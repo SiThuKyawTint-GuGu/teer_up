@@ -20,8 +20,8 @@ const SignUp = () => {
         </form>
 
         <Text as="div" className=" text-black absolute bottom-3 w-[80%] mx-auto">
-          By clicking &quot;Sign Up&quot;, I have read, understood, and given my consent and accepted the
-          Terms of Use.
+          By clicking &quot;Sign Up&quot;, I have read, understood, and given my consent and
+          accepted the Terms of Use.
         </Text>
       </div>
     </div>

@@ -12,9 +12,7 @@ const LoginOTP = () => {
       <div className="flex flex-col justify-evenly h-full items-center w-full flex-1">
         <Image src={teeUpLogo} width={130} height={31} alt="teeUpLogo" />
         <form className="mx-auto flex flex-col justify-center gap-3 w-[90%]">
-          <InputText
-            type="text"
-          />
+          <InputText type="text" />
           <div className="text-black text-center">Enter the OTP for Log In</div>
           <Button>Next</Button>
         </form>
