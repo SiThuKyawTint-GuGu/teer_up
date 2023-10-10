@@ -1,10 +1,9 @@
-'use client';
 import React from 'react';
 import Image from 'next/Image';
 
-import { Button } from '@/components/Button/index';
-import { InputText } from '@/components/Inputs/index';
-import { Text } from '@/components/Typo/Text';
+import { Button } from '@/components/ui/Button';
+import { InputText } from '@/components/ui/Inputs';
+import { Text } from '@/components/ui/Typo/Text';
 import teeUpLogo from '@/configs/img/auth/teeUpLogo.png';
 
 const SignUpOTP = () => {

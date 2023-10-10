@@ -2,8 +2,8 @@
 import React from 'react';
 import Image from 'next/Image';
 
-import { Button } from '@/components/Button/index';
-import { Text } from '@/components/Typo/Text';
+import { Button } from '@/components/ui/Button';
+import { Text } from '@/components/ui/Typo/Text';
 import teeUpLogo from '@/configs/img/auth/teeUpLogo.png';
 
 const Verify = () => {

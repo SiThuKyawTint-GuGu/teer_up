@@ -1,6 +1,9 @@
 import NextImage from 'next/image';
 import { CiLogout, CiSettings } from 'react-icons/ci';
+import { FaLightbulb } from 'react-icons/fa';
 import { FcBusinesswoman } from 'react-icons/fc';
+import { FiUsers } from 'react-icons/fi';
+import { GoCommentDiscussion } from 'react-icons/go';
 import { IoLogoApple, IoNotificationsOutline } from 'react-icons/io5';
 import { MdOutlineMailOutline } from 'react-icons/md';
 import {
@@ -27,10 +30,7 @@ import {
   PiUserThin,
   PiWallet,
 } from 'react-icons/pi';
-import { FaLightbulb } from 'react-icons/fa';
-import { FiUsers } from 'react-icons/fi';
-import { GoCommentDiscussion } from 'react-icons/go';
-import { RxCross2, RxDashboard, RxMagnifyingGlass } from 'react-icons/rx';
+import { RxCross2, RxMagnifyingGlass } from 'react-icons/rx';
 import { SiAmazon, SiNetflix, SiTesla, SiVivawallet } from 'react-icons/si';
 
 export const Icons = {

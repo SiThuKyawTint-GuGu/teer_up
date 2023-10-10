@@ -63,8 +63,8 @@ const FormItem = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivEl
 
     return (
       <FormItemContext.Provider value={{ id }}>
-        <div ref={ref} className={cn('space-y-2', className)} {...props} />
-        <p>{error?.message}</p>
+        <div ref={ref} className={cn('space-y-1', className)} {...props} />
+        <p className="text-primary">{error?.message}</p>
       </FormItemContext.Provider>
     );
   }
@@ -76,7 +76,6 @@ const FormLabel = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
 >(({ className, ...props }, ref) => {
   const { error } = useFormField();
-
   return <Label ref={ref} className={cn(error && 'text-destructive', className)} {...props} />;
 });
 FormLabel.displayName = 'FormLabel';
