@@ -8,13 +8,12 @@ import { Icons } from '../Images';
 type Props = {
   type?: 'text' | 'email' | 'password' | 'number' | 'submit' | 'hidden';
   label?: string;
-  placeholder?: string;
   className?: string;
   error?: any;
 };
 
 const InputText = React.forwardRef<HTMLInputElement, Props>(
-  ({ type, label, placeholder, error, className, ...props }, ref) => {
+  ({ type, label, error, className, ...props }, ref) => {
     return (
       <div>
         <label htmlFor="email" className="block text-sm font-medium text-gray-700">
@@ -23,8 +22,7 @@ const InputText = React.forwardRef<HTMLInputElement, Props>(
         <div className="relative mt-1 rounded-md shadow-sm">
           <InputStyled
             type={type}
-            className={`text-black block w-full rounded-md border-[2px] border-primary-100 px-[12px] py-[8px] focus:border-[#00678D] ${className}`}
-            placeholder={placeholder}
+            className={`text-black bg-[#FFF] block w-full rounded-[9px] border-[2px] border-[#BABABA] px-[20px] py-[14px] focus:border-[#00678D] ${className}`}
             aria-invalid="true"
             aria-describedby="name-error"
             autoComplete="off"
