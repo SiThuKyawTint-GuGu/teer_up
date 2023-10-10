@@ -1,0 +1,20 @@
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  run_ssh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+    - name: Execute remote script
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+        host: 159.89.208.114
+        username: web
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: 2288
+        command_timeout: 30m
+        script: | 
+          ~/cicd/teeup-web.sh
