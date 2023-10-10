@@ -21,7 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <html lang="en" className={fontSans.className}>
         <head />
         <body>
-          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+          <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
             <Theme>
               <PageLayout>{children}</PageLayout>
             </Theme>

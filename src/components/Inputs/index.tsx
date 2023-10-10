@@ -23,7 +23,6 @@ const InputText = React.forwardRef<HTMLInputElement, Props>(
         <div className="relative mt-1 rounded-md shadow-sm">
           <InputStyled
             type={type}
-            id="name"
             className={`text-black block w-full rounded-md border-[2px] border-primary-100 px-[12px] py-[8px] focus:border-[#00678D] ${className}`}
             placeholder={placeholder}
             aria-invalid="true"
@@ -33,11 +32,7 @@ const InputText = React.forwardRef<HTMLInputElement, Props>(
             {...props}
           />
         </div>
-        {error && (
-          <p className="mt-2 text-sm text-red-600" id="email-error">
-            {error}
-          </p>
-        )}
+        {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
       </div>
     );
   }
