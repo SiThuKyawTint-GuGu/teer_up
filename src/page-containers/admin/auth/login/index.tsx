@@ -2,9 +2,11 @@
 import React from 'react';
 import Image from 'next/image';
 import { useForm } from 'react-hook-form';
+import * as Select from '@radix-ui/react-select';
 
 import loginVector from '@/configs/img/auth/loginVector.png';
 import mainLogo from '@/configs/img/auth/mainLogo.png';
+// import { Select, SelectContent, SelectItem, SelectTrigger } from '@/components/Inputs/Select';
 
 const Login = () => {
   return (
@@ -64,8 +66,36 @@ const LoginForm = () => {
             Forgot password?
           </p>
 
+          <p className="justify-start text-sm mb-1">Select Organization</p>
+          {/* <Select {...register('organization')}>
+            <SelectTrigger>Select Organization</SelectTrigger>
+            <SelectContent>
+              <SelectItem value="value1">Option 1</SelectItem>
+              <SelectItem value="value2">Option 2</SelectItem>
+            </SelectContent>
+          </Select> */}
+          <div className="relative inline-flex">
+            <select
+              {...register('organization')}
+              className="block appearance-none w-48 bg-white border border-gray-300 hover:border-gray-400 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline-blue focus:border-blue-300"
+            >
+              <option value="option1">Option 1</option>
+              <option value="option2">Option 2</option>
+              <option value="option3">Option 3</option>
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg
+                className="fill-current h-4 w-4"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+              >
+                <path d="M6.293 9.293a1 1 0 011.414 0L10 11.586l2.293-2.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" />
+              </svg>
+            </div>
+          </div>
+
           <button
-            className="p-2 mt-5 rounded-md"
+            className="p-2 mt-[50px] rounded-md"
             style={{ background: '#e60808', color: '#fff' }}
             type="submit"
           >

@@ -37,7 +37,7 @@ export const HamburgerDrawer = ({
   }, []);
 
   return (
-    <div>
+    <div className="pt-2 pr-1">
       <nav className={cn('HamburgerDrawer', className)} aria-label="Main menu">
         <input
           ref={checkbox}

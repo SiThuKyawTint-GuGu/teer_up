@@ -27,6 +27,9 @@ import {
   PiUserThin,
   PiWallet,
 } from 'react-icons/pi';
+import { FaLightbulb } from 'react-icons/fa';
+import { FiUsers } from 'react-icons/fi';
+import { GoCommentDiscussion } from 'react-icons/go';
 import { RxCross2, RxDashboard, RxMagnifyingGlass } from 'react-icons/rx';
 import { SiAmazon, SiNetflix, SiTesla, SiVivawallet } from 'react-icons/si';
 
@@ -56,7 +59,9 @@ export const Icons = {
       </svg>
     );
   },
-  dashboard: RxDashboard,
+  innovates: FaLightbulb,
+  users: FiUsers,
+  discussions: GoCommentDiscussion,
   wallet: PiWallet,
   transactions: PiArrowsLeftRightDuotone,
   cashback: PiDatabaseThin,

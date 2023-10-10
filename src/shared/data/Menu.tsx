@@ -14,52 +14,58 @@ export interface Menu {
 export const menuList: Menu[] = [
   {
     key: '/',
-    icon: <Icons.dashboard className="w-[20px] h-[20px]" />,
-    title: 'Dashboard',
+    icon: <Icons.innovates className="w-[20px] h-[20px]" />,
+    title: 'Innovates',
     child: [],
   },
   {
-    key: '/wallet',
+    key: '/reward',
     icon: <Icons.wallet className="w-[20px] h-[20px]" />,
-    title: 'Wallet',
+    title: 'Reward',
     child: [],
   },
   {
-    key: '/transactions',
-    icon: <Icons.transactions className="w-[20px] h-[20px]" />,
-    title: 'Transactions',
+    key: '/users',
+    icon: <Icons.users className="w-[20px] h-[20px]" />,
+    title: 'Users',
     child: [],
   },
   {
-    key: '/cashback',
-    icon: <Icons.cashback className="w-[20px] h-[20px]" />,
-    title: 'Cashback',
+    key: '/discussions',
+    icon: <Icons.discussions className="w-[20px] h-[20px]" />,
+    title: 'Disccussions',
     child: [],
   },
   {
-    key: '/payments',
-    icon: <Icons.payments className="w-[20px] h-[20px]" />,
-    title: 'Payments',
+    key: '/setting',
+    icon: <Icons.setting className="w-[20px] h-[20px]" />,
+    title: 'Setting',
     child: [],
   },
-  {
-    key: '/investment',
-    icon: <Icons.investment className="w-[20px] h-[20px]" />,
-    title: 'Investment',
-    child: [],
-  },
-  {
-    key: '/profile',
-    icon: <Icons.user className="w-[20px] h-[20px]" />,
-    title: 'Profile',
-    child: [],
-  },
-  {
-    key: '/support',
-    icon: <Icons.support className="w-[20px] h-[20px]" />,
-    title: 'Support',
-    child: [],
-  },
+  // {
+  //   key: '/payments',
+  //   icon: <Icons.payments className="w-[20px] h-[20px]" />,
+  //   title: 'Payments',
+  //   child: [],
+  // },
+  // {
+  //   key: '/investment',
+  //   icon: <Icons.investment className="w-[20px] h-[20px]" />,
+  //   title: 'Investment',
+  //   child: [],
+  // },
+  // {
+  //   key: '/profile',
+  //   icon: <Icons.user className="w-[20px] h-[20px]" />,
+  //   title: 'Profile',
+  //   child: [],
+  // },
+  // {
+  //   key: '/support',
+  //   icon: <Icons.support className="w-[20px] h-[20px]" />,
+  //   title: 'Support',
+  //   child: [],
+  // },
   // {
   //   key: '/client',
   //   icon: <PersonIcon />,
@@ -82,12 +88,6 @@ export const menuList: Menu[] = [
 ];
 
 export const actionMenu: Menu[] = [
-  {
-    key: '/setting',
-    icon: <Icons.setting className="w-[20px] h-[20px]" />,
-    title: 'Setting',
-    child: [],
-  },
   {
     key: '',
     icon: <Icons.logout className="w-[20px] h-[20px]" />,
