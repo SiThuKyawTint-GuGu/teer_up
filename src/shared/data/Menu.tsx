@@ -13,7 +13,7 @@ export interface Menu {
 
 export const menuList: Menu[] = [
   {
-    key: '/',
+    key: '/admin/auth/login',
     icon: <Icons.innovates className="w-[20px] h-[20px]" />,
     title: 'Innovates',
     child: [],

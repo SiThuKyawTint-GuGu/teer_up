@@ -24,7 +24,7 @@ const Sidebar: React.FC<Props> = ({ className }: Props) => {
   // const { items } = useAtomReducer(TYPES.SWITCH_THEME);
 
   const handleCollapse = (key: any, item: any) => {
-    if (!item.child) {
+    if (!item.child.length) {
       setChildActive(item.key);
       router.push(item.key);
     }

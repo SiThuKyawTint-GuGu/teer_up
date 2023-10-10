@@ -10,10 +10,11 @@ type Props = {
   label?: string;
   className?: string;
   error?: any;
+  placeholder?: string;
 };
 
 const InputText = React.forwardRef<HTMLInputElement, Props>(
-  ({ type, label, error, className, ...props }, ref) => {
+  ({ type, label, error, className, placeholder, ...props }, ref) => {
     return (
       <div>
         <label htmlFor="email" className="block text-sm font-medium text-gray-700">
@@ -26,6 +27,7 @@ const InputText = React.forwardRef<HTMLInputElement, Props>(
             aria-invalid="true"
             aria-describedby="name-error"
             autoComplete="off"
+            placeholder={placeholder}
             ref={ref}
             {...props}
           />
@@ -39,7 +41,6 @@ InputText.displayName = 'InputText';
 
 InputText.defaultProps = {
   type: 'text',
-  placeholder: 'Placeholder',
 };
 
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement>;

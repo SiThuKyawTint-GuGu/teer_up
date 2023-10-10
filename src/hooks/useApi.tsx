@@ -14,7 +14,12 @@ const fetcher = async (url: string): Promise<ApiResponse[]> => {
 };
 
 export const useApi = (url: string, method: string = 'GET') => {
-  const { data, error, mutate: swrMutateData, isLoading } = useSWR<ApiResponse[]>(url, fetcher);
+  const {
+    data = null,
+    error,
+    mutate: swrMutateData,
+    isLoading,
+  } = useSWR<ApiResponse[]>(url, fetcher);
 
   const mutate = async (mutateUrl?: string) => {
     const mutationUrl = mutateUrl || url;
