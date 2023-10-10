@@ -13,8 +13,8 @@ const FetchData = () => {
   console.log(count);
 
   const fetchData = useCallback(async () => {
-    const people = await fetchApi.getPeoples('people', {});
-    console.log(people);
+    const result = await fetchApi.getPeoples('people', {});
+    console.log('result -> ', result);
   }, []);
 
   useEffect(() => {

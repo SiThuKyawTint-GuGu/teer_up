@@ -24,9 +24,9 @@ export class FetchAPI {
       phone: string;
     }
   ) {
+    let isLoading = true;
     const queryString = new URLSearchParams(parameters as any);
     const url = `${this.baseUrl}/${api}?${queryString.toString()}`;
-
     const requestOptions: RequestInit = {
       method,
       headers: {
@@ -47,17 +47,40 @@ export class FetchAPI {
         throw new Error(`Request failed with status ${response.status}`);
       }
       const result = await response.json();
+      isLoading = false;
       return {
         ...result,
         lastFetchUpdated: dayjs().format('ddd, DD MMM YYYY HH:mm:ss [GMT]'),
+        isLoading,
       };
     } catch (error) {
       console.error('Error:', error);
+      isLoading = false;
       throw error;
     }
   }
 
+  // async getPeoples(path: string, params: ParameterType) {
+  //   return await this.sendApiRequest(path, params);
+  // }
   async getPeoples(path: string, params: ParameterType) {
-    return await this.sendApiRequest(path, params);
+    const isLoading = true; // Initialize isLoading as true before making the API request
+
+    try {
+      const response = await this.sendApiRequest(path, params);
+
+      // Set isLoading to false before returning the response
+      return {
+        data: response,
+        isLoading: false,
+      };
+    } catch (error) {
+      // Set isLoading to false in case of an error
+      return {
+        data: null,
+        isLoading: false,
+        error,
+      };
+    }
   }
 }
