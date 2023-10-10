@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 6200",
     "lint": "next lint",
     "code-style": "yarn eslint --ext ts,tsx .",
     "code-style-fix": "yarn eslint --fix  --ext ts,tsx ."
