@@ -3,8 +3,8 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
 
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/Collapsible';
-import { Icons } from '@/components/Images';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/Collapsible';
+import { Icons } from '@/components/ui/Images';
 import { actionMenu, menuList } from '@/shared/data/Menu';
 // import { Switch } from '@/components/ui/switch';
 // import useAtomReducer from '@/hooks/useAtomReducer';

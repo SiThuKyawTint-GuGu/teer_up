@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import PageLayout from '@/components/Layout';
+import PageLayout from '@/components/layout';
 import { fontSans } from '@/configs/fonts';
 import StoreProvider from '@/providers/store';
 import { ThemeProvider } from '@/providers/theme';

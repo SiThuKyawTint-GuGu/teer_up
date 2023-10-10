@@ -1,7 +1,8 @@
 'use client';
-import React, { useCallback, useEffect } from 'react';
+import React from 'react';
 
-import { Button } from '@/components/Button';
+import { Button } from '@/components/ui/Button';
+import { useApi } from '@/hooks/useApi';
 import { FetchAPI } from '@/libs/api';
 import { useStore } from '@/libs/store';
 
@@ -10,16 +11,20 @@ const FetchData = () => {
   const count = useStore(state => state.count);
   const increment = useStore(state => state.increment);
   const decrease = useStore(state => state.decrement);
-  console.log(count);
 
-  const fetchData = useCallback(async () => {
-    const result = await fetchApi.getPeoples('people', {});
-    console.log('result -> ', result);
-  }, []);
+  const { data, isLoading, error } = useApi('https://swapi.dev/api/people');
 
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+  console.log('data -> ', data);
+  console.log('isLoading -> ', isLoading);
+
+  // const fetchData = useCallback(async () => {
+  //   const response = await fetchApi.getPeoples('people', {});
+  // }, []);
+
+  // useEffect(() => {
+  //   fetchData();
+  // }, [fetchData]);
+
   return (
     <div>
       count: {count}

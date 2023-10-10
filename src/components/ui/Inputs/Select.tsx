@@ -1,7 +1,7 @@
 'use client';
 import * as React from 'react';
 
-import { Icons } from '@/components/Images';
+import { Icons } from '@/components/ui/Images';
 import { SELECT_ICONS } from '@/shared/enums';
 import { cn } from '@/utils/cn';
 import * as SelectPrimitive from '@radix-ui/react-select';

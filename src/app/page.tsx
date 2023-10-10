@@ -1,13 +1,12 @@
 import Image from 'next/image';
 
-import { Button } from '@/components/Button';
-import { FetchAPI } from '@/libs/api';
+import { Button } from '@/components/ui/Button';
 import FetchData from '@/page-containers/FetchData';
 
 const Home = async () => {
-  const fetchApi = new FetchAPI();
-  const people = await fetchApi.getPeoples('people', {});
-  console.log('people -> ', people);
+  // const fetchApi = new FetchAPI();
+  // const people = await fetchApi.getPeoples('people', {});
+  // console.log('people -> ', people);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">

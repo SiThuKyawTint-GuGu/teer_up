@@ -27,6 +27,9 @@ const PageLayout = ({ children }: { children: ReactNode }) => {
       <div className="w-full min-h-screen lg:ml-[260px] bg-primary-light dark:bg-primary-dark px-4">
         <Header />
         <div>{children}</div>
+        {/* <Suspense fallback={<div>loading...</div>}>
+          
+        </Suspense> */}
       </div>
     </div>
   );

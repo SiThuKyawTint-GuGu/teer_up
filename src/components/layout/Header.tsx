@@ -2,9 +2,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import CardBox from '@/components/Card';
-import { Icons } from '@/components/Images';
-import { Text } from '@/components/Typo/Text';
+import CardBox from '@/components/ui/Card';
+import { Icons } from '@/components/ui/Images';
+import { Text } from '@/components/ui/Typo/Text';
 import { useWindowSize } from '@/hooks/useWindowSize';
 import { WINDOW_WIDTH } from '@/shared/enums';
 import { Box, Flex, Grid } from '@radix-ui/themes';

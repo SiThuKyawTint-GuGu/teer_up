@@ -1,4 +1,4 @@
-import { Icons } from '@/components/Images';
+import { Icons } from '@/components/ui/Images';
 
 export interface Menu {
   key: string;
