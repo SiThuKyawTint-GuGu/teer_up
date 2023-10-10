@@ -17,4 +17,4 @@ jobs:
         port: 2288
         command_timeout: 30m
         script: | 
-          ~/cicd/teeup-web.sh
+          ~/cicd/teeup-user.sh
