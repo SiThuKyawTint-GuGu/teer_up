@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
 
-import Header from '@/components/Layout/Header';
-import Sidebar from '@/components/Layout/Sidebar';
+import PageLayout from '@/components/Layout';
 import { fontSans } from '@/configs/fonts';
+import { ThemeProvider } from '@/providers/theme';
+import { Theme } from '@radix-ui/themes';
 import { ServerThemeProvider } from '@wits/next-themes';
 
 import '@/styles/globals.css';
+import '@/styles/drawer.css';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -19,9 +21,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <html lang="en" className={fontSans.className}>
         <head />
         <body>
-          <Header />
-          <Sidebar />
-          {children}
+          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+            <Theme>
+              <PageLayout>{children}</PageLayout>
+            </Theme>
+          </ThemeProvider>
         </body>
       </html>
     </ServerThemeProvider>

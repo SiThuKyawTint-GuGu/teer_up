@@ -11,7 +11,10 @@
     "code-style-fix": "yarn eslint --fix  --ext ts,tsx ."
   },
   "dependencies": {
+    "@ariakit/react": "^0.3.4",
     "@hookform/resolvers": "^3.3.1",
+    "@radix-ui/react-collapsible": "^1.0.3",
+    "@radix-ui/themes": "^2.0.0",
     "@wits/next-themes": "^0.2.16",
     "clsx": "^2.0.0",
     "dayjs": "^1.11.10",
