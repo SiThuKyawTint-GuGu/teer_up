@@ -1,13 +1,14 @@
 'use client';
 import React from 'react';
+import Image from 'next/image';
+import { BsBell } from 'react-icons/bs';
 import styled from 'styled-components';
 
 import CardBox from '@/components/ui/Card';
-import { Icons } from '@/components/ui/Images';
 import { Text } from '@/components/ui/Typo/Text';
+import mainLogo from '@/configs/img/auth/mainLogo.png';
 import { useWindowSize } from '@/hooks/useWindowSize';
-import { WINDOW_WIDTH } from '@/shared/enums';
-import { Box, Flex, Grid } from '@radix-ui/themes';
+import { Grid } from '@radix-ui/themes';
 
 const Header: React.FC = () => {
   const { windowWidth } = useWindowSize();
@@ -17,15 +18,41 @@ const Header: React.FC = () => {
   // }, [windowWidth]);
 
   return (
-    <Grid columns="1" py="5">
-      <Flex
+    <Grid columns="1" py="5" className="bg-red-500">
+      <div className="flex justify-between items-center sticky-top h-16 bg-white text-black relative shadow-sm text-2xl">
+        <Text size="4" className="text-center pl-3">
+          Innovates
+        </Text>
+        <div className="flex justify-center items-center mr-10">
+          <div className="mr-3">
+            <p className="text-[17px] font-weight-400">School of Engineering</p>
+            <p className="text-sm text-gray-500">Total 150,000 points</p>
+          </div>
+          <div className="flex ">
+            <Image
+              src={mainLogo}
+              alt="Avatar"
+              className="rounded-full w-12 h-12 border-2 border-white"
+            />
+            <div className="flex flex-col">
+              <p className="text-[15px]">Hi, Simon</p>
+              <p className="text-sm text-gray-500">Admin</p>
+            </div>
+          </div>
+          <div className="ml-4">
+            <BsBell size={20} />
+          </div>
+        </div>
+      </div>
+      {/* <Flex
         gap="4"
         justify="between"
         align={windowWidth > WINDOW_WIDTH.LG ? 'center' : 'start'}
         direction={windowWidth > WINDOW_WIDTH.LG ? 'row' : 'column'}
+        className="h-20 justify-center items-center"
       >
         <Box>
-          <Text size="4">Dashboard</Text>
+          <Text size="4">Innovates</Text>
         </Box>
         <Flex
           gap="6"
@@ -33,9 +60,9 @@ const Header: React.FC = () => {
           align="center"
           direction={windowWidth > WINDOW_WIDTH.LG ? 'row' : 'column'}
         >
-          {/* <Box>
+          <Box>
             <InputSearch type="text" placeholder="Search..." />
-          </Box> */}
+          </Box>
           <Box>
             <CardBoxStyled className="w-[289px] h-[40px]">
               <Flex justify="between" align="center" height="100%" p="4">
@@ -53,7 +80,7 @@ const Header: React.FC = () => {
             </CardBoxStyled>
           </Box>
         </Flex>
-      </Flex>
+      </Flex> */}
     </Grid>
   );
 };

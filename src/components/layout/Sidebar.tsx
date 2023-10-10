@@ -1,10 +1,12 @@
 'use client';
 import React from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
 
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/Collapsible';
 import { Icons } from '@/components/ui/Images';
+import mainLogo from '@/configs/img/auth/mainLogo.png';
 import { actionMenu, menuList } from '@/shared/data/Menu';
 // import { Switch } from '@/components/ui/switch';
 // import useAtomReducer from '@/hooks/useAtomReducer';
@@ -45,8 +47,9 @@ const Sidebar: React.FC<Props> = ({ className }: Props) => {
         )}
       >
         <div className="px-12 pt-[25px] font-semibold mb-8 flex justify-start items-center gap-x-3">
-          <Icons.logo className="w-[60px] h-[60px]" />
-          Wallet
+          {/* <Icons.logo className="w-[60px] h-[60px]" /> */}
+          {/* Wallet */}
+          <Image src={mainLogo} className="w-[200px] h-[70px]" alt="main logo" />
         </div>
         <div className="space-y-[5px]">
           {menuList?.length &&
@@ -111,7 +114,7 @@ const Sidebar: React.FC<Props> = ({ className }: Props) => {
               );
             })}
         </div>
-        <div className="space-y-[5px] mt-[30px] pt-[30px] border-t-[1px] border-[#636363]">
+        <div className="space-y-[5px] mt-[170px] pt-[30px] border-t-[1px]">
           {actionMenu?.length &&
             actionMenu?.map((item, index) => {
               let active = childActive;
@@ -121,7 +124,7 @@ const Sidebar: React.FC<Props> = ({ className }: Props) => {
               return (
                 <Collapsible
                   key={index}
-                  className="px-[25px] py-[10px] cursor-pointer hover:menu-theme"
+                  className="px-[25px] py-[5px] cursor-pointer hover:menu-theme"
                   open={open === item.key}
                   onOpenChange={() => handleCollapse(item.key, item)}
                 >
