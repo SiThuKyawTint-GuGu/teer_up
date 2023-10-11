@@ -9,7 +9,7 @@ export function middleware(req: NextRequest) {
   const requestHeaders = new Headers(req.headers);
 
   // example header set
-  // TODO
+  // TODO: Review and potentially update the headers
   requestHeaders.set('x-hello-from-middleware1', 'hello');
 
   // Define login URL

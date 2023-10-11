@@ -10,27 +10,33 @@ interface WithAuthProps {}
 
 export default function withAuth<T>(Component: React.ComponentType<T>) {
   const ComponentWithAuth = (props: Omit<T, keyof WithAuthProps>) => {
-    const token = sessionStatus;
+    // TODO: Need to modify the token retrieval logic
+    const token = sessionStatus; // Get the user's session token
 
     const checkAuth = useCallback(() => {
       if (!token) {
-        // return;
+        // Define a function to check user authentication
         redirect('/admin');
+        // return;
       }
     }, [token]);
 
+    // Use useEffect to run the checkAuth function and set up event listeners
     useEffect(() => {
       checkAuth();
-      // run checkAuth every focus changes
+      // Run checkAuth every time the focus changes
       window.addEventListener('focus', checkAuth);
+      // Remove the event listener when the component is unmounted
       return () => {
         window.removeEventListener('focus', checkAuth);
       };
     }, [checkAuth]);
 
-    // if (!session) null;
+    // If the user is not authenticated, the checkAuth function will redirect to '/admin'
+    // Otherwise, render the wrapped component with the provided props
     return <Component {...props} />;
   };
 
+  // Return the component with authentication logic
   return ComponentWithAuth;
 }
