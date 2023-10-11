@@ -24,19 +24,19 @@ const Login = () => {
     resolver: yupResolver(validationSchema),
   });
 
-  const {
-    data: response,
-    isLoading,
-    error,
-    mutate,
-  } = useApi('https://teeup-dev-api.viabells.com/api/v1/user/login', 'POST');
+  // const {
+  //   data: response,
+  //   isLoading,
+  //   error,
+  //   mutate,
+  // } = useApi('https://teeup-dev-api.viabells.com/api/v1/user/login', 'POST');
 
   const loginHandler = async (data: loginBody) => {
-    try {
-      mutate(data);
-    } catch (error) {
-      console.error('Error performing login:', error);
-    }
+    // try {
+    //   mutate(data);
+    // } catch (error) {
+    //   console.error('Error performing login:', error);
+    // }
   };
   return (
     <div className="h-screen flex flex-col relative px-5">

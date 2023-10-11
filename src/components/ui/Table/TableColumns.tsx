@@ -8,9 +8,9 @@ export const Columns: Column[] = [
   {
     Header: 'Created Date',
     accessor: 'created_date',
-    // Cell: ({ value }) => {
-    //   return dayjs(new Date(value)).format('DD/MM/YYYY');
-    // },
+    Cell: () => {
+      return <div>testing</div>;
+    },
   },
   {
     Header: 'URL',
