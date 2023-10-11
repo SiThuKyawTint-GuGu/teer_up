@@ -21,7 +21,7 @@ const SignUp = () => {
     email: yup.string().email().required('Email is required!'),
     name: yup.string().required('Name is required!'),
     country: yup.number().required('Country is required!'),
-    password:yup.string().required("Password is required!")
+    password: yup.string().required('Password is required!'),
   });
   const form = useForm({
     resolver: yupResolver(validationSchema),
