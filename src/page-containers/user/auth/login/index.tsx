@@ -25,18 +25,17 @@ const Login = () => {
   const form = useForm({
     resolver: yupResolver(validationSchema),
   });
+
   const {
     data: response,
+    isLoading,
     error,
     mutate,
   } = useApi('https://teeup-dev-api.viabells.com/api/v1/user/login', 'POST');
 
   const loginHandler = async (data: loginBody) => {
     try {
-      await mutate('https://teeup-dev-api.viabells.com/api/v1/user/login', data);
-
-      console.log(response);
-      console.log(error);
+      mutate(data);
     } catch (error) {
       console.error('Error performing login:', error);
     }

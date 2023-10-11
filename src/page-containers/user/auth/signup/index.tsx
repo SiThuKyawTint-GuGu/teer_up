@@ -10,18 +10,19 @@ import { InputText } from '@/components/ui/Inputs';
 import { Text } from '@/components/ui/Typo/Text';
 import teeUpLogo from '@/configs/img/auth/teeUpLogo.png';
 import { yupResolver } from '@hookform/resolvers/yup';
-interface SignUpFormType {
-  email: String;
-  name: String;
-  country: String;
-}
-const validationSchema = yup.object({
-  email: yup.string().email().required('Email is required!'),
-  name: yup.string().required('Name is required!'),
-  country: yup.number().required('Country is required!'),
-  password: yup.string().required('Password is required!'),
-});
+
 const SignUp = () => {
+  interface SignUpFormType {
+    email: String;
+    name: String;
+    country: String;
+  }
+  const validationSchema = yup.object({
+    email: yup.string().email().required('Email is required!'),
+    name: yup.string().required('Name is required!'),
+    country: yup.number().required('Country is required!'),
+    password: yup.string().required('Password is required!'),
+  });
   const form = useForm({
     resolver: yupResolver(validationSchema),
   });
