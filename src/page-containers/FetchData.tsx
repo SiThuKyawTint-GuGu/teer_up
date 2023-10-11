@@ -30,8 +30,6 @@ const FetchData = () => {
     console.log('data -> ', data);
   };
 
-  console.log(form.formState.errors);
-
   return (
     <div className="grid grid-cols-12">
       <div className="col-span-12">

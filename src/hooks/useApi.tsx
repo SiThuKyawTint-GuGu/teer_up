@@ -13,7 +13,7 @@ const fetcher = async (url: string): Promise<ApiResponse[]> => {
   return response.json();
 };
 
-export const useApi = (url: string, method: string) => {
+export const useApi = (url: string, method: string = 'GET') => {
   const {
     data = null,
     error,
@@ -33,9 +33,9 @@ export const useApi = (url: string, method: string) => {
         body: JSON.stringify(requestData || {}),
       });
 
-      // if (!response.ok) {
-      //   throw new Error('Failed to perform mutation');
-      // }
+      if (!response.ok) {
+        throw new Error('Failed to perform mutation');
+      }
 
       swrMutateData();
     } catch (error) {

@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import Image from 'next/Image';
+import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
@@ -11,18 +11,20 @@ import { Text } from '@/components/ui/Typo/Text';
 import teeUpLogo from '@/configs/img/auth/teeUpLogo.png';
 import { yupResolver } from '@hookform/resolvers/yup';
 
+interface SignUpFormType {
+  email: String;
+  name: String;
+  // country: String;
+}
+
+const validationSchema = yup.object({
+  email: yup.string().email().required('Email is required!'),
+  name: yup.string().required('Name is required!'),
+  country: yup.number().required('Country is required!'),
+  password: yup.string().required('Password is required!'),
+});
+
 const SignUp = () => {
-  interface SignUpFormType {
-    email: String;
-    name: String;
-    country: String;
-  }
-  const validationSchema = yup.object({
-    email: yup.string().email().required('Email is required!'),
-    name: yup.string().required('Name is required!'),
-    country: yup.number().required('Country is required!'),
-    password: yup.string().required('Password is required!'),
-  });
   const form = useForm({
     resolver: yupResolver(validationSchema),
   });
@@ -41,6 +43,19 @@ const SignUp = () => {
           >
             <FormField
               control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Enter your name</FormLabel>
+                  <FormControl>
+                    <InputText type="text" {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem>
@@ -52,19 +67,7 @@ const SignUp = () => {
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Enter your name</FormLabel>
-                  <FormControl>
-                    <InputText type="text" {...field} />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="country"
               render={({ field }) => (
@@ -75,7 +78,7 @@ const SignUp = () => {
                   </FormControl>
                 </FormItem>
               )}
-            />
+            /> */}
             <Button type="submit" size="lg">
               Sign Up
             </Button>
