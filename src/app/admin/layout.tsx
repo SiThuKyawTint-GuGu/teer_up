@@ -7,7 +7,7 @@ interface Props {
 const AdminLayout = ({ children }: Props) => {
   return (
     <>
-      <main className="bg-gray-100 h-screen p-[40px]">{children}</main>
+      <main className="bg-gray-100 h-full p-[40px]">{children}</main>
     </>
   );
 };
