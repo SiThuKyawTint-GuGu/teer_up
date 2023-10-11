@@ -1,5 +1,5 @@
 const baseURL: string | undefined = process.env.NEXT_PUBLIC_URL;
-export async function useGet<T>(endPoint: string, bearerToken?: string): Promise<T> {
+export async function getMethod<T>(endPoint: string, bearerToken?: string): Promise<T> {
   try {
     const headers: HeadersInit = {};
     if (bearerToken) {

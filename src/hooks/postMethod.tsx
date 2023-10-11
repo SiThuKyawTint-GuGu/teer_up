@@ -5,7 +5,7 @@ export class CustomError extends Error {
     this.name = 'CustomError';
   }
 }
-export async function usePost<T>(
+export async function postMethod<T>(
   endPoint: string,
   data: Record<string, any>,
   authToken?: string | undefined

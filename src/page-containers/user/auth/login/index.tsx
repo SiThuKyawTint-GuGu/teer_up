@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 // import Image from 'next/Image';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -10,8 +11,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/
 import { InputText } from '@/components/ui/Inputs';
 import { Text } from '@/components/ui/Typo/Text';
 import teeUpLogo from '@/configs/img/auth/teeUpLogo.png';
-import { usePost } from '@/hooks/usePost';
+import { postMethod } from '@/hooks/postMethod';
 import { AuthResponse } from '@/types/type';
+import { setUserInfo } from '@/utils/auth';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 const validationSchema = yup.object({
@@ -24,6 +26,7 @@ type loginBody = {
   password: string;
 };
 const Login = () => {
+  const router = useRouter();
   const form = useForm({
     resolver: yupResolver(validationSchema),
   });
@@ -31,9 +34,11 @@ const Login = () => {
   const [error, setError] = React.useState<string | null>(null);
 
   const loginHandler = async (data: loginBody) => {
-    usePost<AuthResponse>('/user/login', data)
+    postMethod<AuthResponse>('/user/login', data)
       .then(response => {
         setError(null);
+        setUserInfo(response.token);
+        router.push('/');
         console.log(response.token);
       })
       .catch(error => setError(error.message));
@@ -74,12 +79,12 @@ const Login = () => {
             />
 
             <Button type="submit" size="lg">
-              Sign In
+              Login
             </Button>
           </form>
         </Form>
-
-        <Text as="div" className=" text-black absolute bottom-3 w-[80%]">
+        <Button onClick={() => router.push('/signup')}>Sign Up</Button>
+        <Text as="div" className="absolute bottom-3 w-[80%]">
           By clicking &quot;Log In&quot;, I have read, understood, and given my consent and accepted
           the Terms of Use.
         </Text>
