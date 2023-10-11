@@ -10,7 +10,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/
 import { InputText } from '@/components/ui/Inputs';
 import { Text } from '@/components/ui/Typo/Text';
 import teeUpLogo from '@/configs/img/auth/teeUpLogo.png';
-import { usePost } from '@/hooks/usePost';
+import { postMethod } from '@/hooks/postMethod';
 import { AuthResponse } from '@/types/type';
 import { setUserInfo } from '@/utils/auth';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -40,8 +40,10 @@ const SignUp = () => {
     resolver: yupResolver(validationSchema),
   });
   const [error, setError] = useState<string | null>(null);
+  const [studentRegister, setStudentRegister] = useState<Boolean>(true);
+  const endPoint = studentRegister ? '/user/register' : '/user/mentor/register';
   const onSubmit = (data: SignUpFormType) => {
-    usePost<AuthResponse>('/user/register', data)
+    postMethod<AuthResponse>(endPoint, data)
       .then(response => {
         setError(null);
         setUserInfo(response.token);
@@ -52,6 +54,13 @@ const SignUp = () => {
   };
   return (
     <div className="h-screen flex flex-col relative px-5">
+      <div className="flex justify-center py-5">
+        {studentRegister ? (
+          <Button onClick={() => setStudentRegister(false)}>To Mentor Register Form</Button>
+        ) : (
+          <Button onClick={() => setStudentRegister(true)}>To Student Register</Button>
+        )}
+      </div>
       <div className="flex flex-col justify-evenly h-full items-center w-full flex-1">
         <Image src={teeUpLogo} width={130} height={31} alt="teeUpLogo" />
         {error && <div className="text-primary">{error}</div>}
@@ -115,8 +124,8 @@ const SignUp = () => {
             </Button>
           </form>
         </Form>
-
-        <Text as="div" className=" text-black absolute bottom-3 w-[80%] mx-auto">
+        <Button onClick={() => router.push('/login')}>Login</Button>
+        <Text as="div" className="absolute bottom-3 w-[80%] mx-auto">
           By clicking &quot;Sign Up&quot;, I have read, understood, and given my consent and
           accepted the Terms of Use.
         </Text>

@@ -11,8 +11,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/
 import { InputText } from '@/components/ui/Inputs';
 import { Text } from '@/components/ui/Typo/Text';
 import teeUpLogo from '@/configs/img/auth/teeUpLogo.png';
-import { useGet } from '@/hooks/useGet';
-import { usePost } from '@/hooks/usePost';
+import { getMethod } from '@/hooks/getMethod';
+import { postMethod } from '@/hooks/postMethod';
 import { AuthResponse, OtpResponse } from '@/types/type';
 import { getToken, setUserInfo } from '@/utils/auth';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -28,7 +28,7 @@ const Otp = () => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const getOtp = async () => {
-    useGet<OtpResponse>('/user/requestotp', token)
+    getMethod<OtpResponse>('/user/requestotp', token)
       .then(data => {
         setMessage(data.message);
         setError(null);
@@ -42,11 +42,12 @@ const Otp = () => {
     resolver: yupResolver(validationSchema),
   });
   const onSubmit = (data: OtpFormData) => {
-    usePost<AuthResponse>('/user/verifyotp', data, token)
+    postMethod<AuthResponse>('/user/verifyotp', data, token)
       .then(response => {
         setError(null);
         setUserInfo(response.token);
-        router.push('/otp');
+        // need to store User Info persistence or localStorage
+        router.push('/');
         console.log(response);
       })
       .catch(error => {
