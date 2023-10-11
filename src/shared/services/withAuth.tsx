@@ -11,7 +11,7 @@ interface WithAuthProps {}
 export default function withAuth<T>(Component: React.ComponentType<T>) {
   const ComponentWithAuth = (props: Omit<T, keyof WithAuthProps>) => {
     // TODO: Need to modify the token retrieval logic
-    // const hasCookie = hasCookie('token')
+    // const token = hasCookie('token')
     const token = sessionStatus; // Get the user's session token
 
     const checkAuth = useCallback(() => {

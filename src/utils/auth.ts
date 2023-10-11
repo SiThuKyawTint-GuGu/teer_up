@@ -1,7 +1,7 @@
 import { deleteCookie, getCookie, setCookie } from 'cookies-next';
 import CryptoJS from 'crypto-js';
 
-export const setToken = (token: string) => {
+export const setUserInfo = (token: string) => {
   const expires = new Date();
   expires.setDate(expires.getDate() + 7);
   const cipherText = CryptoJS.AES.encrypt(JSON.stringify(token), 'token').toString();
