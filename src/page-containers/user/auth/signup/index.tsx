@@ -1,6 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
@@ -13,7 +14,6 @@ import { usePost } from '@/hooks/usePost';
 import { AuthResponse } from '@/types/type';
 import { setUserInfo } from '@/utils/auth';
 import { yupResolver } from '@hookform/resolvers/yup';
-
 interface SignUpFormType {
   email: String;
   name: String;
@@ -25,24 +25,31 @@ const validationSchema = yup.object({
   email: yup.string().email().required('Email is required!'),
   name: yup.string().required('Name is required!'),
   country: yup.number().required('Country is required!'),
-  password: yup.string().required('Password is required!'),
+  password: yup
+    .string()
+    .min(
+      8,
+      'password must contain 8 or more characters with at least one of each: uppercase, lowercase, number and special'
+    )
+    .required('Password is required!'),
 });
 
 const SignUp = () => {
+  const router = useRouter();
   const form = useForm({
     resolver: yupResolver(validationSchema),
   });
   const [error, setError] = useState<string | null>(null);
   const onSubmit = (data: SignUpFormType) => {
-    usePost<{ responseKey: AuthResponse }>('/api/v1/user/register', data)
+    usePost<AuthResponse>('/user/register', data)
       .then(response => {
         setError(null);
         setUserInfo(response.token);
+        router.push('/otp');
         console.log(response);
       })
       .catch(error => setError(error.message));
   };
-  //   console.log(form.formState.errors);
   return (
     <div className="h-screen flex flex-col relative px-5">
       <div className="flex flex-col justify-evenly h-full items-center w-full flex-1">

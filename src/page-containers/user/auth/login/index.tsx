@@ -1,12 +1,12 @@
 'use client';
 import React from 'react';
+import Image from 'next/image';
 // import Image from 'next/Image';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
 import { Button } from '@/components/ui/Button';
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/Form';
-import { Image } from '@/components/ui/Images';
 import { InputText } from '@/components/ui/Inputs';
 import { Text } from '@/components/ui/Typo/Text';
 import teeUpLogo from '@/configs/img/auth/teeUpLogo.png';
@@ -31,7 +31,7 @@ const Login = () => {
   const [error, setError] = React.useState<string | null>(null);
 
   const loginHandler = async (data: loginBody) => {
-    usePost<{ responseKey: AuthResponse }>('/api/v1/user/login', data)
+    usePost<AuthResponse>('/user/login', data)
       .then(response => {
         setError(null);
         console.log(response.token);

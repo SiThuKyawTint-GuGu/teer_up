@@ -20,3 +20,7 @@ export interface AuthResponse {
 export interface Error {
   message: string;
 }
+
+export interface OtpResponse {
+  message: string;
+}

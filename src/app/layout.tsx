@@ -1,7 +1,6 @@
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
 
-import PageLayout from '@/components/layout';
 import { fontSans } from '@/configs/fonts';
 import StoreProvider from '@/providers/store';
 import { ThemeProvider } from '@/providers/theme';
@@ -27,9 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <StoreProvider>
             <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
               <Theme>
-          
-                  <Suspense fallback={<Loading />}>{children}</Suspense>
-              
+                <Suspense fallback={<Loading />}>{children}</Suspense>
               </Theme>
             </ThemeProvider>
           </StoreProvider>

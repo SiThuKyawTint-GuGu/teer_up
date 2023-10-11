@@ -1,5 +1,6 @@
-import PageLayout from '@/components/layout';
 import React, { ReactNode } from 'react';
+
+import PageLayout from '@/components/layout';
 
 interface Props {
   children: ReactNode;
