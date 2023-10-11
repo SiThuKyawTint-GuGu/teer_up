@@ -1,7 +1,10 @@
 'use client';
+
 import React, { ReactNode } from 'react';
+import { usePathname } from 'next/navigation';
 
 import { useWindowSize } from '@/hooks/useWindowSize';
+import Login from '@/page-containers/admin/auth/login';
 import { WINDOW_WIDTH } from '@/shared/enums';
 
 import HamburgerDrawer from './Drawer';
@@ -10,7 +13,11 @@ import Sidebar from './Sidebar';
 
 const PageLayout = ({ children }: { children: ReactNode }) => {
   const { windowWidth } = useWindowSize();
+  const pathname = usePathname();
 
+  if (pathname === '/admin/auth/login') {
+    return <Login />;
+  }
   return (
     <div className="flex justify-start items-start">
       {windowWidth > WINDOW_WIDTH.LG ? (

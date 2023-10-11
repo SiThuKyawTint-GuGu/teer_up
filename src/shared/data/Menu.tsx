@@ -6,38 +6,41 @@ export interface Menu {
   title: string;
   child?: {
     key: string;
-    icon: JSX.Element;
+    icon?: JSX.Element;
     title: string;
   }[];
 }
 
 export const menuList: Menu[] = [
   {
-    key: '/admin/auth/login',
+    key: '/admin' || '/admin/innovates/projects' || '/admin/innovates/challenges',
     icon: <Icons.innovates className="w-[20px] h-[20px]" />,
     title: 'Innovates',
-    child: [],
+    child: [
+      { key: '/admin/innovates/projects', title: 'Projects' },
+      { key: '/admin/innovates/challenges', title: 'Challenges' },
+    ],
   },
   {
-    key: '/reward',
+    key: '/admin/reward',
     icon: <Icons.wallet className="w-[20px] h-[20px]" />,
     title: 'Reward',
     child: [],
   },
   {
-    key: '/users',
+    key: '/admin/users',
     icon: <Icons.users className="w-[20px] h-[20px]" />,
     title: 'Users',
     child: [],
   },
   {
-    key: '/discussions',
+    key: '/admin/discussions',
     icon: <Icons.discussions className="w-[20px] h-[20px]" />,
     title: 'Disccussions',
     child: [],
   },
   {
-    key: '/setting',
+    key: '/admin/setting',
     icon: <Icons.setting className="w-[20px] h-[20px]" />,
     title: 'Setting',
     child: [],
@@ -89,7 +92,7 @@ export const menuList: Menu[] = [
 
 export const actionMenu: Menu[] = [
   {
-    key: '',
+    key: '/admin/logout',
     icon: <Icons.logout className="w-[20px] h-[20px]" />,
     title: 'Logout',
     child: [],

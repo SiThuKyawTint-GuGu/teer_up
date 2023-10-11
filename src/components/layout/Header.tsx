@@ -1,6 +1,7 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { BsBell } from 'react-icons/bs';
 import styled from 'styled-components';
 
@@ -12,6 +13,18 @@ import { Grid } from '@radix-ui/themes';
 
 const Header: React.FC = () => {
   const { windowWidth } = useWindowSize();
+  const [pathname1, setPathname1] = useState('');
+  const pathname = usePathname();
+
+  useEffect(() => {
+    const pathParts = pathname.split('/').filter(part => part);
+    if (pathParts.length > 1) {
+      const formattedPath = pathParts.slice(1).join(' > ');
+      setPathname1(formattedPath);
+    } else {
+      setPathname1('');
+    }
+  }, [pathname]);
 
   // useEffect(() => {
   //   setWindowSize(windowWidth);
@@ -20,8 +33,8 @@ const Header: React.FC = () => {
   return (
     <Grid columns="1" py="5" className="bg-red-500">
       <div className="flex justify-between items-center sticky-top h-16 bg-white text-black relative shadow-sm text-2xl">
-        <Text size="4" className="text-center pl-3">
-          Innovates
+        <Text size="4" className="text-center pl-3 text-red-600">
+          {pathname1}
         </Text>
         <div className="flex justify-center items-center mr-10">
           <div className="mr-3">
@@ -39,7 +52,7 @@ const Header: React.FC = () => {
               <p className="text-sm text-gray-500">Admin</p>
             </div>
           </div>
-          <div className="ml-4">
+          <div className="ml-4 cursor-pointer">
             <BsBell size={20} />
           </div>
         </div>

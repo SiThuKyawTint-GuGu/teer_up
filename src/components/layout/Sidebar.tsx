@@ -17,8 +17,8 @@ interface Props {
 }
 
 const Sidebar: React.FC<Props> = ({ className }: Props) => {
-  const [open, setOpen] = React.useState<string | null>('/dashboard');
-  const [childActive, setChildActive] = React.useState<string>('/dashboard');
+  const [open, setOpen] = React.useState<string | null>('/admin/innovates/projects');
+  const [childActive, setChildActive] = React.useState<string>('/admin/innovates/projects');
   const router = useRouter();
   const { setTheme }: { setTheme: (theme: string) => void } = useTheme();
   // const { items } = useAtomReducer(TYPES.SWITCH_THEME);
@@ -36,6 +36,7 @@ const Sidebar: React.FC<Props> = ({ className }: Props) => {
   };
   const handleClickChild = (key: string) => {
     setChildActive(key);
+    router.push(key);
   };
 
   return (
@@ -70,20 +71,20 @@ const Sidebar: React.FC<Props> = ({ className }: Props) => {
                       className={cn(
                         'flex rounded-18 hover:bg-secondary-100 hover:text-secondary-800 align-middle justify-between',
                         active === item.key
-                          ? 'text-secondary-800 bg-secondary-100 font-semibold'
+                          ? 'text-secondary-800 bg-secondary-100 font-semibold text-red-500'
                           : ''
                       )}
                     >
-                      <div className="flex justify-center items-center gap-x-2">
+                      <div className="flex justify-center items-center gap-x-2 mb-2">
                         <div>{item.icon}</div>
                         <div>{item.title}</div>
                       </div>
                       {item.child && item.child.length > 0 && (
                         <button>
                           {open === item.key ? (
-                            <Icons.caretUp className="w-24 h-24" />
+                            <Icons.caretUp className="w-7 h-7" />
                           ) : (
-                            <Icons.caretDown className="w-24 h-24" />
+                            <Icons.caretDown className="w-7 h-7" />
                           )}
                         </button>
                       )}
@@ -94,15 +95,15 @@ const Sidebar: React.FC<Props> = ({ className }: Props) => {
                       item.child.length > 0 &&
                       item.child.map((itemChild, index) => (
                         <div
-                          onClick={() => handleClickChild(`${item.key}-${index}`)}
+                          onClick={() => handleClickChild(`${itemChild.key}`)}
                           key={index}
                           className={`
                         ${
-                          active === `${item.key}-${index}`
-                            ? 'text-secondary-800 bg-secondary-100 font-semibold '
+                          active === `${itemChild.key}`
+                            ? 'text-secondary-800 bg-secondary-100 font-semibold text-red-500 '
                             : ''
                         }
-                        mb-8 ml-16 flex gap-16 cursor-pointer p-12 rounded-18 hover:bg-secondary-100 hover:text-secondary-800
+                        mb-1 ml-7 flex gap-16 cursor-pointer p-3 rounded-18 hover:bg-secondary-100 hover:text-secondary-800
                         `}
                         >
                           {itemChild.icon}
@@ -114,7 +115,7 @@ const Sidebar: React.FC<Props> = ({ className }: Props) => {
               );
             })}
         </div>
-        <div className="space-y-[5px] mt-[170px] pt-[30px] border-t-[1px]">
+        <div className="space-y-[5px] mt-[50px] pt-[30px] border-t-[1px]">
           {actionMenu?.length &&
             actionMenu?.map((item, index) => {
               let active = childActive;
