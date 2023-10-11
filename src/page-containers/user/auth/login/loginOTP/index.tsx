@@ -1,9 +1,10 @@
 'use client';
+
 import React from 'react';
 import Image from 'next/Image';
 
-import { Button } from '@/components/Button/index';
-import { InputText } from '@/components/Inputs/index';
+import { Button } from '@/components/ui/Button';
+import { InputText } from '@/components/ui/Inputs';
 import teeUpLogo from '@/configs/img/auth/teeUpLogo.png';
 
 const LoginOTP = () => {

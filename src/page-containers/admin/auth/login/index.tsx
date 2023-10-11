@@ -2,7 +2,6 @@
 import React from 'react';
 import Image from 'next/image';
 import { useForm } from 'react-hook-form';
-import * as Select from '@radix-ui/react-select';
 
 import loginVector from '@/configs/img/auth/loginVector.png';
 import mainLogo from '@/configs/img/auth/mainLogo.png';
