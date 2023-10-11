@@ -15,7 +15,7 @@ type Props = {
 };
 
 const InputText = React.forwardRef<HTMLInputElement, Props>(
-  ({ type, label, error, value, className, placeholder, ...props }, ref) => {
+  ({ type, label, error, className, placeholder, ...props }, ref) => {
     return (
       <div>
         <label htmlFor="email" className="block text-sm font-medium text-gray-700">
@@ -24,13 +24,12 @@ const InputText = React.forwardRef<HTMLInputElement, Props>(
         <div className="relative mt-1 rounded-md shadow-sm">
           <InputStyled
             type={type}
-            className={`text-black bg-[#FFF] block w-full rounded-[9px] border-[2px] border-[#BABABA] px-[20px] py-[14px] focus:border-[#00678D] ${className}`}
+            className={`text-black bg-white block w-full rounded-[9px] border-[2px] border-[#BABABA] px-[20px] py-[14px] focus:border-[#00678D] ${className}`}
             aria-invalid="true"
             aria-describedby="name-error"
             autoComplete="off"
             placeholder={placeholder}
             ref={ref}
-            value={value}
             {...props}
           />
         </div>

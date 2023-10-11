@@ -9,7 +9,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/
 import { InputText } from '@/components/ui/Inputs';
 import { Text } from '@/components/ui/Typo/Text';
 import teeUpLogo from '@/configs/img/auth/teeUpLogo.png';
-import { useApi } from '@/hooks/useApi';
+import { usePost } from '@/hooks/usePost';
+import { LoginResponse } from '@/types/type';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 const validationSchema = yup.object({
@@ -26,24 +27,21 @@ const Login = () => {
     resolver: yupResolver(validationSchema),
   });
 
-  const {
-    data: response,
-    isLoading,
-    error,
-    mutate,
-  } = useApi('https://teeup-dev-api.viabells.com/api/v1/user/login', 'POST');
+  const [error, setError] = React.useState<string | null>(null);
 
   const loginHandler = async (data: loginBody) => {
-    try {
-      mutate(data);
-    } catch (error) {
-      console.error('Error performing login:', error);
-    }
+    usePost<{ responseKey: LoginResponse }>('/api/v1/user/login', data)
+      .then(response => {
+        setError(null);
+        console.log(response);
+      })
+      .catch(error => setError(error.message));
   };
   return (
     <div className="h-screen flex flex-col relative px-5">
       <div className="flex flex-col justify-evenly h-full items-center w-full flex-1">
         <Image src={teeUpLogo} width={130} height={31} alt="teeUpLogo" />
+        {Error && <div className="text-primary">{error}</div>}
         <Form {...form}>
           <form
             className="mx-auto flex flex-col justify-center gap-y-3 w-[90%]"
