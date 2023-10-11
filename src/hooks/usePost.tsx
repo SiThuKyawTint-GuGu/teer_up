@@ -24,12 +24,11 @@ export async function usePost<T>(
     const responseData = await response.json();
     if (!response.ok) {
       throw new Error(responseData.message);
-    } else {
-      return responseData as T;
     }
+    return responseData as T;
   } catch (error: CustomError) {
     // Now 'error' has the type of CustomError
-    console.error(error.message);
+    console.log(error.message);
     throw error; // You can rethrow it if needed
   }
 }

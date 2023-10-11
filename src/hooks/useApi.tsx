@@ -13,7 +13,7 @@ const fetcher = async (url: string): Promise<ApiResponse[]> => {
   return response.json();
 };
 
-export const useApi = (url: string, method: string) => {
+export const useApi = (url: string, method: string = 'GET') => {
   const {
     data = null,
     error,

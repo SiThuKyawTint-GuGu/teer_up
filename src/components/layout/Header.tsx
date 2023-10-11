@@ -33,7 +33,7 @@ const Header: React.FC = () => {
   return (
     <Grid columns="1" py="5" className="bg-red-500">
       <div className="flex justify-between items-center sticky-top h-16 bg-white text-black relative shadow-sm text-2xl">
-        <Text size="4" className="text-center pl-3 text-red-600">
+        <Text size="4" className="text-center font-md pl-3 text-red-600">
           {pathname1}
         </Text>
         <div className="flex justify-center items-center mr-10">
@@ -45,7 +45,7 @@ const Header: React.FC = () => {
             <Image
               src={mainLogo}
               alt="Avatar"
-              className="rounded-full w-12 h-12 border-2 border-white"
+              className="rounded-full w-11 h-11 border-2 border-red-500 mr-3"
             />
             <div className="flex flex-col">
               <p className="text-[15px]">Hi, Simon</p>

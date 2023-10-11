@@ -27,9 +27,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <StoreProvider>
             <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
               <Theme>
-                <PageLayout>
+          
                   <Suspense fallback={<Loading />}>{children}</Suspense>
-                </PageLayout>
+              
               </Theme>
             </ThemeProvider>
           </StoreProvider>
