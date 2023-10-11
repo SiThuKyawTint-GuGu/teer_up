@@ -7,13 +7,13 @@ interface ApiResponse {
 
 const fetcher = async (url: string): Promise<ApiResponse[]> => {
   const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error('Failed to fetch data');
-  }
+  // if (!response.ok) {
+  //   throw new Error('Failed to fetch data');
+  // }
   return response.json();
 };
 
-export const useApi = (url: string, method: string = 'GET') => {
+export const useApi = (url: string, method: string) => {
   const {
     data = null,
     error,
@@ -21,7 +21,7 @@ export const useApi = (url: string, method: string = 'GET') => {
     isLoading,
   } = useSWR<ApiResponse[]>(url, fetcher);
 
-  const mutate = async (mutateUrl?: string) => {
+  const mutate = async (mutateUrl?: string, requestData?: any) => {
     const mutationUrl = mutateUrl || url;
 
     try {
@@ -30,12 +30,12 @@ export const useApi = (url: string, method: string = 'GET') => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({}),
+        body: JSON.stringify(requestData || {}),
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to perform mutation');
-      }
+      // if (!response.ok) {
+      //   throw new Error('Failed to perform mutation');
+      // }
 
       swrMutateData();
     } catch (error) {

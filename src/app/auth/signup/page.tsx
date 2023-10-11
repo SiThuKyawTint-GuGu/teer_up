@@ -1,9 +1,10 @@
 import React from 'react';
+import { NextPage } from 'next';
 
 import SignUp from '@/page-containers/user/auth/signup/index';
 
-const page = () => {
+const SignUpPage: NextPage = () => {
   return <SignUp />;
 };
 
-export default page;
+export default SignUpPage;

@@ -1,9 +1,10 @@
 import React from 'react';
+import { NextPage } from 'next';
 
 import Verify from '@/page-containers/user/auth/verify/index';
 
-const page = () => {
+const VerifyPage: NextPage = () => {
   return <Verify />;
 };
 
-export default page;
+export default VerifyPage;
