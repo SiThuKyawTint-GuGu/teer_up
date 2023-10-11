@@ -1,25 +1,27 @@
-import Cookies from 'js-cookie';
+import { deleteCookie, getCookie, setCookie } from 'cookies-next';
+import CryptoJS from 'crypto-js';
 
 export const setToken = (token: string) => {
-  Cookies.set('token', token, {
-    expires: 1,
+  const expires = new Date();
+  expires.setDate(expires.getDate() + 7);
+  const cipherText = CryptoJS.AES.encrypt(JSON.stringify(token), 'token').toString();
+  setCookie('token', cipherText, {
+    expires,
   });
 };
 
 export const getToken = () => {
-  const token = Cookies.get('token');
-  return token;
-};
-
-export const setLocalStorage = (data: { userName: string }) => {
-  localStorage.setItem('userData', JSON.stringify(data));
-};
-
-export const getLocalStorageData = () => {
-  const getData: any = typeof window !== 'undefined' && localStorage?.getItem('userData');
-  return JSON.parse(getData);
+  const session = getCookie('token');
+  if (!session) return false;
+  const bytes = CryptoJS.AES.decrypt(session, 'token');
+  try {
+    const decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+    return decryptedData;
+  } catch (err) {
+    console.error('error', err);
+  }
 };
 
 export const logout = () => {
-  Cookies.remove('token');
+  deleteCookie('token');
 };
