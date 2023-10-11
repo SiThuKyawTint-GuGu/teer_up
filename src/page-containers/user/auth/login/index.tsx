@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import Image from 'next/Image';
+// import Image from 'next/Image';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
@@ -8,8 +8,6 @@ import { Button } from '@/components/ui/Button';
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/Form';
 import { InputText } from '@/components/ui/Inputs';
 import { Text } from '@/components/ui/Typo/Text';
-import teeUpLogo from '@/configs/img/auth/teeUpLogo.png';
-import { useApi } from '@/hooks/useApi';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 const validationSchema = yup.object({
@@ -43,7 +41,7 @@ const Login = () => {
   return (
     <div className="h-screen flex flex-col relative px-5">
       <div className="flex flex-col justify-evenly h-full items-center w-full flex-1">
-        <Image src={teeUpLogo} width={130} height={31} alt="teeUpLogo" />
+        {/* <Image src={teeUpLogo} width={130} height={31} alt="teeUpLogo" /> */}
         <Form {...form}>
           <form
             className="mx-auto flex flex-col justify-center gap-y-3 w-[90%]"
