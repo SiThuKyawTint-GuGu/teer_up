@@ -37,7 +37,7 @@ const Login = () => {
     postMethod<AuthResponse>('/user/login', data)
       .then(response => {
         setError(null);
-        setUserInfo(response.token);
+        setUserInfo(response.token, response.data);
         router.push('/');
         console.log(response.token);
       })

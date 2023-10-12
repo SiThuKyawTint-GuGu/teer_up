@@ -24,7 +24,7 @@ interface SignUpFormType {
 const validationSchema = yup.object({
   email: yup.string().email().required('Email is required!'),
   name: yup.string().required('Name is required!'),
-  country: yup.number().required('Country is required!'),
+  // country: yup.number().required('Country is required!'),
   password: yup
     .string()
     .min(
@@ -46,7 +46,7 @@ const SignUp = () => {
     postMethod<AuthResponse>(endPoint, data)
       .then(response => {
         setError(null);
-        setUserInfo(response.token);
+        setUserInfo(response.token, response.data);
         router.push('/otp');
         console.log(response);
       })
@@ -95,7 +95,7 @@ const SignUp = () => {
               )}
             />
 
-            <FormField
+            {/* <FormField
               control={form.control}
               name="country"
               render={({ field }) => (
@@ -106,7 +106,7 @@ const SignUp = () => {
                   </FormControl>
                 </FormItem>
               )}
-            />
+            /> */}
             <FormField
               control={form.control}
               name="password"

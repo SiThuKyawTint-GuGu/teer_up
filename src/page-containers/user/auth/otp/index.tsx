@@ -45,7 +45,7 @@ const Otp = () => {
     postMethod<AuthResponse>('/user/verifyotp', data, token)
       .then(response => {
         setError(null);
-        setUserInfo(response.token);
+        setUserInfo(response.token, response.data);
         // need to store User Info persistence or localStorage
         router.push('/');
         console.log(response);
