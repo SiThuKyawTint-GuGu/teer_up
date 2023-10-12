@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -11,7 +11,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/
 import { InputText } from '@/components/ui/Inputs';
 import { Text } from '@/components/ui/Typo/Text';
 import teeUpLogo from '@/configs/img/auth/teeUpLogo.png';
-import { getMethod } from '@/hooks/getMethod';
 import { postMethod } from '@/hooks/postMethod';
 import { AuthResponse, OtpResponse } from '@/types/User';
 import { getToken, setUserInfo } from '@/utils/auth';
@@ -28,7 +27,7 @@ const Otp = () => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const getOtp = async () => {
-    postMethod<OtpResponse>('/user/requestotp',{},token)
+    postMethod<OtpResponse>('/user/requestotp', {}, token)
       .then(data => {
         setMessage(data.message);
         setError(null);
@@ -55,8 +54,6 @@ const Otp = () => {
         setMessage(null);
       });
   };
-
-
 
   return (
     <div className="h-screen flex flex-col relative px-5">

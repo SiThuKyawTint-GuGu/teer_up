@@ -110,7 +110,6 @@ const SignUp = () => {
             <FormField
               control={form.control}
               name="password"
-         
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Enter your password</FormLabel>
