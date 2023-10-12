@@ -69,9 +69,9 @@ const Table = ({ tableColumns, tableData }: Props) => {
               // eslint-disable-next-line react/jsx-key
               <tr {...row.getRowProps()}>
                 {row.cells.map(cell => (
-                  <div key={cell.id} className="p-5 border-b text-gray-500 font-light text-sm">
+                  <td key={cell.id} className="p-5 border-b text-gray-500 font-light text-sm">
                     {cell.render('Cell')}
-                  </div>
+                  </td>
                 ))}
               </tr>
             );

@@ -1,4 +1,6 @@
 import NextImage from 'next/image';
+import { BiBookContent } from 'react-icons/bi';
+import { BsFillPostcardFill } from 'react-icons/bs';
 import { CiLogout, CiSettings } from 'react-icons/ci';
 import { FaLightbulb } from 'react-icons/fa';
 import { FcBusinesswoman } from 'react-icons/fc';
@@ -63,7 +65,9 @@ export const Icons = {
   innovates: FaLightbulb,
   users: FiUsers,
   discussions: GoCommentDiscussion,
+  contents: BiBookContent,
   wallet: PiWallet,
+  blogs: BsFillPostcardFill,
   transactions: PiArrowsLeftRightDuotone,
   cashback: PiDatabaseThin,
   payments: PiCurrencyCircleDollarThin,

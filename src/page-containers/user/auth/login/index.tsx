@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -31,15 +31,14 @@ const Login = () => {
     resolver: yupResolver(validationSchema),
   });
 
-  const [error, setError] = React.useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const loginHandler = async (data: Login) => {
     postMethod<AuthResponse>('/user/login', data)
       .then(response => {
         setError(null);
         setUserInfo(response.token, response.data);
-        router.push('/');
-        console.log(response.token);
+        router.push('/admin');
       })
       .catch(error => setError(error.message));
   };

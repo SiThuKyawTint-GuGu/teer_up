@@ -13,12 +13,21 @@ export interface Menu {
 
 export const menuList: Menu[] = [
   {
-    key: '/admin' || '/admin/innovates/projects' || '/admin/innovates/challenges',
+    key: '/admin/innovates/projects' || '/admin/innovates/challenges',
     icon: <Icons.innovates className="w-[20px] h-[20px]" />,
     title: 'Innovates',
     child: [
       { key: '/admin/innovates/projects', title: 'Projects' },
       { key: '/admin/innovates/challenges', title: 'Challenges' },
+    ],
+  },
+  {
+    key: '/admin/contents/content' || '/admin/contents/category',
+    icon: <Icons.contents className="w-[20px] h-[20px]" />,
+    title: 'Contents',
+    child: [
+      { key: '/admin/contents/content', title: 'Content' },
+      { key: '/admin/contents/category', title: 'Category' },
     ],
   },
   {
@@ -32,6 +41,15 @@ export const menuList: Menu[] = [
     icon: <Icons.users className="w-[20px] h-[20px]" />,
     title: 'Users',
     child: [],
+  },
+  {
+    key: '/admin/blogs/categories' || '/admin/blogs/posts',
+    icon: <Icons.blogs className="w-[20px] h-[20px]" />,
+    title: 'Blogs',
+    child: [
+      { key: '/admin/blogs/categories', title: 'Categories' },
+      { key: '/admin/blogs/posts', title: 'Posts' },
+    ],
   },
   {
     key: '/admin/discussions',
