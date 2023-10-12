@@ -6,9 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start -p 6200",
-    "lint": "next lint",
-    "code-style": "yarn eslint --ext ts,tsx .",
-    "code-style-fix": "yarn eslint --fix  --ext ts,tsx ."
+    "lint": "next lint"
   },
   "dependencies": {
     "@ariakit/react": "^0.3.4",
@@ -38,7 +36,6 @@
     "react-dom": "^18",
     "react-hook-form": "^7.47.0",
     "react-icons": "^4.11.0",
-    "react-table": "^7.8.0",
     "styled-components": "^6.0.8",
     "swr": "^2.2.4",
     "tailwind-merge": "^1.14.0",
@@ -58,10 +55,6 @@
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-jest": "^27.4.2",
     "eslint-plugin-prettier": "^5.0.0",
-    "eslint-plugin-simple-import-sort": "^10.0.0",
-    "eslint-plugin-spellcheck": "^0.0.20",
-    "eslint-plugin-unused-imports": "^3.0.0",
-    "lint-staged": "^14.0.1",
     "postcss": "^8",
     "prettier": "^3.0.3",
     "tailwindcss": "^3",
