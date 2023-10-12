@@ -1,4 +1,3 @@
-import { Suspense } from 'react';
 import type { Metadata } from 'next';
 
 import { fontSans } from '@/configs/fonts';
@@ -6,8 +5,6 @@ import StoreProvider from '@/providers/store';
 import { ThemeProvider } from '@/providers/theme';
 import { Theme } from '@radix-ui/themes';
 import { ServerThemeProvider } from '@wits/next-themes';
-
-import Loading from './loading';
 
 import '@/styles/globals.css';
 import '@/styles/drawer.css';
@@ -26,7 +23,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <StoreProvider>
             <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
               <Theme>
-                <Suspense fallback={<Loading />}>{children}</Suspense>
+                {/* <Suspense fallback={<Loading />}>{children}</Suspense> */}
+                {children}
               </Theme>
             </ThemeProvider>
           </StoreProvider>

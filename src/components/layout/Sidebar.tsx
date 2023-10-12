@@ -75,16 +75,16 @@ const Sidebar: React.FC<Props> = ({ className }: Props) => {
                           : ''
                       )}
                     >
-                      <div className="flex justify-center items-center gap-x-2 mb-2">
+                      <div className="flex justify-center items-center gap-x-[15px] mb-2">
                         <div>{item.icon}</div>
                         <div>{item.title}</div>
                       </div>
                       {item.child && item.child.length > 0 && (
                         <button>
                           {open === item.key ? (
-                            <Icons.caretUp className="w-7 h-7" />
+                            <Icons.caretUp className="w-[20px] h-[20px]" />
                           ) : (
-                            <Icons.caretDown className="w-7 h-7" />
+                            <Icons.caretDown className="w-[20px] h-[20px]" />
                           )}
                         </button>
                       )}
@@ -98,13 +98,13 @@ const Sidebar: React.FC<Props> = ({ className }: Props) => {
                           onClick={() => handleClickChild(`${itemChild.key}`)}
                           key={index}
                           className={`
-                        ${
-                          active === `${itemChild.key}`
-                            ? 'text-secondary-800 bg-secondary-100 font-semibold text-red-500 '
-                            : ''
-                        }
-                        mb-1 ml-7 flex gap-16 cursor-pointer p-3 rounded-18 hover:bg-secondary-100 hover:text-secondary-800
-                        `}
+                            ${
+                              active === `${itemChild.key}`
+                                ? 'text-secondary-800 bg-secondary-100 font-semibold text-red-500'
+                                : ''
+                            }
+                            ml-7 flex gap-16 cursor-pointer p-3 rounded-18
+                          `}
                         >
                           {itemChild.icon}
                           {itemChild.title}
