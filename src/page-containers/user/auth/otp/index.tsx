@@ -28,7 +28,7 @@ const Otp = () => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const getOtp = async () => {
-    getMethod<OtpResponse>('/user/requestotp', token)
+    postMethod<OtpResponse>('/user/requestotp',{},token)
       .then(data => {
         setMessage(data.message);
         setError(null);
@@ -55,10 +55,8 @@ const Otp = () => {
         setMessage(null);
       });
   };
-  useEffect(() => {
-    getOtp();
-  }, []);
-  console.log(message);
+
+
 
   return (
     <div className="h-screen flex flex-col relative px-5">
