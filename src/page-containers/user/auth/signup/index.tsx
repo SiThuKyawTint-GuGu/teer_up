@@ -11,7 +11,7 @@ import { InputText } from '@/components/ui/Inputs';
 import { Text } from '@/components/ui/Typo/Text';
 import teeUpLogo from '@/configs/img/auth/teeUpLogo.png';
 import { postMethod } from '@/hooks/postMethod';
-import { AuthResponse } from '@/types/type';
+import { AuthResponse } from '@/types/User';
 import { setUserInfo } from '@/utils/auth';
 import { yupResolver } from '@hookform/resolvers/yup';
 interface SignUpFormType {

@@ -8,8 +8,6 @@ export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl as NextURL;
   const requestHeaders = new Headers(req.headers);
 
-  console.log(pathname);
-
   // example header set
   // TODO: Review and potentially update the headers
   // requestHeaders.set('x-hello-from-middleware1', 'hello');

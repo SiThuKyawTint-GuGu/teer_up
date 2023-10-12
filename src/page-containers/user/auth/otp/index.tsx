@@ -13,7 +13,7 @@ import { Text } from '@/components/ui/Typo/Text';
 import teeUpLogo from '@/configs/img/auth/teeUpLogo.png';
 import { getMethod } from '@/hooks/getMethod';
 import { postMethod } from '@/hooks/postMethod';
-import { AuthResponse, OtpResponse } from '@/types/type';
+import { AuthResponse, OtpResponse } from '@/types/User';
 import { getToken, setUserInfo } from '@/utils/auth';
 import { yupResolver } from '@hookform/resolvers/yup';
 const token: string = getToken();
