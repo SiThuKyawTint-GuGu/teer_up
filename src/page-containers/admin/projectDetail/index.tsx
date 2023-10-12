@@ -11,7 +11,7 @@ import { Editor } from '@tinymce/tinymce-react';
 import '@/styles/tab.css';
 
 const ProjectDetail = () => {
-  const editorRef = useRef();
+  const editorRef = useRef<any>();
 
   return (
     <Tabs.Root className="TabsRoot" defaultValue="tab1">
