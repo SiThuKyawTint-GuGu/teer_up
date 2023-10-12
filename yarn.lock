@@ -2124,6 +2124,13 @@
     "@typescript-eslint/types" "6.7.5"
     eslint-visitor-keys "^3.4.1"
 
+"@vidstack/react@^1.1.11":
+  version "1.1.11"
+  resolved "https://registry.yarnpkg.com/@vidstack/react/-/react-1.1.11.tgz#28f37545865b77c108198d857f2991da64040253"
+  integrity sha512-TC09apuQtI98tEsox7WD9pzKm5IGEb4Bo9lfkGV4q4gg5H2icNMRJ8I316iAOLPeS54EQUXnou210iMAjNGKUQ==
+  dependencies:
+    media-captions "^1.0.0"
+
 "@wits/next-themes@^0.2.16":
   version "0.2.16"
   resolved "https://registry.yarnpkg.com/@wits/next-themes/-/next-themes-0.2.16.tgz#04f8ac4cf8931b9d2b9917bd4e48218911290660"
@@ -4021,6 +4028,11 @@ make-dir@^2.1.0:
   dependencies:
     pify "^4.0.1"
     semver "^5.6.0"
+
+media-captions@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/media-captions/-/media-captions-1.0.0.tgz#d365b7fbfc7769907379dd90657b0a26cb0340db"
+  integrity sha512-605d9sXW+DtJBNzzfL4N6NpOIjigN+kpzS+V1QaCiNNPB7G015/peyw6wfv9iCp8GAP6R5NPyAICZKeuqWPAQQ==
 
 merge-stream@^2.0.0:
   version "2.0.0"

@@ -7,7 +7,6 @@ import styled from 'styled-components';
 
 import CardBox from '@/components/ui/Card';
 import { Text } from '@/components/ui/Typo/Text';
-import mainLogo from '@/configs/img/auth/mainLogo.png';
 import { useWindowSize } from '@/hooks/useWindowSize';
 import { Grid } from '@radix-ui/themes';
 
@@ -43,9 +42,11 @@ const Header: React.FC = () => {
           </div>
           <div className="flex ">
             <Image
-              src={mainLogo}
+              src="/mainLogo.png"
               alt="Avatar"
-              className="rounded-full w-11 h-11 border-2 border-red-500 mr-3"
+              width={44}
+              height={44}
+              className="rounded-full border-2 border-red-500 mr-3"
             />
             <div className="flex flex-col">
               <p className="text-[15px]">Hi, Simon</p>

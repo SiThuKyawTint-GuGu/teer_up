@@ -10,7 +10,6 @@ import { Button } from '@/components/ui/Button';
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/Form';
 import { InputText } from '@/components/ui/Inputs';
 import { Text } from '@/components/ui/Typo/Text';
-import teeUpLogo from '@/configs/img/auth/teeUpLogo.png';
 import { postMethod } from '@/hooks/postMethod';
 import { AuthResponse, OtpResponse } from '@/types/User';
 import { getToken, setUserInfo } from '@/utils/auth';
@@ -58,7 +57,7 @@ const Otp = () => {
   return (
     <div className="h-screen flex flex-col relative px-5">
       <div className="flex flex-col justify-evenly h-full items-center w-full flex-1">
-        <Image src={teeUpLogo} width={130} height={31} alt="teeUpLogo" />
+        <Image src="/auth/teeUpLogo.png" width={130} height={31} alt="teeUpLogo" />
         {/* {token && <div className="text-green-800">token</div>} */}
         {/* to check is token or not */}
         <div>

@@ -3,7 +3,6 @@ import React, { useRef } from 'react';
 import Image from 'next/image';
 import { AiOutlinePlus } from 'react-icons/ai';
 
-import mainLogo from '@/configs/img/auth/mainLogo.png';
 import * as Tabs from '@radix-ui/react-tabs';
 import { Button } from '@radix-ui/themes';
 import { Editor } from '@tinymce/tinymce-react';

@@ -9,7 +9,6 @@ import { Button } from '@/components/ui/Button';
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/Form';
 import { InputText } from '@/components/ui/Inputs';
 import { Text } from '@/components/ui/Typo/Text';
-import teeUpLogo from '@/configs/img/auth/teeUpLogo.png';
 import { postMethod } from '@/hooks/postMethod';
 import { AuthResponse } from '@/types/User';
 import { setUserInfo } from '@/utils/auth';
@@ -62,7 +61,7 @@ const SignUp = () => {
         )}
       </div>
       <div className="flex flex-col justify-evenly h-full items-center w-full flex-1">
-        <Image src={teeUpLogo} width={130} height={31} alt="teeUpLogo" />
+        <Image src="/auth/teeUpLogo.png" width={130} height={31} alt="teeUpLogo" />
         {error && <div className="text-primary">{error}</div>}
         <Form {...form}>
           <form
