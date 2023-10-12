@@ -2,7 +2,6 @@
 import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-// import Image from 'next/Image';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
@@ -12,7 +11,7 @@ import { InputText } from '@/components/ui/Inputs';
 import { Text } from '@/components/ui/Typo/Text';
 import teeUpLogo from '@/configs/img/auth/teeUpLogo.png';
 import { postMethod } from '@/hooks/postMethod';
-import { AuthResponse } from '@/types/type';
+import { AuthResponse } from '@/types/User';
 import { setUserInfo } from '@/utils/auth';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -21,10 +20,11 @@ const validationSchema = yup.object({
   password: yup.string().required('Password is required!').default(''),
 });
 
-type loginBody = {
+interface Login {
   email: string;
   password: string;
-};
+}
+
 const Login = () => {
   const router = useRouter();
   const form = useForm({
@@ -33,7 +33,7 @@ const Login = () => {
 
   const [error, setError] = React.useState<string | null>(null);
 
-  const loginHandler = async (data: loginBody) => {
+  const loginHandler = async (data: Login) => {
     postMethod<AuthResponse>('/user/login', data)
       .then(response => {
         setError(null);
@@ -43,6 +43,7 @@ const Login = () => {
       })
       .catch(error => setError(error.message));
   };
+
   return (
     <div className="h-screen flex flex-col relative px-5">
       <div className="flex flex-col justify-evenly h-full items-center w-full flex-1">

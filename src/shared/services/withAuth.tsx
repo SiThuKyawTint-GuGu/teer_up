@@ -2,23 +2,18 @@
 import { useCallback, useEffect } from 'react';
 import { redirect } from 'next/navigation';
 
-import { sessionStatus } from '@/utils/session';
+import { getToken } from '@/utils/auth';
 
 interface WithAuthProps {}
 
-// const protectedRoutes = ['/client-hoc'];
-
 export default function withAuth<T>(Component: React.ComponentType<T>) {
   const ComponentWithAuth = (props: Omit<T, keyof WithAuthProps>) => {
-    // TODO: Need to modify the token retrieval logic
-    // const token = hasCookie('token')
-    const token = sessionStatus; // Get the user's session token
+    const token = getToken();
 
     const checkAuth = useCallback(() => {
       if (!token) {
         // Define a function to check user authentication
         redirect('/admin');
-        // return;
       }
     }, [token]);
 

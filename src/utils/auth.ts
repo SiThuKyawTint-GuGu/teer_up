@@ -1,7 +1,7 @@
 import { deleteCookie, getCookie, setCookie } from 'cookies-next';
 import CryptoJS from 'crypto-js';
 
-import { UserData } from '@/types/type';
+import { UserData } from '@/types/User';
 
 export const setUserInfo = (token: string, userInfo: UserData) => {
   const expires = new Date();
