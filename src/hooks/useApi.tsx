@@ -33,10 +33,6 @@ export const useApi = (url: string, method: string = 'GET') => {
         body: JSON.stringify(requestData || {}),
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to perform mutation');
-      }
-
       swrMutateData();
     } catch (error) {
       console.error('Error performing mutation:', error);

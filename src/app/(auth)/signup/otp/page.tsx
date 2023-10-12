@@ -1,7 +1,7 @@
 import React from 'react';
 import { NextPage } from 'next';
 
-import SignUpOTP from '@/page-containers/user/auth/signup/signupOTP/index';
+import SignUpOTP from '@/page-containers/user/auth/signup/signupOTP';
 
 const SignUpOTPPage: NextPage = () => {
   return <SignUpOTP />;
