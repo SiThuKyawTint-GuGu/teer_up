@@ -1,4 +1,5 @@
-import fetcher from "@/libs/fetcher";
+"use client";
+import fetcher from "@/lib/fetcher";
 import { ThemeProvider } from "@/providers/theme";
 import { Theme } from "@radix-ui/themes";
 import { PropsWithChildren } from "react";

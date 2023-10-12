@@ -1,4 +1,4 @@
-import appAxios from "@/libs/appAxios";
+import appAxios from "@/lib/appAxios";
 import { UserData } from "@/types/User";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
@@ -14,5 +14,5 @@ export const useRegister = () =>
   );
 
 type TokenResType = Pick<UserData, "name">;
-export const useToken = (identityId: string) =>
-  useSWR<TokenResType>(identityId && `/token/${identityId}`);
+export const useToken = (identityId: string, a: string) =>
+  useSWR<TokenResType>(identityId && `/token/${identityId} ${a ? "?a=" + a : ""}`);
