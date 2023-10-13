@@ -1,10 +1,8 @@
-import React from 'react';
-import { NextPage } from 'next';
-
-import SignUpOTP from '@/page-containers/user/auth/signup/signupOTP';
+import Otp from "@/page-containers/user/auth/otp";
+import { NextPage } from "next";
 
 const SignUpOTPPage: NextPage = () => {
-  return <SignUpOTP />;
+  return <Otp />;
 };
 
 export default SignUpOTPPage;
