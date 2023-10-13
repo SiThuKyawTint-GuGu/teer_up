@@ -1,7 +1,8 @@
-import { NextPage } from "next";
+import AdminList from '@/page-containers/admin/auth/user/Adminlist';
+import { NextPage } from 'next';
 
-const AdminList: NextPage = () => {
-  return <div>AdminList</div>;
+const AdminListPage: NextPage = () => {
+  return <AdminList />;
 };
 
-export default AdminList;
+export default AdminListPage;
