@@ -11,7 +11,7 @@ const Blog = () => {
         <div className="h-screen w-full flex justify-center items-center snap-start" key={index}>
           <Media>
             <Video
-              loading="visible"
+              loading="lazy"
               poster={v.image}
               controls
               title={v.title}

@@ -2277,36 +2277,22 @@
     "@typescript-eslint/types" "6.7.5"
     eslint-visitor-keys "^3.4.1"
 
-"@vidstack/foundation@0.13.3":
-  version "0.13.3"
-  resolved "https://registry.yarnpkg.com/@vidstack/foundation/-/foundation-0.13.3.tgz#3ed30c4d4e6205fca6cb6d5c46a2cad024240a5f"
-  integrity sha512-My7h4NxNuA08McDVFbj4C0mykzrvMW9SjnTNMPpjh4O4S748ROXfEuOEElr/PNXIAJSS2b7Pc747BWXk4Dz3dQ==
-  dependencies:
-    "@types/fscreen" "^1.0.1"
-
-"@vidstack/foundation@1.6.5":
-  version "1.6.5"
-  resolved "https://registry.yarnpkg.com/@vidstack/foundation/-/foundation-1.6.5.tgz#40acc37d5d77d79c4531d17a1263750c5dfde77a"
-  integrity sha512-coiF1Bv4NZDdu7DjrH3Em7sU2h3KoKw2YSnKsSU+LAbrYiDGnK5ppLdyD1EGeEnmJj78UpMrwKU9zfbGwELB3w==
+"@vidstack/foundation@1.6.0":
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/@vidstack/foundation/-/foundation-1.6.0.tgz#e57619b81fc7cb7180a057b96ecaed2133035247"
+  integrity sha512-xT7ikNhqrzPCuSxqhCYG6l20TNC6rz/VPvBBZjL5DrbdEK9ag+Ojh/ZLhYfp5zv94fjkhrw2n4+vqeNm1KyRPg==
   dependencies:
     "@types/fscreen" "^1.0.1"
     just-debounce-it "^3.0.1"
     just-throttle "^4.0.1"
 
-"@vidstack/player-react@^1.6.5":
-  version "1.6.5"
-  resolved "https://registry.yarnpkg.com/@vidstack/player-react/-/player-react-1.6.5.tgz#51c3c22569770dc637aca6e851eb3c4312be2a2e"
-  integrity sha512-edUkGIKs8GU9Y/Sgu8T154gl5qPgqum1GTyL1dTqNPZyUIhIZUwMnLK6LphMKywtOpr3yIKxEuoDvzlzVL89pQ==
+"@vidstack/player-react@^1.6.0":
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/@vidstack/player-react/-/player-react-1.6.0.tgz#8e442e897b77582bf7b4dbb4e3c24f0c3c2695cd"
+  integrity sha512-Yak6ty/VOJUMlsxmcS7ttZOgrxjy7BUT/WiUfQJoGvvKNIZNNhqnYmX6wTD5msdCB4oo8Aw6YuC/aDC72Tpe8w==
   dependencies:
     "@lit-labs/ssr" "^2.2.0"
-    "@vidstack/foundation" "1.6.5"
-
-"@vidstack/player@^0.13.3":
-  version "0.13.3"
-  resolved "https://registry.yarnpkg.com/@vidstack/player/-/player-0.13.3.tgz#e43355764a22c1d163685a1e25c21054151050da"
-  integrity sha512-XYNIPc3lEGP8BcgFMNF+bHBK7cHQffOrSLoD8dQtOCh2UbNlunaxAyC/+IfItoDE1ICIj1l9DzrgO2aY3vQRdA==
-  dependencies:
-    "@vidstack/foundation" "0.13.3"
+    "@vidstack/foundation" "1.6.0"
 
 "@vidstack/react@^1.1.11":
   version "1.1.11"
@@ -4733,11 +4719,6 @@ react-icons@^4.11.0:
   version "4.11.0"
   resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-4.11.0.tgz#4b0e31c9bfc919608095cc429c4f1846f4d66c65"
   integrity sha512-V+4khzYcE5EBk/BvcuYRq6V/osf11ODUM2J8hg2FDSswRrGvqiYUYPRy4OdrWaQOBj4NcpJfmHZLNaD+VH0TyA==
-
-react-intersection-observer@^9.5.2:
-  version "9.5.2"
-  resolved "https://registry.yarnpkg.com/react-intersection-observer/-/react-intersection-observer-9.5.2.tgz#f68363a1ff292323c0808201b58134307a1626d0"
-  integrity sha512-EmoV66/yvksJcGa1rdW0nDNc4I1RifDWkT50gXSFnPLYQ4xUptuDD4V7k+Rj1OgVAlww628KLGcxPXFlOkkU/Q==
 
 react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"
