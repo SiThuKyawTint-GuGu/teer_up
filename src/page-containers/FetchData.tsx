@@ -1,10 +1,10 @@
 "use client";
-import * as yup from "yup";
+// import * as yup from "yup";
 
-const validationSchema = yup.object({
-  firstName: yup.string().required("First Name is required!"),
-  lastName: yup.string().required("Last name is required!"),
-});
+// const validationSchema = yup.object({
+//   firstName: yup.string().required("First Name is required!"),
+//   lastName: yup.string().required("Last name is required!"),
+// });
 
 const FetchData = () => {
   // const count = useStore(state => state.count);
