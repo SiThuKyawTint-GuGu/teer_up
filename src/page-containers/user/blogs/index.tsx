@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 
 const Blog = () => {
   const router = useRouter();
+
   return (
     <div className="snap-y flex-col snap-mandatory w-full h-screen overflow-scroll">
       {dummyArray.map((v: any, index: number) => (
@@ -15,6 +16,7 @@ const Blog = () => {
               controls
               title={v.title}
               paused={true}
+              className="w-[800px] h-[500px]"
               onClick={() => router.push("/")}
             >
               <video
@@ -22,9 +24,13 @@ const Blog = () => {
                 preload="none"
                 data-video="0"
                 controls
-                className="aspect-video"
+                className={`aspect-video-[${v.aspectRatio}] w-full h-full`}
               >
-                <source className="aspect-video" src={v.video_url} type="video/mp4"></source>
+                <source
+                  className={`aspect-video-[${v.aspectRatio}] w-full h-full`}
+                  src={v.video_url}
+                  type="video/mp4"
+                ></source>
               </video>
             </Video>
           </Media>
