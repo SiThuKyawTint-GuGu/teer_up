@@ -18,6 +18,9 @@ jobs:
         restore-keys: |
           yarn-${{ runner.os }}-
 
+    - name: Copy env
+      run: cp .github/workflows/env-dev .env.dev.local
+
     - name: Setup node
       uses: actions/setup-node@v3
       with:
