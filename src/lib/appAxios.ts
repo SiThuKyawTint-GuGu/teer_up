@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 import { getToken } from '@/utils/auth';
 
@@ -11,23 +11,27 @@ const appAxios = axios.create({
   withCredentials: true,
 });
 
-appAxios.interceptors.request.use(function (config) {
-  if (config.headers) {
-    const token = getToken();
-    console.log('token -> ', token);
-    config.headers.Authorization = token ? `Bearer ${token}` : '';
+appAxios.interceptors.request.use(
+  (config: AxiosRequestConfig) => {
+    if (config.headers) {
+      const token = getToken();
+      config.headers.Authorization = token ? `Bearer ${token}` : '';
+    }
+    return config;
+  },
+  (error: AxiosError) => {
+    return Promise.reject(error);
   }
-  return config;
-});
+);
 
 appAxios.interceptors.response.use(
-  async response => {
+  async (response: AxiosResponse) => {
     if (!response.data) {
       return Promise.reject(response);
     }
     return response;
   },
-  async error => {
+  async (error: AxiosError) => {
     return Promise.reject(error);
   }
 );
