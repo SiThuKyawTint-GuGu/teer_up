@@ -1,19 +1,20 @@
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
 
-import { Button } from '@/components/ui/Button';
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/Form';
-import { InputText } from '@/components/ui/Inputs';
-import { postMethod } from '@/hooks/postMethod';
-import { AuthResponse } from '@/types/User';
-import { setUserInfo } from '@/utils/auth';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { Button } from "@/components/ui/Button";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/Form";
+import { InputText } from "@/components/ui/Inputs";
+import { postMethod } from "@/hooks/postMethod";
+
+import { AuthResponse } from "@/types/User";
+import { setUserInfo } from "@/utils/auth";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 const validationSchema = yup.object({
-  email: yup.string().email().required('Email address is required!'),
-  password: yup.string().required('Password is required!'),
+  email: yup.string().email().required("Email address is required!"),
+  password: yup.string().required("Password is required!"),
 });
 
 interface Login {
@@ -28,21 +29,25 @@ const LoginForm = () => {
     resolver: yupResolver(validationSchema),
   });
 
+  // const registerMutation = useLogin();
+
   const loginHandler = async (data: Login) => {
-    postMethod<AuthResponse>('/user/login', data)
+    postMethod<AuthResponse>("/user/login", data)
       .then(response => {
         setError(null);
         setUserInfo(response.token, response.data);
-        router.push('/');
+        router.push("/");
         console.log(response.token);
       })
       .catch(error => setError(error.message));
+    // const res = registerMutation.mutate(data);
+    // console.log("res", res);
   };
 
   return (
     <>
       <div className="flex flex-col h-screen justify-center">
-        <h2 className="text-3xl mb-10 font-medium" style={{ color: '#da291c' }}>
+        <h2 className="text-3xl mb-10 font-medium" style={{ color: "#da291c" }}>
           Sign In
         </h2>
         {error && <div className="text-primary">{error}</div>}

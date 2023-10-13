@@ -1,22 +1,22 @@
-'use client';
-import React, { useState } from 'react';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
+"use client";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
 
-import { Button } from '@/components/ui/Button';
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/Form';
-import { InputText } from '@/components/ui/Inputs';
-import { Text } from '@/components/ui/Typo/Text';
-import { postMethod } from '@/hooks/postMethod';
-import { AuthResponse } from '@/types/User';
-import { setUserInfo } from '@/utils/auth';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { Button } from "@/components/ui/Button";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/Form";
+import { InputText } from "@/components/ui/Inputs";
+import { Text } from "@/components/ui/Typo/Text";
+import { postMethod } from "@/hooks/postMethod";
+import { AuthResponse } from "@/types/User";
+import { setUserInfo } from "@/utils/auth";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 const validationSchema = yup.object({
-  email: yup.string().email().required('Email is required!').default(''),
-  password: yup.string().required('Password is required!').default(''),
+  email: yup.string().email().required("Email is required!").default(""),
+  password: yup.string().required("Password is required!").default(""),
 });
 
 interface Login {
@@ -33,11 +33,11 @@ const Login = () => {
   const [error, setError] = useState<string | null>(null);
 
   const loginHandler = async (data: Login) => {
-    postMethod<AuthResponse>('/user/login', data)
+    postMethod<AuthResponse>("/user/login", data)
       .then(response => {
         setError(null);
         setUserInfo(response.token, response.data);
-        router.push('/admin');
+        router.push("/admin");
       })
       .catch(error => setError(error.message));
   };
@@ -82,7 +82,7 @@ const Login = () => {
             </Button>
           </form>
         </Form>
-        <Button onClick={() => router.push('/signup')}>Sign Up</Button>
+        <Button onClick={() => router.push("/signup")}>Sign Up</Button>
         <Text as="div" className="absolute bottom-3 w-[80%]">
           By clicking &quot;Log In&quot;, I have read, understood, and given my consent and accepted
           the Terms of Use.

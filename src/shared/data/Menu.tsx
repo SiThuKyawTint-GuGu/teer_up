@@ -63,6 +63,21 @@ export const menuList: Menu[] = [
     title: 'Setting',
     child: [],
   },
+  {
+    key: '/admin/user-management',
+    icon: <Icons.userManagement className="w-[20px] h-[20px]" />,
+    title: 'User Management',
+    child: [
+      {
+        key: '/admin/users/admin-list',
+        title: 'Admin',
+      },
+      {
+        key: '/admin/users/user-list',
+        title: 'User',
+      },
+    ],
+  },
   // {
   //   key: '/payments',
   //   icon: <Icons.payments className="w-[20px] h-[20px]" />,

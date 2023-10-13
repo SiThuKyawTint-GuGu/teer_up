@@ -29,6 +29,7 @@ import {
   PiHouseThin,
   PiPlanetThin,
   PiPlusThin,
+  PiUserGear,
   PiUserThin,
   PiWallet,
 } from 'react-icons/pi';
@@ -100,6 +101,7 @@ export const Icons = {
   logo: SiVivawallet,
   setting: CiSettings,
   logout: CiLogout,
+  userManagement: PiUserGear,
 };
 
 interface Image {

@@ -2,13 +2,13 @@
 // import produce, { Draft } from 'immer';
 // import create from 'zustand';
 
-// import { UserData } from '@/types/User';
+// import { User } from '@/types/User';
 
 // interface AuthStoreType {
-//   user: UserData | null;
+//   user: User | null;
 //   isAuthenticated: boolean;
 //   isLoading: boolean;
-//   login: (user: UserData) => void;
+//   login: (user: User) => void;
 //   logout: () => void;
 //   stopLoading: () => void;
 // }

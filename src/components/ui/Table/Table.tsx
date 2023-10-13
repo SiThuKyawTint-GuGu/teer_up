@@ -1,17 +1,17 @@
-'use client';
-import React, { useMemo } from 'react';
-import { Column, useGlobalFilter, usePagination, useSortBy, useTable } from 'react-table';
+"use client";
+import { useMemo } from "react";
+import { Column, useGlobalFilter, usePagination, useSortBy, useTable } from "react-table";
 
-import Filter from './Filter';
+import Filter from "./Filter";
 
 interface Props {
   tableColumns: Column[];
   tableData: any[];
 }
 
-const Table = ({ tableColumns, tableData }: Props) => {
-  const columns = useMemo(() => tableColumns, []);
-  const data = useMemo(() => tableData, []);
+const Table: React.FC<Props> = ({ tableColumns, tableData }: Props) => {
+  const columns = useMemo(() => tableColumns, [tableColumns]);
+  const data = useMemo(() => tableData, [tableData]);
 
   const tableInstance = useTable(
     {
@@ -22,20 +22,23 @@ const Table = ({ tableColumns, tableData }: Props) => {
     useSortBy,
     usePagination
   );
+
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
-    page,
+    rows,
     nextPage,
     previousPage,
     pageOptions,
     prepareRow,
     state,
     setGlobalFilter,
-  } = tableInstance;
+  } = tableInstance as any;
 
-  const { globalFilter, pageIndex } = state;
+  console.log(tableInstance.headerGroups);
+
+  const { globalFilter, pageIndex } = state as any;
 
   return (
     <div className="overflow-x-auto">
@@ -45,32 +48,32 @@ const Table = ({ tableColumns, tableData }: Props) => {
       </div>
       <table {...getTableProps()} className="min-w-full">
         <thead>
-          {headerGroups.map(headerGroup => (
+          {headerGroups.map((headerGroup: any, key: number) => (
             // eslint-disable-next-line react/jsx-key
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
+            <tr key={key} {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column: any) => (
                 <th
                   {...column.getHeaderProps(column.getSortByToggleProps())}
                   key={column.id}
                   className="p-4 pb-5 border-b text-gray-800 font-normal text-left"
                 >
-                  {column.render('Header')}
+                  {column.render("Header")}
 
-                  <span>{column.isSorted ? (column.isSortedDesc ? ' 🔽' : ' 🔼') : ''}</span>
+                  <span>{column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : ""}</span>
                 </th>
               ))}
             </tr>
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {page.map(row => {
+          {rows.map((row: any, key: number) => {
             prepareRow(row);
             return (
               // eslint-disable-next-line react/jsx-key
-              <tr {...row.getRowProps()}>
-                {row.cells.map(cell => (
+              <tr key={key} {...row.getRowProps()}>
+                {row.cells.map((cell: any) => (
                   <td key={cell.id} className="p-5 border-b text-gray-500 font-light text-sm">
-                    {cell.render('Cell')}
+                    {cell.render("Cell")}
                   </td>
                 ))}
               </tr>
@@ -92,13 +95,13 @@ const Table = ({ tableColumns, tableData }: Props) => {
             className="px-3 py-2 rounded bg-gray-200 mr-2 cursor-pointer"
             onClick={() => previousPage()}
           >
-            {'<'}
+            {"<"}
           </button>
           <button
             className="px-3 py-2 rounded bg-gray-200 cursor-pointer"
             onClick={() => nextPage()}
           >
-            {'>'}
+            {">"}
           </button>
         </div>
       </div>
