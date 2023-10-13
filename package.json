@@ -8,19 +8,19 @@
     "start": "next start -p 6200",
     "lint": "next lint",
     "tsc": "tsc",
-    "lt": "next lint && yarn tsc",
-    "husky": {
-      "hooks": {
-        "pre-commit": "lint-staged"
-      }
-    },
-    "lint-staged": {
-      "src/**/*.{js,jsx,ts,tsx,json}": [
-        "prettier --write",
-        "eslint --fix src/",
-        "tslint --fix --project ."
-      ]
+    "lt": "next lint && yarn tsc"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
     }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json}": [
+      "prettier --write",
+      "eslint --fix src/",
+      "tslint --fix --project ."
+    ]
   },
   "dependencies": {
     "@ariakit/react": "^0.3.4",
