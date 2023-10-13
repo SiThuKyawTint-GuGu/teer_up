@@ -1,4 +1,4 @@
-@import '@radix-ui/colors/black-alpha.css';
+@import "@radix-ui/colors/black-alpha.css";
 
 /* reset */
 button {
@@ -6,8 +6,8 @@ button {
 }
 
 .SwitchRoot {
-  width: 40px;
-  height: 20px;
+  width: 35px;
+  height: 15px;
   background-color: #f9a8d4;
   border-radius: 9999px;
   position: relative;
@@ -17,14 +17,14 @@ button {
 .SwitchRoot:focus {
   box-shadow: 0 0 0 1px #f9a8d4;
 }
-.SwitchRoot[data-state='checked'] {
+.SwitchRoot[data-state="checked"] {
   background-color: #ec4899;
 }
 
 .SwitchThumb {
   display: block;
-  width: 21px;
-  height: 21px;
+  width: 15px;
+  height: 15px;
   background-color: white;
   border-radius: 9999px;
   box-shadow: 0 2px 2px #f9a8d4;
@@ -32,7 +32,7 @@ button {
   transform: translateX(2px);
   will-change: transform;
 }
-.SwitchThumb[data-state='checked'] {
+.SwitchThumb[data-state="checked"] {
   transform: translateX(19px);
 }
 

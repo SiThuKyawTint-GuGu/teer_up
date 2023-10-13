@@ -5,7 +5,7 @@ import { Column, useGlobalFilter, usePagination, useSortBy, useTable } from "rea
 import Filter from "./Filter";
 
 interface Props {
-  tableColumns: Column[];
+  tableColumns: any[];
   tableData: any[];
 }
 

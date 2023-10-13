@@ -1,13 +1,14 @@
-import NextImage from 'next/image';
-import { BiBookContent } from 'react-icons/bi';
-import { BsFillPostcardFill } from 'react-icons/bs';
-import { CiLogout, CiSettings } from 'react-icons/ci';
-import { FaLightbulb } from 'react-icons/fa';
-import { FcBusinesswoman } from 'react-icons/fc';
-import { FiUsers } from 'react-icons/fi';
-import { GoCommentDiscussion } from 'react-icons/go';
-import { IoLogoApple, IoNotificationsOutline } from 'react-icons/io5';
-import { MdOutlineMailOutline } from 'react-icons/md';
+import NextImage from "next/image";
+import { AiOutlineForm } from "react-icons/ai";
+import { BiBookContent } from "react-icons/bi";
+import { BsFillPostcardFill } from "react-icons/bs";
+import { CiLogout, CiSettings } from "react-icons/ci";
+import { FaLightbulb } from "react-icons/fa";
+import { FcBusinesswoman } from "react-icons/fc";
+import { FiUsers } from "react-icons/fi";
+import { GoCommentDiscussion } from "react-icons/go";
+import { IoLogoApple, IoNotificationsOutline } from "react-icons/io5";
+import { MdOutlineMailOutline } from "react-icons/md";
 import {
   PiAirplaneTiltLight,
   PiArrowDownRightThin,
@@ -32,9 +33,9 @@ import {
   PiUserGear,
   PiUserThin,
   PiWallet,
-} from 'react-icons/pi';
-import { RxCross2, RxMagnifyingGlass } from 'react-icons/rx';
-import { SiAmazon, SiNetflix, SiTesla, SiVivawallet } from 'react-icons/si';
+} from "react-icons/pi";
+import { RxCross2, RxMagnifyingGlass } from "react-icons/rx";
+import { SiAmazon, SiNetflix, SiTesla, SiVivawallet } from "react-icons/si";
 
 export const Icons = {
   loading: ({ ...props }) => {
@@ -64,6 +65,7 @@ export const Icons = {
   },
   innovates: FaLightbulb,
   users: FiUsers,
+  form: AiOutlineForm,
   discussions: GoCommentDiscussion,
   contents: BiBookContent,
   wallet: PiWallet,
