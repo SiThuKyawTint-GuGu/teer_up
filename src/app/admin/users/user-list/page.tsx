@@ -1,9 +1,8 @@
-import React from 'react';
+import UserList from "@/page-containers/admin/auth/user/UserList";
+import { NextPage } from "next";
 
-import VirtualizedTable from '@/components/ui/Table/VirtualizedTable';
-
-const UserList = () => {
-  return <VirtualizedTable />;
+const UserListPage: NextPage = () => {
+  return <UserList />;
 };
 
-export default UserList;
+export default UserListPage;
