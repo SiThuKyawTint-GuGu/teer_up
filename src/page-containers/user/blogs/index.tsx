@@ -1,40 +1,111 @@
 "use client";
-// import { Media, Video } from "@vidstack/player-react";
+
+import { Text } from "@/components/ui/Typo/Text";
+import { useEffect, useRef, useState } from "react";
 
 const Blog = () => {
+  const [videos, setVideos] = useState<any[]>([]);
+  const videoRefs = useRef<HTMLVideoElement[]>([]);
+
+  useEffect(() => {
+    setVideos(dummyArray);
+  }, []);
+  useEffect(() => {
+    const observerOptions = {
+      root: null,
+      rootMargin: "0px",
+      threshold: 0.8, // Adjust this value to change the scroll trigger point
+    };
+
+    // This function handles the intersection of videos
+    const handleIntersection = (entries: any[]) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const videoElement = entry.target;
+          videoElement.play();
+        } else {
+          const videoElement = entry.target;
+          videoElement.pause();
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(handleIntersection, observerOptions);
+
+    // We observe each video reference to trigger play/pause
+    videoRefs.current.forEach(videoRef => {
+      observer.observe(videoRef);
+    });
+
+    // We disconnect the observer when the component is unmounted
+    return () => {
+      observer.disconnect();
+    };
+  }, [videos]);
+  const handleVideoRef = (index: number) => (ref: HTMLVideoElement | null) => {
+    if (ref) {
+      videoRefs.current[index] = ref;
+    }
+  };
   return (
     <div className="snap-y flex-col snap-mandatory w-full h-screen overflow-scroll">
-      <div className="text-red-600">text red</div>
       {dummyArray.map((v: any, index: number) => (
-        <div className="h-screen w-full flex justify-center items-center snap-start" key={index}>
-          {/* <Media>
-            <Video
-              loading="lazy"
-              poster={v.image}
-              controls
-              title={v.title}
-              paused={true}
-              className="w-[800px] h-[500px]"
-              onClick={() => router.push("/")}
-            >
-              <video
-                poster={v.image}
-                preload="none"
-                data-video="0"
-                controls
-                className={`aspect-video-[${v.aspectRatio}] w-full h-full`}
-              >
-                <source
-                  className={`aspect-video-[${v.aspectRatio}] w-full h-full`}
-                  src={v.video_url}
-                  type="video/mp4"
-                ></source>
-              </video>
-            </Video>
-          </Media> */}
+        <div
+          className="h-screen w-full flex justify-center items-center snap-start relative"
+          key={index}
+        >
+          <VideoPlayer v={v} setVideoRef={handleVideoRef(index)} autoplay={index === 0} />
         </div>
       ))}
     </div>
+  );
+};
+
+const VideoPlayer = ({ v, setVideoRef, autoplay }: any) => {
+  console.log("v", v);
+
+  const videoRef = useRef<any>([]);
+
+  useEffect(() => {
+    if (autoplay) {
+      videoRef.current.play();
+    }
+  }, [autoplay]);
+
+  const onVideoPress = () => {
+    if (videoRef.current.paused) {
+      videoRef.current.play();
+    } else {
+      videoRef.current.pause();
+    }
+  };
+  return (
+    <>
+      <video
+        poster={v.image}
+        preload="none"
+        data-video="0"
+        controls
+        loop
+        muted={false}
+        onClick={onVideoPress}
+        ref={ref => {
+          videoRef.current = ref;
+          setVideoRef(ref);
+        }}
+        className={`aspect-video-[${v.aspectRatio}] absolute w-full h-full  object-fill`}
+      >
+        <source
+          className={`aspect-video-[${v.aspectRatio}] w-full h-full bg-transparent object-fill`}
+          src={v.video_url}
+          type="video/mp4"
+        ></source>
+      </video>
+      <div>
+        <Text className="text-primary">{v.place}</Text>
+        <Text className="text-primary">{v.description}</Text>
+      </div>
+    </>
   );
 };
 
