@@ -67,6 +67,5 @@ InputSearch.displayName = "InputSearch";
 export { InputSearch, InputText };
 
 const InputStyled = styled.input`
-  color: #ffffff;
   outline: 0;
 `;

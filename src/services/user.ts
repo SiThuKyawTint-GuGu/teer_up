@@ -1,10 +1,21 @@
+"use client";
 import appAxios from "@/lib/appAxios";
-import { AuthResponse, UserData } from "@/types/User";
+
+import { User } from "@/types/User";
+import { routeFilter } from "@/utils";
+
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 
 type RegisterArgType = {
   arg: { email: string; password: string };
+};
+
+type ParamsType = {
+  page?: number;
+  pageSize?: number;
+  name?: string;
+  role?: string;
 };
 
 type RegisterResType = {};
@@ -13,11 +24,11 @@ export const useRegister = () =>
     appAxios.post<RegisterResType>(url, arg)
   );
 
-export const useLogin = () =>
-  useSWRMutation(`/user/login`, (url, { arg }: RegisterArgType) =>
-    appAxios.post<AuthResponse>(url, arg)
-  );
+type TokenResType = Pick<User, "name">;
 
-type TokenResType = Pick<UserData, "name">;
 export const useToken = (identityId: string, a: string) =>
   useSWR<TokenResType>(identityId && `/token/${identityId} ${a ? "?a=" + a : ""}`);
+
+export const useUsers = (params?: ParamsType) => {
+  return useSWR<User>(`/user?${routeFilter(params)}`);
+};

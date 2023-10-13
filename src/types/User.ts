@@ -1,4 +1,4 @@
-export interface UserData {
+export interface User {
   id: string;
   createdAt: string;
   email: string;
@@ -13,7 +13,7 @@ export interface TokenData {
 }
 
 export interface AuthResponse {
-  data: UserData;
+  data: User;
   token: string;
 }
 
