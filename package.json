@@ -8,7 +8,8 @@
     "start": "next start -p 6200",
     "lint": "next lint",
     "tsc": "tsc",
-    "lt": "next lint && yarn tsc"
+    "lt": "next lint && yarn tsc",
+    "format": "prettier --write src/**/*.{ts,tsx}"
   },
   "husky": {
     "hooks": {
