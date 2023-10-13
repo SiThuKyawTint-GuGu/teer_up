@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 
 import { getToken } from '@/utils/auth';
 
@@ -12,7 +12,7 @@ const appAxios = axios.create({
 });
 
 appAxios.interceptors.request.use(
-  (config: AxiosRequestConfig) => {
+  (config: InternalAxiosRequestConfig) => {
     if (config.headers) {
       const token = getToken();
       config.headers.Authorization = token ? `Bearer ${token}` : '';

@@ -17,6 +17,6 @@ export enum SELECT_ICONS {
 }
 
 export enum USER_ROLE {
-  USER = 'USER',
-  ADMIN = 'ADMIN',
+  USER = 'user',
+  ADMIN = 'admin',
 }
