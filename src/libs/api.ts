@@ -9,10 +9,10 @@ export interface ParameterType {
 }
 
 export class FetchAPI {
-  apiDomain: string = 'swapi.dev'; // process.env.API_DOMAIN
+  apiDomain: string = process.env.NEXT_PUBLIC_DOMAIN as string;
   baseUrl: string;
   constructor() {
-    this.baseUrl = `https://${this.apiDomain}/api`;
+    this.baseUrl = `https://${this.apiDomain}/api/v1`;
   }
   async sendApiRequest(
     api: string,

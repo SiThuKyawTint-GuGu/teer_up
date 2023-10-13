@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react';
 
-import '@vidstack/react/player/styles/base.css';
 interface Props {
   children: ReactNode;
 }

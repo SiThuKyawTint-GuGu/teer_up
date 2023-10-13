@@ -1,6 +1,7 @@
 import { promises as fs } from 'fs';
 
 import { MediaPlayer, MediaProvider } from '@vidstack/react';
+import { Text } from '@/components/ui/Typo/Text';
 const Blog = async () => {
   const file = await fs.readFile(process.cwd() + '/json/data.json', 'utf8');
   const data = JSON.parse(file);
@@ -8,8 +9,12 @@ const Blog = async () => {
   console.log(fullData);
   return (
     <div>
-      {fullData?.map((data: any, index: number) => (
-        <section key={index} id={data.video_url} className="mb-5 w-[50%] mx-auto h-screen">
+      {fullData.map((data: any, index: number) => (
+        <section
+          key={index}
+          id={data.video_url}
+          className="mb-5 flex justify-center items-center  h-screen"
+        >
           <MediaPlayer
             src={data.video_url}
             aspectRatio={data.aspectRatio}
@@ -21,6 +26,9 @@ const Blog = async () => {
           >
             <MediaProvider />
           </MediaPlayer>
+          <div>
+            <Text>{data.title}</Text>
+          </div>
         </section>
       ))}
     </div>
