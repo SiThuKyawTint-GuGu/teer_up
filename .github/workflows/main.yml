@@ -10,14 +10,13 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Cache npm packages
+    - name: Cache yarn packages
       uses: actions/cache@v2
       with:
-        path: ~/.npm
-        key: npm-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+        path: ~/.yarn
+        key: yarn-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
-          npm-${{ runner.os }}-
-          npm-
+          yarn-${{ runner.os }}-
 
     - name: Setup node
       uses: actions/setup-node@v3
