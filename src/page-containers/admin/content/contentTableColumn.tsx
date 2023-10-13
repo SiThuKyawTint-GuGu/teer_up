@@ -1,8 +1,8 @@
-"use client";
-import dayjs from "dayjs";
-import Link from "next/link";
-import { AiFillDelete } from "react-icons/ai";
-import { Column } from "react-table";
+'use client';
+import dayjs from 'dayjs';
+import Link from 'next/link';
+import { AiFillDelete, AiFillEdit } from 'react-icons/ai';
+import { Column } from 'react-table';
 
 interface ContentDataType {
   id?: string;
@@ -20,23 +20,16 @@ const handleDelete = (id: string) => {
 
 export const Columns: Column[] = [
   {
-    Header: "Title",
-    accessor: "title",
-    Cell: ({ row }: { row: { original: ContentDataType } }) => {
-      return (
-        <Link className="text-blue-600" href={`/admin/contents/content/${row.original.id}`}>
-          {row.original.title}
-        </Link>
-      );
-    },
+    Header: 'Title',
+    accessor: 'title',
   },
   {
-    Header: "Description",
-    accessor: "description",
+    Header: 'Description',
+    accessor: 'description',
   },
   {
-    Header: "Photo URL",
-    accessor: "photo_url",
+    Header: 'Photo URL',
+    accessor: 'photo_url',
     // Cell: ({ row }) => {
     //   return (
     //     <Link className="text-blue" href={`/admin/contents/content/${row.original.id}`}>
@@ -46,16 +39,16 @@ export const Columns: Column[] = [
     // },
   },
   {
-    Header: "Video URL",
-    accessor: "video_url",
+    Header: 'Video URL',
+    accessor: 'video_url',
   },
   {
-    Header: "User Id",
-    accessor: "userId",
+    Header: 'User Id',
+    accessor: 'userId',
   },
   {
-    Header: "Created At",
-    accessor: "createdAt",
+    Header: 'Created At',
+    accessor: 'createdAt',
     Cell: ({ row }: { row: { original: ContentDataType } }) => {
       const { createdAt } = row.original;
 
@@ -63,12 +56,12 @@ export const Columns: Column[] = [
         return null; // Return null if createdAt is null
       }
 
-      return <p>{dayjs(createdAt).format("D/M/YYYY")}</p>;
+      return <p>{dayjs(createdAt).format('D/M/YYYY')}</p>;
     },
   },
   {
-    Header: "Updated At",
-    accessor: "updatedAt",
+    Header: 'Updated At',
+    accessor: 'updatedAt',
     Cell: ({ row }: { row: { original: ContentDataType } }) => {
       const { updatedAt } = row.original;
 
@@ -76,12 +69,12 @@ export const Columns: Column[] = [
         return null; // Return null if createdAt is null
       }
 
-      return <p>{dayjs(updatedAt).format("D/M/YYYY")}</p>;
+      return <p>{dayjs(updatedAt).format('D/M/YYYY')}</p>;
     },
   },
   {
-    Header: "Name",
-    accessor: "name",
+    Header: 'Name',
+    accessor: 'name',
     Cell: ({ row }: { row: { original: ContentDataType } }) => {
       const { user } = row.original;
 
@@ -93,12 +86,15 @@ export const Columns: Column[] = [
     },
   },
   {
-    Header: "Action",
-    accessor: "",
+    Header: 'Action',
+    accessor: '',
     Cell: ({ row }: { row: { original: ContentDataType } }) => (
       <div>
+        <Link className="text-blue-600" href={`/admin/contents/content/${row.original.id}`}>
+          <AiFillEdit className="cursor-pointer mr-5" size={25} color="gray" />
+        </Link>
         <AiFillDelete
-          onClick={() => handleDelete(row.original.id || "")}
+          onClick={() => handleDelete(row.original.id || '')}
           className="cursor-pointer"
           size={25}
           color="gray"
