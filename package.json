@@ -9,18 +9,15 @@
     "lint": "next lint",
     "tsc": "tsc",
     "lt": "next lint && yarn tsc",
-    "format": "prettier --write src/**/*.{ts,tsx}"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
+    "format": "prettier --write src/**/*.{ts,tsx}",
+    "prepare": "husky install"
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx,json}": [
-      "prettier --write",
-      "eslint --fix src/",
-      "tslint --fix --project ."
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --quiet --fix"
+    ],
+    "*.{json,js,ts,jsx,tsx,html}": [
+      "prettier --write --ignore-unknown"
     ]
   },
   "dependencies": {
@@ -77,7 +74,7 @@
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-jest": "^27.4.2",
     "eslint-plugin-prettier": "^5.0.0",
-    "husky": "^8.0.3",
+    "husky": "^8.0.0",
     "lint-staged": "^14.0.1",
     "postcss": "^8",
     "prettier": "^3.0.3",
