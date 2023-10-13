@@ -3,7 +3,7 @@ import axios from "axios";
 import { getToken } from "@/utils/auth";
 
 const appAxios = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: process.env.NEXT_PUBLIC_URL,
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",

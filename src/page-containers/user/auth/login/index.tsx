@@ -45,7 +45,7 @@ const Login = () => {
   return (
     <div className="h-screen flex flex-col relative px-5">
       <div className="flex flex-col justify-evenly h-full items-center w-full flex-1">
-        <Image src="/teeUpLogo.png" width={130} height={31} alt="teeUpLogo" />
+        <Image src="/auth/teeUpLogo.png" width={130} height={31} alt="teeUpLogo" />
         {error && <div className="text-primary">{error}</div>}
         <Form {...form}>
           <form
@@ -93,24 +93,3 @@ const Login = () => {
 };
 
 export default Login;
-
-{
-  /* // const {
-//   data: response,
-//   isLoading,
-//   error,
-//   mutate,
-// } = useApi('https://teeup-dev-api.viabells.com/api/v1/user/login', 'POST');
-
-// const loginHandler = async (data: loginBody) => {
-//   try {
-//     mutate(data);
-//   } catch (error) {
-//     console.error('Error performing login:', error);
-//   }
-// };
-return (
-  <div className="h-screen flex flex-col relative px-5">
-    <div className="flex flex-col justify-evenly h-full items-center w-full flex-1">
-      <Image src={teeUpLogo} width={130} height={31} alt="teeUpLogo" /> */
-}
