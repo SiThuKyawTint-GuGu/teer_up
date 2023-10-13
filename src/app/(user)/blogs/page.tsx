@@ -1,8 +1,10 @@
 import React from 'react';
 import { NextPage } from 'next';
 
-const page: NextPage = () => {
-  return <div>:NextPage</div>;
+import Blog from '@/page-containers/user/blogs';
+
+const BlogPage: NextPage = () => {
+  return <Blog />;
 };
 
-export default page;
+export default BlogPage;

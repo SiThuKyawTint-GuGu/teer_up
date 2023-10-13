@@ -1,12 +1,12 @@
 'use client';
 import React from 'react';
 import Image from 'next/image';
+// import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
 
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/Collapsible';
 import { Icons } from '@/components/ui/Images';
-import mainLogo from '@/configs/img/auth/mainLogo.png';
 import { actionMenu, menuList } from '@/shared/data/Menu';
 // import { Switch } from '@/components/ui/switch';
 // import useAtomReducer from '@/hooks/useAtomReducer';
@@ -50,7 +50,7 @@ const Sidebar: React.FC<Props> = ({ className }: Props) => {
         <div className="px-12 pt-[25px] font-semibold mb-8 flex justify-start items-center gap-x-3">
           {/* <Icons.logo className="w-[60px] h-[60px]" /> */}
           {/* Wallet */}
-          <Image src={mainLogo} className="w-[200px] h-[70px]" alt="main logo" />
+          <Image src="/mainLogo.png" width={200} height={70} alt="main logo" />
         </div>
         <div className="space-y-[5px]">
           {menuList?.length &&
