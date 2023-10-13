@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/Button';
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/Form';
 import { InputText } from '@/components/ui/Inputs';
 import { postMethod } from '@/hooks/postMethod';
+
 import { AuthResponse } from '@/types/User';
 import { setUserInfo } from '@/utils/auth';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -28,6 +29,8 @@ const LoginForm = () => {
     resolver: yupResolver(validationSchema),
   });
 
+  // const registerMutation = useLogin();
+
   const loginHandler = async (data: Login) => {
     postMethod<AuthResponse>('/user/login', data)
       .then(response => {
@@ -37,6 +40,8 @@ const LoginForm = () => {
         console.log(response.token);
       })
       .catch(error => setError(error.message));
+    // const res = registerMutation.mutate(data);
+    // console.log("res", res);
   };
 
   return (

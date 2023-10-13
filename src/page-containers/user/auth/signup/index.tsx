@@ -1,7 +1,7 @@
 'use client';
-import React, { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
@@ -16,14 +16,14 @@ import { yupResolver } from '@hookform/resolvers/yup';
 interface SignUpFormType {
   email: String;
   name: String;
-  country: number;
+  country: string;
   password: String;
 }
 
 const validationSchema = yup.object({
   email: yup.string().email().required('Email is required!'),
   name: yup.string().required('Name is required!'),
-  country: yup.number().required('Country is required!'),
+  country: yup.string().required('Country is required!'),
   password: yup
     .string()
     .min(

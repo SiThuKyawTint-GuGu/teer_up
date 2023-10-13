@@ -5,7 +5,6 @@ import { User } from '@/types/User';
 import { routeFilter } from '@/utils';
 import useSWR, { SWRResponse } from 'swr';
 import useSWRMutation from 'swr/mutation';
-
 type RegisterArgType = {
   arg: { email: string; password: string };
 };
