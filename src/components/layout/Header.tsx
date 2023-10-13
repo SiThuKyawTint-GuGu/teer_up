@@ -17,11 +17,15 @@ const Header: React.FC = () => {
 
   useEffect(() => {
     const pathParts = pathname.split('/').filter(part => part);
-    if (pathParts.length > 1) {
-      const formattedPath = pathParts.slice(1).join(' > ');
+
+    if (pathParts.length >= 3) {
+      const secondItem = pathParts[1];
+      const thirdItem = pathParts[2];
+
+      const formattedPath = `${secondItem} > ${thirdItem}`;
       setPathname1(formattedPath);
     } else {
-      setPathname1('');
+      setPathname1(pathParts[1] || '');
     }
   }, [pathname]);
 

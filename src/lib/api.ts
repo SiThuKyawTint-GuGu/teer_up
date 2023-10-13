@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 
 // import { ApiResponse } from '@/types';
 
@@ -17,7 +17,7 @@ export class FetchAPI {
   async sendApiRequest(
     api: string,
     parameters: ParameterType,
-    method: string = 'GET',
+    method: string = "GET",
     body?: {
       name: string;
       email: string;
@@ -29,7 +29,7 @@ export class FetchAPI {
     const requestOptions: RequestInit = {
       method,
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       next: {
         revalidate: 3600,
@@ -48,10 +48,10 @@ export class FetchAPI {
       const result = await response.json();
       return {
         ...result,
-        lastFetchUpdated: dayjs().format('ddd, DD MMM YYYY HH:mm:ss [GMT]'),
+        lastFetchUpdated: dayjs().format("ddd, DD MMM YYYY HH:mm:ss [GMT]"),
       };
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
       throw error;
     }
   }
