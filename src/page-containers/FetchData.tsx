@@ -1,37 +1,29 @@
 "use client";
-import { useForm } from "react-hook-form";
-import * as yup from "yup";
+// import * as yup from "yup";
 
-import { Button } from "@/components/ui/Button";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/Form";
-import { InputText } from "@/components/ui/Inputs";
-import { useApi } from "@/hooks/useApi";
-import { useStore } from "@/lib/store";
-import { yupResolver } from "@hookform/resolvers/yup";
-
-const validationSchema = yup.object({
-  firstName: yup.string().required("First Name is required!"),
-  lastName: yup.string().required("Last name is required!"),
-});
+// const validationSchema = yup.object({
+//   firstName: yup.string().required("First Name is required!"),
+//   lastName: yup.string().required("Last name is required!"),
+// });
 
 const FetchData = () => {
-  const count = useStore(state => state.count);
-  const increment = useStore(state => state.increment);
-  const decrease = useStore(state => state.decrement);
+  // const count = useStore(state => state.count);
+  // const increment = useStore(state => state.increment);
+  // const decrease = useStore(state => state.decrement);
 
-  const { data, isLoading, error } = useApi("https://jsonplaceholder.typicode.com/posts");
+  // const { data, isLoading, error } = useApi("https://jsonplaceholder.typicode.com/posts");
 
-  const form = useForm({
-    resolver: yupResolver(validationSchema),
-  });
+  // const form = useForm({
+  //   resolver: yupResolver(validationSchema),
+  // });
 
-  const onSubmit = (data: any) => {
-    console.log("data -> ", data);
-  };
+  // const onSubmit = (data: any) => {
+  //   console.log("data -> ", data);
+  // };
 
   return (
     <div className="grid grid-cols-12">
-      <div className="col-span-12">
+      {/* <div className="col-span-12">
         count: {count}
         <Button onClick={increment}>Increase</Button>
         <Button onClick={decrease}>Decrement</Button>
@@ -64,7 +56,7 @@ const FetchData = () => {
             <Button type="submit">Submit</Button>
           </form>
         </Form>
-      </div>
+      </div> */}
     </div>
   );
 };
