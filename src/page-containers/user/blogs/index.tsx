@@ -1,15 +1,13 @@
 "use client";
-import { Media, Video } from "@vidstack/player-react";
-import { useRouter } from "next/navigation";
+// import { Media, Video } from "@vidstack/player-react";
 
 const Blog = () => {
-  const router = useRouter();
-
   return (
     <div className="snap-y flex-col snap-mandatory w-full h-screen overflow-scroll">
+      <div className="text-red-600">text red</div>
       {dummyArray.map((v: any, index: number) => (
         <div className="h-screen w-full flex justify-center items-center snap-start" key={index}>
-          <Media>
+          {/* <Media>
             <Video
               loading="lazy"
               poster={v.image}
@@ -33,7 +31,7 @@ const Blog = () => {
                 ></source>
               </video>
             </Video>
-          </Media>
+          </Media> */}
         </div>
       ))}
     </div>

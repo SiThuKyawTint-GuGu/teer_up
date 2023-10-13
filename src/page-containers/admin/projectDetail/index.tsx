@@ -1,13 +1,13 @@
-'use client';
-import React, { useRef } from 'react';
-import Image from 'next/image';
-import { AiOutlinePlus } from 'react-icons/ai';
+"use client";
+import Image from "next/image";
+import { useRef } from "react";
+import { AiOutlinePlus } from "react-icons/ai";
 
-import * as Tabs from '@radix-ui/react-tabs';
-import { Button } from '@radix-ui/themes';
-import { Editor } from '@tinymce/tinymce-react';
+import * as Tabs from "@radix-ui/react-tabs";
+import { Button } from "@radix-ui/themes";
+import { Editor } from "@tinymce/tinymce-react";
 
-import '@/styles/tab.css';
+import "@/styles/tab.css";
 
 const ProjectDetail = () => {
   const editorRef = useRef<any>();
@@ -33,7 +33,13 @@ const ProjectDetail = () => {
       </Tabs.List>
       <Tabs.Content className="TabsContent" value="tab1">
         <p className="font-weight-600 mb-3">Project Image</p>
-        <Image src={mainLogo} height={400} width={400} alt="prjImg" className="rounded-md mb-10" />
+        <Image
+          src="/mainLogo.png"
+          height={400}
+          width={400}
+          alt="prjImg"
+          className="rounded-md mb-10"
+        />
 
         <p className="font-weight-600 mb-3">Project Name</p>
         <fieldset className="Fieldset mb-10">
@@ -49,7 +55,7 @@ const ProjectDetail = () => {
         <fieldset className="Fieldset">
           <input className="Input" id="point" defaultValue="1,000" />
         </fieldset>
-        <div style={{ display: 'flex', marginTop: 20 }}>
+        <div style={{ display: "flex", marginTop: 20 }}>
           <Button
             variant="outline"
             className=" outlineButton flex justify-center items-center rounded-md"

@@ -8,7 +8,17 @@
     "start": "next start -p 6200",
     "lint": "next lint",
     "tsc": "tsc",
-    "lt": "next lint && yarn tsc"
+    "lt": "next lint && yarn tsc",
+    "format": "prettier --write src/**/*.{ts,tsx}",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --quiet --fix"
+    ],
+    "*.{json,js,ts,jsx,tsx,html}": [
+      "prettier --write --ignore-unknown"
+    ]
   },
   "dependencies": {
     "@ariakit/react": "^0.3.4",
@@ -24,6 +34,8 @@
     "@tanstack/react-table": "^8.10.6",
     "@tinymce/tinymce-react": "^4.3.0",
     "@types/react-table": "^7.7.16",
+    "@types/styled-components": "^5.1.28",
+    "@vidstack/player": "^0.13.3",
     "@vidstack/player-react": "^1.6.0",
     "@vidstack/react": "^1.1.11",
     "@wits/next-themes": "^0.2.16",
@@ -59,11 +71,14 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10",
+    "commitizen": "^4.3.0",
     "eslint": "^8",
     "eslint-config-next": "13.5.4",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-jest": "^27.4.2",
     "eslint-plugin-prettier": "^5.0.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^14.0.1",
     "postcss": "^8",
     "prettier": "^3.0.3",
     "tailwindcss": "^3",
