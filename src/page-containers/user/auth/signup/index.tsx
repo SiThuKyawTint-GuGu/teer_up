@@ -1,36 +1,36 @@
-'use client';
-import React, { useState } from 'react';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
+"use client";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
 
-import { Button } from '@/components/ui/Button';
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/Form';
-import { InputText } from '@/components/ui/Inputs';
-import { Text } from '@/components/ui/Typo/Text';
-import { postMethod } from '@/hooks/postMethod';
-import { AuthResponse } from '@/types/User';
-import { setUserInfo } from '@/utils/auth';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { Button } from "@/components/ui/Button";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/Form";
+import { InputText } from "@/components/ui/Inputs";
+import { Text } from "@/components/ui/Typo/Text";
+import { postMethod } from "@/hooks/postMethod";
+import { AuthResponse } from "@/types/User";
+import { setUserInfo } from "@/utils/auth";
+import { yupResolver } from "@hookform/resolvers/yup";
 interface SignUpFormType {
   email: String;
   name: String;
-  country: number;
+  country: string;
   password: String;
 }
 
 const validationSchema = yup.object({
-  email: yup.string().email().required('Email is required!'),
-  name: yup.string().required('Name is required!'),
-  country: yup.number().required('Country is required!'),
+  email: yup.string().email().required("Email is required!"),
+  name: yup.string().required("Name is required!"),
+  country: yup.string().required("Country is required!"),
   password: yup
     .string()
     .min(
       8,
-      'password must contain 8 or more characters with at least one of each: uppercase, lowercase, number and special'
+      "password must contain 8 or more characters with at least one of each: uppercase, lowercase, number and special"
     )
-    .required('Password is required!'),
+    .required("Password is required!"),
 });
 
 const SignUp = () => {
@@ -40,13 +40,13 @@ const SignUp = () => {
   });
   const [error, setError] = useState<string | null>(null);
   const [studentRegister, setStudentRegister] = useState<Boolean>(true);
-  const endPoint = studentRegister ? '/user/register' : '/user/mentor/register';
+  const endPoint = studentRegister ? "/user/register" : "/user/mentor/register";
   const onSubmit = (data: SignUpFormType) => {
     postMethod<AuthResponse>(endPoint, data)
       .then(response => {
         setError(null);
         setUserInfo(response.token, response.data);
-        router.push('/auth/otp');
+        router.push("/auth/otp");
         console.log(response);
       })
       .catch(error => setError(error.message));
@@ -123,7 +123,7 @@ const SignUp = () => {
             </Button>
           </form>
         </Form>
-        <Button onClick={() => router.push('/login')}>Login</Button>
+        <Button onClick={() => router.push("/login")}>Login</Button>
         <Text as="div" className="absolute bottom-3 w-[80%] mx-auto">
           By clicking &quot;Sign Up&quot;, I have read, understood, and given my consent and
           accepted the Terms of Use.
