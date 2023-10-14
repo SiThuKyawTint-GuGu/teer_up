@@ -15,3 +15,8 @@ export enum SELECT_ICONS {
   DOWN_CARET = 'arrow',
   PLUS = 'plus',
 }
+
+export enum USER_ROLE {
+  USER = 'user',
+  ADMIN = 'admin',
+}

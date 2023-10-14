@@ -1,6 +1,6 @@
-import { NextPage } from "next";
+import { NextPage } from 'next';
 
-import Blog from "@/page-containers/user/blogs";
+import Blog from '@/page-containers/user/blogs';
 
 const BlogPage: NextPage = () => {
   return <Blog />;
