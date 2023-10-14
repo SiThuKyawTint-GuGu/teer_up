@@ -106,29 +106,11 @@ const fadeData = [
     allocated: '',
     status: 'true',
   },
-  {
-    name: 'user',
-    created_data: '12/34/233',
-    url: 'dfdsf',
-    owner: 'user',
-    point: '1323',
-    allocated: '',
-    status: 'true',
-  },
-  {
-    name: 'user',
-    created_data: '12/34/233',
-    url: 'dfdsf',
-    owner: 'user',
-    point: '1323',
-    allocated: '',
-    status: 'true',
-  },
 ];
 const Category = () => {
   const token = getToken();
-  const getContents = async () => {
-    console.log('call api');
+  const getCategory = async () => {
+    console.log('call api from content category...');
 
     getMethod<any>('/admin/contentcategories', token)
       .then(response => {
@@ -143,7 +125,7 @@ const Category = () => {
   };
 
   useEffect(() => {
-    getContents();
+    getCategory();
   }, []);
 
   return (

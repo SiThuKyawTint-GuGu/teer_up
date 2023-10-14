@@ -1,48 +1,24 @@
 'use client';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import { AiFillPlusSquare } from 'react-icons/ai';
 
-import Table from '@/components/ui/Table/Table';
-import { getToken } from '@/utils/auth';
 import { Box } from '@radix-ui/themes';
 
-import { getMethod } from '@/hooks/getMethod';
-import { ParamsType } from '@/services/content';
+import Table from '@/components/ui/Table/Table';
+import { ParamsType, useGetContent } from '@/services/content';
 import { ContentResponseData } from '@/types/Content';
 import { Columns } from './contentTableColumn';
 
 const Content = () => {
-  const [contentData, setContentData] = useState<ContentResponseData[]>([]);
-  const [error, setError] = useState<string>('');
-  const token = getToken();
-
   const params: ParamsType = {
     page: 1,
     pageSize: 10,
   };
 
-  // const { data } = useGetContent<ParamsType, ContentResponseData>(params);
-  // console.log('data from content', data);
+  const { data, isLoading, error } = useGetContent<ParamsType, ContentResponseData>(params);
+  // console.log('data from content', data?.data);
 
-  const getContents = async () => {
-    console.log('call api');
-    getMethod<any>('/content?page=1&pageSize=10', token)
-      .then(response => {
-        console.log('get content data......');
-        console.log(response.data);
-        setContentData(response.data);
-        // setError(null);
-      })
-      .catch(error => {
-        console.log(error);
-        setError(error.message);
-      });
-  };
-
-  useEffect(() => {
-    getContents();
-  }, []);
+  if (isLoading) return <p>Loading...</p>;
 
   return (
     <div>
@@ -57,11 +33,7 @@ const Content = () => {
             />
           </Link>
         </div>
-        <Table tableColumns={Columns} tableData={contentData} />
-        {/* {contentData.length > 0 ? (
-        ) : (
-          'Loading...'
-        )} */}
+        <Table tableColumns={Columns} tableData={data?.data || []} />
       </Box>
     </div>
   );
