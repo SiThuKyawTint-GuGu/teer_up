@@ -1,10 +1,10 @@
 'use client';
-import Table from '@/components/ui/Table/Table';
-import { Columns } from '@/components/ui/Table/TableColumns';
+import UserTable from '@/components/ui/Table/UserTable';
 import { ParamsType, useGetUser } from '@/services/user';
 import { USER_ROLE } from '@/shared/enums';
-import { User } from '@/types/User';
+import { UserResponse } from '@/types/User';
 import { Box } from '@radix-ui/themes';
+import { UserColumns } from './UserColumns';
 
 const fadeData = [
   {
@@ -127,16 +127,16 @@ const fadeData = [
 ];
 
 const AdminList = () => {
-  const { data: userData } = useGetUser<ParamsType, User>({
+  const { data: userData = [] } = useGetUser<ParamsType, UserResponse>({
     role: USER_ROLE.ADMIN,
   });
 
-  console.log('admin data -> ', userData);
+  console.log('data => ', userData);
 
   return (
     <>
       <Box className="bg-white p-10 rounded-md">
-        <Table tableColumns={Columns} tableData={fadeData} />
+        {userData?.data && <UserTable tableColumns={UserColumns} tableData={userData?.data} />}
       </Box>
     </>
   );

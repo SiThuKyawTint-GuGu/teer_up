@@ -1,10 +1,10 @@
 'use client';
 import Table from '@/components/ui/Table/Table';
-import { Columns } from '@/components/ui/Table/TableColumns';
 import { ParamsType, useGetUser } from '@/services/user';
 import { USER_ROLE } from '@/shared/enums';
 import { User } from '@/types/User';
 import { Box } from '@radix-ui/themes';
+import { UserColumns } from './UserColumns';
 
 const fadeData = [
   {
@@ -136,7 +136,7 @@ const UserList = () => {
   return (
     <>
       <Box className="bg-white p-10 rounded-md">
-        <Table tableColumns={Columns} tableData={fadeData} />
+        <Table tableColumns={UserColumns} tableData={fadeData} />
       </Box>
     </>
   );
