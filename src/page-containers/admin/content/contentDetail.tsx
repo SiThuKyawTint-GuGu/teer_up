@@ -16,6 +16,8 @@ interface Props {
 }
 const ContentDetail = ({ id }: Props) => {
   const authToken = getToken();
+  const { data } = useGetContentById<ParamsType>(id);
+
   const [selectedValue, setSelectedValue] = useState<String>('');
   const [error, setError] = useState<string>('');
   const [content, setContent] = useState<ContentResponseData | null>(null);
@@ -37,12 +39,7 @@ const ContentDetail = ({ id }: Props) => {
     }
   };
 
-  const params: ParamsType = {
-    id,
-  };
-
-  const { data } = useGetContentById<ParamsType, any>(params);
-  console.log('data from content detail id', data);
+  // console.log('data from content detail id', content);
 
   // const getContentById = async () => {
   //   getMethod<any>(`/content/${id}`, authToken)
@@ -128,7 +125,7 @@ const ContentDetail = ({ id }: Props) => {
               className="Input"
               id="title"
               onChange={e => setTitle(e.target.value)}
-              defaultValue={content?.title || ''}
+              // defaultValue={content?.title || ''}
             />
           </fieldset>
         </div>
@@ -139,7 +136,7 @@ const ContentDetail = ({ id }: Props) => {
               className="Input"
               id="description"
               onChange={e => setDesc(e.target.value)}
-              defaultValue={content?.description || ''}
+              // defaultValue={content?.description || ''}
             />
           </fieldset>
         </div>
@@ -204,7 +201,7 @@ const ContentDetail = ({ id }: Props) => {
             </div>
           </>
         )}
-        {content && content?.video_url && (
+        {/* {content && content?.video_url && (
           <div className="mt-4">
             <p className="font-bold mb-2">Video Preview:</p>
             <video width={300} height={300} controls>
@@ -235,7 +232,7 @@ const ContentDetail = ({ id }: Props) => {
               Submit
             </button>
           )}
-        </div>
+        </div> */}
       </div>
     </>
   );

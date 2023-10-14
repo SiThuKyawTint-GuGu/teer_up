@@ -24,10 +24,8 @@ export const useGetContent = <ParamsType, ContentType>(
   return useSWR<ContentType>(`/content?${routeFilter(params)}`);
 };
 
-export const useGetContentById = <ParamsType, ContentType>(
-  params: ParamsType
-): SWRResponse<ContentType, any> => {
-  return useSWR<ContentType>(`/content?${routeFilter(params)}`);
+export const useGetContentById = <ContentType>(id: string): SWRResponse<ContentType, any> => {
+  return useSWR<ContentType>(`/content/${id}`);
 };
 
 export const usePostContent = async (arg: ContentArgType) => {
