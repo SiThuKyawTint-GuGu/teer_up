@@ -126,12 +126,12 @@ const fadeData = [
   },
 ];
 
-const UserList = () => {
+const AdminList = () => {
   const { data: userData } = useGetUser<ParamsType, User>({
-    role: USER_ROLE.USER,
+    role: USER_ROLE.ADMIN,
   });
 
-  console.log('user data -> ', userData);
+  console.log('admin data -> ', userData);
 
   return (
     <>
@@ -142,4 +142,4 @@ const UserList = () => {
   );
 };
 
-export default UserList;
+export default AdminList;

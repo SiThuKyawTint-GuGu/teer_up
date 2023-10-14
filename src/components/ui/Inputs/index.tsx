@@ -1,12 +1,12 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
-import { IconButton, TextField } from "@radix-ui/themes";
+import { IconButton, TextField } from '@radix-ui/themes';
 
-import { Icons } from "../Images";
+import { Icons } from '../Images';
 
 type Props = {
-  type?: "text" | "email" | "password" | "number" | "submit" | "hidden";
+  type?: 'text' | 'email' | 'password' | 'number' | 'submit' | 'hidden';
   label?: string;
   className?: string;
   error?: any;
@@ -30,7 +30,7 @@ const InputText = React.forwardRef<HTMLInputElement, Props>(
             aria-describedby="name-error"
             autoComplete="off"
             placeholder={placeholder}
-            defaultValue={defaultValue || ""}
+            defaultValue={defaultValue || ''}
             ref={ref}
             {...props}
           />
@@ -40,10 +40,10 @@ const InputText = React.forwardRef<HTMLInputElement, Props>(
     );
   }
 );
-InputText.displayName = "InputText";
+InputText.displayName = 'InputText';
 
 InputText.defaultProps = {
-  type: "text",
+  type: 'text',
 };
 
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
@@ -62,7 +62,7 @@ const InputSearch = React.forwardRef<HTMLInputElement, InputProps>(
     );
   }
 );
-InputSearch.displayName = "InputSearch";
+InputSearch.displayName = 'InputSearch';
 
 export { InputSearch, InputText };
 
