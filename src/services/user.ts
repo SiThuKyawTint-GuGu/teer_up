@@ -5,6 +5,7 @@ import { User } from '@/types/User';
 import { routeFilter } from '@/utils';
 import useSWR, { SWRResponse } from 'swr';
 import useSWRMutation from 'swr/mutation';
+
 type RegisterArgType = {
   arg: { email: string; password: string };
 };
@@ -26,8 +27,18 @@ type TokenResType = Pick<User, 'name'>;
 export const useToken = (identityId: string, a: string) =>
   useSWR<TokenResType>(identityId && `/token/${identityId} ${a ? '?a=' + a : ''}`);
 
-export const useGetUser = <ParamsType, UserType>(
+export const useGetUser = <ParamsType, UserResponse>(
   params: ParamsType
-): SWRResponse<UserType, any> => {
-  return useSWR<UserType>(`/user?${routeFilter(params)}`);
+): SWRResponse<UserResponse, any> => {
+  return useSWR<UserResponse>(`/user?${routeFilter(params)}`);
 };
+
+interface UpdateUserResType {
+  arg: {
+    name: string;
+  };
+}
+export const useUpdateUser = (userId: string) =>
+  useSWRMutation(`/user/${userId}`, (url, { arg }: UpdateUserResType) => {
+    return appAxios.put<UpdateUserResType>(url, arg);
+  });

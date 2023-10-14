@@ -131,8 +131,6 @@ const UserList = () => {
     role: USER_ROLE.USER,
   });
 
-  console.log('user data -> ', userData);
-
   return (
     <>
       <Box className="bg-white p-10 rounded-md">
