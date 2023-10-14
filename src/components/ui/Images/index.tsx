@@ -1,20 +1,19 @@
-import NextImage from "next/image";
-import { AiOutlineForm } from "react-icons/ai";
-import { BiBookContent } from "react-icons/bi";
-import { BsFillPostcardFill } from "react-icons/bs";
-import { CiLogout, CiSettings } from "react-icons/ci";
-import { FaLightbulb } from "react-icons/fa";
-import { FcBusinesswoman } from "react-icons/fc";
-import { FiUsers } from "react-icons/fi";
-import { GoCommentDiscussion } from "react-icons/go";
-import { IoLogoApple, IoNotificationsOutline } from "react-icons/io5";
-import { MdOutlineMailOutline } from "react-icons/md";
+import NextImage from 'next/image';
+import { BiBookContent } from 'react-icons/bi';
+import { BsFillPostcardFill } from 'react-icons/bs';
+import { CiLogout, CiSettings } from 'react-icons/ci';
+import { FaLightbulb } from 'react-icons/fa';
+import { FcBusinesswoman } from 'react-icons/fc';
+import { FiUsers } from 'react-icons/fi';
+import { GoCommentDiscussion } from 'react-icons/go';
+import { IoLogoApple, IoNotificationsOutline } from 'react-icons/io5';
+import { MdDelete, MdOutlineMailOutline } from 'react-icons/md';
 import {
   PiAirplaneTiltLight,
   PiArrowDownRightThin,
+  PiArrowUpRightThin,
   PiArrowsLeftRightDuotone,
   PiArrowsLeftRightThin,
-  PiArrowUpRightThin,
   PiBagSimpleThin,
   PiCameraLight,
   PiCar,
@@ -28,6 +27,7 @@ import {
   PiFilmSlate,
   PiFlowArrowLight,
   PiHouseThin,
+  PiNotePencil,
   PiPlanetThin,
   PiPlusThin,
   PiUserGear,
@@ -104,6 +104,8 @@ export const Icons = {
   setting: CiSettings,
   logout: CiLogout,
   userManagement: PiUserGear,
+  edit: PiNotePencil,
+  delete: MdDelete,
 };
 
 interface Image {
