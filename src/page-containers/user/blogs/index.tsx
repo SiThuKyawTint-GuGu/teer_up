@@ -1,10 +1,17 @@
 'use client';
 
 import { Text } from '@/components/ui/Typo/Text';
+import { ParamsType, useGetContent } from '@/services/user';
 
 import { useEffect, useRef, useState } from 'react';
 
 const Blog = () => {
+  const { data: contentData } = useGetContent<ParamsType, any>({
+    page: 1,
+    pageSize: 20,
+  });
+
+  console.log('content', contentData);
   const [videos, setVideos] = useState<any[]>([]);
   const videoRefs = useRef<HTMLVideoElement[]>([]);
 

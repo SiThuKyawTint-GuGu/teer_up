@@ -31,3 +31,9 @@ export const useGetUser = <ParamsType, UserType>(
 ): SWRResponse<UserType, any> => {
   return useSWR<UserType>(`/user?${routeFilter(params)}`);
 };
+
+export const useGetContent = <ParamsType, ContentType>(
+  params: ParamsType
+): SWRResponse<ContentType, any> => {
+  return useSWR<ContentType>(`/content?${routeFilter(params)}`);
+};
