@@ -12,7 +12,12 @@ const validationSchema = yup.object({
   name: yup.string().required('Name is required!'),
 });
 
-const UserUpdateForm: React.FC<{ userId: string; row: User; setOpen: any; role: USER_ROLE }> = ({
+const UserUpdateForm: React.FC<{
+  userId: string;
+  row: User;
+  setOpen: (arg: boolean) => void;
+  role: USER_ROLE;
+}> = ({
   userId,
   row,
   setOpen,
