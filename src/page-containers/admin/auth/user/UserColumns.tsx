@@ -1,5 +1,9 @@
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/Dialog';
+import { Button } from '@/components/ui/Button';
+import { Dialog, DialogClose, DialogContent, DialogTrigger } from '@/components/ui/Dialog';
 import { Icons } from '@/components/ui/Images';
+import { Text } from '@/components/ui/Typo/Text';
+import { useDeleteUser } from '@/services/user';
+import { USER_ROLE } from '@/shared/enums';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import { Column } from 'react-table';
@@ -17,7 +21,7 @@ export const UserColumns: Column[] = [
   {
     Header: 'Verified',
     accessor: 'verified',
-    Cell: ({ value }) => <div>{value.toString()}</div>,
+    Cell: ({ value }) => <div>{value === true ? 'Yes' : 'No'}</div>,
   },
   {
     Header: 'Updated Date',
@@ -28,25 +32,67 @@ export const UserColumns: Column[] = [
     Header: 'Action',
     accessor: 'action',
     Cell: ({ row }) => {
-      const { id } = row.original as any;
+      const { id, role } = row.original as any;
       const [open, setOpen] = useState<boolean>(false);
+      const [dialogType, setDialogType] = useState<'UPDATE' | 'DELETE'>();
+      const { trigger } = useDeleteUser(id);
+
+      const handleDeleteUser = async () => {
+        await trigger();
+      };
+
       return (
         <>
           <Dialog open={open} onOpenChange={val => setOpen(val)}>
             <div className="flex justify-start items-center gap-3">
-              <DialogTrigger>
+              <DialogTrigger
+                onClick={() => {
+                  setOpen(!open);
+                  setDialogType('UPDATE');
+                }}
+              >
                 <div>
                   <Icons.edit className="w-[20px] h-[20px]" />
                 </div>
               </DialogTrigger>
-              <DialogTrigger>
+              <DialogTrigger
+                onClick={() => {
+                  setOpen(!open);
+                  setDialogType('DELETE');
+                }}
+              >
                 <div>
                   <Icons.delete className="w-[20px] h-[20px]" />
                 </div>
               </DialogTrigger>
             </div>
             <DialogContent className="bg-white">
-              <UserUpdateForm row={row.original} userId={id} setOpen={setOpen} />
+              {dialogType === 'UPDATE' ? (
+                <UserUpdateForm
+                  row={row.original}
+                  userId={id}
+                  setOpen={setOpen}
+                  role={role as USER_ROLE}
+                />
+              ) : (
+                <div className="flex flex-col justify-center items-center">
+                  <Text className="text-[24px]">Are you sure want to delete user?</Text>
+                  <div className="flex justify-center items-center gap-4">
+                    <DialogClose>
+                      <Button className="p-2 mt-[50px] rounded-md w-full text-white" type="submit">
+                        Cancel
+                      </Button>
+                    </DialogClose>
+                    <Button
+                      onClick={handleDeleteUser}
+                      className="p-2 mt-[50px] rounded-md w-full text-white"
+                      type="submit"
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                </div>
+              )}
             </DialogContent>
           </Dialog>
         </>

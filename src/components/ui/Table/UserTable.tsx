@@ -67,7 +67,6 @@ const UserTable: React.FC<Props> = ({ tableColumns, tableData }: Props) => {
             {rows.map((row: any, key: number) => {
               prepareRow(row);
               return (
-                // eslint-disable-next-line react/jsx-key
                 <tr key={key} {...row.getRowProps()}>
                   {row.cells.map((cell: any) => (
                     <td key={cell.id} className="p-5 border-b text-gray-500 font-light text-sm">

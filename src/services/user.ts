@@ -42,3 +42,8 @@ export const useUpdateUser = (userId: string) =>
   useSWRMutation(`/user/${userId}`, (url, { arg }: UpdateUserResType) => {
     return appAxios.put<UpdateUserResType>(url, arg);
   });
+
+export const useDeleteUser = (userId: string) =>
+  useSWRMutation(`/user/${userId}`, url => {
+    return appAxios.delete<UpdateUserResType>(url);
+  });
