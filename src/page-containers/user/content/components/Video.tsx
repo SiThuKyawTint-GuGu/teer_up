@@ -4,12 +4,12 @@ import { Text } from '@/components/ui/Typo/Text';
 import { ContentData } from '@/types/Content';
 import { useEffect, useRef } from 'react';
 
-type VideoPlayerProps = {
+type VideoProps = {
   data: ContentData;
   setVideoRef: any;
   autoplay: boolean;
 };
-const VideoPlayer: React.FC<VideoPlayerProps> = ({ data, setVideoRef, autoplay }) => {
+const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay }) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
@@ -88,4 +88,4 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ data, setVideoRef, autoplay }
   );
 };
 
-export default VideoPlayer;
+export default Video;

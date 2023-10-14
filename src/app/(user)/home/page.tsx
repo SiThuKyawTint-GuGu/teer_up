@@ -1,9 +1,8 @@
+import UserContent from '@/page-containers/user/content';
 import { NextPage } from 'next';
 
-import Content from '@/page-containers/user/content';
-
 const Home: NextPage = () => {
-  return <Content />;
+  return <UserContent />;
 };
 
 export default Home;
