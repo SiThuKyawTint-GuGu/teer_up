@@ -1,6 +1,7 @@
 'use client';
 
 import { Text } from '@/components/ui/Typo/Text';
+
 import { useEffect, useRef, useState } from 'react';
 
 const Blog = () => {
@@ -48,13 +49,14 @@ const Blog = () => {
     }
   };
   return (
-    <div className="snap-y flex-col snap-mandatory w-full h-screen overflow-scroll">
+    <div className="snap-y flex-col snap-mandatory w-full h-screen  overflow-scroll">
       {dummyArray.map((v: any, index: number) => (
-        <div
-          className="h-screen w-full flex justify-center items-center snap-start relative"
-          key={index}
-        >
-          <VideoPlayer v={v} setVideoRef={handleVideoRef(index)} autoplay={index === 0} />
+        <div className="h-screen w-full flex justify-center  items-center snap-start" key={index}>
+          {!v.video_url ? (
+            <BlogPost v={v} />
+          ) : (
+            <VideoPlayer v={v} setVideoRef={handleVideoRef(index)} autoplay={index === 0} />
+          )}
         </div>
       ))}
     </div>
@@ -80,7 +82,7 @@ const VideoPlayer = ({ v, setVideoRef, autoplay }: any) => {
     }
   };
   return (
-    <>
+    <div className="w-full h-full  md:w-[600px]  md:aspect-video relative">
       <video
         poster={v.image}
         preload="none"
@@ -105,7 +107,15 @@ const VideoPlayer = ({ v, setVideoRef, autoplay }: any) => {
         <Text>{v.description}</Text>
         <Text>{v.hashtags}</Text>
       </div>
-    </>
+    </div>
+  );
+};
+const BlogPost = ({ v }: any) => {
+  return (
+    <div>
+      {v.description}
+      {/* <Image src={v.image} width={300} height={300} alt="blog post url" /> */}
+    </div>
   );
 };
 
@@ -141,8 +151,7 @@ const dummyArray: any[] = [
     id: 3,
     image: 'https://rocketseat-cdn.s3-sa-east-1.amazonaws.com/instagram-clone/3.jpeg',
     small: 'https://rocketseat-cdn.s3-sa-east-1.amazonaws.com/instagram-clone/small/3.jpeg',
-    video_url:
-      'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+    video_url: '',
     aspectRatio: 0.834,
     description: 'Rocketships fly away!',
     likes: 1002,
@@ -360,5 +369,29 @@ const dummyArray: any[] = [
     hashtags: '#Work #Dev',
     place: 'Cinema do PrudenShopping',
     authorId: 1,
+  },
+  {
+    id: 21,
+    image: 'https://rocketseat-cdn.s3-sa-east-1.amazonaws.com/instagram-clone/5.jpeg',
+    small: 'https://rocketseat-cdn.s3-sa-east-1.amazonaws.com/instagram-clone/small/5.jpeg',
+    video_url: '',
+    aspectRatio: 0.834,
+    description: 'Code, code and more code!',
+    likes: 1002,
+    hashtags: '#Work #Dev',
+    place: 'Cinema do PrudenShopping',
+    authorId: 2,
+  },
+  {
+    id: 22,
+    image: 'https://rocketseat-cdn.s3-sa-east-1.amazonaws.com/instagram-clone/5.jpeg',
+    small: 'https://rocketseat-cdn.s3-sa-east-1.amazonaws.com/instagram-clone/small/5.jpeg',
+    video_url: '',
+    aspectRatio: 0.834,
+    description: 'Code, code and more code!',
+    likes: 1002,
+    hashtags: '#Work #Dev',
+    place: 'Cinema do PrudenShopping',
+    authorId: 2,
   },
 ];

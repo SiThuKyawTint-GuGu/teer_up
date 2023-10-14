@@ -40,8 +40,6 @@ const LoginForm = () => {
         console.log(response.token);
       })
       .catch(error => setError(error.message));
-    // const res = registerMutation.mutate(data);
-    // console.log("res", res);
   };
 
   return (

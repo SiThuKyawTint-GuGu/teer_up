@@ -5,7 +5,13 @@ interface Props {
 }
 
 const UserLayout = ({ children }: Props) => {
-  return <div className="mx-auto p-3">{children}</div>;
+  return (
+    <div className="mx-auto p-3">
+      <header>Header</header>
+      <div>{children}</div>
+      <header>Footer</header>
+    </div>
+  );
 };
 
 export default UserLayout;
