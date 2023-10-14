@@ -85,7 +85,6 @@ const VideoPlayer = ({ v, setVideoRef, autoplay }: any) => {
         poster={v.image}
         preload="none"
         data-video="0"
-        controls
         loop
         muted={false}
         onClick={onVideoPress}
@@ -93,17 +92,18 @@ const VideoPlayer = ({ v, setVideoRef, autoplay }: any) => {
           videoRef.current = ref;
           setVideoRef(ref);
         }}
-        className={`aspect-video-[${v.aspectRatio}] absolute w-full h-full  object-fill`}
+        className={`w-full h-full object-fill absolute`}
       >
         <source
-          className={`aspect-video-[${v.aspectRatio}] w-full h-full bg-transparent object-fill`}
+          className={`object-cover bg-cover bg-center`}
           src={v.video_url}
           type="video/mp4"
         ></source>
       </video>
-      <div>
-        <Text className="text-primary">{v.place}</Text>
-        <Text className="text-primary">{v.description}</Text>
+      <div className="absolute flex flex-col bottom-10 left-3 z-[1000]">
+        <Text>{v.place}</Text>
+        <Text>{v.description}</Text>
+        <Text>{v.hashtags}</Text>
       </div>
     </>
   );
