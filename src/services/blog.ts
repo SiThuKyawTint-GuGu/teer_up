@@ -11,5 +11,5 @@ export const useGetBlogBySlug = <UserResponse>(
   slug: string,
   params?: ParamsType
 ): SWRResponse<UserResponse, any> => {
-  return useSWR<UserResponse>(`/admin/blog/${slug}?${routeFilter(params)}`);
+  return useSWR<UserResponse>(`/admin/blog/slug/${slug}?${routeFilter(params)}`);
 };
