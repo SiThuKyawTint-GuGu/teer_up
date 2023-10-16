@@ -8,7 +8,7 @@ const appAxios = axios.create({
     Accept: 'application/json',
     'Content-Type': 'application/json',
   },
-  withCredentials: true,
+  // withCredentials: true,
 });
 
 appAxios.interceptors.request.use(
