@@ -20,7 +20,7 @@ const BlogContent: React.FC = () => {
               <Heading as="h1" size="6" weight="bold">
                 {blogData?.data?.name}
               </Heading>
-              <Text dangerouslySetInnerHTML={{ __html: blogData?.data?.name || '' }} />
+              <Text dangerouslySetInnerHTML={{ __html: blogData?.data?.content || '' }} />
             </CardBox>
           </div>
         </div>
