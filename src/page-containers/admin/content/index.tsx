@@ -16,12 +16,13 @@ const Content = () => {
   };
 
   const { data, isLoading, error } = useGetContent<ParamsType, ContentResponseData>(params);
-  // console.log('data from content', data?.data);
+  console.log('data from content', data?.data);
 
   if (isLoading) return <p>Loading...</p>;
 
   return (
     <div>
+      {error && <p className="text-red-600">{error}</p>}
       <Box className="bg-white p-10 rounded-md">
         <div className="flex justify-between">
           <p className="text-lg">Contents</p>
