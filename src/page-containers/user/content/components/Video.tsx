@@ -56,7 +56,7 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay }) => {
   };
 
   return (
-    <div className="w-full h-full md:w-[600px] md:aspect-video relative">
+    <div className="w-full h-full md:aspect-video relative">
       {data.content_video && (
         <video
           poster={data.content_video.thumbnail}

@@ -6,14 +6,14 @@ import { FaLightbulb } from 'react-icons/fa';
 import { FcBusinesswoman } from 'react-icons/fc';
 import { FiUsers } from 'react-icons/fi';
 import { GoCommentDiscussion } from 'react-icons/go';
-import { IoLogoApple, IoNotificationsOutline } from 'react-icons/io5';
+import { IoCheckmarkCircle, IoLogoApple, IoNotificationsOutline } from 'react-icons/io5';
 import { MdDelete, MdOutlineMailOutline } from 'react-icons/md';
 import {
   PiAirplaneTiltLight,
   PiArrowDownRightThin,
-  PiArrowUpRightThin,
   PiArrowsLeftRightDuotone,
   PiArrowsLeftRightThin,
+  PiArrowUpRightThin,
   PiBagSimpleThin,
   PiCameraLight,
   PiCar,
@@ -105,6 +105,7 @@ export const Icons = {
   userManagement: PiUserGear,
   edit: PiNotePencil,
   delete: MdDelete,
+  mark: IoCheckmarkCircle,
 };
 
 interface Image {

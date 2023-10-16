@@ -6,9 +6,9 @@ interface Props {
 
 const UserLayout = ({ children }: Props) => {
   return (
-    <div className="mx-auto p-3">
+    <div className="mx-auto max-w-[500px] p-3">
       <header>Header</header>
-      <div>{children}</div>
+      <div className="w-full">{children}</div>
       <header>Footer</header>
     </div>
   );
