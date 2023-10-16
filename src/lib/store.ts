@@ -6,6 +6,8 @@ interface StoreInterface {
   lastUpdate: number;
   light: boolean;
   count: number;
+  refetch: boolean;
+  toggleUpdated: (arg: boolean) => void;
   increment: () => void;
   decrement: () => void;
 }
@@ -14,6 +16,7 @@ const getDefaultInitialState = () => ({
   lastUpdate: Date.now(),
   light: false,
   count: 0,
+  refetch: false,
 });
 
 export type StoreType = ReturnType<typeof initializeStore>;
@@ -40,6 +43,11 @@ export const initializeStore = (preloadedState: Partial<StoreInterface> = {}) =>
     decrement: () => {
       set({
         count: get().count - 1,
+      });
+    },
+    toggleUpdated: (val: boolean) => {
+      set({
+        refetch: val,
       });
     },
   }));

@@ -7,13 +7,13 @@ import { FcBusinesswoman } from 'react-icons/fc';
 import { FiUsers } from 'react-icons/fi';
 import { GoCommentDiscussion } from 'react-icons/go';
 import { IoLogoApple, IoNotificationsOutline } from 'react-icons/io5';
-import { MdOutlineMailOutline } from 'react-icons/md';
+import { MdDelete, MdOutlineMailOutline } from 'react-icons/md';
 import {
   PiAirplaneTiltLight,
   PiArrowDownRightThin,
+  PiArrowUpRightThin,
   PiArrowsLeftRightDuotone,
   PiArrowsLeftRightThin,
-  PiArrowUpRightThin,
   PiBagSimpleThin,
   PiCameraLight,
   PiCar,
@@ -27,6 +27,7 @@ import {
   PiFilmSlate,
   PiFlowArrowLight,
   PiHouseThin,
+  PiNotePencil,
   PiPlanetThin,
   PiPlusThin,
   PiUserGear,
@@ -102,6 +103,8 @@ export const Icons = {
   setting: CiSettings,
   logout: CiLogout,
   userManagement: PiUserGear,
+  edit: PiNotePencil,
+  delete: MdDelete,
 };
 
 interface Image {
