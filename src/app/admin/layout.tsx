@@ -1,6 +1,7 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from "react";
 
-import PageLayout from '@/components/layout';
+import PageLayout from "@/components/layout";
+import ThemeRegistry from "./ThemeRegistry";
 
 interface Props {
   children: ReactNode;
@@ -8,9 +9,11 @@ interface Props {
 
 const AdminLayout = ({ children }: Props) => {
   return (
-    <PageLayout>
-      <main className="bg-gray-100 h-full p-[40px]">{children}</main>
-    </PageLayout>
+    <ThemeRegistry options={{ key: "mui" }}>
+      <PageLayout>
+        <main className="bg-gray-100 h-full p-[40px]">{children}</main>
+      </PageLayout>
+    </ThemeRegistry>
   );
 };
 

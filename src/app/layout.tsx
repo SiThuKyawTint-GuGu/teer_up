@@ -1,14 +1,14 @@
-import { fontSans } from '@/configs/fonts';
-import '@/styles/drawer.css';
-import '@/styles/globals.css';
-import '@radix-ui/themes/styles.css';
-import { ServerThemeProvider } from '@wits/next-themes';
-import type { Metadata } from 'next';
-import Providers from './providers';
+import { fontSans } from "@/app/fonts";
+import "@/styles/drawer.css";
+import "@/styles/globals.css";
+import "@radix-ui/themes/styles.css";
+import { ServerThemeProvider } from "@wits/next-themes";
+import type { Metadata } from "next";
+import Providers from "./providers";
 
 export const metadata: Metadata = {
-  title: 'TeeUP',
-  description: 'TeeUP Web App',
+  title: "TeeUP",
+  description: "TeeUP Web App",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
