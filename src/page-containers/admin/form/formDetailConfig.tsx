@@ -318,7 +318,11 @@ const FormDetailConfigPage = ({ id }: Props) => {
             fields?.data.length > 0 &&
             fields.data.map((field: any, index: number) => (
               <>
-                {(field.type === 'Text' || field.type === 'text') && (
+                {(field.type === 'Text' ||
+                  field.type === 'text' ||
+                  field.type === 'email' ||
+                  field.type === 'phone' ||
+                  field.type === 'number') && (
                   <div
                     key={index}
                     className="flex flex-col border border-gray-300 p-5 m-3 rounded-md"
@@ -328,6 +332,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
                       <fieldset className="Fieldset mb-10">
                         <input
                           className="Input"
+                          type={field.type === 'number' ? 'number' : 'text'}
                           id="name"
                           placeholder={field.placeholder}
                           defaultValue=""
@@ -632,45 +637,47 @@ const FormDetailConfigPage = ({ id }: Props) => {
                   key={index}
                   className=" flex flex-col border border-gray-300 p-5 m-3 rounded-md"
                 >
-                  {field.inputType === 'text' ||
-                    (field.input_config.type === 'Text' && (
-                      <>
-                        <div>
-                          <p className="font-weight-500 text-sm mb-2">
-                            Name<sub>*</sub>
-                          </p>
-                          <div className="flex">
-                            <fieldset className="Fieldset mb-10">
-                              <input
-                                className="Input"
-                                id="phoneNo"
-                                placeholder={field.input_config.name}
-                                defaultValue=""
-                                onChange={e => handleFieldChange(index, 'name', e.target.value)}
-                              />
-                            </fieldset>
-                          </div>
+                  {(field.input_config.type === 'text' ||
+                    field.input_config.type === 'Text' ||
+                    field.input_config.type === 'email' ||
+                    field.input_config.type === 'phone' ||
+                    field.input_config.type === 'number') && (
+                    <>
+                      <div>
+                        <p className="font-weight-500 text-sm mb-2">
+                          Name<sub>*</sub>
+                        </p>
+                        <div className="flex">
+                          <fieldset className="Fieldset mb-10">
+                            <input
+                              className="Input"
+                              placeholder={field.input_config.name}
+                              defaultValue=""
+                              onChange={e => handleFieldChange(index, 'name', e.target.value)}
+                            />
+                          </fieldset>
                         </div>
-                        <div>
-                          <p className="font-weight-500 text-sm mb-2">
-                            Placeholder<sub>*</sub>
-                          </p>
-                          <div className="flex">
-                            <fieldset className="Fieldset mb-10">
-                              <input
-                                className="Input"
-                                id="phoneNo"
-                                placeholder={field.input_config.placeholder}
-                                defaultValue=""
-                                onChange={e =>
-                                  handleFieldChange(index, 'placeholder', e.target.value)
-                                }
-                              />
-                            </fieldset>
-                          </div>
+                      </div>
+                      <div>
+                        <p className="font-weight-500 text-sm mb-2">
+                          Placeholder<sub>*</sub>
+                        </p>
+                        <div className="flex">
+                          <fieldset className="Fieldset mb-10">
+                            <input
+                              className="Input"
+                              type={field.input_config.type === 'number' ? 'number' : 'text'}
+                              placeholder={field.input_config.placeholder}
+                              defaultValue=""
+                              onChange={e =>
+                                handleFieldChange(index, 'placeholder', e.target.value)
+                              }
+                            />
+                          </fieldset>
                         </div>
-                      </>
-                    ))}
+                      </div>
+                    </>
+                  )}
                   {field.input_config.type === 'radio' &&
                     field.input_config.input_options.length > 0 && (
                       <div>
@@ -799,23 +806,27 @@ const FormDetailConfigPage = ({ id }: Props) => {
             {editFormFields.length > 0 &&
               editFormFields.map((field, index) => (
                 <div key={index}>
-                  {field.input_config.type === 'text' || field.input_config.type === 'Text' ? (
+                  {(field.input_config.type === 'text' ||
+                    field.input_config.type === 'Text' ||
+                    field.input_config.type === 'email' ||
+                    field.input_config.type === 'phone' ||
+                    field.input_config.type === 'number') && (
                     <div className="my-2">
                       <p className="font-weight-500 text-sm mb-2">
                         {field.input_config.name}
-                        <sub>*</sub>
+                        {field.required === true ? '*' : ''}
                       </p>
                       <div className="flex">
                         <fieldset className="Fieldset mb-10">
                           <input
                             className="Input"
-                            id="phoneNo"
+                            type={field.input_config.type === 'number' ? 'number' : 'text'}
                             placeholder={field.input_config.placeholder}
                           />
                         </fieldset>
                       </div>
                     </div>
-                  ) : null}
+                  )}
 
                   {field.input_config.type === 'radio' &&
                     field.input_config.input_options.length > 0 && (

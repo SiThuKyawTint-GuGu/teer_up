@@ -33,7 +33,7 @@ export const Columns: Column[] = [
         });
       };
       return (
-        <div className="flex justify-center">
+        <div className="flex">
           <Link href={`/admin/form/${row.original.id}`}>
             <AiFillEdit className="cursor-pointer mr-5" size={25} color="gray" />
           </Link>

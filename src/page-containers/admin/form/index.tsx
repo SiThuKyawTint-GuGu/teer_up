@@ -26,11 +26,9 @@ const FormConfig = () => {
               </Button>
             </Link>
           </div>
-
-          <Table
-            tableColumns={Columns}
-            tableData={formConfigs.data.length > 0 ? formConfigs?.data : []}
-          />
+          {formConfigs?.data && (
+            <Table tableColumns={Columns} tableData={formConfigs?.data || []} />
+          )}
         </Box>
       </div>
     </>
