@@ -1,6 +1,7 @@
-import { fontSans } from "@/configs/fonts";
+import { fontSans } from "@/app/fonts";
 import "@/styles/drawer.css";
 import "@/styles/globals.css";
+import "@radix-ui/themes/styles.css";
 import { ServerThemeProvider } from "@wits/next-themes";
 import type { Metadata } from "next";
 import Providers from "./providers";

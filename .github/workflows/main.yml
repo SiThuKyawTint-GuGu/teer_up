@@ -1,6 +1,6 @@
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   workflow_dispatch:
 
 jobs:
@@ -8,43 +8,46 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Cache yarn packages
-      uses: actions/cache@v2
-      with:
-        path: ~/.yarn
-        key: yarn-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: |
-          yarn-${{ runner.os }}-
+      - name: Cache yarn packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.yarn
+          key: yarn-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            yarn-${{ runner.os }}-
 
-    - name: Setup node
-      uses: actions/setup-node@v3
-      with:
-        node-version: 18
-        cache: 'npm'
-    - run: yarn install
-    - run: yarn build
+      - name: Copy env
+        run: cp .github/workflows/env-dev .env.local
 
-    - name: Install SSH Key
-      uses: shimataro/ssh-key-action@v2
-      with:
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        known_hosts: "unnecessary"
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: "npm"
+      - run: yarn install
+      - run: yarn build
 
-    - name: Adding Known Hosts
-      run: ssh-keyscan -p 2288 -H 159.89.208.114 >> ~/.ssh/known_hosts
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: "unnecessary"
 
-    - name: Deploy with rsync
-      run: rsync -avz --delete --exclude-from=".github/workflows/rsync-excludes.txt" -e 'ssh -p 2288' . web@159.89.208.114:/var/www/prudential/teeup/dev/teeup-user
-    
-    - name: Execute remote script
-      uses: appleboy/ssh-action@v0.1.10
-      with:
-        host: 159.89.208.114
-        username: web
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        port: 2288
-        command_timeout: 30m
-        script: | 
-          ~/cicd/teeup-user.sh
+      - name: Adding Known Hosts
+        run: ssh-keyscan -p 2288 -H 159.89.208.114 >> ~/.ssh/known_hosts
+
+      - name: Deploy with rsync
+        run: rsync -avz --delete --exclude-from=".github/workflows/rsync-excludes.txt" -e 'ssh -p 2288' . web@159.89.208.114:/var/www/prudential/teeup/dev/teeup-user
+
+      - name: Execute remote script
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: 159.89.208.114
+          username: web
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 2288
+          command_timeout: 30m
+          script: |
+            ~/cicd/teeup-user.sh
