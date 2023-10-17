@@ -7,6 +7,7 @@ import Event from '@/page-containers/user/content/components/Event';
 import Video from '@/page-containers/user/content/components/Video';
 import { useGetContent } from '@/services/content';
 import { useEffect, useRef, useState } from 'react';
+import Article from './components/Article';
 
 const UserContent = () => {
   const [page, setPage] = useState<number>(1);
@@ -63,7 +64,7 @@ const UserContent = () => {
     if (data.type === 'video' && data.content_video)
       return <Video data={data} setVideoRef={handleVideoRef(index)} autoplay={index === 0} />;
     if (data.type === 'event' && data.content_event) return <Event data={data} />;
-    if (data.type === 'article' && data.content_article) return <div>article</div>;
+    if (data.type === 'article' && data.content_article) return <Article data={data} />;
   };
 
   const hasMoreData = (contentData: ContentType) => {

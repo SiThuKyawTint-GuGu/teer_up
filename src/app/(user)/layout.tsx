@@ -8,7 +8,7 @@ const UserLayout = ({ children }: Props) => {
   return (
     <div className="mx-auto max-w-[500px] p-3">
       <header>Header</header>
-      <div className="w-full">{children}</div>
+      <div className="w-full bg-[#F8F9FB]">{children}</div>
       <header>Footer</header>
     </div>
   );

@@ -59,7 +59,10 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay }) => {
     <div className="w-full h-full md:aspect-video relative">
       {data.content_video && (
         <video
-          poster={data.content_video.thumbnail}
+          poster={
+            data.content_video.thumbnail ||
+            'https://teeup-dev.s3.ap-southeast-1.amazonaws.com/1697257229853-125476757-demoimage1.jpeg'
+          }
           preload="none"
           data-video="0"
           loop

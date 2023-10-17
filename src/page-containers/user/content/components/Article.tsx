@@ -8,7 +8,7 @@ const Article: React.FC<ArticleProps> = ({ data }) => {
   const router = useRouter();
   return (
     <div>
-      <button onClick={() => router.push('/event/testing-title-gaga')}>
+      <button onClick={() => router.push(`/articles/${data.slug}`)}>
         Go To Article Page- {data.title}
       </button>
     </div>

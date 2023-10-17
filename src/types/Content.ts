@@ -15,9 +15,20 @@ export interface User {
   name: string;
   email: string;
 }
-export interface ContentEvent {}
+export interface ContentEvent {
+  id: 8;
+  from_datetime: string;
+  to_datetime: string;
+  location: string;
+  content_id: string;
+}
 
-export interface ContentArticle {}
+export interface ContentArticle {
+  id: 13;
+  article_body: string;
+  published_by: string;
+  content_id: string;
+}
 
 export interface ContentData {
   id: string;
@@ -28,6 +39,7 @@ export interface ContentData {
   updated_at: string;
   user_id: string;
   image_url: string;
+  slug: string;
   status: string;
   category_id: number;
   content_video: ContentVideo | null;

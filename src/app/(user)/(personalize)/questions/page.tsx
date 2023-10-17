@@ -1,4 +1,4 @@
-import QuestionPage from '@/page-containers/user/questions';
+import QuestionPage from '@/page-containers/user/personalized/questions';
 import { NextPage } from 'next';
 
 const Question: NextPage = () => {

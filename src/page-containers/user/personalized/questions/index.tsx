@@ -1,9 +1,8 @@
 'use client';
-import { Icons } from '@/components/ui/Images';
 import { Text } from '@/components/ui/Typo/Text';
-import QuestionPageCard from '@/page-containers/user/questions/components/QuestionPageCard';
-import { cn } from '@/utils/cn';
+import QuestionPageCard from '@/page-containers/user/personalized/components/QuestionPageCard';
 import { useState } from 'react';
+import TextBox from '../components/TextBox';
 
 const QuestionPage: React.FC = () => {
   const [qId, setQid] = useState<number | string | null>(null);
@@ -12,22 +11,13 @@ const QuestionPage: React.FC = () => {
       <div className="flex flex-col flex-wrap gap-y-10 justify-center w-full h-full">
         {dummyQuesiton.map((q: any, index: number) => (
           <div key={index} onClick={() => setQid(q.id)}>
-            <div
-              className={cn(
-                'px-[24px] py-[12px] shadow-md rounded-md relative flex cursor-pointer',
-                qId === q.id && 'bg-secondary border-[1px] border-primary'
-              )}
-            >
-              <Text className="font-size-[20px] font-[600] tracking-wide flex-1">{q.text}</Text>
-              {qId === q.id ? (
-                <Icons.mark className="w-5 h-5 text-green-600" />
-              ) : (
-                <div className="w-5 h-5"></div>
-              )}
-            </div>
+            <TextBox id={qId} data={q} icon />
           </div>
         ))}
       </div>
+      <Text as="p" className="text-gray-500 my-4 text-center">
+        Tips: Choose the answer that best describes you currently.
+      </Text>
     </QuestionPageCard>
   );
 };

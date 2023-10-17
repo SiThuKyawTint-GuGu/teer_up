@@ -18,6 +18,6 @@ export default CardBox;
 
 const CardStyled = styled.div`
   box-shadow:
-    rgb(234, 236, 240) 0px 0px 1px,
+    0px 26px 30px 0px rgba(0, 0, 0, 0.05),
     rgba(29, 41, 57, 0.08) 0px 1px 3px;
 `;

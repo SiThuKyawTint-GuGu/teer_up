@@ -2,7 +2,7 @@ import NextImage from 'next/image';
 import { BiBookContent } from 'react-icons/bi';
 import { BsFillPostcardFill } from 'react-icons/bs';
 import { CiLogout, CiSettings } from 'react-icons/ci';
-import { FaLightbulb } from 'react-icons/fa';
+import { FaArrowRight, FaLightbulb } from 'react-icons/fa';
 import { FcBusinesswoman } from 'react-icons/fc';
 import { FiUsers } from 'react-icons/fi';
 import { GoCommentDiscussion } from 'react-icons/go';
@@ -106,6 +106,7 @@ export const Icons = {
   edit: PiNotePencil,
   delete: MdDelete,
   mark: IoCheckmarkCircle,
+  rightArrow: FaArrowRight,
 };
 
 interface Image {

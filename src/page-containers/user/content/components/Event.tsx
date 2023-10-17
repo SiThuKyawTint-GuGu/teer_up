@@ -8,7 +8,7 @@ const Event: React.FC<EventProps> = ({ data }) => {
   const router = useRouter();
   return (
     <div>
-      <button onClick={() => router.push('/event/testing-title-gaga')}>
+      <button onClick={() => router.push(`/events/${data.slug}`)}>
         Go To Event Page- {data.title}
       </button>
     </div>
