@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { Text } from '@/components/ui/Typo/Text';
-import { ContentData } from '@/types/Content';
-import { useEffect, useRef } from 'react';
+import { Text } from "@/components/ui/Typo/Text";
+import { ContentData } from "@/types/Content";
+import { useEffect, useRef } from "react";
 
 type VideoProps = {
   data: ContentData;
@@ -32,7 +32,7 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay }) => {
 
     const observer = new IntersectionObserver(handleIntersection, {
       root: null,
-      rootMargin: '0px',
+      rootMargin: "0px",
       threshold: 0.8,
     });
 
@@ -61,7 +61,7 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay }) => {
         <video
           poster={
             data.content_video.thumbnail ||
-            'https://teeup-dev.s3.ap-southeast-1.amazonaws.com/1697257229853-125476757-demoimage1.jpeg'
+            "https://teeup-dev.s3.ap-southeast-1.amazonaws.com/1697257229853-125476757-demoimage1.jpeg"
           }
           preload="none"
           data-video="0"
@@ -82,10 +82,10 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay }) => {
         </video>
       )}
 
-      <div className="absolute flex flex-col bottom-10 left-3 z-[1000]">
+      <div className="absolute flex flex-col bottom-10 left-3 z-[1000] text-white">
         <Text>{data.title}</Text>
         <Text>{data.description}</Text>
-        <Text>{data.created_at}</Text>
+        {/* <Text>{data.created_at}</Text> */}
       </div>
     </div>
   );
