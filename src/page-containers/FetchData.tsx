@@ -1,4 +1,7 @@
 "use client";
+
+import Table from "@/components/ui/Table";
+
 // import * as yup from "yup";
 
 // const validationSchema = yup.object({
@@ -23,6 +26,9 @@ const FetchData = () => {
 
   return (
     <div className="grid grid-cols-12">
+      <div className="col-span-12">
+        <Table />
+      </div>
       {/* <div className="col-span-12">
         count: {count}
         <Button onClick={increment}>Increase</Button>

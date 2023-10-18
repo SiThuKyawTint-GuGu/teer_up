@@ -1,11 +1,17 @@
-import { ReactNode } from 'react';
+import { ReactNode } from "react";
 
 interface Props {
   children: ReactNode;
 }
 
 const UserLayout = ({ children }: Props) => {
-  return <div className="mx-auto p-3">{children}</div>;
+  return (
+    <div className="mx-auto max-w-[500px] p-3">
+      <header>Header</header>
+      <div className="w-full bg-[#F8F9FB]">{children}</div>
+      <header>Footer</header>
+    </div>
+  );
 };
 
 export default UserLayout;

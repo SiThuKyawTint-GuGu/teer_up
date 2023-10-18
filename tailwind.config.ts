@@ -17,6 +17,8 @@ const config: Config = {
       },
       colors: {
         primary: "#DA291C",
+        secondary: "#F9E9EA",
+        slateGray: "#BBC7D6",
       },
     },
   },

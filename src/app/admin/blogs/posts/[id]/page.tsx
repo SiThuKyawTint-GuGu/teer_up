@@ -1,12 +1,15 @@
-'use client';
-import React, { useRef, useState } from 'react';
+"use client";
+import { useRef, useState } from "react";
 
-import { Select, SelectContent, SelectItem, SelectTrigger } from '@/components/ui/Inputs/Select';
-import * as Switch from '@radix-ui/react-switch';
-import { Editor } from '@tinymce/tinymce-react';
+import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/Inputs/Select";
+import * as Switch from "@radix-ui/react-switch";
+import { Editor } from "@tinymce/tinymce-react";
+import { AiFillDelete } from "react-icons/ai";
 
-import '@/styles/tab.css';
-import '@/styles/switch.css';
+import { Button } from "@/components/ui/Button";
+import "@/styles/switch.css";
+import "@/styles/tab.css";
+import { Flex } from "@radix-ui/themes";
 
 interface Props {
   params: { id: number };
@@ -14,12 +17,12 @@ interface Props {
 const PostDetail = ({ params: { id } }: Props) => {
   const editorRef = useRef<any>();
   // console.log(id);
-  const [selectedValue, setSelectedValue] = useState<String>('');
+  const [selectedValue, setSelectedValue] = useState<String>("");
   const [isSwitchOn, setIsSwitchOn] = useState<boolean>(false);
 
   const handleSelectChange = (selectedValue: String) => {
     // Handle the selected value
-    console.log('Selected value:', selectedValue);
+    console.log("Selected value:", selectedValue);
     setSelectedValue(selectedValue);
   };
 
@@ -54,7 +57,7 @@ const PostDetail = ({ params: { id } }: Props) => {
         </div>
         <div className="mb-10 mt-5">
           <form>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div style={{ display: "flex", alignItems: "center" }}>
               <Switch.Root
                 className="SwitchRoot mr-3"
                 id="airplane-mode"
@@ -74,7 +77,9 @@ const PostDetail = ({ params: { id } }: Props) => {
           <p className="font-weight-600 mb-3">Content</p>
           <Editor onInit={(evt, editor) => (editorRef.current = editor)} />
         </div>
-        <div style={{ display: 'flex', marginTop: 20, justifyContent: 'flex-end' }}>
+
+       
+        <div style={{ display: "flex", marginTop: 20, justifyContent: "flex-end" }}>
           <button className="Button green cursor-pointer">Submit</button>
         </div>
       </div>

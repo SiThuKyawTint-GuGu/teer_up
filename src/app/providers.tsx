@@ -10,7 +10,7 @@ export default function Providers({ children }: PropsWithChildren) {
   return (
     <SWRConfig value={{ fetcher }}>
       <StoreProvider>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem={true}>
           <Theme>{children}</Theme>
         </ThemeProvider>
       </StoreProvider>
