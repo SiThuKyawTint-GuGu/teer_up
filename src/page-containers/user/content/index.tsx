@@ -80,10 +80,10 @@ const UserContent = () => {
           hasMore={hasMoreData(contentData)}
           loader={<p>Loading...</p>}
         >
-          <div className="snap-y flex-col snap-mandatory w-full h-screen  overflow-scroll">
+          <div className="snap-y flex-col snap-mandatory w-full max-h-[750px] h-[85vh]   no-scrollbar overflow-y-scroll">
             {contentData.data.map((data: ContentData, index: number) => (
               <div
-                className="h-screen w-full flex justify-center  items-center snap-start"
+                className="h-full w-full flex justify-center  items-center snap-start"
                 key={index}
               >
                 {differentContent(data, index)}

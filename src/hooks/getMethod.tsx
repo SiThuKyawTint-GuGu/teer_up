@@ -3,12 +3,12 @@ export async function getMethod<T>(endPoint: string, bearerToken?: string): Prom
   try {
     const headers: HeadersInit = {};
     if (bearerToken) {
-      headers['Authorization'] = `Bearer ${bearerToken}`;
+      headers["Authorization"] = `Bearer ${bearerToken}`;
     }
     // let apiUrl = baseURL + endPoint;
     const apiUrl: string = `${baseURL}/api/v1${endPoint}`;
     const response = await fetch(apiUrl, {
-      method: 'GET',
+      method: "GET",
       headers,
     });
     const responseData = await response.json();

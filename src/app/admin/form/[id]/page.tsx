@@ -1,4 +1,4 @@
-import FormDetailConfigPage from '@/page-containers/admin/form/formDetailConfig';
+import FormDetailConfigPage from "@/page-containers/admin/form/formDetailConfig";
 
 interface Props {
   params: { id: string };

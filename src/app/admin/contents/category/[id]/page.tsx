@@ -1,24 +1,24 @@
-'use client';
-import { Button } from '@/components/ui/Button';
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/Form';
-import { InputText } from '@/components/ui/Inputs';
+"use client";
+import { Button } from "@/components/ui/Button";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/Form";
+import { InputText } from "@/components/ui/Inputs";
 import {
   useGetContentCategoryById,
   usePostContentCategory,
   useUpdateContentCategory,
-} from '@/services/contentCategory';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { Box } from '@radix-ui/themes';
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
+} from "@/services/contentCategory";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Box } from "@radix-ui/themes";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
 
 interface Props {
   params: { id: number };
 }
 
 const validationSchema = yup.object({
-  name: yup.string().required('Name is required!'),
+  name: yup.string().required("Name is required!"),
 });
 
 const ContentDetailPage = ({ params: { id } }: Props) => {
@@ -43,7 +43,7 @@ const ContentDetailPage = ({ params: { id } }: Props) => {
     } else {
       await postContentCategoryTrigger(submitData);
     }
-    router.push('/admin/contents/category');
+    router.push("/admin/contents/category");
   };
   return (
     <>

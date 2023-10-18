@@ -1,7 +1,7 @@
-'use client';
-import appAxios from '@/lib/appAxios';
-import useSWR, { SWRResponse } from 'swr';
-import useSWRMutation from 'swr/mutation';
+"use client";
+import appAxios from "@/lib/appAxios";
+import useSWR, { SWRResponse } from "swr";
+import useSWRMutation from "swr/mutation";
 
 type ContentCategoryArgType = {
   arg: { id?: number; name?: string };

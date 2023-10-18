@@ -1,8 +1,8 @@
-'use client';
-import appAxios from '@/lib/appAxios';
-import { FormConfig, InputConfig } from '@/types/InputConfig';
-import useSWR, { SWRResponse } from 'swr';
-import useSWRMutation from 'swr/mutation';
+"use client";
+import appAxios from "@/lib/appAxios";
+import { FormConfig, InputConfig } from "@/types/InputConfig";
+import useSWR, { SWRResponse } from "swr";
+import useSWRMutation from "swr/mutation";
 
 export type ParamsType = {
   id?: string;
@@ -21,7 +21,7 @@ export const useGetFormConfig = <FromConfigResponse>(): SWRResponse<FromConfigRe
 };
 
 export const useGetFormConfigById = <FormType>(id: string): SWRResponse<FormType, any> => {
-  const key = id != '0' ? `/admin/formconfig/${id}` : null;
+  const key = id != "0" ? `/admin/formconfig/${id}` : null;
   return useSWR<FormType>(key);
 };
 
