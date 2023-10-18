@@ -1,33 +1,23 @@
-import { Button } from '@/components/ui/Button';
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/Form';
-import { InputText } from '@/components/ui/Inputs';
-import { ParamsType, useGetUser, useUpdateUser } from '@/services/user';
-import { USER_ROLE } from '@/shared/enums';
-import { User, UserResponse } from '@/types/User';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
+import { Button } from "@/components/ui/Button";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/Form";
+import { InputText } from "@/components/ui/Inputs";
+import { ParamsType, useGetUser, useUpdateUser } from "@/services/user";
+import { ROLES } from "@/shared/enums";
+import { User, UserResponse } from "@/types/User";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
 
 const validationSchema = yup.object({
-  name: yup.string().required('Name is required!'),
+  name: yup.string().required("Name is required!"),
 });
 
 const UserUpdateForm: React.FC<{
   userId: string;
   row: User;
   setOpen: (arg: boolean) => void;
-  role: USER_ROLE;
-}> = ({
-  userId,
-  row,
-  setOpen,
-  role,
-}: {
-  userId: string;
-  row: User;
-  setOpen: any;
-  role: USER_ROLE;
-}) => {
+  role: ROLES;
+}> = ({ userId, row, setOpen, role }: { userId: string; row: User; setOpen: any; role: ROLES }) => {
   const { mutate } = useGetUser<ParamsType, UserResponse>({
     role,
   });

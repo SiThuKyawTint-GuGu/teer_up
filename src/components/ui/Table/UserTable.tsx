@@ -1,5 +1,11 @@
 "use client";
-import { ParamsType, useDeleteUser, useGetUser, useUpdateUser } from "@/services/user";
+import {
+  ParamsType,
+  useCreateUser,
+  useDeleteUser,
+  useGetUser,
+  useUpdateUser,
+} from "@/services/user";
 import { USER_ROLE } from "@/shared/enums";
 import { UserResponse } from "@/types/User";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -22,10 +28,12 @@ const UserTable: React.FC = () => {
     mutate,
     isLoading,
   } = useGetUser<ParamsType, UserResponse>({
-    role: USER_ROLE.ADMIN,
+    role: USER_ROLE.STUDENT,
+    page: 1,
+    pageSize: 30,
   });
+  const { trigger: createTrigger } = useCreateUser();
   const { trigger: updateTrigger } = useUpdateUser();
-
   const { trigger: deleteTrigger } = useDeleteUser();
   const columns = useMemo(
     () => [
@@ -94,13 +102,23 @@ const UserTable: React.FC = () => {
     values,
     table,
   }) => {
+    const { name, email, role } = values;
     const newValidationErrors = validateUser(values);
     if (Object.values(newValidationErrors).some(error => error)) {
       setValidationErrors(newValidationErrors);
       return;
     }
     setValidationErrors({});
-    // await createUser(values);
+    const newValues = {
+      name,
+      email,
+      role,
+    };
+    createTrigger(newValues, {
+      onSuccess: () => {
+        mutate();
+      },
+    });
     table.setCreatingRow(null); //exit creating mode
   };
 
@@ -190,7 +208,7 @@ const UserTable: React.FC = () => {
 //CREATE hook (post new user to api)
 // function useCreateUser() {
 //   const { data, isLoading, error } = useGetUser<ParamsType, UserResponse>({
-//     role: USER_ROLE.USER,
+//     role: ROLES.USER,
 //   });
 //   return {
 //     data,
@@ -202,7 +220,7 @@ const UserTable: React.FC = () => {
 //READ hook (get users from api)
 // function useGetUsers() {
 //   const { data, isLoading, error } = useGetUser<ParamsType, UserResponse>({
-//     role: USER_ROLE.USER,
+//     role: ROLES.USER,
 //   });
 //   return {
 //     data,
@@ -222,7 +240,7 @@ const UserTable: React.FC = () => {
 //DELETE hook (delete user in api)
 // function useDeleteUser() {
 //   const { data, isLoading, error } = useGetUser<ParamsType, UserResponse>({
-//     role: USER_ROLE.USER,
+//     role: ROLES.USER,
 //   });
 //   return {
 //     data,

@@ -7,16 +7,23 @@ export enum WINDOW_WIDTH {
 }
 
 export enum THEME {
-  DARK = 'dark',
-  LIGHT = 'light',
+  DARK = "dark",
+  LIGHT = "light",
 }
 
 export enum SELECT_ICONS {
-  DOWN_CARET = 'arrow',
-  PLUS = 'plus',
+  DOWN_CARET = "arrow",
+  PLUS = "plus",
 }
 
 export enum USER_ROLE {
-  USER = 'student',
-  ADMIN = 'admin',
+  MENTOR = "mentor",
+  STUDENT = "student",
+  ADMIN = "admin",
 }
+
+export const ROLES = {
+  [USER_ROLE.MENTOR]: "mentor",
+  [USER_ROLE.STUDENT]: "student",
+  [USER_ROLE.ADMIN]: "admin",
+};
