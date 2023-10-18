@@ -1,8 +1,8 @@
-import { NextPage } from 'next';
+import { NextPage } from "next";
 
 const EventDetail: NextPage = () => {
   return (
-    <div className="w-full h-screen flex justify-center items-center">
+    <div className="w-full h-screen flex justify-center items-center overflow-y-scroll">
       <h1>Event Detail </h1>;
     </div>
   );
