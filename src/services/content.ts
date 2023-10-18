@@ -1,8 +1,8 @@
-'use client';
-import appAxios from '@/lib/appAxios';
-import { routeFilter } from '@/utils';
-import useSWR, { SWRResponse } from 'swr';
-import useSWRMutation from 'swr/mutation';
+"use client";
+import appAxios from "@/lib/appAxios";
+import { routeFilter } from "@/utils";
+import useSWR, { SWRResponse } from "swr";
+import useSWRMutation from "swr/mutation";
 
 export type ParamsType = {
   page?: number;
@@ -30,13 +30,13 @@ interface FileArgType {
 }
 
 export const useGetContent = <ParamsType, ContentType>(
-  params: ParamsType
+  params?: ParamsType
 ): SWRResponse<ContentType, any> => {
   return useSWR<ContentType>(`/content?${routeFilter(params)}`);
 };
 
 export const useGetContentById = <ContentType>(id: string): SWRResponse<ContentType, any> => {
-  const key = id != '0' ? `/content/${id}` : null;
+  const key = id != "0" ? `/content/${id}` : null;
   return useSWR<ContentType>(key);
 };
 
@@ -54,7 +54,7 @@ export const usePostFile = () =>
   useSWRMutation(`/content/fileupload`, (url, { arg }: FileArgType) => {
     return appAxios.post<FileArgType>(url, arg, {
       headers: {
-        'Content-Type': 'multipart/form-data',
+        "Content-Type": "multipart/form-data",
       },
     });
   });
