@@ -1,9 +1,11 @@
-import { useGetContent } from "@/services/content";
+"use client";
+import { ParamsType, useDeleteUser, useGetUser, useUpdateUser } from "@/services/user";
+import { USER_ROLE } from "@/shared/enums";
+import { UserResponse } from "@/types/User";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { Box, IconButton, Tooltip } from "@mui/material";
 import {
-  MRT_ColumnDef,
   MaterialReactTable,
   useMaterialReactTable,
   type MRT_Row,
@@ -11,55 +13,48 @@ import {
 } from "material-react-table";
 import { useMemo, useState } from "react";
 import { Button } from "../Button";
-import { fakeData, usStates, type User } from "./makeData";
+import { type User } from "./makeData";
 
-const Table = () => {
+const AdminTable: React.FC = () => {
   const [validationErrors, setValidationErrors] = useState<Record<string, string | undefined>>({});
+  const {
+    data: userData,
+    mutate,
+    isLoading,
+  } = useGetUser<ParamsType, UserResponse>({
+    role: USER_ROLE.ADMIN,
+  });
+  const { trigger: updateTrigger } = useUpdateUser();
 
-  const columns = useMemo<MRT_ColumnDef<User>[]>(
+  const { trigger: deleteTrigger } = useDeleteUser();
+  const columns = useMemo(
     () => [
       {
         accessorKey: "id",
-        header: "Id",
+        header: "ID",
         enableEditing: false,
-        size: 80,
       },
       {
-        accessorKey: "firstName",
+        accessorKey: "name",
         header: "First Name",
         muiEditTextFieldProps: {
-          type: "email",
+          type: "text",
           required: true,
-          error: !!validationErrors?.firstName,
-          helperText: validationErrors?.firstName,
+          error: !!validationErrors?.name,
+          helperText: validationErrors?.name,
           //remove any previous validation errors when user focuses on the input
           onFocus: () =>
             setValidationErrors({
               ...validationErrors,
-              firstName: undefined,
+              name: undefined,
             }),
           //optionally add validation checking for onBlur or onChange
         },
       },
       {
-        accessorKey: "lastName",
-        header: "Last Name",
-        muiEditTextFieldProps: {
-          type: "email",
-          required: true,
-          error: !!validationErrors?.lastName,
-          helperText: validationErrors?.lastName,
-          //remove any previous validation errors when user focuses on the input
-          onFocus: () =>
-            setValidationErrors({
-              ...validationErrors,
-              lastName: undefined,
-            }),
-        },
-      },
-      {
         accessorKey: "email",
         header: "Email",
+        enableEditing: false,
         muiEditTextFieldProps: {
           type: "email",
           required: true,
@@ -74,29 +69,25 @@ const Table = () => {
         },
       },
       {
-        accessorKey: "state",
-        header: "State",
-        editVariant: "select",
-        editSelectOptions: usStates,
+        accessorKey: "role",
+        header: "Role",
+        enableEditing: false,
         muiEditTextFieldProps: {
-          select: true,
-          error: !!validationErrors?.state,
-          helperText: validationErrors?.state,
+          type: "email",
+          required: true,
+          error: !!validationErrors?.email,
+          helperText: validationErrors?.email,
+          //remove any previous validation errors when user focuses on the input
+          onFocus: () =>
+            setValidationErrors({
+              ...validationErrors,
+              email: undefined,
+            }),
         },
       },
     ],
     [validationErrors]
   );
-
-  //call CREATE hook
-  // const { data: createUser, isLoading: isCreatingUser } = useCreateUser();
-  //call READ hook
-  const { data: content, isLoading } = useGetContent();
-  console.log("content -> ", content);
-  //call UPDATE hook
-  // const { data: updateUser, isLoading: isUpdatingUser } = useUpdateUser();
-  //call DELETE hook
-  // const { data: deleteUser, isLoading: isDeletingUser } = useDeleteUser();
 
   //CREATE action
   const handleCreateUser: MRT_TableOptions<User>["onCreatingRowSave"] = async ({
@@ -114,45 +105,59 @@ const Table = () => {
   };
 
   //UPDATE action
-  const handleSaveUser: MRT_TableOptions<User>["onEditingRowSave"] = async ({ values, table }) => {
+  const handleSaveUser: MRT_TableOptions<User>["onEditingRowSave"] = ({ values, table }) => {
+    const { id, name } = values;
     const newValidationErrors = validateUser(values);
     if (Object.values(newValidationErrors).some(error => error)) {
       setValidationErrors(newValidationErrors);
       return;
     }
     setValidationErrors({});
-    // await updateUser(values);
-    table.setEditingRow(null); //exit editing mode
+    const newValues = {
+      name,
+      id,
+    };
+    updateTrigger(newValues, {
+      onSuccess: () => {
+        mutate();
+      },
+    });
+    table.setEditingRow(null);
   };
 
   //DELETE action
-  const openDeleteConfirmModal = (row: MRT_Row<User>) => {
+  const openDeleteConfirmModal = async (row: MRT_Row<any>) => {
+    const { id } = row;
     if (window.confirm("Are you sure you want to delete this user?")) {
-      // deleteUser(row.original.id);
+      await deleteTrigger({ id });
     }
   };
 
   const table = useMaterialReactTable({
     columns,
-    data: fakeData,
-    createDisplayMode: "row", // ('modal', and 'custom' are also available)
-    editDisplayMode: "row", // ('modal', 'cell', 'table', and 'custom' are also available)
+    data: (userData?.data as any) || [],
+    createDisplayMode: "row",
+    editDisplayMode: "row",
     enableEditing: true,
     getRowId: row => row.id,
-    // muiToolbarAlertBannerProps: isLoading
-    //   ? {
-    //       color: "error",
-    //       children: "Error loading data",
-    //     }
-    //   : undefined,
-    // muiTableContainerProps: {
-    //   sx: {
-    //     minHeight: "500px",
-    //   },
-    // },
+    muiToolbarAlertBannerProps: isLoading
+      ? {
+          color: "error",
+          children: "Error loading data",
+        }
+      : undefined,
+    muiTableContainerProps: {
+      sx: {
+        minHeight: "500px",
+      },
+    },
     onCreatingRowCancel: () => setValidationErrors({}),
     onCreatingRowSave: handleCreateUser,
     onEditingRowCancel: () => setValidationErrors({}),
+    positionActionsColumn: "last",
+    state: {
+      showSkeletons: isLoading ?? false,
+    },
     onEditingRowSave: handleSaveUser,
     renderRowActions: ({ row, table }) => (
       <Box sx={{ display: "flex", gap: "1rem" }}>
@@ -182,55 +187,7 @@ const Table = () => {
   return <MaterialReactTable table={table} />;
 };
 
-//CREATE hook (post new user to api)
-// function useCreateUser() {
-//   const { data, isLoading, error } = useGetUser<ParamsType, UserResponse>({
-//     role: USER_ROLE.USER,
-//   });
-//   return {
-//     data,
-//     isLoading,
-//     error,
-//   };
-// }
-
-//READ hook (get users from api)
-// function useGetUsers() {
-//   const { data, isLoading, error } = useGetUser<ParamsType, UserResponse>({
-//     role: USER_ROLE.USER,
-//   });
-//   return {
-//     data,
-//     isLoading,
-//     error,
-//   };
-// }
-
-//UPDATE hook (put user in api)
-// function useUpdateUser() {
-//   const { data, isLoading, error } = useGetUser<ParamsType, UserResponse>({
-//     role: USER_ROLE.USER,
-//   });
-//   return {
-//     data,
-//     isLoading,
-//     error,
-//   };
-// }
-
-//DELETE hook (delete user in api)
-// function useDeleteUser() {
-//   const { data, isLoading, error } = useGetUser<ParamsType, UserResponse>({
-//     role: USER_ROLE.USER,
-//   });
-//   return {
-//     data,
-//     isLoading,
-//     error,
-//   };
-// }
-
-export default Table;
+export default AdminTable;
 
 const validateRequired = (value: string) => !!value.length;
 const validateEmail = (email: string) =>
@@ -243,8 +200,6 @@ const validateEmail = (email: string) =>
 
 function validateUser(user: User) {
   return {
-    firstName: !validateRequired(user.firstName) ? "First Name is Required" : "",
-    lastName: !validateRequired(user.lastName) ? "Last Name is Required" : "",
-    email: !validateEmail(user.email) ? "Incorrect Email Format" : "",
+    name: !validateRequired(user.name) ? "First Name is Required" : "",
   };
 }

@@ -15,17 +15,16 @@ export function middleware(req: NextRequest) {
   // Define login URL
   const loginPath = "/auth/login";
   const adminLoginPath = "/admin/auth/login";
-  const loginUrl = new URL(loginPath, req.url);
 
   // Get the user's token from cookies
   const token = req.cookies.get("token")?.value;
 
   // If the user is not logged in, redirect to the login page
   if (!token) {
-    // if (pathname.includes("/admin")) {
-    //   return NextResponse.rewrite(adminLoginPath);
-    // }
-    return NextResponse.rewrite(loginUrl);
+    if (pathname.includes("/admin")) {
+      return NextResponse.rewrite(new URL(adminLoginPath, req.url));
+    }
+    return NextResponse.rewrite(new URL(loginPath, req.url));
   }
 
   // If the user is already logged in and tries to access protected routes, redirect to the admin dashboard
