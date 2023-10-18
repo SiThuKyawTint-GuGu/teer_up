@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/Button";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/Form";
 import { InputText } from "@/components/ui/Inputs";
 import {
+  useCreateContentCategory,
   useGetContentCategoryById,
-  usePostContentCategory,
   useUpdateContentCategory,
 } from "@/services/contentCategory";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -25,7 +25,7 @@ const ContentDetailPage = ({ params: { id } }: Props) => {
   const router = useRouter();
   const { data: category } = useGetContentCategoryById<any>(id);
   const { trigger } = useUpdateContentCategory(id);
-  const { trigger: postContentCategoryTrigger } = usePostContentCategory();
+  const { trigger: postContentCategoryTrigger } = useCreateContentCategory();
 
   const form = useForm<{ name: string }>({
     resolver: yupResolver(validationSchema),
