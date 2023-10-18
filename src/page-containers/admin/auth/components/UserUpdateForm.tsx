@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/Button";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/Form";
 import { InputText } from "@/components/ui/Inputs";
 import { ParamsType, useGetUser, useUpdateUser } from "@/services/user";
-import { ROLES } from "@/shared/enums";
+import { USER_ROLE } from "@/shared/enums";
 import { User, UserResponse } from "@/types/User";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
@@ -16,12 +16,22 @@ const UserUpdateForm: React.FC<{
   userId: string;
   row: User;
   setOpen: (arg: boolean) => void;
-  role: ROLES;
-}> = ({ userId, row, setOpen, role }: { userId: string; row: User; setOpen: any; role: ROLES }) => {
+  role: USER_ROLE;
+}> = ({
+  userId,
+  row,
+  setOpen,
+  role,
+}: {
+  userId: string;
+  row: User;
+  setOpen: any;
+  role: USER_ROLE;
+}) => {
   const { mutate } = useGetUser<ParamsType, UserResponse>({
     role,
   });
-  const { trigger } = useUpdateUser(userId);
+  const { trigger } = useUpdateUser();
 
   const form = useForm<{ name: string }>({
     resolver: yupResolver(validationSchema),
@@ -33,6 +43,7 @@ const UserUpdateForm: React.FC<{
   const submit = async (data: any) => {
     const submitData = {
       name: data?.name,
+      id: userId,
     };
     await trigger(submitData, {
       onSuccess: () => {

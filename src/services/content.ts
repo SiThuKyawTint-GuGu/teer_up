@@ -3,19 +3,12 @@ import appAxios from "@/lib/appAxios";
 import { routeFilter } from "@/utils";
 import useSWR, { SWRResponse } from "swr";
 import useSWRMutation from "swr/mutation";
-
-export type ParamsType = {
-  page?: number;
-  pageSize?: number;
-  id?: string;
-};
-
 export interface ContentArgType {
   arg: {
     title?: string;
     description?: string;
     type?: string;
-    user_id: string;
+    category_id: number;
     content_video?: {
       video_url?: string;
       thumbnail?: string;
@@ -28,7 +21,6 @@ interface FileArgType {
     data?: any;
   };
 }
-
 export const useGetContent = <ParamsType, ContentType>(
   params?: ParamsType
 ): SWRResponse<ContentType, any> => {
@@ -63,3 +55,8 @@ export const usePostFile = () =>
 //   useSWRMutation(`/admin/contentcategories/${id}`, url => {
 //     return appAxios.delete<ContentArgType>(url);
 //   });
+
+export const useLikeContent = <likeResponse>(contentId: string) =>
+  useSWRMutation(`/content/like/${contentId}`, url => {
+    return appAxios.post<likeResponse>(url);
+  });

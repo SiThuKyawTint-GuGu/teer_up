@@ -1,4 +1,4 @@
-import Content from '@/page-containers/admin/content';
+import Content from "@/page-containers/admin/content";
 
 const ContentPage = () => {
   return (

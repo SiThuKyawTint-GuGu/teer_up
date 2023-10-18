@@ -1,13 +1,14 @@
-'use client';
-import Link from 'next/link';
-import { AiFillPlusSquare } from 'react-icons/ai';
+"use client";
+import Link from "next/link";
+import { AiOutlinePlus } from "react-icons/ai";
 
-import { Box } from '@radix-ui/themes';
+import { Box } from "@radix-ui/themes";
 
-import Table from '@/components/ui/Table/Table';
-import { ParamsType, useGetContent } from '@/services/content';
-import { ContentResponseData } from '@/types/Content';
-import { Columns } from './contentTableColumn';
+import { Button } from "@/components/ui/Button";
+import Table from "@/components/ui/Table/Table";
+import { ParamsType, useGetContent } from "@/services/content";
+import { ContentType } from "@/types/Content";
+import { Columns } from "./contentTableColumn";
 
 const Content = () => {
   const params: ParamsType = {
@@ -15,8 +16,8 @@ const Content = () => {
     pageSize: 10,
   };
 
-  const { data, isLoading, error } = useGetContent<ParamsType, ContentResponseData>(params);
-  console.log('data from content', data?.data);
+  const { data, isLoading, error } = useGetContent<ParamsType, ContentType>(params);
+  console.log("data from content", data?.data);
 
   if (isLoading) return <p>Loading...</p>;
 
@@ -26,12 +27,10 @@ const Content = () => {
       <Box className="bg-white p-10 rounded-md">
         <div className="flex justify-between">
           <p className="text-lg">Contents</p>
-          <Link href={'/admin/contents/content/0'}>
-            <AiFillPlusSquare
-              color="gray"
-              size={25}
-              className="cursor-pointer hover:text-gray-900"
-            />
+          <Link href={"/admin/contents/content/0"}>
+            <Button className="p-2 mb-5 rounded-md w-full text-white" type="submit">
+              Create new content <AiOutlinePlus color="white" size={20} />
+            </Button>
           </Link>
         </div>
         <Table tableColumns={Columns} tableData={data?.data || []} />

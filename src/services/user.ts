@@ -7,7 +7,7 @@ import useSWR, { SWRResponse } from "swr";
 import useSWRMutation from "swr/mutation";
 
 type RegisterArgType = {
-  arg: { email: string; password: string };
+  arg: { email: string; name: string };
 };
 
 export type ParamsType = {
@@ -17,13 +17,8 @@ export type ParamsType = {
   role?: USER_ROLE;
 };
 
-type RegisterResType = {};
-export const useRegister = () =>
-  useSWRMutation(`/auth/sign-up`, (url, { arg }: RegisterArgType) =>
-    appAxios.post<RegisterResType>(url, arg)
-  );
-
 type TokenResType = Pick<User, "name">;
+
 export const useToken = (identityId: string, a: string) =>
   useSWR<TokenResType>(identityId && `/token/${identityId} ${a ? "?a=" + a : ""}`);
 
@@ -60,3 +55,7 @@ export const useDeleteUser = () =>
   useSWRMutation(`/user`, (url, { arg }: { arg: { id: string } }) => {
     return appAxios.delete<UpdateUserResType>(`${url}/${arg.id}`);
   });
+export const useRegister = () =>
+  useSWRMutation(`/user/register`, (url, { arg }: RegisterArgType) =>
+    appAxios.post<RegisterArgType>(url, arg)
+  );

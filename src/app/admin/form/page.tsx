@@ -1,4 +1,4 @@
-import FormConfig from '@/page-containers/admin/form';
+import FormConfig from "@/page-containers/admin/form";
 
 const FormPage = () => {
   return (

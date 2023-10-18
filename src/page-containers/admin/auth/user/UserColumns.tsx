@@ -3,7 +3,7 @@ import { Dialog, DialogClose, DialogContent, DialogTrigger } from "@/components/
 import { Icons } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import { ParamsType, useDeleteUser, useGetUser } from "@/services/user";
-import { ROLES } from "@/shared/enums";
+import { USER_ROLE } from "@/shared/enums";
 import { UserResponse } from "@/types/User";
 import dayjs from "dayjs";
 import { useState } from "react";
@@ -39,10 +39,10 @@ export const UserColumns: Column[] = [
       const { mutate } = useGetUser<ParamsType, UserResponse>({
         role,
       });
-      const { trigger } = useDeleteUser(id);
+      const { trigger } = useDeleteUser();
 
       const handleDeleteUser = async () => {
-        await trigger();
+        await trigger({ id });
         await mutate();
         setOpen(!open);
       };
@@ -78,7 +78,7 @@ export const UserColumns: Column[] = [
                   row={row.original}
                   userId={id}
                   setOpen={setOpen}
-                  role={role as ROLES}
+                  role={role as USER_ROLE}
                 />
               ) : (
                 <div className="flex flex-col justify-center items-center">

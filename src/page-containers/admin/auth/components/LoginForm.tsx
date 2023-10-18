@@ -36,7 +36,7 @@ const LoginForm = () => {
       .then(response => {
         setError(null);
         setUserInfo(response.token, response.data);
-        router.push("/");
+        router.push("/admin/blogs");
         console.log(response.token);
       })
       .catch(error => setError(error.message));

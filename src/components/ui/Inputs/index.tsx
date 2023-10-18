@@ -1,12 +1,12 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
-import { IconButton, TextField } from '@radix-ui/themes';
+import { IconButton, TextField } from "@radix-ui/themes";
 
-import { Icons } from '../Images';
+import { Icons } from "../Images";
 
 type Props = {
-  type?: 'text' | 'email' | 'password' | 'number' | 'submit' | 'hidden';
+  type?: "text" | "email" | "password" | "number" | "submit" | "hidden";
   label?: string;
   className?: string;
   error?: any;
@@ -25,12 +25,12 @@ const InputText = React.forwardRef<HTMLInputElement, Props>(
         <div className="relative mt-1 rounded-md shadow-sm">
           <InputStyled
             type={type}
-            className={`block w-full rounded-[9px] border-[2px] border-[#BABABA] px-[20px] py-[14px] focus:border-[#00678D] ${className}`}
+            className={`block w-full rounded-[9px] border-[2px] bg-white border-[#BABABA] px-[20px] py-[14px] focus:border-[#00678D] ${className}`}
             aria-invalid="true"
             aria-describedby="name-error"
             autoComplete="off"
             placeholder={placeholder}
-            defaultValue={defaultValue || ''}
+            defaultValue={defaultValue || ""}
             ref={ref}
             {...props}
           />
@@ -40,10 +40,10 @@ const InputText = React.forwardRef<HTMLInputElement, Props>(
     );
   }
 );
-InputText.displayName = 'InputText';
+InputText.displayName = "InputText";
 
 InputText.defaultProps = {
-  type: 'text',
+  type: "text",
 };
 
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
@@ -62,7 +62,7 @@ const InputSearch = React.forwardRef<HTMLInputElement, InputProps>(
     );
   }
 );
-InputSearch.displayName = 'InputSearch';
+InputSearch.displayName = "InputSearch";
 
 export { InputSearch, InputText };
 
