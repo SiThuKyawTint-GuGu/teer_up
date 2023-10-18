@@ -1,47 +1,55 @@
-export interface ContentData {
-  id?: string;
-  title?: string;
-  description?: string;
+export interface Pagination {
+  current_page: number;
+  last_page: number;
+  per_page: number;
+  total: number;
+}
+
+export interface ContentVideo {
+  id: string;
   video_url: string;
-  photo_url: string;
-  type: string;
-  user_id: string;
-  status: string;
-  category?: string;
-  category_id?: string;
-  content_article?: string;
-  content_event?: string;
-  content_video?: ContentVideoType;
-  content_pathways: any[];
-  user: UserType;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface ContentResponseData {
-  current_page?: number;
-  data?: ContentData[];
-  last_page?: number;
-  per_page?: number;
-  total?: number;
-}
-
-export interface ContentVideoType {
-  content_id: string;
-  id: number;
   thumbnail: string;
-  video_url: string;
+  content_id: string;
 }
-
-interface UserType {
+export interface User {
   name: string;
   email: string;
 }
+export interface ContentEvent {
+  id: 8;
+  from_datetime: string;
+  to_datetime: string;
+  location: string;
+  content_id: string;
+}
 
-export interface FileResponse {
-  data?: {
-    data?: {
-      file_Path: string;
-    };
-  };
+export interface ContentArticle {
+  id: 13;
+  article_body: string;
+  published_by: string;
+  content_id: string;
+}
+
+export interface ContentData {
+  id: string;
+  title: string;
+  description: string;
+  created_at: string;
+  type: "video" | "article" | "event";
+  updated_at: string;
+  user_id: string;
+  image_url: string;
+  slug: string;
+  status: string;
+  category_id: number;
+  content_video: ContentVideo | null;
+  content_event: ContentEvent | null;
+  content_article: ContentArticle | null;
+  content_pathways: any;
+  category: string;
+  user: User;
+}
+
+export interface ContentType extends Pagination {
+  data: ContentData[];
 }

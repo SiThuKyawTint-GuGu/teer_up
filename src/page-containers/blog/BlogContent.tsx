@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import CardBox from '@/components/ui/Card';
-import { Text } from '@/components/ui/Typo/Text';
-import { useGetBlogBySlug } from '@/services/blog';
-import { BlogResponse } from '@/types/Blog';
-import { Heading } from '@radix-ui/themes';
-import { useParams } from 'next/navigation';
+import CardBox from "@/components/ui/Card";
+import { Text } from "@/components/ui/Typo/Text";
+import { useGetBlogBySlug } from "@/services/blog";
+import { BlogResponse } from "@/types/Blog";
+import { Heading } from "@radix-ui/themes";
+import { useParams } from "next/navigation";
 
 const BlogContent: React.FC = () => {
   const { slug } = useParams();
@@ -20,7 +20,7 @@ const BlogContent: React.FC = () => {
               <Heading as="h1" size="6" weight="bold">
                 {blogData?.data?.name}
               </Heading>
-              <Text dangerouslySetInnerHTML={{ __html: blogData?.data?.content || '' }} />
+              <Text dangerouslySetInnerHTML={{ __html: blogData?.data?.content || "" }} />
             </CardBox>
           </div>
         </div>
