@@ -24,7 +24,7 @@ const validationSchema = yup.object({
 const BlogCategoryDetail = ({ id }: Props) => {
   const router = useRouter();
   const { data: category } = useGetBlogCategoryById<any>(id);
-  console.log("category", category);
+  // console.log("category", category);
   const { trigger } = useUpdateBlogCategory(id);
   const { trigger: postBlogCategoryTrigger } = usePostBlogCategory();
 
