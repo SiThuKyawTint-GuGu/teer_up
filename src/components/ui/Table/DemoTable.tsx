@@ -123,10 +123,9 @@ const validateEmail = (email: string) =>
     .match(
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     );
-function validateUser(user: User) {
+function validateUser(user: any) {
   return {
-    firstName: !validateRequired(user.firstName) ? "First Name is Required" : "",
-    lastName: !validateRequired(user.lastName) ? "Last Name is Required" : "",
+    name: !validateRequired(user.name) ? "First Name is Required" : "",
     email: !validateEmail(user.email) ? "Incorrect Email Format" : "",
   };
 }
