@@ -49,11 +49,11 @@ export const menuList: Menu[] = [
   //   child: [],
   // },
   {
-    key: "/admin/blogs/categories" || "/admin/blogs/posts",
+    key: "/admin/blogs/category" || "/admin/blogs/posts",
     icon: <Icons.blogs className="w-[20px] h-[20px]" />,
     title: "Blogs",
     child: [
-      { key: "/admin/blogs/categories", title: "Categories" },
+      { key: "/admin/blogs/category", title: "Category" },
       { key: "/admin/blogs/posts", title: "Posts" },
     ],
   },

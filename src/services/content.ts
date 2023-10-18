@@ -15,7 +15,7 @@ export interface ContentArgType {
     title?: string;
     description?: string;
     type?: string;
-    user_id: string;
+    category_id: number;
     content_video?: {
       video_url?: string;
       thumbnail?: string;

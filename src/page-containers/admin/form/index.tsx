@@ -1,11 +1,11 @@
-'use client';
-import { Button } from '@/components/ui/Button';
-import Table from '@/components/ui/Table/Table';
-import { useGetFormConfig } from '@/services/formConfig';
-import { Box } from '@radix-ui/themes';
-import Link from 'next/link';
-import { AiOutlinePlus } from 'react-icons/ai';
-import { Columns } from './formConfigTableColumn';
+"use client";
+import { Button } from "@/components/ui/Button";
+import Table from "@/components/ui/Table/Table";
+import { useGetFormConfig } from "@/services/formConfig";
+import { Box } from "@radix-ui/themes";
+import Link from "next/link";
+import { AiOutlinePlus } from "react-icons/ai";
+import { Columns } from "./formConfigTableColumn";
 
 const FormConfig = () => {
   const { data: formConfigs, isLoading, error } = useGetFormConfig<any>();
@@ -20,7 +20,7 @@ const FormConfig = () => {
           <div className="flex justify-between">
             <p className="text-lg">Form Config</p>
 
-            <Link href={'/admin/form/0'}>
+            <Link href={"/admin/form/0"}>
               <Button className="p-2 mb-5 rounded-md w-full text-white" type="submit">
                 Create new form <AiOutlinePlus color="white" size={20} />
               </Button>
