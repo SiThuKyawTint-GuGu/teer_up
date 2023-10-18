@@ -1,10 +1,12 @@
 "use client";
 
 import { Icons } from "@/components/ui/Images";
+import CmtInput from "@/components/ui/Inputs/CmtInput";
 import { Text } from "@/components/ui/Typo/Text";
-import { useLikeContent } from "@/services/content";
-import { ContentData } from "@/types/Content";
-import { useEffect, useRef } from "react";
+import { useGetContent, useLikeContent, usePostComment } from "@/services/content";
+import { ParamsType } from "@/services/user";
+import { ContentData, ContentType } from "@/types/Content";
+import { useEffect, useRef, useState } from "react";
 
 type VideoProps = {
   data: ContentData;
@@ -12,8 +14,9 @@ type VideoProps = {
   autoplay: boolean;
 };
 const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay }) => {
-  const { trigger } = useLikeContent(data.id);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  const [showDescription, setShowDescription] = useState<boolean>(false);
 
   useEffect(() => {
     if (autoplay && videoRef.current) {
@@ -85,20 +88,79 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay }) => {
         </video>
       )}
 
-      <div className="absolute flex flex-col items-baseline w-[300px] bottom-5 left-3 z-[1000] text-[20px] font-[600]">
+      <div
+        className={`absolute flex flex-col items-baseline w-[300px] cursor-pointer bottom-5 left-3 z-[1000] text-[20px] font-[600] ${
+          showDescription && "transition-all duration-1000 ease-in-out"
+        }`}
+        onClick={() => setShowDescription(prev => !prev)}
+      >
         <Text>{data.title}</Text>
-        <Text>{data.description}</Text>
+        {!showDescription ? (
+          <div className="flex flex-wrap gap-x-1">
+            <Text>{data.description.slice(0, 15)}...</Text>
+            <span>See more</span>
+          </div>
+        ) : (
+          <Text>{data.description}</Text>
+        )}
       </div>
+      <LikeandCmt data={data} />
+    </div>
+  );
+};
+
+export default Video;
+type CmtandLikeProps = {
+  data: ContentData;
+};
+const LikeandCmt: React.FC<CmtandLikeProps> = ({ data }) => {
+  const { mutate: upDateContent } = useGetContent<ParamsType, ContentType>({
+    page: 1,
+    pageSize: 20,
+  });
+  // const { data: cmts, mutate } = useGetComment(data.id, {
+  //   cursor: 1,
+  //   pageSize: 20,
+  // });
+  const [commentValue, setCommentValue] = useState<string>("");
+
+  const { trigger: postComment } = usePostComment();
+  const { trigger: likeVideo } = useLikeContent();
+  const [showCmt, setShowCmt] = useState<boolean>(false);
+
+  const postSubmitHandler = async () => {
+    const formData = {
+      parent_id: data.id,
+      comment: commentValue,
+    };
+    await postComment(formData, {
+      // onSuccess: () => mutate(),
+    });
+  };
+
+  return (
+    <>
       <div className="absolute right-3 bottom-[1rem] items-end flex flex-col flex-wrap gap-y-[32px]">
         <div className="flex flex-col flex-wrap gap-[10px] w-full">
           <Icons.like
             className="w-[40px] h-[40px]"
+            onClick={async () =>
+              await likeVideo(
+                { id: data.id },
+                {
+                  onSuccess: () => upDateContent(),
+                }
+              )
+            }
             // className="filter drop-shadow-[0px 8px 4px rgba(0, 0, 0, 0.50)]"
           />
           <div className="text-[18px] font-[600] text-center">{data.likes}</div>
         </div>
         <div className="flex flex-col flex-wrap gap-[10px]">
-          <Icons.comment className="w-[40px] h-[40px]" />
+          <Icons.comment
+            className="w-[40px] h-[40px]"
+            onClick={() => setShowCmt(prev => !showCmt)}
+          />
           <div className="text-[18px] font-[600] text-center">{data.comments}</div>
         </div>
         <div className="flex flex-col flex-wrap gap-[10px] ">
@@ -109,8 +171,45 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay }) => {
           <Icons.share className="w-[40px] h-[40px]" />
         </div>
       </div>
-    </div>
+      {showCmt && (
+        <div className="absolute w-full bottom-0 rounded-t-[16px] bg-white p-[8px] z-[9999999] text-black">
+          <div
+            className="bg-primary rounded-[6px] w-[60px] h-[2px] mx-auto"
+            onClick={() => setShowCmt(prev => !prev)}
+          />
+          <div className="my-3 text-[16px] font-[600]">0 comments</div>
+          <div className="flex items-start  w-full h-full mb-2">
+            <div className="bg-slateGray  rounded-full w-[32px] h-[32px]" />
+            <div className="flex flex-col w-full ms-2">
+              <div className="flex">
+                <Text as="div" className="text-[16px] font-[600]">
+                  Sai Thiha Kyaw
+                </Text>
+                <Text as="span" className="text-[14px] font-[300]">
+                  {"."}
+                  12 mins ago
+                </Text>
+              </div>
+              <div className="text-start">
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Temporibus id odit vero
+                recusandae ab, sed eum laboriosam voluptas nemo reiciendis error odio atque itaque
+                molestiae esse iste nihil ducimus modi!
+              </div>
+            </div>
+          </div>
+          {/* Comment Input */}
+          <div className="w-full h-full relative">
+            <div className=" w-full">
+              <form className="w-full flex font-[16px]">
+                <CmtInput setValue={setCommentValue} />
+                <button onClick={postSubmitHandler} className="text-primary p-1">
+                  Send
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
-
-export default Video;

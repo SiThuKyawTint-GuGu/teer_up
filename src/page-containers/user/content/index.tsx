@@ -14,7 +14,7 @@ const UserContent = () => {
   const [videos, setVideos] = useState<any>([]);
   const videoRefs = useRef<HTMLVideoElement[]>([]);
 
-  const { data: contentData } = useGetContent<ParamsType, ContentType>({
+  const { data: contentData, mutate } = useGetContent<ParamsType, ContentType>({
     page: page,
     pageSize: 20,
   });
@@ -65,12 +65,13 @@ const UserContent = () => {
       return <Video data={data} setVideoRef={handleVideoRef(index)} autoplay={index === 0} />;
     if (data.type === "event" && data.content_event) return <Event data={data} />;
     if (data.type === "article" && data.content_article) return <Article data={data} />;
+    return <div>Page is not currently avaliable</div>;
   };
 
   const hasMoreData = (contentData: ContentType) => {
     return contentData.total > contentData.current_page * contentData.per_page;
   };
-
+  mutate();
   return (
     <>
       {contentData && (
