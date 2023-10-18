@@ -1,22 +1,22 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
 
-import { Button } from '@/components/ui/Button';
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/Form';
-import { InputText } from '@/components/ui/Inputs';
-import { Text } from '@/components/ui/Typo/Text';
-import { postMethod } from '@/hooks/postMethod';
-import { AuthResponse, OtpResponse } from '@/types/User';
-import { getToken, setUserInfo } from '@/utils/auth';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { Button } from "@/components/ui/Button";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/Form";
+import { InputText } from "@/components/ui/Inputs";
+import { Text } from "@/components/ui/Typo/Text";
+import { postMethod } from "@/hooks/postMethod";
+import { AuthResponse, OtpResponse } from "@/types/User";
+import { getToken, setUserInfo } from "@/utils/auth";
+import { yupResolver } from "@hookform/resolvers/yup";
 const token: string = getToken();
 const validationSchema = yup.object({
-  verificationCode: yup.string().required('verificationCode!'),
+  verificationCode: yup.string().required("verificationCode!"),
 });
 interface OtpFormData {
   verificationCode: string;
@@ -26,7 +26,7 @@ const Otp = () => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const getOtp = async () => {
-    postMethod<OtpResponse>('/user/requestotp', {}, token)
+    postMethod<OtpResponse>("/user/requestotp", {}, token)
       .then(data => {
         setMessage(data.message);
         setError(null);
@@ -40,12 +40,12 @@ const Otp = () => {
     resolver: yupResolver(validationSchema),
   });
   const onSubmit = (data: OtpFormData) => {
-    postMethod<AuthResponse>('/user/verifyotp', data, token)
+    postMethod<AuthResponse>("/user/verifyotp", data, token)
       .then(response => {
         setError(null);
         setUserInfo(response.token, response.data);
         // need to store User Info persistence or localStorage
-        router.push('/');
+        router.push("/home");
         console.log(response);
       })
       .catch(error => {
