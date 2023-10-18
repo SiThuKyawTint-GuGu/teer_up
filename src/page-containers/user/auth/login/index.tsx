@@ -21,7 +21,7 @@ const validationSchema = yup.object({
 
 interface Login {
   email: string;
-  password: string;
+  // password: string;
 }
 
 const Login = () => {

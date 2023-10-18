@@ -48,7 +48,7 @@ const SignUp = () => {
       .then(response => {
         setError(null);
         setUserInfo(response.token, response.data);
-        router.push("/home");
+        router.push("/auth/otp");
       })
       .catch(error => setError(error.message));
   };
