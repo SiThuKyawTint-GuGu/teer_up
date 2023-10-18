@@ -11,7 +11,7 @@ const AdminLayout = ({ children }: Props) => {
   return (
     <ThemeRegistry options={{ key: "mui" }}>
       <PageLayout>
-        <main className="bg-gray-100 h-full p-[40px]">{children}</main>
+        <main className="bg-gray-100 h-full p-[10px]">{children}</main>
       </PageLayout>
     </ThemeRegistry>
   );

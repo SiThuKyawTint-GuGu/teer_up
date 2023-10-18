@@ -1,22 +1,22 @@
-'use client';
-import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
-import { usePathname } from 'next/navigation';
-import { BsBell } from 'react-icons/bs';
-import styled from 'styled-components';
+"use client";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { BsBell } from "react-icons/bs";
+import styled from "styled-components";
 
-import CardBox from '@/components/ui/Card';
-import { Text } from '@/components/ui/Typo/Text';
-import { useWindowSize } from '@/hooks/useWindowSize';
-import { Grid } from '@radix-ui/themes';
+import CardBox from "@/components/ui/Card";
+import { Text } from "@/components/ui/Typo/Text";
+import { useWindowSize } from "@/hooks/useWindowSize";
+import { Grid } from "@radix-ui/themes";
 
 const Header: React.FC = () => {
   const { windowWidth } = useWindowSize();
-  const [pathname1, setPathname1] = useState('');
+  const [pathname1, setPathname1] = useState("");
   const pathname = usePathname();
 
   useEffect(() => {
-    const pathParts = pathname.split('/').filter(part => part);
+    const pathParts = pathname.split("/").filter(part => part);
 
     if (pathParts.length >= 3) {
       const secondItem = pathParts[1];
@@ -25,7 +25,7 @@ const Header: React.FC = () => {
       const formattedPath = `${secondItem} > ${thirdItem}`;
       setPathname1(formattedPath);
     } else {
-      setPathname1(pathParts[1] || '');
+      setPathname1(pathParts[1] || "");
     }
   }, [pathname]);
 
@@ -34,22 +34,18 @@ const Header: React.FC = () => {
   // }, [windowWidth]);
 
   return (
-    <Grid columns="1" py="5" className="bg-red-500">
+    <Grid columns="1">
       <div className="flex justify-between items-center sticky-top h-16 bg-white text-black relative shadow-sm text-2xl">
         <Text size="4" className="text-center font-md pl-3 text-red-600">
           {pathname1}
         </Text>
         <div className="flex justify-center items-center mr-10">
-          <div className="mr-3">
-            <p className="text-[17px] font-weight-400">School of Engineering</p>
-            <p className="text-sm text-gray-500">Total 150,000 points</p>
-          </div>
           <div className="flex ">
             <Image
               src="/mainLogo.png"
               alt="Avatar"
-              width={44}
-              height={44}
+              width={50}
+              height={50}
               className="rounded-full border-2 border-red-500 mr-3"
             />
             <div className="flex flex-col">
