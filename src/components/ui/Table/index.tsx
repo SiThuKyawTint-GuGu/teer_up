@@ -12,7 +12,6 @@ import {
   type MRT_TableOptions,
 } from "material-react-table";
 import { useMemo, useState } from "react";
-import { Button } from "../Button";
 import { type User } from "./makeData";
 
 const AdminTable: React.FC = () => {
@@ -172,15 +171,6 @@ const AdminTable: React.FC = () => {
           </IconButton>
         </Tooltip>
       </Box>
-    ),
-    renderTopToolbarCustomActions: ({ table }) => (
-      <Button
-        onClick={() => {
-          table.setCreatingRow(true);
-        }}
-      >
-        Create New User
-      </Button>
     ),
   });
 

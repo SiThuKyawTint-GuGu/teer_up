@@ -25,17 +25,17 @@ export const useGetContentCategoryById = <ContentCategoryResponse>(
   return useSWR<ContentCategoryResponse>(`/admin/contentcategories/${id}`);
 };
 
-export const useUpdateContentCategory = (id: number) =>
-  useSWRMutation(`/admin/contentcategories/${id}`, (url, { arg }: ContentCategoryArgType) => {
-    return appAxios.put<ContentCategoryArgType>(url, arg);
-  });
-
-export const usePostContentCategory = () =>
+export const useCreateContentCategory = () =>
   useSWRMutation(`/admin/contentcategories`, (url, { arg }: ContentCategoryArgType) => {
     return appAxios.post<ContentCategoryArgType>(url, arg);
   });
 
-export const useDeleteContentCategory = (id: number) =>
-  useSWRMutation(`/admin/contentcategories/${id}`, url => {
-    return appAxios.delete<ContentCategoryArgType>(url);
+export const useUpdateContentCategory = () =>
+  useSWRMutation(`/admin/contentcategories`, (url, { arg }: ContentCategoryArgType) => {
+    return appAxios.put<ContentCategoryArgType>(`${url}/${arg.id}`, arg);
+  });
+
+export const useDeleteContentCategory = () =>
+  useSWRMutation(`/admin/contentcategories`, (url, { arg }: { arg: { id: string } }) => {
+    return appAxios.delete<ContentCategoryArgType>(`${url}/${arg.id}`);
   });

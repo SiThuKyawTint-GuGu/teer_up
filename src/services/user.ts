@@ -28,6 +28,18 @@ export const useGetUser = <ParamsType, UserResponse>(
   return useSWR<UserResponse>(`/user?${routeFilter(params)}`);
 };
 
+interface CreateUserResType {
+  arg: {
+    name: string;
+    email: string;
+    role: USER_ROLE;
+  };
+}
+export const useCreateUser = () =>
+  useSWRMutation(`/user`, (url, { arg }: CreateUserResType) => {
+    return appAxios.post<CreateUserResType>(url, arg);
+  });
+
 interface UpdateUserResType {
   arg: {
     name: string;

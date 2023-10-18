@@ -1,9 +1,10 @@
-import Category from "@/page-containers/admin/contentCategory";
+import CategoryTable from "@/page-containers/admin/contentCategory";
+import { NextPage } from "next";
 
-const CategoryPage = () => {
+const CategoryPage: NextPage = () => {
   return (
     <div>
-      <Category />
+      <CategoryTable />
     </div>
   );
 };
