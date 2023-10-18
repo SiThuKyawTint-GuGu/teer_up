@@ -1,7 +1,11 @@
-import React from 'react';
+import Category from "@/page-containers/admin/contentCategory";
 
 const CategoryPage = () => {
-  return <div>CategoryPage</div>;
+  return (
+    <div>
+      <Category />
+    </div>
+  );
 };
 
 export default CategoryPage;

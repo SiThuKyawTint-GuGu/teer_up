@@ -1,9 +1,9 @@
-import { Button } from '@/components/ui/Button';
-import { Icons } from '@/components/ui/Images';
-import { Text } from '@/components/ui/Typo/Text';
-import Image from 'next/image';
-import React from 'react';
-import QuestionPageCard from '../components/QuestionPageCard';
+import { Button } from "@/components/ui/Button";
+import { Icons } from "@/components/ui/Images";
+import { Text } from "@/components/ui/Typo/Text";
+import Image from "next/image";
+import React from "react";
+import QuestionPageCard from "../components/QuestionPageCard";
 
 const ExplorePage: React.FC = () => {
   return (

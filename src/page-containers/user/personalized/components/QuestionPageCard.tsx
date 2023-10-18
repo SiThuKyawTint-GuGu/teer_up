@@ -1,5 +1,5 @@
-import React from 'react';
-import { Text } from '../../../../components/ui/Typo/Text';
+import React from "react";
+import { Text } from "../../../../components/ui/Typo/Text";
 
 type QuestionPageCardProp = {
   children: React.ReactNode;

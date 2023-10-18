@@ -1,4 +1,5 @@
 import NextImage from "next/image";
+import { AiOutlineForm } from "react-icons/ai";
 import { BiBookContent } from "react-icons/bi";
 import { BsFillPostcardFill } from "react-icons/bs";
 import { CiLogout, CiSettings } from "react-icons/ci";
@@ -78,6 +79,7 @@ export const Icons = {
   },
   innovates: FaLightbulb,
   users: FiUsers,
+  form: AiOutlineForm,
   discussions: GoCommentDiscussion,
   contents: BiBookContent,
   wallet: PiWallet,

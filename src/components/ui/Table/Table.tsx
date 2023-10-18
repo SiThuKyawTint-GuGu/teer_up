@@ -1,11 +1,11 @@
-'use client';
-import { useMemo } from 'react';
-import { Column, useGlobalFilter, usePagination, useSortBy, useTable } from 'react-table';
+"use client";
+import { useMemo } from "react";
+import { Column, useGlobalFilter, usePagination, useSortBy, useTable } from "react-table";
 
-import Filter from './Filter';
+import Filter from "./Filter";
 
 interface Props {
-  tableColumns: Column[];
+  tableColumns: any[];
   tableData: any[];
 }
 
@@ -57,9 +57,9 @@ const Table: React.FC<Props> = ({ tableColumns, tableData }: Props) => {
                   key={column.id}
                   className="p-4 pb-5 border-b text-gray-800 font-normal text-left"
                 >
-                  {column.render('Header')}
+                  {column.render("Header")}
 
-                  <span>{column.isSorted ? (column.isSortedDesc ? ' 🔽' : ' 🔼') : ''}</span>
+                  <span>{column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : ""}</span>
                 </th>
               ))}
             </tr>
@@ -73,7 +73,7 @@ const Table: React.FC<Props> = ({ tableColumns, tableData }: Props) => {
               <tr key={key} {...row.getRowProps()}>
                 {row.cells.map((cell: any) => (
                   <td key={cell.id} className="p-5 border-b">
-                    {cell.render('Cell')}
+                    {cell.render("Cell")}
                   </td>
                 ))}
               </tr>
@@ -95,13 +95,13 @@ const Table: React.FC<Props> = ({ tableColumns, tableData }: Props) => {
             className="px-3 py-2 rounded bg-gray-200 mr-2 cursor-pointer"
             onClick={() => previousPage()}
           >
-            {'<'}
+            {"<"}
           </button>
           <button
             className="px-3 py-2 rounded bg-gray-200 cursor-pointer"
             onClick={() => nextPage()}
           >
-            {'>'}
+            {">"}
           </button>
         </div>
       </div>

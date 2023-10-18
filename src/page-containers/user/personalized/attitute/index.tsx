@@ -1,5 +1,5 @@
-import QuestionPageCard from '../components/QuestionPageCard';
-import RadioButton from '../components/RadioButton';
+import QuestionPageCard from "../components/QuestionPageCard";
+import RadioButton from "../components/RadioButton";
 
 const AttitudePage = () => {
   return (

@@ -1,6 +1,6 @@
-import { ContentData } from '@/types/Content';
-import { useRouter } from 'next/navigation';
-import React from 'react';
+import { ContentData } from "@/types/Content";
+import { useRouter } from "next/navigation";
+import React from "react";
 type ArticleProps = {
   data: ContentData;
 };

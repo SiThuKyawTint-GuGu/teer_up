@@ -16,6 +16,16 @@ export const setUserInfo = (token: string, userInfo: User) => {
   });
 };
 
+export const getUserInfo = () => {
+  const userinfo = getCookie("userInfo");
+  if (!userinfo) {
+    return null;
+  }
+  const userInfoBytes = CryptoJS.AES.decrypt(userinfo, "userInfo");
+  const decryptedUserInfo = JSON.parse(userInfoBytes.toString(CryptoJS.enc.Utf8));
+  return decryptedUserInfo;
+};
+
 export const getToken = () => {
   const session = getCookie("token");
   if (!session) return false;

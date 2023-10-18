@@ -1,7 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
-import { cn } from '@/utils/cn';
+import { cn } from "@/utils/cn";
 
 interface Props {
   className?: string;
@@ -10,7 +10,7 @@ interface Props {
 
 const CardBox: React.FC<Props> = ({ children, className }: Props) => {
   return (
-    <CardStyled className={cn('rounded-[6px] overflow-hidden', className)}>{children}</CardStyled>
+    <CardStyled className={cn("rounded-[6px] overflow-hidden", className)}>{children}</CardStyled>
   );
 };
 

@@ -1,5 +1,5 @@
-import UserContent from '@/page-containers/user/content';
-import { NextPage } from 'next';
+import UserContent from "@/page-containers/user/content";
+import { NextPage } from "next";
 
 const Home: NextPage = () => {
   return <UserContent />;

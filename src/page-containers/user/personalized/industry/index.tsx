@@ -1,4 +1,4 @@
-import QuestionPageCard from '../components/QuestionPageCard';
+import QuestionPageCard from "../components/QuestionPageCard";
 
 const IndustryPage = () => {
   return (
@@ -23,45 +23,45 @@ export default IndustryPage;
 
 const dummyText = [
   {
-    text: 'Aviation',
+    text: "Aviation",
   },
   {
-    text: 'Financial services',
+    text: "Financial services",
   },
   {
-    text: 'Construction',
+    text: "Construction",
   },
   {
-    text: 'Design',
+    text: "Design",
   },
   {
-    text: 'Engineering',
+    text: "Engineering",
   },
   {
-    text: 'Healthcare',
+    text: "Healthcare",
   },
   {
-    text: 'Human resources',
+    text: "Human resources",
   },
   {
-    text: 'Logistics & supply chain',
+    text: "Logistics & supply chain",
   },
   {
-    text: 'Maritime & shipping',
+    text: "Maritime & shipping",
   },
   {
-    text: 'Media',
+    text: "Media",
   },
   {
-    text: 'Pharmaceutical & bio-tech',
+    text: "Pharmaceutical & bio-tech",
   },
   {
-    text: 'Social services',
+    text: "Social services",
   },
   {
-    text: 'Tourism & hospitality',
+    text: "Tourism & hospitality",
   },
   {
-    text: 'Others',
+    text: "Others",
   },
 ];
