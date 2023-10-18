@@ -1,6 +1,7 @@
+import { useGetContent } from "@/services/content";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { Box, Button, IconButton, Tooltip } from "@mui/material";
+import { Box, IconButton, Tooltip } from "@mui/material";
 import {
   MRT_ColumnDef,
   MaterialReactTable,
@@ -9,6 +10,7 @@ import {
   type MRT_TableOptions,
 } from "material-react-table";
 import { useMemo, useState } from "react";
+import { Button } from "../Button";
 import { fakeData, usStates, type User } from "./makeData";
 
 const Table = () => {
@@ -89,10 +91,8 @@ const Table = () => {
   //call CREATE hook
   // const { data: createUser, isLoading: isCreatingUser } = useCreateUser();
   //call READ hook
-  // const { data: userData, isLoading } = useGetUser({
-  //   role: USER_ROLE.ADMIN,
-  // });
-  // console.log("fetchedUsers -> ", userData);
+  const { data: content, isLoading } = useGetContent();
+  console.log("content -> ", content);
   //call UPDATE hook
   // const { data: updateUser, isLoading: isUpdatingUser } = useUpdateUser();
   //call DELETE hook
@@ -170,7 +170,6 @@ const Table = () => {
     ),
     renderTopToolbarCustomActions: ({ table }) => (
       <Button
-        variant="contained"
         onClick={() => {
           table.setCreatingRow(true);
         }}
