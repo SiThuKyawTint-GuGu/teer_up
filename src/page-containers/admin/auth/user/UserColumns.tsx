@@ -2,8 +2,9 @@ import { Button } from '@/components/ui/Button';
 import { Dialog, DialogClose, DialogContent, DialogTrigger } from '@/components/ui/Dialog';
 import { Icons } from '@/components/ui/Images';
 import { Text } from '@/components/ui/Typo/Text';
-import { useDeleteUser } from '@/services/user';
+import { ParamsType, useDeleteUser, useGetUser } from '@/services/user';
 import { USER_ROLE } from '@/shared/enums';
+import { UserResponse } from '@/types/User';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import { Column } from 'react-table';
@@ -35,10 +36,15 @@ export const UserColumns: Column[] = [
       const { id, role } = row.original as any;
       const [open, setOpen] = useState<boolean>(false);
       const [dialogType, setDialogType] = useState<'UPDATE' | 'DELETE'>();
+      const { mutate } = useGetUser<ParamsType, UserResponse>({
+        role,
+      });
       const { trigger } = useDeleteUser(id);
 
       const handleDeleteUser = async () => {
         await trigger();
+        await mutate();
+        setOpen(!open);
       };
 
       return (
