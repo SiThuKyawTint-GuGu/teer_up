@@ -1,6 +1,6 @@
-'use client';
-import { routeFilter } from '@/utils';
-import useSWR, { SWRResponse } from 'swr';
+"use client";
+import { routeFilter } from "@/utils";
+import useSWR, { SWRResponse } from "swr";
 
 export type ParamsType = {
   page?: number;

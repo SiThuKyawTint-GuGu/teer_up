@@ -1,14 +1,14 @@
-'use client';
-import * as React from 'react';
+"use client";
+import * as React from "react";
 
-import { Text as RText, textPropDefs } from '@radix-ui/themes';
+import { Text as RText, textPropDefs } from "@radix-ui/themes";
 
-type SizePropValues = (typeof textPropDefs)['size']['values'][number];
+type SizePropValues = (typeof textPropDefs)["size"]["values"][number];
 
 interface Props {
   children?: React.ReactNode;
   className?: string;
-  as?: 'p' | 'div' | 'span';
+  as?: "p" | "div" | "span";
   size?: SizePropValues;
   weight?: string;
   color?: string;
@@ -22,7 +22,7 @@ export const Text = React.forwardRef<HTMLDivElement, Props>(
   ({ children, as, className, dangerouslySetInnerHTML, ...rest }: Props, ref) => (
     <RText
       ref={ref}
-      as={as || 'p'}
+      as={as || "p"}
       className={className}
       dangerouslySetInnerHTML={dangerouslySetInnerHTML}
       {...(rest as any)}
@@ -32,4 +32,4 @@ export const Text = React.forwardRef<HTMLDivElement, Props>(
   )
 );
 
-Text.displayName = 'Text';
+Text.displayName = "Text";

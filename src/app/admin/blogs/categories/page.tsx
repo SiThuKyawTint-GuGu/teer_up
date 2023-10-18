@@ -1,6 +1,4 @@
-import React from 'react';
-
-import Category from '@/page-containers/admin/category';
+import Category from '@/page-containers/admin/contentCategory';
 
 const CategoriesPage = () => {
   return <Category />;

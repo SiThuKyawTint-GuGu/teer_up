@@ -1,24 +1,24 @@
-'use client';
-import React from 'react';
-import Image from 'next/image';
+"use client";
+import Image from "next/image";
+import React from "react";
 // import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { useTheme } from 'next-themes';
+import { useTheme } from "next-themes";
+import { useRouter } from "next/navigation";
 
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/Collapsible';
-import { Icons } from '@/components/ui/Images';
-import { actionMenu, menuList } from '@/shared/data/Menu';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/Collapsible";
+import { Icons } from "@/components/ui/Images";
+import { actionMenu, menuList } from "@/shared/data/Menu";
 // import { Switch } from '@/components/ui/switch';
 // import useAtomReducer from '@/hooks/useAtomReducer';
-import { cn } from '@/utils/cn';
+import { cn } from "@/utils/cn";
 
 interface Props {
   className?: string;
 }
 
 const Sidebar: React.FC<Props> = ({ className }: Props) => {
-  const [open, setOpen] = React.useState<string | null>('/admin/innovates/projects');
-  const [childActive, setChildActive] = React.useState<string>('/admin/innovates/projects');
+  const [open, setOpen] = React.useState<string | null>("/admin/innovates/projects");
+  const [childActive, setChildActive] = React.useState<string>("/admin/innovates/projects");
   const router = useRouter();
   const { setTheme }: { setTheme: (theme: string) => void } = useTheme();
   // const { items } = useAtomReducer(TYPES.SWITCH_THEME);
@@ -43,7 +43,7 @@ const Sidebar: React.FC<Props> = ({ className }: Props) => {
     <>
       <div
         className={cn(
-          'lg:w-[260px] h-screen bg-default-light dark:bg-default-dark relative',
+          "lg:w-[260px] h-screen bg-default-light dark:bg-default-dark relative",
           className
         )}
       >
@@ -57,7 +57,7 @@ const Sidebar: React.FC<Props> = ({ className }: Props) => {
             menuList?.map((item, index) => {
               let active = childActive;
               if (!item.child) {
-                active = active?.split('-')[0];
+                active = active?.split("-")[0];
               }
               return (
                 <Collapsible
@@ -69,10 +69,10 @@ const Sidebar: React.FC<Props> = ({ className }: Props) => {
                   <CollapsibleTrigger asChild>
                     <div
                       className={cn(
-                        'flex rounded-18 hover:bg-secondary-100 hover:text-secondary-800 align-middle justify-between',
+                        "flex rounded-18 hover:bg-secondary-100 hover:text-secondary-800 align-middle justify-between",
                         active === item.key
-                          ? 'text-secondary-800 bg-secondary-100 font-semibold text-red-500'
-                          : ''
+                          ? "text-secondary-800 bg-secondary-100 font-semibold text-red-500"
+                          : ""
                       )}
                     >
                       <div className="flex justify-center items-center gap-x-[15px] mb-2">
@@ -80,7 +80,7 @@ const Sidebar: React.FC<Props> = ({ className }: Props) => {
                         <div>{item.title}</div>
                       </div>
                       {item.child && item.child.length > 0 && (
-                        <button>
+                        <button className="hover:text-red-600">
                           {open === item.key ? (
                             <Icons.caretUp className="w-[20px] h-[20px]" />
                           ) : (
@@ -100,8 +100,8 @@ const Sidebar: React.FC<Props> = ({ className }: Props) => {
                           className={`
                             ${
                               active === `${itemChild.key}`
-                                ? 'text-secondary-800 bg-secondary-100 font-semibold text-red-500'
-                                : ''
+                                ? "text-secondary-800 bg-secondary-100 font-semibold text-red-500"
+                                : ""
                             }
                             ml-7 flex gap-16 cursor-pointer p-3 rounded-18
                           `}
@@ -120,7 +120,7 @@ const Sidebar: React.FC<Props> = ({ className }: Props) => {
             actionMenu?.map((item, index) => {
               let active = childActive;
               if (!item.child) {
-                active = active?.split('-')[0];
+                active = active?.split("-")[0];
               }
               return (
                 <Collapsible
@@ -132,10 +132,10 @@ const Sidebar: React.FC<Props> = ({ className }: Props) => {
                   <CollapsibleTrigger asChild>
                     <div
                       className={cn(
-                        'flex rounded-18 hover:bg-secondary-100 hover:text-secondary-800 align-middle justify-between',
+                        "flex rounded-18 hover:bg-secondary-100 hover:text-secondary-800 align-middle justify-between",
                         active === item.key
-                          ? 'text-secondary-800 bg-secondary-100 font-semibold'
-                          : ''
+                          ? "text-secondary-800 bg-secondary-100 font-semibold"
+                          : ""
                       )}
                     >
                       <div className="flex justify-center items-center gap-x-2">
