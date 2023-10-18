@@ -1,14 +1,14 @@
-'use client';
-import UserTable from '@/components/ui/Table/UserTable';
-import { ParamsType, useGetUser } from '@/services/user';
-import { USER_ROLE } from '@/shared/enums';
-import { UserResponse } from '@/types/User';
-import { Box } from '@radix-ui/themes';
-import { UserColumns } from './UserColumns';
+"use client";
+import UserTable from "@/components/ui/Table/UserTable";
+import { ParamsType, useGetUser } from "@/services/user";
+import { ROLES } from "@/shared/enums";
+import { UserResponse } from "@/types/User";
+import { Box } from "@radix-ui/themes";
+import { UserColumns } from "./UserColumns";
 
 const UserList = () => {
   const { data: userData } = useGetUser<ParamsType, UserResponse>({
-    role: USER_ROLE.USER,
+    role: ROLES.USER,
   });
 
   return (

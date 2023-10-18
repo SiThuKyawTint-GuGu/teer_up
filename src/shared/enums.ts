@@ -17,6 +17,13 @@ export enum SELECT_ICONS {
 }
 
 export enum USER_ROLE {
-  USER = "student",
+  MENTOR = "mentor",
+  STUDENT = "student",
   ADMIN = "admin",
 }
+
+export const ROLES = {
+  [USER_ROLE.MENTOR]: "mentor",
+  [USER_ROLE.STUDENT]: "student",
+  [USER_ROLE.ADMIN]: "admin",
+};

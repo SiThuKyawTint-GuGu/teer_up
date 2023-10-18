@@ -39,10 +39,10 @@ export const UserColumns: Column[] = [
       const { mutate } = useGetUser<ParamsType, UserResponse>({
         role,
       });
-      const { trigger } = useDeleteUser(id);
+      const { trigger } = useDeleteUser();
 
       const handleDeleteUser = async () => {
-        await trigger();
+        await trigger({ id });
         await mutate();
         setOpen(!open);
       };

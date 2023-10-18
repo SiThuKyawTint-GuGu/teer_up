@@ -4,7 +4,7 @@ import { Box } from "@radix-ui/themes";
 
 const AdminList: React.FC = () => {
   // const { data: userData } = useGetUser<ParamsType, UserResponse>({
-  //   role: USER_ROLE.ADMIN,
+  //   role: ROLES.ADMIN,
   // });
 
   return (

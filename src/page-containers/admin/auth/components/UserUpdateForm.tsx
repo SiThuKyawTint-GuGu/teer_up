@@ -31,7 +31,7 @@ const UserUpdateForm: React.FC<{
   const { mutate } = useGetUser<ParamsType, UserResponse>({
     role,
   });
-  const { trigger } = useUpdateUser(userId);
+  const { trigger } = useUpdateUser();
 
   const form = useForm<{ name: string }>({
     resolver: yupResolver(validationSchema),
@@ -43,6 +43,7 @@ const UserUpdateForm: React.FC<{
   const submit = async (data: any) => {
     const submitData = {
       name: data?.name,
+      id: userId,
     };
     await trigger(submitData, {
       onSuccess: () => {
