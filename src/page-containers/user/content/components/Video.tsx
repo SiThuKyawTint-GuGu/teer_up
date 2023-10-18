@@ -133,9 +133,7 @@ const LikeandCmt: React.FC<CmtandLikeProps> = ({ data }) => {
       parent_id: data.id,
       comment: commentValue,
     };
-    await postComment(formData, {
-      // onSuccess: () => mutate(),
-    });
+    await postComment(formData);
   };
 
   return (
@@ -200,12 +198,12 @@ const LikeandCmt: React.FC<CmtandLikeProps> = ({ data }) => {
           {/* Comment Input */}
           <div className="w-full h-full relative">
             <div className=" w-full">
-              <form className="w-full flex font-[16px]">
+              <div className="w-full flex font-[16px]">
                 <CmtInput setValue={setCommentValue} />
                 <button onClick={postSubmitHandler} className="text-primary p-1">
                   Send
                 </button>
-              </form>
+              </div>
             </div>
           </div>
         </div>
