@@ -36,7 +36,7 @@ const UserTable: React.FC = () => {
       },
       {
         accessorKey: "name",
-        header: "First Name",
+        header: "Name",
         muiEditTextFieldProps: {
           type: "text",
           required: true,
@@ -54,7 +54,7 @@ const UserTable: React.FC = () => {
       {
         accessorKey: "email",
         header: "Email",
-        enableEditing: false,
+        enableEditing: true,
         muiEditTextFieldProps: {
           type: "email",
           required: true,
@@ -70,8 +70,8 @@ const UserTable: React.FC = () => {
       },
       {
         accessorKey: "role",
-        header: "Row",
-        enableEditing: false,
+        header: "Role",
+        enableEditing: true,
         muiEditTextFieldProps: {
           type: "email",
           required: true,

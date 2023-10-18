@@ -1,3 +1,4 @@
+"use client";
 import { ParamsType, useDeleteUser, useGetUser, useUpdateUser } from "@/services/user";
 import { USER_ROLE } from "@/shared/enums";
 import { UserResponse } from "@/types/User";
@@ -14,18 +15,18 @@ import { useMemo, useState } from "react";
 import { Button } from "../Button";
 import { type User } from "./makeData";
 
-const Table: React.FC = () => {
-  const [getId, setGetId] = useState<string | null>();
+const AdminTable: React.FC = () => {
   const [validationErrors, setValidationErrors] = useState<Record<string, string | undefined>>({});
   const {
-    data: user,
+    data: userData,
     mutate,
     isLoading,
   } = useGetUser<ParamsType, UserResponse>({
     role: USER_ROLE.ADMIN,
   });
-  const { trigger } = useUpdateUser(getId ?? "");
-  const { trigger: deleteTrigger } = useDeleteUser(getId ?? "");
+  const { trigger: updateTrigger } = useUpdateUser();
+
+  const { trigger: deleteTrigger } = useDeleteUser();
   const columns = useMemo(
     () => [
       {
@@ -69,7 +70,7 @@ const Table: React.FC = () => {
       },
       {
         accessorKey: "role",
-        header: "Row",
+        header: "Role",
         enableEditing: false,
         muiEditTextFieldProps: {
           type: "email",
@@ -104,8 +105,8 @@ const Table: React.FC = () => {
   };
 
   //UPDATE action
-  const handleSaveUser: MRT_TableOptions<User>["onEditingRowSave"] = async ({ values, table }) => {
-    setGetId(values?.id);
+  const handleSaveUser: MRT_TableOptions<User>["onEditingRowSave"] = ({ values, table }) => {
+    const { id, name } = values;
     const newValidationErrors = validateUser(values);
     if (Object.values(newValidationErrors).some(error => error)) {
       setValidationErrors(newValidationErrors);
@@ -113,29 +114,30 @@ const Table: React.FC = () => {
     }
     setValidationErrors({});
     const newValues = {
-      name: values?.name,
+      name,
+      id,
     };
-    await trigger(newValues, {
+    updateTrigger(newValues, {
       onSuccess: () => {
-        setGetId(null);
         mutate();
       },
     });
-    table.setEditingRow(null); //exit editing mode
+    table.setEditingRow(null);
   };
 
   //DELETE action
-  const openDeleteConfirmModal = async (row: MRT_Row<User>) => {
+  const openDeleteConfirmModal = async (row: MRT_Row<any>) => {
+    const { id } = row;
     if (window.confirm("Are you sure you want to delete this user?")) {
-      await deleteTrigger();
+      await deleteTrigger({ id });
     }
   };
 
   const table = useMaterialReactTable({
     columns,
-    data: (user?.data as any) || [],
-    createDisplayMode: "row", // ('modal', and 'custom' are also available)
-    editDisplayMode: "row", // ('modal', 'cell', 'table', and 'custom' are also available)
+    data: (userData?.data as any) || [],
+    createDisplayMode: "row",
+    editDisplayMode: "row",
     enableEditing: true,
     getRowId: row => row.id,
     muiToolbarAlertBannerProps: isLoading
@@ -185,55 +187,7 @@ const Table: React.FC = () => {
   return <MaterialReactTable table={table} />;
 };
 
-//CREATE hook (post new user to api)
-// function useCreateUser() {
-//   const { data, isLoading, error } = useGetUser<ParamsType, UserResponse>({
-//     role: USER_ROLE.USER,
-//   });
-//   return {
-//     data,
-//     isLoading,
-//     error,
-//   };
-// }
-
-//READ hook (get users from api)
-// function useGetUsers() {
-//   const { data, isLoading, error } = useGetUser<ParamsType, UserResponse>({
-//     role: USER_ROLE.USER,
-//   });
-//   return {
-//     data,
-//     isLoading,
-//     error,
-//   };
-// }
-
-//UPDATE hook (put user in api)
-// function useUpdateUser() {
-//   const { data, isLoading, error } = useGetUser<ParamsType, UserResponse>({
-//     role: USER_ROLE.USER,
-//   });
-//   return {
-//     data,
-//     isLoading,
-//     error,
-//   };
-// }
-
-//DELETE hook (delete user in api)
-// function useDeleteUser() {
-//   const { data, isLoading, error } = useGetUser<ParamsType, UserResponse>({
-//     role: USER_ROLE.USER,
-//   });
-//   return {
-//     data,
-//     isLoading,
-//     error,
-//   };
-// }
-
-export default Table;
+export default AdminTable;
 
 const validateRequired = (value: string) => !!value.length;
 const validateEmail = (email: string) =>
