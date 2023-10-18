@@ -7,7 +7,20 @@ import { FaArrowRight, FaLightbulb } from "react-icons/fa";
 import { FcBusinesswoman } from "react-icons/fc";
 import { FiUsers } from "react-icons/fi";
 import { GoCommentDiscussion } from "react-icons/go";
-import { IoCheckmarkCircle, IoLogoApple, IoNotificationsOutline } from "react-icons/io5";
+import {
+  IoBookmarkOutline,
+  IoChatbubbleOutline,
+  IoCheckmarkCircle,
+  IoGlobeOutline,
+  IoHeartOutline,
+  IoHome,
+  IoLogoApple,
+  IoNotificationsOutline,
+  IoPeopleOutline,
+  IoPersonCircleOutline,
+  IoSearch,
+  IoShareSocialOutline,
+} from "react-icons/io5";
 import { MdDelete, MdOutlineMailOutline } from "react-icons/md";
 import {
   PiAirplaneTiltLight,
@@ -109,6 +122,15 @@ export const Icons = {
   delete: MdDelete,
   mark: IoCheckmarkCircle,
   rightArrow: FaArrowRight,
+  searchLens: IoSearch,
+  home: IoHome,
+  globe: IoGlobeOutline,
+  people: IoPeopleOutline,
+  saved: IoBookmarkOutline,
+  person: IoPersonCircleOutline,
+  like: IoHeartOutline,
+  comment: IoChatbubbleOutline,
+  share: IoShareSocialOutline,
 };
 
 interface Image {

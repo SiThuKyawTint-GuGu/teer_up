@@ -1,6 +1,8 @@
 "use client";
 
+import { Icons } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
+import { useLikeContent } from "@/services/content";
 import { ContentData } from "@/types/Content";
 import { useEffect, useRef } from "react";
 
@@ -10,6 +12,7 @@ type VideoProps = {
   autoplay: boolean;
 };
 const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay }) => {
+  const { trigger } = useLikeContent(data.id);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
@@ -56,7 +59,7 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay }) => {
   };
 
   return (
-    <div className="w-full h-full md:aspect-video relative">
+    <div className="w-full h-full md:aspect-video relative text-white">
       {data.content_video && (
         <video
           poster={
@@ -82,10 +85,29 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay }) => {
         </video>
       )}
 
-      <div className="absolute flex flex-col bottom-10 left-3 z-[1000] text-white">
+      <div className="absolute flex flex-col items-baseline w-[300px] bottom-5 left-3 z-[1000] text-[20px] font-[600]">
         <Text>{data.title}</Text>
         <Text>{data.description}</Text>
-        {/* <Text>{data.created_at}</Text> */}
+      </div>
+      <div className="absolute right-3 bottom-[1rem] items-end flex flex-col flex-wrap gap-y-[32px]">
+        <div className="flex flex-col flex-wrap gap-[10px] w-full">
+          <Icons.like
+            className="w-[40px] h-[40px]"
+            // className="filter drop-shadow-[0px 8px 4px rgba(0, 0, 0, 0.50)]"
+          />
+          <div className="text-[18px] font-[600] text-center">{data.likes}</div>
+        </div>
+        <div className="flex flex-col flex-wrap gap-[10px]">
+          <Icons.comment className="w-[40px] h-[40px]" />
+          <div className="text-[18px] font-[600] text-center">{data.comments}</div>
+        </div>
+        <div className="flex flex-col flex-wrap gap-[10px] ">
+          <Icons.saved className="w-[40px] h-[40px]" />
+          <div className="text-[18px] font-[600] text-center"></div>
+        </div>
+        <div>
+          <Icons.share className="w-[40px] h-[40px]" />
+        </div>
       </div>
     </div>
   );

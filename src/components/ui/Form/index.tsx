@@ -1,17 +1,17 @@
-import * as React from 'react';
+import * as React from "react";
 import {
   Controller,
+  FormProvider,
+  useFormContext,
   type ControllerProps,
   type FieldPath,
   type FieldValues,
-  FormProvider,
-  useFormContext,
-} from 'react-hook-form';
+} from "react-hook-form";
 
-import { Label } from '@/components/ui/Label';
-import { cn } from '@/utils/cn';
-import type * as LabelPrimitive from '@radix-ui/react-label';
-import { Slot } from '@radix-ui/react-slot';
+import { Label } from "@/components/ui/Label";
+import { cn } from "@/utils/cn";
+import type * as LabelPrimitive from "@radix-ui/react-label";
+import { Slot } from "@radix-ui/react-slot";
 
 const Form = FormProvider;
 
@@ -44,7 +44,7 @@ const useFormField = () => {
   const fieldState = getFieldState(fieldContext.name, formState);
 
   if (!fieldContext) {
-    throw new Error('useFormField should be used within <FormField>');
+    throw new Error("useFormField should be used within <FormField>");
   }
 
   return {
@@ -63,22 +63,22 @@ const FormItem = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivEl
 
     return (
       <FormItemContext.Provider value={{ id }}>
-        <div ref={ref} className={cn('space-y-1', className)} {...props} />
+        <div ref={ref} className={cn("space-y-1", className)} {...props} />
         <p className="text-primary">{error?.message}</p>
       </FormItemContext.Provider>
     );
   }
 );
-FormItem.displayName = 'FormItem';
+FormItem.displayName = "FormItem";
 
 const FormLabel = React.forwardRef<
   React.ElementRef<typeof LabelPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
 >(({ className, ...props }, ref) => {
   const { error } = useFormField();
-  return <Label ref={ref} className={cn(error && 'text-destructive', className)} {...props} />;
+  return <Label ref={ref} className={cn(error && "text-destructive", className)} {...props} />;
 });
-FormLabel.displayName = 'FormLabel';
+FormLabel.displayName = "FormLabel";
 
 const FormControl = React.forwardRef<
   React.ElementRef<typeof Slot>,
@@ -88,6 +88,6 @@ const FormControl = React.forwardRef<
 
   return <Slot ref={ref} aria-invalid={!!error} {...props} />;
 });
-FormControl.displayName = 'FormControl';
+FormControl.displayName = "FormControl";
 
 export { Form, FormControl, FormField, FormItem, FormLabel, useFormField };

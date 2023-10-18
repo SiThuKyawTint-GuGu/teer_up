@@ -1,4 +1,4 @@
-import ContentDetail from '@/page-containers/admin/content/contentDetail';
+import ContentDetail from "@/page-containers/admin/content/contentDetail";
 
 interface Props {
   params: { id: string };

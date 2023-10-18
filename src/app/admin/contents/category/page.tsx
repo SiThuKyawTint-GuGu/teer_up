@@ -1,4 +1,4 @@
-import Category from '@/page-containers/admin/contentCategory';
+import Category from "@/page-containers/admin/contentCategory";
 
 const CategoryPage = () => {
   return (

@@ -16,7 +16,7 @@ export interface User {
   email: string;
 }
 export interface ContentEvent {
-  id: 8;
+  id: number;
   from_datetime: string;
   to_datetime: string;
   location: string;
@@ -24,7 +24,7 @@ export interface ContentEvent {
 }
 
 export interface ContentArticle {
-  id: 13;
+  id: number;
   article_body: string;
   published_by: string;
   content_id: string;
@@ -41,6 +41,8 @@ export interface ContentData {
   image_url: string;
   slug: string;
   status: string;
+  likes: number;
+  comments: number;
   category_id: number;
   content_video: ContentVideo | null;
   content_event: ContentEvent | null;
@@ -53,3 +55,7 @@ export interface ContentData {
 export interface ContentType extends Pagination {
   data: ContentData[];
 }
+
+export type likeResponse = {
+  message: string;
+};

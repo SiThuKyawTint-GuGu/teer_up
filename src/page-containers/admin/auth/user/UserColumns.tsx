@@ -1,41 +1,41 @@
-import { Button } from '@/components/ui/Button';
-import { Dialog, DialogClose, DialogContent, DialogTrigger } from '@/components/ui/Dialog';
-import { Icons } from '@/components/ui/Images';
-import { Text } from '@/components/ui/Typo/Text';
-import { ParamsType, useDeleteUser, useGetUser } from '@/services/user';
-import { USER_ROLE } from '@/shared/enums';
-import { UserResponse } from '@/types/User';
-import dayjs from 'dayjs';
-import { useState } from 'react';
-import { Column } from 'react-table';
-import UserUpdateForm from '../components/UserUpdateForm';
+import { Button } from "@/components/ui/Button";
+import { Dialog, DialogClose, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
+import { Icons } from "@/components/ui/Images";
+import { Text } from "@/components/ui/Typo/Text";
+import { ParamsType, useDeleteUser, useGetUser } from "@/services/user";
+import { USER_ROLE } from "@/shared/enums";
+import { UserResponse } from "@/types/User";
+import dayjs from "dayjs";
+import { useState } from "react";
+import { Column } from "react-table";
+import UserUpdateForm from "../components/UserUpdateForm";
 
 export const UserColumns: Column[] = [
   {
-    Header: 'User name',
-    accessor: 'name',
+    Header: "User name",
+    accessor: "name",
   },
   {
-    Header: 'Email',
-    accessor: 'email',
+    Header: "Email",
+    accessor: "email",
   },
   {
-    Header: 'Verified',
-    accessor: 'verified',
-    Cell: ({ value }) => <div>{value === true ? 'Yes' : 'No'}</div>,
+    Header: "Verified",
+    accessor: "verified",
+    Cell: ({ value }) => <div>{value === true ? "Yes" : "No"}</div>,
   },
   {
-    Header: 'Updated Date',
-    accessor: 'updated_at',
-    Cell: ({ value }) => <div>{dayjs(value).format('DD-MM-YYYY')}</div>,
+    Header: "Updated Date",
+    accessor: "updated_at",
+    Cell: ({ value }) => <div>{dayjs(value).format("DD-MM-YYYY")}</div>,
   },
   {
-    Header: 'Action',
-    accessor: 'action',
+    Header: "Action",
+    accessor: "action",
     Cell: ({ row }) => {
       const { id, role } = row.original as any;
       const [open, setOpen] = useState<boolean>(false);
-      const [dialogType, setDialogType] = useState<'UPDATE' | 'DELETE'>();
+      const [dialogType, setDialogType] = useState<"UPDATE" | "DELETE">();
       const { mutate } = useGetUser<ParamsType, UserResponse>({
         role,
       });
@@ -54,7 +54,7 @@ export const UserColumns: Column[] = [
               <DialogTrigger
                 onClick={() => {
                   setOpen(!open);
-                  setDialogType('UPDATE');
+                  setDialogType("UPDATE");
                 }}
               >
                 <div>
@@ -64,7 +64,7 @@ export const UserColumns: Column[] = [
               <DialogTrigger
                 onClick={() => {
                   setOpen(!open);
-                  setDialogType('DELETE');
+                  setDialogType("DELETE");
                 }}
               >
                 <div>
@@ -73,7 +73,7 @@ export const UserColumns: Column[] = [
               </DialogTrigger>
             </div>
             <DialogContent className="bg-white">
-              {dialogType === 'UPDATE' ? (
+              {dialogType === "UPDATE" ? (
                 <UserUpdateForm
                   row={row.original}
                   userId={id}

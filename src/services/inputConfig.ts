@@ -1,8 +1,8 @@
-'use client';
-import appAxios from '@/lib/appAxios';
-import { InputConfig } from '@/types/InputConfig';
-import useSWR, { SWRResponse } from 'swr';
-import useSWRMutation from 'swr/mutation';
+"use client";
+import appAxios from "@/lib/appAxios";
+import { InputConfig } from "@/types/InputConfig";
+import useSWR, { SWRResponse } from "swr";
+import useSWRMutation from "swr/mutation";
 
 export type ParamsType = {
   id?: number;

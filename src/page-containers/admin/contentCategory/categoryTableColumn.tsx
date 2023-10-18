@@ -1,8 +1,8 @@
-'use client';
-import { useDeleteContentCategory } from '@/services/contentCategory';
-import Link from 'next/link';
-import { AiFillDelete, AiFillEdit } from 'react-icons/ai';
-import { Column } from 'react-table';
+"use client";
+import { useDeleteContentCategory } from "@/services/contentCategory";
+import Link from "next/link";
+import { AiFillDelete, AiFillEdit } from "react-icons/ai";
+import { Column } from "react-table";
 
 interface DataType {
   id?: string;
@@ -10,16 +10,16 @@ interface DataType {
 
 export const CategoryTableColumn: Column[] = [
   {
-    Header: 'Id',
-    accessor: 'id',
+    Header: "Id",
+    accessor: "id",
   },
   {
-    Header: 'Name',
-    accessor: 'name',
+    Header: "Name",
+    accessor: "name",
   },
   {
-    Header: 'Action',
-    accessor: '',
+    Header: "Action",
+    accessor: "",
     Cell: ({ row }: { row: { original: DataType } }) => {
       const { trigger } = useDeleteContentCategory(Number(row.original.id));
       const handleDelete = async () => {

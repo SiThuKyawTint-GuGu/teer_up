@@ -13,7 +13,6 @@ interface Props {
 const AdminLayout = ({ children }: Props) => {
   const pathname = usePathname();
   const token = getToken();
-  console.log("pathname -> ", pathname);
 
   return (
     <ThemeRegistry options={{ key: "mui" }}>

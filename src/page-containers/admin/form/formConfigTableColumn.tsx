@@ -1,8 +1,8 @@
-'use client';
-import { useDeleteFormConfig, useGetFormConfig } from '@/services/formConfig';
-import Link from 'next/link';
-import { AiFillDelete, AiFillEdit } from 'react-icons/ai';
-import { Column } from 'react-table';
+"use client";
+import { useDeleteFormConfig, useGetFormConfig } from "@/services/formConfig";
+import Link from "next/link";
+import { AiFillDelete, AiFillEdit } from "react-icons/ai";
+import { Column } from "react-table";
 
 interface FormConfigDataType {
   id?: string;
@@ -11,19 +11,19 @@ interface FormConfigDataType {
 
 export const Columns: Column[] = [
   {
-    Header: 'Id',
-    accessor: 'id',
+    Header: "Id",
+    accessor: "id",
   },
   {
-    Header: 'Name',
-    accessor: 'name',
+    Header: "Name",
+    accessor: "name",
   },
 
   {
-    Header: 'Action',
-    accessor: '',
+    Header: "Action",
+    accessor: "",
     Cell: ({ row }: { row: { original: FormConfigDataType } }) => {
-      const { trigger } = useDeleteFormConfig(row.original.id || '');
+      const { trigger } = useDeleteFormConfig(row.original.id || "");
       const { mutate } = useGetFormConfig();
       const handleDelete = async () => {
         await trigger(null, {

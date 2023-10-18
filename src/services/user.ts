@@ -18,6 +18,7 @@ export type ParamsType = {
 };
 
 type TokenResType = Pick<User, "name">;
+
 export const useToken = (identityId: string, a: string) =>
   useSWR<TokenResType>(identityId && `/token/${identityId} ${a ? "?a=" + a : ""}`);
 
@@ -30,16 +31,17 @@ export const useGetUser = <ParamsType, UserResponse>(
 interface UpdateUserResType {
   arg: {
     name: string;
+    id: string;
   };
 }
-export const useUpdateUser = (userId: string) =>
-  useSWRMutation(`/user/${userId}`, (url, { arg }: UpdateUserResType) => {
-    return appAxios.put<UpdateUserResType>(url, arg);
+export const useUpdateUser = () =>
+  useSWRMutation(`/user`, (url, { arg }: UpdateUserResType) => {
+    return appAxios.put<UpdateUserResType>(`${url}/${arg.id}`, arg);
   });
 
-export const useDeleteUser = (userId: string) =>
-  useSWRMutation(`/user/${userId}`, url => {
-    return appAxios.delete<UpdateUserResType>(url);
+export const useDeleteUser = () =>
+  useSWRMutation(`/user`, (url, { arg }: { arg: { id: string } }) => {
+    return appAxios.delete<UpdateUserResType>(`${url}/${arg.id}`);
   });
 export const useRegister = () =>
   useSWRMutation(`/user/register`, (url, { arg }: RegisterArgType) =>
