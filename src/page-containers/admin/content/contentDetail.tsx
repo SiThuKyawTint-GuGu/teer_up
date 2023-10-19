@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/Inputs/Select";
 
@@ -89,12 +89,13 @@ const ContentDetail = ({ id }: Props) => {
   );
   const [endDate, setEndDate] = useState<string>(content?.data?.content_event?.to_datetime || "");
   const [eventError, setEventError] = useState<string>("");
-  const [author, setAuthor] = useState<string>("");
-  // const [editorContent, setEditorContent] = useState<any>(
-  //   editorRef.current ? editorRef.current.getContent() : null
-  // );
+  const [author, setAuthor] = useState<string>(content?.data?.content_article?.published_by || "");
+  const [editorContent, setEditorContent] = useState<any>(
+    content?.data?.content_article?.article_body || ""
+  );
   const [link, setLink] = useState<string>(content?.data?.content_opportunity?.link || "");
   const [pathways, setPathways] = useState<PathwayType[]>([]);
+  const [editor, setEditor] = useState<any>(null);
 
   // useEffect(() => {
   //   if (content?.data) {
@@ -104,6 +105,15 @@ const ContentDetail = ({ id }: Props) => {
   //   }
   // }, []);
   // console.log("content pathway", pathways);
+
+  const handleEditorInit = (evt: any, editor: any) => {
+    setEditor(editor);
+  };
+  useEffect(() => {
+    if (editor) {
+      editor.setContent(editorContent);
+    }
+  }, [editorContent, editor]);
 
   const form = useForm<{ title: string; description: string }>({
     resolver: yupResolver(validationSchema),
@@ -198,7 +208,7 @@ const ContentDetail = ({ id }: Props) => {
         setEventError("Author name is required!");
         return;
       }
-      if (!editorRef.current.getContent()) {
+      if (!editor.getContent()) {
         setEventError("Content is required!");
         return;
       }
@@ -210,7 +220,7 @@ const ContentDetail = ({ id }: Props) => {
         category_id: Number(selectCategory),
         image_url: imageUrl,
         content_article: {
-          article_body: editorRef.current.getContent(),
+          article_body: editor.getContent(),
           published_by: author,
         },
       };
@@ -473,7 +483,7 @@ const ContentDetail = ({ id }: Props) => {
                 </div>
                 <div className="mb-10">
                   <p className="text-sm font-semibold mb-3">Content</p>
-                  <Editor onInit={(evt, editor) => (editorRef.current = editor)} />
+                  <Editor onInit={handleEditorInit} />
                 </div>
               </>
             )}
