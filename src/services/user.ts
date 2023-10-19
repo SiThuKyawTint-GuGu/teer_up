@@ -65,14 +65,3 @@ export const useUserRegister = () => {
     return appAxios.post<AuthResponse>(url, arg);
   });
 };
-
-interface LoginArgType {
-  arg: {
-    email: string;
-  };
-}
-export const useUserLogin = () => {
-  return useSWRMutation(`/user/login`, (url, { arg }: LoginArgType) => {
-    return appAxios.post<AuthResponse>(url, arg);
-  });
-};

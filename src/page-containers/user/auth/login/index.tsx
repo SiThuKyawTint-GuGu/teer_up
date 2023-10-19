@@ -1,22 +1,24 @@
 "use client";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 import { Button } from "@/components/ui/Button";
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/Form";
 import { InputText } from "@/components/ui/Inputs";
 import { Text } from "@/components/ui/Typo/Text";
-import { useUserLogin } from "@/services/user";
+import { postMethod } from "@/hooks/postMethod";
+import { AuthResponse } from "@/types/User";
 import { setUserInfo } from "@/utils/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 const validationSchema = yup.object({
-  email: yup.string().email().required("Please enter email address!").default(""),
+  email: yup.string().email().required("Email is required!").default(""),
   // password: yup.string().required("Password is required!").default(""),
 });
 
-interface LoginData {
+interface Login {
   email: string;
   // password: string;
 }
@@ -27,27 +29,24 @@ const Login = () => {
     resolver: yupResolver(validationSchema),
   });
 
-  const { isMutating, trigger } = useUserLogin();
+  const [error, setError] = useState<string | null>(null);
 
-  const loginHandler = async (data: LoginData) => {
-    await trigger(data, {
-      onSuccess: response => {
-        setUserInfo(response.data.token, response.data.data);
-        router.push("/auth/otp");
-      },
-    });
+  const loginHandler = async (data: Login) => {
+    postMethod<AuthResponse>("/user/login", data)
+      .then(response => {
+        setError(null);
+        setUserInfo(response.token, response.data);
+        router.push("/home");
+      })
+      .catch(error => setError(error.message));
   };
 
   return (
-    <div className="h-screen flex   relative px-5">
-      <div className="flex flex-col justify-center  h-full items-center w-full ">
-        <div className="flex justify-start w-full flex-col mb-[32px] flex-wrap gap-y-3">
-          <div className="font-700 text-[36px]">Login</div>
-          <div className="text-[16px] font-[300]">An OTP code will be send to your email</div>
-        </div>
+    <div className="h-screen flex flex-col relative px-5">
+      <div className="flex flex-col justify-evenly h-full items-center w-full flex-1">
         <Form {...form}>
           <form
-            className="mx-auto flex flex-col flex-wrap justify-center gap-y-5 w-full"
+            className="mx-auto flex flex-col justify-center gap-y-3 w-[90%]"
             onSubmit={form.handleSubmit(loginHandler)}
           >
             <FormField
@@ -55,36 +54,44 @@ const Login = () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>Enter your email address</FormLabel>
                   <FormControl>
-                    <InputText type="text" {...field} placeholder="Enter your emailaddress" />
+                    <InputText type="text" {...field} />
                   </FormControl>
                 </FormItem>
               )}
             />
+            {/* <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Enter your Password</FormLabel>
+                  <FormControl>
+                    <InputText type="password" {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            /> */}
 
-            <div className="flex w-full flex-wrap gap-x-1">
-              <input
-                id="default-checkbox"
-                type="checkbox"
-                value=""
-                className="w-5 h-5  border-slateGray bg-white rounded  focus:ring-slateGray  focus:ring-2 "
-              />
-              <Text as="div">I have read, understood and accept</Text>
-              <Text as="span" className="text-primary">
-                Terms of Use
-              </Text>
-            </div>
-            <Button type="submit" size="lg" disabled={isMutating}>
+            <Button type="submit" size="lg">
               Login
             </Button>
           </form>
         </Form>
-        <div className="flex flex-wrap gap-x-1 mt-3">
-          <Text>Don’t have an account? </Text>
-          <button className="text-primary" onClick={() => router.push("/auth/signup")}>
-            Sign up now
-          </button>
+        <div className="flex w-full flex-wrap gap-x-1">
+          <input
+            id="default-checkbox"
+            type="checkbox"
+            value=""
+            className="w-5 h-5  border-slateGray bg-white rounded  focus:ring-slateGray  focus:ring-2 "
+          />
+          <Text as="div">I have read, understood and accept</Text>
+          <Text as="span" className="text-primary">
+            Terms of Use
+          </Text>
         </div>
+        <Button onClick={() => router.push("/signup")}>Sign Up</Button>
       </div>
     </div>
   );
