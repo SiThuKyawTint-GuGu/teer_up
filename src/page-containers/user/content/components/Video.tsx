@@ -64,7 +64,10 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay }) => {
   };
 
   return (
-    <div className="w-full h-full md:aspect-video relative text-white">
+    <div
+      className="w-full h-full md:aspect-video relative text-white"
+      onClick={() => showCmt && setShowCmt(false)}
+    >
       {data.content_video && (
         <video
           poster={
@@ -176,7 +179,7 @@ const LikeandCmt: React.FC<CmtandLikeProps> = ({ data, setShowCmt, showCmt }) =>
           <div className="text-[18px] font-[600] text-center">{data.likes}</div>
         </div>
         <div className="flex flex-col flex-wrap gap-[10px]">
-          <Icons.comment className="w-[40px] h-[40px]" onClick={() => setShowCmt(!showCmt)} />
+          <Icons.comment className="w-[40px] h-[40px]" onClick={() => setShowCmt(true)} />
           <div className="text-[18px] font-[600] text-center">{data.comments}</div>
         </div>
         <div className="flex flex-col flex-wrap gap-[10px] ">
