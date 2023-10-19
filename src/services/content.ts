@@ -38,10 +38,12 @@ export const useGetContentById = <ContentType>(id: string): SWRResponse<ContentT
   return useSWR<ContentType>(key);
 };
 
-// export const useUpdateContent = (id: string) =>
-//   useSWRMutation(`/admin/contentcategories/${id}`, (url, { arg }: ContentArgType) => {
-//     return appAxios.put<ContentArgType>(url, arg);
-//   });
+export const useUpdateContent = (id: string) => {
+  console.log("id from content", id);
+  useSWRMutation(`/content/16`, (url, { arg }: ContentArgType) => {
+    return appAxios.put<ContentArgType>(url, arg);
+  });
+};
 
 export const usePostContent = () =>
   useSWRMutation(`/content`, (url, { arg }: ContentArgType) => {
@@ -57,10 +59,11 @@ export const usePostFile = () =>
     });
   });
 
-// export const useDeleteContent = (id: string) =>
-//   useSWRMutation(`/admin/contentcategories/${id}`, url => {
-//     return appAxios.delete<ContentArgType>(url);
-//   });
+
+export const useDeleteContent = (id: string) =>
+  useSWRMutation(`/content/${id}`, url => {
+    return appAxios.delete<ContentArgType>(url);
+
 type LikContentResType = {
   arg: {
     id: number | string;

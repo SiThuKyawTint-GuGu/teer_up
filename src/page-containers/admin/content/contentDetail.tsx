@@ -7,19 +7,31 @@ import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/u
 import { Button } from "@/components/ui/Button";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/Form";
 import { InputText } from "@/components/ui/Inputs";
-import { useGetContentById, usePostContent, usePostFile } from "@/services/content";
+import {
+  ParamsType,
+  useGetContent,
+  useGetContentById,
+  usePostContent,
+  usePostFile,
+} from "@/services/content";
 import { useGetContentCategory } from "@/services/contentCategory";
+import { useGetFormConfig } from "@/services/formConfig";
+import "@/styles/checkbox.css";
 import "@/styles/switch.css";
 import "@/styles/tab.css";
+import { ContentType } from "@/types/Content";
 import { ContentCategoryResponse } from "@/types/ContentCategory";
+import { FormConfigResponse } from "@/types/Formconfig";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import * as Checkbox from "@radix-ui/react-checkbox";
 import { Editor } from "@tinymce/tinymce-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { AiOutlineCheck } from "react-icons/ai";
 import * as yup from "yup";
 
 interface Props {
@@ -31,14 +43,21 @@ const validationSchema = yup.object({
   description: yup.string().required("Description is required!"),
 });
 
+interface PathwayType {
+  pathway_id: number;
+}
+
 const ContentDetail = ({ id }: Props) => {
   const router = useRouter();
   const editorRef = useRef<any>();
   const { data: content } = useGetContentById<any>(id);
+  const { data: contents } = useGetContent<ParamsType, ContentType>();
+  // console.log("get contents...", contents);
 
   const { trigger: fileTrigger } = usePostFile();
   const { trigger: postTrigger } = usePostContent();
   const { data: category } = useGetContentCategory<ContentCategoryResponse>();
+  const { data: formconfigs } = useGetFormConfig<FormConfigResponse>();
 
   const [selectedValue, setSelectedValue] = useState<string>("");
   // const [content, setContent] = useState<ContentResponseData | null>(null);
@@ -53,6 +72,8 @@ const ContentDetail = ({ id }: Props) => {
   const [desc, setDesc] = useState<string>("");
   const [selectCategory, setSelectCategory] = useState<string>("");
   const [selectCategoryName, setSelectCategoryName] = useState<string>("");
+  const [selectForm, setSelectForm] = useState<string>("");
+  const [selectFormName, setSelectFormName] = useState<string>("");
   const [location, setLocation] = useState<string>("");
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
@@ -61,6 +82,8 @@ const ContentDetail = ({ id }: Props) => {
   // const [editorContent, setEditorContent] = useState<any>(
   //   editorRef.current ? editorRef.current.getContent() : null
   // );
+  const [link, setLink] = useState<string>("");
+  const [pathways, setPathways] = useState<PathwayType[]>([]);
 
   const form = useForm<{ title: string; description: string }>({
     resolver: yupResolver(validationSchema),
@@ -161,6 +184,37 @@ const ContentDetail = ({ id }: Props) => {
           published_by: author,
         },
       };
+    } else if (selectedValue === "opportunity") {
+      if (!link) {
+        setEventError("Link is required!");
+        return;
+      }
+      if (!selectForm) {
+        setEventError("Please Select Form!");
+        return;
+      }
+      postdata = {
+        title: data?.title,
+        description: data?.description,
+        type: selectedValue,
+        status: "published",
+        category_id: Number(selectCategory),
+        image_url: imageUrl,
+        content_opportunity: {
+          link: link,
+          formconfig_id: 1,
+        },
+      };
+    } else if (selectedValue === "pathway") {
+      postdata = {
+        title: data?.title,
+        description: data?.description,
+        type: selectedValue,
+        status: "published",
+        category_id: Number(selectCategory),
+        image_url: imageUrl,
+        content_pathways: pathways,
+      };
     }
     // console.log(postdata);
     await postTrigger(postdata);
@@ -203,6 +257,20 @@ const ContentDetail = ({ id }: Props) => {
     setSelectCategoryName(selectItem?.name || "");
   };
 
+  const handleFormSelectChange = (selectedValue: string) => {
+    setSelectForm(selectedValue);
+    const selectItem = formconfigs?.data.find((cat: any) => cat.id === Number(selectedValue));
+    setSelectFormName(selectItem?.name || "");
+  };
+
+  const handleCheckboxChange = (id: number, isChecked: any) => {
+    if (isChecked) {
+      setPathways(prevPathways => [...prevPathways, { pathway_id: id }]);
+    } else {
+      setPathways(prevPathways => prevPathways.filter(pathway => pathway.pathway_id !== id));
+    }
+  };
+
   return (
     <>
       <Form {...form}>
@@ -237,7 +305,7 @@ const ContentDetail = ({ id }: Props) => {
               />
             </div>
             <div className="mb-10">
-              <p className="text-sm font-semibold mb-3">Selct Category</p>
+              <p className="text-sm font-semibold mb-3">Select Category</p>
               <Select onValueChange={handleCategorySelectChange}>
                 <SelectTrigger className="p-2 h-5 border-2  bg-white border-gray-700 ">
                   {selectCategoryName || "Category"}
@@ -266,7 +334,7 @@ const ContentDetail = ({ id }: Props) => {
                 </SelectContent>
               </Select>
             </div>
-
+            {eventError && <p className="text-red-700 mb-3">{eventError}</p>}
             {selectedValue === "video" && (
               <>
                 <div className="p-8">
@@ -319,7 +387,6 @@ const ContentDetail = ({ id }: Props) => {
             )}
             {selectedValue === "event" && (
               <>
-                {eventError && <p className="text-red-700 mb-3">{eventError}</p>}
                 <div className="flex">
                   <div className="mr-10">
                     <p className="text-sm font-semibold">Start Date</p>
@@ -360,7 +427,6 @@ const ContentDetail = ({ id }: Props) => {
             )}
             {selectedValue === "article" && (
               <>
-                {eventError && <p className="text-red-700 mb-3">{eventError}</p>}
                 <div className="my-5">
                   <p className="text-sm mb-2 font-semibold">Published By</p>
                   <fieldset className="Fieldset">
@@ -375,6 +441,59 @@ const ContentDetail = ({ id }: Props) => {
                   <p className="text-sm font-semibold mb-3">Content</p>
                   <Editor onInit={(evt, editor) => (editorRef.current = editor)} />
                 </div>
+              </>
+            )}
+            {selectedValue === "opportunity" && (
+              <>
+                <div className="my-5">
+                  <p className="text-sm mb-2 font-semibold">Link</p>
+                  <fieldset className="Fieldset">
+                    <input
+                      onChange={e => setLink(e.target.value)}
+                      className="Input"
+                      defaultValue={author || ""}
+                    />
+                  </fieldset>
+                </div>
+                <div className="mb-10">
+                  <p className="text-sm font-semibold mb-3">Select Form</p>
+                  <Select onValueChange={handleFormSelectChange}>
+                    <SelectTrigger className="p-2 h-5 border-2  bg-white border-gray-700 ">
+                      {selectFormName || "Form"}
+                    </SelectTrigger>
+                    <SelectContent className="bg-white">
+                      {formconfigs?.data.map((cat: any, index: number) => (
+                        <SelectItem key={index} value={cat.id}>
+                          {cat.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </>
+            )}
+            {selectedValue === "pathway" && (
+              <>
+                <p className="text-sm font-semibold mb-3">Select Pathways</p>
+                {contents?.data.map((item: any, index: number) => (
+                  <form className="my-3" key={index}>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <Checkbox.Root
+                        onCheckedChange={isChecked => handleCheckboxChange(item.id, isChecked)}
+                        defaultChecked={false}
+                        className="CheckboxRoot"
+                        id={`c${item.id}`}
+                      >
+                        <Checkbox.Indicator className="CheckboxIndicator">
+                          <AiOutlineCheck size={25} className="text-red-700" />
+                        </Checkbox.Indicator>
+                      </Checkbox.Root>
+                      <label className="Label" htmlFor={`c${item.id}`}>
+                        {item?.title}
+                      </label>
+                    </div>
+                  </form>
+                ))}
               </>
             )}
             {/* {content && content?.video_url && (

@@ -26,9 +26,7 @@ const FormConfig = () => {
               </Button>
             </Link>
           </div>
-          {formConfigs?.data && (
-            <Table tableColumns={Columns} tableData={formConfigs?.data || []} />
-          )}
+          {formConfigs?.data && <Table tableColumns={Columns} tableData={formConfigs?.data} />}
         </Box>
       </div>
     </>
