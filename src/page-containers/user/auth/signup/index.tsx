@@ -1,29 +1,25 @@
 "use client";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 import { Button } from "@/components/ui/Button";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/Form";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form";
 import { InputText } from "@/components/ui/Inputs";
 import { Text } from "@/components/ui/Typo/Text";
-import { postMethod } from "@/hooks/postMethod";
-import { AuthResponse } from "@/types/User";
 import { setUserInfo } from "@/utils/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useUserRegister } from "../../../../services/user";
 interface SignUpFormType {
-  email: String;
-  name: String;
-  // country: string;
-  // password: String;
+  email: string;
+  name: string;
+  country: string;
 }
 
 const validationSchema = yup.object({
   email: yup.string().email().required("Email is required!"),
   name: yup.string().required("Name is required!"),
-  // country: yup.string().required('Country is required!'),
+  country: yup.string().required("Country is required!"),
   // password: yup
   //   .string()
   //   .min(
@@ -35,76 +31,102 @@ const validationSchema = yup.object({
 
 const SignUp = () => {
   const router = useRouter();
-  // const { trigger, isloading } = useRegister();
   const form = useForm({
     resolver: yupResolver(validationSchema),
   });
-  const [error, setError] = useState<string | null>(null);
-  const [studentRegister, setStudentRegister] = useState<Boolean>(true);
-  const endPoint = studentRegister ? "/user/register" : "/user/mentor/register";
+
+  const { isMutating, trigger, error } = useUserRegister();
   const onSubmit = async (data: SignUpFormType) => {
-    // await trigger(data);
-    postMethod<AuthResponse>(endPoint, data)
-      .then(response => {
-        setError(null);
-        setUserInfo(response.token, response.data);
+    await trigger(data, {
+      onSuccess: response => {
+        setUserInfo(response.data.token, response.data.data);
         router.push("/auth/otp");
-      })
-      .catch(error => setError(error.message));
+      },
+    });
   };
   return (
     <div className="h-screen flex flex-col relative px-5">
-      <div className="flex justify-center py-5">
-        {studentRegister ? (
-          <Button onClick={() => setStudentRegister(false)}>To Mentor Register Form</Button>
-        ) : (
-          <Button onClick={() => setStudentRegister(true)}>To Student Register</Button>
-        )}
-      </div>
-      <div className="flex flex-col justify-evenly h-full items-center w-full flex-1">
-        <Image src="/auth/teeUpLogo.png" width={130} height={31} alt="teeUpLogo" />
-        {error && <div className="text-primary">{error}</div>}
+      {error && <div className="text-primary">{error}</div>}
+      <div className="flex flex-col  h-full justify-center w-full flex-1">
+        <Text as="div" className="mb-[3rem] text-[36px] font-[700]">
+          {" "}
+          Sign Up
+        </Text>
         <Form {...form}>
           <form
-            className="mx-auto flex flex-col justify-center gap-y-3 w-[90%]"
+            className="mx-auto flex flex-col justify-center gap-y-3 w-full"
             onSubmit={form.handleSubmit(onSubmit)}
           >
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Enter your name</FormLabel>
-                  <FormControl>
-                    <InputText type="text" {...field} />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Enter your email address</FormLabel>
                   <FormControl>
-                    <InputText type="text" {...field} />
+                    <InputText type="text" {...field} placeholder="Enter your emailaddress" />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <InputText type="text" {...field} placeholder="Enter your name" />
                   </FormControl>
                 </FormItem>
               )}
             />
 
-            <Button type="submit" size="lg">
+            <FormField
+              control={form.control}
+              name="country"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    {/* <InputText type="text" {...field} placeholder="Select a country" /> */}
+                    <select
+                      data-te-select-init
+                      aria-invalid="true"
+                      aria-describedby="name-error"
+                      autoComplete="off"
+                      placeholder="Select a country"
+                      className="block w-full rounded-[9px]  bg-white text-gray-400  px-[20px] py-[14px] outline-none"
+                      {...field}
+                    >
+                      <option value="">Select a country</option>
+                      <option value="1">Country 1</option>
+                      <option value="2">Country 2</option>
+                      <option value="3">Country 3</option>
+                      <option value="4">Country 4</option>
+                      <option value="5">Country 5</option>
+                      <option value="6">Country 6</option>
+                      <option value="7">Country 7</option>
+                      <option value="8">Country 8</option>
+                    </select>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <div className="flex w-full flex-wrap gap-x-1">
+              <input
+                id="default-checkbox"
+                type="checkbox"
+                value=""
+                className="w-5 h-5 checked:bg-white border-slateGray bg-white dark:ring-white rounded text-white focus:ring-slateGray focus:ring-2"
+              />
+              <Text as="div">I have read, understood and accept</Text>
+              <Text as="span" className="text-primary">
+                Terms of Use
+              </Text>
+            </div>
+            <Button type="submit" size="lg" className="mt-5" disabled={isMutating}>
               Sign Up
             </Button>
           </form>
         </Form>
-        <Button onClick={() => router.push("/login")}>Login</Button>
-        <Text as="div" className="absolute bottom-3 w-[80%] mx-auto">
-          By clicking &quot;Sign Up&quot;, I have read, understood, and given my consent and
-          accepted the Terms of Use.
-        </Text>
       </div>
     </div>
   );

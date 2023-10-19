@@ -14,6 +14,7 @@ import {
   IoGlobeOutline,
   IoHeartOutline,
   IoHome,
+  IoInformationCircleOutline,
   IoLogoApple,
   IoNotificationsOutline,
   IoPeopleOutline,
@@ -131,6 +132,7 @@ export const Icons = {
   like: IoHeartOutline,
   comment: IoChatbubbleOutline,
   share: IoShareSocialOutline,
+  inputError: IoInformationCircleOutline,
 };
 
 interface Image {

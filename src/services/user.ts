@@ -1,14 +1,10 @@
 "use client";
 import appAxios from "@/lib/appAxios";
 import { USER_ROLE } from "@/shared/enums";
-import { User } from "@/types/User";
+import { AuthResponse, User } from "@/types/User";
 import { routeFilter } from "@/utils";
 import useSWR, { SWRResponse } from "swr";
 import useSWRMutation from "swr/mutation";
-
-type RegisterArgType = {
-  arg: { email: string; name: string };
-};
 
 export type ParamsType = {
   page?: number;
@@ -56,7 +52,16 @@ export const useDeleteUser = () =>
   useSWRMutation(`/user`, (url, { arg }: { arg: { id: string } }) => {
     return appAxios.delete<UpdateUserResType>(`${url}/${arg.id}`);
   });
-export const useRegister = () =>
-  useSWRMutation(`/user/register`, (url, { arg }: RegisterArgType) =>
-    appAxios.post<RegisterArgType>(url, arg)
-  );
+
+interface RegisterArgType {
+  arg: {
+    name: string;
+    email: string;
+    country: number | string;
+  };
+}
+export const useUserRegister = () => {
+  return useSWRMutation(`/user/register`, (url, { arg }: RegisterArgType) => {
+    return appAxios.post<AuthResponse>(url, arg);
+  });
+};
