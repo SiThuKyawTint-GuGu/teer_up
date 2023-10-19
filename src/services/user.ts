@@ -76,3 +76,14 @@ export const useUserLogin = () => {
     return appAxios.post<AuthResponse>(url, arg);
   });
 };
+
+interface OtpArgType {
+  arg: {
+    verificationCode: string;
+  };
+}
+export const useOtpVerified = () => {
+  return useSWRMutation(`/user/verifyotp`, (url, { arg }: OtpArgType) => {
+    return appAxios.post<AuthResponse>(url, arg);
+  });
+};

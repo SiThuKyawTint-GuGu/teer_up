@@ -79,7 +79,7 @@ const UserContent = () => {
           dataLength={contentData.data.length}
           next={() => setPage(prev => prev + 1)}
           hasMore={hasMoreData(contentData)}
-          loader={<p>Loading...</p>}
+          loader={<p></p>}
         >
           <div className="snap-y flex-col snap-mandatory w-full max-h-[750px] h-[85vh]   no-scrollbar overflow-y-scroll">
             {contentData.data.map((data: ContentData, index: number) => (
