@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/Inputs/Select";
 
@@ -13,6 +13,7 @@ import {
   useGetContentById,
   usePostContent,
   usePostFile,
+  useUpdateContent,
 } from "@/services/content";
 import { useGetContentCategory } from "@/services/contentCategory";
 import { useGetFormConfig } from "@/services/formConfig";
@@ -54,17 +55,18 @@ const ContentDetail = ({ id }: Props) => {
   const { data: contents } = useGetContent<ParamsType, ContentType>();
   // console.log("get contents...", contents);
 
+  const { trigger: updateTrigger } = useUpdateContent(id);
   const { trigger: fileTrigger } = usePostFile();
   const { trigger: postTrigger } = usePostContent();
   const { data: category } = useGetContentCategory<ContentCategoryResponse>();
   const { data: formconfigs } = useGetFormConfig<FormConfigResponse>();
 
-  const [selectedValue, setSelectedValue] = useState<string>("");
+  const [selectedValue, setSelectedValue] = useState<string>(content?.data.type || "");
   // const [content, setContent] = useState<ContentResponseData | null>(null);
 
   const [videoUrl, setVideoUrl] = useState<string>("");
   const [fileUrl, setFileUrl] = useState<string>("");
-  const [imgUrl, setImgUrl] = useState<string>("");
+  const [imgUrl, setImgUrl] = useState<string>(content?.data.image_url || "");
   const [file, setFile] = useState<File | null>(null);
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [image, setImage] = useState<File | null>(null);
@@ -72,9 +74,13 @@ const ContentDetail = ({ id }: Props) => {
   const [desc, setDesc] = useState<string>("");
   const [selectCategory, setSelectCategory] = useState<string>("");
   const [selectCategoryName, setSelectCategoryName] = useState<string>("");
-  const [selectForm, setSelectForm] = useState<string>("");
-  const [selectFormName, setSelectFormName] = useState<string>("");
-  const [location, setLocation] = useState<string>("");
+  const [selectForm, setSelectForm] = useState<string>(
+    content?.data?.content_opportunity?.formconfig_id || ""
+  );
+  const [selectFormName, setSelectFormName] = useState<string>(
+    content?.data.content_opportunity?.form_config.name || ""
+  );
+  const [location, setLocation] = useState<string>(content?.data?.content_event?.location || "");
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   const [eventError, setEventError] = useState<string>("");
@@ -82,8 +88,17 @@ const ContentDetail = ({ id }: Props) => {
   // const [editorContent, setEditorContent] = useState<any>(
   //   editorRef.current ? editorRef.current.getContent() : null
   // );
-  const [link, setLink] = useState<string>("");
+  const [link, setLink] = useState<string>(content?.data?.content_opportunity?.link || "");
   const [pathways, setPathways] = useState<PathwayType[]>([]);
+
+  useEffect(() => {
+    if (content?.data) {
+      content.data.content_pathways?.map((cont: any) => {
+        setPathways(prevPathways => [...prevPathways, { pathway_id: cont.id }]);
+      });
+    }
+  }, []);
+  console.log("content pathway", pathways);
 
   const form = useForm<{ title: string; description: string }>({
     resolver: yupResolver(validationSchema),
@@ -108,6 +123,14 @@ const ContentDetail = ({ id }: Props) => {
     let videoUrl = "";
     let imageUrl = "";
     let postdata: any = {};
+    if (!selectCategory) {
+      setEventError("Please select category!");
+      return;
+    }
+    if (!selectedValue) {
+      setEventError("Please select type!");
+      return;
+    }
 
     const imgRes: any = image && (await fileTrigger({ file: image }));
     if (imgRes) {
@@ -137,6 +160,7 @@ const ContentDetail = ({ id }: Props) => {
           thumbnail: thumbnailUrl,
         },
       };
+      content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
     } else if (selectedValue === "event") {
       if (!location) {
         setEventError("Location is required!");
@@ -163,6 +187,7 @@ const ContentDetail = ({ id }: Props) => {
           location: location,
         },
       };
+      content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
     } else if (selectedValue === "article") {
       if (!author) {
         setEventError("Author name is required!");
@@ -184,6 +209,7 @@ const ContentDetail = ({ id }: Props) => {
           published_by: author,
         },
       };
+      content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
     } else if (selectedValue === "opportunity") {
       if (!link) {
         setEventError("Link is required!");
@@ -205,6 +231,7 @@ const ContentDetail = ({ id }: Props) => {
           formconfig_id: 1,
         },
       };
+      content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
     } else if (selectedValue === "pathway") {
       postdata = {
         title: data?.title,
@@ -215,9 +242,9 @@ const ContentDetail = ({ id }: Props) => {
         image_url: imageUrl,
         content_pathways: pathways,
       };
+      content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
     }
-    // console.log(postdata);
-    await postTrigger(postdata);
+
     router.push("/admin/contents/content");
   };
 
@@ -451,7 +478,7 @@ const ContentDetail = ({ id }: Props) => {
                     <input
                       onChange={e => setLink(e.target.value)}
                       className="Input"
-                      defaultValue={author || ""}
+                      defaultValue={link || ""}
                     />
                   </fieldset>
                 </div>
