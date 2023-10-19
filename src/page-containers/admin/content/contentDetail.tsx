@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/Inputs/Select";
 
@@ -65,8 +65,8 @@ const ContentDetail = ({ id }: Props) => {
   const [selectedValue, setSelectedValue] = useState<string>(content?.data.type || "");
   // const [content, setContent] = useState<ContentResponseData | null>(null);
 
-  const [videoUrl, setVideoUrl] = useState<string>("");
-  const [fileUrl, setFileUrl] = useState<string>("");
+  const [videoUrl, setVideoUrl] = useState<string>(content?.data?.content_video?.video_url || "");
+  const [fileUrl, setFileUrl] = useState<string>(content?.data?.content_video?.thumbnail || "");
   const [imgUrl, setImgUrl] = useState<string>(content?.data.image_url || "");
   const [file, setFile] = useState<File | null>(null);
   const [thumbnail, setThumbnail] = useState<File | null>(null);
@@ -89,12 +89,13 @@ const ContentDetail = ({ id }: Props) => {
   );
   const [endDate, setEndDate] = useState<string>(content?.data?.content_event?.to_datetime || "");
   const [eventError, setEventError] = useState<string>("");
-  const [author, setAuthor] = useState<string>("");
-  // const [editorContent, setEditorContent] = useState<any>(
-  //   editorRef.current ? editorRef.current.getContent() : null
-  // );
+  const [author, setAuthor] = useState<string>(content?.data?.content_article?.published_by || "");
+  const [editorContent, setEditorContent] = useState<any>(
+    content?.data?.content_article?.article_body || ""
+  );
   const [link, setLink] = useState<string>(content?.data?.content_opportunity?.link || "");
   const [pathways, setPathways] = useState<PathwayType[]>([]);
+  const [editor, setEditor] = useState<any>(null);
 
   // useEffect(() => {
   //   if (content?.data) {
@@ -104,6 +105,15 @@ const ContentDetail = ({ id }: Props) => {
   //   }
   // }, []);
   // console.log("content pathway", pathways);
+
+  const handleEditorInit = (evt: any, editor: any) => {
+    setEditor(editor);
+  };
+  useEffect(() => {
+    if (editor) {
+      editor.setContent(editorContent);
+    }
+  }, [editorContent, editor]);
 
   const form = useForm<{ title: string; description: string }>({
     resolver: yupResolver(validationSchema),
@@ -124,9 +134,6 @@ const ContentDetail = ({ id }: Props) => {
   };
 
   const handleSubmit = async (data: { title: string; description: string }) => {
-    let thumbnailUrl = "";
-    let videoUrl = "";
-    let imageUrl = imgUrl;
     let postdata: any = {};
     if (!selectCategory) {
       setEventError("Please select category!");
@@ -139,7 +146,7 @@ const ContentDetail = ({ id }: Props) => {
 
     const imgRes: any = image && (await fileTrigger({ file: image }));
     if (imgRes) {
-      imageUrl = imgRes.data?.data?.file_path;
+      setImgUrl(imgRes.data?.data?.file_path);
     }
 
     if (selectedValue === "video") {
@@ -147,11 +154,10 @@ const ContentDetail = ({ id }: Props) => {
       const videoRes: any = file && (await fileTrigger({ file }));
 
       if (thumbnailRes) {
-        thumbnailUrl = thumbnailRes.data?.data?.file_path;
+        setFileUrl(thumbnailRes.data?.data?.file_path);
       }
       if (videoRes) {
-        videoUrl = videoRes.data?.data?.file_path;
-        console.log("Video URL:", videoUrl);
+        setVideoUrl(videoRes.data?.data?.file_path);
       }
       postdata = {
         title: data?.title,
@@ -159,10 +165,10 @@ const ContentDetail = ({ id }: Props) => {
         type: selectedValue,
         status: "published",
         category_id: Number(selectCategory),
-        image_url: imageUrl,
+        image_url: imgUrl,
         content_video: {
           video_url: videoUrl,
-          thumbnail: thumbnailUrl,
+          thumbnail: fileUrl,
         },
       };
       content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
@@ -185,7 +191,7 @@ const ContentDetail = ({ id }: Props) => {
         type: selectedValue,
         status: "published",
         category_id: Number(selectCategory),
-        image_url: imageUrl,
+        image_url: imgUrl,
         content_event: {
           from_datetime: startDate,
           to_datetime: endDate,
@@ -198,7 +204,7 @@ const ContentDetail = ({ id }: Props) => {
         setEventError("Author name is required!");
         return;
       }
-      if (!editorRef.current.getContent()) {
+      if (!editor.getContent()) {
         setEventError("Content is required!");
         return;
       }
@@ -208,9 +214,9 @@ const ContentDetail = ({ id }: Props) => {
         type: selectedValue,
         status: "published",
         category_id: Number(selectCategory),
-        image_url: imageUrl,
+        image_url: imgUrl,
         content_article: {
-          article_body: editorRef.current.getContent(),
+          article_body: editor.getContent(),
           published_by: author,
         },
       };
@@ -230,7 +236,7 @@ const ContentDetail = ({ id }: Props) => {
         type: selectedValue,
         status: "published",
         category_id: Number(selectCategory),
-        image_url: imageUrl,
+        image_url: imgUrl,
         content_opportunity: {
           link: link,
           formconfig_id: 1,
@@ -244,7 +250,7 @@ const ContentDetail = ({ id }: Props) => {
         type: selectedValue,
         status: "published",
         category_id: Number(selectCategory),
-        image_url: imageUrl,
+        image_url: imgUrl,
         content_pathways: pathways,
       };
       content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
@@ -473,7 +479,7 @@ const ContentDetail = ({ id }: Props) => {
                 </div>
                 <div className="mb-10">
                   <p className="text-sm font-semibold mb-3">Content</p>
-                  <Editor onInit={(evt, editor) => (editorRef.current = editor)} />
+                  <Editor onInit={handleEditorInit} />
                 </div>
               </>
             )}
@@ -530,27 +536,6 @@ const ContentDetail = ({ id }: Props) => {
                 ))}
               </>
             )}
-            {/* {content && content?.video_url && (
-          <div className="mt-4">
-            <p className="font-bold mb-2">Video Preview:</p>
-            <video width={300} height={300} controls>
-              <source src={content.video_url} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-          </div>
-        )} */}
-            {/* {content && content?.photo_url && (
-          <div className="mt-4">
-            <p className="font-bold mb-2">Thumbnail Preview:</p>
-            <Image
-              width={300}
-              height={300}
-              src={content.photo_url}
-              alt="File Preview"
-              className="max-w-full h-auto"
-            />
-          </div>
-        )} */}
             <div className="p-8">
               <label className="flex items-center w-[30%] justify-center px-4 py-2 bg-red-600 text-white rounded-lg cursor-pointer">
                 <span className="text-base font-medium">Upload Image</span>
