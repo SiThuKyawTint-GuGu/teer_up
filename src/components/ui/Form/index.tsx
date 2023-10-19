@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/Label";
 import { cn } from "@/utils/cn";
 import type * as LabelPrimitive from "@radix-ui/react-label";
 import { Slot } from "@radix-ui/react-slot";
+import { Icons } from "../Images";
 
 const Form = FormProvider;
 
@@ -64,7 +65,15 @@ const FormItem = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivEl
     return (
       <FormItemContext.Provider value={{ id }}>
         <div ref={ref} className={cn("space-y-1", className)} {...props} />
-        <p className="text-primary">{error?.message}</p>
+        {error && (
+          <div className="text-primary flex items-center ">
+            <div className="me-1">
+              {""}
+              <Icons.inputError />
+            </div>
+            {error?.message}
+          </div>
+        )}
       </FormItemContext.Provider>
     );
   }

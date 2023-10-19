@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -45,8 +44,6 @@ const Login = () => {
   return (
     <div className="h-screen flex flex-col relative px-5">
       <div className="flex flex-col justify-evenly h-full items-center w-full flex-1">
-        <Image src="/auth/teeUpLogo.png" width={130} height={31} alt="teeUpLogo" />
-        {error && <div className="text-primary">{error}</div>}
         <Form {...form}>
           <form
             className="mx-auto flex flex-col justify-center gap-y-3 w-[90%]"
@@ -82,11 +79,19 @@ const Login = () => {
             </Button>
           </form>
         </Form>
+        <div className="flex w-full flex-wrap gap-x-1">
+          <input
+            id="default-checkbox"
+            type="checkbox"
+            value=""
+            className="w-5 h-5  border-slateGray bg-white rounded  focus:ring-slateGray  focus:ring-2 "
+          />
+          <Text as="div">I have read, understood and accept</Text>
+          <Text as="span" className="text-primary">
+            Terms of Use
+          </Text>
+        </div>
         <Button onClick={() => router.push("/signup")}>Sign Up</Button>
-        <Text as="div" className="absolute bottom-3 w-[80%]">
-          By clicking &quot;Log In&quot;, I have read, understood, and given my consent and accepted
-          the Terms of Use.
-        </Text>
       </div>
     </div>
   );

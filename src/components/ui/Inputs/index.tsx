@@ -25,7 +25,7 @@ const InputText = React.forwardRef<HTMLInputElement, Props>(
         <div className="relative mt-1 rounded-md shadow-sm">
           <InputStyled
             type={type}
-            className={`block w-full rounded-[9px] border-[2px] bg-white border-[#BABABA] px-[20px] py-[14px] focus:border-[#00678D] ${className}`}
+            className={`block w-full rounded-[9px]  bg-white  px-[20px] py-[14px]  ${className}`}
             aria-invalid="true"
             aria-describedby="name-error"
             autoComplete="off"
