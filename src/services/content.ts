@@ -3,6 +3,12 @@ import appAxios from "@/lib/appAxios";
 import { routeFilter } from "@/utils";
 import useSWR, { SWRResponse } from "swr";
 import useSWRMutation from "swr/mutation";
+
+export type ParamsType = {
+  page?: number;
+  pageSize?: number;
+};
+
 export interface ContentArgType {
   arg: {
     title?: string;

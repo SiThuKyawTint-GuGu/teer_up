@@ -1,20 +1,13 @@
-'use client';
-import UserTable from '@/components/ui/Table/UserTable';
-import { ParamsType, useGetUser } from '@/services/user';
-import { USER_ROLE } from '@/shared/enums';
-import { UserResponse } from '@/types/User';
-import { Box } from '@radix-ui/themes';
-import { UserColumns } from './UserColumns';
+"use client";
+import UserTable from "@/components/ui/Table/UserTable";
+import { Box } from "@radix-ui/themes";
 
 const UserList = () => {
-  const { data: userData } = useGetUser<ParamsType, UserResponse>({
-    role: USER_ROLE.USER,
-  });
-
   return (
     <>
       <Box className="bg-white p-10 rounded-md">
-        {userData?.data && <UserTable tableColumns={UserColumns} tableData={userData?.data} />}
+        {/* {userData?.data && <UserTable tableColumns={UserColumns} tableData={userData?.data} />} */}
+        <UserTable />
       </Box>
     </>
   );
