@@ -59,10 +59,10 @@ export const usePostFile = () =>
     });
   });
 
-
 export const useDeleteContent = (id: string) =>
   useSWRMutation(`/content/${id}`, url => {
     return appAxios.delete<ContentArgType>(url);
+  });
 
 type LikContentResType = {
   arg: {
