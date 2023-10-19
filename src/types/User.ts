@@ -9,10 +9,11 @@ export interface User {
 }
 
 export type UserResponse = {
-  currentPage?: number;
+  current_page?: number;
   data?: User[];
-  totalCount?: number;
-  totalPages?: number;
+  last_page?: number;
+  per_page?: number;
+  total?: number;
 };
 
 export interface TokenData {

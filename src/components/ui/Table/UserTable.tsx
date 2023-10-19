@@ -12,6 +12,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { Box, IconButton, Tooltip } from "@mui/material";
 import {
+  MRT_PaginationState,
   MaterialReactTable,
   useMaterialReactTable,
   type MRT_Row,
@@ -23,19 +24,25 @@ import { type User } from "./makeData";
 
 const UserTable: React.FC = () => {
   const [validationErrors, setValidationErrors] = useState<Record<string, string | undefined>>({});
+  const [globalFilter, setGlobalFilter] = useState<string>("");
+  const [pagination, setPagination] = useState<MRT_PaginationState>({
+    pageIndex: 1,
+    pageSize: 10,
+  });
   const {
     data: userData,
     mutate,
     isLoading,
   } = useGetUser<ParamsType, UserResponse>({
     role: USER_ROLE.STUDENT,
-    page: 1,
-    pageSize: 30,
+    page: pagination.pageIndex + 1,
+    pageSize: pagination.pageSize,
+    name: globalFilter || "",
   });
   const { trigger: createTrigger } = useCreateUser();
   const { trigger: updateTrigger } = useUpdateUser();
   const { trigger: deleteTrigger } = useDeleteUser();
-  const columns = useMemo(
+  const columns = useMemo<any>(
     () => [
       {
         accessorKey: "id",
@@ -80,16 +87,19 @@ const UserTable: React.FC = () => {
         accessorKey: "role",
         header: "Role",
         enableEditing: true,
+        editVariant: "select",
+        editSelectOptions: ["Student", "Mentor"],
         muiEditTextFieldProps: {
-          type: "email",
+          select: true,
+          type: "role",
           required: true,
-          error: !!validationErrors?.email,
-          helperText: validationErrors?.email,
+          error: !!validationErrors?.role,
+          helperText: validationErrors?.role,
           //remove any previous validation errors when user focuses on the input
           onFocus: () =>
             setValidationErrors({
               ...validationErrors,
-              email: undefined,
+              role: undefined,
             }),
         },
       },
@@ -147,15 +157,24 @@ const UserTable: React.FC = () => {
   const openDeleteConfirmModal = async (row: MRT_Row<any>) => {
     const { id } = row;
     if (window.confirm("Are you sure you want to delete this user?")) {
-      await deleteTrigger({ id });
+      await deleteTrigger(
+        { id },
+        {
+          onSuccess: () => {
+            mutate();
+          },
+        }
+      );
     }
   };
+
+  console.log("globalFilter => ", globalFilter);
 
   const table = useMaterialReactTable({
     columns,
     data: (userData?.data as any) || [],
-    createDisplayMode: "row", // ('modal', and 'custom' are also available)
-    editDisplayMode: "row", // ('modal', 'cell', 'table', and 'custom' are also available)
+    createDisplayMode: "row",
+    editDisplayMode: "row",
     enableEditing: true,
     getRowId: row => row.id,
     muiToolbarAlertBannerProps: isLoading
@@ -173,9 +192,22 @@ const UserTable: React.FC = () => {
     onCreatingRowSave: handleCreateUser,
     onEditingRowCancel: () => setValidationErrors({}),
     positionActionsColumn: "last",
+    manualFiltering: true,
+    manualPagination: true,
+    rowCount: userData?.total,
+    initialState: {
+      pagination: {
+        pageSize: 10,
+        pageIndex: 1,
+      },
+    },
     state: {
       showSkeletons: isLoading ?? false,
+      pagination,
+      isLoading,
     },
+    onGlobalFilterChange: setGlobalFilter,
+    onPaginationChange: setPagination,
     onEditingRowSave: handleSaveUser,
     renderRowActions: ({ row, table }) => (
       <Box sx={{ display: "flex", gap: "1rem" }}>
@@ -204,50 +236,6 @@ const UserTable: React.FC = () => {
 
   return <MaterialReactTable table={table} />;
 };
-
-//CREATE hook (post new user to api)
-// function useCreateUser() {
-//   const { data, isLoading, error } = useGetUser<ParamsType, UserResponse>({
-//     role: ROLES.USER,
-//   });
-//   return {
-//     data,
-//     isLoading,
-//     error,
-//   };
-// }
-
-//READ hook (get users from api)
-// function useGetUsers() {
-//   const { data, isLoading, error } = useGetUser<ParamsType, UserResponse>({
-//     role: ROLES.USER,
-//   });
-//   return {
-//     data,
-//     isLoading,
-//     error,
-//   };
-// }
-
-//UPDATE hook (put user in api)
-// const useUpdate = (id: string) => {
-//   const { trigger } = useUpdateUser(id);
-//   return {
-//     trigger,
-//   };
-// };
-
-//DELETE hook (delete user in api)
-// function useDeleteUser() {
-//   const { data, isLoading, error } = useGetUser<ParamsType, UserResponse>({
-//     role: ROLES.USER,
-//   });
-//   return {
-//     data,
-//     isLoading,
-//     error,
-//   };
-// }
 
 export default UserTable;
 
