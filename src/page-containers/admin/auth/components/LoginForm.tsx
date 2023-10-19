@@ -29,8 +29,6 @@ const LoginForm = () => {
     resolver: yupResolver(validationSchema),
   });
 
-  // const registerMutation = useLogin();
-
   const loginHandler = async (data: Login) => {
     postMethod<AuthResponse>("/user/login", data)
       .then(response => {

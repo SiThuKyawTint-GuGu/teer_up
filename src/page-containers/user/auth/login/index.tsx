@@ -1,6 +1,5 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -8,8 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/Form";
 import { InputText } from "@/components/ui/Inputs";
 import { Text } from "@/components/ui/Typo/Text";
-import { postMethod } from "@/hooks/postMethod";
-import { AuthResponse } from "@/types/User";
+import { useUserLogin } from "@/services/user";
 import { setUserInfo } from "@/utils/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 
@@ -29,16 +27,15 @@ const Login = () => {
     resolver: yupResolver(validationSchema),
   });
 
-  const [error, setError] = useState<string | null>(null);
+  const { isMutating, trigger, error } = useUserLogin();
 
   const loginHandler = async (data: Login) => {
-    postMethod<AuthResponse>("/user/login", data)
-      .then(response => {
-        setError(null);
-        setUserInfo(response.token, response.data);
-        router.push("/home");
-      })
-      .catch(error => setError(error.message));
+    await trigger(data, {
+      onSuccess: res => {
+        setUserInfo(res.data.token, res.data.data);
+        router.push("/login/otp");
+      },
+    });
   };
 
   return (
@@ -91,7 +88,7 @@ const Login = () => {
             Terms of Use
           </Text>
         </div>
-        <Button onClick={() => router.push("/signup")}>Sign Up</Button>
+        <Button onClick={() => router.push("/auth/signup")}>Sign Up</Button>
       </div>
     </div>
   );

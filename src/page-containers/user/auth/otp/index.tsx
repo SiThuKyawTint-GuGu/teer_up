@@ -8,6 +8,8 @@ import * as yup from "yup";
 import { Button } from "@/components/ui/Button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form";
 import { InputText } from "@/components/ui/Inputs";
+import Modal from "@/components/ui/Modal";
+import { Text } from "@/components/ui/Typo/Text";
 import { postMethod } from "@/hooks/postMethod";
 import { useOtpVerified } from "@/services/user";
 import { OtpResponse } from "@/types/User";
@@ -21,6 +23,7 @@ interface OtpFormData {
   verificationCode: string;
 }
 const Otp = () => {
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -50,7 +53,10 @@ const Otp = () => {
 
   return (
     <div className="h-screen flex flex-col relative px-5">
-      <button className="flex w-full justify-end text-primary mt-5 font-[600] text-[18px]">
+      <button
+        className="flex w-full justify-end text-primary mt-5 font-[600] text-[18px]"
+        onClick={() => setModalOpen(true)}
+      >
         Skip for now
       </button>
       <div className="flex flex-col justify-center flex-wrap gap-y-5  h-full items-center w-full flex-1">
@@ -62,6 +68,7 @@ const Otp = () => {
           <div className="font-700 text-[36px]">Verify email</div>
           <div className="text-[16px] font-[300]">Check your inbox and enter the received OTP</div>
         </div>
+
         <Form {...form}>
           <form
             className="w-full flex flex-col justify-center flex-wrap gap-y-3"
@@ -90,6 +97,24 @@ const Otp = () => {
           </Button>
         </Form>
       </div>
+      {modalOpen && (
+        <Modal onClose={() => setModalOpen(false)}>
+          <div className="bg-white w-[398px]">
+            <div className="text-center w-full py-[16px] text-[20px] font-[600]">Verfiy Email</div>
+            <div className="bg-[#EEE] w-full px-[24px] py-[32px] flex flex-col flex-wrap gap-y-3">
+              <Text className="text-center font-[400]">
+                Are you sure to continue without verification? We will not be able to save your
+                progress if you do not verify email.
+              </Text>
+
+              <Button size="lg" className="w-full">
+                Verify now
+              </Button>
+              <button>Verify Later</button>
+            </div>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 };

@@ -29,6 +29,7 @@
     "@mui/material": "^5.14.13",
     "@mui/x-date-pickers": "^6.16.2",
     "@radix-ui/react-collapsible": "^1.0.3",
+    "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-switch": "^1.0.3",
     "@radix-ui/react-tabs": "^1.0.4",
