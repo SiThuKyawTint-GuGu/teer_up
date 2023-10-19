@@ -128,7 +128,14 @@ const AdminTable: React.FC = () => {
   const openDeleteConfirmModal = async (row: MRT_Row<any>) => {
     const { id } = row;
     if (window.confirm("Are you sure you want to delete this user?")) {
-      await deleteTrigger({ id });
+      await deleteTrigger(
+        { id },
+        {
+          onSuccess: () => {
+            mutate();
+          },
+        }
+      );
     }
   };
 
