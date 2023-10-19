@@ -87,3 +87,9 @@ export const useOtpVerified = () => {
     return appAxios.post<AuthResponse>(url, arg);
   });
 };
+
+export const useGetOtp = () => {
+  return useSWRMutation(`/user/requestotp`, url => {
+    return appAxios.post<AuthResponse>(url);
+  });
+};

@@ -8,9 +8,9 @@ import { Button } from "@/components/ui/Button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form";
 import { InputText } from "@/components/ui/Inputs";
 import { useOtpVerified } from "@/services/user";
-import { getToken, setUserInfo } from "@/utils/auth";
+import { setUserInfo } from "@/utils/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
-const token: string = getToken();
+
 const validationSchema = yup.object({
   verificationCode: yup.string().required("Enter verification code"),
 });

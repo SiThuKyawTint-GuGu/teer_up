@@ -10,12 +10,10 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form";
 import { InputText } from "@/components/ui/Inputs";
 import Modal from "@/components/ui/Modal";
 import { Text } from "@/components/ui/Typo/Text";
-import { postMethod } from "@/hooks/postMethod";
-import { useOtpVerified } from "@/services/user";
-import { OtpResponse } from "@/types/User";
-import { getToken, setUserInfo } from "@/utils/auth";
+import { useGetOtp, useOtpVerified } from "@/services/user";
+import { setUserInfo } from "@/utils/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
-const token: string = getToken();
+
 const validationSchema = yup.object({
   verificationCode: yup.string().required("Enter verification code"),
 });
@@ -24,20 +22,12 @@ interface OtpFormData {
 }
 const Otp = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [message, setMessage] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+
   const router = useRouter();
-  const { isMutating: verifiedLoading, trigger: verified } = useOtpVerified();
+  const { isMutating: verifiedLoading, trigger: verified, error } = useOtpVerified();
+  const { isMutating, trigger: getOtpCode } = useGetOtp();
   const getOtp = async () => {
-    postMethod<OtpResponse>("/user/requestotp", {}, token)
-      .then(data => {
-        setMessage(data.message);
-        setError(null);
-      })
-      .catch(error => {
-        setMessage(null);
-        setError(error.message);
-      });
+    await getOtpCode();
   };
   const form = useForm({
     resolver: yupResolver(validationSchema),
@@ -60,10 +50,7 @@ const Otp = () => {
         Skip for now
       </button>
       <div className="flex flex-col justify-center flex-wrap gap-y-5  h-full items-center w-full flex-1">
-        <div>
-          {message && <div className="text-green-800">{message}</div>}
-          {error && <div className="text-primary">{error}</div>}
-        </div>
+        <div>{error && <div className="text-primary">{error.response.data.message}</div>}</div>
         <div className="flex justify-start w-full flex-col mb-[32px] flex-wrap gap-y-3">
           <div className="font-700 text-[36px]">Verify email</div>
           <div className="text-[16px] font-[300]">Check your inbox and enter the received OTP</div>
@@ -92,7 +79,7 @@ const Otp = () => {
             </Button>
           </form>
           <button className="text-primary">Change email</button>
-          <Button size="lg" onClick={getOtp}>
+          <Button size="lg" onClick={getOtp} disabled={isMutating}>
             Resend Varification
           </Button>
         </Form>
