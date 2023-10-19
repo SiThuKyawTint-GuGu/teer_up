@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/Inputs/Select";
 
@@ -51,7 +51,6 @@ interface PathwayType {
 
 const ContentDetail = ({ id }: Props) => {
   const router = useRouter();
-  const editorRef = useRef<any>();
   const { data: content } = useGetContentById<any>(id);
   const { data: contents } = useGetContent<ParamsType, ContentType>();
   // console.log("get contents...", contents);
@@ -63,7 +62,6 @@ const ContentDetail = ({ id }: Props) => {
   const { data: formconfigs } = useGetFormConfig<FormConfigResponse>();
 
   const [selectedValue, setSelectedValue] = useState<string>(content?.data.type || "");
-  // const [content, setContent] = useState<ContentResponseData | null>(null);
 
   const [videoUrl, setVideoUrl] = useState<string>(content?.data?.content_video?.video_url || "");
   const [fileUrl, setFileUrl] = useState<string>(content?.data?.content_video?.thumbnail || "");
@@ -71,8 +69,6 @@ const ContentDetail = ({ id }: Props) => {
   const [file, setFile] = useState<File | null>(null);
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [image, setImage] = useState<File | null>(null);
-  const [title, setTitle] = useState<string>("");
-  const [desc, setDesc] = useState<string>("");
   const [selectCategory, setSelectCategory] = useState<string>(content?.data?.category?.id || "");
   const [selectCategoryName, setSelectCategoryName] = useState<string>(
     content?.data?.category?.name || ""
@@ -94,17 +90,12 @@ const ContentDetail = ({ id }: Props) => {
     content?.data?.content_article?.article_body || ""
   );
   const [link, setLink] = useState<string>(content?.data?.content_opportunity?.link || "");
-  const [pathways, setPathways] = useState<PathwayType[]>([]);
+  const [pathways, setPathways] = useState<PathwayType[]>(
+    content?.data?.content_pathways
+      ? content?.data?.content_pathways.map((item: any) => ({ pathway_id: item.pathway.id }))
+      : []
+  );
   const [editor, setEditor] = useState<any>(null);
-
-  // useEffect(() => {
-  //   if (content?.data) {
-  //     content.data.content_pathways?.map((cont: any) => {
-  //       setPathways(prevPathways => [...prevPathways, { pathway_id: cont.id }]);
-  //     });
-  //   }
-  // }, []);
-  // console.log("content pathway", pathways);
 
   const handleEditorInit = (evt: any, editor: any) => {
     setEditor(editor);
@@ -520,7 +511,7 @@ const ContentDetail = ({ id }: Props) => {
                     <div style={{ display: "flex", alignItems: "center" }}>
                       <Checkbox.Root
                         onCheckedChange={isChecked => handleCheckboxChange(item.id, isChecked)}
-                        defaultChecked={false}
+                        defaultChecked={pathways.some(path => path.pathway_id === item.id)}
                         className="CheckboxRoot"
                         id={`c${item.id}`}
                       >
