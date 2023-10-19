@@ -1,28 +1,17 @@
 "use client";
 import { Button } from "@/components/ui/Button";
-import { ParamsType, useGetContent } from "@/services/content";
-import {
-  useCreateContentCategory,
-  useDeleteContentCategory,
-  useUpdateContentCategory,
-} from "@/services/contentCategory";
+import { ParamsType, useDeleteContent, useGetContent } from "@/services/content";
 import { ContentType } from "@/types/Content";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { Box, IconButton, Tooltip } from "@mui/material";
-import {
-  MaterialReactTable,
-  useMaterialReactTable,
-  type MRT_TableOptions,
-} from "material-react-table";
-import { useMemo, useState } from "react";
+import { MaterialReactTable, MRT_Row, useMaterialReactTable } from "material-react-table";
+import Link from "next/link";
+import { useMemo } from "react";
 
 const ContentTable: React.FC = () => {
-  const [validationErrors, setValidationErrors] = useState<Record<string, string | undefined>>({});
-  const { data: contents, isLoading, mutate } = useGetContent<ParamsType, ContentType>();
-  const { trigger: createTrigger } = useCreateContentCategory();
-  const { trigger: updateTrigger } = useUpdateContentCategory();
-  const { trigger: deleteTrigger } = useDeleteContentCategory();
+  const { data: contents, isLoading } = useGetContent<ParamsType, ContentType>();
+  const { trigger: deleteTrigger } = useDeleteContent();
 
   const columns = useMemo(
     () => [
@@ -52,52 +41,15 @@ const ContentTable: React.FC = () => {
         enableEditing: false,
       },
     ],
-    [validationErrors]
+    []
   );
 
-  //CREATE action
-  const handleCreateCategory: MRT_TableOptions<any>["onCreatingRowSave"] = async ({
-    values,
-    table,
-  }) => {
-    const { id, name } = values;
-    const newValidationErrors = validateUser(values);
-    if (Object.values(newValidationErrors).some(error => error)) {
-      setValidationErrors(newValidationErrors);
-      return;
+  //DELETE action
+  const openDeleteConfirmModal = async (row: MRT_Row<any>) => {
+    const { id } = row;
+    if (window.confirm("Are you sure you want to delete this content?")) {
+      await deleteTrigger({ id });
     }
-    setValidationErrors({});
-    const newValues = {
-      name,
-      values,
-    };
-    createTrigger(newValues, {
-      onSuccess: () => {
-        mutate();
-      },
-    });
-    table.setCreatingRow(null); //exit creating mode
-  };
-
-  //UPDATE action
-  const handleSaveCategory: MRT_TableOptions<any>["onEditingRowSave"] = ({ values, table }) => {
-    const { id, name } = values;
-    const newValidationErrors = validateUser(values);
-    if (Object.values(newValidationErrors).some(error => error)) {
-      setValidationErrors(newValidationErrors);
-      return;
-    }
-    setValidationErrors({});
-    const newValues = {
-      name,
-      id,
-    };
-    updateTrigger(newValues, {
-      onSuccess: () => {
-        mutate();
-      },
-    });
-    table.setEditingRow(null);
   };
 
   const table = useMaterialReactTable({
@@ -106,7 +58,7 @@ const ContentTable: React.FC = () => {
     createDisplayMode: "row",
     editDisplayMode: "row",
     enableEditing: true,
-    getRowId: row => row.id,
+    getRowId: (row: any) => row.id,
     muiToolbarAlertBannerProps: isLoading
       ? {
           color: "error",
@@ -122,28 +74,25 @@ const ContentTable: React.FC = () => {
     state: {
       showSkeletons: isLoading ?? false,
     },
-    onEditingRowSave: handleSaveCategory,
     renderRowActions: ({ row, table }) => (
       <Box sx={{ display: "flex", gap: "1rem" }}>
         <Tooltip title="Edit">
-          <IconButton>
-            <EditIcon />
-          </IconButton>
+          <Link href={`/admin/contents/content/${row.id}`}>
+            <IconButton>
+              <EditIcon />
+            </IconButton>
+          </Link>
         </Tooltip>
         <Tooltip title="Delete">
-          <IconButton color="error">
+          <IconButton color="error" onClick={() => openDeleteConfirmModal(row)}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
       </Box>
     ),
     renderTopToolbarCustomActions: ({ table }) => (
-      <Button
-        onClick={() => {
-          table.setCreatingRow(true);
-        }}
-      >
-        Create New Category
+      <Button className="my-5 mr-2">
+        <Link href={"/admin/contents/content/0"}>Create New Content</Link>
       </Button>
     ),
   });
@@ -152,11 +101,3 @@ const ContentTable: React.FC = () => {
 };
 
 export default ContentTable;
-
-const validateRequired = (value: string) => !!value.length;
-
-function validateUser(user: any) {
-  return {
-    name: !validateRequired(user.name) ? "First Name is Required" : "",
-  };
-}
