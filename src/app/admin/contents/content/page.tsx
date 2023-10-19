@@ -1,9 +1,9 @@
-import Content from "@/page-containers/admin/content";
+import ContentTable from "@/page-containers/admin/content/contentTable";
 
 const ContentPage = () => {
   return (
     <div>
-      <Content />
+      <ContentTable />
     </div>
   );
 };
