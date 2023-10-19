@@ -13,7 +13,6 @@ import { Box, IconButton, Tooltip } from "@mui/material";
 import {
   MaterialReactTable,
   useMaterialReactTable,
-  type MRT_Row,
   type MRT_TableOptions,
 } from "material-react-table";
 import { useMemo, useState } from "react";
@@ -101,15 +100,13 @@ const ContentTable: React.FC = () => {
     table.setEditingRow(null);
   };
 
- 
-
   const table = useMaterialReactTable({
     columns,
     data: (contents?.data as any) || [],
     createDisplayMode: "row",
     editDisplayMode: "row",
     enableEditing: true,
-    getRowId: row => row.id.toString(),
+    getRowId: row => row.id,
     muiToolbarAlertBannerProps: isLoading
       ? {
           color: "error",
@@ -125,7 +122,7 @@ const ContentTable: React.FC = () => {
     state: {
       showSkeletons: isLoading ?? false,
     },
-    // onEditingRowSave: handleSaveCategory,
+    onEditingRowSave: handleSaveCategory,
     renderRowActions: ({ row, table }) => (
       <Box sx={{ display: "flex", gap: "1rem" }}>
         <Tooltip title="Edit">
