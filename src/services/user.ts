@@ -15,6 +15,7 @@ export type ParamsType = {
   pageSize?: number;
   name?: string;
   role?: USER_ROLE;
+  cursor?: number;
 };
 
 type TokenResType = Pick<User, "name">;

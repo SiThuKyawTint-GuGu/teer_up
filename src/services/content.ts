@@ -61,8 +61,31 @@ export const usePostFile = () =>
 //   useSWRMutation(`/admin/contentcategories/${id}`, url => {
 //     return appAxios.delete<ContentArgType>(url);
 //   });
-
-export const useLikeContent = <likeResponse>(contentId: string) =>
-  useSWRMutation(`/content/like/${contentId}`, url => {
-    return appAxios.post<likeResponse>(url);
+type LikContentResType = {
+  arg: {
+    id: number | string;
+  };
+};
+export const useLikeContent = () =>
+  useSWRMutation(`/content/like`, (url, { arg }: LikContentResType) => {
+    return appAxios.post<LikContentResType>(`${url}/${arg.id}`, arg);
   });
+
+type CommentArgType = {
+  arg: {
+    id: number | string;
+    comment: string;
+    parent_id?: number | string;
+  };
+};
+export const usePostComment = () =>
+  useSWRMutation(`content/comment`, (url, { arg }: CommentArgType) => {
+    return appAxios.post<CommentArgType>(`${url}/${arg.id}`, arg);
+  });
+
+export const useGetComment = <ParamsType, CommentType>(
+  id: number | string,
+  params?: ParamsType
+): SWRResponse<CommentType, any> => {
+  return useSWR<CommentType>(`/content/comments/${id}?${routeFilter(params)}`);
+};

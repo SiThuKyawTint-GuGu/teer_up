@@ -59,3 +59,23 @@ export interface ContentType extends Pagination {
 export type likeResponse = {
   message: string;
 };
+
+export interface CommentData {
+  id: number | string;
+  comment: string;
+  user_id: number | string;
+  content_id: number | string;
+  parent_id: null;
+  created_at: string;
+  updated_at: string;
+  user: {
+    name: string;
+    id: string | number;
+    email: string;
+  };
+  replies: [];
+}
+export interface CommentResponse {
+  data: CommentData[];
+  hasNextPage: boolean;
+}
