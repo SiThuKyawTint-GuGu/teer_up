@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/Inputs/Select";
 
@@ -30,6 +30,7 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import { Editor } from "@tinymce/tinymce-react";
+import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { AiOutlineCheck } from "react-icons/ai";
@@ -72,8 +73,10 @@ const ContentDetail = ({ id }: Props) => {
   const [image, setImage] = useState<File | null>(null);
   const [title, setTitle] = useState<string>("");
   const [desc, setDesc] = useState<string>("");
-  const [selectCategory, setSelectCategory] = useState<string>("");
-  const [selectCategoryName, setSelectCategoryName] = useState<string>("");
+  const [selectCategory, setSelectCategory] = useState<string>(content?.data?.category?.id || "");
+  const [selectCategoryName, setSelectCategoryName] = useState<string>(
+    content?.data?.category?.name || ""
+  );
   const [selectForm, setSelectForm] = useState<string>(
     content?.data?.content_opportunity?.formconfig_id || ""
   );
@@ -81,8 +84,10 @@ const ContentDetail = ({ id }: Props) => {
     content?.data.content_opportunity?.form_config.name || ""
   );
   const [location, setLocation] = useState<string>(content?.data?.content_event?.location || "");
-  const [startDate, setStartDate] = useState<string>("");
-  const [endDate, setEndDate] = useState<string>("");
+  const [startDate, setStartDate] = useState<string>(
+    content?.data?.content_event?.from_datetime || ""
+  );
+  const [endDate, setEndDate] = useState<string>(content?.data?.content_event?.to_datetime || "");
   const [eventError, setEventError] = useState<string>("");
   const [author, setAuthor] = useState<string>("");
   // const [editorContent, setEditorContent] = useState<any>(
@@ -91,14 +96,14 @@ const ContentDetail = ({ id }: Props) => {
   const [link, setLink] = useState<string>(content?.data?.content_opportunity?.link || "");
   const [pathways, setPathways] = useState<PathwayType[]>([]);
 
-  useEffect(() => {
-    if (content?.data) {
-      content.data.content_pathways?.map((cont: any) => {
-        setPathways(prevPathways => [...prevPathways, { pathway_id: cont.id }]);
-      });
-    }
-  }, []);
-  console.log("content pathway", pathways);
+  // useEffect(() => {
+  //   if (content?.data) {
+  //     content.data.content_pathways?.map((cont: any) => {
+  //       setPathways(prevPathways => [...prevPathways, { pathway_id: cont.id }]);
+  //     });
+  //   }
+  // }, []);
+  // console.log("content pathway", pathways);
 
   const form = useForm<{ title: string; description: string }>({
     resolver: yupResolver(validationSchema),
@@ -121,7 +126,7 @@ const ContentDetail = ({ id }: Props) => {
   const handleSubmit = async (data: { title: string; description: string }) => {
     let thumbnailUrl = "";
     let videoUrl = "";
-    let imageUrl = "";
+    let imageUrl = imgUrl;
     let postdata: any = {};
     if (!selectCategory) {
       setEventError("Please select category!");
@@ -271,11 +276,13 @@ const ContentDetail = ({ id }: Props) => {
   };
 
   const handleStartDateChange = (date: any) => {
-    setStartDate(new Date(date).toISOString());
+    // setStartDate(new Date(date).toISOString());
+    setStartDate(date);
   };
 
   const handleEndDateChange = (date: any) => {
-    setEndDate(new Date(date).toISOString());
+    // setEndDate(new Date(date).toISOString());
+    setEndDate(date);
   };
 
   const handleCategorySelectChange = (selectedValue: string) => {
@@ -420,7 +427,7 @@ const ContentDetail = ({ id }: Props) => {
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DemoContainer components={["DateTimePicker"]}>
                         <DateTimePicker
-                          value={startDate}
+                          value={dayjs(startDate)}
                           onChange={handleStartDateChange}
                           label="Start Date"
                         />
@@ -432,7 +439,7 @@ const ContentDetail = ({ id }: Props) => {
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DemoContainer components={["DateTimePicker"]}>
                         <DateTimePicker
-                          value={endDate}
+                          value={dayjs(endDate)}
                           onChange={handleEndDateChange}
                           label="End Date"
                         />
