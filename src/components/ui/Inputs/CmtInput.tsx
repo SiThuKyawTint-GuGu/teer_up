@@ -1,7 +1,8 @@
 type CmtInputProp = {
+  value: string;
   setValue: (v: string) => void;
 };
-const CmtInput: React.FC<CmtInputProp> = ({ setValue }) => {
+const CmtInput: React.FC<CmtInputProp> = ({ setValue, value }) => {
   return (
     <div className="w-[303px] h-[32px]">
       <input
@@ -9,6 +10,7 @@ const CmtInput: React.FC<CmtInputProp> = ({ setValue }) => {
          focus:border-[#00678D] outline-none placeholder:text-[16px] placeholder:font-[300]
         "
         placeholder="Write your comment"
+        value={value}
         onChange={(e: any) => setValue(e.target.value)}
       ></input>
     </div>

@@ -3,9 +3,9 @@
 import { Icons } from "@/components/ui/Images";
 import CmtInput from "@/components/ui/Inputs/CmtInput";
 import { Text } from "@/components/ui/Typo/Text";
-import { useGetContent, useLikeContent, usePostComment } from "@/services/content";
+import { useGetComment, useGetContent, useLikeContent, usePostComment } from "@/services/content";
 import { ParamsType } from "@/services/user";
-import { ContentData, ContentType } from "@/types/Content";
+import { CommentData, CommentResponse, ContentData, ContentType } from "@/types/Content";
 import { useEffect, useRef, useState } from "react";
 
 type VideoProps = {
@@ -118,10 +118,10 @@ const LikeandCmt: React.FC<CmtandLikeProps> = ({ data }) => {
     page: 1,
     pageSize: 20,
   });
-  // const { data: cmts, mutate } = useGetComment(data.id, {
-  //   cursor: 1,
-  //   pageSize: 20,
-  // });
+  const { data: cmts, mutate: mutateCmt } = useGetComment<ParamsType, CommentResponse>(data.id, {
+    cursor: 1,
+    pageSize: 20,
+  });
   const [commentValue, setCommentValue] = useState<string>("");
 
   const { trigger: postComment } = usePostComment();
@@ -130,10 +130,13 @@ const LikeandCmt: React.FC<CmtandLikeProps> = ({ data }) => {
 
   const postSubmitHandler = async () => {
     const formData = {
-      parent_id: data.id,
+      // parent_id: data.id,
+      id: data.id,
       comment: commentValue,
     };
-    await postComment(formData);
+    await postComment(formData, {
+      onSuccess: () => mutateCmt(),
+    });
   };
 
   return (
@@ -146,7 +149,10 @@ const LikeandCmt: React.FC<CmtandLikeProps> = ({ data }) => {
               await likeVideo(
                 { id: data.id },
                 {
-                  onSuccess: () => upDateContent(),
+                  onSuccess: () => {
+                    upDateContent();
+                    setCommentValue(prev => "");
+                  },
                 }
               )
             }
@@ -176,30 +182,31 @@ const LikeandCmt: React.FC<CmtandLikeProps> = ({ data }) => {
             onClick={() => setShowCmt(prev => !prev)}
           />
           <div className="my-3 text-[16px] font-[600]">0 comments</div>
-          <div className="flex items-start  w-full h-full mb-2">
-            <div className="bg-slateGray  rounded-full w-[32px] h-[32px]" />
-            <div className="flex flex-col w-full ms-2">
-              <div className="flex">
-                <Text as="div" className="text-[16px] font-[600]">
-                  Sai Thiha Kyaw
-                </Text>
-                <Text as="span" className="text-[14px] font-[300]">
-                  {"."}
-                  12 mins ago
-                </Text>
+
+          {cmts?.data.length !== 0 &&
+            cmts?.data.map((data: CommentData, index: number) => (
+              <div className="flex items-start  w-full h-full mb-2" key={index}>
+                <div className="bg-slateGray  rounded-full w-[32px] h-[32px]" />
+                <div className="flex flex-col w-full ms-2">
+                  <div className="flex">
+                    <Text as="div" className="text-[16px] font-[600]">
+                      {data.user.name}
+                    </Text>
+                    <Text as="span" className="text-[14px] font-[300]">
+                      {"."}
+                      12 mins ago
+                    </Text>
+                  </div>
+                  <div className="text-start">{data.comment}</div>
+                </div>
               </div>
-              <div className="text-start">
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Temporibus id odit vero
-                recusandae ab, sed eum laboriosam voluptas nemo reiciendis error odio atque itaque
-                molestiae esse iste nihil ducimus modi!
-              </div>
-            </div>
-          </div>
+            ))}
+
           {/* Comment Input */}
           <div className="w-full h-full relative">
             <div className=" w-full">
               <div className="w-full flex font-[16px]">
-                <CmtInput setValue={setCommentValue} />
+                <CmtInput setValue={setCommentValue} value={commentValue} />
                 <button onClick={postSubmitHandler} className="text-primary p-1">
                   Send
                 </button>

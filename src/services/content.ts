@@ -67,13 +67,14 @@ export const useLikeContent = () =>
 
 type CommentArgType = {
   arg: {
+    id: number | string;
     comment: string;
-    parent_id: number | string;
+    parent_id?: number | string;
   };
 };
 export const usePostComment = () =>
-  useSWRMutation(`content/comment/`, (url, { arg }: CommentArgType) => {
-    return appAxios.post<CommentArgType>(`${url}/${arg.parent_id}`, arg);
+  useSWRMutation(`content/comment`, (url, { arg }: CommentArgType) => {
+    return appAxios.post<CommentArgType>(`${url}/${arg.id}`, arg);
   });
 
 export const useGetComment = <ParamsType, CommentType>(
