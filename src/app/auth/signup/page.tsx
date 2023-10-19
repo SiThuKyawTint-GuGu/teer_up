@@ -1,7 +1,6 @@
-import React from 'react';
-import { NextPage } from 'next';
-
-import SignUp from '@/page-containers/user/auth/signup/index';
+import SignUp from "@/page-containers/user/auth/signup";
+import { NextPage } from "next";
+import React from "react";
 
 const SignUpPage: NextPage = () => {
   return <SignUp />;

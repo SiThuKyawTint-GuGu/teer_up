@@ -176,10 +176,7 @@ const LikeandCmt: React.FC<CmtandLikeProps> = ({ data, setShowCmt, showCmt }) =>
           <div className="text-[18px] font-[600] text-center">{data.likes}</div>
         </div>
         <div className="flex flex-col flex-wrap gap-[10px]">
-          <Icons.comment
-            className="w-[40px] h-[40px]"
-            onClick={() => setShowCmt(prev => !showCmt)}
-          />
+          <Icons.comment className="w-[40px] h-[40px]" onClick={() => setShowCmt(!showCmt)} />
           <div className="text-[18px] font-[600] text-center">{data.comments}</div>
         </div>
         <div className="flex flex-col flex-wrap gap-[10px] ">
