@@ -17,9 +17,9 @@ interface SignUpFormType {
 }
 
 const validationSchema = yup.object({
-  email: yup.string().email().required("Email is required!"),
-  name: yup.string().required("Name is required!"),
-  country: yup.string().required("Country is required!"),
+  email: yup.string().email().required("Please enter email address"),
+  name: yup.string().required("Please enter  name"),
+  country: yup.string().required("Please select country"),
   // password: yup
   //   .string()
   //   .min(
@@ -127,6 +127,12 @@ const SignUp = () => {
             </Button>
           </form>
         </Form>
+        <div className="flex flex-wrap gap-x-1 mt-3">
+          <Text>Already have an account? Log in </Text>
+          <button className="text-primary" onClick={() => router.push("/auth/login")}>
+            Log in
+          </button>
+        </div>
       </div>
     </div>
   );
