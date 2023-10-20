@@ -25,17 +25,22 @@ export interface ContentEvent {
 
 export interface ContentArticle {
   id: number;
-  article_body: string;
+  article_body: string | TrustedHTML;
   published_by: string;
   content_id: string;
 }
 
+export interface ContentOpportunity {
+  id: number | string;
+  form_config_id: number | string;
+  link: string;
+}
 export interface ContentData {
   id: string;
   title: string;
   description: string;
   created_at: string;
-  type: "video" | "article" | "event";
+  type: "video" | "article" | "event" | "opportunity" | "pathway";
   updated_at: string;
   user_id: string;
   image_url: string;
@@ -47,6 +52,7 @@ export interface ContentData {
   content_video: ContentVideo | null;
   content_event: ContentEvent | null;
   content_article: ContentArticle | null;
+  content_opportunity: ContentOpportunity | null;
   content_pathways: any;
   category: string;
   user: User;

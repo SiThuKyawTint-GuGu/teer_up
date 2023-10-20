@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/Inputs/Select";
 
@@ -24,16 +24,19 @@ import { ContentType } from "@/types/Content";
 import { ContentCategoryResponse } from "@/types/ContentCategory";
 import { FormConfigResponse } from "@/types/Formconfig";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Button as MuiButton } from "@mui/material";
+import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import * as Checkbox from "@radix-ui/react-checkbox";
 import { Editor } from "@tinymce/tinymce-react";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { AiOutlineCheck } from "react-icons/ai";
+import { AiFillDelete, AiOutlinePlus } from "react-icons/ai";
+import { BiSolidCloudUpload } from "react-icons/bi";
 import * as yup from "yup";
 
 interface Props {
@@ -45,14 +48,14 @@ const validationSchema = yup.object({
   description: yup.string().required("Description is required!"),
 });
 
-interface PathwayType {
-  pathway_id: number;
+interface OptionType {
+  label: string;
+  id: number;
 }
 
 const ContentDetail = ({ id }: Props) => {
   const router = useRouter();
-  const editorRef = useRef<any>();
-  const { data: content } = useGetContentById<any>(id);
+  const { data: content, isLoading } = useGetContentById<any>(id);
   const { data: contents } = useGetContent<ParamsType, ContentType>();
   // console.log("get contents...", contents);
 
@@ -62,64 +65,78 @@ const ContentDetail = ({ id }: Props) => {
   const { data: category } = useGetContentCategory<ContentCategoryResponse>();
   const { data: formconfigs } = useGetFormConfig<FormConfigResponse>();
 
-  const [selectedValue, setSelectedValue] = useState<string>(content?.data.type || "");
-  // const [content, setContent] = useState<ContentResponseData | null>(null);
+  const [selectedValue, setSelectedValue] = useState<string>("");
 
-  const [videoUrl, setVideoUrl] = useState<string>(content?.data?.content_video?.video_url || "");
-  const [fileUrl, setFileUrl] = useState<string>(content?.data?.content_video?.thumbnail || "");
-  const [imgUrl, setImgUrl] = useState<string>(content?.data.image_url || "");
+  const [videoUrl, setVideoUrl] = useState<string>("");
+  const [fileUrl, setFileUrl] = useState<string>("");
+  const [imgUrl, setImgUrl] = useState<string>("");
   const [file, setFile] = useState<File | null>(null);
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [image, setImage] = useState<File | null>(null);
+  const [selectCategory, setSelectCategory] = useState<string>("");
+  const [selectCategoryName, setSelectCategoryName] = useState<string>("");
+  const [selectForm, setSelectForm] = useState<string>("");
+  const [selectFormName, setSelectFormName] = useState<string>("");
+  const [location, setLocation] = useState<string>("");
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
+  const [eventError, setEventError] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [desc, setDesc] = useState<string>("");
-  const [selectCategory, setSelectCategory] = useState<string>(content?.data?.category?.id || "");
-  const [selectCategoryName, setSelectCategoryName] = useState<string>(
-    content?.data?.category?.name || ""
-  );
-  const [selectForm, setSelectForm] = useState<string>(
-    content?.data?.content_opportunity?.formconfig_id || ""
-  );
-  const [selectFormName, setSelectFormName] = useState<string>(
-    content?.data.content_opportunity?.form_config.name || ""
-  );
-  const [location, setLocation] = useState<string>(content?.data?.content_event?.location || "");
-  const [startDate, setStartDate] = useState<string>(
-    content?.data?.content_event?.from_datetime || ""
-  );
-  const [endDate, setEndDate] = useState<string>(content?.data?.content_event?.to_datetime || "");
-  const [eventError, setEventError] = useState<string>("");
-  const [author, setAuthor] = useState<string>(content?.data?.content_article?.published_by || "");
-  const [editorContent, setEditorContent] = useState<any>(
-    content?.data?.content_article?.article_body || ""
-  );
-  const [link, setLink] = useState<string>(content?.data?.content_opportunity?.link || "");
-  const [pathways, setPathways] = useState<PathwayType[]>([]);
+  const [author, setAuthor] = useState<string>("");
+  const [editorContent, setEditorContent] = useState<any>("");
+  const [link, setLink] = useState<string>("");
+  const [pathwayContent, setPathwayContent] = useState([{ name: "", pathway_id: "" }]);
   const [editor, setEditor] = useState<any>(null);
-
-  // useEffect(() => {
-  //   if (content?.data) {
-  //     content.data.content_pathways?.map((cont: any) => {
-  //       setPathways(prevPathways => [...prevPathways, { pathway_id: cont.id }]);
-  //     });
-  //   }
-  // }, []);
-  // console.log("content pathway", pathways);
-
+  const [contentOptions, setContentOptions] = useState<OptionType[]>([]);
   const handleEditorInit = (evt: any, editor: any) => {
     setEditor(editor);
   };
+  const { setValue } = useForm();
   useEffect(() => {
     if (editor) {
       editor.setContent(editorContent);
     }
-  }, [editorContent, editor]);
+    if (content?.data) {
+      setSelectCategoryName(content?.data?.category?.name);
+      setSelectedValue(content?.data.type);
+      setSelectCategory(content?.data?.category?.id);
+      setEditorContent(content?.data?.content_article?.article_body);
+      setLink(content?.data?.content_opportunity?.link);
+      setAuthor(content?.data?.content_article?.published_by);
+      setSelectFormName(content?.data.content_opportunity?.form_config.name);
+      setSelectForm(content?.data?.content_opportunity?.formconfig_id);
+      setImgUrl(content?.data.image_url);
+      setFileUrl(content?.data?.content_video?.thumbnail);
+      setVideoUrl(content?.data?.content_video?.video_url);
+      setLocation(content?.data?.content_event?.location);
+      setStartDate(content?.data?.content_event?.from_datetime);
+      setEndDate(content?.data?.content_event?.to_datetime);
+      const pathwayContentData = content?.data.content_pathways.map((pathway: any) => ({
+        name: pathway.pathway.title, // Change this to the appropriate field you want
+        pathway_id: pathway.pathway.id,
+      }));
+      setPathwayContent(pathwayContentData);
+
+      // setTitle(content?.data.title);
+      // setDesc(content?.data.description);
+      setValue("title", content?.data.title);
+      setValue("description", content?.data.description);
+    }
+    if (contents?.data) {
+      const updatedOptions = contents?.data.map((option: any) => ({
+        label: option.title,
+        id: option.id,
+      }));
+      setContentOptions(updatedOptions);
+    }
+  }, [editorContent, editor, contents?.data, content?.data]);
 
   const form = useForm<{ title: string; description: string }>({
     resolver: yupResolver(validationSchema),
     defaultValues: {
-      title: content?.data?.title || undefined,
-      description: content?.data?.description || undefined,
+      title: content?.data.title || undefined,
+      description: content?.data.description || undefined,
     },
   });
 
@@ -244,6 +261,7 @@ const ContentDetail = ({ id }: Props) => {
       };
       content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
     } else if (selectedValue === "pathway") {
+      const pathways = pathwayContent.map((path: any) => ({ pathway_id: path.pathway_id }));
       postdata = {
         title: data?.title,
         description: data?.description,
@@ -303,13 +321,27 @@ const ContentDetail = ({ id }: Props) => {
     setSelectFormName(selectItem?.name || "");
   };
 
-  const handleCheckboxChange = (id: number, isChecked: any) => {
-    if (isChecked) {
-      setPathways(prevPathways => [...prevPathways, { pathway_id: id }]);
-    } else {
-      setPathways(prevPathways => prevPathways.filter(pathway => pathway.pathway_id !== id));
-    }
+  const handleAddPathway = () => {
+    const updatedOptions = [...pathwayContent, { name: "", pathway_id: "" }];
+    setPathwayContent(updatedOptions);
   };
+
+  const handleDeletePathway = (indexValue: number) => {
+    const updatedFields = pathwayContent.filter((field, index) => index !== indexValue);
+    setPathwayContent(updatedFields);
+  };
+
+  const handleInputChange = async (event: any, newInputValue: any) => {
+    // console.log(newInputValue);
+  };
+  const handleSelectPathwayChange = (event: any, newValue: any, index: number) => {
+    const updatedPathways = [...pathwayContent];
+
+    updatedPathways[index] = { pathway_id: newValue ? newValue.id : "", name: newValue.label };
+    setPathwayContent(updatedPathways);
+  };
+
+  if (isLoading) return <p>Loading...</p>;
 
   return (
     <>
@@ -377,8 +409,9 @@ const ContentDetail = ({ id }: Props) => {
             {eventError && <p className="text-red-700 mb-3">{eventError}</p>}
             {selectedValue === "video" && (
               <>
-                <div className="p-8">
-                  <label className="flex items-center w-[30%] justify-center px-4 py-2 bg-red-600 text-white rounded-lg cursor-pointer">
+                <div className="mt-5">
+                  <label className="flex items-center w-[20%] justify-center px-4 py-2 bg-red-600 text-white rounded-lg cursor-pointer">
+                    <BiSolidCloudUpload size={23} />
                     <span className="text-base font-medium">Upload Video</span>
                     <input
                       type="file"
@@ -399,8 +432,9 @@ const ContentDetail = ({ id }: Props) => {
                     </div>
                   )}
                 </div>
-                <div className="p-8">
-                  <label className="flex items-center w-[30%] justify-center px-4 py-2 bg-red-600 text-white rounded-lg cursor-pointer">
+                <div className="mt-5">
+                  <label className="flex items-center w-[25%] justify-center px-4 py-2 bg-red-600 text-white rounded-lg cursor-pointer">
+                    <BiSolidCloudUpload size={23} />
                     <span className="text-base font-medium">Upload Thumbnail</span>
                     <input
                       type="file"
@@ -514,30 +548,51 @@ const ContentDetail = ({ id }: Props) => {
             )}
             {selectedValue === "pathway" && (
               <>
-                <p className="text-sm font-semibold mb-3">Select Pathways</p>
-                {contents?.data.map((item: any, index: number) => (
-                  <form className="my-3" key={index}>
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <Checkbox.Root
-                        onCheckedChange={isChecked => handleCheckboxChange(item.id, isChecked)}
-                        defaultChecked={false}
-                        className="CheckboxRoot"
-                        id={`c${item.id}`}
-                      >
-                        <Checkbox.Indicator className="CheckboxIndicator">
-                          <AiOutlineCheck size={25} className="text-red-700" />
-                        </Checkbox.Indicator>
-                      </Checkbox.Root>
-                      <label className="Label" htmlFor={`c${item.id}`}>
-                        {item?.title}
-                      </label>
-                    </div>
-                  </form>
+                <MuiButton
+                  style={{ textTransform: "none" }}
+                  color="error"
+                  variant="contained"
+                  onClick={handleAddPathway}
+                >
+                  <AiOutlinePlus size={20} />
+                  Add Pathway
+                </MuiButton>
+                {pathwayContent.map((pathway: any, index: number) => (
+                  <div key={index} className="flex items-center gap-4 mt-10">
+                    {/* <TextField
+                      size="small"
+                      id="outlined-basic"
+                      label="Pathway Name"
+                      variant="outlined"
+                    /> */}
+                    <Autocomplete
+                      disablePortal
+                      id="combo-box-demo"
+                      options={contentOptions || []}
+                      sx={{ width: 300 }}
+                      value={pathway.name}
+                      onInputChange={handleInputChange}
+                      onChange={(event, newValue) =>
+                        handleSelectPathwayChange(event, newValue, index)
+                      }
+                      // onChange={handleSelectPathwayChange}
+                      renderInput={params => (
+                        <TextField {...params} size="small" label="Contents" />
+                      )}
+                    />
+                    <AiFillDelete
+                      onClick={() => handleDeletePathway(index)}
+                      className="cursor-pointer"
+                      size={25}
+                      color="#d8291c"
+                    />
+                  </div>
                 ))}
               </>
             )}
-            <div className="p-8">
-              <label className="flex items-center w-[30%] justify-center px-4 py-2 bg-red-600 text-white rounded-lg cursor-pointer">
+            <div className="mt-5">
+              <label className="flex items-center w-[20%] justify-center px-4 py-2 bg-red-600 text-white rounded-lg cursor-pointer">
+                <BiSolidCloudUpload size={23} />
                 <span className="text-base font-medium">Upload Image</span>
                 <input
                   type="file"

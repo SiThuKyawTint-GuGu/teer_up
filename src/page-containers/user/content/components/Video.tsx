@@ -3,9 +3,9 @@
 import { Icons } from "@/components/ui/Images";
 import CmtInput from "@/components/ui/Inputs/CmtInput";
 import { Text } from "@/components/ui/Typo/Text";
-import { useGetComment, useGetContent, useLikeContent, usePostComment } from "@/services/content";
+import { useGetComment, useLikeContent, usePostComment } from "@/services/content";
 import { ParamsType } from "@/services/user";
-import { CommentData, CommentResponse, ContentData, ContentType } from "@/types/Content";
+import { CommentData, CommentResponse, ContentData } from "@/types/Content";
 import { showTimeDifference } from "@/utils/time";
 import { useEffect, useRef, useState } from "react";
 
@@ -13,8 +13,9 @@ type VideoProps = {
   data: ContentData;
   setVideoRef: any;
   autoplay: boolean;
+  contentMutate: any;
 };
-const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay }) => {
+const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutate }) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [showCmt, setShowCmt] = useState<boolean>(false);
 
@@ -109,7 +110,12 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay }) => {
           <Text>{data.description}</Text>
         )}
       </div>
-      <LikeandCmt data={data} setShowCmt={setShowCmt} showCmt={showCmt} />
+      <LikeandCmt
+        data={data}
+        setShowCmt={setShowCmt}
+        showCmt={showCmt}
+        contentMutate={contentMutate}
+      />
     </div>
   );
 };
@@ -125,16 +131,17 @@ export default Video;
 type CmtandLikeProps = {
   data: ContentData;
   showCmt: Boolean;
+  contentMutate: any;
   setShowCmt: (v: boolean) => void;
 };
-const LikeandCmt: React.FC<CmtandLikeProps> = ({ data, setShowCmt, showCmt }) => {
-  useEffect(() => {
-    setShowCmt(false);
-  }, []);
-  const { mutate: upDateContent } = useGetContent<ParamsType, ContentType>({
-    page: 1,
-    pageSize: 20,
-  });
+const LikeandCmt: React.FC<CmtandLikeProps> = ({ data, setShowCmt, showCmt, contentMutate }) => {
+  // useEffect(() => {
+  //   setShowCmt(false);
+  // }, []);
+  // const { mutate: upDateContent } = useGetContent<ParamsType, ContentType>({
+  //   page: 1,
+  //   pageSize: 20,
+  // });
   const { data: cmts, mutate: mutateCmt } = useGetComment<ParamsType, CommentResponse>(data.id, {
     cursor: 1,
     pageSize: 20,
@@ -169,7 +176,7 @@ const LikeandCmt: React.FC<CmtandLikeProps> = ({ data, setShowCmt, showCmt }) =>
                 { id: data.id },
                 {
                   onSuccess: () => {
-                    upDateContent();
+                    contentMutate();
                   },
                 }
               )
@@ -200,7 +207,7 @@ const LikeandCmt: React.FC<CmtandLikeProps> = ({ data, setShowCmt, showCmt }) =>
 
           {cmts?.data.length !== 0 &&
             cmts?.data.map((data: CommentData, index: number) => (
-              <div className="flex items-start  w-full h-full mb-2" key={index}>
+              <div className="flex items-start  w-full h-full mb-2 z-[9999999] " key={index}>
                 <div className="bg-slateGray  rounded-full w-[32px] h-[32px]" />
                 <div className="flex flex-col w-full ms-2">
                   <div className="flex items-center flex-wrap gap-x-2">
@@ -218,7 +225,7 @@ const LikeandCmt: React.FC<CmtandLikeProps> = ({ data, setShowCmt, showCmt }) =>
             ))}
 
           {/* Comment Input */}
-          <div className="w-full h-full relative">
+          <div className="w-full h-full relative z-[9999999]">
             <div className=" w-full">
               <div className="w-full flex font-[16px]">
                 <CmtInput setValue={setCommentValue} value={commentValue} />
