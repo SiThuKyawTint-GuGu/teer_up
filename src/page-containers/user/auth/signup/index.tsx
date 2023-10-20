@@ -46,7 +46,7 @@ const SignUp = () => {
   };
   return (
     <div className="h-screen flex flex-col relative px-5">
-      {error && <div className="text-primary">{error.response.data.message}</div>}
+      {error && <div className="text-primary">{error}</div>}
       <div className="flex flex-col  h-full justify-center w-full flex-1">
         <Text as="div" className="mb-[3rem] text-[36px] font-[700]">
           {" "}
