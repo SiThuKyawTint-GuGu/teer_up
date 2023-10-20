@@ -1,11 +1,12 @@
+import { User } from "@/types/User";
 import { deleteCookie, getCookie, setCookie } from "cookies-next";
 import CryptoJS from "crypto-js";
-
-import { User } from "@/types/User";
+import jwt_decode from "jwt-decode";
 
 export const setUserInfo = (token: string, userInfo: User) => {
+  const { exp } = jwt_decode(token) as any;
   const expires = new Date();
-  expires.setDate(expires.getDate() + 7);
+  expires.setDate(expires.getDate() + exp);
   const cipherUserInfo = CryptoJS.AES.encrypt(JSON.stringify(userInfo), "userInfo").toString();
   const cipherText = CryptoJS.AES.encrypt(JSON.stringify(token), "token").toString();
   setCookie("token", cipherText, {
@@ -40,4 +41,5 @@ export const getToken = () => {
 
 export const logout = () => {
   deleteCookie("token");
+  deleteCookie("userInfo");
 };

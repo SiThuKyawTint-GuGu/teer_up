@@ -1,8 +1,8 @@
 import UserContentDetail from "@/page-containers/user/content/components/UserContentDetail";
 import { NextPage } from "next";
 
-const EventDetail: NextPage = () => {
-  return <UserContentDetail type="evnet" />;
+const ArticleDetail: NextPage = () => {
+  return <UserContentDetail type="article" />;
 };
 
-export default EventDetail;
+export default ArticleDetail;
