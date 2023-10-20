@@ -90,3 +90,8 @@ export const useGetComment = <ParamsType, CommentType>(
 ): SWRResponse<CommentType, any> => {
   return useSWR<CommentType>(`/content/comments/${id}?${routeFilter(params)}`);
 };
+
+export const useGetContentBySlug = <ContentData>(slug: string): SWRResponse => {
+  const url = `content/slug/${slug}`;
+  return useSWR<ContentData>(url);
+};
