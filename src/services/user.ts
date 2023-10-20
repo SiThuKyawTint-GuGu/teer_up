@@ -1,7 +1,7 @@
 "use client";
 import appAxios from "@/lib/appAxios";
 import { USER_ROLE } from "@/shared/enums";
-import { AuthResponse, User } from "@/types/User";
+import { AuthResponse } from "@/types/User";
 import { routeFilter } from "@/utils";
 import useSWR, { SWRResponse } from "swr";
 import useSWRMutation from "swr/mutation";
@@ -13,11 +13,6 @@ export type ParamsType = {
   role?: USER_ROLE;
   cursor?: number;
 };
-
-type TokenResType = Pick<User, "name">;
-
-export const useToken = (identityId: string, a: string) =>
-  useSWR<TokenResType>(identityId && `/token/${identityId} ${a ? "?a=" + a : ""}`);
 
 export const useGetUser = <ParamsType, UserResponse>(
   params: ParamsType
