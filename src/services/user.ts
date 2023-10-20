@@ -66,17 +66,6 @@ export const useUserRegister = () => {
   });
 };
 
-interface LoginArgType {
-  arg: {
-    email: string;
-  };
-}
-export const useUserLogin = () => {
-  return useSWRMutation(`/user/login`, (url, { arg }: LoginArgType) => {
-    return appAxios.post<AuthResponse>(url, arg);
-  });
-};
-
 interface OtpArgType {
   arg: {
     verificationCode: string;
@@ -85,11 +74,5 @@ interface OtpArgType {
 export const useOtpVerified = () => {
   return useSWRMutation(`/user/verifyotp`, (url, { arg }: OtpArgType) => {
     return appAxios.post<AuthResponse>(url, arg);
-  });
-};
-
-export const useGetOtp = () => {
-  return useSWRMutation(`/user/requestotp`, url => {
-    return appAxios.post<AuthResponse>(url);
   });
 };
