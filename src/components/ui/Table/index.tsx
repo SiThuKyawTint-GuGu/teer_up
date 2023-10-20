@@ -1,5 +1,5 @@
 "use client";
-import { ParamsType, useDeleteUser, useGetUser, useUpdateUser } from "@/services/user";
+import { ParamsType, useDeleteUser, useGetUsers, useUpdateUser } from "@/services/user";
 import { USER_ROLE } from "@/shared/enums";
 import { UserResponse } from "@/types/User";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -20,7 +20,7 @@ const AdminTable: React.FC = () => {
     data: userData,
     mutate,
     isLoading,
-  } = useGetUser<ParamsType, UserResponse>({
+  } = useGetUsers<ParamsType, UserResponse>({
     role: USER_ROLE.ADMIN,
   });
   const { trigger: updateTrigger } = useUpdateUser();

@@ -26,11 +26,12 @@ import { MdDelete, MdOutlineMailOutline } from "react-icons/md";
 import {
   PiAirplaneTiltLight,
   PiArrowDownRightThin,
+  PiArrowUpRightThin,
   PiArrowsLeftRightDuotone,
   PiArrowsLeftRightThin,
-  PiArrowUpRightThin,
   PiBagSimpleThin,
   PiCameraLight,
+  PiCameraPlusFill,
   PiCar,
   PiCaretDownThin,
   PiCaretRightThin,
@@ -133,6 +134,7 @@ export const Icons = {
   comment: IoChatbubbleOutline,
   share: IoShareSocialOutline,
   inputError: IoInformationCircleOutline,
+  profileCamera: PiCameraPlusFill,
 };
 
 interface Image {

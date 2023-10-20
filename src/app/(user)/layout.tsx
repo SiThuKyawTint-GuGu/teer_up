@@ -8,10 +8,10 @@ interface Props {
 
 const UserLayout = ({ children }: Props) => {
   return (
-    <div className="w-full h-full flex justify-center items-center">
-      <div className=" max-w-[390px] max-h-[844px] p-3 relative no-scrollbar">
+    <div className="w-full h-full flex justify-center items-center bg-[#e2e3e3]">
+      <div className="max-w-[390px] min-h-screen p-3 relative no-scrollbar">
         <Header />
-        <div className="w-full bg-[#F8F9FB] max-h-[80%] overflow-hidden">{children}</div>
+        <div className="w-full min-h-screen overflow-hidden">{children}</div>
         <BottomNavbar />
       </div>
     </div>

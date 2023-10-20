@@ -1,7 +1,7 @@
 "use client";
 import appAxios from "@/lib/appAxios";
 import { USER_ROLE } from "@/shared/enums";
-import { AuthResponse, User } from "@/types/User";
+import { AuthResponse } from "@/types/User";
 import { routeFilter } from "@/utils";
 import useSWR, { SWRResponse } from "swr";
 import useSWRMutation from "swr/mutation";
@@ -14,15 +14,15 @@ export type ParamsType = {
   cursor?: number;
 };
 
-type TokenResType = Pick<User, "name">;
+export const useGetUsers = <ParamsType, User>(params: ParamsType): SWRResponse<User, any> => {
+  return useSWR<User>(`/user?${routeFilter(params)}`);
+};
 
-export const useToken = (identityId: string, a: string) =>
-  useSWR<TokenResType>(identityId && `/token/${identityId} ${a ? "?a=" + a : ""}`);
-
-export const useGetUser = <ParamsType, UserResponse>(
-  params: ParamsType
-): SWRResponse<UserResponse, any> => {
-  return useSWR<UserResponse>(`/user?${routeFilter(params)}`);
+export const useGetUserById = <ParamsType, User>(
+  id: string,
+  params?: ParamsType
+): SWRResponse<User, any> => {
+  return useSWR<User>(`/user/${id}?${routeFilter(params)}`);
 };
 
 interface CreateUserResType {
@@ -50,7 +50,7 @@ export const useUpdateUser = () =>
 
 export const useDeleteUser = () =>
   useSWRMutation(`/user`, (url, { arg }: { arg: { id: string } }) => {
-    return appAxios.delete<UpdateUserResType>(`${url}/${arg.id}`);
+    return appAxios.delete(`${url}/${arg.id}`);
   });
 
 interface RegisterArgType {
