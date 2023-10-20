@@ -25,9 +25,9 @@ export const useGetBlogCategoryById = <ContentCategoryResponse>(
   return useSWR<ContentCategoryResponse>(key);
 };
 
-export const useUpdateBlogCategory = (id: string) =>
-  useSWRMutation(`/admin/categories/${id}`, (url, { arg }: BlogCategoryArgType) => {
-    return appAxios.put<BlogCategoryArgType>(url, arg);
+export const useUpdateBlogCategory = () =>
+  useSWRMutation(`/admin/categories`, (url, { arg }: BlogCategoryArgType) => {
+    return appAxios.put<BlogCategoryArgType>(`${url}/${arg.id}`, arg);
   });
 
 export const usePostBlogCategory = () =>
@@ -35,7 +35,7 @@ export const usePostBlogCategory = () =>
     return appAxios.post<BlogCategoryArgType>(url, arg);
   });
 
-export const useDeleteBlogCategory = (id: string) =>
-  useSWRMutation(`/admin/categories/${id}`, url => {
-    return appAxios.delete<BlogCategoryArgType>(url);
+export const useDeleteBlogCategory = () =>
+  useSWRMutation(`/admin/categories`, (url, { arg }: { arg: { id: string } }) => {
+    return appAxios.delete<BlogCategoryArgType>(`${url}/${arg.id}`);
   });

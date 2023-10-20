@@ -30,11 +30,11 @@ const ContentTable: React.FC = () => {
         header: "Description",
         enableEditing: false,
       },
-      {
-        accessorKey: "image_url",
-        header: "Image URL",
-        enableEditing: false,
-      },
+      // {
+      //   accessorKey: "image_url",
+      //   header: "Image URL",
+      //   enableEditing: false,
+      // },
       {
         accessorKey: "created_at",
         header: "Created At",
