@@ -6,9 +6,8 @@ import * as yup from "yup";
 import { Button } from "@/components/ui/Button";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/Form";
 import { InputText } from "@/components/ui/Inputs";
-import { postMethod } from "@/hooks/postMethod";
 
-import { AuthResponse } from "@/types/User";
+import { useUserLogin } from "@/services/user";
 import { setUserInfo } from "@/utils/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 
@@ -17,29 +16,22 @@ const validationSchema = yup.object({
   password: yup.string().required("Password is required!"),
 });
 
-interface Login {
-  email: string;
-  password: string;
-}
-
 const LoginForm = () => {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const form = useForm({
     resolver: yupResolver(validationSchema),
   });
+  const { isMutating, trigger: loginTrigger, error: loginError } = useUserLogin();
 
-  // const registerMutation = useLogin();
-
-  const loginHandler = async (data: Login) => {
-    postMethod<AuthResponse>("/user/login", data)
-      .then(response => {
-        setError(null);
-        setUserInfo(response.token, response.data);
-        router.push("/admin/blogs");
-        console.log(response.token);
-      })
-      .catch(error => setError(error.message));
+  const loginHandler = async (data: { email: string; password: string }) => {
+    await loginTrigger(data, {
+      onSuccess: res => {
+        const { token, data } = res.data;
+        setUserInfo(token, data);
+        router.push("/admin");
+      },
+    });
   };
 
   return (

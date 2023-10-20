@@ -32,13 +32,12 @@ const Login = () => {
   const [error, setError] = useState<string | null>(null);
 
   const loginHandler = async (data: Login) => {
-    postMethod<AuthResponse>("/user/login", data)
-      .then(response => {
-        setError(null);
-        setUserInfo(response.token, response.data);
-        router.push("/home");
-      })
-      .catch(error => setError(error.message));
+    await trigger(data, {
+      onSuccess: res => {
+        setUserInfo(res.data.token, res.data.data);
+        router.push("/auth/login/otp");
+      },
+    });
   };
 
   return (
