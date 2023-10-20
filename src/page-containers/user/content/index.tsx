@@ -8,6 +8,7 @@ import Video from "@/page-containers/user/content/components/Video";
 import { useGetContent } from "@/services/content";
 import { useEffect, useRef, useState } from "react";
 import Article from "./components/Article";
+import Opportunity from "./components/Opportunity";
 
 const UserContent = () => {
   const [page, setPage] = useState<number>(1);
@@ -62,9 +63,20 @@ const UserContent = () => {
 
   const differentContent = (data: ContentData, index: number) => {
     if (data.type === "video" && data.content_video)
-      return <Video data={data} setVideoRef={handleVideoRef(index)} autoplay={index === 0} />;
-    if (data.type === "event" && data.content_event) return <Event data={data} />;
-    if (data.type === "article" && data.content_article) return <Article data={data} />;
+      return (
+        <Video
+          data={data}
+          setVideoRef={handleVideoRef(index)}
+          autoplay={index === 0}
+          contentMutate={mutate}
+        />
+      );
+    if (data.type === "event" && data.content_event)
+      return <Event data={data} contentMutate={mutate} />;
+    if (data.type === "article" && data.content_article)
+      return <Article data={data} contentMutate={mutate} />;
+    if (data.type === "opportunity" && data.content_opportunity)
+      return <Opportunity data={data} contentMutate={mutate} />;
     return <div>Page is not currently avaliable</div>;
   };
 

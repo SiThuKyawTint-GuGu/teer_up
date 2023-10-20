@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 
 interface Props {
   children: ReactNode;
@@ -7,7 +7,7 @@ interface Props {
 const AuthLayout = ({ children }: Props) => {
   return (
     <main className="bg-[#F8F9FB]">
-      <div className="w-[500px] mx-auto">{children}</div>
+      <div className="w-full max-w-[390px] mx-auto">{children}</div>
     </main>
   );
 };
