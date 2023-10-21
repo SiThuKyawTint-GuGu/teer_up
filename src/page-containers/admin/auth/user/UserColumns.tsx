@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/Button";
 import { Dialog, DialogClose, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
-import { ParamsType, useDeleteUser, useGetUser } from "@/services/user";
+import { ParamsType, useDeleteUser, useGetUsers } from "@/services/user";
 import { USER_ROLE } from "@/shared/enums";
 import { UserResponse } from "@/types/User";
 import dayjs from "dayjs";
@@ -36,7 +36,7 @@ export const UserColumns: Column[] = [
       const { id, role } = row.original as any;
       const [open, setOpen] = useState<boolean>(false);
       const [dialogType, setDialogType] = useState<"UPDATE" | "DELETE">();
-      const { mutate } = useGetUser<ParamsType, UserResponse>({
+      const { mutate } = useGetUsers<ParamsType, UserResponse>({
         role,
       });
       const { trigger } = useDeleteUser();

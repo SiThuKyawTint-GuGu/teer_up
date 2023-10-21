@@ -14,10 +14,15 @@ export type ParamsType = {
   cursor?: number;
 };
 
-export const useGetUser = <ParamsType, UserResponse>(
-  params: ParamsType
-): SWRResponse<UserResponse, any> => {
-  return useSWR<UserResponse>(`/user?${routeFilter(params)}`);
+export const useGetUsers = <ParamsType, User>(params: ParamsType): SWRResponse<User, any> => {
+  return useSWR<User>(`/user?${routeFilter(params)}`);
+};
+
+export const useGetUserById = <UserProfileResponse>(
+  id: string,
+  params?: ParamsType
+): SWRResponse<UserProfileResponse, any> => {
+  return useSWR<UserProfileResponse>(`/user/${id}?${routeFilter(params)}`);
 };
 
 interface CreateUserResType {
@@ -45,7 +50,7 @@ export const useUpdateUser = () =>
 
 export const useDeleteUser = () =>
   useSWRMutation(`/user`, (url, { arg }: { arg: { id: string } }) => {
-    return appAxios.delete<UpdateUserResType>(`${url}/${arg.id}`);
+    return appAxios.delete(`${url}/${arg.id}`);
   });
 
 interface RegisterArgType {

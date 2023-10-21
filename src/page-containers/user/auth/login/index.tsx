@@ -33,7 +33,7 @@ const Login = () => {
     await trigger(data, {
       onSuccess: res => {
         setUserInfo(res.data.token, res.data.data);
-        router.push("/auth/logi n/otp");
+        router.push("/auth/otp");
       },
     });
   };
