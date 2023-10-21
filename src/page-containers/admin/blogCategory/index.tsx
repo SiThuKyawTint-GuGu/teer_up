@@ -1,5 +1,4 @@
 "use client";
-import { Button } from "@/components/ui/Button";
 import {
   useDeleteBlogCategory,
   useGetBlogCategory,
@@ -10,6 +9,7 @@ import { ContentCategoryResponse } from "@/types/ContentCategory";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { Box, IconButton, Tooltip } from "@mui/material";
+import Button from "@mui/material/Button";
 import {
   MaterialReactTable,
   useMaterialReactTable,
@@ -155,6 +155,9 @@ const BlogCategory: React.FC = () => {
         onClick={() => {
           table.setCreatingRow(true);
         }}
+        variant="contained"
+        color="error"
+        sx={{ textTransform: "none" }}
       >
         Create New Category
       </Button>
