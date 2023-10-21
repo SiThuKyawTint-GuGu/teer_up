@@ -9,6 +9,7 @@ import { FiUsers } from "react-icons/fi";
 import { GoCommentDiscussion } from "react-icons/go";
 import {
   IoBookmarkOutline,
+  IoCalendarOutline,
   IoChatbubbleOutline,
   IoCheckmarkCircle,
   IoChevronBack,
@@ -16,6 +17,7 @@ import {
   IoHeartOutline,
   IoHome,
   IoInformationCircleOutline,
+  IoLocationOutline,
   IoLogoApple,
   IoNotificationsOutline,
   IoPeopleOutline,
@@ -27,9 +29,9 @@ import { MdDelete, MdOutlineMailOutline } from "react-icons/md";
 import {
   PiAirplaneTiltLight,
   PiArrowDownRightThin,
-  PiArrowUpRightThin,
   PiArrowsLeftRightDuotone,
   PiArrowsLeftRightThin,
+  PiArrowUpRightThin,
   PiBagSimpleThin,
   PiCameraLight,
   PiCameraPlusFill,
@@ -138,6 +140,8 @@ export const Icons = {
   back: IoChevronBack,
   profileCamera: PiCameraPlusFill,
   userProfile: FaUserCircle,
+  location: IoLocationOutline,
+  calender: IoCalendarOutline,
 };
 
 interface Image {

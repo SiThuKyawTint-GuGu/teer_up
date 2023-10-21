@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/Button";
+import { Text } from "@/components/ui/Typo/Text";
 import { ContentData } from "@/types/Content";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -10,14 +11,28 @@ type EventProps = {
 const Event: React.FC<EventProps> = ({ data, contentMutate }) => {
   const router = useRouter();
   return (
-    <ContentLayout contentMutate={contentMutate} data={data} type="Event">
-      <div className="w-full h-full">
-        <div className="w-full h-full flex flex-col justify-between">
+    <ContentLayout data={data} contentMutate={contentMutate} type="Event">
+      <div
+        className="mt-2 cursor-pointer h-full flex justify-between flex-col"
+        onClick={() => router.push(`/events/${data.slug}`)}
+      >
+        {data.description && (
           <div>
-            <Button onClick={() => router.push(`/events/${data.slug}`)}>Go to Event Detail</Button>
+            <div className="flex flex-col">
+              {(() => {
+                const temporaryDiv = document.createElement("div");
+                temporaryDiv.innerHTML = data.description && data.description.toString();
+                if (!temporaryDiv.textContent) return "";
+                return temporaryDiv.textContent.substring(0, 300) + "...";
+              })()}
+              <Text as="span" className="text-primary">
+                See more
+              </Text>
+            </div>
           </div>
-          <Button>Join Now</Button>
-        </div>
+        )}
+
+        <Button>Join Now</Button>
       </div>
     </ContentLayout>
   );

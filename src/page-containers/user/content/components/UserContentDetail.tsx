@@ -1,10 +1,13 @@
 "use client";
 
 import LikeCmtBar from "@/components/contentLayout/LikeCmtBar";
+import { Icons } from "@/components/ui/Images";
+
 import { useGetContentBySlug } from "@/services/content";
 import { ContentData } from "@/types/Content";
 import { Dialog, DialogContent } from "@radix-ui/react-dialog";
 import { Grid } from "@radix-ui/themes";
+import dayjs from "dayjs";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import React, { useState } from "react";
@@ -18,6 +21,7 @@ const UserContentDetail: React.FC<ContentlayoutProps> = ({ type }) => {
   const { slug }: { slug: string } = useParams();
   const { data: contentData, mutate: contentMutate } = useGetContentBySlug<ContentData>(slug);
   const [openModal, setOpenModal] = useState<boolean>(false);
+  console.log(contentData);
   return (
     <Dialog open={openModal} onOpenChange={val => setOpenModal(val)}>
       <Grid columns="1">
@@ -32,20 +36,38 @@ const UserContentDetail: React.FC<ContentlayoutProps> = ({ type }) => {
                 height={200}
                 alt={contentData.data.title}
               />
-              <div className="absolute top-0 right-0 bg-white text-[14px] font-[600] px-[16px] py-[4px] rounded-bl-lg shadow-lg">
-                {type}
+              <div className="absolute capitalize top-0 right-0 bg-white text-[14px] font-[600] px-[16px] py-[4px] rounded-bl-lg shadow-lg">
+                {contentData.data.type}
               </div>
             </div>
             <div className="w-full px-[16px] bg-white">
               <div>
                 <h1 className="font-[700] text-[24px]">{contentData.data.title}</h1>
-                <div className="h-full min-h-[50vh]">
+
+                <div className="h-full min-h-[50vh] flex flex-col flex-wrap gap-y-3">
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: contentData.data.description,
+                    }}
+                  />
                   {contentData.data.content_article && (
                     <div
                       dangerouslySetInnerHTML={{
                         __html: contentData.data.content_article.article_body,
                       }}
                     />
+                  )}
+                  {contentData.data.content_event && (
+                    <div className="flex flex-wrap gap-x-2 items-center text-[16px] font-[700]">
+                      <Icons.location className="w-[20px] h-[20px]" />
+                      {contentData.data.content_event.location}
+                    </div>
+                  )}
+                  {contentData.data.content_event && (
+                    <div className="flex flex-wrap gap-x-2 items-center  text-[16px] font-[700]">
+                      <Icons.calender className="w-[20px] h-[20px]" />
+                      {dayjs(contentData.data.content_event.to_datetime).format("D MMMM")}
+                    </div>
                   )}
                 </div>
               </div>

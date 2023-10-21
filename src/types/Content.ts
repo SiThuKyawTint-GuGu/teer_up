@@ -38,7 +38,7 @@ export interface ContentOpportunity {
 export interface ContentData {
   id: string;
   title: string;
-  description: string;
+  description: TrustedHTML;
   created_at: string;
   type: "video" | "article" | "event" | "opportunity" | "pathway";
   updated_at: string;
