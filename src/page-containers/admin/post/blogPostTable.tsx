@@ -1,15 +1,29 @@
 "use client";
-import { Button } from "@/components/ui/Button";
-import { useDeleteBlog, useGetBlogs } from "@/services/blogPost";
+import { ParamsType, useDeleteBlog, useGetBlogs } from "@/services/blogPost";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { Box, IconButton, Tooltip } from "@mui/material";
-import { MaterialReactTable, MRT_Row, useMaterialReactTable } from "material-react-table";
+import Button from "@mui/material/Button";
+import {
+  MaterialReactTable,
+  MRT_PaginationState,
+  MRT_Row,
+  useMaterialReactTable,
+} from "material-react-table";
 import Link from "next/link";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 const BlogTable: React.FC = () => {
-  const { data: blogs, isLoading } = useGetBlogs<any>();
+  const [pagination, setPagination] = useState<MRT_PaginationState>({
+    pageIndex: 1,
+    pageSize: 10,
+  });
+  const [globalFilter, setGlobalFilter] = useState<string>("");
+  const { data: blogs, isLoading } = useGetBlogs<ParamsType, any>({
+    page: pagination.pageIndex + 1,
+    pageSize: pagination.pageSize,
+    name: globalFilter || "",
+  });
   const { trigger: deleteTrigger } = useDeleteBlog();
 
   const columns = useMemo(
@@ -70,9 +84,22 @@ const BlogTable: React.FC = () => {
       },
     },
     positionActionsColumn: "last",
+    manualFiltering: true,
+    manualPagination: true,
+    rowCount: blogs?.total,
+    initialState: {
+      pagination: {
+        pageSize: 10,
+        pageIndex: 1,
+      },
+    },
     state: {
       showSkeletons: isLoading ?? false,
+      pagination,
+      isLoading,
     },
+    onGlobalFilterChange: setGlobalFilter,
+    onPaginationChange: setPagination,
     renderRowActions: ({ row, table }) => (
       <Box sx={{ display: "flex", gap: "1rem" }}>
         <Tooltip title="Edit">
@@ -90,7 +117,7 @@ const BlogTable: React.FC = () => {
       </Box>
     ),
     renderTopToolbarCustomActions: ({ table }) => (
-      <Button className="my-5 mr-2">
+      <Button variant="contained" color="error" sx={{ textTransform: "none" }}>
         <Link href={"/admin/blogs/posts/0"}>Create New Blog</Link>
       </Button>
     ),
