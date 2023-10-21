@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/Button";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/Form";
@@ -35,7 +35,7 @@ const validationSchema = yup.object({
 const BlogPostDetail = ({ id }: Props) => {
   const router = useRouter();
   const { trigger: postTrigger } = usePostBlog();
-  const { trigger: updateTrigger } = useUpdateBlog(id);
+  const { trigger: updateTrigger } = useUpdateBlog();
   const { data: categories } = useGetBlogCategory<any>();
   const { data: formconfigs } = useGetFormConfig<any>();
 
@@ -46,26 +46,31 @@ const BlogPostDetail = ({ id }: Props) => {
   // console.log("blog by id", inputForms);
 
   const editorRef = useRef<any>();
-  const [selectedValue, setSelectedValue] = useState<string>(
-    blog?.data ? blog.data.category_id : ""
-  );
-  const [selectedName, setSelectedName] = useState<string>(
-    blog?.data ? blog?.data.category.name : ""
-  );
-  const [selectFormName, setSelectFormName] = useState<string>(
-    blog?.data ? blog.data.form_config.name : ""
-  );
-  const [selectFormValue, setSelectFormValue] = useState<string>(
-    blog?.data ? blog.data.formconfig_id : ""
-  );
-  const [isSwitchOn, setIsSwitchOn] = useState<boolean>(blog?.data ? blog.data.is_public : false);
-  const [editorContent, setEditorContent] = useState<any>(
-    blog?.data.content
-      ? blog.data.content
-      : editorRef.current
-      ? editorRef.current.getContent()
-      : null
-  );
+  const [selectedValue, setSelectedValue] = useState<string>("");
+  const [selectedName, setSelectedName] = useState<string>("");
+  const [selectFormName, setSelectFormName] = useState<string>();
+  const [selectFormValue, setSelectFormValue] = useState<string>("");
+  const [isSwitchOn, setIsSwitchOn] = useState<boolean>(false);
+  const [editorContent, setEditorContent] = useState<any>("");
+  const [editor, setEditor] = useState<any>(null);
+
+  const handleEditorInit = (evt: any, editor: any) => {
+    setEditor(editor);
+  };
+
+  useEffect(() => {
+    if (editor) {
+      editor.setContent(editorContent);
+    }
+    if (blog?.data) {
+      setSelectedValue(blog?.data.category_id);
+      setSelectedName(blog?.data.category.name);
+      setSelectFormName(blog.data.form_config.name);
+      setSelectFormValue(blog.data.formconfig_id);
+      setIsSwitchOn(blog.data.is_public);
+      setEditorContent(blog?.data.content);
+    }
+  }, [editor, editorContent, blog?.data]);
 
   const form = useForm<{ name: string; link: string }>({
     resolver: yupResolver(validationSchema),
@@ -91,16 +96,19 @@ const BlogPostDetail = ({ id }: Props) => {
   };
 
   const submit = async (data: any) => {
+    if (editor?.getContent()) {
+      console.log("no content");
+    }
     if (data.name && data.link) {
       const submitData = {
         name: data.name,
         link: data.link,
         is_public: isSwitchOn,
         category_id: Number(selectedValue),
-        content: editorContent,
+        content: editor.getContent(),
         formconfig_id: Number(selectFormValue),
       };
-      // console.log("submit data", submitData);
+      console.log("submit data", submitData);
       if (blog?.data) {
         await updateTrigger(submitData);
       } else {
@@ -193,10 +201,7 @@ const BlogPostDetail = ({ id }: Props) => {
 
             <div className="mb-10">
               <p className="font-weight-600 mb-3">Content</p>
-              <Editor
-                value={editorContent}
-                onInit={(evt, editor) => (editorRef.current = editor)}
-              />
+              <Editor onInit={handleEditorInit} />
             </div>
 
             {blog?.data && inputForms?.data && (
