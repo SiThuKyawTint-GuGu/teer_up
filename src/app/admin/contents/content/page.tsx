@@ -3,7 +3,7 @@ import { Box } from "@radix-ui/themes";
 
 const ContentPage = () => {
   return (
-    <Box className="bg-white p-10 rounded-md">
+    <Box className="bg-white p-5 rounded-md">
       <ContentTable />
     </Box>
   );
