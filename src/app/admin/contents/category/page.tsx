@@ -4,7 +4,7 @@ import { NextPage } from "next";
 
 const CategoryPage: NextPage = () => {
   return (
-    <Box className="bg-white p-10 rounded-md">
+    <Box className="bg-white p-5 rounded-md">
       <CategoryTable />
     </Box>
   );

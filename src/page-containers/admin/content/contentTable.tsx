@@ -1,10 +1,10 @@
 "use client";
-import { Button } from "@/components/ui/Button";
 import { ParamsType, useDeleteContent, useGetContent } from "@/services/content";
 import { ContentType } from "@/types/Content";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { Box, IconButton, Tooltip } from "@mui/material";
+import Button from "@mui/material/Button";
 import {
   MaterialReactTable,
   MRT_PaginationState,
@@ -118,7 +118,11 @@ const ContentTable: React.FC = () => {
       </Box>
     ),
     renderTopToolbarCustomActions: ({ table }) => (
-      <Button className="my-5 mr-2">
+      <Button
+        variant="contained"
+        color="error"
+        sx={{ background: "#DA291C", textTransform: "none" }}
+      >
         <Link href={"/admin/contents/content/0"}>Create New Content</Link>
       </Button>
     ),
