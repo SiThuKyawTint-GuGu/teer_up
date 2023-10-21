@@ -3,7 +3,7 @@ import {
   ParamsType,
   useCreateUser,
   useDeleteUser,
-  useGetUser,
+  useGetUsers,
   useUpdateUser,
 } from "@/services/user";
 import { USER_ROLE } from "@/shared/enums";
@@ -33,7 +33,7 @@ const UserTable: React.FC = () => {
     data: userData,
     mutate,
     isLoading,
-  } = useGetUser<ParamsType, UserResponse>({
+  } = useGetUsers<ParamsType, UserResponse>({
     role: USER_ROLE.STUDENT,
     page: pagination.pageIndex + 1,
     pageSize: pagination.pageSize,

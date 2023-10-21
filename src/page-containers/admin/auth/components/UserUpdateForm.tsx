@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/Button";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/Form";
 import { InputText } from "@/components/ui/Inputs";
-import { ParamsType, useGetUser, useUpdateUser } from "@/services/user";
+import { ParamsType, useGetUsers, useUpdateUser } from "@/services/user";
 import { USER_ROLE } from "@/shared/enums";
 import { User, UserResponse } from "@/types/User";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -28,7 +28,7 @@ const UserUpdateForm: React.FC<{
   setOpen: any;
   role: USER_ROLE;
 }) => {
-  const { mutate } = useGetUser<ParamsType, UserResponse>({
+  const { mutate } = useGetUsers<ParamsType, UserResponse>({
     role,
   });
   const { trigger } = useUpdateUser();
