@@ -135,13 +135,6 @@ type CmtandLikeProps = {
   setShowCmt: (v: boolean) => void;
 };
 const LikeandCmt: React.FC<CmtandLikeProps> = ({ data, setShowCmt, showCmt, contentMutate }) => {
-  // useEffect(() => {
-  //   setShowCmt(false);
-  // }, []);
-  // const { mutate: upDateContent } = useGetContent<ParamsType, ContentType>({
-  //   page: 1,
-  //   pageSize: 20,
-  // });
   const { data: cmts, mutate: mutateCmt } = useGetComment<ParamsType, CommentResponse>(data.id, {
     cursor: 1,
     pageSize: 20,

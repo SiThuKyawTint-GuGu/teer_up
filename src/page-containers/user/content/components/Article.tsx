@@ -1,7 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/Button";
-
+import { Text } from "@/components/ui/Typo/Text";
 import { ContentData } from "@/types/Content";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -15,13 +14,12 @@ const Article: React.FC<ArticleProps> = ({ data, contentMutate }) => {
 
   return (
     <ContentLayout data={data} contentMutate={contentMutate} type="Article">
-      <>
-        <Button onClick={() => router.push(`/articles/${data.slug}`)}>Go to detail page</Button>
-        {data.content_article && (
-          <div dangerouslySetInnerHTML={{ __html: data.content_article.article_body }} />
-        )}
-      </>
-      s
+      <div className="mt-2 cursor-pointer" onClick={() => router.push(`/articles/${data.slug}`)}>
+        {data.content_article && <div>{data.description.slice(0, 300)}...</div>}
+        <Text as="span" className="text-primary">
+          see more
+        </Text>
+      </div>
     </ContentLayout>
   );
 };

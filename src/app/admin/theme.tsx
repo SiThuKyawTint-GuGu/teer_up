@@ -7,6 +7,12 @@ const defaultTheme = createTheme({
   },
   palette: {
     mode: "light",
+    primary: {
+      main: "#DA291C",
+    },
+    secondary: {
+      main: "#F9E9EA",
+    },
   },
 });
 
