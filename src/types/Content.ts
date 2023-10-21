@@ -47,6 +47,7 @@ export interface ContentData {
   slug: string;
   status: string;
   likes: number;
+  is_liked: boolean;
   comments: number;
   category_id: number;
   content_video: ContentVideo | null;
