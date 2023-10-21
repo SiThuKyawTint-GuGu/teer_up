@@ -23,17 +23,17 @@ const InputText = React.forwardRef<HTMLInputElement, Props>(
           {label}
         </label>
         <div className="relative mt-1 rounded-md shadow-sm">
-          <InputStyled
-            type={type}
-            className={`block w-full rounded-[9px]  bg-white  px-[20px] py-[14px]  ${className}`}
-            aria-invalid="true"
-            aria-describedby="name-error"
-            autoComplete="off"
-            placeholder={placeholder}
-            defaultValue={defaultValue || ""}
-            ref={ref}
-            {...props}
-          />
+          <TextField.Root>
+            <TextField.Input
+              type={type}
+              className={className}
+              placeholder={placeholder}
+              defaultValue={defaultValue || ""}
+              size="3"
+              ref={ref}
+              {...props}
+            />
+          </TextField.Root>
         </div>
         {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
       </div>

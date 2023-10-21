@@ -1,9 +1,11 @@
 "use client";
-import { Dialog, DialogContent } from "@/components/ui/Dialog";
-import { Image } from "@/components/ui/Images";
+import { InputText } from "@/components/ui/Inputs";
+import Radio from "@/components/ui/Inputs/Radio";
+import { Label } from "@/components/ui/Label";
 import { Text } from "@/components/ui/Typo/Text";
 import { useGetUserById } from "@/services/user";
 import { UserProfileResponse } from "@/types/Profile";
+import { FormControl, RadioGroup } from "@mui/material";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import { useParams } from "next/navigation";
 import { useState } from "react";
@@ -16,72 +18,66 @@ const PersonalInfo: React.FC = () => {
 
   return (
     <>
-      <Dialog open={open} onOpenChange={val => setOpen(val)}>
-        <Grid columns="1">
-          <Box>
-            <Flex justify="center" className="bg-white" p="3">
-              <Text size="3" weight="medium">
-                Personal Information
-              </Text>
-            </Flex>
-            <Box className="pb-[7px]">
-              <Section className="bg-white" py="4" px="3">
-                <Flex justify="between" align="center" mb="4">
-                  <Heading as="h6" size="4" align="left">
-                    Gender
-                  </Heading>
-                  <Text className="text-primary">Edit</Text>
-                </Flex>
-                <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
-                  <Flex direction="column" gap="2">
-                    <Text>Female</Text>
-                  </Flex>
-                </div>
-                <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
-                  <Flex direction="column" gap="2">
-                    <Text>Male</Text>
-                  </Flex>
-                </div>
-                <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
-                  <Flex direction="column" gap="2">
-                    <Text>More options</Text>
-                  </Flex>
-                </div>
-              </Section>
-            </Box>
+      <Grid columns="1">
+        <Box>
+          <Flex justify="center" className="bg-white" p="3">
+            <Text size="3" weight="medium">
+              Personal Information
+            </Text>
+          </Flex>
+          <Box className="pb-[7px]">
+            <Section className="bg-white" py="4" px="3">
+              <Flex justify="between" align="center" mb="4">
+                <Heading as="h6" size="4" align="left">
+                  Gender
+                </Heading>
+                <Text className="text-primary">Edit</Text>
+              </Flex>
+              <FormControl
+                sx={{
+                  "&.MuiFormControl-root": {
+                    width: "100%",
+                  },
+                }}
+              >
+                <RadioGroup
+                  aria-labelledby="demo-radio-buttons-group-label"
+                  defaultValue="female"
+                  name="radio-buttons-group"
+                >
+                  <Label className="border-b border-b-[#BDC7D5]">
+                    <Flex justify="between" align="center">
+                      Female
+                      <Radio value="female" />
+                    </Flex>
+                  </Label>
+                  <Label className="border-b border-b-[#BDC7D5]">
+                    <Flex justify="between" align="center">
+                      Male
+                      <Radio value="male" />
+                    </Flex>
+                  </Label>
+                  <Label>
+                    <Flex justify="between" align="center">
+                      More options
+                      <Radio value="other" />
+                    </Flex>
+                  </Label>
+                </RadioGroup>
+              </FormControl>
+            </Section>
           </Box>
-        </Grid>
-        <DialogContent className="bg-white top-[initial] bottom-0 px-4 py-8 translate-y-0">
-          <Box className="space-y-[40px]">
-            <Flex
-              justify="start"
-              align="center"
-              className="pb-[20px] mb-[20px] border-b border-b-[#BDC7D5] gap-[10px]"
-            >
-              <Image
-                src="/uploads/icons/see-profile.svg"
-                width={20}
-                height={20}
-                alt="see profile"
-              />
-              <Text>See profile picture</Text>
-            </Flex>
-            <Flex
-              justify="start"
-              align="center"
-              className="pb-[20px] mb-[20px] border-b border-b-[#BDC7D5] gap-[10px]"
-            >
-              <Image
-                src="/uploads/icons/select-profile.svg"
-                width={20}
-                height={20}
-                alt="select profile"
-              />
-              <Text>Select profile picture</Text>
-            </Flex>
+
+          <Box className="pb-[7px]">
+            <Section className="bg-white" py="4" px="3">
+              <Heading as="h6" size="4" align="left" mb="4">
+                Email
+              </Heading>
+              <InputText />
+            </Section>
           </Box>
-        </DialogContent>
-      </Dialog>
+        </Box>
+      </Grid>
     </>
   );
 };
