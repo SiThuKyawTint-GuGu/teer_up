@@ -6,7 +6,7 @@ import { Text } from "@/components/ui/Typo/Text";
 import { useGetComment, useLikeContent, usePostComment } from "@/services/content";
 import { ParamsType } from "@/services/user";
 import { CommentData, CommentResponse, ContentData } from "@/types/Content";
-import { showTimeDifference } from "@/utils/time";
+import { showTime } from "@/utils/time";
 import { useEffect, useRef, useState } from "react";
 
 type VideoProps = {
@@ -118,13 +118,6 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
       />
     </div>
   );
-};
-
-const showTime = (createTime: string) => {
-  const { days, hours, minutes } = showTimeDifference(createTime);
-  if (days) return `${days} day ago`;
-  if (hours) return `${hours} hour ago`;
-  return `${minutes} minute ago`;
 };
 
 export default Video;

@@ -25,7 +25,7 @@ export interface ContentEvent {
 
 export interface ContentArticle {
   id: number;
-  article_body: string | TrustedHTML;
+  article_body: TrustedHTML;
   published_by: string;
   content_id: string;
 }
