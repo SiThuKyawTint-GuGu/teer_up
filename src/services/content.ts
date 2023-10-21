@@ -7,6 +7,7 @@ import useSWRMutation from "swr/mutation";
 export type ParamsType = {
   page?: number;
   pageSize?: number;
+  name?: string;
 };
 
 export interface ContentArgType {
