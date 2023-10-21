@@ -11,6 +11,7 @@ import {
   IoBookmarkOutline,
   IoChatbubbleOutline,
   IoCheckmarkCircle,
+  IoChevronBack,
   IoGlobeOutline,
   IoHeartOutline,
   IoHome,
@@ -133,6 +134,7 @@ export const Icons = {
   comment: IoChatbubbleOutline,
   share: IoShareSocialOutline,
   inputError: IoInformationCircleOutline,
+  back: IoChevronBack,
 };
 
 interface Image {

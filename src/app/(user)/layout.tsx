@@ -1,5 +1,3 @@
-import BottomNavbar from "@/components/userLayout/BottomNavbar";
-import Header from "@/components/userLayout/Header";
 import { ReactNode } from "react";
 
 interface Props {
@@ -9,10 +7,8 @@ interface Props {
 const UserLayout = ({ children }: Props) => {
   return (
     <div className="w-full h-full flex justify-center items-center">
-      <div className=" max-w-[390px] max-h-[844px] p-3 relative no-scrollbar">
-        <Header />
-        <div className="w-full bg-[#F8F9FB] max-h-[80%] overflow-hidden">{children}</div>
-        <BottomNavbar />
+      <div className=" max-w-[390px] max-h-[850px] p-3  no-scrollbar">
+        <div className="w-full bg-[#F8F9FB] relative overflow-hidden">{children}</div>
       </div>
     </div>
   );
