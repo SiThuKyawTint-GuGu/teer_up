@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 
 // import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/Inputs/Select";
 
-import { Button } from "@/components/ui/Button";
 import {
   ParamsType,
   useGetContent,
@@ -22,12 +21,15 @@ import { ContentType } from "@/types/Content";
 import { ContentCategoryResponse } from "@/types/ContentCategory";
 import { FormConfigResponse } from "@/types/Formconfig";
 import { yupResolver } from "@hookform/resolvers/yup";
+import SaveIcon from "@mui/icons-material/Save";
+import LoadingButton from "@mui/lab/LoadingButton";
 import { Button as MuiButton } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { styled } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
@@ -63,9 +65,9 @@ const ContentDetail = ({ id }: Props) => {
   const { data: contents } = useGetContent<ParamsType, ContentType>();
   // console.log("get contents...", contents);
 
-  const { trigger: updateTrigger } = useUpdateContent(id);
+  const { trigger: updateTrigger, isMutating: updateMutating } = useUpdateContent(id);
   const { trigger: fileTrigger } = usePostFile();
-  const { trigger: postTrigger } = usePostContent();
+  const { trigger: postTrigger, isMutating: postMutating } = usePostContent();
   const { data: category } = useGetContentCategory<ContentCategoryResponse>();
   const { data: formconfigs } = useGetFormConfig<FormConfigResponse>();
 
@@ -403,11 +405,11 @@ const ContentDetail = ({ id }: Props) => {
                 label="Type"
                 onChange={handleSelectChange}
               >
-                <MenuItem value="video">video</MenuItem>
-                <MenuItem value="event">event</MenuItem>
-                <MenuItem value="article">article</MenuItem>
-                <MenuItem value="opportunity">opportunity</MenuItem>
-                <MenuItem value="pathway">pathway</MenuItem>
+                <MenuItem value="video">Video</MenuItem>
+                <MenuItem value="event">Event</MenuItem>
+                <MenuItem value="article">Article</MenuItem>
+                <MenuItem value="opportunity">Opportunity</MenuItem>
+                <MenuItem value="pathway">Pathway</MenuItem>
               </Select>
             </FormControl>
             <p className="mt-2 text-red-700">{errors.type?.message}</p>
@@ -415,8 +417,8 @@ const ContentDetail = ({ id }: Props) => {
           {eventError && <p className="text-red-700 mb-3">{eventError}</p>}
           {selectedValue === "video" && (
             <>
-              <div className="mt-5">
-                <label className="flex items-center w-[20%] justify-center px-4 py-2 bg-red-600 text-white rounded-lg cursor-pointer">
+              <div className="mt-10">
+                {/* <label className="flex items-center w-[20%] justify-center px-4 py-2 bg-red-600 text-white rounded-lg cursor-pointer">
                   <BiSolidCloudUpload size={23} />
                   <span className="text-base font-medium">Upload Video</span>
                   <input
@@ -426,7 +428,17 @@ const ContentDetail = ({ id }: Props) => {
                     onChange={handleFileChange}
                     multiple={false}
                   />
-                </label>
+                </label> */}
+                <MuiButton
+                  sx={{ textTransform: "none", background: "#DA291C" }}
+                  component="label"
+                  color="error"
+                  variant="contained"
+                  startIcon={<BiSolidCloudUpload />}
+                >
+                  Upload Video
+                  <VisuallyHiddenInput accept="video/*" onChange={handleFileChange} type="file" />
+                </MuiButton>
 
                 {videoUrl && (
                   <div className="mt-4">
@@ -438,8 +450,8 @@ const ContentDetail = ({ id }: Props) => {
                   </div>
                 )}
               </div>
-              <div className="mt-5">
-                <label className="flex items-center w-[25%] justify-center px-4 py-2 bg-red-600 text-white rounded-lg cursor-pointer">
+              <div className="mt-10">
+                {/* <label className="flex items-center w-[25%] justify-center px-4 py-2 bg-red-600 text-white rounded-lg cursor-pointer">
                   <BiSolidCloudUpload size={23} />
                   <span className="text-base font-medium">Upload Thumbnail</span>
                   <input
@@ -448,7 +460,17 @@ const ContentDetail = ({ id }: Props) => {
                     accept="image/*"
                     onChange={handlePhotoChange}
                   />
-                </label>
+                </label> */}
+                <MuiButton
+                  component="label"
+                  variant="contained"
+                  sx={{ textTransform: "none", background: "#DA291C" }}
+                  color="error"
+                  startIcon={<BiSolidCloudUpload />}
+                >
+                  Upload thumbnail
+                  <VisuallyHiddenInput accept="image/*" onChange={handlePhotoChange} type="file" />
+                </MuiButton>
 
                 {fileUrl && (
                   <div className="mt-4">
@@ -609,11 +631,21 @@ const ContentDetail = ({ id }: Props) => {
             </>
           )}
           <div className="mt-10">
-            <label className="flex items-center w-[20%] justify-center px-4 py-2 bg-red-600 text-white rounded-md cursor-pointer">
+            {/* <label className="flex items-center w-[20%] justify-center px-4 py-2 bg-red-600 text-white rounded-md cursor-pointer">
               <BiSolidCloudUpload size={23} />
               <span className="text-base font-medium">Upload Image</span>
               <input type="file" className="hidden" accept="image/*" onChange={handleImageChange} />
-            </label>
+            </label> */}
+            <MuiButton
+              sx={{ textTransform: "none", background: "#DA291C" }}
+              component="label"
+              variant="contained"
+              startIcon={<BiSolidCloudUpload />}
+              color="error"
+            >
+              Upload Image
+              <VisuallyHiddenInput accept="image/*" onChange={handleImageChange} type="file" />
+            </MuiButton>
 
             {imgUrl && (
               <div className="mt-4">
@@ -629,9 +661,29 @@ const ContentDetail = ({ id }: Props) => {
             )}
           </div>
           <div style={{ display: "flex", marginTop: 20, justifyContent: "flex-end" }}>
-            <Button className="p-2 mt-[20px] rounded-md w-[15%] text-white" type="submit">
-              {id != "0" ? "Update" : "Submit"}
-            </Button>
+            {content?.data ? (
+              <LoadingButton
+                loading={updateMutating}
+                loadingPosition="start"
+                startIcon={<SaveIcon />}
+                variant="contained"
+                type="submit"
+                color="error"
+              >
+                Update
+              </LoadingButton>
+            ) : (
+              <LoadingButton
+                loading={postMutating}
+                loadingPosition="start"
+                startIcon={<SaveIcon />}
+                variant="contained"
+                type="submit"
+                color="error"
+              >
+                Save
+              </LoadingButton>
+            )}
           </div>
         </div>
       </form>
@@ -640,3 +692,15 @@ const ContentDetail = ({ id }: Props) => {
 };
 
 export default ContentDetail;
+
+const VisuallyHiddenInput = styled("input")({
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
+  height: 1,
+  overflow: "hidden",
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  whiteSpace: "nowrap",
+  width: 1,
+});
