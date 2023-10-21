@@ -103,11 +103,23 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
         <Text>{data.title}</Text>
         {!showDescription ? (
           <div className="flex flex-wrap gap-x-1">
-            <Text>{data.description.slice(0, 15)}...</Text>
+            <div>
+              {(() => {
+                const temporaryDiv = document.createElement("div");
+
+                temporaryDiv.innerHTML = data.description && data.description.toString();
+                if (!temporaryDiv.textContent) return "";
+                return temporaryDiv.textContent.substring(0, 50) + "...";
+              })()}
+            </div>
             <span>See more</span>
           </div>
         ) : (
-          <Text>{data.description}</Text>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: data.description,
+            }}
+          />
         )}
       </div>
       <LikeandCmt
