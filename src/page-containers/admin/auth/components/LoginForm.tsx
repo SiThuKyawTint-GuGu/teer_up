@@ -24,7 +24,6 @@ const LoginForm = () => {
   });
   const { isMutating, trigger: loginTrigger, error: loginError } = useUserLogin();
 
-
   const loginHandler = async (data: { email: string; password: string }) => {
     await loginTrigger(data, {
       onSuccess: res => {

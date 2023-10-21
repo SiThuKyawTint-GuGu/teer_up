@@ -11,6 +11,7 @@ export type ParamsType = {
 
 export interface BlogsArgType {
   arg: {
+    id?: string;
     name?: string;
     link?: string;
     is_public?: boolean;
@@ -34,12 +35,12 @@ export const usePostBlog = () =>
     return appAxios.post<BlogsArgType>(url, arg);
   });
 
-export const useUpdateBlog = (id: string) =>
-  useSWRMutation(`/admin/blog/${id}`, (url, { arg }: BlogsArgType) => {
-    return appAxios.put<BlogsArgType>(url, arg);
+export const useUpdateBlog = () =>
+  useSWRMutation(`/admin/blog`, (url, { arg }: BlogsArgType) => {
+    return appAxios.put<BlogsArgType>(`${url}/${arg.id}`, arg);
   });
 
-export const useDeleteBlog = (id: string) =>
-  useSWRMutation(`/admin/blog/${id}`, url => {
-    return appAxios.delete<BlogsArgType>(url);
+export const useDeleteBlog = () =>
+  useSWRMutation(`/admin/blog`, (url, { arg }: { arg: { id: string } }) => {
+    return appAxios.delete<BlogsArgType>(`${url}/${arg.id}`);
   });
