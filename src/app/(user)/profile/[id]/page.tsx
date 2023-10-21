@@ -1,4 +1,4 @@
-import ProfileEdit from "@/page-containers/user/profile/edit";
+import ProfileEdit from "@/page-containers/user/profile/Edit";
 import { NextPage } from "next";
 
 const ProfileEditPage: NextPage = () => {

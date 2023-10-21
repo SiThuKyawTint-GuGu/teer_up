@@ -5,15 +5,16 @@ import { Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import { useGetUserById } from "@/services/user";
 import { UserProfileResponse } from "@/types/Profile";
-import { getUserInfo } from "@/utils/auth";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 import { useState } from "react";
 
 const ProfileEdit: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
-  const user = getUserInfo();
-  const { data: profileData } = useGetUserById<UserProfileResponse>(user?.id);
+  const { id } = useParams();
+  const { data: profileData } = useGetUserById<UserProfileResponse>(id as string);
   const userProfile = profileData?.data;
 
   return (
@@ -71,7 +72,9 @@ const ProfileEdit: React.FC = () => {
                   <Heading as="h6" size="4" align="left">
                     Brief bio
                   </Heading>
-                  <Text className="text-primary">Edit</Text>
+                  <Link href={`/profile/${id}/personal-info`}>
+                    <Text className="text-primary">Edit</Text>
+                  </Link>
                 </Flex>
                 <Text>{userProfile?.bio}</Text>
               </Section>
