@@ -8,6 +8,7 @@ import { UserProfileResponse } from "@/types/Profile";
 import { getUserInfo } from "@/utils/auth";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
+import Link from "next/link";
 import { useState } from "react";
 
 const Profile: React.FC = () => {
@@ -59,13 +60,15 @@ const Profile: React.FC = () => {
                   </Flex>
                 </div>
                 <div className="absolute top-2 right-2">
-                  <Button
-                    variant="outline"
-                    className="border-2 border-[#F4153D] rounded-[30px] space-x-[5px]"
-                  >
-                    <Image src="/uploads/icons/pencil.svg" width={20} height={20} alt="pencil" />
-                    <Text>Edit Button</Text>
-                  </Button>
+                  <Link href={`/profile/${userProfile?.id}`}>
+                    <Button
+                      variant="outline"
+                      className="border-2 border-[#F4153D] rounded-[30px] space-x-[5px]"
+                    >
+                      <Image src="/uploads/icons/pencil.svg" width={20} height={20} alt="pencil" />
+                      <Text>Edit Button</Text>
+                    </Button>
+                  </Link>
                 </div>
                 <Heading as="h4" size="5" mb="4">
                   {userProfile?.name}
@@ -155,7 +158,7 @@ const Profile: React.FC = () => {
             <Box className="pb-[7px]">
               <Section className="bg-white" py="4" px="3">
                 <Heading as="h6" size="4" align="left" mb="4">
-                  Career interests
+                  Preferences
                 </Heading>
                 <Flex wrap="wrap" gap="2">
                   <Button className="bg-[#d1d5d8] text-black">Animation</Button>
