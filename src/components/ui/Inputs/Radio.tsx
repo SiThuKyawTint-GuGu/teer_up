@@ -22,14 +22,14 @@ const Radio: React.FC<{
       checkedIcon={
         <>
           <div className="flex justify-center items-center relative">
-            <LiaCircle className="w-[30px] h-[30px] text-[#c6c7c9]" />
+            <LiaCircle className="w-[25px] h-[25px] text-[#c6c7c9]" />
             <div className="absolute">
-              <PiCircleFill className="text-primary" />
+              <PiCircleFill className="text-primary w-[12px] h-[11px]" />
             </div>
           </div>
         </>
       }
-      icon={<LiaCircle className="w-[30px] h-[30px] text-[#c6c7c9]" />}
+      icon={<LiaCircle className="w-[25px] h-[25px] text-[#c6c7c9]" />}
       checked={checked}
       onChange={handleChange}
       value={value}

@@ -1,8 +1,10 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 import { IconButton, TextField } from "@radix-ui/themes";
 
+import { USER_ROLE } from "@/shared/enums";
+import { cn } from "@/utils/cn";
 import { Icons } from "../Images";
 
 type Props = {
@@ -13,20 +15,21 @@ type Props = {
   placeholder?: string;
   value?: string;
   defaultValue?: string;
+  inputType: USER_ROLE;
 };
 
 const InputText = React.forwardRef<HTMLInputElement, Props>(
-  ({ type, label, error, className, placeholder, defaultValue, ...props }, ref) => {
+  ({ type, label, error, className, placeholder, defaultValue, inputType, ...props }, ref) => {
     return (
-      <div>
+      <InputStyled inputType={inputType}>
         <label htmlFor="email" className="block text-sm font-medium text-gray-700">
           {label}
         </label>
-        <div className="relative mt-1 rounded-md shadow-sm">
+        <div className="relative mt-1 rounded-md">
           <TextField.Root>
             <TextField.Input
               type={type}
-              className={className}
+              className={cn(className, inputType !== USER_ROLE.ADMIN ? "shadow-theme" : "")}
               placeholder={placeholder}
               defaultValue={defaultValue || ""}
               size="3"
@@ -36,7 +39,7 @@ const InputText = React.forwardRef<HTMLInputElement, Props>(
           </TextField.Root>
         </div>
         {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
-      </div>
+      </InputStyled>
     );
   }
 );
@@ -66,6 +69,15 @@ InputSearch.displayName = "InputSearch";
 
 export { InputSearch, InputText };
 
-const InputStyled = styled.input`
-  outline: 0;
+const InputStyled = styled.div<{ inputType: USER_ROLE }>`
+  & input {
+    ${({ inputType }) =>
+      inputType !== USER_ROLE.ADMIN &&
+      css`
+        /* box-shadow: 0px 26px 30px 0px rgba(0, 0, 0, 0.05); */
+      `}
+  }
+  & .rt-TextFieldChrome {
+    box-shadow: none;
+  }
 `;

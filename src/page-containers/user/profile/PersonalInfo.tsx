@@ -4,6 +4,7 @@ import Radio from "@/components/ui/Inputs/Radio";
 import { Label } from "@/components/ui/Label";
 import { Text } from "@/components/ui/Typo/Text";
 import { useGetUserById } from "@/services/user";
+import { USER_ROLE } from "@/shared/enums";
 import { UserProfileResponse } from "@/types/Profile";
 import { FormControl, RadioGroup } from "@mui/material";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
@@ -73,7 +74,7 @@ const PersonalInfo: React.FC = () => {
               <Heading as="h6" size="4" align="left" mb="4">
                 Email
               </Heading>
-              <InputText />
+              <InputText inputType={USER_ROLE.STUDENT} />
             </Section>
           </Box>
         </Box>
