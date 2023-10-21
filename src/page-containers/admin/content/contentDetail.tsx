@@ -83,6 +83,8 @@ const ContentDetail = ({ id }: Props) => {
   const [selectForm, setSelectForm] = useState<string>("");
 
   const [location, setLocation] = useState<string>("");
+  const [oppoLocation, setOppoLocation] = useState<string>("");
+  const [eventLink, setEventLink] = useState<string>("");
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   const [eventError, setEventError] = useState<string>("");
@@ -113,12 +115,14 @@ const ContentDetail = ({ id }: Props) => {
       setSelectCategory(content?.data?.category?.id);
       setEditorContent(content?.data?.content_article?.article_body);
       setLink(content?.data?.content_opportunity?.link);
+      setOppoLocation(content?.data?.content_opportunity?.location);
       setAuthor(content?.data?.content_article?.published_by);
       setSelectForm(content?.data?.content_opportunity?.formconfig_id);
       setImgUrl(content?.data.image_url);
       setFileUrl(content?.data?.content_video?.thumbnail);
       setVideoUrl(content?.data?.content_video?.video_url);
       setLocation(content?.data?.content_event?.location);
+      setEventLink(content?.data?.content_event?.link);
       setStartDate(content?.data?.content_event?.from_datetime);
       setEndDate(content?.data?.content_event?.to_datetime);
       const pathwayContentData = content?.data.content_pathways.map((pathway: any) => ({
@@ -214,6 +218,10 @@ const ContentDetail = ({ id }: Props) => {
         setEventError("Location is required!");
         return;
       }
+      if (!eventLink) {
+        setEventError("Link is required!");
+        return;
+      }
       postdata = {
         title: data?.title,
         description: editordesc.getContent(),
@@ -225,6 +233,7 @@ const ContentDetail = ({ id }: Props) => {
           from_datetime: startDate,
           to_datetime: endDate,
           location: location,
+          link: eventLink,
         },
       };
       content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
@@ -255,6 +264,10 @@ const ContentDetail = ({ id }: Props) => {
         setEventError("Link is required!");
         return;
       }
+      if (!oppoLocation) {
+        setEventError("Location is required!");
+        return;
+      }
       if (!selectForm) {
         setEventError("Please Select Form!");
         return;
@@ -269,6 +282,7 @@ const ContentDetail = ({ id }: Props) => {
         content_opportunity: {
           link: link,
           formconfig_id: 1,
+          location: oppoLocation,
         },
       };
       content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
@@ -418,17 +432,6 @@ const ContentDetail = ({ id }: Props) => {
           {selectedValue === "video" && (
             <>
               <div className="mt-10">
-                {/* <label className="flex items-center w-[20%] justify-center px-4 py-2 bg-red-600 text-white rounded-lg cursor-pointer">
-                  <BiSolidCloudUpload size={23} />
-                  <span className="text-base font-medium">Upload Video</span>
-                  <input
-                    type="file"
-                    className="hidden"
-                    accept="video/*"
-                    onChange={handleFileChange}
-                    multiple={false}
-                  />
-                </label> */}
                 <MuiButton
                   sx={{ textTransform: "none", background: "#DA291C" }}
                   component="label"
@@ -451,16 +454,6 @@ const ContentDetail = ({ id }: Props) => {
                 )}
               </div>
               <div className="mt-10">
-                {/* <label className="flex items-center w-[25%] justify-center px-4 py-2 bg-red-600 text-white rounded-lg cursor-pointer">
-                  <BiSolidCloudUpload size={23} />
-                  <span className="text-base font-medium">Upload Thumbnail</span>
-                  <input
-                    type="file"
-                    className="hidden"
-                    accept="image/*"
-                    onChange={handlePhotoChange}
-                  />
-                </label> */}
                 <MuiButton
                   component="label"
                   variant="contained"
@@ -535,6 +528,16 @@ const ContentDetail = ({ id }: Props) => {
                   variant="outlined"
                 />
               </div>
+              <div className="mb-10 ">
+                <TextField
+                  onChange={e => setEventLink(e.target.value)}
+                  value={eventLink}
+                  label="Link"
+                  size="small"
+                  className="w-full"
+                  variant="outlined"
+                />
+              </div>
             </>
           )}
           {selectedValue === "article" && (
@@ -562,6 +565,16 @@ const ContentDetail = ({ id }: Props) => {
                   onChange={e => setLink(e.target.value)}
                   value={link}
                   label="Link"
+                  size="small"
+                  className="w-full"
+                  variant="outlined"
+                />
+              </div>
+              <div className="mb-10">
+                <TextField
+                  onChange={e => setOppoLocation(e.target.value)}
+                  value={oppoLocation}
+                  label="Location"
                   size="small"
                   className="w-full"
                   variant="outlined"
@@ -631,11 +644,6 @@ const ContentDetail = ({ id }: Props) => {
             </>
           )}
           <div className="mt-10">
-            {/* <label className="flex items-center w-[20%] justify-center px-4 py-2 bg-red-600 text-white rounded-md cursor-pointer">
-              <BiSolidCloudUpload size={23} />
-              <span className="text-base font-medium">Upload Image</span>
-              <input type="file" className="hidden" accept="image/*" onChange={handleImageChange} />
-            </label> */}
             <MuiButton
               sx={{ textTransform: "none", background: "#DA291C" }}
               component="label"

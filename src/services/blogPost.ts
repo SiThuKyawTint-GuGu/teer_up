@@ -1,12 +1,13 @@
 "use client";
 import appAxios from "@/lib/appAxios";
+import { routeFilter } from "@/utils";
 import useSWR, { SWRResponse } from "swr";
 import useSWRMutation from "swr/mutation";
 
 export type ParamsType = {
   page?: number;
   pageSize?: number;
-  id?: string;
+  name?: string;
 };
 
 export interface BlogsArgType {
@@ -21,8 +22,14 @@ export interface BlogsArgType {
   };
 }
 
-export const useGetBlogs = <BlogResponse>(): SWRResponse<BlogResponse, any> => {
-  return useSWR<BlogResponse>(`/admin/blog`);
+// export const useGetBlogs = <BlogResponse>(): SWRResponse<BlogResponse, any> => {
+//   return useSWR<BlogResponse>(`/admin/blog`);
+// };
+
+export const useGetBlogs = <ParamsType, BlogType>(
+  params?: ParamsType
+): SWRResponse<BlogType, any> => {
+  return useSWR<BlogType>(`/admin/blog?${routeFilter(params)}`);
 };
 
 export const useGetBlogById = <BlogType>(id: string): SWRResponse<BlogType, any> => {
@@ -35,9 +42,9 @@ export const usePostBlog = () =>
     return appAxios.post<BlogsArgType>(url, arg);
   });
 
-export const useUpdateBlog = () =>
-  useSWRMutation(`/admin/blog`, (url, { arg }: BlogsArgType) => {
-    return appAxios.put<BlogsArgType>(`${url}/${arg.id}`, arg);
+export const useUpdateBlog = (id: string) =>
+  useSWRMutation(`/admin/blog/${id}`, (url, { arg }: BlogsArgType) => {
+    return appAxios.put<BlogsArgType>(url, arg);
   });
 
 export const useDeleteBlog = () =>
