@@ -1,5 +1,9 @@
+"use client";
+
 import { Button } from "@/components/ui/Button";
+import { Text } from "@/components/ui/Typo/Text";
 import { ContentData } from "@/types/Content";
+import { useRouter } from "next/navigation";
 import React from "react";
 import ContentLayout from "./ContentLayout";
 
@@ -9,13 +13,30 @@ type OpportunityProps = {
 };
 
 const Opportunity: React.FC<OpportunityProps> = ({ data, contentMutate }) => {
+  const router = useRouter();
   return (
-    <ContentLayout contentMutate={contentMutate} data={data} type="Opportunity">
-      <div className="w-full h-full">
-        <div className="w-full h-full flex flex-col justify-between">
-          <div>Hello</div>
-          <Button>Apply now</Button>
-        </div>
+    <ContentLayout data={data} contentMutate={contentMutate} type="Event">
+      <div
+        className="mt-2 cursor-pointer h-full flex justify-between flex-col"
+        onClick={() => router.push(`/opportunity/${data.slug}`)}
+      >
+        {data.description && (
+          <div className="flex">
+            <div className="w-full">
+              {(() => {
+                const temporaryDiv = document.createElement("div");
+                temporaryDiv.innerHTML = data.description && data.description.toString();
+                if (!temporaryDiv.textContent) return "";
+                return temporaryDiv.textContent.substring(0, 300) + "...";
+              })()}
+            </div>
+            <Text as="span" className="text-primary">
+              See more
+            </Text>
+          </div>
+        )}
+
+        <Button>Join Now</Button>
       </div>
     </ContentLayout>
   );

@@ -3,15 +3,15 @@ import UserContentDetail from "@/page-containers/user/content/components/UserCon
 import { Grid } from "@radix-ui/themes";
 import { NextPage } from "next";
 
-const ArticleDetail: NextPage = () => {
+const ContentDetail: NextPage = () => {
   return (
     <Grid columns="1">
       <div className="absolute  w-full left-0 top-0 z-[9999] flex flex-wrap">
         <ContentDetailHeader pathname="/home" title="Event Detail" />
       </div>
-      <UserContentDetail type="article" />
+      <UserContentDetail type="Event" />
     </Grid>
   );
 };
 
-export default ArticleDetail;
+export default ContentDetail;

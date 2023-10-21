@@ -15,9 +15,21 @@ const Article: React.FC<ArticleProps> = ({ data, contentMutate }) => {
   return (
     <ContentLayout data={data} contentMutate={contentMutate} type="Article">
       <div className="mt-2 cursor-pointer" onClick={() => router.push(`/articles/${data.slug}`)}>
-        {data.content_article && <div>{data.description.slice(0, 300)}...</div>}
+        {data.content_article && (
+          <div>
+            {(() => {
+              const temporaryDiv = document.createElement("div");
+
+              temporaryDiv.innerHTML =
+                data.content_article && data.content_article.article_body.toString();
+              if (!temporaryDiv.textContent) return "";
+              return temporaryDiv.textContent.substring(0, 300) + "...";
+            })()}
+          </div>
+        )}
+
         <Text as="span" className="text-primary">
-          see more
+          See more
         </Text>
       </div>
     </ContentLayout>
