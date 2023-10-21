@@ -47,7 +47,7 @@ interface Props {
 
 const validationSchema = yup.object({
   title: yup.string().required("Title is required!"),
-  description: yup.string().required("Description is required!"),
+  // description: yup.string().required("Description is required!"),
   category: yup.string().required("Please select category!"),
   type: yup.string().required("Please select type!"),
 });
@@ -86,16 +86,25 @@ const ContentDetail = ({ id }: Props) => {
   const [eventError, setEventError] = useState<string>("");
   const [author, setAuthor] = useState<string>("");
   const [editorContent, setEditorContent] = useState<any>("");
+  const [editorContentDesc, setEditorContentDesc] = useState<any>("");
   const [link, setLink] = useState<string>("");
   const [pathwayContent, setPathwayContent] = useState([{ name: "", pathway_id: "" }]);
   const [editor, setEditor] = useState<any>(null);
+  const [editordesc, setEditordesc] = useState<any>(null);
+  const [descError, setDescError] = useState<string>("");
   const [contentOptions, setContentOptions] = useState<OptionType[]>([]);
   const handleEditorInit = (evt: any, editor: any) => {
     setEditor(editor);
   };
+  const handleEditorDescInit = (evt: any, editor: any) => {
+    setEditordesc(editor);
+  };
   useEffect(() => {
     if (editor) {
       editor.setContent(editorContent);
+    }
+    if (editordesc) {
+      editordesc.setContent(editorContentDesc);
     }
     if (content?.data) {
       setSelectedValue(content?.data.type);
@@ -115,8 +124,9 @@ const ContentDetail = ({ id }: Props) => {
         pathway_id: pathway.pathway.id,
       }));
       setPathwayContent(pathwayContentData);
+      setEditorContentDesc(content?.data?.description);
       setValue("title", content?.data.title);
-      setValue("description", content?.data.description);
+      // setValue("description", content?.data.description);
       setValue("category", content?.data?.category?.id);
       setValue("type", content?.data.type);
     }
@@ -127,12 +137,13 @@ const ContentDetail = ({ id }: Props) => {
       }));
       setContentOptions(updatedOptions);
     }
-  }, [editorContent, editor, contents?.data, content?.data]);
+  }, [editorContent, editor, editordesc, contents?.data, content?.data]);
 
   const {
     register,
     handleSubmit,
     setValue,
+    control,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(validationSchema),
@@ -150,7 +161,10 @@ const ContentDetail = ({ id }: Props) => {
 
   const submit = async (data: any) => {
     let postdata: any = {};
-
+    if (!editordesc.getContent()) {
+      setDescError("Description is required!");
+      return;
+    }
     const imgRes: any = image && (await fileTrigger({ file: image }));
     if (imgRes) {
       setImgUrl(imgRes.data?.data?.file_path);
@@ -174,7 +188,7 @@ const ContentDetail = ({ id }: Props) => {
       }
       postdata = {
         title: data?.title,
-        description: data?.description,
+        description: editordesc.getContent(),
         type: selectedValue,
         status: "published",
         category_id: Number(selectCategory),
@@ -200,7 +214,7 @@ const ContentDetail = ({ id }: Props) => {
       }
       postdata = {
         title: data?.title,
-        description: data?.description,
+        description: editordesc.getContent(),
         type: selectedValue,
         status: "published",
         category_id: Number(selectCategory),
@@ -223,7 +237,7 @@ const ContentDetail = ({ id }: Props) => {
       }
       postdata = {
         title: data?.title,
-        description: data?.description,
+        description: editordesc.getContent(),
         type: selectedValue,
         status: "published",
         category_id: Number(selectCategory),
@@ -245,7 +259,7 @@ const ContentDetail = ({ id }: Props) => {
       }
       postdata = {
         title: data?.title,
-        description: data?.description,
+        description: editordesc.getContent(),
         type: selectedValue,
         status: "published",
         category_id: Number(selectCategory),
@@ -260,7 +274,7 @@ const ContentDetail = ({ id }: Props) => {
       const pathways = pathwayContent.map((path: any) => ({ pathway_id: path.pathway_id }));
       postdata = {
         title: data?.title,
-        description: data?.description,
+        description: editordesc.getContent(),
         type: selectedValue,
         status: "published",
         category_id: Number(selectCategory),
@@ -308,12 +322,6 @@ const ContentDetail = ({ id }: Props) => {
     setSelectCategory(event.target.value);
   };
 
-  // const handleCategorySelectChange = (selectedValue: string) => {
-  //   setSelectCategory(selectedValue);
-  //   const selectItem = category?.data.find((cat: any) => cat.id === Number(selectedValue));
-  //   setSelectCategoryName(selectItem?.name || "");
-  // };
-
   const handleFormSelectChange = (event: SelectChangeEvent) => {
     setSelectForm(event.target.value);
   };
@@ -345,18 +353,6 @@ const ContentDetail = ({ id }: Props) => {
       <form onSubmit={handleSubmit(submit)} className="space-y-8">
         <div className="bg-white p-10 rounded-md">
           <div className="mb-10">
-            {/* <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Title</FormLabel>
-                    <FormControl>
-                      <InputText placeholder="Title" {...field} />
-                    </FormControl>
-                  </FormItem>
-                )}
-              /> */}
             <TextField
               {...register("title")}
               // required
@@ -368,41 +364,13 @@ const ContentDetail = ({ id }: Props) => {
             <p className="mt-2 text-red-700">{errors.title?.message}</p>
           </div>
           <div className="mb-10">
-            {/* <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Description</FormLabel>
-                    <FormControl>
-                      <InputText placeholder="Description" {...field} />
-                    </FormControl>
-                  </FormItem>
-                )}
-              /> */}
-            <TextField
-              {...register("description")}
-              label="Description"
-              size="small"
-              className="w-full"
-              variant="outlined"
-            />
-            <p className="mt-2 text-red-700">{errors.description?.message}</p>
+            <div className="mb-10">
+              <p className="text-md font-semibold mb-3">Description</p>
+              <Editor onInit={handleEditorDescInit} />
+              <p className="mt-2 text-red-700">{descError}</p>
+            </div>
           </div>
           <div className="mb-10">
-            {/* <p className="text-sm font-semibold mb-3">Select Category</p>
-              <Select onValueChange={handleCategorySelectChange}>
-                <SelectTrigger className="p-2 h-5 border-2  bg-white border-gray-700 ">
-                  {selectCategoryName || "Category"}
-                </SelectTrigger>
-                <SelectContent className="bg-white">
-                  {category?.data.map((cat: any, index: number) => (
-                    <SelectItem key={index} value={cat.id}>
-                      {cat.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select> */}
             <FormControl size="small" fullWidth>
               <InputLabel id="category">Category</InputLabel>
               <Select
@@ -424,19 +392,6 @@ const ContentDetail = ({ id }: Props) => {
             <p className="mt-2 text-red-700">{errors.category?.message}</p>
           </div>
           <div className="mb-10">
-            {/* <p className="text-sm font-semibold mb-3">Selct Type</p>
-              <Select onValueChange={handleSelectChange}>
-                <SelectTrigger className="p-2 h-5 border-2  bg-white border-gray-700 ">
-                  {content?.type ? content.type : selectedValue ? selectedValue : "Type"}
-                </SelectTrigger>
-                <SelectContent className="bg-white">
-                  <SelectItem value="video">video</SelectItem>
-                  <SelectItem value="event">event</SelectItem>
-                  <SelectItem value="article">article</SelectItem>
-                  <SelectItem value="opportunity">opportunity</SelectItem>
-                  <SelectItem value="pathway">pathway</SelectItem>
-                </SelectContent>
-              </Select> */}
             <FormControl size="small" fullWidth>
               <InputLabel id="selectType">Type</InputLabel>
               <Select
@@ -518,6 +473,11 @@ const ContentDetail = ({ id }: Props) => {
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DemoContainer components={["DateTimePicker"]}>
                       <DateTimePicker
+                        sx={{
+                          "& .MuiInputBase-root": {
+                            height: "45px",
+                          },
+                        }}
                         value={dayjs(startDate)}
                         onChange={handleStartDateChange}
                         label="Start Date"
@@ -530,6 +490,11 @@ const ContentDetail = ({ id }: Props) => {
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DemoContainer components={["DateTimePicker"]}>
                       <DateTimePicker
+                        sx={{
+                          "& .MuiInputBase-root": {
+                            height: "45px",
+                          },
+                        }}
                         value={dayjs(endDate)}
                         onChange={handleEndDateChange}
                         label="End Date"
@@ -539,14 +504,6 @@ const ContentDetail = ({ id }: Props) => {
                 </div>
               </div>
               <div className="mb-10 ">
-                {/* <p className="text-sm mb-2 font-semibold">Location</p>
-                  <fieldset className="Fieldset">
-                    <input
-                      onChange={e => setLocation(e.target.value)}
-                      className="Input"
-                      defaultValue={location || ""}
-                    />
-                  </fieldset> */}
                 <TextField
                   onChange={e => setLocation(e.target.value)}
                   value={location}
@@ -561,14 +518,6 @@ const ContentDetail = ({ id }: Props) => {
           {selectedValue === "article" && (
             <>
               <div className="mb-10">
-                {/* <p className="text-sm mb-2 font-semibold">Published By</p>
-                  <fieldset className="Fieldset">
-                    <input
-                      onChange={e => setAuthor(e.target.value)}
-                      className="Input"
-                      defaultValue={author || ""}
-                    />
-                  </fieldset> */}
                 <TextField
                   onChange={e => setAuthor(e.target.value)}
                   value={author}
@@ -587,14 +536,6 @@ const ContentDetail = ({ id }: Props) => {
           {selectedValue === "opportunity" && (
             <>
               <div className="mb-10">
-                {/* <p className="text-sm mb-2 font-semibold">Link</p>
-                  <fieldset className="Fieldset">
-                    <input
-                      onChange={e => setLink(e.target.value)}
-                      className="Input"
-                      defaultValue={link || ""}
-                    />
-                  </fieldset> */}
                 <TextField
                   onChange={e => setLink(e.target.value)}
                   value={link}
@@ -605,19 +546,6 @@ const ContentDetail = ({ id }: Props) => {
                 />
               </div>
               <div className="mb-10">
-                {/* <p className="text-sm font-semibold mb-3">Select Form</p>
-                  <Select onValueChange={handleFormSelectChange}>
-                    <SelectTrigger className="p-2 h-5 border-2  bg-white border-gray-700 ">
-                      {selectFormName || "Form"}
-                    </SelectTrigger>
-                    <SelectContent className="bg-white">
-                      {formconfigs?.data.map((cat: any, index: number) => (
-                        <SelectItem key={index} value={cat.id}>
-                          {cat.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select> */}
                 <FormControl size="small" fullWidth>
                   <InputLabel id="selectForm">Form</InputLabel>
                   <Select
@@ -680,8 +608,8 @@ const ContentDetail = ({ id }: Props) => {
               ))}
             </>
           )}
-          <div className="mt-5">
-            <label className="flex items-center w-[20%] justify-center px-4 py-2 bg-red-600 text-white rounded-lg cursor-pointer">
+          <div className="mt-10">
+            <label className="flex items-center w-[20%] justify-center px-4 py-2 bg-red-600 text-white rounded-md cursor-pointer">
               <BiSolidCloudUpload size={23} />
               <span className="text-base font-medium">Upload Image</span>
               <input type="file" className="hidden" accept="image/*" onChange={handleImageChange} />
