@@ -15,11 +15,23 @@ type Props = {
   placeholder?: string;
   value?: string;
   defaultValue?: string;
-  inputType: USER_ROLE;
+  inputType?: USER_ROLE;
 };
 
 const InputText = React.forwardRef<HTMLInputElement, Props>(
-  ({ type, label, error, className, placeholder, defaultValue, inputType, ...props }, ref) => {
+  (
+    {
+      type,
+      label,
+      error,
+      className,
+      placeholder,
+      defaultValue,
+      inputType = USER_ROLE.ADMIN,
+      ...props
+    },
+    ref
+  ) => {
     return (
       <InputStyled inputType={inputType}>
         <label htmlFor="email" className="block text-sm font-medium text-gray-700">

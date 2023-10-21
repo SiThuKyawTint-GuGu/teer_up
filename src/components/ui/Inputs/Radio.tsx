@@ -1,41 +1,22 @@
-import { Radio as MuiRadio } from "@mui/material";
+import "@/styles/radio.css";
+import { cn } from "@/utils/cn";
+import * as RadioPrimitive from "@radix-ui/react-radio-group";
 import React from "react";
-import { LiaCircle } from "react-icons/lia";
-import { PiCircleFill } from "react-icons/pi";
 
-const Radio: React.FC<{
-  checked?: boolean;
-  handleChange?: (e: React.ChangeEvent) => void;
-  value?: string;
-  name?: string;
-}> = ({ checked, handleChange, value, ...rest }) => {
-  return (
-    <MuiRadio
-      sx={{
-        "&.MuiButtonBase-root": {
-          color: "#c6c7c9",
-          "&.Mui-checked": {
-            transition: "color 0.5s ease-in-out",
-          },
-        },
-      }}
-      checkedIcon={
-        <>
-          <div className="flex justify-center items-center relative">
-            <LiaCircle className="w-[25px] h-[25px] text-[#c6c7c9]" />
-            <div className="absolute">
-              <PiCircleFill className="text-primary w-[12px] h-[11px]" />
-            </div>
-          </div>
-        </>
-      }
-      icon={<LiaCircle className="w-[25px] h-[25px] text-[#c6c7c9]" />}
-      checked={checked}
-      onChange={handleChange}
-      value={value}
-      {...rest}
-    />
-  );
-};
+const Radio = RadioPrimitive.Root;
 
-export default Radio;
+const RadioItem = React.forwardRef<
+  React.ElementRef<typeof RadioPrimitive.Item>,
+  React.ComponentPropsWithoutRef<typeof RadioPrimitive.Item>
+>(({ className, ...props }, ref) => (
+  <RadioPrimitive.Item
+    ref={ref}
+    className={cn("bg-white w-[25px] h-[25px] rounded-full border-2 border-[#c6c7c9]", className)}
+    {...props}
+  >
+    <RadioPrimitive.Indicator className="flex items-center justify-center w-full h-full relative after:content after:block after:w-3 after:h-3 after:rounded-full after:bg-primary" />
+  </RadioPrimitive.Item>
+));
+RadioItem.displayName = RadioPrimitive.Item.displayName;
+
+export { Radio, RadioItem };

@@ -21,7 +21,7 @@ const config: Config = {
         slateGray: "#BBC7D6",
       },
       boxShadow: {
-        theme: "0px 26px 30px 0px rgba(0, 0, 0, 0.05)",
+        theme: "0px 6px 35px 5px rgba(0, 0, 0, 0.2)",
       },
     },
   },
