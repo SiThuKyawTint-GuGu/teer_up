@@ -18,11 +18,11 @@ export const useGetUsers = <ParamsType, User>(params: ParamsType): SWRResponse<U
   return useSWR<User>(`/user?${routeFilter(params)}`);
 };
 
-export const useGetUserById = <ParamsType, User>(
+export const useGetUserById = <UserProfileResponse>(
   id: string,
   params?: ParamsType
-): SWRResponse<User, any> => {
-  return useSWR<User>(`/user/${id}?${routeFilter(params)}`);
+): SWRResponse<UserProfileResponse, any> => {
+  return useSWR<UserProfileResponse>(`/user/${id}?${routeFilter(params)}`);
 };
 
 interface CreateUserResType {

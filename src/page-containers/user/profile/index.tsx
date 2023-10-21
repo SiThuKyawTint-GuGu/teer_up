@@ -3,15 +3,18 @@ import { Button } from "@/components/ui/Button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
+import { useGetUserById } from "@/services/user";
+import { UserProfileResponse } from "@/types/Profile";
 import { getUserInfo } from "@/utils/auth";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
+import dayjs from "dayjs";
 import { useState } from "react";
 
 const Profile: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
-  const getUser = getUserInfo();
-  console.log("user => ", getUser);
-  // const { data } = useGetUserById();
+  const user = getUserInfo();
+  const { data: profileData } = useGetUserById<UserProfileResponse>(user?.id);
+  const userProfile = profileData?.data;
 
   return (
     <>
@@ -32,21 +35,42 @@ const Profile: React.FC = () => {
                 </DialogTrigger>
               </Section>
               <Section className="bg-white pt-[70px]" pb="4" px="3" position="relative">
-                <div className="absolute -top-[38%]">
-                  <Image
-                    src="/uploads/icons/profile.svg"
-                    width={120}
-                    height={120}
-                    alt="profile icon"
-                  />
+                <div className="absolute -top-[50%]">
+                  <Flex
+                    justify="center"
+                    align="center"
+                    position="relative"
+                    className="w-[120px] h-[120px] rounded-full bg-[#D9D9D9] ring-4 ring-white"
+                  >
+                    <Image
+                      className="mt-[30px]"
+                      width={90}
+                      height={90}
+                      src="/uploads/icons/user-profile.svg"
+                      alt="user profile"
+                    />
+                    <Flex
+                      justify="center"
+                      align="center"
+                      className="absolute bottom-0 right-0 w-[30px] h-[30px] rounded-full bg-[#D9D9D9] ring-2 ring-white"
+                    >
+                      <Icons.profileCamera className="w-[15] h-[15]" />
+                    </Flex>
+                  </Flex>
+                </div>
+                <div className="absolute top-2 right-2">
+                  <Button
+                    variant="outline"
+                    className="border-2 border-[#F4153D] rounded-[30px] space-x-[5px]"
+                  >
+                    <Image src="/uploads/icons/pencil.svg" width={20} height={20} alt="pencil" />
+                    <Text>Edit Button</Text>
+                  </Button>
                 </div>
                 <Heading as="h4" size="5" mb="4">
-                  Kyaw Nyein Naing
+                  {userProfile?.name}
                 </Heading>
-                <Text>
-                  A dedicated UI/UX designer with a passion for crafting delightful digital
-                  experiences.{" "}
-                </Text>
+                <Text>{userProfile?.bio}</Text>
               </Section>
             </Box>
             <Box className="pb-[7px]">
@@ -67,7 +91,11 @@ const Profile: React.FC = () => {
                     <Text as="label" weight="bold" size="3">
                       Birthday
                     </Text>
-                    <Text>December 7,1998</Text>
+                    <Text>
+                      {userProfile?.personal_info?.birthday
+                        ? dayjs(userProfile?.personal_info?.birthday).format("MMMM D, YYYY")
+                        : "-"}
+                    </Text>
                   </Flex>
                 </div>
                 <div className="pb-[10px] mb-[10px]">
@@ -75,7 +103,7 @@ const Profile: React.FC = () => {
                     <Text as="label" weight="bold" size="3">
                       Email
                     </Text>
-                    <Text>sheinkoko.designer@gmail.com</Text>
+                    <Text>{userProfile?.email}</Text>
                   </Flex>
                 </div>
               </Section>
