@@ -5,12 +5,26 @@ import { ContentType } from "@/types/Content";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { Box, IconButton, Tooltip } from "@mui/material";
-import { MaterialReactTable, MRT_Row, useMaterialReactTable } from "material-react-table";
+import {
+  MaterialReactTable,
+  MRT_PaginationState,
+  MRT_Row,
+  useMaterialReactTable,
+} from "material-react-table";
 import Link from "next/link";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 const ContentTable: React.FC = () => {
-  const { data: contents, isLoading } = useGetContent<ParamsType, ContentType>();
+  const [pagination, setPagination] = useState<MRT_PaginationState>({
+    pageIndex: 1,
+    pageSize: 10,
+  });
+  const [globalFilter, setGlobalFilter] = useState<string>("");
+  const { data: contents, isLoading } = useGetContent<ParamsType, ContentType>({
+    page: pagination.pageIndex + 1,
+    pageSize: pagination.pageSize,
+    name: globalFilter || "",
+  });
   const { trigger: deleteTrigger } = useDeleteContent();
 
   const columns = useMemo(
@@ -71,9 +85,22 @@ const ContentTable: React.FC = () => {
       },
     },
     positionActionsColumn: "last",
+    manualFiltering: true,
+    manualPagination: true,
+    rowCount: contents?.total,
+    initialState: {
+      pagination: {
+        pageSize: 10,
+        pageIndex: 1,
+      },
+    },
     state: {
       showSkeletons: isLoading ?? false,
+      pagination,
+      isLoading,
     },
+    onGlobalFilterChange: setGlobalFilter,
+    onPaginationChange: setPagination,
     renderRowActions: ({ row, table }) => (
       <Box sx={{ display: "flex", gap: "1rem" }}>
         <Tooltip title="Edit">

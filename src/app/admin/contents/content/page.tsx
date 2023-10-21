@@ -1,10 +1,11 @@
 import ContentTable from "@/page-containers/admin/content/contentTable";
+import { Box } from "@radix-ui/themes";
 
 const ContentPage = () => {
   return (
-    <div>
+    <Box className="bg-white p-10 rounded-md">
       <ContentTable />
-    </div>
+    </Box>
   );
 };
 
