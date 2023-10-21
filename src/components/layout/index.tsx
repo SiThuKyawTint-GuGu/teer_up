@@ -1,21 +1,21 @@
-'use client';
+"use client";
 
-import React, { ReactNode } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname } from "next/navigation";
+import { ReactNode } from "react";
 
-import { useWindowSize } from '@/hooks/useWindowSize';
-import Login from '@/page-containers/admin/auth/login';
-import { WINDOW_WIDTH } from '@/shared/enums';
+import { useWindowSize } from "@/hooks/useWindowSize";
+import Login from "@/page-containers/admin/auth/login";
+import { WINDOW_WIDTH } from "@/shared/enums";
 
-import HamburgerDrawer from './Drawer';
-import Header from './Header';
-import Sidebar from './Sidebar';
+import HamburgerDrawer from "./Drawer";
+import Header from "./Header";
+import Sidebar from "./Sidebar";
 
 const PageLayout = ({ children }: { children: ReactNode }) => {
   const { windowWidth } = useWindowSize();
   const pathname = usePathname();
 
-  if (pathname === '/admin/auth/login') {
+  if (pathname === "/admin/auth/login") {
     return <Login />;
   }
   return (
@@ -34,9 +34,6 @@ const PageLayout = ({ children }: { children: ReactNode }) => {
       <div className="w-full min-h-screen lg:ml-[260px] bg-primary-light dark:bg-primary-dark px-4">
         <Header />
         <div>{children}</div>
-        {/* <Suspense fallback={<div>loading...</div>}>
-          
-        </Suspense> */}
       </div>
     </div>
   );

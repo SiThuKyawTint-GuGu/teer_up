@@ -10,6 +10,7 @@ import { Icons } from "@/components/ui/Images";
 import { actionMenu, menuList } from "@/shared/data/Menu";
 // import { Switch } from '@/components/ui/switch';
 // import useAtomReducer from '@/hooks/useAtomReducer';
+import { logout } from "@/utils/auth";
 import { cn } from "@/utils/cn";
 
 interface Props {
@@ -75,7 +76,7 @@ const Sidebar: React.FC<Props> = ({ className }: Props) => {
                           : ""
                       )}
                     >
-                      <div className="flex justify-center items-center gap-x-[15px] mb-2">
+                      <div className="flex justify-center items-center gap-x-[15px]">
                         <div>{item.icon}</div>
                         <div>{item.title}</div>
                       </div>
@@ -127,7 +128,10 @@ const Sidebar: React.FC<Props> = ({ className }: Props) => {
                   key={index}
                   className="px-[25px] py-[5px] cursor-pointer hover:menu-theme"
                   open={open === item.key}
-                  onOpenChange={() => handleCollapse(item.key, item)}
+                  onOpenChange={() => {
+                    logout();
+                    router.push("/admin");
+                  }}
                 >
                   <CollapsibleTrigger asChild>
                     <div
