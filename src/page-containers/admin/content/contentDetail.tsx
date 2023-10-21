@@ -2,11 +2,9 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/Inputs/Select";
+// import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/Inputs/Select";
 
 import { Button } from "@/components/ui/Button";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/Form";
-import { InputText } from "@/components/ui/Inputs";
 import {
   ParamsType,
   useGetContent,
@@ -26,6 +24,10 @@ import { FormConfigResponse } from "@/types/Formconfig";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button as MuiButton } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
@@ -46,6 +48,8 @@ interface Props {
 const validationSchema = yup.object({
   title: yup.string().required("Title is required!"),
   description: yup.string().required("Description is required!"),
+  category: yup.string().required("Please select category!"),
+  type: yup.string().required("Please select type!"),
 });
 
 interface OptionType {
@@ -74,15 +78,12 @@ const ContentDetail = ({ id }: Props) => {
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [image, setImage] = useState<File | null>(null);
   const [selectCategory, setSelectCategory] = useState<string>("");
-  const [selectCategoryName, setSelectCategoryName] = useState<string>("");
   const [selectForm, setSelectForm] = useState<string>("");
-  const [selectFormName, setSelectFormName] = useState<string>("");
+
   const [location, setLocation] = useState<string>("");
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   const [eventError, setEventError] = useState<string>("");
-  const [title, setTitle] = useState<string>("");
-  const [desc, setDesc] = useState<string>("");
   const [author, setAuthor] = useState<string>("");
   const [editorContent, setEditorContent] = useState<any>("");
   const [link, setLink] = useState<string>("");
@@ -92,19 +93,16 @@ const ContentDetail = ({ id }: Props) => {
   const handleEditorInit = (evt: any, editor: any) => {
     setEditor(editor);
   };
-  const { setValue } = useForm();
   useEffect(() => {
     if (editor) {
       editor.setContent(editorContent);
     }
     if (content?.data) {
-      setSelectCategoryName(content?.data?.category?.name);
       setSelectedValue(content?.data.type);
       setSelectCategory(content?.data?.category?.id);
       setEditorContent(content?.data?.content_article?.article_body);
       setLink(content?.data?.content_opportunity?.link);
       setAuthor(content?.data?.content_article?.published_by);
-      setSelectFormName(content?.data.content_opportunity?.form_config.name);
       setSelectForm(content?.data?.content_opportunity?.formconfig_id);
       setImgUrl(content?.data.image_url);
       setFileUrl(content?.data?.content_video?.thumbnail);
@@ -117,11 +115,10 @@ const ContentDetail = ({ id }: Props) => {
         pathway_id: pathway.pathway.id,
       }));
       setPathwayContent(pathwayContentData);
-
-      // setTitle(content?.data.title);
-      // setDesc(content?.data.description);
       setValue("title", content?.data.title);
       setValue("description", content?.data.description);
+      setValue("category", content?.data?.category?.id);
+      setValue("type", content?.data.type);
     }
     if (contents?.data) {
       const updatedOptions = contents?.data.map((option: any) => ({
@@ -132,12 +129,13 @@ const ContentDetail = ({ id }: Props) => {
     }
   }, [editorContent, editor, contents?.data, content?.data]);
 
-  const form = useForm<{ title: string; description: string }>({
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm({
     resolver: yupResolver(validationSchema),
-    defaultValues: {
-      title: content?.data.title || undefined,
-      description: content?.data.description || undefined,
-    },
   });
 
   const handleFileChange = (event: any) => {
@@ -150,16 +148,8 @@ const ContentDetail = ({ id }: Props) => {
     }
   };
 
-  const handleSubmit = async (data: { title: string; description: string }) => {
+  const submit = async (data: any) => {
     let postdata: any = {};
-    if (!selectCategory) {
-      setEventError("Please select category!");
-      return;
-    }
-    if (!selectedValue) {
-      setEventError("Please select type!");
-      return;
-    }
 
     const imgRes: any = image && (await fileTrigger({ file: image }));
     if (imgRes) {
@@ -167,6 +157,12 @@ const ContentDetail = ({ id }: Props) => {
     }
 
     if (selectedValue === "video") {
+      if (!file) {
+        setEventError("Video is required!");
+      }
+      if (!thumbnail) {
+        setEventError("Thumbnail is requried!");
+      }
       const thumbnailRes: any = thumbnail && (await fileTrigger({ file: thumbnail }));
       const videoRes: any = file && (await fileTrigger({ file }));
 
@@ -190,16 +186,16 @@ const ContentDetail = ({ id }: Props) => {
       };
       content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
     } else if (selectedValue === "event") {
-      if (!location) {
-        setEventError("Location is required!");
-        return;
-      }
       if (!startDate) {
         setEventError("Start Date is required!");
         return;
       }
       if (!endDate) {
         setEventError("End Date is required!");
+        return;
+      }
+      if (!location) {
+        setEventError("Location is required!");
         return;
       }
       postdata = {
@@ -295,8 +291,8 @@ const ContentDetail = ({ id }: Props) => {
     }
   };
 
-  const handleSelectChange = (selectedValue: string) => {
-    setSelectedValue(selectedValue);
+  const handleSelectChange = (event: SelectChangeEvent) => {
+    setSelectedValue(event.target.value);
   };
 
   const handleStartDateChange = (date: any) => {
@@ -308,17 +304,18 @@ const ContentDetail = ({ id }: Props) => {
     // setEndDate(new Date(date).toISOString());
     setEndDate(date);
   };
-
-  const handleCategorySelectChange = (selectedValue: string) => {
-    setSelectCategory(selectedValue);
-    const selectItem = category?.data.find((cat: any) => cat.id === Number(selectedValue));
-    setSelectCategoryName(selectItem?.name || "");
+  const handleCategorySelectChange = (event: SelectChangeEvent) => {
+    setSelectCategory(event.target.value);
   };
 
-  const handleFormSelectChange = (selectedValue: string) => {
-    setSelectForm(selectedValue);
-    const selectItem = formconfigs?.data.find((cat: any) => cat.id === Number(selectedValue));
-    setSelectFormName(selectItem?.name || "");
+  // const handleCategorySelectChange = (selectedValue: string) => {
+  //   setSelectCategory(selectedValue);
+  //   const selectItem = category?.data.find((cat: any) => cat.id === Number(selectedValue));
+  //   setSelectCategoryName(selectItem?.name || "");
+  // };
+
+  const handleFormSelectChange = (event: SelectChangeEvent) => {
+    setSelectForm(event.target.value);
   };
 
   const handleAddPathway = () => {
@@ -345,11 +342,10 @@ const ContentDetail = ({ id }: Props) => {
 
   return (
     <>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
-          <div className="bg-white p-10 rounded-md">
-            <div className="mb-5">
-              <FormField
+      <form onSubmit={handleSubmit(submit)} className="space-y-8">
+        <div className="bg-white p-10 rounded-md">
+          <div className="mb-10">
+            {/* <FormField
                 control={form.control}
                 name="title"
                 render={({ field }) => (
@@ -360,10 +356,19 @@ const ContentDetail = ({ id }: Props) => {
                     </FormControl>
                   </FormItem>
                 )}
-              />
-            </div>
-            <div className="mb-5">
-              <FormField
+              /> */}
+            <TextField
+              {...register("title")}
+              // required
+              label="Title"
+              size="small"
+              className="w-full"
+              variant="outlined"
+            />
+            <p className="mt-2 text-red-700">{errors.title?.message}</p>
+          </div>
+          <div className="mb-10">
+            {/* <FormField
                 control={form.control}
                 name="description"
                 render={({ field }) => (
@@ -374,10 +379,18 @@ const ContentDetail = ({ id }: Props) => {
                     </FormControl>
                   </FormItem>
                 )}
-              />
-            </div>
-            <div className="mb-10">
-              <p className="text-sm font-semibold mb-3">Select Category</p>
+              /> */}
+            <TextField
+              {...register("description")}
+              label="Description"
+              size="small"
+              className="w-full"
+              variant="outlined"
+            />
+            <p className="mt-2 text-red-700">{errors.description?.message}</p>
+          </div>
+          <div className="mb-10">
+            {/* <p className="text-sm font-semibold mb-3">Select Category</p>
               <Select onValueChange={handleCategorySelectChange}>
                 <SelectTrigger className="p-2 h-5 border-2  bg-white border-gray-700 ">
                   {selectCategoryName || "Category"}
@@ -389,10 +402,29 @@ const ContentDetail = ({ id }: Props) => {
                     </SelectItem>
                   ))}
                 </SelectContent>
+              </Select> */}
+            <FormControl size="small" fullWidth>
+              <InputLabel id="category">Category</InputLabel>
+              <Select
+                {...register("category")}
+                size="small"
+                labelId="category"
+                id="category"
+                value={selectCategory}
+                label="Category"
+                onChange={handleCategorySelectChange}
+              >
+                {category?.data.map((cat: any, index: number) => (
+                  <MenuItem key={index} value={cat.id}>
+                    {cat.name}
+                  </MenuItem>
+                ))}
               </Select>
-            </div>
-            <div className="mb-10">
-              <p className="text-sm font-semibold mb-3">Selct Type</p>
+            </FormControl>
+            <p className="mt-2 text-red-700">{errors.category?.message}</p>
+          </div>
+          <div className="mb-10">
+            {/* <p className="text-sm font-semibold mb-3">Selct Type</p>
               <Select onValueChange={handleSelectChange}>
                 <SelectTrigger className="p-2 h-5 border-2  bg-white border-gray-700 ">
                   {content?.type ? content.type : selectedValue ? selectedValue : "Type"}
@@ -404,133 +436,176 @@ const ContentDetail = ({ id }: Props) => {
                   <SelectItem value="opportunity">opportunity</SelectItem>
                   <SelectItem value="pathway">pathway</SelectItem>
                 </SelectContent>
+              </Select> */}
+            <FormControl size="small" fullWidth>
+              <InputLabel id="selectType">Type</InputLabel>
+              <Select
+                {...register("type")}
+                size="small"
+                labelId="selectType"
+                id="selectType"
+                value={selectedValue}
+                label="Type"
+                onChange={handleSelectChange}
+              >
+                <MenuItem value="video">video</MenuItem>
+                <MenuItem value="event">event</MenuItem>
+                <MenuItem value="article">article</MenuItem>
+                <MenuItem value="opportunity">opportunity</MenuItem>
+                <MenuItem value="pathway">pathway</MenuItem>
               </Select>
-            </div>
-            {eventError && <p className="text-red-700 mb-3">{eventError}</p>}
-            {selectedValue === "video" && (
-              <>
-                <div className="mt-5">
-                  <label className="flex items-center w-[20%] justify-center px-4 py-2 bg-red-600 text-white rounded-lg cursor-pointer">
-                    <BiSolidCloudUpload size={23} />
-                    <span className="text-base font-medium">Upload Video</span>
-                    <input
-                      type="file"
-                      className="hidden"
-                      accept="video/*"
-                      onChange={handleFileChange}
-                      multiple={false}
-                    />
-                  </label>
+            </FormControl>
+            <p className="mt-2 text-red-700">{errors.type?.message}</p>
+          </div>
+          {eventError && <p className="text-red-700 mb-3">{eventError}</p>}
+          {selectedValue === "video" && (
+            <>
+              <div className="mt-5">
+                <label className="flex items-center w-[20%] justify-center px-4 py-2 bg-red-600 text-white rounded-lg cursor-pointer">
+                  <BiSolidCloudUpload size={23} />
+                  <span className="text-base font-medium">Upload Video</span>
+                  <input
+                    type="file"
+                    className="hidden"
+                    accept="video/*"
+                    onChange={handleFileChange}
+                    multiple={false}
+                  />
+                </label>
 
-                  {videoUrl && (
-                    <div className="mt-4">
-                      <p className="font-bold mb-2">Video Preview:</p>
-                      <video className="w-[300px] h-[300px]" controls>
-                        <source src={videoUrl} type="video/mp4" />
-                        Your browser does not support the video tag.
-                      </video>
-                    </div>
-                  )}
-                </div>
-                <div className="mt-5">
-                  <label className="flex items-center w-[25%] justify-center px-4 py-2 bg-red-600 text-white rounded-lg cursor-pointer">
-                    <BiSolidCloudUpload size={23} />
-                    <span className="text-base font-medium">Upload Thumbnail</span>
-                    <input
-                      type="file"
-                      className="hidden"
-                      accept="image/*"
-                      onChange={handlePhotoChange}
-                    />
-                  </label>
+                {videoUrl && (
+                  <div className="mt-4">
+                    <p className="font-bold mb-2">Video Preview:</p>
+                    <video className="w-[300px] h-[300px]" controls>
+                      <source src={videoUrl} type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                )}
+              </div>
+              <div className="mt-5">
+                <label className="flex items-center w-[25%] justify-center px-4 py-2 bg-red-600 text-white rounded-lg cursor-pointer">
+                  <BiSolidCloudUpload size={23} />
+                  <span className="text-base font-medium">Upload Thumbnail</span>
+                  <input
+                    type="file"
+                    className="hidden"
+                    accept="image/*"
+                    onChange={handlePhotoChange}
+                  />
+                </label>
 
-                  {fileUrl && (
-                    <div className="mt-4">
-                      <p className="font-bold mb-2">Thumbnail Preview:</p>
-                      <Image
-                        width={300}
-                        height={300}
-                        src={fileUrl}
-                        alt="File Preview"
-                        className="max-w-full h-auto"
+                {fileUrl && (
+                  <div className="mt-4">
+                    <p className="font-bold mb-2">Thumbnail Preview:</p>
+                    <Image
+                      width={300}
+                      height={300}
+                      src={fileUrl}
+                      alt="File Preview"
+                      className="max-w-full h-auto"
+                    />
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+          {selectedValue === "event" && (
+            <>
+              <div className="flex mb-10">
+                <div className="mr-10">
+                  <p className="text-sm font-semibold">Start Date</p>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DemoContainer components={["DateTimePicker"]}>
+                      <DateTimePicker
+                        value={dayjs(startDate)}
+                        onChange={handleStartDateChange}
+                        label="Start Date"
                       />
-                    </div>
-                  )}
+                    </DemoContainer>
+                  </LocalizationProvider>
                 </div>
-              </>
-            )}
-            {selectedValue === "event" && (
-              <>
-                <div className="flex">
-                  <div className="mr-10">
-                    <p className="text-sm font-semibold">Start Date</p>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DemoContainer components={["DateTimePicker"]}>
-                        <DateTimePicker
-                          value={dayjs(startDate)}
-                          onChange={handleStartDateChange}
-                          label="Start Date"
-                        />
-                      </DemoContainer>
-                    </LocalizationProvider>
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold">End Date</p>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DemoContainer components={["DateTimePicker"]}>
-                        <DateTimePicker
-                          value={dayjs(endDate)}
-                          onChange={handleEndDateChange}
-                          label="End Date"
-                        />
-                      </DemoContainer>
-                    </LocalizationProvider>
-                  </div>
+                <div>
+                  <p className="text-sm font-semibold">End Date</p>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DemoContainer components={["DateTimePicker"]}>
+                      <DateTimePicker
+                        value={dayjs(endDate)}
+                        onChange={handleEndDateChange}
+                        label="End Date"
+                      />
+                    </DemoContainer>
+                  </LocalizationProvider>
                 </div>
-                <div className="my-5">
-                  <p className="text-sm mb-2 font-semibold">Location</p>
+              </div>
+              <div className="mb-10 ">
+                {/* <p className="text-sm mb-2 font-semibold">Location</p>
                   <fieldset className="Fieldset">
                     <input
                       onChange={e => setLocation(e.target.value)}
                       className="Input"
                       defaultValue={location || ""}
                     />
-                  </fieldset>
-                </div>
-              </>
-            )}
-            {selectedValue === "article" && (
-              <>
-                <div className="my-5">
-                  <p className="text-sm mb-2 font-semibold">Published By</p>
+                  </fieldset> */}
+                <TextField
+                  onChange={e => setLocation(e.target.value)}
+                  value={location}
+                  label="Location"
+                  size="small"
+                  className="w-full"
+                  variant="outlined"
+                />
+              </div>
+            </>
+          )}
+          {selectedValue === "article" && (
+            <>
+              <div className="mb-10">
+                {/* <p className="text-sm mb-2 font-semibold">Published By</p>
                   <fieldset className="Fieldset">
                     <input
                       onChange={e => setAuthor(e.target.value)}
                       className="Input"
                       defaultValue={author || ""}
                     />
-                  </fieldset>
-                </div>
-                <div className="mb-10">
-                  <p className="text-sm font-semibold mb-3">Content</p>
-                  <Editor onInit={handleEditorInit} />
-                </div>
-              </>
-            )}
-            {selectedValue === "opportunity" && (
-              <>
-                <div className="my-5">
-                  <p className="text-sm mb-2 font-semibold">Link</p>
+                  </fieldset> */}
+                <TextField
+                  onChange={e => setAuthor(e.target.value)}
+                  value={author}
+                  label="Published By"
+                  size="small"
+                  className="w-full"
+                  variant="outlined"
+                />
+              </div>
+              <div className="mb-10">
+                <p className="text-md font-semibold mb-3">Content</p>
+                <Editor onInit={handleEditorInit} />
+              </div>
+            </>
+          )}
+          {selectedValue === "opportunity" && (
+            <>
+              <div className="mb-10">
+                {/* <p className="text-sm mb-2 font-semibold">Link</p>
                   <fieldset className="Fieldset">
                     <input
                       onChange={e => setLink(e.target.value)}
                       className="Input"
                       defaultValue={link || ""}
                     />
-                  </fieldset>
-                </div>
-                <div className="mb-10">
-                  <p className="text-sm font-semibold mb-3">Select Form</p>
+                  </fieldset> */}
+                <TextField
+                  onChange={e => setLink(e.target.value)}
+                  value={link}
+                  label="Link"
+                  size="small"
+                  className="w-full"
+                  variant="outlined"
+                />
+              </div>
+              <div className="mb-10">
+                {/* <p className="text-sm font-semibold mb-3">Select Form</p>
                   <Select onValueChange={handleFormSelectChange}>
                     <SelectTrigger className="p-2 h-5 border-2  bg-white border-gray-700 ">
                       {selectFormName || "Form"}
@@ -542,87 +617,96 @@ const ContentDetail = ({ id }: Props) => {
                         </SelectItem>
                       ))}
                     </SelectContent>
+                  </Select> */}
+                <FormControl size="small" fullWidth>
+                  <InputLabel id="selectForm">Form</InputLabel>
+                  <Select
+                    size="small"
+                    labelId="selectForm"
+                    id="selectForm"
+                    value={selectForm}
+                    label="Form"
+                    onChange={handleFormSelectChange}
+                  >
+                    {formconfigs?.data.map((cat: any, index: number) => (
+                      <MenuItem key={index} value={cat.id}>
+                        {cat.name}
+                      </MenuItem>
+                    ))}
                   </Select>
-                </div>
-              </>
-            )}
-            {selectedValue === "pathway" && (
-              <>
-                <MuiButton
-                  style={{ textTransform: "none" }}
-                  color="error"
-                  variant="contained"
-                  onClick={handleAddPathway}
-                >
-                  <AiOutlinePlus size={20} />
-                  Add Pathway
-                </MuiButton>
-                {pathwayContent.map((pathway: any, index: number) => (
-                  <div key={index} className="flex items-center gap-4 mt-10">
-                    {/* <TextField
+                </FormControl>
+              </div>
+            </>
+          )}
+          {selectedValue === "pathway" && (
+            <>
+              <MuiButton
+                style={{ textTransform: "none" }}
+                color="error"
+                variant="contained"
+                onClick={handleAddPathway}
+              >
+                <AiOutlinePlus size={20} />
+                Add Pathway
+              </MuiButton>
+              {pathwayContent.map((pathway: any, index: number) => (
+                <div key={index} className="flex items-center gap-4 mt-10">
+                  {/* <TextField
                       size="small"
                       id="outlined-basic"
                       label="Pathway Name"
                       variant="outlined"
                     /> */}
-                    <Autocomplete
-                      disablePortal
-                      id="combo-box-demo"
-                      options={contentOptions || []}
-                      sx={{ width: 300 }}
-                      value={pathway.name}
-                      onInputChange={handleInputChange}
-                      onChange={(event, newValue) =>
-                        handleSelectPathwayChange(event, newValue, index)
-                      }
-                      // onChange={handleSelectPathwayChange}
-                      renderInput={params => (
-                        <TextField {...params} size="small" label="Contents" />
-                      )}
-                    />
-                    <AiFillDelete
-                      onClick={() => handleDeletePathway(index)}
-                      className="cursor-pointer"
-                      size={25}
-                      color="#d8291c"
-                    />
-                  </div>
-                ))}
-              </>
-            )}
-            <div className="mt-5">
-              <label className="flex items-center w-[20%] justify-center px-4 py-2 bg-red-600 text-white rounded-lg cursor-pointer">
-                <BiSolidCloudUpload size={23} />
-                <span className="text-base font-medium">Upload Image</span>
-                <input
-                  type="file"
-                  className="hidden"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                />
-              </label>
-
-              {imgUrl && (
-                <div className="mt-4">
-                  <p className="font-bold mb-2">Image Preview:</p>
-                  <Image
-                    width={300}
-                    height={300}
-                    src={imgUrl}
-                    alt="File Preview"
-                    className="max-w-full h-auto"
+                  <Autocomplete
+                    disablePortal
+                    id="combo-box-demo"
+                    options={contentOptions || []}
+                    sx={{ width: 300 }}
+                    value={pathway.name}
+                    onInputChange={handleInputChange}
+                    onChange={(event, newValue) =>
+                      handleSelectPathwayChange(event, newValue, index)
+                    }
+                    // onChange={handleSelectPathwayChange}
+                    renderInput={params => <TextField {...params} size="small" label="Contents" />}
+                  />
+                  <AiFillDelete
+                    onClick={() => handleDeletePathway(index)}
+                    className="cursor-pointer"
+                    size={25}
+                    color="#d8291c"
                   />
                 </div>
-              )}
-            </div>
-            <div style={{ display: "flex", marginTop: 20, justifyContent: "flex-end" }}>
-              <Button className="p-2 mt-[20px] rounded-md w-[15%] text-white" type="submit">
-                {id != "0" ? "Update" : "Submit"}
-              </Button>
-            </div>
+              ))}
+            </>
+          )}
+          <div className="mt-5">
+            <label className="flex items-center w-[20%] justify-center px-4 py-2 bg-red-600 text-white rounded-lg cursor-pointer">
+              <BiSolidCloudUpload size={23} />
+              <span className="text-base font-medium">Upload Image</span>
+              <input type="file" className="hidden" accept="image/*" onChange={handleImageChange} />
+            </label>
+
+            {imgUrl && (
+              <div className="mt-4">
+                <p className="font-bold mb-2">Image Preview:</p>
+                <Image
+                  width={300}
+                  height={300}
+                  src={imgUrl}
+                  alt="File Preview"
+                  className="max-w-full h-auto"
+                />
+              </div>
+            )}
           </div>
-        </form>
-      </Form>
+          <div style={{ display: "flex", marginTop: 20, justifyContent: "flex-end" }}>
+            <Button className="p-2 mt-[20px] rounded-md w-[15%] text-white" type="submit">
+              {id != "0" ? "Update" : "Submit"}
+            </Button>
+          </div>
+        </div>
+      </form>
     </>
   );
 };
