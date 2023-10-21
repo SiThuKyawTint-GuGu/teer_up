@@ -1,31 +1,16 @@
 "use client";
 import { Button } from "@/components/ui/Button";
-import { ParamsType, useDeleteContent, useGetContent } from "@/services/content";
-import { ContentType } from "@/types/Content";
+import { useDeleteBlog, useGetBlogs } from "@/services/blogPost";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { Box, IconButton, Tooltip } from "@mui/material";
-import {
-  MaterialReactTable,
-  MRT_PaginationState,
-  MRT_Row,
-  useMaterialReactTable,
-} from "material-react-table";
+import { MaterialReactTable, MRT_Row, useMaterialReactTable } from "material-react-table";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 
-const ContentTable: React.FC = () => {
-  const [pagination, setPagination] = useState<MRT_PaginationState>({
-    pageIndex: 1,
-    pageSize: 10,
-  });
-  const [globalFilter, setGlobalFilter] = useState<string>("");
-  const { data: contents, isLoading } = useGetContent<ParamsType, ContentType>({
-    page: pagination.pageIndex + 1,
-    pageSize: pagination.pageSize,
-    name: globalFilter || "",
-  });
-  const { trigger: deleteTrigger } = useDeleteContent();
+const BlogTable: React.FC = () => {
+  const { data: blogs, isLoading } = useGetBlogs<any>();
+  const { trigger: deleteTrigger } = useDeleteBlog();
 
   const columns = useMemo(
     () => [
@@ -35,25 +20,25 @@ const ContentTable: React.FC = () => {
         enableEditing: false,
       },
       {
-        accessorKey: "title",
-        header: "Title",
-        enableEditing: false,
-      },
-      {
-        accessorKey: "description",
-        header: "Description",
+        accessorKey: "name",
+        header: "Name",
         enableEditing: false,
       },
       // {
-      //   accessorKey: "image_url",
-      //   header: "Image URL",
+      //   accessorKey: "content",
+      //   header: "Content",
       //   enableEditing: false,
       // },
       {
-        accessorKey: "created_at",
-        header: "Created At",
+        accessorKey: "link",
+        header: "Link",
         enableEditing: false,
       },
+      // {
+      //   accessorKey: "is_public",
+      //   header: "Public",
+      //   enableEditing: false,
+      // },
     ],
     []
   );
@@ -68,7 +53,7 @@ const ContentTable: React.FC = () => {
 
   const table = useMaterialReactTable({
     columns,
-    data: (contents?.data as any) || [],
+    data: (blogs?.data as any) || [],
     createDisplayMode: "row",
     editDisplayMode: "row",
     enableEditing: true,
@@ -85,26 +70,13 @@ const ContentTable: React.FC = () => {
       },
     },
     positionActionsColumn: "last",
-    manualFiltering: true,
-    manualPagination: true,
-    rowCount: contents?.total,
-    initialState: {
-      pagination: {
-        pageSize: 10,
-        pageIndex: 1,
-      },
-    },
     state: {
       showSkeletons: isLoading ?? false,
-      pagination,
-      isLoading,
     },
-    onGlobalFilterChange: setGlobalFilter,
-    onPaginationChange: setPagination,
     renderRowActions: ({ row, table }) => (
       <Box sx={{ display: "flex", gap: "1rem" }}>
         <Tooltip title="Edit">
-          <Link href={`/admin/contents/content/${row.id}`}>
+          <Link href={`/admin/blogs/posts/${row.id}`}>
             <IconButton>
               <EditIcon />
             </IconButton>
@@ -119,7 +91,7 @@ const ContentTable: React.FC = () => {
     ),
     renderTopToolbarCustomActions: ({ table }) => (
       <Button className="my-5 mr-2">
-        <Link href={"/admin/contents/content/0"}>Create New Content</Link>
+        <Link href={"/admin/blogs/posts/0"}>Create New Blog</Link>
       </Button>
     ),
   });
@@ -127,4 +99,4 @@ const ContentTable: React.FC = () => {
   return <MaterialReactTable table={table} />;
 };
 
-export default ContentTable;
+export default BlogTable;
