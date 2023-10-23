@@ -9,7 +9,6 @@ type ContentlayoutProps = {
   children: React.ReactNode;
   data: ContentData;
   contentMutate: any;
-  type: string;
 };
 
 const ContentLayout: React.FC<ContentlayoutProps> = ({ children, data, contentMutate, type }) => {
@@ -35,8 +34,8 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ children, data, contentMu
             height={200}
             alt={data.title}
           />
-          <div className="absolute top-0 right-0 bg-white text-[14px] font-[600] px-[16px] py-[4px] rounded-bl-lg shadow-lg">
-            {type}
+          <div className="absolute top-0 right-0 bg-white text-[14px] font-[600] px-[16px] py-[4px] rounded-bl-lg shadow-lg uppercase">
+            {data.type}
           </div>
         </div>
         <div className="w-full px-[16px] bg-white">

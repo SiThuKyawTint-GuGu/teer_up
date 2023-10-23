@@ -23,9 +23,17 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
   };
   return (
     <div className="bg-white flex py-5 items-center">
-      <Button size="sm" className="w-[166px]">
-        Join now
-      </Button>
+      {data.type === "event" && (
+        <Button size="sm" className="w-[166px]">
+          Join now
+        </Button>
+      )}
+      {data.type === "opportunity" && (
+        <Button size="sm" className="w-[166px]">
+          Apply now
+        </Button>
+      )}
+
       <div className="flex justify-between p-3 w-full flex-1">
         <div className="flex items-center flex-wrap gap-x-[5px]">
           <Icons.like

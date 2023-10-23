@@ -13,14 +13,13 @@ import { useParams } from "next/navigation";
 import React, { useState } from "react";
 import CommentSection from "./CommentSection";
 
-type ContentlayoutProps = {
-  type: string;
-};
+type ContentlayoutProps = {};
 
-const UserContentDetail: React.FC<ContentlayoutProps> = ({ type }) => {
+const UserContentDetail: React.FC<ContentlayoutProps> = () => {
   const { slug }: { slug: string } = useParams();
   const { data: contentData, mutate: contentMutate } = useGetContentBySlug<ContentData>(slug);
   const [openModal, setOpenModal] = useState<boolean>(false);
+  console.log(contentData);
   console.log(contentData);
   return (
     <Dialog open={openModal} onOpenChange={val => setOpenModal(val)}>
@@ -31,7 +30,7 @@ const UserContentDetail: React.FC<ContentlayoutProps> = ({ type }) => {
             <div className="w-full mx-auto relative p-2">
               <Image
                 src={contentData.data.image_url}
-                className="w-full h-[200px]"
+                className="w-full h-[30%]"
                 width={358}
                 height={200}
                 alt={contentData.data.title}
@@ -67,6 +66,12 @@ const UserContentDetail: React.FC<ContentlayoutProps> = ({ type }) => {
                     <div className="flex flex-wrap gap-x-2 items-center  text-[16px] font-[700]">
                       <Icons.calender className="w-[20px] h-[20px]" />
                       {dayjs(contentData.data.content_event.to_datetime).format("D MMMM")}
+                    </div>
+                  )}
+                  {contentData.data.content_opportunity && (
+                    <div className="flex flex-wrap gap-x-2 items-center text-[16px] font-[700]">
+                      <Icons.location className="w-[20px] h-[20px]" />
+                      {contentData.data.content_opportunity.location || "Yangon"}
                     </div>
                   )}
                 </div>
