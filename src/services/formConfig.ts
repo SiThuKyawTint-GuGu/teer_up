@@ -35,7 +35,7 @@ export const useUpdateFormConfig = (id: string) =>
     return appAxios.put<FormConfigArgType>(url, arg);
   });
 
-export const useDeleteFormConfig = (id: string) =>
-  useSWRMutation(`/admin/formconfig/${id}`, url => {
-    return appAxios.delete<FormConfigArgType>(url);
+export const useDeleteFormConfig = () =>
+  useSWRMutation(`/admin/formconfig`, (url, { arg }: { arg: { id: string } }) => {
+    return appAxios.delete<FormConfigArgType>(`${url}/${arg.id}`);
   });
