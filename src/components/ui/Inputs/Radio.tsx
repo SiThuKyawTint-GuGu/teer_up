@@ -11,10 +11,10 @@ const RadioItem = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <RadioPrimitive.Item
     ref={ref}
-    className={cn("bg-white w-[25px] h-[25px] rounded-full border-2 border-[#c6c7c9]", className)}
+    className={cn("bg-white w-[20px] h-[20px] rounded-full border-2 border-[#c6c7c9]", className)}
     {...props}
   >
-    <RadioPrimitive.Indicator className="flex items-center justify-center w-full h-full relative after:content after:block after:w-3 after:h-3 after:rounded-full after:bg-primary" />
+    <RadioPrimitive.Indicator className="flex items-center justify-center w-full h-full relative after:content after:block after:w-2 after:h-2 after:rounded-full after:bg-primary" />
   </RadioPrimitive.Item>
 ));
 RadioItem.displayName = RadioPrimitive.Item.displayName;
