@@ -49,7 +49,7 @@ interface Props {
 
 const validationSchema = yup.object({
   title: yup.string().required("Title is required!"),
-  // description: yup.string().required("Description is required!"),
+  description: yup.string().required("Description is required!"),
   category: yup.string().required("Please select category!"),
   type: yup.string().required("Please select type!"),
 });
@@ -90,25 +90,25 @@ const ContentDetail = ({ id }: Props) => {
   const [eventError, setEventError] = useState<string>("");
   const [author, setAuthor] = useState<string>("");
   const [editorContent, setEditorContent] = useState<any>("");
-  const [editorContentDesc, setEditorContentDesc] = useState<any>("");
+  const [oppoEditorContent, setOppoEditorContent] = useState<any>("");
   const [link, setLink] = useState<string>("");
   const [pathwayContent, setPathwayContent] = useState([{ name: "", pathway_id: "" }]);
   const [editor, setEditor] = useState<any>(null);
-  const [editordesc, setEditordesc] = useState<any>(null);
-  const [descError, setDescError] = useState<string>("");
+  const [oppoEditor, setOppoEditor] = useState<any>(null);
   const [contentOptions, setContentOptions] = useState<OptionType[]>([]);
   const handleEditorInit = (evt: any, editor: any) => {
     setEditor(editor);
   };
-  const handleEditorDescInit = (evt: any, editor: any) => {
-    setEditordesc(editor);
+  const handleOppoEditorInit = (evt: any, editor: any) => {
+    setOppoEditor(editor);
   };
+
   useEffect(() => {
     if (editor) {
       editor.setContent(editorContent);
     }
-    if (editordesc) {
-      editordesc.setContent(editorContentDesc);
+    if (oppoEditor) {
+      oppoEditor.setContent(oppoEditorContent);
     }
     if (content?.data) {
       setSelectedValue(content?.data.type);
@@ -130,9 +130,8 @@ const ContentDetail = ({ id }: Props) => {
         pathway_id: pathway.pathway.id,
       }));
       setPathwayContent(pathwayContentData);
-      setEditorContentDesc(content?.data?.description);
       setValue("title", content?.data.title);
-      // setValue("description", content?.data.description);
+      setValue("description", content?.data.description);
       setValue("category", content?.data?.category?.id);
       setValue("type", content?.data.type);
     }
@@ -143,13 +142,12 @@ const ContentDetail = ({ id }: Props) => {
       }));
       setContentOptions(updatedOptions);
     }
-  }, [editorContent, editor, editordesc, contents?.data, content?.data]);
+  }, [editorContent, editor, oppoEditor, oppoEditorContent, contents?.data, content?.data]);
 
   const {
     register,
     handleSubmit,
     setValue,
-    control,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(validationSchema),
@@ -167,10 +165,6 @@ const ContentDetail = ({ id }: Props) => {
 
   const submit = async (data: any) => {
     let postdata: any = {};
-    if (!editordesc.getContent()) {
-      setDescError("Description is required!");
-      return;
-    }
     const imgRes: any = image && (await fileTrigger({ file: image }));
     if (imgRes) {
       setImgUrl(imgRes.data?.data?.file_path);
@@ -194,7 +188,7 @@ const ContentDetail = ({ id }: Props) => {
       }
       postdata = {
         title: data?.title,
-        description: editordesc.getContent(),
+        description: data.description,
         type: selectedValue,
         status: "published",
         category_id: Number(selectCategory),
@@ -224,7 +218,7 @@ const ContentDetail = ({ id }: Props) => {
       }
       postdata = {
         title: data?.title,
-        description: editordesc.getContent(),
+        description: data?.description,
         type: selectedValue,
         status: "published",
         category_id: Number(selectCategory),
@@ -248,7 +242,7 @@ const ContentDetail = ({ id }: Props) => {
       }
       postdata = {
         title: data?.title,
-        description: editordesc.getContent(),
+        description: data?.description,
         type: selectedValue,
         status: "published",
         category_id: Number(selectCategory),
@@ -272,9 +266,13 @@ const ContentDetail = ({ id }: Props) => {
         setEventError("Please Select Form!");
         return;
       }
+      if (!oppoEditor.getContent()) {
+        setEventError("Opportunity Content is required!");
+        return;
+      }
       postdata = {
         title: data?.title,
-        description: editordesc.getContent(),
+        description: data?.description,
         type: selectedValue,
         status: "published",
         category_id: Number(selectCategory),
@@ -290,7 +288,7 @@ const ContentDetail = ({ id }: Props) => {
       const pathways = pathwayContent.map((path: any) => ({ pathway_id: path.pathway_id }));
       postdata = {
         title: data?.title,
-        description: editordesc.getContent(),
+        description: data?.description,
         type: selectedValue,
         status: "published",
         category_id: Number(selectCategory),
@@ -381,9 +379,16 @@ const ContentDetail = ({ id }: Props) => {
           </div>
           <div className="mb-10">
             <div className="mb-10">
-              <p className="text-md font-semibold mb-3">Description</p>
-              <Editor onInit={handleEditorDescInit} />
-              <p className="mt-2 text-red-700">{descError}</p>
+              <TextField
+                {...register("description")}
+                label="Description"
+                size="small"
+                multiline
+                rows={4}
+                className="w-full"
+                variant="outlined"
+              />
+              <p className="mt-2 text-red-700">{errors.description?.message}</p>
             </div>
           </div>
           <div className="mb-10">
@@ -598,6 +603,10 @@ const ContentDetail = ({ id }: Props) => {
                     ))}
                   </Select>
                 </FormControl>
+              </div>
+              <div className="mb-10">
+                <p className="text-md font-semibold mb-3">Opportunity Content</p>
+                <Editor onInit={handleOppoEditorInit} />
               </div>
             </>
           )}
