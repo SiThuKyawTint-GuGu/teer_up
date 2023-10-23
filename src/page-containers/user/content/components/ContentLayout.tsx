@@ -11,7 +11,7 @@ type ContentlayoutProps = {
   contentMutate: any;
 };
 
-const ContentLayout: React.FC<ContentlayoutProps> = ({ children, data, contentMutate, type }) => {
+const ContentLayout: React.FC<ContentlayoutProps> = ({ children, data, contentMutate }) => {
   const { trigger: like } = useLikeContent();
   const likePost = async () => {
     await like(
