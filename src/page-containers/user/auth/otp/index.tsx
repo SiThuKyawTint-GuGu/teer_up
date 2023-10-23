@@ -94,10 +94,10 @@ const Otp = () => {
                 progress if you do not verify email.
               </Text>
 
-              <Button size="lg" className="w-full">
+              <Button size="lg" className="w-full" onClick={() => setModalOpen(false)}>
                 Verify now
               </Button>
-              <button>Verify Later</button>
+              <button onClick={() => router.push("/home")}>Verify Later</button>
             </div>
           </div>
         </Modal>

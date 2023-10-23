@@ -1,9 +1,10 @@
 import { Icons } from "@/components/ui/Images";
 import { useLikeContent } from "@/services/content";
 import { ContentData } from "@/types/Content";
-import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@radix-ui/react-dialog";
 import Image from "next/image";
 import React, { useState } from "react";
+import CommentSection from "./CommentSection";
 
 type ContentlayoutProps = {
   children: React.ReactNode;
@@ -75,6 +76,11 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ children, data, contentMu
           </div>
         </div>
       </div>
+      {openModal && (
+        <DialogContent className="absolute top-[initial] bottom-0 w-full  bg-white">
+          <CommentSection data={data} mutateParentData={contentMutate} />
+        </DialogContent>
+      )}
     </Dialog>
   );
 };

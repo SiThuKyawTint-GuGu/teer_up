@@ -7,8 +7,9 @@ import { showTime } from "@/utils/time";
 import React, { useState } from "react";
 type CommentSectionProp = {
   data: ContentData;
+  mutateParentData: () => any;
 };
-const CommentSection: React.FC<CommentSectionProp> = ({ data }) => {
+const CommentSection: React.FC<CommentSectionProp> = ({ data, mutateParentData }) => {
   const { data: cmts, mutate: mutateCmt } = useGetComment<ParamsType, CommentResponse>(data.id, {
     cursor: 1,
     pageSize: 20,
@@ -25,6 +26,7 @@ const CommentSection: React.FC<CommentSectionProp> = ({ data }) => {
     await postComment(formData, {
       onSuccess: () => {
         mutateCmt();
+        mutateParentData();
         setCommentValue("");
       },
     });
