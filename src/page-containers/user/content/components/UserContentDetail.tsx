@@ -84,7 +84,7 @@ const UserContentDetail: React.FC<ContentlayoutProps> = () => {
         )}
         {openModal && (
           <DialogContent className="absolute top-[]initial] bottom-0 w-full  bg-white">
-            <CommentSection data={contentData.data} />
+            <CommentSection data={contentData.data} mutateParentData={contentMutate} />
           </DialogContent>
         )}
       </Grid>

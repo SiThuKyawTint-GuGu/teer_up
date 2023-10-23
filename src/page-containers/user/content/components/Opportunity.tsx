@@ -27,7 +27,9 @@ const Opportunity: React.FC<OpportunityProps> = ({ data, contentMutate }) => {
                 const temporaryDiv = document.createElement("div");
                 temporaryDiv.innerHTML = data.description && data.description.toString();
                 if (!temporaryDiv.textContent) return "";
-                return temporaryDiv.textContent.substring(0, 300) + "...";
+                if (temporaryDiv.textContent.length > 300)
+                  return temporaryDiv.textContent.substring(0, 300) + "...";
+                return temporaryDiv.textContent;
               })()}
             </div>
             <Text as="span" className="text-primary">
@@ -36,7 +38,7 @@ const Opportunity: React.FC<OpportunityProps> = ({ data, contentMutate }) => {
           </div>
         )}
 
-        <Button>Join Now</Button>
+        <Button>Apply Now</Button>
       </div>
     </ContentLayout>
   );
