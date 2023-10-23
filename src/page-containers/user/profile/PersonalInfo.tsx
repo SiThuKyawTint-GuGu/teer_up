@@ -7,9 +7,11 @@ import { InputText } from "@/components/ui/Inputs";
 import { Radio, RadioItem } from "@/components/ui/Inputs/Radio";
 import { Label } from "@/components/ui/Label";
 import { Text } from "@/components/ui/Typo/Text";
-import { useGetUserById, useUpdatePersonalInfo } from "@/services/user";
+import { useGetGenders, useGetUserById, useUpdatePersonalInfo } from "@/services/user";
 import { USER_ROLE } from "@/shared/enums";
 import { UserProfileResponse } from "@/types/Profile";
+import { Gender } from "@/types/User";
+import { getUserInfo } from "@/utils/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
@@ -29,27 +31,26 @@ const validationSchema = yup.object({
 const PersonalInfo: React.FC = () => {
   const { id } = useParams();
   const router = useRouter();
+  const userInfo = getUserInfo();
   const { data: profileData } = useGetUserById<UserProfileResponse>(id as string);
+  const { data: genders, isLoading: genderLoading } = useGetGenders<Gender[]>();
   const { trigger } = useUpdatePersonalInfo();
   const userProfile = profileData?.data;
+  const defaultChecked = userProfile?.personal_info?.gender?.id.toString();
 
   const form = useForm({
     resolver: yupResolver(validationSchema),
   });
 
   const submit = async (data: any) => {
-    const birthday = Object.keys(data).reduce(
-      (acc, key) => {
-        delete data.gender;
-        const formattedDate = { ...acc, date: dayjs(data[key]).format("YYYY-MM-DD") };
-        return formattedDate;
-      },
-      {} as { date: string }
-    );
+    console.log(data);
+    const day = dayjs(data?.day).format("DD");
+    const month = dayjs(data?.month).format("MM");
+    const year = dayjs(data?.year).year();
 
     const newData = {
-      gender_id: 1,
-      birthday: birthday.date,
+      gender_id: Number(data.gender),
+      birthday: `${year}-${month}-${day}`,
     };
 
     await trigger(newData, {
@@ -80,41 +81,37 @@ const PersonalInfo: React.FC = () => {
                       Gender
                     </Heading>
                   </Flex>
-                  <FormField
-                    control={form.control}
-                    name="gender"
-                    render={({ field }) => {
-                      return (
-                        <FormItem>
-                          <FormControl>
-                            <Radio
-                              className="space-y-[10px]"
-                              onValueChange={val => field.onChange(val)}
-                            >
-                              <Label className="block pb-[10px] border-b border-b-[#BDC7D5]">
-                                <Flex justify="between" align="center">
-                                  Female
-                                  <RadioItem value="female" defaultChecked />
-                                </Flex>
-                              </Label>
-                              <Label className="block pb-[10px] border-b border-b-[#BDC7D5]">
-                                <Flex justify="between" align="center">
-                                  Male
-                                  <RadioItem value="male" />
-                                </Flex>
-                              </Label>
-                              <Label className="block pb-[10px] border-b border-b-[#BDC7D5]">
-                                <Flex justify="between" align="center">
-                                  More options
-                                  <RadioItem value="other" />
-                                </Flex>
-                              </Label>
-                            </Radio>
-                          </FormControl>
-                        </FormItem>
-                      );
-                    }}
-                  />
+                  {defaultChecked && (
+                    <FormField
+                      control={form.control}
+                      name="gender"
+                      render={({ field }) => {
+                        return (
+                          <FormItem>
+                            <FormControl>
+                              <Radio
+                                className="space-y-[10px]"
+                                onValueChange={val => field.onChange(val)}
+                                defaultValue={defaultChecked}
+                              >
+                                {genders?.map((each, key) => (
+                                  <Label
+                                    key={key}
+                                    className="block pb-[10px] border-b border-b-[#BDC7D5]"
+                                  >
+                                    <Flex justify="between" align="center">
+                                      {each.type}
+                                      <RadioItem value={each.id.toString()} />
+                                    </Flex>
+                                  </Label>
+                                ))}
+                              </Radio>
+                            </FormControl>
+                          </FormItem>
+                        );
+                      }}
+                    />
+                  )}
                 </Section>
               </Box>
               <Box className="pb-[7px]">
@@ -126,7 +123,11 @@ const PersonalInfo: React.FC = () => {
                     <FormField
                       control={form.control}
                       name="day"
-                      defaultValue={new Date()}
+                      defaultValue={
+                        userProfile?.personal_info?.birthday
+                          ? new Date(userProfile?.personal_info?.birthday)
+                          : new Date()
+                      }
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
@@ -146,13 +147,19 @@ const PersonalInfo: React.FC = () => {
                     <FormField
                       name="month"
                       control={form.control}
-                      defaultValue={new Date()}
+                      defaultValue={
+                        userProfile?.personal_info?.birthday
+                          ? new Date(userProfile?.personal_info?.birthday)
+                          : new Date()
+                      }
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
                             <CardBox className="px-[12px] py-[16px] flex justify-between items-center">
                               <ReactDatePicker
-                                selected={dayjs(field.value).toDate()}
+                                selected={dayjs(
+                                  field.value ? field.value : userProfile?.personal_info?.birthday
+                                ).toDate()}
                                 onChange={date => field.onChange(dayjs(date).format())}
                                 dateFormat="MM"
                                 showMonthYearPicker
@@ -168,13 +175,19 @@ const PersonalInfo: React.FC = () => {
                     <FormField
                       control={form.control}
                       name="year"
-                      defaultValue={new Date()}
+                      defaultValue={
+                        userProfile?.personal_info?.birthday
+                          ? new Date(userProfile?.personal_info?.birthday)
+                          : new Date()
+                      }
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
                             <CardBox className="px-[12px] py-[16px] flex justify-between items-center">
                               <ReactDatePicker
-                                selected={dayjs(field.value).toDate()}
+                                selected={dayjs(
+                                  field.value ? field.value : userProfile?.personal_info?.birthday
+                                ).toDate()}
                                 onChange={date => field.onChange(dayjs(date).format())}
                                 dateFormat="yyyy"
                                 showYearPicker
@@ -189,7 +202,6 @@ const PersonalInfo: React.FC = () => {
                   </Flex>
                 </Section>
               </Box>
-
               <Box className="pb-[7px]">
                 <Section className="bg-white" py="4" px="3">
                   <Heading as="h6" size="4" align="left" mb="4">

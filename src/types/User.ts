@@ -32,3 +32,11 @@ export interface Error {
 export interface OtpResponse {
   message: string;
 }
+
+// gender
+export interface Gender {
+  id: number;
+  type: string;
+  created_at: string;
+  updated_at: string;
+}

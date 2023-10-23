@@ -21,7 +21,8 @@ export interface Education {
 export interface PersonalInfo {
   birthday: string;
   created_at: string;
-  gender_id: Gender;
+  gender_id: number;
+  gender: Gender;
   id: number;
   updated_at: string;
   user_id: number;

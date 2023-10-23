@@ -104,3 +104,8 @@ export const useGetOtp = () => {
     return appAxios.post<AuthResponse>(url);
   });
 };
+
+// gender
+export const useGetGenders = <Gender>(): SWRResponse<Gender, any> => {
+  return useSWR<Gender>(`/details/genders`);
+};

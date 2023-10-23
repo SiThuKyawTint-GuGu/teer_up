@@ -125,7 +125,9 @@ const ProfileEdit: React.FC = () => {
                   <Heading as="h6" size="4" align="left">
                     Education
                   </Heading>
-                  <Text className="text-primary">Edit</Text>
+                  <Link href={`/profile/${id}/education`}>
+                    <Text className="text-primary">Edit</Text>
+                  </Link>
                 </Flex>
                 <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
                   <Flex direction="column" gap="2">
