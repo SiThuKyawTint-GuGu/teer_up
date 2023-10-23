@@ -22,6 +22,7 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ children, data, contentMu
       }
     );
   };
+  console.log("contentLayout", data);
   const [openModal, setOpenModal] = useState<boolean>(false);
   return (
     <Dialog open={openModal} onOpenChange={val => setOpenModal(val)}>
