@@ -20,16 +20,16 @@ const Article: React.FC<ArticleProps> = ({ data, contentMutate }) => {
       >
         {data.content_article && (
           <div>
-            {(() => {
+            {/* {(() => {
               const temporaryDiv = document.createElement("div");
 
               temporaryDiv.innerHTML =
                 data.content_article && data.content_article.article_body.toString();
               if (!temporaryDiv.textContent) return "";
-              if (temporaryDiv.textContent.length > 300)
-                return temporaryDiv.textContent.substring(0, 300) + "...";
+              if (temporaryDiv.textContent.length > 100)
+                return temporaryDiv.textContent.substring(0, 100) + "...";
               return temporaryDiv.textContent;
-            })()}
+            })()} */}
           </div>
         )}
 

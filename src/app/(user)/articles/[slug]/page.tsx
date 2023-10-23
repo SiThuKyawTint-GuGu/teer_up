@@ -7,7 +7,7 @@ const ArticleDetail: NextPage = () => {
   return (
     <Grid columns="1">
       <div className="absolute  w-full left-0 top-0 z-[9999] flex flex-wrap">
-        <ContentDetailHeader pathname="/home" title="Event Detail" />
+        <ContentDetailHeader pathname="/home" title="Article Detail" />
       </div>
       <UserContentDetail />
     </Grid>
