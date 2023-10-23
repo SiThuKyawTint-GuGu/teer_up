@@ -2,7 +2,7 @@ const baseURL: string | undefined = process.env.NEXT_PUBLIC_API_URL;
 export class CustomError extends Error {
   constructor(message: string) {
     super(message);
-    this.name = 'CustomError';
+    this.name = "CustomError";
   }
 }
 export async function postMethod<T>(
@@ -11,12 +11,12 @@ export async function postMethod<T>(
   authToken?: string | undefined
 ): Promise<T> {
   const headers: HeadersInit = {};
-  headers['Content-Type'] = 'application/json';
+  headers["Content-Type"] = "application/json";
   if (authToken) {
-    headers['Authorization'] = `Bearer ${authToken}`;
+    headers["Authorization"] = `Bearer ${authToken}`;
   }
   const requestOptions: RequestInit = {
-    method: 'POST',
+    method: "POST",
     headers,
     body: JSON.stringify(data),
   };
@@ -31,7 +31,7 @@ export async function postMethod<T>(
     return responseData as T;
   } catch (error: any) {
     // Now 'error' has the type of CustomError
-    console.log(error.message);
+
     throw error; // You can rethrow it if needed
   }
 }

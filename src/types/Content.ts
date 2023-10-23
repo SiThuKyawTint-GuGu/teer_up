@@ -30,6 +30,14 @@ export interface ContentArticle {
   content_id: string;
 }
 
+export interface ContentPathway {
+  content_id: number;
+  created_at: Date;
+  id: number;
+  path_way_id: number;
+  upadated_at: Date;
+}
+
 export interface ContentOpportunity {
   id: number | string;
   form_config_id: number | string;
@@ -55,7 +63,7 @@ export interface ContentData {
   content_event: ContentEvent | null;
   content_article: ContentArticle | null;
   content_opportunity: ContentOpportunity | null;
-  content_pathways: any;
+  content_pathways: ContentPathway[] | null;
   category: string;
   user: User;
 }
