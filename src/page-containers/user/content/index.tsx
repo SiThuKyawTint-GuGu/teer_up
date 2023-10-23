@@ -9,6 +9,7 @@ import { useGetContent } from "@/services/content";
 import { useEffect, useRef, useState } from "react";
 import Article from "./components/Article";
 import Opportunity from "./components/Opportunity";
+import Pathway from "./components/Pathway";
 
 const UserContent = () => {
   const [page, setPage] = useState<number>(1);
@@ -62,6 +63,7 @@ const UserContent = () => {
   };
 
   const differentContent = (data: ContentData, index: number) => {
+    console.log(data.type);
     if (data.type === "video" && data.content_video)
       return (
         <Video
@@ -77,7 +79,8 @@ const UserContent = () => {
       return <Article data={data} contentMutate={mutate} />;
     if (data.type === "opportunity" && data.content_opportunity)
       return <Opportunity data={data} contentMutate={mutate} />;
-    return <div>Page is not currently avaliable</div>;
+    if (data.type === "pathway") return <Pathway data={data} contentMutate={mutate} />;
+    return <div>This Page is not avaliable right now</div>;
   };
 
   const hasMoreData = (contentData: ContentType) => {

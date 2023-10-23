@@ -22,7 +22,6 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ children, data, contentMu
       }
     );
   };
-  console.log("contentLayout", data);
   const [openModal, setOpenModal] = useState<boolean>(false);
   return (
     <Dialog open={openModal} onOpenChange={val => setOpenModal(val)}>
@@ -42,7 +41,7 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ children, data, contentMu
         <div className="w-full px-[16px] bg-white">
           <div>
             <h1 className="font-[700] text-[24px]">{data.title}</h1>
-            <div className="h-[40vh]">{children}</div>
+            <div className="h-[30vh]">{children}</div>
           </div>
 
           <div className="flex justify-between p-3">
@@ -63,7 +62,7 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ children, data, contentMu
               </div>
             </DialogTrigger>
             <div className="flex items-center flex-wrap gap-x-[10px]">
-              <Icons.saved className="w-[20px] h-[20px]]" />
+              <Icons.saved className="w-[20px] h-[20px]" />
               <div>{""}0</div>
             </div>
             <div className="flex items-center flex-wrap gap-x-1">
