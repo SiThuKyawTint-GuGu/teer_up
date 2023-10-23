@@ -29,6 +29,7 @@ const AnimatedSelect = React.forwardRef<
     <Ariakit.SelectProvider
       animated
       setValue={value => {
+        // @ts-ignore
         React.startTransition(() => setValue(value));
       }}
     >
