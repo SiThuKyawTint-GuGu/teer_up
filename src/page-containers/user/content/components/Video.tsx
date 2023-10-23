@@ -6,7 +6,7 @@ import { useLikeContent } from "@/services/content";
 import { ContentData } from "@/types/Content";
 import { Dialog, DialogContent, DialogTrigger } from "@radix-ui/react-dialog";
 import { useEffect, useRef, useState } from "react";
-import CommentSection from "./CommentSection";
+import CommentSection from "../../../../components/contentLayout/CommentSection";
 type VideoProps = {
   data: ContentData;
   setVideoRef: any;
