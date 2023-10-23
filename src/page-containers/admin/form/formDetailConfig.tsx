@@ -1,7 +1,6 @@
 "use client";
-import { Button } from "@/components/ui/Button";
-import { Dialog, DialogContent, DialogFooter, DialogHeader } from "@/components/ui/Dialog";
-import { SelectContent, SelectItem, SelectTrigger } from "@/components/ui/Inputs/Select";
+// import { Button } from "@/components/ui/Button";
+// import { SelectContent, SelectItem, SelectTrigger } from "@/components/ui/Inputs/Select";
 import {
   useGetFormConfigById,
   usePostFormConfig,
@@ -17,11 +16,19 @@ import "@/styles/radio.css";
 import "@/styles/switch.css";
 import "@/styles/tab.css";
 import { InputConfigResponse } from "@/types/InputConfig";
+import { Box, InputLabel, TextField } from "@mui/material";
 import * as Checkbox from "@radix-ui/react-checkbox";
-import * as RadioGroup from "@radix-ui/react-radio-group";
-import { Select } from "@radix-ui/react-select";
+// import * as RadioGroup from "@radix-ui/react-radio-group";
+import FormControl from "@mui/material/FormControl";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+// import { Select } from "@radix-ui/react-select";
+import Button from "@mui/material/Button";
+import MenuItem from "@mui/material/MenuItem";
+import Modal from "@mui/material/Modal";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import * as Switch from "@radix-ui/react-switch";
-import { DialogTitle } from "@radix-ui/themes";
 import { Editor } from "@tinymce/tinymce-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -64,6 +71,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
 
   const [showModal, setShowModal] = useState<boolean>(false);
   const [selectType, setSelectType] = useState<string>("");
+  const [selectInputConfig, setSelectInputConfig] = useState<string>("");
   // const [fields, setFields] = useState<InputConfig[]>([]);
   const [order, setOrder] = useState<number>(1);
   const [options, setOptions] = useState([{ label: "", value: "" }]);
@@ -91,9 +99,12 @@ const FormDetailConfigPage = ({ id }: Props) => {
     }
   }, [formConfigs?.data]);
 
-  const handleSelectChange = (selectedValue: string) => {
+  const handleSelectChange = (event: SelectChangeEvent) => {
     setOptions([]);
-    setSelectType(selectedValue);
+    setSelectType(event.target.value as string);
+  };
+  const handleSelectInputConfig = (event: SelectChangeEvent) => {
+    setSelectInputConfig(event.target.value as string);
   };
 
   const handleAddField = async (field: any) => {
@@ -280,27 +291,31 @@ const FormDetailConfigPage = ({ id }: Props) => {
   return (
     <div className="bg-white p-7 rounded-md">
       {error && <p className="text-red-600 mb-2">{error}</p>}
-      <p className="mb-2">Name*</p>
-      <fieldset className="Fieldset mb-10">
-        <input
-          onChange={e => setFormName(e.target.value)}
-          className="Input"
-          id="name"
-          placeholder="Enter Name"
-          defaultValue={formConfigs?.data.name || formName}
-        />
-      </fieldset>
 
-      <p className="mb-2">Button Lable*</p>
-      <fieldset className="Fieldset mb-10">
-        <input
-          onChange={e => setButtonLabel(e.target.value)}
-          className="Input"
-          id="name"
-          placeholder="Enter Button Label"
-          defaultValue=""
+      <div className="mb-10">
+        <TextField
+          // {...register("name")}
+
+          label="Name"
+          size="small"
+          className="w-full"
+          variant="outlined"
         />
-      </fieldset>
+        {/* <p className="mt-2 text-red-700">{errors.title?.message}</p> */}
+      </div>
+
+      <div className="mb-10">
+        <TextField
+          // {...register("name")}
+
+          label="Button Label"
+          size="small"
+          className="w-full"
+          variant="outlined"
+        />
+        {/* <p className="mt-2 text-red-700">{errors.title?.message}</p> */}
+      </div>
+
       <div className="mb-10">
         <p className="font-weight-600 mb-3">Header</p>
         <Editor onInit={(evt, editor) => (editorRef.current = editor)} />
@@ -327,9 +342,9 @@ const FormDetailConfigPage = ({ id }: Props) => {
                     key={index}
                     className="flex flex-col border border-gray-300 p-5 m-3 rounded-md"
                   >
-                    <p className="font-weight-500 text-sm mb-2">{field.name}</p>
-                    <div className="flex">
-                      <fieldset className="Fieldset mb-10">
+                    <p className="font-weight-500 text-sm ">{field.name}</p>
+                    <div className="flex justify-center my-5">
+                      {/* <fieldset className="Fieldset mb-10">
                         <input
                           className="Input"
                           type={field.type === "number" ? "number" : "text"}
@@ -337,8 +352,16 @@ const FormDetailConfigPage = ({ id }: Props) => {
                           placeholder={field.placeholder}
                           defaultValue=""
                         />
-                      </fieldset>
+                      </fieldset> */}
 
+                      <TextField
+                        label={field.name}
+                        size="small"
+                        type={field.type === "number" ? "number" : "text"}
+                        placeholder={field.placeholder}
+                        className="w-full"
+                        variant="outlined"
+                      />
                       <AiTwotoneEdit
                         onClick={() => handleUpdateInputConfig(field)}
                         className="ml-2 cursor-pointer text-red-700"
@@ -346,7 +369,9 @@ const FormDetailConfigPage = ({ id }: Props) => {
                       />
                     </div>
                     <Button
-                      className="ml-2 w-[15%] py-0 cursor-pointer rounded-md bg-red-700 text-white"
+                      color="error"
+                      variant="contained"
+                      sx={{ width: "50px" }}
                       onClick={() => handleAddField(field)}
                     >
                       ADD
@@ -356,37 +381,26 @@ const FormDetailConfigPage = ({ id }: Props) => {
                 {field.type === "radio" && (
                   <div className="border border-gray-300 p-5 m-3 rounded-md">
                     <p className="text-sm">{field.name}</p>
-                    {field.input_options.length > 0 &&
-                      field.input_options.map((option: any, index: number) => (
-                        <>
-                          <form>
-                            <RadioGroup.Root
-                              className="RadioGroupRoot"
-                              defaultValue="default"
-                              aria-label="View density"
-                            >
-                              <div
-                                className="my-2"
-                                style={{ display: "flex", alignItems: "center" }}
-                              >
-                                <RadioGroup.Item
-                                  className="RadioGroupItem"
-                                  value={option.value}
-                                  id={option.label}
-                                >
-                                  <RadioGroup.Indicator className="RadioGroupIndicator" />
-                                </RadioGroup.Item>
-                                <label className="Label" htmlFor={option.label}>
-                                  {option.label}
-                                </label>
-                              </div>
-                            </RadioGroup.Root>
-                          </form>
-                        </>
-                      ))}
+                    <FormControl>
+                      <RadioGroup defaultValue="" name="radio-buttons-group">
+                        {field.input_options.length > 0 &&
+                          field.input_options.map((option: any, index: number) => (
+                            <>
+                              <FormControlLabel
+                                key={index}
+                                value={option.value}
+                                control={<Radio />}
+                                label={option.label}
+                              />
+                            </>
+                          ))}
+                      </RadioGroup>
+                    </FormControl>
                     <div className="flex justify-between">
                       <Button
-                        className="ml-2 mt-4 w-30 py-0 cursor-pointer rounded-md bg-red-700 text-white"
+                        color="error"
+                        variant="contained"
+                        sx={{ width: "50px" }}
                         onClick={() => handleAddField(field)}
                       >
                         ADD
@@ -404,30 +418,50 @@ const FormDetailConfigPage = ({ id }: Props) => {
                   <div className="border border-gray-300 p-5 m-3 rounded-md">
                     <p className="text-sm mb-2">{field.name}</p>
                     {field.input_options.length > 0 && (
-                      <Select onValueChange={handleSelectChange}>
-                        <SelectTrigger className="p-2 h-5 border-2  bg-white border-gray-700 ">
-                          {field.placeholder || selectType}
-                        </SelectTrigger>
+                      // <Select onValueChange={handleSelectChange}>
+                      //   <SelectTrigger className="p-2 h-5 border-2  bg-white border-gray-700 ">
+                      //     {field.placeholder || selectType}
+                      //   </SelectTrigger>
 
-                        <SelectContent className="bg-white">
+                      //   <SelectContent className="bg-white">
+                      //     {field.input_options.map((dropdown: any, index: number) => (
+                      //       <SelectItem key={index} value={dropdown.value}>
+                      //         {dropdown.label}
+                      //       </SelectItem>
+                      //     ))}
+                      //   </SelectContent>
+                      // </Select>
+                      <FormControl fullWidth>
+                        <InputLabel size="small" id="input-config">
+                          {field.placeholder || selectInputConfig}
+                        </InputLabel>
+                        <Select
+                          labelId="input-config"
+                          value={selectInputConfig}
+                          label="Age"
+                          size="small"
+                          onChange={handleSelectInputConfig}
+                        >
                           {field.input_options.map((dropdown: any, index: number) => (
-                            <SelectItem key={index} value={dropdown.value}>
+                            <MenuItem key={index} value={dropdown.value}>
                               {dropdown.label}
-                            </SelectItem>
+                            </MenuItem>
                           ))}
-                        </SelectContent>
-                      </Select>
+                        </Select>
+                      </FormControl>
                     )}
-                    <div className="flex justify-between">
+                    <div className="flex justify-between mt-5">
                       <Button
-                        className="ml-2 mt-4 w-30 py-0 cursor-pointer rounded-md bg-red-700 text-white"
+                        color="error"
+                        variant="contained"
+                        sx={{ width: "50px" }}
                         onClick={() => handleAddField(field)}
                       >
                         ADD
                       </Button>
                       <AiTwotoneEdit
                         onClick={() => handleUpdateInputConfig(field)}
-                        className="ml-2 mt-4 cursor-pointer text-red-700"
+                        className="ml-2 mt-2 cursor-pointer text-red-700"
                         size={25}
                       />
                     </div>
@@ -507,39 +541,55 @@ const FormDetailConfigPage = ({ id }: Props) => {
           </div>
           <div className="flex justify-between">
             <div></div>
-            <Dialog open={showModal}>
+            <Modal open={showModal}>
               {/* Dialog Box */}
-              <DialogContent className="bg-white">
-                <DialogHeader>
+              <Box sx={style}>
+                {/* <DialogHeader>
                   <DialogTitle className="text-lg">Input Config</DialogTitle>
-                </DialogHeader>
+                </DialogHeader> */}
                 {error && <p className="text-red-600">{error}</p>}
-                <div className="mb-2">
+                <div className="mb-5">
                   <p className="font-weight-600 mb-3">Name*</p>
-                  <fieldset className="Fieldset mb-10">
+                  {/* <fieldset className="Fieldset mb-10">
                     <input
                       className="Input"
                       id="name"
                       defaultValue={inputConfigName || ""}
                       onChange={e => setInputConfigName(e.target.value)}
                     />
-                  </fieldset>
+                  </fieldset> */}
+                  <TextField
+                    label="Name"
+                    size="small"
+                    defaultValue={inputConfigName || ""}
+                    onChange={e => setInputConfigName(e.target.value)}
+                    className="w-full"
+                    variant="outlined"
+                  />
                 </div>
 
-                <div className="mb-2">
+                <div className="mb-5">
                   <p className="font-weight-600 mb-3">Placeholder*</p>
-                  <fieldset className="Fieldset mb-10">
+                  {/* <fieldset className="Fieldset mb-10">
                     <input
                       className="Input"
                       id="link"
                       defaultValue={inputConfigPlaceholder || ""}
                       onChange={e => setInputConfigPlaceholder(e.target.value)}
                     />
-                  </fieldset>
+                  </fieldset> */}
+                  <TextField
+                    label="Placeholder"
+                    size="small"
+                    defaultValue={inputConfigPlaceholder || ""}
+                    onChange={e => setInputConfigPlaceholder(e.target.value)}
+                    className="w-full"
+                    variant="outlined"
+                  />
                 </div>
                 <div className="mb-10">
-                  <p className="mb-2">Type*</p>
-                  <Select onValueChange={handleSelectChange}>
+                  <p className="mb-5">Type*</p>
+                  {/* <Select onValueChange={handleSelectChange}>
                     <SelectTrigger className="p-2 h-5 border-2  bg-white border-gray-700 ">
                       {selectType || "Type"}
                     </SelectTrigger>
@@ -554,7 +604,27 @@ const FormDetailConfigPage = ({ id }: Props) => {
                       <SelectItem value="radio">Radio</SelectItem>
                       <SelectItem value="dropdown">Dropdown</SelectItem>
                     </SelectContent>
-                  </Select>
+                  </Select> */}
+                  <FormControl fullWidth>
+                    <InputLabel size="small" id="select-type">
+                      {"Type"}
+                    </InputLabel>
+                    <Select
+                      labelId="select-type"
+                      value={selectType}
+                      onChange={handleSelectChange}
+                      size="small"
+                    >
+                      <MenuItem value="text">Text</MenuItem>
+                      <MenuItem value="email">Email</MenuItem>
+                      <MenuItem value="phone">Phone</MenuItem>
+                      <MenuItem value="number">Number</MenuItem>
+                      <MenuItem value="checkbox">Checkbox</MenuItem>
+                      <MenuItem value="date">Date</MenuItem>
+                      <MenuItem value="radio">Radio</MenuItem>
+                      <MenuItem value="dropdown">Dropdown</MenuItem>
+                    </Select>
+                  </FormControl>
                 </div>
                 {(selectType === "radio" || selectType === "dropdown") && (
                   <>
@@ -605,24 +675,37 @@ const FormDetailConfigPage = ({ id }: Props) => {
                     </button>
                   </>
                 )}
+                {/* footer */}
+                <div className="flex justify-between">
+                  <div></div>
+                  <div>
+                    <Button
+                      sx={{
+                        textTransform: "none",
+                        marginRight: "10px",
+                        color: "white",
+                        backgroundColor: "gray",
+                      }}
+                      variant="contained"
+                      onClick={() => {
+                        setShowModal(false);
+                      }}
+                    >
+                      Cancel
+                    </Button>
 
-                <DialogFooter>
-                  <button
-                    onClick={() => setShowModal(false)}
-                    className="Button text-white bg-gray-600 cursor-pointer"
-                  >
-                    Cancel
-                  </button>
-
-                  <button
-                    onClick={handleAddInputConfig}
-                    className="Button bg-red-600 text-white cursor-pointer"
-                  >
-                    Save changes
-                  </button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
+                    <Button
+                      onClick={handleAddInputConfig}
+                      color="error"
+                      variant="contained"
+                      sx={{ textTransform: "none" }}
+                    >
+                      Save changes
+                    </Button>
+                  </div>
+                </div>
+              </Box>
+            </Modal>
           </div>
         </div>
 
@@ -682,38 +765,27 @@ const FormDetailConfigPage = ({ id }: Props) => {
                     field.input_config.input_options.length > 0 && (
                       <div>
                         <p className="text-sm">{field.input_config.name}</p>
-                        {field.input_config.input_options.map((option: any, index: number) => (
-                          <form key={index}>
-                            <RadioGroup.Root
-                              className="RadioGroupRoot"
-                              defaultValue="default"
-                              aria-label="View density"
-                            >
-                              <div
-                                className="my-2"
-                                style={{ display: "flex", alignItems: "center" }}
-                              >
-                                <RadioGroup.Item
-                                  className="RadioGroupItem"
+                        <FormControl>
+                          <RadioGroup defaultValue="" name="radio-buttons-group">
+                            {field.input_config.input_options.map((option: any, index: number) => (
+                              <>
+                                <FormControlLabel
+                                  key={index}
                                   value={option.value}
-                                  id={option.label}
-                                >
-                                  <RadioGroup.Indicator className="RadioGroupIndicator" />
-                                </RadioGroup.Item>
-                                <label className="Label" htmlFor={option.label}>
-                                  {option.label}
-                                </label>
-                              </div>
-                            </RadioGroup.Root>
-                          </form>
-                        ))}
+                                  control={<Radio />}
+                                  label={option.label}
+                                />
+                              </>
+                            ))}
+                          </RadioGroup>
+                        </FormControl>
                       </div>
                     )}
                   {field.input_config.type === "dropdown" &&
                     field.input_config.input_options.length > 0 && (
                       <>
-                        <p className="text-sm mb-2">{field.input_config.name}</p>
-                        <Select onValueChange={handleSelectChange}>
+                        <p className="text-sm mb-5">{field.input_config.name}</p>
+                        {/* <Select onValueChange={handleSelectChange}>
                           <SelectTrigger className="p-2 h-5 border-2  bg-white border-gray-700 ">
                             {field.input_config.placeholder || selectType}
                           </SelectTrigger>
@@ -727,7 +799,26 @@ const FormDetailConfigPage = ({ id }: Props) => {
                               )
                             )}
                           </SelectContent>
-                        </Select>
+                        </Select> */}
+                        <FormControl fullWidth>
+                          <InputLabel size="small" id="drop">
+                            {field.input_config.placeholder || selectInputConfig}
+                          </InputLabel>
+                          <Select
+                            labelId="drop"
+                            value={selectType}
+                            size="small"
+                            onChange={handleSelectChange}
+                          >
+                            {field.input_config.input_options.map(
+                              (dropdown: any, index: number) => (
+                                <MenuItem key={index} value={dropdown.value}>
+                                  {dropdown.label}
+                                </MenuItem>
+                              )
+                            )}
+                          </Select>
+                        </FormControl>
                       </>
                     )}
 
@@ -830,40 +921,29 @@ const FormDetailConfigPage = ({ id }: Props) => {
 
                   {field.input_config.type === "radio" &&
                     field.input_config.input_options.length > 0 && (
-                      <div className="my-4">
+                      <div className="mb-4">
                         <p className="text-sm">{field.input_config.name}</p>
-                        {field.input_config.input_options.map((option: any, index: number) => (
-                          <form key={index}>
-                            <RadioGroup.Root
-                              className="RadioGroupRoot"
-                              defaultValue="default"
-                              aria-label="View density"
-                            >
-                              <div
-                                className="my-2"
-                                style={{ display: "flex", alignItems: "center" }}
-                              >
-                                <RadioGroup.Item
-                                  className="RadioGroupItem"
+                        <FormControl>
+                          <RadioGroup defaultValue="" name="radio-buttons-group">
+                            {field.input_config.input_options.map((option: any, index: number) => (
+                              <>
+                                <FormControlLabel
+                                  key={index}
                                   value={option.value}
-                                  id={option.label}
-                                >
-                                  <RadioGroup.Indicator className="RadioGroupIndicator" />
-                                </RadioGroup.Item>
-                                <label className="Label" htmlFor={option.label}>
-                                  {option.label}
-                                </label>
-                              </div>
-                            </RadioGroup.Root>
-                          </form>
-                        ))}
+                                  control={<Radio />}
+                                  label={option.label}
+                                />
+                              </>
+                            ))}
+                          </RadioGroup>
+                        </FormControl>
                       </div>
                     )}
                   {field.input_config.type === "dropdown" &&
                     field.input_config.input_options.length > 0 && (
                       <>
                         <p className="text-sm my-4 mb-2">{field.input_config.name}</p>
-                        <Select onValueChange={handleSelectChange}>
+                        {/* <Select onValueChange={handleSelectChange}>
                           <SelectTrigger className="p-2 h-5 border-2  bg-white border-gray-700 ">
                             {field.input_config.placeholder || selectType}
                           </SelectTrigger>
@@ -877,7 +957,26 @@ const FormDetailConfigPage = ({ id }: Props) => {
                               )
                             )}
                           </SelectContent>
-                        </Select>
+                        </Select> */}
+                        <FormControl fullWidth>
+                          <InputLabel size="small" id="drop">
+                            {field.input_config.placeholder || selectInputConfig}
+                          </InputLabel>
+                          <Select
+                            labelId="drop"
+                            value={selectType}
+                            size="small"
+                            onChange={handleSelectChange}
+                          >
+                            {field.input_config.input_options.map(
+                              (dropdown: any, index: number) => (
+                                <MenuItem key={index} value={dropdown.value}>
+                                  {dropdown.label}
+                                </MenuItem>
+                              )
+                            )}
+                          </Select>
+                        </FormControl>
                       </>
                     )}
 
@@ -925,3 +1024,14 @@ const FormDetailConfigPage = ({ id }: Props) => {
 };
 
 export default FormDetailConfigPage;
+
+const style = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 600,
+  bgcolor: "white",
+  boxShadow: 24,
+  p: 4,
+};
