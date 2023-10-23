@@ -7,45 +7,56 @@ import { InputText } from "@/components/ui/Inputs";
 import { Radio, RadioItem } from "@/components/ui/Inputs/Radio";
 import { Label } from "@/components/ui/Label";
 import { Text } from "@/components/ui/Typo/Text";
-import { useGetUserById } from "@/services/user";
+import { useGetUserById, useUpdatePersonalInfo } from "@/services/user";
 import { USER_ROLE } from "@/shared/enums";
 import { UserProfileResponse } from "@/types/Profile";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
-import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 import ReactDatePicker from "react-datepicker";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 const validationSchema = yup.object({
   gender: yup.string().required("Gender is required!"),
-  email: yup.string().email().required("Email is required!"),
+  email: yup.string().email(),
   day: yup.date().required("Day is required!").typeError("Invalid date"),
   month: yup.date().required("Month is required!").typeError("Invalid date"),
   year: yup.date().required("Year is required!").typeError("Invalid date"),
 });
 
 const PersonalInfo: React.FC = () => {
-  const [open, setOpen] = useState<boolean>(false);
   const { id } = useParams();
+  const router = useRouter();
   const { data: profileData } = useGetUserById<UserProfileResponse>(id as string);
+  const { trigger } = useUpdatePersonalInfo();
   const userProfile = profileData?.data;
-  const [startDate, setStartDate] = useState(new Date());
 
   const form = useForm({
     resolver: yupResolver(validationSchema),
   });
 
-  const submit = async (data: { gender: string; email: string }) => {
-    console.log("submit data => ", data);
-    // await trigger(data, {
-    //   onSuccess: res => {
-    //     setUserInfo(res.data.token, res.data.data);
-    //     router.push("/auth/otp");
-    //   },
-    // });
+  const submit = async (data: any) => {
+    const birthday = Object.keys(data).reduce(
+      (acc, key) => {
+        delete data.gender;
+        const formattedDate = { ...acc, date: dayjs(data[key]).format("YYYY-MM-DD") };
+        return formattedDate;
+      },
+      {} as { date: string }
+    );
+
+    const newData = {
+      gender_id: 1,
+      birthday: birthday.date,
+    };
+
+    await trigger(newData, {
+      onSuccess: () => {
+        router.push("/profile");
+      },
+    });
   };
 
   return (
@@ -135,6 +146,7 @@ const PersonalInfo: React.FC = () => {
                     <FormField
                       name="month"
                       control={form.control}
+                      defaultValue={new Date()}
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
@@ -189,7 +201,13 @@ const PersonalInfo: React.FC = () => {
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
-                          <InputText type="text" inputType={USER_ROLE.STUDENT} {...field} />
+                          <InputText
+                            type="text"
+                            inputType={USER_ROLE.STUDENT}
+                            defaultValue={userProfile?.email}
+                            disabled
+                            {...field}
+                          />
                         </FormControl>
                       </FormItem>
                     )}

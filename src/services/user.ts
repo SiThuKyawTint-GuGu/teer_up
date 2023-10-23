@@ -53,6 +53,17 @@ export const useDeleteUser = () =>
     return appAxios.delete(`${url}/${arg.id}`);
   });
 
+interface UpdatePersonalInfoType {
+  arg: {
+    gender_id: number;
+    birthday: string;
+  };
+}
+export const useUpdatePersonalInfo = () =>
+  useSWRMutation(`/user/profile/personalinfo`, (url, { arg }: UpdatePersonalInfoType) => {
+    return appAxios.put<UpdatePersonalInfoType>(`${url}`, arg);
+  });
+
 interface RegisterArgType {
   arg: {
     name: string;

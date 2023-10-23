@@ -16,6 +16,7 @@ type Props = {
   value?: string;
   defaultValue?: string;
   inputType?: USER_ROLE;
+  disabled?: boolean;
 };
 
 const InputText = React.forwardRef<HTMLInputElement, Props>(
@@ -28,6 +29,7 @@ const InputText = React.forwardRef<HTMLInputElement, Props>(
       placeholder,
       defaultValue,
       inputType = USER_ROLE.ADMIN,
+      disabled = false,
       ...props
     },
     ref
@@ -46,6 +48,7 @@ const InputText = React.forwardRef<HTMLInputElement, Props>(
               defaultValue={defaultValue || ""}
               size="3"
               ref={ref}
+              disabled={disabled}
               {...props}
             />
           </TextField.Root>
