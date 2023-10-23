@@ -20,6 +20,9 @@ const config: Config = {
         secondary: "#F9E9EA",
         slateGray: "#BBC7D6",
       },
+      boxShadow: {
+        theme: "0px 6px 35px 5px rgba(0, 0, 0, 0.2)",
+      },
     },
   },
   plugins: [],

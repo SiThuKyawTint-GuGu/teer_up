@@ -53,6 +53,17 @@ export const useDeleteUser = () =>
     return appAxios.delete(`${url}/${arg.id}`);
   });
 
+interface UpdatePersonalInfoType {
+  arg: {
+    gender_id: number;
+    birthday: string;
+  };
+}
+export const useUpdatePersonalInfo = () =>
+  useSWRMutation(`/user/profile/personalinfo`, (url, { arg }: UpdatePersonalInfoType) => {
+    return appAxios.put<UpdatePersonalInfoType>(`${url}`, arg);
+  });
+
 interface RegisterArgType {
   arg: {
     name: string;
@@ -92,4 +103,9 @@ export const useGetOtp = () => {
   return useSWRMutation(`/user/requestotp`, url => {
     return appAxios.post<AuthResponse>(url);
   });
+};
+
+// gender
+export const useGetGenders = <Gender>(): SWRResponse<Gender, any> => {
+  return useSWR<Gender>(`/details/genders`);
 };

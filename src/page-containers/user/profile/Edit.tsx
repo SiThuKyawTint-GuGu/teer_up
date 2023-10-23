@@ -1,20 +1,20 @@
 "use client";
 import { Button } from "@/components/ui/Button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
-import { Icons, Image } from "@/components/ui/Images";
+import { Dialog, DialogContent } from "@/components/ui/Dialog";
+import { Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import { useGetUserById } from "@/services/user";
 import { UserProfileResponse } from "@/types/Profile";
-import { getUserInfo } from "@/utils/auth";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { useState } from "react";
 
-const Profile: React.FC = () => {
+const ProfileEdit: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
-  const user = getUserInfo();
-  const { data: profileData } = useGetUserById<UserProfileResponse>(user?.id);
+  const { id } = useParams();
+  const { data: profileData } = useGetUserById<UserProfileResponse>(id as string);
   const userProfile = profileData?.data;
 
   return (
@@ -24,69 +24,77 @@ const Profile: React.FC = () => {
           <Box>
             <Flex justify="center" className="bg-white" p="3">
               <Text size="3" weight="medium">
-                Profile
+                Edit Profile
               </Text>
             </Flex>
             <Box className="pb-[7px]">
-              <Section p="0">
-                <DialogTrigger className="w-full">
-                  <Flex className="h-[130px] bg-[#D9D9D9]" justify="center" align="center">
-                    <Icons.profileCamera className="w-[24px] h-[24px]" />
+              <Section className="bg-white" py="4" px="3">
+                <div>
+                  <Flex justify="between" align="center" mb="4">
+                    <Heading as="h6" size="4" align="left">
+                      Cover photo
+                    </Heading>
+                    <Text className="text-primary">Edit</Text>
                   </Flex>
-                </DialogTrigger>
-              </Section>
-              <Section className="bg-white pt-[70px]" pb="4" px="3" position="relative">
-                <div className="absolute -top-[50%]">
-                  <Flex
-                    justify="center"
-                    align="center"
-                    position="relative"
-                    className="w-[120px] h-[120px] rounded-full bg-[#D9D9D9] ring-4 ring-white"
-                  >
-                    <Image
-                      className="mt-[30px]"
-                      width={90}
-                      height={90}
-                      src="/uploads/icons/user-profile.svg"
-                      alt="user profile"
-                    />
+                  <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
+                    <Flex className="h-[130px] bg-[#D9D9D9]" justify="center" align="center"></Flex>
+                  </div>
+                </div>
+                <div>
+                  <Flex justify="between" align="center" mb="4">
+                    <Heading as="h6" size="4" align="left">
+                      Cover photo
+                    </Heading>
+                    <Text className="text-primary">Edit</Text>
+                  </Flex>
+                  <div className="pb-[10px] mb-[10px]">
                     <Flex
                       justify="center"
                       align="center"
-                      className="absolute bottom-0 right-0 w-[30px] h-[30px] rounded-full bg-[#D9D9D9] ring-2 ring-white"
+                      position="relative"
+                      className="w-[120px] h-[120px] rounded-full bg-[#D9D9D9] ring-4 ring-white"
                     >
-                      <Icons.profileCamera className="w-[15] h-[15]" />
+                      <Image
+                        className="mt-[30px]"
+                        width={90}
+                        height={90}
+                        src="/uploads/icons/user-profile.svg"
+                        alt="user profile"
+                      />
                     </Flex>
-                  </Flex>
+                  </div>
                 </div>
-                <div className="absolute top-2 right-2">
-                  <Link href={`/profile/${user?.id}`}>
-                    <Button
-                      variant="outline"
-                      className="border-2 border-[#F4153D] rounded-[30px] space-x-[5px]"
-                    >
-                      <Image src="/uploads/icons/pencil.svg" width={20} height={20} alt="pencil" />
-                      <Text>Edit Button</Text>
-                    </Button>
+              </Section>
+            </Box>
+            <Box className="pb-[7px]">
+              <Section className="bg-white" py="4" px="3">
+                <Flex justify="between" align="center" mb="4">
+                  <Heading as="h6" size="4" align="left">
+                    Brief bio
+                  </Heading>
+                  <Link href={`/profile/${id}/personal-info`}>
+                    <Text className="text-primary">Edit</Text>
                   </Link>
-                </div>
-                <Heading as="h4" size="5" mb="4">
-                  {userProfile?.name}
-                </Heading>
+                </Flex>
                 <Text>{userProfile?.bio}</Text>
               </Section>
             </Box>
             <Box className="pb-[7px]">
               <Section className="bg-white" py="4" px="3">
-                <Heading as="h6" size="4" align="left" mb="4">
-                  Personal information
-                </Heading>
+                <Flex justify="between" align="center" mb="4">
+                  <Heading as="h6" size="4" align="left">
+                    Personal information
+                  </Heading>
+                  <Link href={`/profile/${id}/personal-info`}>
+                    <Text className="text-primary">Edit</Text>
+                  </Link>
+                </Flex>
                 <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
                   <Flex direction="column" gap="2">
                     <Text as="label" weight="bold" size="3">
                       Gender
                     </Text>
-                    <Text>{userProfile?.personal_info?.gender?.type}</Text>
+                    <Text>Male</Text>
                   </Flex>
                 </div>
                 <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
@@ -113,9 +121,14 @@ const Profile: React.FC = () => {
             </Box>
             <Box className="pb-[7px]">
               <Section className="bg-white" py="4" px="3">
-                <Heading as="h6" size="4" align="left" mb="4">
-                  Education
-                </Heading>
+                <Flex justify="between" align="center" mb="4">
+                  <Heading as="h6" size="4" align="left">
+                    Education
+                  </Heading>
+                  <Link href={`/profile/${id}/education`}>
+                    <Text className="text-primary">Edit</Text>
+                  </Link>
+                </Flex>
                 <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
                   <Flex direction="column" gap="2">
                     <Text as="label" weight="bold" size="3">
@@ -144,9 +157,12 @@ const Profile: React.FC = () => {
             </Box>
             <Box className="pb-[7px]">
               <Section className="bg-white" py="4" px="3">
-                <Heading as="h6" size="4" align="left" mb="4">
-                  Career interests
-                </Heading>
+                <Flex justify="between" align="center" mb="4">
+                  <Heading as="h6" size="4" align="left">
+                    Career interests
+                  </Heading>
+                  <Text className="text-primary">Edit</Text>
+                </Flex>
                 <Flex wrap="wrap" gap="2">
                   <Button className="bg-[#d1d5d8] text-black">Human Resources</Button>
                   <Button className="bg-[#d1d5d8] text-black">Design</Button>
@@ -157,9 +173,12 @@ const Profile: React.FC = () => {
             </Box>
             <Box className="pb-[7px]">
               <Section className="bg-white" py="4" px="3">
-                <Heading as="h6" size="4" align="left" mb="4">
-                  Preferences
-                </Heading>
+                <Flex justify="between" align="center" mb="4">
+                  <Heading as="h6" size="4" align="left">
+                    Preferences
+                  </Heading>
+                  <Text className="text-primary">Edit</Text>
+                </Flex>
                 <Flex wrap="wrap" gap="2">
                   <Button className="bg-[#d1d5d8] text-black">Animation</Button>
                   <Button className="bg-[#d1d5d8] text-black">Art</Button>
@@ -205,4 +224,4 @@ const Profile: React.FC = () => {
   );
 };
 
-export default Profile;
+export default ProfileEdit;

@@ -1,16 +1,5 @@
-@import '@radix-ui/colors/black-alpha.css';
-@import '@radix-ui/colors/violet.css';
-
-/* reset */
-button {
-  all: unset;
-}
-
-.RadioGroupRoot {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
+@import "@radix-ui/colors/black-alpha.css";
+@import "@radix-ui/colors/violet.css";
 
 .RadioGroupItem {
   background-color: white;
@@ -35,7 +24,7 @@ button {
   position: relative;
 }
 .RadioGroupIndicator::after {
-  content: '';
+  content: "";
   display: block;
   width: 11px;
   height: 11px;
