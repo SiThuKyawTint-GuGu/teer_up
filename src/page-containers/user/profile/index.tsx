@@ -60,7 +60,7 @@ const Profile: React.FC = () => {
                   </Flex>
                 </div>
                 <div className="absolute top-2 right-2">
-                  <Link href={`/profile/${userProfile?.id}`}>
+                  <Link href={`/profile/${user?.id}`}>
                     <Button
                       variant="outline"
                       className="border-2 border-[#F4153D] rounded-[30px] space-x-[5px]"
@@ -86,7 +86,7 @@ const Profile: React.FC = () => {
                     <Text as="label" weight="bold" size="3">
                       Gender
                     </Text>
-                    <Text>Male</Text>
+                    <Text>{userProfile?.personal_info?.gender?.type}</Text>
                   </Flex>
                 </div>
                 <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
