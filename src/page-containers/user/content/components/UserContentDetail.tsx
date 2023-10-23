@@ -11,7 +11,7 @@ import dayjs from "dayjs";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import React, { useState } from "react";
-import CommentSection from "./CommentSection";
+import CommentSection from "../../../../components/contentLayout/CommentSection";
 
 type ContentlayoutProps = {};
 
@@ -19,8 +19,7 @@ const UserContentDetail: React.FC<ContentlayoutProps> = () => {
   const { slug }: { slug: string } = useParams();
   const { data: contentData, mutate: contentMutate } = useGetContentBySlug<ContentData>(slug);
   const [openModal, setOpenModal] = useState<boolean>(false);
-  console.log(contentData);
-  console.log(contentData);
+
   return (
     <Dialog open={openModal} onOpenChange={val => setOpenModal(val)}>
       <Grid columns="1">

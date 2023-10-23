@@ -12,7 +12,7 @@ type ContentlayoutProps = {
   contentMutate: any;
 };
 
-const ContentLayout: React.FC<ContentlayoutProps> = ({ children, data, contentMutate }) => {
+const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ children, data, contentMutate }) => {
   const { trigger: like } = useLikeContent();
   const likePost = async () => {
     await like(
@@ -27,13 +27,34 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ children, data, contentMu
     <Dialog open={openModal} onOpenChange={val => setOpenModal(val)}>
       <div className="w-full h-full">
         <div className="w-full mx-auto relative p-2">
-          <Image
-            src={data.image_url}
-            className="w-full h-[200px]"
-            width={358}
-            height={200}
-            alt={data.title}
-          />
+          {data.content_video ? (
+            <video
+              className="w-full h-[200px]"
+              poster={
+                data.content_video.thumbnail ||
+                "https://teeup-dev.s3.ap-southeast-1.amazonaws.com/1697257229853-125476757-demoimage1.jpeg"
+              }
+              preload="none"
+              data-video="0"
+              muted={false}
+              controls
+            >
+              <source
+                src={data.content_video.video_url}
+                className="object-fill"
+                type="video/mp4"
+              ></source>
+            </video>
+          ) : (
+            <Image
+              src={data.image_url}
+              className="w-full h-[200px]"
+              width={358}
+              height={200}
+              alt={data.title}
+            />
+          )}
+
           <div className="absolute top-0 right-0 bg-white text-[14px] font-[600] px-[16px] py-[4px] rounded-bl-lg shadow-lg uppercase">
             {data.type}
           </div>
@@ -41,7 +62,7 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ children, data, contentMu
         <div className="w-full px-[16px] bg-white">
           <div>
             <h1 className="font-[700] text-[24px]">{data.title}</h1>
-            <div className="h-[30vh]">{children}</div>
+            <div className="h-[10vh]">{children}</div>
           </div>
 
           <div className="flex justify-between p-3">
@@ -76,7 +97,7 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ children, data, contentMu
         </div>
       </div>
       {openModal && (
-        <DialogContent className="absolute top-[initial] bottom-0 w-full  bg-white">
+        <DialogContent className="absolute top-[initial] bottom-0 w-full z-[999999]  bg-white">
           <CommentSection data={data} mutateParentData={contentMutate} />
         </DialogContent>
       )}
@@ -84,4 +105,4 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ children, data, contentMu
   );
 };
 
-export default ContentLayout;
+export default BrowserContentLayout;
