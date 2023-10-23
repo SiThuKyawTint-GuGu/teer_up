@@ -14,22 +14,23 @@ import {
 } from "@/services/content";
 import { useGetContentCategory } from "@/services/contentCategory";
 import { useGetFormConfig } from "@/services/formConfig";
+import { useGetKeywords } from "@/services/keyword";
 import "@/styles/checkbox.css";
 import "@/styles/switch.css";
 import "@/styles/tab.css";
 import { ContentType } from "@/types/Content";
 import { ContentCategoryResponse } from "@/types/ContentCategory";
 import { FormConfigResponse } from "@/types/Formconfig";
+import { KeywordResponse } from "@/types/Keyword";
 import { yupResolver } from "@hookform/resolvers/yup";
 import SaveIcon from "@mui/icons-material/Save";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { Button as MuiButton } from "@mui/material";
+import { Button as MuiButton, styled } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { styled } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
@@ -63,6 +64,8 @@ const ContentDetail = ({ id }: Props) => {
   const router = useRouter();
   const { data: content, isLoading } = useGetContentById<any>(id);
   const { data: contents } = useGetContent<ParamsType, ContentType>();
+  const { data: keywords } = useGetKeywords<KeywordResponse>();
+  // console.log("key words", keywords);
   // console.log("get contents...", contents);
 
   const { trigger: updateTrigger, isMutating: updateMutating } = useUpdateContent(id);
@@ -96,6 +99,8 @@ const ContentDetail = ({ id }: Props) => {
   const [editor, setEditor] = useState<any>(null);
   const [oppoEditor, setOppoEditor] = useState<any>(null);
   const [contentOptions, setContentOptions] = useState<OptionType[]>([]);
+  const [keywordOptions, setKeywordOptions] = useState<OptionType[]>([]);
+  const [selectedKeywords, setSelectedKeywords] = useState<OptionType[]>([]);
   const handleEditorInit = (evt: any, editor: any) => {
     setEditor(editor);
   };
@@ -105,19 +110,26 @@ const ContentDetail = ({ id }: Props) => {
 
   useEffect(() => {
     if (editor) {
-      editor.setContent(editorContent);
+      editor?.setContent(editorContent);
     }
     if (oppoEditor) {
-      oppoEditor.setContent(oppoEditorContent);
+      oppoEditor?.setContent(oppoEditorContent);
     }
     if (content?.data) {
       setSelectedValue(content?.data.type);
       setSelectCategory(content?.data?.category?.id);
-      setEditorContent(content?.data?.content_article?.article_body);
+      setEditorContent(content?.data?.content_article?.body);
+      setOppoEditorContent(content?.data?.content_opportunity?.body);
       setLink(content?.data?.content_opportunity?.link);
       setOppoLocation(content?.data?.content_opportunity?.location);
       setAuthor(content?.data?.content_article?.published_by);
-      setSelectForm(content?.data?.content_opportunity?.formconfig_id);
+      if (content?.data?.type === "event") {
+        setSelectForm(content?.data?.content_event?.formconfig_id);
+      } else if (content?.data?.type === "opportunity") {
+        setSelectForm(content?.data?.content_opportunity?.formconfig_id);
+      } else {
+        setSelectForm(content?.data?.content_article?.formconfig_id);
+      }
       setImgUrl(content?.data.image_url);
       setFileUrl(content?.data?.content_video?.thumbnail);
       setVideoUrl(content?.data?.content_video?.video_url);
@@ -126,10 +138,15 @@ const ContentDetail = ({ id }: Props) => {
       setStartDate(content?.data?.content_event?.from_datetime);
       setEndDate(content?.data?.content_event?.to_datetime);
       const pathwayContentData = content?.data.content_pathways.map((pathway: any) => ({
-        name: pathway.pathway.title, // Change this to the appropriate field you want
-        pathway_id: pathway.pathway.id,
+        name: pathway?.title,
+        pathway_id: pathway?.id,
       }));
       setPathwayContent(pathwayContentData);
+      const selectKeywords = content?.data.content_keywords.map((keyword: any) => ({
+        label: keyword.keyword?.keyword,
+        id: keyword?.keyword?.id,
+      }));
+      setSelectedKeywords(selectKeywords);
       setValue("title", content?.data.title);
       setValue("description", content?.data.description);
       setValue("category", content?.data?.category?.id);
@@ -141,6 +158,13 @@ const ContentDetail = ({ id }: Props) => {
         id: option.id,
       }));
       setContentOptions(updatedOptions);
+    }
+    if (keywords?.data) {
+      const updatedOptions = keywords?.data.map((option: any) => ({
+        label: option.keyword,
+        id: option.id,
+      }));
+      setKeywordOptions(updatedOptions);
     }
   }, [editorContent, editor, oppoEditor, oppoEditorContent, contents?.data, content?.data]);
 
@@ -165,6 +189,10 @@ const ContentDetail = ({ id }: Props) => {
 
   const submit = async (data: any) => {
     let postdata: any = {};
+    if (!imgUrl) {
+      setEventError("Image is required!");
+      return;
+    }
     const imgRes: any = image && (await fileTrigger({ file: image }));
     if (imgRes) {
       setImgUrl(imgRes.data?.data?.file_path);
@@ -216,6 +244,11 @@ const ContentDetail = ({ id }: Props) => {
         setEventError("Link is required!");
         return;
       }
+      if (!selectForm) {
+        setEventError("Please select form!");
+        return;
+      }
+      const keywords = selectedKeywords.map(item => item.id);
       postdata = {
         title: data?.title,
         description: data?.description,
@@ -223,11 +256,13 @@ const ContentDetail = ({ id }: Props) => {
         status: "published",
         category_id: Number(selectCategory),
         image_url: imgUrl,
+        keywords,
         content_event: {
           from_datetime: startDate,
           to_datetime: endDate,
           location: location,
           link: eventLink,
+          formconfig_id: selectForm,
         },
       };
       content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
@@ -236,10 +271,15 @@ const ContentDetail = ({ id }: Props) => {
         setEventError("Author name is required!");
         return;
       }
+      if (!selectForm) {
+        setEventError("Please select form!");
+        return;
+      }
       if (!editor.getContent()) {
         setEventError("Content is required!");
         return;
       }
+      const keywords = selectedKeywords.map(item => item.id);
       postdata = {
         title: data?.title,
         description: data?.description,
@@ -247,9 +287,11 @@ const ContentDetail = ({ id }: Props) => {
         status: "published",
         category_id: Number(selectCategory),
         image_url: imgUrl,
+        keywords,
         content_article: {
-          article_body: editor.getContent(),
+          body: editor.getContent(),
           published_by: author,
+          formconfig_id: selectForm,
         },
       };
       content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
@@ -270,6 +312,7 @@ const ContentDetail = ({ id }: Props) => {
         setEventError("Opportunity Content is required!");
         return;
       }
+      const keywords = selectedKeywords.map(item => item.id);
       postdata = {
         title: data?.title,
         description: data?.description,
@@ -277,20 +320,24 @@ const ContentDetail = ({ id }: Props) => {
         status: "published",
         category_id: Number(selectCategory),
         image_url: imgUrl,
+        keywords,
         content_opportunity: {
           link: link,
-          formconfig_id: 1,
+          formconfig_id: selectForm,
           location: oppoLocation,
+          body: oppoEditor.getContent(),
         },
       };
       content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
     } else if (selectedValue === "pathway") {
       const pathways = pathwayContent.map((path: any) => ({ pathway_id: path.pathway_id }));
+      const keywords = selectedKeywords.map(item => item.id);
       postdata = {
         title: data?.title,
         description: data?.description,
         type: selectedValue,
         status: "published",
+        keywords,
         category_id: Number(selectCategory),
         image_url: imgUrl,
         content_pathways: pathways,
@@ -321,6 +368,7 @@ const ContentDetail = ({ id }: Props) => {
 
   const handleSelectChange = (event: SelectChangeEvent) => {
     setSelectedValue(event.target.value);
+    setSelectForm("");
   };
 
   const handleStartDateChange = (date: any) => {
@@ -343,6 +391,10 @@ const ContentDetail = ({ id }: Props) => {
   const handleAddPathway = () => {
     const updatedOptions = [...pathwayContent, { name: "", pathway_id: "" }];
     setPathwayContent(updatedOptions);
+  };
+
+  const handleKeywordChange = (event: any, newValue: any) => {
+    setSelectedKeywords(newValue);
   };
 
   const handleDeletePathway = (indexValue: number) => {
@@ -434,6 +486,20 @@ const ContentDetail = ({ id }: Props) => {
             <p className="mt-2 text-red-700">{errors.type?.message}</p>
           </div>
           {eventError && <p className="text-red-700 mb-3">{eventError}</p>}
+          {/* Keywords */}
+          <div className="my-10">
+            <Autocomplete
+              multiple
+              id="tags-outlined"
+              options={keywordOptions || []}
+              size="small"
+              value={selectedKeywords}
+              onChange={handleKeywordChange}
+              renderInput={params => (
+                <TextField {...params} label="Select keywords" placeholder="Keywords" />
+              )}
+            />
+          </div>
           {selectedValue === "video" && (
             <>
               <div className="mt-10">
@@ -543,6 +609,25 @@ const ContentDetail = ({ id }: Props) => {
                   variant="outlined"
                 />
               </div>
+              <div className="mb-10">
+                <FormControl size="small" fullWidth>
+                  <InputLabel id="selectForm">Form</InputLabel>
+                  <Select
+                    size="small"
+                    labelId="selectForm"
+                    id="selectForm"
+                    value={selectForm}
+                    label="Form"
+                    onChange={handleFormSelectChange}
+                  >
+                    {formconfigs?.data.map((cat: any, index: number) => (
+                      <MenuItem key={index} value={cat.id}>
+                        {cat.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </div>
             </>
           )}
           {selectedValue === "article" && (
@@ -556,6 +641,25 @@ const ContentDetail = ({ id }: Props) => {
                   className="w-full"
                   variant="outlined"
                 />
+              </div>
+              <div className="mb-10">
+                <FormControl size="small" fullWidth>
+                  <InputLabel id="selectForm">Form</InputLabel>
+                  <Select
+                    size="small"
+                    labelId="selectForm"
+                    id="selectForm"
+                    value={selectForm}
+                    label="Form"
+                    onChange={handleFormSelectChange}
+                  >
+                    {formconfigs?.data.map((cat: any, index: number) => (
+                      <MenuItem key={index} value={cat.id}>
+                        {cat.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </div>
               <div className="mb-10">
                 <p className="text-md font-semibold mb-3">Content</p>
@@ -677,6 +781,7 @@ const ContentDetail = ({ id }: Props) => {
               </div>
             )}
           </div>
+
           <div style={{ display: "flex", marginTop: 20, justifyContent: "flex-end" }}>
             {content?.data ? (
               <LoadingButton
