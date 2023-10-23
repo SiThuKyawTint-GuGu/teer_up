@@ -13,8 +13,11 @@ const Article: React.FC<ArticleProps> = ({ data, contentMutate }) => {
   const router = useRouter();
 
   return (
-    <ContentLayout data={data} contentMutate={contentMutate} type="Article">
-      <div className="mt-2 cursor-pointer" onClick={() => router.push(`/articles/${data.slug}`)}>
+    <ContentLayout data={data} contentMutate={contentMutate}>
+      <div
+        className="mt-2 w-full cursor-pointer"
+        onClick={() => router.push(`/articles/${data.slug}`)}
+      >
         {data.content_article && (
           <div>
             {(() => {

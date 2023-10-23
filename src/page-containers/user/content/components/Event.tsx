@@ -11,9 +11,9 @@ type EventProps = {
 const Event: React.FC<EventProps> = ({ data, contentMutate }) => {
   const router = useRouter();
   return (
-    <ContentLayout data={data} contentMutate={contentMutate} type="Event">
+    <ContentLayout data={data} contentMutate={contentMutate}>
       <div
-        className="mt-2 cursor-pointer h-full flex justify-between flex-col"
+        className="mt-2 cursor-pointer  h-full w-full flex justify-between flex-col"
         onClick={() => router.push(`/events/${data.slug}`)}
       >
         {data.description && (

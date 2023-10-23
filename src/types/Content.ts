@@ -34,6 +34,7 @@ export interface ContentOpportunity {
   id: number | string;
   form_config_id: number | string;
   link: string;
+  location: string;
 }
 export interface ContentData {
   id: string;

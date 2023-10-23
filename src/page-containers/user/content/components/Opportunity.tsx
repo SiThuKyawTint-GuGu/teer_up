@@ -15,13 +15,13 @@ type OpportunityProps = {
 const Opportunity: React.FC<OpportunityProps> = ({ data, contentMutate }) => {
   const router = useRouter();
   return (
-    <ContentLayout data={data} contentMutate={contentMutate} type="Event">
+    <ContentLayout data={data} contentMutate={contentMutate}>
       <div
         className="mt-2 cursor-pointer h-full flex justify-between flex-col"
         onClick={() => router.push(`/opportunity/${data.slug}`)}
       >
         {data.description && (
-          <div className="flex">
+          <div className="flex flex-col">
             <div className="w-full">
               {(() => {
                 const temporaryDiv = document.createElement("div");
