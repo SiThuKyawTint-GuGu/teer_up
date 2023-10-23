@@ -5,6 +5,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { Box, IconButton, Tooltip } from "@mui/material";
 import Button from "@mui/material/Button";
+import dayjs from "dayjs";
 import {
   MaterialReactTable,
   MRT_PaginationState,
@@ -25,6 +26,7 @@ const ContentTable: React.FC = () => {
     pageSize: pagination.pageSize,
     name: globalFilter || "",
   });
+  console.log(contents);
   const { trigger: deleteTrigger } = useDeleteContent();
 
   const columns = useMemo(
@@ -44,15 +46,22 @@ const ContentTable: React.FC = () => {
         header: "Description",
         enableEditing: false,
       },
+      {
+        accessorKey: "type",
+        header: "Type",
+        enableEditing: false,
+      },
       // {
-      //   accessorKey: "image_url",
-      //   header: "Image URL",
+      //   accessorKey: "keywords",
+      //   header: "Keywords",
       //   enableEditing: false,
+
       // },
       {
         accessorKey: "created_at",
         header: "Created At",
         enableEditing: false,
+        Cell: ({ value }: any) => dayjs(value).format("YYYY-MM-DD"),
       },
     ],
     []
