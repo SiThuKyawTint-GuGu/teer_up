@@ -1,5 +1,6 @@
 import CmtInput from "@/components/ui/Inputs/CmtInput";
 import { Text } from "@/components/ui/Typo/Text";
+
 import { useGetComment, usePostComment } from "@/services/content";
 import { ParamsType } from "@/services/user";
 import { CommentData, CommentResponse, ContentData } from "@/types/Content";
@@ -10,7 +11,7 @@ type CommentSectionProp = {
   mutateParentData: () => any;
 };
 const CommentSection: React.FC<CommentSectionProp> = ({ data, mutateParentData }) => {
-  const { data: cmts, mutate: mutateCmt } = useGetComment<ParamsType, CommentResponse>(data.id, {
+  const { data: cmtsArray, mutate: mutateCmt } = useGetComment<ParamsType>(data.id, {
     cursor: 1,
     pageSize: 20,
   });
@@ -36,25 +37,35 @@ const CommentSection: React.FC<CommentSectionProp> = ({ data, mutateParentData }
     <div className="pb-5">
       <div className="w-fullrounded-t-[16px] bg-white p-[8px] z-[9999999] text-black">
         <div className="bg-primary rounded-[6px] w-[60px] h-[2px] mx-auto" />
-        <div className="my-3 text-[16px] font-[600]">{cmts?.data.length}comments</div>
-
-        {cmts?.data.length !== 0 &&
-          cmts?.data.map((data: CommentData, index: number) => (
-            <div className="flex items-start  w-full h-full mb-2 z-[9999999] " key={index}>
-              <div className="bg-slateGray  rounded-full w-[32px] h-[32px]" />
-              <div className="flex flex-col w-full ms-2">
-                <div className="flex items-center flex-wrap gap-x-2">
-                  <Text as="div" className="text-[16px] font-[600]">
-                    {data.user.name}
-                  </Text>
-                  <Text as="span" className="text-[14px] font-[300]">
-                    {showTime(data.created_at)}
-                  </Text>
-                </div>
-                <div className="text-start">{data.comment}</div>
+        <div className="my-3 text-[16px] font-[600]">
+          {cmtsArray && cmtsArray.length > 0 && cmtsArray[0].total}comments
+        </div>
+        {cmtsArray && cmtsArray.length > 0 && (
+          <div className="h-[50vh] overflow-y-auto">
+            {cmtsArray.map((cmts: CommentResponse, index: number) => (
+              <div key={index}>
+                {cmts?.data.length !== 0 &&
+                  cmts?.data.map((data: CommentData, index: number) => (
+                    <div className="flex items-start  w-full h-full mb-2 z-[9999999] " key={index}>
+                      <div className="bg-slateGray  rounded-full w-[32px] h-[32px]" />
+                      <div className="flex flex-col w-full ms-2">
+                        <div className="flex items-center flex-wrap gap-x-2">
+                          <Text as="div" className="text-[16px] font-[600]">
+                            {data.user.name}
+                          </Text>
+                          <Text as="span" className="text-[14px] font-[300]">
+                            {showTime(data.created_at)}
+                          </Text>
+                        </div>
+                        <div className="text-start">{data.comment}</div>
+                      </div>
+                    </div>
+                  ))}
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+        )}
+
         {/* Comment Input */}
         <div className="w-full h-full relative z-[9999999]">
           <div className=" w-full">

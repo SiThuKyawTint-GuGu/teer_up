@@ -1,13 +1,15 @@
 "use client";
 import appAxios from "@/lib/appAxios";
+import { CommentResponse, ContentType } from "@/types/Content";
 import { routeFilter } from "@/utils";
 import useSWR, { SWRResponse } from "swr";
+import useSWRInfinite, { SWRInfiniteResponse } from "swr/infinite";
 import useSWRMutation from "swr/mutation";
-
 export type ParamsType = {
   page?: number;
   pageSize?: number;
   name?: string;
+  cursor?: number;
 };
 
 export interface ContentArgType {
@@ -28,6 +30,13 @@ interface FileArgType {
     data?: any;
   };
 }
+export const useGetContentInfinite = <ParamsType>(
+  params?: ParamsType
+): SWRInfiniteResponse<ContentType> => {
+  const getKey = () => `/content?${routeFilter(params)}`;
+  return useSWRInfinite<ContentType>(getKey);
+};
+
 export const useGetContent = <ParamsType, ContentType>(
   params?: ParamsType
 ): SWRResponse<ContentType, any> => {
@@ -85,11 +94,12 @@ export const usePostComment = () =>
     return appAxios.post<CommentArgType>(`${url}/${arg.id}/comments`, arg);
   });
 
-export const useGetComment = <ParamsType, CommentType>(
+export const useGetComment = <ParamsType>(
   id: number | string,
   params?: ParamsType
-): SWRResponse<CommentType, any> => {
-  return useSWR<CommentType>(`/content/${id}/comments?${routeFilter(params)}`);
+): SWRInfiniteResponse => {
+  const getKey = () => `/content/${id}/comments?${routeFilter(params)}`;
+  return useSWRInfinite<CommentResponse>(getKey);
 };
 
 export const useGetContentBySlug = <ContentData>(slug: string): SWRResponse => {

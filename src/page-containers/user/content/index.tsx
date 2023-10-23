@@ -1,29 +1,25 @@
 "use client";
 import { ParamsType } from "@/services/user";
 import { ContentData, ContentType } from "@/types/Content";
-import InfiniteScroll from "react-infinite-scroll-component";
 
 import Event from "@/page-containers/user/content/components/Event";
 import Video from "@/page-containers/user/content/components/Video";
-import { useGetContent } from "@/services/content";
+import { useGetContentInfinite } from "@/services/content";
 import { useEffect, useRef, useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import Article from "./components/Article";
 import Opportunity from "./components/Opportunity";
 import Pathway from "./components/Pathway";
 
 const UserContent = () => {
   const [page, setPage] = useState<number>(1);
-  const [videos, setVideos] = useState<any>([]);
   const videoRefs = useRef<HTMLVideoElement[]>([]);
 
-  const { data: contentData, mutate } = useGetContent<ParamsType, ContentType>({
+  const { data, mutate } = useGetContentInfinite<ParamsType>({
     page: page,
     pageSize: 20,
   });
 
-  useEffect(() => {
-    setVideos(contentData);
-  }, []);
   useEffect(() => {
     const observerOptions = {
       root: null,
@@ -55,7 +51,8 @@ const UserContent = () => {
     return () => {
       observer.disconnect();
     };
-  }, [videos]);
+  }, []);
+
   const handleVideoRef = (index: number) => (ref: HTMLVideoElement | null) => {
     if (ref) {
       videoRefs.current[index] = ref;
@@ -63,7 +60,6 @@ const UserContent = () => {
   };
 
   const differentContent = (data: ContentData, index: number) => {
-    console.log(data.type);
     if (data.type === "video" && data.content_video)
       return (
         <Video
@@ -89,25 +85,31 @@ const UserContent = () => {
   mutate();
   return (
     <>
-      {contentData && (
-        <InfiniteScroll
-          dataLength={contentData.data.length}
-          next={() => setPage(prev => prev + 1)}
-          hasMore={hasMoreData(contentData)}
-          loader={<p></p>}
-        >
-          <div className="snap-y flex-col snap-mandatory w-full max-h-[750px] h-[85vh]   no-scrollbar overflow-y-scroll">
-            {contentData.data.map((data: ContentData, index: number) => (
-              <div
-                className="h-full w-full flex justify-center  items-center snap-start"
-                key={index}
+      {data &&
+        data.length > 0 &&
+        data.map((data: ContentType, index: number) => (
+          <div key={index}>
+            {data && data.data.length > 0 && (
+              <InfiniteScroll
+                dataLength={data.data.length}
+                next={() => setPage(prev => prev + 1)}
+                hasMore={hasMoreData(data)}
+                loader={<p></p>}
               >
-                {differentContent(data, index)}
-              </div>
-            ))}
+                <div className="snap-y flex-col snap-mandatory w-full max-h-[750px] h-[85vh]   no-scrollbar overflow-y-scroll">
+                  {data.data.map((data: ContentData, index: number) => (
+                    <div
+                      className="h-full w-full flex justify-center  items-center snap-start"
+                      key={index}
+                    >
+                      {differentContent(data, index)}
+                    </div>
+                  ))}
+                </div>
+              </InfiniteScroll>
+            )}
           </div>
-        </InfiniteScroll>
-      )}
+        ))}
     </>
   );
 };
