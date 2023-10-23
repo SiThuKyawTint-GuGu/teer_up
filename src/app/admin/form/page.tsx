@@ -1,10 +1,11 @@
-import FormConfig from "@/page-containers/admin/form";
+import FormConfigTable from "@/page-containers/admin/form/formTable";
+import { Box } from "@radix-ui/themes";
 
 const FormPage = () => {
   return (
-    <div>
-      <FormConfig />
-    </div>
+    <Box className="p-5 bg-white">
+      <FormConfigTable />
+    </Box>
   );
 };
 

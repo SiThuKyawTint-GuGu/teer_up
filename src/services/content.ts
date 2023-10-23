@@ -81,15 +81,15 @@ type CommentArgType = {
   };
 };
 export const usePostComment = () =>
-  useSWRMutation(`content/comment`, (url, { arg }: CommentArgType) => {
-    return appAxios.post<CommentArgType>(`${url}/${arg.id}`, arg);
+  useSWRMutation(`/content`, (url, { arg }: CommentArgType) => {
+    return appAxios.post<CommentArgType>(`${url}/${arg.id}/comments`, arg);
   });
 
 export const useGetComment = <ParamsType, CommentType>(
   id: number | string,
   params?: ParamsType
 ): SWRResponse<CommentType, any> => {
-  return useSWR<CommentType>(`/content/comments/${id}?${routeFilter(params)}`);
+  return useSWR<CommentType>(`/content/${id}/comments?${routeFilter(params)}`);
 };
 
 export const useGetContentBySlug = <ContentData>(slug: string): SWRResponse => {

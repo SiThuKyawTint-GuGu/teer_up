@@ -1,30 +1,16 @@
 "use client";
-import { ParamsType, useDeleteBlog, useGetBlogs } from "@/services/blogPost";
+import { useDeleteFormConfig, useGetFormConfig } from "@/services/formConfig";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { Box, IconButton, Tooltip } from "@mui/material";
 import Button from "@mui/material/Button";
-import {
-  MaterialReactTable,
-  MRT_PaginationState,
-  MRT_Row,
-  useMaterialReactTable,
-} from "material-react-table";
+import { MaterialReactTable, MRT_Row, useMaterialReactTable } from "material-react-table";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 
-const BlogTable: React.FC = () => {
-  const [pagination, setPagination] = useState<MRT_PaginationState>({
-    pageIndex: 1,
-    pageSize: 10,
-  });
-  const [globalFilter, setGlobalFilter] = useState<string>("");
-  const { data: blogs, isLoading } = useGetBlogs<ParamsType, any>({
-    page: pagination.pageIndex + 1,
-    pageSize: pagination.pageSize,
-    name: globalFilter || "",
-  });
-  const { trigger: deleteTrigger } = useDeleteBlog();
+const FormConfigTable: React.FC = () => {
+  const { data: forms, isLoading } = useGetFormConfig<any>();
+  const { trigger: deleteTrigger } = useDeleteFormConfig();
 
   const columns = useMemo(
     () => [
@@ -38,21 +24,6 @@ const BlogTable: React.FC = () => {
         header: "Name",
         enableEditing: false,
       },
-      // {
-      //   accessorKey: "content",
-      //   header: "Content",
-      //   enableEditing: false,
-      // },
-      {
-        accessorKey: "link",
-        header: "Link",
-        enableEditing: false,
-      },
-      // {
-      //   accessorKey: "is_public",
-      //   header: "Public",
-      //   enableEditing: false,
-      // },
     ],
     []
   );
@@ -60,14 +31,14 @@ const BlogTable: React.FC = () => {
   //DELETE action
   const openDeleteConfirmModal = async (row: MRT_Row<any>) => {
     const { id } = row;
-    if (window.confirm("Are you sure you want to delete this content?")) {
+    if (window.confirm("Are you sure you want to delete this form?")) {
       await deleteTrigger({ id });
     }
   };
 
   const table = useMaterialReactTable({
     columns,
-    data: (blogs?.data as any) || [],
+    data: (forms?.data as any) || [],
     createDisplayMode: "row",
     editDisplayMode: "row",
     enableEditing: true,
@@ -84,26 +55,13 @@ const BlogTable: React.FC = () => {
       },
     },
     positionActionsColumn: "last",
-    manualFiltering: true,
-    manualPagination: true,
-    rowCount: blogs?.total,
-    initialState: {
-      pagination: {
-        pageSize: 10,
-        pageIndex: 1,
-      },
-    },
     state: {
       showSkeletons: isLoading ?? false,
-      pagination,
-      isLoading,
     },
-    onGlobalFilterChange: setGlobalFilter,
-    onPaginationChange: setPagination,
     renderRowActions: ({ row, table }) => (
       <Box sx={{ display: "flex", gap: "1rem" }}>
         <Tooltip title="Edit">
-          <Link href={`/admin/blogs/posts/${row.id}`}>
+          <Link href={`/admin/form/${row.id}`}>
             <IconButton>
               <EditIcon />
             </IconButton>
@@ -117,8 +75,12 @@ const BlogTable: React.FC = () => {
       </Box>
     ),
     renderTopToolbarCustomActions: ({ table }) => (
-      <Button variant="contained" color="error" sx={{ textTransform: "none" }}>
-        <Link href={"/admin/blogs/posts/0"}>Create New Blog</Link>
+      <Button
+        variant="contained"
+        color="error"
+        sx={{ background: "#DA291C", textTransform: "none" }}
+      >
+        <Link href={"/admin/form/0"}>Create New Form</Link>
       </Button>
     ),
   });
@@ -126,4 +88,4 @@ const BlogTable: React.FC = () => {
   return <MaterialReactTable table={table} />;
 };
 
-export default BlogTable;
+export default FormConfigTable;

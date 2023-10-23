@@ -25,7 +25,7 @@ export interface ContentEvent {
 
 export interface ContentArticle {
   id: number;
-  article_body: string | TrustedHTML;
+  article_body: TrustedHTML;
   published_by: string;
   content_id: string;
 }
@@ -34,11 +34,12 @@ export interface ContentOpportunity {
   id: number | string;
   form_config_id: number | string;
   link: string;
+  location: string;
 }
 export interface ContentData {
   id: string;
   title: string;
-  description: string;
+  description: TrustedHTML;
   created_at: string;
   type: "video" | "article" | "event" | "opportunity" | "pathway";
   updated_at: string;
