@@ -7,9 +7,10 @@ import useSWRInfinite, { SWRInfiniteResponse } from "swr/infinite";
 import useSWRMutation from "swr/mutation";
 export type ParamsType = {
   page?: number;
-  pageSize?: number;
+  pagesize?: number;
   name?: string;
   cursor?: number;
+  type?: string;
 };
 
 export interface ContentArgType {
