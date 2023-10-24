@@ -24,6 +24,7 @@ import {
   IoPersonCircleOutline,
   IoSearch,
   IoShareSocialOutline,
+  IoChevronUpSharp,
 } from "react-icons/io5";
 import { MdDelete, MdOutlineMailOutline } from "react-icons/md";
 import {
@@ -144,6 +145,7 @@ export const Icons = {
   userProfile: FaUserCircle,
   location: IoLocationOutline,
   calender: IoCalendarOutline,
+  upArrow: IoChevronUpSharp,
 };
 
 interface Image {
