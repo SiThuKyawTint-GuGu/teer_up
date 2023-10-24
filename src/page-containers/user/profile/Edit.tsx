@@ -10,7 +10,7 @@ import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 
 const profileTrigger = {
   [PROFILE_TRIGGER.COVER]: "See cover picture",
@@ -32,30 +32,31 @@ const ProfileEdit: React.FC = () => {
   const { trigger: uploadCoverTrigger } = useUploadCover();
   const userProfile = profileData?.data;
 
-  const handleUploadImage = async (event: any) => {
-    const file = await event?.target?.files[0];
+  const handleUploadImage = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = await getFileFromEvent(event);
+
     if (file) {
-      if (triggerType === PROFILE_TRIGGER.PROFILE) {
-        await uploadProfileTrigger(
-          { file },
-          {
-            onSuccess: () => {
-              router.push("/profile");
-            },
-          }
-        );
-      } else {
-        await uploadCoverTrigger(
-          { file },
-          {
-            onSuccess: () => {
-              router.push("/profile");
-            },
-          }
-        );
+      const triggerFunction =
+        triggerType === PROFILE_TRIGGER.PROFILE
+          ? uploadProfileTrigger({ file })
+          : uploadCoverTrigger({ file });
+
+      try {
+        await triggerFunction;
+        router.push("/profile");
+      } catch (error) {
+        console.error("Upload failed =>", error);
       }
     }
   };
+
+  const getFileFromEvent = async (event: ChangeEvent<HTMLInputElement>) => {
+    const inputElement = event.target as HTMLInputElement;
+    const files = inputElement?.files;
+    return files ? files[0] : null;
+  };
+
+  console.log("userProfile => ", userProfile);
 
   return (
     <>
@@ -79,7 +80,16 @@ const ProfileEdit: React.FC = () => {
                     </DialogTrigger>
                   </Flex>
                   <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
-                    <Flex className="h-[130px] bg-[#D9D9D9]" justify="center" align="center"></Flex>
+                    {userProfile?.cover_url ? (
+                      <div
+                        style={{
+                          background: `url(${userProfile?.cover_url}) center / cover`,
+                          height: "130px",
+                        }}
+                      />
+                    ) : (
+                      <Flex className="h-[130px] bg-[#D9D9D9]" justify="center" align="center" />
+                    )}
                   </div>
                 </div>
                 <div>
@@ -92,20 +102,29 @@ const ProfileEdit: React.FC = () => {
                     </DialogTrigger>
                   </Flex>
                   <div className="pb-[10px] mb-[10px]">
-                    <Flex
-                      justify="center"
-                      align="center"
-                      position="relative"
-                      className="w-[120px] h-[120px] rounded-full bg-[#D9D9D9] ring-4 ring-white"
-                    >
-                      <Image
-                        className="mt-[30px]"
-                        width={90}
-                        height={90}
-                        src="/uploads/icons/user-profile.svg"
-                        alt="user profile"
+                    {userProfile?.profile_url ? (
+                      <div
+                        className="w-[120px] h-[120px] rounded-full  ring-4 ring-white"
+                        style={{
+                          background: `url(${userProfile?.profile_url}) center / cover`,
+                        }}
                       />
-                    </Flex>
+                    ) : (
+                      <Flex
+                        justify="center"
+                        align="center"
+                        position="relative"
+                        className="w-[120px] h-[120px] rounded-full bg-[#D9D9D9] ring-4 ring-white"
+                      >
+                        <Image
+                          className="mt-[30px]"
+                          width={90}
+                          height={90}
+                          src="/uploads/icons/user-profile.svg"
+                          alt="user profile"
+                        />
+                      </Flex>
+                    )}
                   </div>
                 </div>
               </Section>
