@@ -30,12 +30,6 @@ export const menuList: Menu[] = [
       { key: "/admin/contents/category", title: "Category" },
     ],
   },
-  // {
-  //   key: "/admin/reward",
-  //   icon: <Icons.wallet className="w-[20px] h-[20px]" />,
-  //   title: "Reward",
-  //   child: [],
-  // },
   {
     key: "/admin/form",
     icon: <Icons.form className="w-[20px] h-[20px]" />,
@@ -57,17 +51,20 @@ export const menuList: Menu[] = [
       { key: "/admin/blogs/posts", title: "Posts" },
     ],
   },
-  // {
-  //   key: "/admin/discussions",
-  //   icon: <Icons.discussions className="w-[20px] h-[20px]" />,
-  //   title: "Disccussions",
-  //   child: [],
-  // },
   {
-    key: "/admin/setting",
+    key:
+      "/admin/configs/industry" ||
+      "/admin/configs/position" ||
+      "/admin/configs/career" ||
+      "/admin/configs/preferences",
     icon: <Icons.setting className="w-[20px] h-[20px]" />,
-    title: "Setting",
-    child: [],
+    title: "Configurations",
+    child: [
+      { key: "/admin/configs/industry", title: "Industry" },
+      { key: "/admin/configs/position", title: "Position" },
+      { key: "/admin/configs/career", title: "Career" },
+      { key: "/admin/configs/preferences", title: "Preferences" },
+    ],
   },
   {
     key: "/admin/user-management",
