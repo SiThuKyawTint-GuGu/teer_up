@@ -4,14 +4,14 @@ import { useGetBlogById, usePostBlog, useUpdateBlog } from "@/services/blogPost"
 import { useGetFormConfig, useGetFormConfigById } from "@/services/formConfig";
 import "@/styles/checkbox.css";
 import "@/styles/radio.css";
-import "@/styles/switch.css";
 import "@/styles/tab.css";
 import { yupResolver } from "@hookform/resolvers/yup";
 import SaveIcon from "@mui/icons-material/Save";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Switch from "@mui/material/Switch";
 import TextField from "@mui/material/TextField";
-import * as Switch from "@radix-ui/react-switch";
 import { Editor } from "@tinymce/tinymce-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -180,21 +180,11 @@ const BlogPostDetail = ({ id }: Props) => {
             <p className="mt-2 text-red-700">{errors.form?.message}</p>
           </div>
           <div className="mb-10 mt-5">
-            <form>
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <Switch.Root
-                  className="SwitchRoot mr-3"
-                  id="airplane-mode"
-                  checked={isSwitchOn}
-                  onCheckedChange={handleSwitchToggle}
-                >
-                  <Switch.Thumb className="SwitchThumb" />
-                </Switch.Root>
-                <label className="Label" htmlFor="airplane-mode">
-                  Visible to Public
-                </label>
-              </div>
-            </form>
+            <FormControlLabel
+              control={<Switch checked={isSwitchOn} onChange={handleSwitchToggle} color="error" />}
+              sx={{ fontSize: "15px", color: "gray" }}
+              label="Visible to Public"
+            />
           </div>
 
           <div className="mb-10">
