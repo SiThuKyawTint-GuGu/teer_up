@@ -8,12 +8,15 @@ import { FcBusinesswoman } from "react-icons/fc";
 import { FiUsers } from "react-icons/fi";
 import { GoCommentDiscussion } from "react-icons/go";
 import {
+  IoBookmark,
   IoBookmarkOutline,
   IoCalendarOutline,
   IoChatbubbleOutline,
   IoCheckmarkCircle,
   IoChevronBack,
+  IoChevronUpSharp,
   IoGlobeOutline,
+  IoHeart,
   IoHeartOutline,
   IoHome,
   IoInformationCircleOutline,
@@ -135,8 +138,10 @@ export const Icons = {
   globe: IoGlobeOutline,
   people: IoPeopleOutline,
   saved: IoBookmarkOutline,
+  savedFill: IoBookmark,
   person: IoPersonCircleOutline,
   like: IoHeartOutline,
+  likefill: IoHeart,
   comment: IoChatbubbleOutline,
   share: IoShareSocialOutline,
   inputError: IoInformationCircleOutline,
@@ -146,6 +151,7 @@ export const Icons = {
   location: IoLocationOutline,
   calender: IoCalendarOutline,
   caretDown: PiCaretDownFill,
+  upArrow: IoChevronUpSharp,
 };
 
 interface Image {

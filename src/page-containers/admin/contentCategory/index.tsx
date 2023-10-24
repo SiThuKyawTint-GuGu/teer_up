@@ -10,16 +10,19 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { Box, IconButton, Tooltip } from "@mui/material";
 import Button from "@mui/material/Button";
+import Modal from "@mui/material/Modal";
+import Typography from "@mui/material/Typography";
 import {
   MaterialReactTable,
   useMaterialReactTable,
-  type MRT_Row,
   type MRT_TableOptions,
 } from "material-react-table";
 import { useMemo, useState } from "react";
 
 const CategoryTable: React.FC = () => {
   const [validationErrors, setValidationErrors] = useState<Record<string, string | undefined>>({});
+  const [open, setOpen] = useState<boolean>(false);
+  const [id, setId] = useState<string>("");
   const {
     data: contentCategories,
     isLoading,
@@ -103,11 +106,9 @@ const CategoryTable: React.FC = () => {
   };
 
   //DELETE action
-  const openDeleteConfirmModal = async (row: MRT_Row<any>) => {
-    const { id } = row;
-    if (window.confirm("Are you sure you want to delete this user?")) {
-      await deleteTrigger({ id });
-    }
+  const handleDelete = async () => {
+    setOpen(false);
+    await deleteTrigger({ id });
   };
 
   const table = useMaterialReactTable({
@@ -144,7 +145,13 @@ const CategoryTable: React.FC = () => {
           </IconButton>
         </Tooltip>
         <Tooltip title="Delete">
-          <IconButton color="error" onClick={() => openDeleteConfirmModal(row)}>
+          <IconButton
+            color="error"
+            onClick={() => {
+              setId(row.id);
+              setOpen(true);
+            }}
+          >
             <DeleteIcon />
           </IconButton>
         </Tooltip>
@@ -164,7 +171,50 @@ const CategoryTable: React.FC = () => {
     ),
   });
 
-  return <MaterialReactTable table={table} />;
+  return (
+    <>
+      <MaterialReactTable table={table} />
+      <Modal open={open} onClose={() => setOpen(false)}>
+        <Box sx={style}>
+          <Typography color={"error"} variant="h6" component="h2">
+            Delete Confirm
+          </Typography>
+          <Typography sx={{ mt: 2 }}>
+            Are you sure you want to delete this content category?
+          </Typography>
+          <div className="flex justify-between mt-4">
+            <div></div>
+            <div>
+              <Button
+                onClick={() => setOpen(false)}
+                sx={{
+                  textTransform: "none",
+                  marginRight: "10px",
+                  color: "white",
+                  background: "gray",
+                  ":hover": {
+                    color: "white",
+                    background: "gray",
+                  },
+                }}
+                variant="contained"
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleDelete}
+                color="error"
+                sx={{ textTransform: "none" }}
+                variant="contained"
+              >
+                Delete
+              </Button>
+            </div>
+          </div>
+        </Box>
+      </Modal>
+    </>
+  );
 };
 
 export default CategoryTable;
@@ -173,6 +223,16 @@ const validateRequired = (value: string) => !!value.length;
 
 function validateUser(user: any) {
   return {
-    name: !validateRequired(user.name) ? "First Name is Required" : "",
+    name: !validateRequired(user.name) ? "Name is Required" : "",
   };
 }
+const style = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 4,
+};

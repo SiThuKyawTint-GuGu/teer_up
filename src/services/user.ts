@@ -109,3 +109,9 @@ export const useGetOtp = () => {
 export const useGetGenders = <Gender>(): SWRResponse<Gender, any> => {
   return useSWR<Gender>(`/details/genders`);
 };
+
+// bio
+export const useUpdateBio = () =>
+  useSWRMutation(`/user/profile/bio`, (url, { arg }: { arg: { bio: string } }) => {
+    return appAxios.put<{ arg: { bio: string } }>(`${url}`, arg);
+  });

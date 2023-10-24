@@ -1,7 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
 
-import { IconButton, TextField } from "@radix-ui/themes";
+import { IconButton, TextArea, TextField } from "@radix-ui/themes";
 
 import { USER_ROLE } from "@/shared/enums";
 import { cn } from "@/utils/cn";
@@ -82,7 +82,43 @@ const InputSearch = React.forwardRef<HTMLInputElement, InputProps>(
 );
 InputSearch.displayName = "InputSearch";
 
-export { InputSearch, InputText };
+const InputTextArea = React.forwardRef<HTMLInputElement, Props>(
+  (
+    {
+      label,
+      error,
+      className,
+      placeholder,
+      defaultValue,
+      inputType = USER_ROLE.ADMIN,
+      disabled = false,
+      ...props
+    },
+    ref
+  ) => {
+    return (
+      <InputStyled inputType={inputType}>
+        <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+          {label}
+        </label>
+        <div className="relative mt-1 rounded-md">
+          <TextArea
+            className={cn(className, inputType !== USER_ROLE.ADMIN ? "shadow-theme" : "")}
+            placeholder={placeholder}
+            defaultValue={defaultValue || ""}
+            size="3"
+            disabled={disabled}
+            {...props}
+          />
+        </div>
+        {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+      </InputStyled>
+    );
+  }
+);
+InputTextArea.displayName = "InputTextArea";
+
+export { InputSearch, InputText, InputTextArea };
 
 const InputStyled = styled.div<{ inputType: USER_ROLE }>`
   & input {
