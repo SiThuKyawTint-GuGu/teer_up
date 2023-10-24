@@ -1,7 +1,7 @@
 "use client";
 import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
-import { ParamsType, useGetUserEducations } from "@/services/education";
+import { EducationParamsType, useGetUserEducations } from "@/services/education";
 import { useGetUserById } from "@/services/user";
 import { EducationResponse } from "@/types/Education";
 import { UserProfileResponse } from "@/types/Profile";
@@ -14,7 +14,7 @@ const Education: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const { id } = useParams();
   const { data: profileData } = useGetUserById<UserProfileResponse>(id as string);
-  const { data: educationList } = useGetUserEducations<ParamsType, EducationResponse>();
+  const { data: educationList } = useGetUserEducations<EducationParamsType, EducationResponse>();
   const userProfile = profileData?.data;
 
   return (
@@ -42,7 +42,7 @@ const Education: React.FC = () => {
                     </Text>
                     <Text>{each.degree}</Text>
                   </Flex>
-                  <Link href={`/profile/${id}/education/edit`}>
+                  <Link href={`/profile/${id}/education/${each.id}`}>
                     <Image src="/uploads/icons/pencil.svg" width={20} height={20} alt="pencil" />
                   </Link>
                 </Flex>
