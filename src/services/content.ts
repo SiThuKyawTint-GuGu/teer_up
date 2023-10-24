@@ -91,7 +91,16 @@ type CommentArgType = {
 };
 export const usePostComment = () =>
   useSWRMutation(`/content`, (url, { arg }: CommentArgType) => {
-    return appAxios.post<CommentArgType>(`${url}/${arg.id}/comments`, arg);
+    return appAxios.post(`${url}/${arg.id}/comments`, arg);
+  });
+type saveContentArg = {
+  arg: {
+    id: number | string;
+  };
+};
+export const useSaveContent = () =>
+  useSWRMutation(`/content/save`, (url, { arg }: saveContentArg) => {
+    return appAxios.post(`${url}/${arg.id}`, arg);
   });
 
 export const useGetComment = <ParamsType>(

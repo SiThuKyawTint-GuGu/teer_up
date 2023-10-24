@@ -97,7 +97,7 @@ const PathwayDetail: React.FC = () => {
           </>
         )}
       </div>
-      <Flex justify="between" className="absolute bottom-1 w-full left-0 bg-white z-[999]">
+      <Flex justify="between" className="absolute bottom-0 pb-1 w-full left-0 bg-white z-[999]">
         <Text className="font-[600] text-[16px]">Career paths and all “magic”</Text>
         <Icons.upArrow className="text-primary w-[20px] h-[20px]" />
       </Flex>
