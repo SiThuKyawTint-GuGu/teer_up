@@ -72,7 +72,7 @@ const ProfileEdit: React.FC = () => {
                   <Heading as="h6" size="4" align="left">
                     Brief bio
                   </Heading>
-                  <Link href={`/profile/${id}/personal-info`}>
+                  <Link href={`/profile/${id}/bio`}>
                     <Text className="text-primary">Edit</Text>
                   </Link>
                 </Flex>
