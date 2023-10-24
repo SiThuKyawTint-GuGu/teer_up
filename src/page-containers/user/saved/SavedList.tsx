@@ -4,15 +4,14 @@ import CardBox from "@/components/ui/Card";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
-import { useGetSavedContents } from "@/services/content";
+import { ParamsType, useGetSavedContents } from "@/services/content";
+import { SavedContentResponse } from "@/types/SavedContent";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import React, { useState } from "react";
 
 const SavedList: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
-  const { data } = useGetSavedContents();
-
-  console.log("data => ", data);
+  const { data: savedContents } = useGetSavedContents<ParamsType, SavedContentResponse>();
 
   return (
     <Dialog open={open} onOpenChange={val => setOpen(val)}>
@@ -31,23 +30,21 @@ const SavedList: React.FC = () => {
           </Flex>
           <Box className="pb-[7px] bg-[#F8F9FB]">
             <Section className="" py="4" px="3">
-              {[0, 1, 2, 3].map((each, key) => (
+              {savedContents?.data?.map((each, key) => (
                 <Box key={key} pb="4">
                   <CardBox className="p-[8px]">
                     <Flex justify="start" align="start" gap="2">
                       <Image
-                        src="/uploads/images/demos/saved-image.svg"
+                        src={each?.image_url}
                         className="w-[128px] h-[100px]"
                         width={128}
                         height={100}
                         alt="saved image"
                       />
                       <Flex className="text-[#373A36] space-y-1" direction="column" wrap="wrap">
-                        <Text>
-                          Lorem ipsum dolor sit amet. Ornare mattis ma ipsumt amet. Ornare...
-                        </Text>
+                        <Text>{each.title}</Text>
                         <Text size="2" weight="light">
-                          Event . Saved 2d ago
+                          {each.type} . Saved 2d ago
                         </Text>
                       </Flex>
                     </Flex>

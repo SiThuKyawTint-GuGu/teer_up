@@ -119,8 +119,8 @@ export const useGetContentBySlug = <ContentData>(slug: string): SWRResponse => {
 
 // saved content
 
-export const useGetSavedContents = <SavedContentType>(
+export const useGetSavedContents = <ParamsType, SavedContentResponse>(
   params?: ParamsType
-): SWRResponse<SavedContentType, any> => {
-  return useSWR<SavedContentType>(`/content/save?${routeFilter(params)}`);
+): SWRResponse<SavedContentResponse, any> => {
+  return useSWR<SavedContentResponse>(`/content/save?${routeFilter(params)}`);
 };
