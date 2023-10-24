@@ -23,7 +23,7 @@ const ContentTable: React.FC = () => {
   const [globalFilter, setGlobalFilter] = useState<string>("");
   const { data: contents, isLoading } = useGetContent<ParamsType, ContentType>({
     page: pagination.pageIndex + 1,
-    pageSize: pagination.pageSize,
+    pagesize: pagination.pageSize,
     name: globalFilter || "",
   });
   console.log(contents);
