@@ -1,17 +1,18 @@
 "use client";
 import {
-  useCreatePreferences,
-  useDeletePreferences,
-  useGetPreferences,
-  useUpdatePreferences,
-} from "@/services/preferences";
-import { PreferenceResponse } from "@/types/Preferences";
+  useCreateDepartment,
+  useDeleteDepartment,
+  useGetDepartment,
+  useUpdateDepartment,
+} from "@/services/department";
+import { DepartmentResponse } from "@/types/Department";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { Box, IconButton, Tooltip } from "@mui/material";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
+import dayjs from "dayjs";
 import {
   MaterialReactTable,
   useMaterialReactTable,
@@ -19,14 +20,15 @@ import {
 } from "material-react-table";
 import { useMemo, useState } from "react";
 
-const Preferences: React.FC = () => {
+const Department: React.FC = () => {
   const [validationErrors, setValidationErrors] = useState<Record<string, string | undefined>>({});
   const [open, setOpen] = useState<boolean>(false);
   const [id, setId] = useState<string>("");
-  const { data: preferences, isLoading, mutate } = useGetPreferences<PreferenceResponse>();
-  const { trigger: createTrigger } = useCreatePreferences();
-  const { trigger: updateTrigger } = useUpdatePreferences();
-  const { trigger: deleteTrigger } = useDeletePreferences();
+  const { data: departments, isLoading, mutate } = useGetDepartment<DepartmentResponse>();
+
+  const { trigger: createTrigger } = useCreateDepartment();
+  const { trigger: updateTrigger } = useUpdateDepartment();
+  const { trigger: deleteTrigger } = useDeleteDepartment();
 
   const columns = useMemo(
     () => [
@@ -35,6 +37,7 @@ const Preferences: React.FC = () => {
         header: "ID",
         enableEditing: false,
       },
+
       {
         accessorKey: "name",
         header: "Name",
@@ -52,12 +55,24 @@ const Preferences: React.FC = () => {
           //optionally add validation checking for onBlur or onChange
         },
       },
+      {
+        accessorKey: "created_at",
+        header: "Created At",
+        enableEditing: false,
+        Cell: ({ value }: any) => dayjs(value).format("YYYY-MM-DD"),
+      },
+      {
+        accessorKey: "updated_at",
+        header: "Upated At",
+        enableEditing: false,
+        Cell: ({ value }: any) => dayjs(value).format("YYYY-MM-DD"),
+      },
     ],
     [validationErrors]
   );
 
   //CREATE action
-  const handleCreatePreference: MRT_TableOptions<any>["onCreatingRowSave"] = async ({
+  const handleCreateDepartment: MRT_TableOptions<any>["onCreatingRowSave"] = async ({
     values,
     table,
   }) => {
@@ -81,7 +96,7 @@ const Preferences: React.FC = () => {
   };
 
   //UPDATE action
-  const handleUpdatePreference: MRT_TableOptions<any>["onEditingRowSave"] = ({ values, table }) => {
+  const handleUpdateDepartment: MRT_TableOptions<any>["onEditingRowSave"] = ({ values, table }) => {
     const { id, name } = values;
     const newValidationErrors = validatePreference(values);
     if (Object.values(newValidationErrors).some(error => error)) {
@@ -102,14 +117,14 @@ const Preferences: React.FC = () => {
   };
 
   //DELETE action
-  const handleDeletePreference = async () => {
+  const handleDeleteDepartment = async () => {
     setOpen(false);
     await deleteTrigger({ id });
   };
 
   const table = useMaterialReactTable({
     columns,
-    data: (preferences?.data as any) || [],
+    data: (departments?.data as any) || [],
     createDisplayMode: "row",
     editDisplayMode: "row",
     enableEditing: true,
@@ -126,13 +141,13 @@ const Preferences: React.FC = () => {
       },
     },
     onCreatingRowCancel: () => setValidationErrors({}),
-    onCreatingRowSave: handleCreatePreference,
+    onCreatingRowSave: handleCreateDepartment,
     onEditingRowCancel: () => setValidationErrors({}),
     positionActionsColumn: "last",
     state: {
       showSkeletons: isLoading ?? false,
     },
-    onEditingRowSave: handleUpdatePreference,
+    onEditingRowSave: handleUpdateDepartment,
     renderRowActions: ({ row, table }) => (
       <Box sx={{ display: "flex", gap: "1rem" }}>
         <Tooltip title="Edit">
@@ -162,7 +177,7 @@ const Preferences: React.FC = () => {
           table.setCreatingRow(true);
         }}
       >
-        Create New Preference
+        Create New Department
       </Button>
     ),
   });
@@ -175,7 +190,7 @@ const Preferences: React.FC = () => {
           <Typography color={"error"} variant="h6" component="h2">
             Delete Confirm
           </Typography>
-          <Typography sx={{ mt: 2 }}>Are you sure you want to delete this preference?</Typography>
+          <Typography sx={{ mt: 2 }}>Are you sure you want to delete this department?</Typography>
           <div className="flex justify-between mt-4">
             <div></div>
             <div>
@@ -196,7 +211,7 @@ const Preferences: React.FC = () => {
                 Cancel
               </Button>
               <Button
-                onClick={handleDeletePreference}
+                onClick={handleDeleteDepartment}
                 color="error"
                 sx={{ textTransform: "none" }}
                 variant="contained"
@@ -211,7 +226,7 @@ const Preferences: React.FC = () => {
   );
 };
 
-export default Preferences;
+export default Department;
 
 const validateRequired = (value: string) => !!value.length;
 
