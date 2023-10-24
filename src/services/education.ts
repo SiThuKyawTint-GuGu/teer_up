@@ -5,7 +5,7 @@ import { routeFilter } from "@/utils";
 import useSWR, { SWRResponse } from "swr";
 import useSWRMutation from "swr/mutation";
 
-export type ParamsType = {
+export type EducationParamsType = {
   page?: number;
   pageSize?: number;
   name?: string;
@@ -13,17 +13,16 @@ export type ParamsType = {
   cursor?: number;
 };
 
-export const useGetUserEducations = <ParamsType, User>(
-  params?: ParamsType
-): SWRResponse<User, any> => {
-  return useSWR<User>(`/user/profile/education?${routeFilter(params)}`);
+export const useGetUserEducations = <EducationParamsType, EducationResponse>(
+  params?: EducationParamsType
+): SWRResponse<EducationResponse, any> => {
+  return useSWR<EducationResponse>(`/user/profile/educations?${routeFilter(params)}`);
 };
 
-export const useGetUserById = <UserProfileResponse>(
-  id: string,
-  params?: ParamsType
-): SWRResponse<UserProfileResponse, any> => {
-  return useSWR<UserProfileResponse>(`/user/${id}?${routeFilter(params)}`);
+export const useGetEducationById = <EducationResponse>(
+  id: string
+): SWRResponse<EducationResponse, any> => {
+  return useSWR<EducationResponse>(`/user/profile/educations/${id}`);
 };
 
 interface CreateUserResType {
@@ -35,22 +34,30 @@ interface CreateUserResType {
   };
 }
 export const useCreateEducation = () =>
-  useSWRMutation(`/user/profile/education`, (url, { arg }: CreateUserResType) => {
+  useSWRMutation(`/user/profile/educations`, (url, { arg }: CreateUserResType) => {
     return appAxios.post<CreateUserResType>(url, arg);
   });
 
 interface UpdateUserResType {
   arg: {
-    name: string;
-    id: string;
+    educationId: string;
+    school_name: string;
+    degree: string;
+    start_date: string;
+    end_date: string;
   };
 }
-export const useUpdateUser = () =>
-  useSWRMutation(`/user`, (url, { arg }: UpdateUserResType) => {
-    return appAxios.put<UpdateUserResType>(`${url}/${arg.id}`, arg);
+export const useUpdateEducation = () =>
+  useSWRMutation(`/user/profile/educations`, (url, { arg }: UpdateUserResType) => {
+    return appAxios.put<UpdateUserResType>(`${url}/${arg.educationId}`, {
+      school_name: arg?.school_name,
+      degree: arg?.degree,
+      start_date: arg?.start_date,
+      end_date: arg?.end_date,
+    });
   });
 
-export const useDeleteUser = () =>
-  useSWRMutation(`/user`, (url, { arg }: { arg: { id: string } }) => {
-    return appAxios.delete(`${url}/${arg.id}`);
+export const useDeleteEducation = () =>
+  useSWRMutation(`/user/profile/educations`, (url, { arg }: { arg: { edu_id: string } }) => {
+    return appAxios.delete(`${url}/${arg.edu_id}`);
   });

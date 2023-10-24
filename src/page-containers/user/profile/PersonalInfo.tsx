@@ -36,14 +36,13 @@ const PersonalInfo: React.FC = () => {
   const { data: genders, isLoading: genderLoading } = useGetGenders<Gender[]>();
   const { trigger } = useUpdatePersonalInfo();
   const userProfile = profileData?.data;
-  const defaultChecked = userProfile?.personal_info?.gender?.id.toString();
+  const defaultChecked = userProfile?.personal_info?.gender?.id.toString() || "1";
 
   const form = useForm({
     resolver: yupResolver(validationSchema),
   });
 
   const submit = async (data: any) => {
-    console.log(data);
     const day = dayjs(data?.day).format("DD");
     const month = dayjs(data?.month).format("MM");
     const year = dayjs(data?.year).year();

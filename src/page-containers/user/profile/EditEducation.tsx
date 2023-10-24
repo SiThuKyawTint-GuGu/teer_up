@@ -5,15 +5,17 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form";
 import { Icons } from "@/components/ui/Images";
 import { InputText } from "@/components/ui/Inputs";
 import { Text } from "@/components/ui/Typo/Text";
-import { useCreateEducation } from "@/services/education";
+import { useDeleteEducation, useGetEducationById, useUpdateEducation } from "@/services/education";
 import { useGetUserById } from "@/services/user";
 import { USER_ROLE } from "@/shared/enums";
+import { EducationById } from "@/types/Education";
 import { UserProfileResponse } from "@/types/Profile";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
+import { useEffect } from "react";
 import ReactDatePicker from "react-datepicker";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -25,15 +27,21 @@ const validationSchema = yup.object({
   end_date: yup.date().required("End date is required!").typeError("Invalid date"),
 });
 
-const CreateEducation: React.FC = () => {
-  const { id } = useParams();
+const EditEducation: React.FC = () => {
+  const { id, edu_id } = useParams();
   const router = useRouter();
   const { data: profileData } = useGetUserById<UserProfileResponse>(id as string);
-  const { trigger } = useCreateEducation();
+  const { data: educationData } = useGetEducationById<EducationById>(edu_id as string);
+  const { trigger } = useUpdateEducation();
+  const { trigger: deleteTrigger } = useDeleteEducation();
   const userProfile = profileData?.data;
 
   const form = useForm({
     resolver: yupResolver(validationSchema),
+    defaultValues: {
+      school_name: educationData?.data?.school_name,
+      degree: educationData?.data?.degree,
+    },
   });
 
   const submit = async (data: {
@@ -44,15 +52,33 @@ const CreateEducation: React.FC = () => {
   }) => {
     const newData = {
       ...data,
+      educationId: edu_id as string,
       start_date: dayjs(data.start_date).format("YYYY-MM-DD"),
       end_date: dayjs(data.end_date).format("YYYY-MM-DD"),
     };
     await trigger(newData, {
       onSuccess: () => {
-        router.push(`/profile/${id}/education`);
+        router.push(`/profile/${id}/educations`);
       },
     });
   };
+
+  const handleDelete = async () => {
+    await deleteTrigger(
+      { edu_id: edu_id as string },
+      {
+        onSuccess: () => {
+          console.log("deleted!");
+          router.push(`/profile/${id}/educations`);
+        },
+      }
+    );
+  };
+
+  useEffect(() => {
+    form.setValue("school_name", educationData?.data?.school_name || "");
+    form.setValue("degree", educationData?.data?.degree || "");
+  }, [form, educationData?.data]);
 
   return (
     <>
@@ -63,7 +89,7 @@ const CreateEducation: React.FC = () => {
         >
           <Grid columns="1">
             <Flex justify="between" align="center" className="bg-white" p="3">
-              <Link href="/profile">
+              <Link href={`/profile/${id}/education`}>
                 <Icons.caretLeft className="text-[#373A36] w-[23px] h-[23px]" />
               </Link>
               <Text size="3" weight="medium">
@@ -178,9 +204,17 @@ const CreateEducation: React.FC = () => {
             </Box>
 
             <Box className="pb-[7px]">
-              <Section py="4" px="3">
+              <Section py="4" px="3" className="space-y-[15px]">
                 <Button type="submit" className="bg-primary w-full">
                   Save
+                </Button>
+                <Button
+                  type="button"
+                  onClick={handleDelete}
+                  variant="outline"
+                  className="border-primary w-full"
+                >
+                  Delete
                 </Button>
               </Section>
             </Box>
@@ -191,4 +225,4 @@ const CreateEducation: React.FC = () => {
   );
 };
 
-export default CreateEducation;
+export default EditEducation;

@@ -115,3 +115,27 @@ export const useUpdateBio = () =>
   useSWRMutation(`/user/profile/bio`, (url, { arg }: { arg: { bio: string } }) => {
     return appAxios.put<{ arg: { bio: string } }>(`${url}`, arg);
   });
+
+// upload images
+interface UploadFileArgType {
+  arg: {
+    file: any;
+  };
+}
+export const useUploadCover = () =>
+  useSWRMutation(`/user/profile/cover-img`, (url, { arg }: UploadFileArgType) => {
+    return appAxios.post<UploadFileArgType>(url, arg, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  });
+
+export const useUploadProfile = () =>
+  useSWRMutation(`/user/profile/profile-img`, (url, { arg }: UploadFileArgType) => {
+    return appAxios.post<UploadFileArgType>(url, arg, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  });
