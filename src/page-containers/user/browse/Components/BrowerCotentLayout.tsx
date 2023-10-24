@@ -48,7 +48,7 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ children, data, co
           ) : (
             <Image
               src={data.image_url}
-              className="w-full h-[200px]"
+              className="w-[100vw] h-[200px]"
               width={358}
               height={200}
               alt={data.title}
@@ -90,7 +90,7 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ children, data, co
               <Icons.share className="w-[20px] h-[20px]" />
               <div>
                 {""}
-                Shares
+                Share
               </div>
             </div>
           </div>

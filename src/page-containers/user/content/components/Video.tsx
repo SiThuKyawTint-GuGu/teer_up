@@ -181,7 +181,7 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
             <Icons.share className="w-[20px] h-[20px]" />
             <div>
               {""}
-              Shares
+              Share
             </div>
           </div>
         </div>
