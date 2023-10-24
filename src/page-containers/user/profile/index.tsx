@@ -64,10 +64,13 @@ const Profile: React.FC = () => {
                   onClick={() => setTriggerType(PROFILE_TRIGGER.PROFILE)}
                   className="w-full"
                 >
-                  <div className="absolute -top-[50%]">
+                  <div className="absolute -top-[36%]">
                     {userProfile?.profile_url ? (
-                      <div
-                        className="w-[120px] h-[120px] rounded-full  ring-4 ring-white"
+                      <Flex
+                        justify="center"
+                        align="center"
+                        position="relative"
+                        className="w-[120px] h-[120px] rounded-full bg-[#D9D9D9] ring-4 ring-white"
                         style={{
                           background: `url(${userProfile?.profile_url}) center / cover`,
                         }}
