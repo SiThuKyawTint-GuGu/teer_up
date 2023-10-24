@@ -91,7 +91,7 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ children, data, contentMu
               <Icons.share className="w-[20px] h-[20px]" />
               <div>
                 {""}
-                Shares
+                Share
               </div>
             </div>
           </div>
