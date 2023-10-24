@@ -1,11 +1,11 @@
 "use client";
 import {
-  useCreateIndustry,
-  useDeleteIndustry,
-  useGetIndustry,
-  useUpdateIndustry,
-} from "@/services/industry";
-import { IndustryResponse } from "@/types/Industry";
+  useCreateDepartment,
+  useDeleteDepartment,
+  useGetDepartment,
+  useUpdateDepartment,
+} from "@/services/department";
+import { DepartmentResponse } from "@/types/Department";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { Box, IconButton, Tooltip } from "@mui/material";
@@ -20,15 +20,15 @@ import {
 } from "material-react-table";
 import { useMemo, useState } from "react";
 
-const Industry: React.FC = () => {
+const Department: React.FC = () => {
   const [validationErrors, setValidationErrors] = useState<Record<string, string | undefined>>({});
   const [open, setOpen] = useState<boolean>(false);
   const [id, setId] = useState<string>("");
-  const { data: industries, isLoading, mutate } = useGetIndustry<IndustryResponse>();
+  const { data: departments, isLoading, mutate } = useGetDepartment<DepartmentResponse>();
 
-  const { trigger: createTrigger } = useCreateIndustry();
-  const { trigger: updateTrigger } = useUpdateIndustry();
-  const { trigger: deleteTrigger } = useDeleteIndustry();
+  const { trigger: createTrigger } = useCreateDepartment();
+  const { trigger: updateTrigger } = useUpdateDepartment();
+  const { trigger: deleteTrigger } = useDeleteDepartment();
 
   const columns = useMemo(
     () => [
@@ -72,7 +72,7 @@ const Industry: React.FC = () => {
   );
 
   //CREATE action
-  const handleCreateIndustry: MRT_TableOptions<any>["onCreatingRowSave"] = async ({
+  const handleCreateDepartment: MRT_TableOptions<any>["onCreatingRowSave"] = async ({
     values,
     table,
   }) => {
@@ -96,7 +96,7 @@ const Industry: React.FC = () => {
   };
 
   //UPDATE action
-  const handleUpdateIndustry: MRT_TableOptions<any>["onEditingRowSave"] = ({ values, table }) => {
+  const handleUpdateDepartment: MRT_TableOptions<any>["onEditingRowSave"] = ({ values, table }) => {
     const { id, name } = values;
     const newValidationErrors = validatePreference(values);
     if (Object.values(newValidationErrors).some(error => error)) {
@@ -117,14 +117,14 @@ const Industry: React.FC = () => {
   };
 
   //DELETE action
-  const handleDeleteIndustry = async () => {
+  const handleDeleteDepartment = async () => {
     setOpen(false);
     await deleteTrigger({ id });
   };
 
   const table = useMaterialReactTable({
     columns,
-    data: (industries?.data as any) || [],
+    data: (departments?.data as any) || [],
     createDisplayMode: "row",
     editDisplayMode: "row",
     enableEditing: true,
@@ -141,13 +141,13 @@ const Industry: React.FC = () => {
       },
     },
     onCreatingRowCancel: () => setValidationErrors({}),
-    onCreatingRowSave: handleCreateIndustry,
+    onCreatingRowSave: handleCreateDepartment,
     onEditingRowCancel: () => setValidationErrors({}),
     positionActionsColumn: "last",
     state: {
       showSkeletons: isLoading ?? false,
     },
-    onEditingRowSave: handleUpdateIndustry,
+    onEditingRowSave: handleUpdateDepartment,
     renderRowActions: ({ row, table }) => (
       <Box sx={{ display: "flex", gap: "1rem" }}>
         <Tooltip title="Edit">
@@ -177,7 +177,7 @@ const Industry: React.FC = () => {
           table.setCreatingRow(true);
         }}
       >
-        Create New Industry
+        Create New Department
       </Button>
     ),
   });
@@ -190,7 +190,7 @@ const Industry: React.FC = () => {
           <Typography color={"error"} variant="h6" component="h2">
             Delete Confirm
           </Typography>
-          <Typography sx={{ mt: 2 }}>Are you sure you want to delete this industry?</Typography>
+          <Typography sx={{ mt: 2 }}>Are you sure you want to delete this department?</Typography>
           <div className="flex justify-between mt-4">
             <div></div>
             <div>
@@ -211,7 +211,7 @@ const Industry: React.FC = () => {
                 Cancel
               </Button>
               <Button
-                onClick={handleDeleteIndustry}
+                onClick={handleDeleteDepartment}
                 color="error"
                 sx={{ textTransform: "none" }}
                 variant="contained"
@@ -226,7 +226,7 @@ const Industry: React.FC = () => {
   );
 };
 
-export default Industry;
+export default Department;
 
 const validateRequired = (value: string) => !!value.length;
 

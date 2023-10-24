@@ -52,17 +52,12 @@ export const menuList: Menu[] = [
     ],
   },
   {
-    key:
-      "/admin/configs/industry" ||
-      "/admin/configs/position" ||
-      "/admin/configs/career" ||
-      "/admin/configs/preferences",
+    key: "/admin/configs/industry" || "/admin/configs/departments" || "/admin/configs/preferences",
     icon: <Icons.setting className="w-[20px] h-[20px]" />,
     title: "Configurations",
     child: [
       { key: "/admin/configs/industry", title: "Industry" },
-      { key: "/admin/configs/position", title: "Position" },
-      { key: "/admin/configs/career", title: "Career" },
+      { key: "/admin/configs/departments", title: "Departments" },
       { key: "/admin/configs/preferences", title: "Preferences" },
     ],
   },
