@@ -1,8 +1,9 @@
 "use client";
 import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
-import { useGetUserEducations } from "@/services/education";
+import { ParamsType, useGetUserEducations } from "@/services/education";
 import { useGetUserById } from "@/services/user";
+import { EducationResponse } from "@/types/Education";
 import { UserProfileResponse } from "@/types/Profile";
 import { Box, Flex, Grid, Section } from "@radix-ui/themes";
 import Link from "next/link";
@@ -13,10 +14,8 @@ const Education: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const { id } = useParams();
   const { data: profileData } = useGetUserById<UserProfileResponse>(id as string);
-  const { data: educationList } = useGetUserEducations();
+  const { data: educationList } = useGetUserEducations<ParamsType, EducationResponse>();
   const userProfile = profileData?.data;
-
-  console.log("educationList -> ", educationList);
 
   return (
     <>
@@ -34,14 +33,14 @@ const Education: React.FC = () => {
         </Flex>
         <Box className="pb-[7px]">
           <Section className="bg-white" py="4" px="3">
-            {[0, 1, 2].map((each, key) => (
+            {educationList?.data?.map((each, key) => (
               <div key={key} className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
                 <Flex justify="between" align="start">
                   <Flex direction="column" gap="2">
                     <Text as="label" weight="bold" size="3">
-                      MUFL
+                      {each.school_name}
                     </Text>
-                    <Text>Post Graduate Diploma</Text>
+                    <Text>{each.degree}</Text>
                   </Flex>
                   <Link href={`/profile/${id}/education/edit`}>
                     <Image src="/uploads/icons/pencil.svg" width={20} height={20} alt="pencil" />

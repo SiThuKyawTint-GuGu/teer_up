@@ -13,10 +13,10 @@ export type ParamsType = {
   cursor?: number;
 };
 
-export const useGetUserEducations = <ParamsType, User>(
+export const useGetUserEducations = <ParamsType, EducationResponse>(
   params?: ParamsType
-): SWRResponse<User, any> => {
-  return useSWR<User>(`/user/profile/education?${routeFilter(params)}`);
+): SWRResponse<EducationResponse, any> => {
+  return useSWR<EducationResponse>(`/user/profile/educations?${routeFilter(params)}`);
 };
 
 export const useGetUserById = <UserProfileResponse>(
@@ -35,7 +35,7 @@ interface CreateUserResType {
   };
 }
 export const useCreateEducation = () =>
-  useSWRMutation(`/user/profile/education`, (url, { arg }: CreateUserResType) => {
+  useSWRMutation(`/user/profile/educations`, (url, { arg }: CreateUserResType) => {
     return appAxios.post<CreateUserResType>(url, arg);
   });
 

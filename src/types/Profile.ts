@@ -1,21 +1,11 @@
 import { USER_ROLE } from "@/shared/enums";
+import { Education } from "./Education";
 
 export interface Gender {
   id: number;
   type: string;
   created_at: string;
   updated_at: string;
-}
-
-export interface Education {
-  id: number;
-  school_name: string;
-  degree: string;
-  start_date: string;
-  end_date: string;
-  created_at: string;
-  updated_at: string;
-  user_id: number;
 }
 
 export interface PersonalInfo {

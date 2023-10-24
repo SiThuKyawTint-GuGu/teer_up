@@ -36,7 +36,7 @@ const PersonalInfo: React.FC = () => {
   const { data: genders, isLoading: genderLoading } = useGetGenders<Gender[]>();
   const { trigger } = useUpdatePersonalInfo();
   const userProfile = profileData?.data;
-  const defaultChecked = userProfile?.personal_info?.gender?.id.toString();
+  const defaultChecked = userProfile?.personal_info?.gender?.id.toString() || "1";
 
   const form = useForm({
     resolver: yupResolver(validationSchema),
