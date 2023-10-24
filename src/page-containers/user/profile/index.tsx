@@ -66,7 +66,7 @@ const Profile: React.FC = () => {
                       className="border-2 border-[#F4153D] rounded-[30px] space-x-[5px]"
                     >
                       <Image src="/uploads/icons/pencil.svg" width={20} height={20} alt="pencil" />
-                      <Text>Edit Button</Text>
+                      <Text>Edit Profile</Text>
                     </Button>
                   </Link>
                 </div>

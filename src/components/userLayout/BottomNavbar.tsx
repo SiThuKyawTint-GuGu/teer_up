@@ -1,5 +1,6 @@
 "use client";
 
+import { Flex } from "@radix-ui/themes";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Icons } from "../ui/Images";
@@ -8,7 +9,14 @@ const BottomNavbar = () => {
   const pathName = usePathname();
 
   return (
-    <nav className="flex justify-between items-center">
+    <Flex
+      className="bg-white"
+      align="center"
+      justify="between"
+      position="fixed"
+      bottom="0"
+      width="100%"
+    >
       {NavbarItems.map((item: NavbarType, index: number) => (
         <div key={index} className="p-2">
           <Link
@@ -22,7 +30,7 @@ const BottomNavbar = () => {
           </Link>
         </div>
       ))}
-    </nav>
+    </Flex>
   );
 };
 

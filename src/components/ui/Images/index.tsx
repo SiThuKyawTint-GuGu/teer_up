@@ -8,12 +8,15 @@ import { FcBusinesswoman } from "react-icons/fc";
 import { FiUsers } from "react-icons/fi";
 import { GoCommentDiscussion } from "react-icons/go";
 import {
+  IoBookmark,
   IoBookmarkOutline,
   IoCalendarOutline,
   IoChatbubbleOutline,
   IoCheckmarkCircle,
   IoChevronBack,
+  IoChevronUpSharp,
   IoGlobeOutline,
+  IoHeart,
   IoHeartOutline,
   IoHome,
   IoInformationCircleOutline,
@@ -24,15 +27,14 @@ import {
   IoPersonCircleOutline,
   IoSearch,
   IoShareSocialOutline,
-  IoChevronUpSharp,
 } from "react-icons/io5";
 import { MdDelete, MdOutlineMailOutline } from "react-icons/md";
 import {
   PiAirplaneTiltLight,
   PiArrowDownRightThin,
-  PiArrowUpRightThin,
   PiArrowsLeftRightDuotone,
   PiArrowsLeftRightThin,
+  PiArrowUpRightThin,
   PiBagSimpleThin,
   PiCameraLight,
   PiCameraPlusFill,
@@ -135,8 +137,10 @@ export const Icons = {
   globe: IoGlobeOutline,
   people: IoPeopleOutline,
   saved: IoBookmarkOutline,
+  savedFill: IoBookmark,
   person: IoPersonCircleOutline,
   like: IoHeartOutline,
+  likefill: IoHeart,
   comment: IoChatbubbleOutline,
   share: IoShareSocialOutline,
   inputError: IoInformationCircleOutline,

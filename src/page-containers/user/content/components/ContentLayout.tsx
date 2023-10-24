@@ -1,5 +1,5 @@
 import { Icons } from "@/components/ui/Images";
-import { useLikeContent } from "@/services/content";
+import { useLikeContent, useSaveContent } from "@/services/content";
 import { ContentData } from "@/types/Content";
 import { Dialog, DialogContent, DialogTrigger } from "@radix-ui/react-dialog";
 import Image from "next/image";
@@ -14,6 +14,9 @@ type ContentlayoutProps = {
 
 const ContentLayout: React.FC<ContentlayoutProps> = ({ children, data, contentMutate }) => {
   const { trigger: like } = useLikeContent();
+  const { trigger: contentSave } = useSaveContent();
+
+  const [openModal, setOpenModal] = useState<boolean>(false);
   const likePost = async () => {
     await like(
       { id: data.id },
@@ -22,7 +25,17 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ children, data, contentMu
       }
     );
   };
-  const [openModal, setOpenModal] = useState<boolean>(false);
+
+  const saveContent = async () => {
+    await contentSave(
+      {
+        id: data.id,
+      },
+      {
+        onSuccess: () => contentMutate(),
+      }
+    );
+  };
   return (
     <Dialog open={openModal} onOpenChange={val => setOpenModal(val)}>
       <div className="w-full h-full">
@@ -45,8 +58,12 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ children, data, contentMu
           </div>
 
           <div className="flex justify-between p-3">
-            <div className="flex items-center flex-wrap gap-x-[10px]">
-              <Icons.like className="w-[20px] h-[20px]" onClick={likePost} />
+            <div className="flex items-center flex-wrap gap-x-[10px]" onClick={likePost}>
+              {data.is_liked ? (
+                <Icons.likefill className="w-[20px] h-[20px] text-primary" />
+              ) : (
+                <Icons.like className="w-[20px] h-[20px]" />
+              )}
               <div>
                 {""}
                 {data.likes}
@@ -61,15 +78,20 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ children, data, contentMu
                 </div>
               </div>
             </DialogTrigger>
-            <div className="flex items-center flex-wrap gap-x-[10px]">
-              <Icons.saved className="w-[20px] h-[20px]" />
+            <div className="flex items-center flex-wrap gap-x-[10px]" onClick={saveContent}>
+              {data.is_saved ? (
+                <Icons.savedFill className="w-[20px] h-[20px] text-yellow-400" />
+              ) : (
+                <Icons.saved className="w-[20px] h-[20px]" />
+              )}
+
               <div>{""}0</div>
             </div>
             <div className="flex items-center flex-wrap gap-x-1">
               <Icons.share className="w-[20px] h-[20px]" />
               <div>
                 {""}
-                Shares
+                Share
               </div>
             </div>
           </div>
