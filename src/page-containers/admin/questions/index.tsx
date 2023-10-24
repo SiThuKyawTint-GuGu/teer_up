@@ -1,6 +1,5 @@
 "use client";
-import { useDeleteContent } from "@/services/content";
-import { useGetQuestion } from "@/services/question";
+import { useDeleteQuestion, useGetQuestion } from "@/services/question";
 import { QuestionResponse } from "@/types/Question";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -18,7 +17,7 @@ const Questions: React.FC = () => {
   const [id, setId] = useState<string>("");
   const { data: questions, isLoading } = useGetQuestion<QuestionResponse>();
   console.log(questions);
-  const { trigger: deleteTrigger } = useDeleteContent();
+  const { trigger: deleteTrigger } = useDeleteQuestion();
 
   const columns = useMemo(
     () => [
