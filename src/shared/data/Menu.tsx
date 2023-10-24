@@ -53,12 +53,21 @@ export const menuList: Menu[] = [
   },
   {
     key: "/admin/configs/industry" || "/admin/configs/departments" || "/admin/configs/preferences",
-    icon: <Icons.setting className="w-[20px] h-[20px]" />,
+    icon: <Icons.setting1 className="w-[20px] h-[20px]" />,
     title: "Configurations",
     child: [
       { key: "/admin/configs/industry", title: "Industry" },
       { key: "/admin/configs/departments", title: "Departments" },
       { key: "/admin/configs/preferences", title: "Preferences" },
+    ],
+  },
+  {
+    key: "/admin/setting/dimension" || "/admin/setting/questions",
+    icon: <Icons.setting1 className="w-[20px] h-[20px]" />,
+    title: "Recommendation Setting",
+    child: [
+      { key: "/admin/setting/dimension", title: "Dimensions" },
+      { key: "/admin/setting/questions", title: "Questions" },
     ],
   },
   {
