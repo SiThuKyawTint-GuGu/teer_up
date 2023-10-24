@@ -43,7 +43,6 @@ const PersonalInfo: React.FC = () => {
   });
 
   const submit = async (data: any) => {
-    console.log(data);
     const day = dayjs(data?.day).format("DD");
     const month = dayjs(data?.month).format("MM");
     const year = dayjs(data?.year).year();

@@ -23,6 +23,9 @@ const config: Config = {
       boxShadow: {
         theme: "0px 6px 35px 5px rgba(0, 0, 0, 0.2)",
       },
+      borderRadius: {
+        "10px-tl-tr": "10px 10px 0 0",
+      },
     },
   },
   plugins: [],

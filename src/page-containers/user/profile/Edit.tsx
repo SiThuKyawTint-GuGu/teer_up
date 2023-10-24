@@ -1,21 +1,61 @@
 "use client";
 import { Button } from "@/components/ui/Button";
-import { Dialog, DialogContent } from "@/components/ui/Dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
-import { useGetUserById } from "@/services/user";
+import { useGetUserById, useUploadCover, useUploadProfile } from "@/services/user";
+import { PROFILE_TRIGGER } from "@/shared/enums";
 import { UserProfileResponse } from "@/types/Profile";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
+
+const profileTrigger = {
+  [PROFILE_TRIGGER.COVER]: "See cover picture",
+  [PROFILE_TRIGGER.PROFILE]: "See profile picture",
+};
+
+const profileTriggerIcon = {
+  [PROFILE_TRIGGER.COVER]: "/uploads/icons/select-profile.svg",
+  [PROFILE_TRIGGER.PROFILE]: "/uploads/icons/see-profile.svg",
+};
 
 const ProfileEdit: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
+  const [triggerType, setTriggerType] = useState<PROFILE_TRIGGER>();
   const { id } = useParams();
+  const router = useRouter();
   const { data: profileData } = useGetUserById<UserProfileResponse>(id as string);
+  const { trigger: uploadProfileTrigger } = useUploadProfile();
+  const { trigger: uploadCoverTrigger } = useUploadCover();
   const userProfile = profileData?.data;
+
+  const handleUploadImage = async (event: any) => {
+    const file = await event?.target?.files[0];
+    if (file) {
+      if (triggerType === PROFILE_TRIGGER.PROFILE) {
+        await uploadProfileTrigger(
+          { file },
+          {
+            onSuccess: () => {
+              router.push("/profile");
+            },
+          }
+        );
+      } else {
+        await uploadCoverTrigger(
+          { file },
+          {
+            onSuccess: () => {
+              router.push("/profile");
+            },
+          }
+        );
+      }
+    }
+  };
 
   return (
     <>
@@ -34,7 +74,9 @@ const ProfileEdit: React.FC = () => {
                     <Heading as="h6" size="4" align="left">
                       Cover photo
                     </Heading>
-                    <Text className="text-primary">Edit</Text>
+                    <DialogTrigger onClick={() => setTriggerType(PROFILE_TRIGGER.COVER)}>
+                      <Text className="text-primary">Edit</Text>
+                    </DialogTrigger>
                   </Flex>
                   <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
                     <Flex className="h-[130px] bg-[#D9D9D9]" justify="center" align="center"></Flex>
@@ -43,9 +85,11 @@ const ProfileEdit: React.FC = () => {
                 <div>
                   <Flex justify="between" align="center" mb="4">
                     <Heading as="h6" size="4" align="left">
-                      Cover photo
+                      Profile picture
                     </Heading>
-                    <Text className="text-primary">Edit</Text>
+                    <DialogTrigger onClick={() => setTriggerType(PROFILE_TRIGGER.PROFILE)}>
+                      <Text className="text-primary">Edit</Text>
+                    </DialogTrigger>
                   </Flex>
                   <div className="pb-[10px] mb-[10px]">
                     <Flex
@@ -189,33 +233,26 @@ const ProfileEdit: React.FC = () => {
             </Box>
           </Box>
         </Grid>
-        <DialogContent className="bg-white top-[initial] bottom-0 px-4 py-8 translate-y-0">
+        <DialogContent className="bg-white top-[initial] bottom-0 px-4 pt-8 pb-2 translate-y-0 rounded-10px-tl-tr">
           <Box className="space-y-[40px]">
             <Flex
               justify="start"
               align="center"
+              position="relative"
               className="pb-[20px] mb-[20px] border-b border-b-[#BDC7D5] gap-[10px]"
             >
+              <input
+                type="file"
+                onChange={handleUploadImage}
+                className="absolute top-0 left-0 w-full h-full opacity-0 z-50"
+              />
               <Image
-                src="/uploads/icons/see-profile.svg"
+                src={profileTriggerIcon[triggerType as PROFILE_TRIGGER]}
                 width={20}
                 height={20}
-                alt="see profile"
+                alt={profileTrigger[triggerType as PROFILE_TRIGGER]}
               />
-              <Text>See profile picture</Text>
-            </Flex>
-            <Flex
-              justify="start"
-              align="center"
-              className="pb-[20px] mb-[20px] border-b border-b-[#BDC7D5] gap-[10px]"
-            >
-              <Image
-                src="/uploads/icons/select-profile.svg"
-                width={20}
-                height={20}
-                alt="select profile"
-              />
-              <Text>Select profile picture</Text>
+              <Text>{profileTrigger[triggerType as PROFILE_TRIGGER]}</Text>
             </Flex>
           </Box>
         </DialogContent>

@@ -27,3 +27,8 @@ export const ROLES = {
   [USER_ROLE.STUDENT]: "student",
   [USER_ROLE.ADMIN]: "admin",
 };
+
+export enum PROFILE_TRIGGER {
+  PROFILE = "PROFILE",
+  COVER = "COVER",
+}
