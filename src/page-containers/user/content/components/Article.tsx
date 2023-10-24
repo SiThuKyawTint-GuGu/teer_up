@@ -18,9 +18,9 @@ const Article: React.FC<ArticleProps> = ({ data, contentMutate }) => {
         className="mt-2 w-full cursor-pointer"
         onClick={() => router.push(`/articles/${data.slug}`)}
       >
-        {data.content_article && (
+        {/* {data.content_article && (
           <div>
-            {/* {(() => {
+            {(() => {
               const temporaryDiv = document.createElement("div");
 
               temporaryDiv.innerHTML =
@@ -29,9 +29,9 @@ const Article: React.FC<ArticleProps> = ({ data, contentMutate }) => {
               if (temporaryDiv.textContent.length > 100)
                 return temporaryDiv.textContent.substring(0, 100) + "...";
               return temporaryDiv.textContent;
-            })()} */}
+            })()}
           </div>
-        )}
+        )} */}
 
         <Text as="span" className="text-primary">
           See more

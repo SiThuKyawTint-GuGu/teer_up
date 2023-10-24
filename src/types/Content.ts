@@ -57,6 +57,7 @@ export interface ContentData {
   status: string;
   likes: number;
   is_liked: boolean;
+  is_saved: boolean;
   comments: number;
   category_id: number;
   content_video: ContentVideo | null;
