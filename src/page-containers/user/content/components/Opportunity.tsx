@@ -1,8 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui/Button";
-import { Text } from "@/components/ui/Typo/Text";
 import { ContentData } from "@/types/Content";
+import { Text } from "@radix-ui/themes";
 import { useRouter } from "next/navigation";
 import React from "react";
 import ContentLayout from "./ContentLayout";
@@ -23,21 +23,15 @@ const Opportunity: React.FC<OpportunityProps> = ({ data, contentMutate }) => {
         {data.description && (
           <div className="flex flex-col">
             <div className="w-full">
-              {(() => {
-                const temporaryDiv = document.createElement("div");
-                temporaryDiv.innerHTML = data.description && data.description.toString();
-                if (!temporaryDiv.textContent) return "";
-                if (temporaryDiv.textContent.length > 100)
-                  return temporaryDiv.textContent.substring(0, 100) + "...";
-                return temporaryDiv.textContent;
-              })()}
+              <Text>
+                {data.description.slice(0, 100)}{" "}
+                <Text as="span" className="text-primary">
+                  See more
+                </Text>
+              </Text>
             </div>
-            <Text as="span" className="text-primary">
-              See more
-            </Text>
           </div>
         )}
-
         <Button>Apply Now</Button>
       </div>
     </ContentLayout>

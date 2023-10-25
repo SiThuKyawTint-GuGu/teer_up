@@ -1,4 +1,4 @@
-import useSWR from 'swr';
+import useSWR from "swr";
 
 interface ApiResponse {
   id: number;
@@ -7,13 +7,16 @@ interface ApiResponse {
 
 const fetcher = async (url: string): Promise<ApiResponse[]> => {
   const response = await fetch(url);
-  // if (!response.ok) {
-  //   throw new Error('Failed to fetch data');
-  // }
+  console.log("resp", response);
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
   return response.json();
 };
 
-export const useApi = (url: string, method: string = 'GET') => {
+export const useApi = (url: string, method: string = "GET") => {
   const {
     data = null,
     error,
@@ -28,14 +31,14 @@ export const useApi = (url: string, method: string = 'GET') => {
       const response = await fetch(mutationUrl, {
         method,
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(requestData || {}),
       });
 
       swrMutateData();
     } catch (error) {
-      console.error('Error performing mutation:', error);
+      console.error("Error performing mutation:", error);
     }
   };
 
