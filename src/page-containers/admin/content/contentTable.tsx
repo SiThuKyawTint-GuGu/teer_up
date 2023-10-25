@@ -24,7 +24,11 @@ const ContentTable: React.FC = () => {
   const [globalFilter, setGlobalFilter] = useState<string>("");
   const [open, setOpen] = useState<boolean>(false);
   const [id, setId] = useState<string>("");
-  const { data: contents, isLoading } = useGetContent<ParamsType, ContentType>({
+  const {
+    data: contents,
+    isLoading,
+    mutate,
+  } = useGetContent<ParamsType, ContentType>({
     page: pagination.pageIndex + 1,
     pagesize: pagination.pageSize,
     name: globalFilter || "",
@@ -48,6 +52,7 @@ const ContentTable: React.FC = () => {
         accessorKey: "description",
         header: "Description",
         enableEditing: false,
+        Cell: ({ row }: any) => <div>{truncateText(row.original.description, 20)}</div>,
       },
       {
         accessorKey: "type",
@@ -75,6 +80,7 @@ const ContentTable: React.FC = () => {
     setOpen(false);
     await deleteTrigger({ id });
   };
+
   // const openDeleteConfirmModal = async (row: MRT_Row<any>) => {
   //   const { id } = row;
   //   if (window.confirm("Are you sure you want to delete this content?")) {
@@ -196,7 +202,6 @@ const ContentTable: React.FC = () => {
 };
 
 export default ContentTable;
-
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -207,3 +212,15 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+
+function truncateText(text: string, maxWords: number) {
+  console.log("text", text);
+  const words = text?.split(" ");
+
+  if (words?.length > maxWords) {
+    const truncatedText = words?.slice(0, maxWords).join(" ");
+    return `${truncatedText}...`;
+  } else {
+    return text;
+  }
+}

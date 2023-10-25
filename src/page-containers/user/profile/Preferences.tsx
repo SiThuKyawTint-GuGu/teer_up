@@ -3,22 +3,20 @@ import { Icons } from "@/components/ui/Images";
 import { Checkbox } from "@/components/ui/Inputs/Checkbox";
 import { Label } from "@/components/ui/Label";
 import { Text } from "@/components/ui/Typo/Text";
-import { useGetIndustry } from "@/services/industry";
+import { useGetPreferences } from "@/services/preferences";
 import { useGetUserById } from "@/services/user";
-import { IndustryResponse } from "@/types/Industry";
+import { PreferenceResponse } from "@/types/Preferences";
 import { UserProfileResponse } from "@/types/Profile";
 import { Box, Flex, Grid, Section } from "@radix-ui/themes";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 
-const CareerInterests: React.FC = () => {
+const Preferences: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const { id } = useParams();
   const { data: profileData } = useGetUserById<UserProfileResponse>(id as string);
-  const { data: industryData } = useGetIndustry<IndustryResponse>();
-
-  console.log(industryData);
+  const { data: preferencesData } = useGetPreferences<PreferenceResponse>();
 
   return (
     <>
@@ -28,7 +26,7 @@ const CareerInterests: React.FC = () => {
             <Icons.caretLeft className="text-[#373A36] w-[23px] h-[23px]" />
           </Link>
           <Text size="3" weight="medium">
-            Career Interests
+            Preferences
           </Text>
           <Link href={`/profile/${id}/education/create`}>
             <Icons.plus className="text-primary w-[23px] h-[23px]" />
@@ -36,7 +34,7 @@ const CareerInterests: React.FC = () => {
         </Flex>
         <Box className="pb-[7px]">
           <Section className="bg-white" py="4" px="3">
-            {industryData?.data?.map((each, key) => (
+            {preferencesData?.data?.map((each, key) => (
               <Label key={key} className="block mb-[25px]">
                 <Flex justify="between" align="start">
                   <Flex direction="column" gap="2">
@@ -55,4 +53,4 @@ const CareerInterests: React.FC = () => {
   );
 };
 
-export default CareerInterests;
+export default Preferences;
