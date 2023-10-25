@@ -1,3 +1,5 @@
+import VerfiyPop from "@/components/auth/VerfiyPop";
+import { useVerifyModal } from "@/store/authStore";
 import { Grid } from "@radix-ui/themes";
 import Head from "next/head";
 import { ReactNode } from "react";
@@ -16,6 +18,7 @@ const Layout = ({ children }: Props) => {
         {/* Add any other meta tags, styles, or scripts as needed */}
       </Head>
       <Grid columns="1">
+        <VerfiyPop />
         <div className="max-w-[400px] w-full mx-auto py-[50px] h-full relative">{children}</div>
       </Grid>
     </>

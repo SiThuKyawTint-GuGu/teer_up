@@ -81,8 +81,12 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
                       </div>
                     </div>
                   )}
-                  {data.type === "event" && <Button>Join</Button>}
-                  {data.type === "opportunity" && <Button>Apply</Button>}
+                  {data.type === "event" && (
+                    <Button onClick={() => router.push(redir)}>Join</Button>
+                  )}
+                  {data.type === "opportunity" && (
+                    <Button onClick={() => router.push(redir)}>Apply</Button>
+                  )}
                 </div>
               </Link>
             </div>

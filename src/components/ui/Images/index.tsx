@@ -15,6 +15,7 @@ import {
   IoCheckmarkCircle,
   IoChevronBack,
   IoChevronUpSharp,
+  IoCloseCircleSharp,
   IoGlobeOutline,
   IoHeart,
   IoHeartOutline,
@@ -32,9 +33,9 @@ import { MdDelete, MdOutlineMailOutline } from "react-icons/md";
 import {
   PiAirplaneTiltLight,
   PiArrowDownRightThin,
-  PiArrowUpRightThin,
   PiArrowsLeftRightDuotone,
   PiArrowsLeftRightThin,
+  PiArrowUpRightThin,
   PiBagSimpleThin,
   PiCameraLight,
   PiCameraPlusFill,
@@ -153,6 +154,7 @@ export const Icons = {
   calender: IoCalendarOutline,
   caretDown: PiCaretDownFill,
   upArrow: IoChevronUpSharp,
+  closeCircle: IoCloseCircleSharp,
 };
 
 interface Image {

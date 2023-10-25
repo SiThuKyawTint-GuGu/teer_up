@@ -5,6 +5,7 @@ import { ContentData, ContentType } from "@/types/Content";
 import Loading from "@/app/loading";
 import Video from "@/page-containers/user/content/components/Video";
 import { useGetContentInfinite } from "@/services/content";
+import { useVerifyModal } from "@/store/authStore";
 import { useEffect, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ContentLayout from "./components/ContentLayout";
@@ -13,6 +14,7 @@ import Onboarding from "./components/Onboarding";
 const UserContent = () => {
   const [page, setPage] = useState<number>(1);
   const videoRefs = useRef<HTMLVideoElement[]>([]);
+  const { verifyModalOpenHandler } = useVerifyModal();
 
   const { data, mutate, isLoading } = useGetContentInfinite<ParamsType>({
     page: page,
@@ -77,7 +79,7 @@ const UserContent = () => {
     if (data.type === "pathway")
       return <ContentLayout data={data} contentMutate={mutate} redir={`/events/${data.slug}`} />;
     if (data.type === "onboarding") return <Onboarding data={data} />;
-    return <div>This Page is not avaliable right now</div>;
+    return <div>This page is not avaliable right now</div>;
   };
 
   const hasMoreData = (contentData: ContentType) => {
