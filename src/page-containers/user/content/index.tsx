@@ -3,14 +3,11 @@ import { ParamsType } from "@/services/user";
 import { ContentData, ContentType } from "@/types/Content";
 
 import Loading from "@/app/loading";
-import Event from "@/page-containers/user/content/components/Event";
 import Video from "@/page-containers/user/content/components/Video";
 import { useGetContentInfinite } from "@/services/content";
 import { useEffect, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import Article from "./components/Article";
-import Opportunity from "./components/Opportunity";
-import Pathway from "./components/Pathway";
+import ContentLayout from "./components/ContentLayout";
 
 const UserContent = () => {
   const [page, setPage] = useState<number>(1);
@@ -71,12 +68,13 @@ const UserContent = () => {
         />
       );
     if (data.type === "event" && data.content_event)
-      return <Event data={data} contentMutate={mutate} />;
+      return <ContentLayout data={data} contentMutate={mutate} redir={`/events/${data.slug}`} />;
     if (data.type === "article" && data.content_article)
-      return <Article data={data} contentMutate={mutate} />;
+      return <ContentLayout data={data} contentMutate={mutate} redir={`/events/${data.slug}`} />;
     if (data.type === "opportunity" && data.content_opportunity)
-      return <Opportunity data={data} contentMutate={mutate} />;
-    if (data.type === "pathway") return <Pathway data={data} contentMutate={mutate} />;
+      return <ContentLayout data={data} contentMutate={mutate} redir={`/events/${data.slug}`} />;
+    if (data.type === "pathway")
+      return <ContentLayout data={data} contentMutate={mutate} redir={`/events/${data.slug}`} />;
     return <div>This Page is not avaliable right now</div>;
   };
 

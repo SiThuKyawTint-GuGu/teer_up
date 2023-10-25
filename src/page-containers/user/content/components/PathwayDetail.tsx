@@ -6,10 +6,7 @@ import { ContentData } from "@/types/Content";
 import { Flex, Grid } from "@radix-ui/themes";
 import { useParams } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
-import Article from "./Article";
-import Event from "./Event";
-import Opportunity from "./Opportunity";
-import Pathway from "./Pathway";
+import ContentLayout from "./ContentLayout";
 import Video from "./Video";
 
 const PathwayDetail: React.FC = () => {
@@ -69,12 +66,21 @@ const PathwayDetail: React.FC = () => {
         />
       );
     if (data.type === "event" && data.content_event)
-      return <Event data={data} contentMutate={contentMutate} />;
+      return (
+        <ContentLayout data={data} contentMutate={contentMutate} redir={`/events/${data.slug}`} />
+      );
     if (data.type === "article" && data.content_article)
-      return <Article data={data} contentMutate={contentMutate} />;
+      return (
+        <ContentLayout data={data} contentMutate={contentMutate} redir={`/events/${data.slug}`} />
+      );
     if (data.type === "opportunity" && data.content_opportunity)
-      return <Opportunity data={data} contentMutate={contentMutate} />;
-    if (data.type === "pathway") return <Pathway data={data} contentMutate={contentMutate} />;
+      return (
+        <ContentLayout data={data} contentMutate={contentMutate} redir={`/events/${data.slug}`} />
+      );
+    if (data.type === "pathway")
+      return (
+        <ContentLayout data={data} contentMutate={contentMutate} redir={`/events/${data.slug}`} />
+      );
     return <div>This Page is not avaliable right now</div>;
   };
   return (
