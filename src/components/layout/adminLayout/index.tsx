@@ -1,3 +1,4 @@
+"use client";
 import { menuList } from "@/shared/data/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -170,7 +171,13 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({
                   >
                     {each?.icon}
                   </ListItemIcon>
-                  <ListItemText primary={each.title} sx={{ opacity: open ? 1 : 0 }} />
+                  {!each?.child?.length ? (
+                    <Link href={each?.key}>
+                      <ListItemText primary={each.title} sx={{ opacity: open ? 1 : 0 }} />
+                    </Link>
+                  ) : (
+                    <ListItemText primary={each.title} sx={{ opacity: open ? 1 : 0 }} />
+                  )}
                 </ListItemButton>
               </ListItem>
               <Collapse in={collapseStates[index]} timeout="auto" unmountOnExit>
