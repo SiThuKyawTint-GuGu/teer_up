@@ -34,13 +34,14 @@ const CommentSection: React.FC<CommentSectionProp> = ({ data, mutateParentData }
       },
     });
   };
-  // const moreReply = (cmts: CommentResponse) => {
-  //   if (cmtsArray && cmtsArray.length > 0) {
-  //     const lastElementOfCmtArray = cmtsArray[cmtsArray.length - 1];
-  //     const contentData: ContentData[] = lastElementOfCmtArray.data;
-  //     // const lastIdofComments = contentData[contentData.length - 1].id;
-  //   }
-  // };
+  const moreReply = () => {
+    if (cmtsArray && cmtsArray.length > 0) {
+      const lastElementOfCmtArray = cmtsArray[cmtsArray.length - 1];
+      const contentData: ContentData[] = lastElementOfCmtArray.data;
+      const lastIdofComments = contentData[contentData.length - 1].id;
+      setCursor(parseInt(lastIdofComments));
+    }
+  };
   const [commentValue, setCommentValue] = useState<string>("");
   return (
     <div className="pb-[100px] h-full w-full min-h-[70%]">
@@ -74,10 +75,7 @@ const CommentSection: React.FC<CommentSectionProp> = ({ data, mutateParentData }
                           </div>
                         ))}
                         {cmts.hasNextPage && (
-                          <div
-                            className="text-primary cursor-pointer"
-                            // onClick={() => moreReply(cmts)}
-                          >
+                          <div className="text-primary cursor-pointer" onClick={moreReply}>
                             More Replies
                           </div>
                         )}
