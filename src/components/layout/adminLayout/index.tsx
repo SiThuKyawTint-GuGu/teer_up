@@ -1,9 +1,8 @@
+"use client";
 import { menuList } from "@/shared/data/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
 import { Collapse } from "@mui/material";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -170,9 +169,15 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({
                       justifyContent: "center",
                     }}
                   >
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                    {each?.icon}
                   </ListItemIcon>
-                  <ListItemText primary={each.title} sx={{ opacity: open ? 1 : 0 }} />
+                  {!each?.child?.length ? (
+                    <Link href={each?.key}>
+                      <ListItemText primary={each.title} sx={{ opacity: open ? 1 : 0 }} />
+                    </Link>
+                  ) : (
+                    <ListItemText primary={each.title} sx={{ opacity: open ? 1 : 0 }} />
+                  )}
                 </ListItemButton>
               </ListItem>
               <Collapse in={collapseStates[index]} timeout="auto" unmountOnExit>
