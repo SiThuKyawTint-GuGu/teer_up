@@ -64,7 +64,7 @@ export const menuList: Menu[] = [
   {
     key: "/admin/setting/dimension" || "/admin/setting/questions",
     icon: <Icons.setting1 className="w-[20px] h-[20px]" />,
-    title: "Recommendation Setting",
+    title: "Recommend Setting",
     child: [
       { key: "/admin/setting/dimension", title: "Dimensions" },
       { key: "/admin/setting/questions", title: "Questions" },
