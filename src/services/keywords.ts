@@ -4,7 +4,7 @@ import useSWR, { SWRResponse } from "swr";
 import useSWRMutation from "swr/mutation";
 
 type KeywordArgType = {
-  arg: { id?: number; name?: string };
+  arg: { id?: number; keyword?: string };
 };
 
 export type ParamsType = {

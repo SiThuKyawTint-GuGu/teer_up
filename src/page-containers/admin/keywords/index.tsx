@@ -39,13 +39,13 @@ const Keywords: React.FC = () => {
         muiEditTextFieldProps: {
           type: "text",
           required: true,
-          error: !!validationErrors?.name,
-          helperText: validationErrors?.name,
+          error: !!validationErrors?.keyword,
+          helperText: validationErrors?.keyword,
           //remove any previous validation errors when user focuses on the input
           onFocus: () =>
             setValidationErrors({
               ...validationErrors,
-              name: undefined,
+              keyword: undefined,
             }),
           //optionally add validation checking for onBlur or onChange
         },
@@ -71,7 +71,7 @@ const Keywords: React.FC = () => {
     values,
     table,
   }) => {
-    const { id, name } = values;
+    const { id, keyword } = values;
     const newValidationErrors = validatePreference(values);
     if (Object.values(newValidationErrors).some(error => error)) {
       setValidationErrors(newValidationErrors);
@@ -79,7 +79,7 @@ const Keywords: React.FC = () => {
     }
     setValidationErrors({});
     const newValues = {
-      name,
+      keyword,
       values,
     };
     createTrigger(newValues, {
@@ -92,7 +92,7 @@ const Keywords: React.FC = () => {
 
   //UPDATE action
   const handleUpdatePreference: MRT_TableOptions<any>["onEditingRowSave"] = ({ values, table }) => {
-    const { id, name } = values;
+    const { id, keyword } = values;
     const newValidationErrors = validatePreference(values);
     if (Object.values(newValidationErrors).some(error => error)) {
       setValidationErrors(newValidationErrors);
@@ -100,7 +100,7 @@ const Keywords: React.FC = () => {
     }
     setValidationErrors({});
     const newValues = {
-      name,
+      keyword,
       id,
     };
     updateTrigger(newValues, {
@@ -227,7 +227,7 @@ const validateRequired = (value: string) => !!value.length;
 
 function validatePreference(pre: any) {
   return {
-    name: !validateRequired(pre.name) ? "Name is Required" : "",
+    keyword: !validateRequired(pre.keyword) ? "Keyword is Required" : "",
   };
 }
 
