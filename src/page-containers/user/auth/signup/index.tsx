@@ -56,7 +56,7 @@ const SignUp = () => {
         </Text>
         <Form {...form}>
           <form
-            className="mx-auto flex flex-col justify-center gap-y-3 w-full"
+            className="mx-auto flex flex-col h-full justify-center flex-wrap gap-y-[30px] w-full"
             onSubmit={form.handleSubmit(onSubmit)}
           >
             <FormField
@@ -68,8 +68,8 @@ const SignUp = () => {
                     <InputText
                       type="text"
                       {...field}
-                      placeholder="Enter your emailaddress"
-                      className="block w-full rounded-[9px]  bg-white text-gray-400  px-[20px] py-[14px] outline-none"
+                      placeholder="Enter your email address"
+                      className="py-[30px]"
                     />
                   </FormControl>
                 </FormItem>
@@ -85,7 +85,7 @@ const SignUp = () => {
                       type="text"
                       {...field}
                       placeholder="Enter your name"
-                      className="block w-full rounded-[9px]  bg-white text-gray-400  px-[20px] py-[14px] outline-none"
+                      className="py-[30px]"
                     />
                   </FormControl>
                 </FormItem>
@@ -105,7 +105,7 @@ const SignUp = () => {
                       aria-describedby="name-error"
                       autoComplete="off"
                       placeholder="Select a country"
-                      className="block w-full rounded-[9px]  bg-white text-gray-400  px-[20px] py-[14px] outline-none"
+                      className="block w-full rounded-[9px]  bg-white text-gray-400  px-[5px] py-[30px] outline-none"
                       {...field}
                     >
                       <option value="">Select a country</option>
