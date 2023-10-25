@@ -20,7 +20,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ data }) => {
             <Text className="text-[28px] font-[700]  text-center mb-5" as="div">
               {data.name}
             </Text>
-            <div className="w-full  flex flex-col flex-wrap gap-y-10 justify-center h-full items-center">
+            <div className="w-full cursor-pointer  flex flex-col flex-wrap gap-y-10 justify-center h-full items-center">
               {data.options &&
                 data.options.length &&
                 data.options.map((q: OnBoardingOption, index: number) => (
