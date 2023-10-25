@@ -3,7 +3,7 @@
 import { cn } from "@/utils/cn";
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import * as React from "react";
-import { RiCheckFill } from "react-icons/ri";
+import { MdOutlineCheck } from "react-icons/md";
 
 const Checkbox = React.forwardRef<
   React.ElementRef<typeof CheckboxPrimitive.Root>,
@@ -18,7 +18,7 @@ const Checkbox = React.forwardRef<
     {...props}
   >
     <CheckboxPrimitive.Indicator className={cn("flex items-center justify-center text-current")}>
-      <RiCheckFill />
+      <MdOutlineCheck className="text-primary" />
     </CheckboxPrimitive.Indicator>
   </CheckboxPrimitive.Root>
 ));
