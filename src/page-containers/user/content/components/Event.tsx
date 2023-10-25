@@ -17,18 +17,13 @@ const Event: React.FC<EventProps> = ({ data, contentMutate }) => {
         onClick={() => router.push(`/events/${data.slug}`)}
       >
         {data.description && (
-          <div>
-            <div className="flex flex-col">
-              {(() => {
-                const temporaryDiv = document.createElement("div");
-                temporaryDiv.innerHTML = data.description && data.description.toString();
-                if (!temporaryDiv.textContent) return "";
-                if (temporaryDiv.textContent.length > 100)
-                  return temporaryDiv.textContent.substring(0, 100) + "...";
-                return temporaryDiv.textContent;
-              })()}
-              <Text as="span" className="text-primary">
-                See more
+          <div className="w-full h-full">
+            <div className="flex flex-col w-full h-full">
+              <Text>
+                {data.description.slice(0, 100)}{" "}
+                <Text as="span" className="text-primary">
+                  See more
+                </Text>
               </Text>
             </div>
           </div>

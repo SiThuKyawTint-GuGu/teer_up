@@ -65,12 +65,6 @@ const Login = () => {
               )}
             />
             <div className="flex w-full flex-wrap gap-x-1">
-              {/* <input
-                id="default-checkbox"
-                type="checkbox"
-                value=""
-                className="w-5 h-5  border-slateGray bg-white rounded  focus:ring-slateGray  focus:ring-2 "
-              /> */}
               <Checkbox />
               <Text as="div">I have read, understood and accept</Text>
               <Text as="span" className="text-primary">

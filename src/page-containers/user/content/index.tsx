@@ -2,6 +2,7 @@
 import { ParamsType } from "@/services/user";
 import { ContentData, ContentType } from "@/types/Content";
 
+import Loading from "@/app/loading";
 import Event from "@/page-containers/user/content/components/Event";
 import Video from "@/page-containers/user/content/components/Video";
 import { useGetContentInfinite } from "@/services/content";
@@ -15,7 +16,7 @@ const UserContent = () => {
   const [page, setPage] = useState<number>(1);
   const videoRefs = useRef<HTMLVideoElement[]>([]);
 
-  const { data, mutate } = useGetContentInfinite<ParamsType>({
+  const { data, mutate, isLoading } = useGetContentInfinite<ParamsType>({
     page: page,
     pageSize: 20,
   });
@@ -85,31 +86,40 @@ const UserContent = () => {
   mutate();
   return (
     <>
-      {data &&
-        data.length > 0 &&
-        data.map((data: ContentType, index: number) => (
-          <div key={index}>
-            {data && data.data.length > 0 && (
-              <InfiniteScroll
-                dataLength={data.data.length}
-                next={() => setPage(prev => prev + 1)}
-                hasMore={hasMoreData(data)}
-                loader={<p></p>}
-              >
-                <div className="snap-y flex-col snap-mandatory w-full max-h-[750px] h-[85vh]   no-scrollbar overflow-y-scroll">
-                  {data.data.map((data: ContentData, index: number) => (
-                    <div
-                      className="h-full w-full flex justify-center  items-center snap-start"
-                      key={index}
-                    >
-                      {differentContent(data, index)}
+      {isLoading ? (
+        <div className="h-full">
+          <Loading />
+        </div>
+      ) : (
+        <div>
+          {data &&
+            data.length > 0 &&
+            data.map((data: ContentType, index: number) => (
+              <div key={index}>
+                {data && data.data.length > 0 && (
+                  <InfiniteScroll
+                    dataLength={data.data.length}
+                    next={() => setPage(prev => prev + 1)}
+                    hasMore={hasMoreData(data)}
+                    loader={<p></p>}
+                  >
+                    <div className="snap-y flex-col snap-mandatory w-full h-[90vh] no-scrollbar overflow-y-scroll">
+                      {data.data.map((data: ContentData, index: number) => (
+                        <div
+                          className="h-full w-full flex justify-center  items-center snap-start"
+                          key={index}
+                        >
+                          {differentContent(data, index)}
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              </InfiniteScroll>
-            )}
-          </div>
-        ))}
+                  </InfiniteScroll>
+                )}
+              </div>
+            ))}
+        </div>
+      )}
+      <div></div>
     </>
   );
 };
