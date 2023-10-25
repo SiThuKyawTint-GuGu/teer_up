@@ -6,6 +6,7 @@ import * as yup from "yup";
 import { Button } from "@/components/ui/Button";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/Form";
 import { InputText } from "@/components/ui/Inputs";
+import { Checkbox } from "@/components/ui/Inputs/Checkbox";
 import { Text } from "@/components/ui/Typo/Text";
 import { useUserLogin } from "@/services/user";
 import { setUserInfo } from "@/utils/auth";
@@ -64,12 +65,13 @@ const Login = () => {
               )}
             />
             <div className="flex w-full flex-wrap gap-x-1">
-              <input
+              {/* <input
                 id="default-checkbox"
                 type="checkbox"
                 value=""
                 className="w-5 h-5  border-slateGray bg-white rounded  focus:ring-slateGray  focus:ring-2 "
-              />
+              /> */}
+              <Checkbox />
               <Text as="div">I have read, understood and accept</Text>
               <Text as="span" className="text-primary">
                 Terms of Use

@@ -1,15 +1,18 @@
 "use client";
 import {
-  useDeleteBlogCategory,
-  useGetBlogCategory,
-  usePostBlogCategory,
-  useUpdateBlogCategory,
-} from "@/services/blogCategory";
-import { ContentCategoryResponse } from "@/types/ContentCategory";
+  useCreateDepartment,
+  useDeleteDepartment,
+  useGetDepartment,
+  useUpdateDepartment,
+} from "@/services/department";
+import { DepartmentResponse } from "@/types/Department";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { Box, IconButton, Modal, Tooltip, Typography } from "@mui/material";
+import { Box, IconButton, Tooltip } from "@mui/material";
 import Button from "@mui/material/Button";
+import Modal from "@mui/material/Modal";
+import Typography from "@mui/material/Typography";
+import dayjs from "dayjs";
 import {
   MaterialReactTable,
   useMaterialReactTable,
@@ -17,18 +20,15 @@ import {
 } from "material-react-table";
 import { useMemo, useState } from "react";
 
-const BlogCategory: React.FC = () => {
+const Department: React.FC = () => {
   const [validationErrors, setValidationErrors] = useState<Record<string, string | undefined>>({});
-  const {
-    data: contentCategories,
-    isLoading,
-    mutate,
-  } = useGetBlogCategory<ContentCategoryResponse>();
   const [open, setOpen] = useState<boolean>(false);
   const [id, setId] = useState<string>("");
-  const { trigger: createTrigger } = usePostBlogCategory();
-  const { trigger: updateTrigger } = useUpdateBlogCategory();
-  const { trigger: deleteTrigger } = useDeleteBlogCategory();
+  const { data: departments, isLoading, mutate } = useGetDepartment<DepartmentResponse>();
+
+  const { trigger: createTrigger } = useCreateDepartment();
+  const { trigger: updateTrigger } = useUpdateDepartment();
+  const { trigger: deleteTrigger } = useDeleteDepartment();
 
   const columns = useMemo(
     () => [
@@ -37,6 +37,7 @@ const BlogCategory: React.FC = () => {
         header: "ID",
         enableEditing: false,
       },
+
       {
         accessorKey: "name",
         header: "Name",
@@ -54,17 +55,29 @@ const BlogCategory: React.FC = () => {
           //optionally add validation checking for onBlur or onChange
         },
       },
+      {
+        accessorKey: "created_at",
+        header: "Created At",
+        enableEditing: false,
+        Cell: ({ value }: any) => dayjs(value).format("YYYY-MM-DD"),
+      },
+      {
+        accessorKey: "updated_at",
+        header: "Upated At",
+        enableEditing: false,
+        Cell: ({ value }: any) => dayjs(value).format("YYYY-MM-DD"),
+      },
     ],
     [validationErrors]
   );
 
   //CREATE action
-  const handleCreateCategory: MRT_TableOptions<any>["onCreatingRowSave"] = async ({
+  const handleCreateDepartment: MRT_TableOptions<any>["onCreatingRowSave"] = async ({
     values,
     table,
   }) => {
     const { id, name } = values;
-    const newValidationErrors = validateUser(values);
+    const newValidationErrors = validatePreference(values);
     if (Object.values(newValidationErrors).some(error => error)) {
       setValidationErrors(newValidationErrors);
       return;
@@ -83,9 +96,9 @@ const BlogCategory: React.FC = () => {
   };
 
   //UPDATE action
-  const handleSaveCategory: MRT_TableOptions<any>["onEditingRowSave"] = ({ values, table }) => {
+  const handleUpdateDepartment: MRT_TableOptions<any>["onEditingRowSave"] = ({ values, table }) => {
     const { id, name } = values;
-    const newValidationErrors = validateUser(values);
+    const newValidationErrors = validatePreference(values);
     if (Object.values(newValidationErrors).some(error => error)) {
       setValidationErrors(newValidationErrors);
       return;
@@ -104,14 +117,14 @@ const BlogCategory: React.FC = () => {
   };
 
   //DELETE action
-  const handleDelete = async () => {
+  const handleDeleteDepartment = async () => {
     setOpen(false);
     await deleteTrigger({ id });
   };
 
   const table = useMaterialReactTable({
     columns,
-    data: (contentCategories?.data as any) || [],
+    data: (departments?.data as any) || [],
     createDisplayMode: "row",
     editDisplayMode: "row",
     enableEditing: true,
@@ -128,13 +141,13 @@ const BlogCategory: React.FC = () => {
       },
     },
     onCreatingRowCancel: () => setValidationErrors({}),
-    onCreatingRowSave: handleCreateCategory,
+    onCreatingRowSave: handleCreateDepartment,
     onEditingRowCancel: () => setValidationErrors({}),
     positionActionsColumn: "last",
     state: {
       showSkeletons: isLoading ?? false,
     },
-    onEditingRowSave: handleSaveCategory,
+    onEditingRowSave: handleUpdateDepartment,
     renderRowActions: ({ row, table }) => (
       <Box sx={{ display: "flex", gap: "1rem" }}>
         <Tooltip title="Edit">
@@ -157,14 +170,14 @@ const BlogCategory: React.FC = () => {
     ),
     renderTopToolbarCustomActions: ({ table }) => (
       <Button
+        variant="contained"
+        color="error"
+        sx={{ background: "#DA291C", textTransform: "none" }}
         onClick={() => {
           table.setCreatingRow(true);
         }}
-        variant="contained"
-        color="error"
-        sx={{ textTransform: "none" }}
       >
-        Create New Category
+        Create New Department
       </Button>
     ),
   });
@@ -177,7 +190,7 @@ const BlogCategory: React.FC = () => {
           <Typography color={"error"} variant="h6" component="h2">
             Delete Confirm
           </Typography>
-          <Typography sx={{ mt: 2 }}>Are you sure you want to delete this category?</Typography>
+          <Typography sx={{ mt: 2 }}>Are you sure you want to delete this department?</Typography>
           <div className="flex justify-between mt-4">
             <div></div>
             <div>
@@ -198,7 +211,7 @@ const BlogCategory: React.FC = () => {
                 Cancel
               </Button>
               <Button
-                onClick={handleDelete}
+                onClick={handleDeleteDepartment}
                 color="error"
                 sx={{ textTransform: "none" }}
                 variant="contained"
@@ -213,13 +226,13 @@ const BlogCategory: React.FC = () => {
   );
 };
 
-export default BlogCategory;
+export default Department;
 
 const validateRequired = (value: string) => !!value.length;
 
-function validateUser(user: any) {
+function validatePreference(pre: any) {
   return {
-    name: !validateRequired(user.name) ? "Name is Required" : "",
+    name: !validateRequired(pre.name) ? "Name is Required" : "",
   };
 }
 

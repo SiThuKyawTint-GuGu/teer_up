@@ -12,7 +12,6 @@ import { Box, IconButton, Tooltip } from "@mui/material";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
-import { Flex } from "@radix-ui/themes";
 import {
   MaterialReactTable,
   useMaterialReactTable,
@@ -177,7 +176,7 @@ const Preferences: React.FC = () => {
             Delete Confirm
           </Typography>
           <Typography sx={{ mt: 2 }}>Are you sure you want to delete this preference?</Typography>
-          <Flex className="justify-between mt-4">
+          <div className="flex justify-between mt-4">
             <div></div>
             <div>
               <Button
@@ -205,7 +204,7 @@ const Preferences: React.FC = () => {
                 Delete
               </Button>
             </div>
-          </Flex>
+          </div>
         </Box>
       </Modal>
     </>

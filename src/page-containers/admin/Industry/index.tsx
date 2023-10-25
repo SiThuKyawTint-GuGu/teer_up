@@ -1,6 +1,11 @@
 "use client";
-import { ParamsType, useDeleteContent, useGetContent } from "@/services/content";
-import { ContentType } from "@/types/Content";
+import {
+  useCreateIndustry,
+  useDeleteIndustry,
+  useGetIndustry,
+  useUpdateIndustry,
+} from "@/services/industry";
+import { IndustryResponse } from "@/types/Industry";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { Box, IconButton, Tooltip } from "@mui/material";
@@ -10,27 +15,20 @@ import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";
 import {
   MaterialReactTable,
-  MRT_PaginationState,
   useMaterialReactTable,
+  type MRT_TableOptions,
 } from "material-react-table";
-import Link from "next/link";
 import { useMemo, useState } from "react";
 
-const ContentTable: React.FC = () => {
-  const [pagination, setPagination] = useState<MRT_PaginationState>({
-    pageIndex: 0,
-    pageSize: 10,
-  });
-  const [globalFilter, setGlobalFilter] = useState<string>("");
+const Industry: React.FC = () => {
+  const [validationErrors, setValidationErrors] = useState<Record<string, string | undefined>>({});
   const [open, setOpen] = useState<boolean>(false);
   const [id, setId] = useState<string>("");
-  const { data: contents, isLoading } = useGetContent<ParamsType, ContentType>({
-    page: pagination.pageIndex + 1,
-    pagesize: pagination.pageSize,
-    name: globalFilter || "",
-  });
-  // console.log(contents);
-  const { trigger: deleteTrigger } = useDeleteContent();
+  const { data: industries, isLoading, mutate } = useGetIndustry<IndustryResponse>();
+
+  const { trigger: createTrigger } = useCreateIndustry();
+  const { trigger: updateTrigger } = useUpdateIndustry();
+  const { trigger: deleteTrigger } = useDeleteIndustry();
 
   const columns = useMemo(
     () => [
@@ -39,56 +37,98 @@ const ContentTable: React.FC = () => {
         header: "ID",
         enableEditing: false,
       },
-      {
-        accessorKey: "title",
-        header: "Title",
-        enableEditing: false,
-      },
-      {
-        accessorKey: "description",
-        header: "Description",
-        enableEditing: false,
-      },
-      {
-        accessorKey: "type",
-        header: "Type",
-        enableEditing: false,
-      },
-      // {
-      //   accessorKey: "keywords",
-      //   header: "Keywords",
-      //   enableEditing: false,
 
-      // },
+      {
+        accessorKey: "name",
+        header: "Name",
+        muiEditTextFieldProps: {
+          type: "text",
+          required: true,
+          error: !!validationErrors?.name,
+          helperText: validationErrors?.name,
+          //remove any previous validation errors when user focuses on the input
+          onFocus: () =>
+            setValidationErrors({
+              ...validationErrors,
+              name: undefined,
+            }),
+          //optionally add validation checking for onBlur or onChange
+        },
+      },
       {
         accessorKey: "created_at",
         header: "Created At",
         enableEditing: false,
         Cell: ({ value }: any) => dayjs(value).format("YYYY-MM-DD"),
       },
+      {
+        accessorKey: "updated_at",
+        header: "Upated At",
+        enableEditing: false,
+        Cell: ({ value }: any) => dayjs(value).format("YYYY-MM-DD"),
+      },
     ],
-    []
+    [validationErrors]
   );
 
+  //CREATE action
+  const handleCreateIndustry: MRT_TableOptions<any>["onCreatingRowSave"] = async ({
+    values,
+    table,
+  }) => {
+    const { id, name } = values;
+    const newValidationErrors = validatePreference(values);
+    if (Object.values(newValidationErrors).some(error => error)) {
+      setValidationErrors(newValidationErrors);
+      return;
+    }
+    setValidationErrors({});
+    const newValues = {
+      name,
+      values,
+    };
+    createTrigger(newValues, {
+      onSuccess: () => {
+        mutate();
+      },
+    });
+    table.setCreatingRow(null); //exit creating mode
+  };
+
+  //UPDATE action
+  const handleUpdateIndustry: MRT_TableOptions<any>["onEditingRowSave"] = ({ values, table }) => {
+    const { id, name } = values;
+    const newValidationErrors = validatePreference(values);
+    if (Object.values(newValidationErrors).some(error => error)) {
+      setValidationErrors(newValidationErrors);
+      return;
+    }
+    setValidationErrors({});
+    const newValues = {
+      name,
+      id,
+    };
+    updateTrigger(newValues, {
+      onSuccess: () => {
+        mutate();
+      },
+    });
+    table.setEditingRow(null);
+  };
+
   //DELETE action
-  const handleDelete = async () => {
+  const handleDeleteIndustry = async () => {
     setOpen(false);
     await deleteTrigger({ id });
   };
-  // const openDeleteConfirmModal = async (row: MRT_Row<any>) => {
-  //   const { id } = row;
-  //   if (window.confirm("Are you sure you want to delete this content?")) {
-  //     await deleteTrigger({ id });
-  //   }
-  // };
 
   const table = useMaterialReactTable({
     columns,
-    data: (contents?.data as any) || [],
+    data: (industries?.data as any) || [],
     createDisplayMode: "row",
     editDisplayMode: "row",
     enableEditing: true,
-    getRowId: (row: any) => row.id,
+    getRowId: row => row.id,
     muiToolbarAlertBannerProps: isLoading
       ? {
           color: "error",
@@ -100,36 +140,24 @@ const ContentTable: React.FC = () => {
         minHeight: "500px",
       },
     },
+    onCreatingRowCancel: () => setValidationErrors({}),
+    onCreatingRowSave: handleCreateIndustry,
+    onEditingRowCancel: () => setValidationErrors({}),
     positionActionsColumn: "last",
-    manualFiltering: true,
-    manualPagination: true,
-    rowCount: contents?.total,
-    initialState: {
-      pagination: {
-        pageSize: 10,
-        pageIndex: 0,
-      },
-    },
     state: {
       showSkeletons: isLoading ?? false,
-      pagination,
-      isLoading,
     },
-    onGlobalFilterChange: setGlobalFilter,
-    onPaginationChange: setPagination,
+    onEditingRowSave: handleUpdateIndustry,
     renderRowActions: ({ row, table }) => (
       <Box sx={{ display: "flex", gap: "1rem" }}>
         <Tooltip title="Edit">
-          <Link href={`/admin/contents/content/${row.id}`}>
-            <IconButton>
-              <EditIcon />
-            </IconButton>
-          </Link>
+          <IconButton onClick={() => table.setEditingRow(row)}>
+            <EditIcon />
+          </IconButton>
         </Tooltip>
         <Tooltip title="Delete">
           <IconButton
             color="error"
-            // onClick={() => openDeleteConfirmModal(row)}
             onClick={() => {
               setId(row.id);
               setOpen(true);
@@ -145,8 +173,11 @@ const ContentTable: React.FC = () => {
         variant="contained"
         color="error"
         sx={{ background: "#DA291C", textTransform: "none" }}
+        onClick={() => {
+          table.setCreatingRow(true);
+        }}
       >
-        <Link href={"/admin/contents/content/0"}>Create New Content</Link>
+        Create New Industry
       </Button>
     ),
   });
@@ -159,7 +190,7 @@ const ContentTable: React.FC = () => {
           <Typography color={"error"} variant="h6" component="h2">
             Delete Confirm
           </Typography>
-          <Typography sx={{ mt: 2 }}>Are you sure you want to delete this content?</Typography>
+          <Typography sx={{ mt: 2 }}>Are you sure you want to delete this industry?</Typography>
           <div className="flex justify-between mt-4">
             <div></div>
             <div>
@@ -180,7 +211,7 @@ const ContentTable: React.FC = () => {
                 Cancel
               </Button>
               <Button
-                onClick={handleDelete}
+                onClick={handleDeleteIndustry}
                 color="error"
                 sx={{ textTransform: "none" }}
                 variant="contained"
@@ -195,7 +226,15 @@ const ContentTable: React.FC = () => {
   );
 };
 
-export default ContentTable;
+export default Industry;
+
+const validateRequired = (value: string) => !!value.length;
+
+function validatePreference(pre: any) {
+  return {
+    name: !validateRequired(pre.name) ? "Name is Required" : "",
+  };
+}
 
 const style = {
   position: "absolute" as "absolute",

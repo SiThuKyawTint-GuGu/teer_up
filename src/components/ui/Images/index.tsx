@@ -1,5 +1,5 @@
 import NextImage from "next/image";
-import { AiOutlineForm } from "react-icons/ai";
+import { AiOutlineForm, AiOutlineSetting } from "react-icons/ai";
 import { BiBookContent } from "react-icons/bi";
 import { BsFillPostcardFill } from "react-icons/bs";
 import { CiLogout, CiSettings } from "react-icons/ci";
@@ -126,6 +126,7 @@ export const Icons = {
   amazon: SiAmazon,
   logo: SiVivawallet,
   setting: CiSettings,
+  setting1: AiOutlineSetting,
   logout: CiLogout,
   userManagement: PiUserGear,
   edit: PiNotePencil,

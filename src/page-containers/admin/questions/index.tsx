@@ -1,35 +1,24 @@
 "use client";
-import { ParamsType, useDeleteBlog, useGetBlogs } from "@/services/blogPost";
+import { useDeleteContent } from "@/services/content";
+import { useGetQuestion } from "@/services/question";
+import { QuestionResponse } from "@/types/Question";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { Box, IconButton, Modal, Tooltip, Typography } from "@mui/material";
+import { Box, IconButton, Tooltip } from "@mui/material";
 import Button from "@mui/material/Button";
-import {
-  MaterialReactTable,
-  MRT_PaginationState,
-  useMaterialReactTable,
-} from "material-react-table";
+import Modal from "@mui/material/Modal";
+import Typography from "@mui/material/Typography";
+import dayjs from "dayjs";
+import { MaterialReactTable, useMaterialReactTable } from "material-react-table";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
-const BlogTable: React.FC = () => {
-  const [pagination, setPagination] = useState<MRT_PaginationState>({
-    pageIndex: 1,
-    pageSize: 10,
-  });
-  const [globalFilter, setGlobalFilter] = useState<string>("");
+const Questions: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [id, setId] = useState<string>("");
-  const {
-    data: blogs,
-    isLoading,
-    mutate,
-  } = useGetBlogs<ParamsType, any>({
-    page: pagination.pageIndex + 1,
-    pageSize: pagination.pageSize,
-    name: globalFilter || "",
-  });
-  const { trigger: deleteTrigger } = useDeleteBlog();
+  const { data: questions, isLoading } = useGetQuestion<QuestionResponse>();
+  console.log(questions);
+  const { trigger: deleteTrigger } = useDeleteContent();
 
   const columns = useMemo(
     () => [
@@ -43,21 +32,28 @@ const BlogTable: React.FC = () => {
         header: "Name",
         enableEditing: false,
       },
-      // {
-      //   accessorKey: "content",
-      //   header: "Content",
-      //   enableEditing: false,
-      // },
       {
-        accessorKey: "link",
-        header: "Link",
+        accessorKey: "dimension.name",
+        header: "Dimension",
         enableEditing: false,
       },
-      // {
-      //   accessorKey: "is_public",
-      //   header: "Public",
-      //   enableEditing: false,
-      // },
+      {
+        accessorKey: "type",
+        header: "Type",
+        enableEditing: false,
+      },
+      {
+        accessorKey: "created_at",
+        header: "Created At",
+        enableEditing: false,
+        Cell: ({ value }: any) => dayjs(value).format("YYYY-MM-DD"),
+      },
+      {
+        accessorKey: "updated_at",
+        header: "Updated At",
+        enableEditing: false,
+        Cell: ({ value }: any) => dayjs(value).format("YYYY-MM-DD"),
+      },
     ],
     []
   );
@@ -65,19 +61,18 @@ const BlogTable: React.FC = () => {
   //DELETE action
   const handleDelete = async () => {
     setOpen(false);
-    await deleteTrigger(
-      { id },
-      {
-        onSuccess: () => {
-          mutate();
-        },
-      }
-    );
+    await deleteTrigger({ id });
   };
+  // const openDeleteConfirmModal = async (row: MRT_Row<any>) => {
+  //   const { id } = row;
+  //   if (window.confirm("Are you sure you want to delete this content?")) {
+  //     await deleteTrigger({ id });
+  //   }
+  // };
 
   const table = useMaterialReactTable({
     columns,
-    data: (blogs?.data as any) || [],
+    data: (questions?.data as any) || [],
     createDisplayMode: "row",
     editDisplayMode: "row",
     enableEditing: true,
@@ -94,26 +89,15 @@ const BlogTable: React.FC = () => {
       },
     },
     positionActionsColumn: "last",
-    manualFiltering: true,
-    manualPagination: true,
-    rowCount: blogs?.total,
-    initialState: {
-      pagination: {
-        pageSize: 10,
-        pageIndex: 1,
-      },
-    },
+
     state: {
       showSkeletons: isLoading ?? false,
-      pagination,
-      isLoading,
     },
-    onGlobalFilterChange: setGlobalFilter,
-    onPaginationChange: setPagination,
+
     renderRowActions: ({ row, table }) => (
       <Box sx={{ display: "flex", gap: "1rem" }}>
         <Tooltip title="Edit">
-          <Link href={`/admin/blogs/posts/${row.id}`}>
+          <Link href={`/admin/setting/questions/${row.id}`}>
             <IconButton>
               <EditIcon />
             </IconButton>
@@ -122,6 +106,7 @@ const BlogTable: React.FC = () => {
         <Tooltip title="Delete">
           <IconButton
             color="error"
+            // onClick={() => openDeleteConfirmModal(row)}
             onClick={() => {
               setId(row.id);
               setOpen(true);
@@ -133,8 +118,12 @@ const BlogTable: React.FC = () => {
       </Box>
     ),
     renderTopToolbarCustomActions: ({ table }) => (
-      <Button variant="contained" color="error" sx={{ textTransform: "none" }}>
-        <Link href={"/admin/blogs/posts/0"}>Create New Blog</Link>
+      <Button
+        variant="contained"
+        color="error"
+        sx={{ background: "#DA291C", textTransform: "none" }}
+      >
+        <Link href={"/admin/setting/questions/0"}>Create New Question</Link>
       </Button>
     ),
   });
@@ -147,7 +136,7 @@ const BlogTable: React.FC = () => {
           <Typography color={"error"} variant="h6" component="h2">
             Delete Confirm
           </Typography>
-          <Typography sx={{ mt: 2 }}>Are you sure you want to delete this blog?</Typography>
+          <Typography sx={{ mt: 2 }}>Are you sure you want to delete this question?</Typography>
           <div className="flex justify-between mt-4">
             <div></div>
             <div>
@@ -183,7 +172,7 @@ const BlogTable: React.FC = () => {
   );
 };
 
-export default BlogTable;
+export default Questions;
 
 const style = {
   position: "absolute" as "absolute",
