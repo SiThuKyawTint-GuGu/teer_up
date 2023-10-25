@@ -104,7 +104,7 @@ const UserContent = () => {
                     <div className="snap-y flex-col snap-mandatory w-full h-[90vh] no-scrollbar overflow-y-scroll">
                       {data.data.map((data: ContentData, index: number) => (
                         <div
-                          className="h-full w-full flex justify-center  items-center snap-start"
+                          className="h-full  w-full flex justify-center  items-center snap-start"
                           key={index}
                         >
                           {differentContent(data, index)}

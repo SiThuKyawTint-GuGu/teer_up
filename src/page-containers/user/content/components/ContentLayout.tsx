@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/Button";
+import CardBox from "@/components/ui/Card";
 import { Icons } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import { useLikeContent, useSaveContent } from "@/services/content";
@@ -59,15 +60,15 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
             {data.type}
           </div>
         </div>
-        <div className="w-full h-full px-[16px] bg-white">
-          <div className="w-full h-full">
+        <div className="w-full h-full">
+          <CardBox className="w-full">
             <h1 className="font-[700] text-[24px]">{data.title}</h1>
-            <div className="h-[40%]">
+            <div>
               <Link href={redir}>
                 <div className="mt-2 cursor-pointer  h-full w-full flex justify-between flex-col">
                   {data.description && (
                     <div className="w-full h-full">
-                      <div className="flex flex-col w-full h-full">
+                      <div className="flex flex-col w-full h-[40vh]">
                         <Text>
                           {data.description.slice(0, 100)}
 
@@ -126,7 +127,8 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
                 </div>
               </div>
             </div>
-          </div>
+          </CardBox>
+          <div className="py-4 text-center font-[300] w-full">Swipe up for more</div>
         </div>
       </div>
       {openModal && (
