@@ -62,7 +62,7 @@ const ProfileEdit: React.FC = () => {
     <>
       <Dialog open={open} onOpenChange={val => setOpen(val)}>
         <Grid columns="1">
-          <Box>
+          <Box className="pb-[55px]">
             <Flex justify="center" className="bg-white" p="3">
               <Text size="3" weight="medium">
                 Edit Profile
@@ -224,7 +224,9 @@ const ProfileEdit: React.FC = () => {
                   <Heading as="h6" size="4" align="left">
                     Career interests
                   </Heading>
-                  <Text className="text-primary">Edit</Text>
+                  <Link href={`/profile/${id}/career-interests`}>
+                    <Text className="text-primary">Edit</Text>
+                  </Link>
                 </Flex>
                 <Flex wrap="wrap" gap="2">
                   <Button className="bg-[#d1d5d8] text-black">Human Resources</Button>
