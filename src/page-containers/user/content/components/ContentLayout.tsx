@@ -60,8 +60,8 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
             {data.type}
           </div>
         </div>
-        <div className="w-full h-full">
-          <CardBox className="w-full">
+        <div className="w-full h-full bg-white">
+          <CardBox className="w-full px-3">
             <h1 className="font-[700] text-[24px]">{data.title}</h1>
             <div>
               <Link href={redir}>

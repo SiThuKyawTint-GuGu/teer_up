@@ -8,6 +8,7 @@ import { useGetContentInfinite } from "@/services/content";
 import { useEffect, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ContentLayout from "./components/ContentLayout";
+import Onboarding from "./components/Onboarding";
 
 const UserContent = () => {
   const [page, setPage] = useState<number>(1);
@@ -75,6 +76,7 @@ const UserContent = () => {
       return <ContentLayout data={data} contentMutate={mutate} redir={`/events/${data.slug}`} />;
     if (data.type === "pathway")
       return <ContentLayout data={data} contentMutate={mutate} redir={`/events/${data.slug}`} />;
+    if (data.type === "onboarding") return <Onboarding data={data} />;
     return <div>This Page is not avaliable right now</div>;
   };
 
@@ -101,7 +103,7 @@ const UserContent = () => {
                     hasMore={hasMoreData(data)}
                     loader={<p></p>}
                   >
-                    <div className="snap-y flex-col snap-mandatory w-full h-[90vh] no-scrollbar overflow-y-scroll">
+                    <div className="snap-y flex-col snap-mandatory w-full h-[90vh] bg-[#F8F9FB] no-scrollbar overflow-y-scroll">
                       {data.data.map((data: ContentData, index: number) => (
                         <div
                           className="h-full  w-full flex justify-center  items-center snap-start"

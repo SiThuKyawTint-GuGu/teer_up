@@ -125,9 +125,9 @@ export const useGetComment = <ParamsType>(
 ): SWRInfiniteResponse => {
   const getKey = () => `/content/${id}/comments?${routeFilter(params)}`;
   return useSWRInfinite<CommentResponse>(getKey, {
-    // revalidateFirstPage: false,
-    // revalidateAll: true,
-    // parallel: true,
+    revalidateFirstPage: false,
+    revalidateAll: true,
+    parallel: true,
   });
 };
 
@@ -143,3 +143,15 @@ export const useGetSavedContents = <ParamsType, SavedContentResponse>(
 ): SWRResponse<SavedContentResponse, any> => {
   return useSWR<SavedContentResponse>(`/content/save?${routeFilter(params)}`);
 };
+
+type PostOnBoardingArg = {
+  arg: {
+    question_id: string | number;
+    option_id: string | number;
+  };
+};
+
+export const usePostOnboarding = () =>
+  useSWRMutation(`/user/onboarding`, (url, { arg }: PostOnBoardingArg) => {
+    return appAxios.post(url, arg);
+  });
