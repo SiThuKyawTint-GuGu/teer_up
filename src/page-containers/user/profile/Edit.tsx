@@ -242,7 +242,9 @@ const ProfileEdit: React.FC = () => {
                   <Heading as="h6" size="4" align="left">
                     Preferences
                   </Heading>
-                  <Text className="text-primary">Edit</Text>
+                  <Link href={`/profile/${id}/preferences`}>
+                    <Text className="text-primary">Edit</Text>
+                  </Link>
                 </Flex>
                 <Flex wrap="wrap" gap="2">
                   <Button className="bg-[#d1d5d8] text-black">Animation</Button>
