@@ -1,3 +1,5 @@
+import { getUserInfo } from "@/utils/auth";
+
 import useSWR from "swr";
 
 interface ApiResponse {
@@ -6,11 +8,16 @@ interface ApiResponse {
 }
 
 const fetcher = async (url: string): Promise<ApiResponse[]> => {
-  const response = await fetch(url);
-  // if (!response.ok) {
-  //   throw new Error('Failed to fetch data');
-  // }
-  return response.json();
+  try {
+    const response = await fetch(url);
+    console.log("resp", response);
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch data");
+    }
+
+    return response.json();
+  } catch (error) {}
 };
 
 export const useApi = (url: string, method: string = "GET") => {

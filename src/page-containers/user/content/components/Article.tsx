@@ -15,7 +15,7 @@ const Article: React.FC<ArticleProps> = ({ data, contentMutate }) => {
   return (
     <ContentLayout data={data} contentMutate={contentMutate}>
       <div
-        className="mt-2 w-full cursor-pointer"
+        className="mt-2 w-full cursor-pointer h-full"
         onClick={() => router.push(`/articles/${data.slug}`)}
       >
         {/* {data.content_article && (

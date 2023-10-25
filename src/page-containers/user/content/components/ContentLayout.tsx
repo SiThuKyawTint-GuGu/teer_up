@@ -42,8 +42,8 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ children, data, contentMu
         <div className="w-full mx-auto relative p-2">
           <Image
             src={data.image_url}
-            className="w-full h-[200px]"
-            width={358}
+            className="w-full"
+            width={400}
             height={200}
             alt={data.title}
           />
@@ -51,47 +51,46 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ children, data, contentMu
             {data.type}
           </div>
         </div>
-        <div className="w-full px-[16px] bg-white">
-          <div>
+        <div className="w-full h-full px-[16px] bg-white">
+          <div className="w-full h-full">
             <h1 className="font-[700] text-[24px]">{data.title}</h1>
-            <div className="h-[30vh]">{children}</div>
-          </div>
-
-          <div className="flex justify-between p-3">
-            <div className="flex items-center flex-wrap gap-x-[10px]" onClick={likePost}>
-              {data.is_liked ? (
-                <Icons.likefill className="w-[20px] h-[20px] text-primary" />
-              ) : (
-                <Icons.like className="w-[20px] h-[20px]" />
-              )}
-              <div>
-                {""}
-                {data.likes}
-              </div>
-            </div>
-            <DialogTrigger>
-              <div className="flex items-center flex-wrap gap-x-[10px]">
-                <Icons.comment className="w-[20px] h-[20px]" />
+            <div className="h-[40%]">{children}</div>
+            <div className="flex justify-between p-3 w-full">
+              <div className="flex items-center flex-wrap gap-x-[10px]" onClick={likePost}>
+                {data.is_liked ? (
+                  <Icons.likefill className="w-[20px] h-[20px] text-primary" />
+                ) : (
+                  <Icons.like className="w-[20px] h-[20px]" />
+                )}
                 <div>
                   {""}
-                  {data.comments}
+                  {data.likes}
                 </div>
               </div>
-            </DialogTrigger>
-            <div className="flex items-center flex-wrap gap-x-[10px]" onClick={saveContent}>
-              {data.is_saved ? (
-                <Icons.savedFill className="w-[20px] h-[20px] text-yellow-400" />
-              ) : (
-                <Icons.saved className="w-[20px] h-[20px]" />
-              )}
+              <DialogTrigger>
+                <div className="flex items-center flex-wrap gap-x-[10px]">
+                  <Icons.comment className="w-[20px] h-[20px]" />
+                  <div>
+                    {""}
+                    {data.comments}
+                  </div>
+                </div>
+              </DialogTrigger>
+              <div className="flex items-center flex-wrap gap-x-[10px]" onClick={saveContent}>
+                {data.is_saved ? (
+                  <Icons.savedFill className="w-[20px] h-[20px] text-yellow-400" />
+                ) : (
+                  <Icons.saved className="w-[20px] h-[20px]" />
+                )}
 
-              <div>{""}0</div>
-            </div>
-            <div className="flex items-center flex-wrap gap-x-1">
-              <Icons.share className="w-[20px] h-[20px]" />
-              <div>
-                {""}
-                Share
+                <div>{""}0</div>
+              </div>
+              <div className="flex items-center flex-wrap gap-x-1">
+                <Icons.share className="w-[20px] h-[20px]" />
+                <div>
+                  {""}
+                  Share
+                </div>
               </div>
             </div>
           </div>

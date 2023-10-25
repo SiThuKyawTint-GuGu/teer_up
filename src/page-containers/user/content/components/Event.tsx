@@ -17,8 +17,8 @@ const Event: React.FC<EventProps> = ({ data, contentMutate }) => {
         onClick={() => router.push(`/events/${data.slug}`)}
       >
         {data.description && (
-          <div>
-            <div className="flex flex-col">
+          <div className="w-full h-full">
+            <div className="flex flex-col w-full h-full">
               {(() => {
                 const temporaryDiv = document.createElement("div");
                 temporaryDiv.innerHTML = data.description && data.description.toString();

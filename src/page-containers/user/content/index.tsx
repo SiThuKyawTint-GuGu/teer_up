@@ -96,7 +96,7 @@ const UserContent = () => {
                 hasMore={hasMoreData(data)}
                 loader={<p></p>}
               >
-                <div className="snap-y flex-col snap-mandatory w-full max-h-[750px] h-[85vh]   no-scrollbar overflow-y-scroll">
+                <div className="snap-y flex-col snap-mandatory w-full h-screen no-scrollbar overflow-y-scroll">
                   {data.data.map((data: ContentData, index: number) => (
                     <div
                       className="h-full w-full flex justify-center  items-center snap-start"
