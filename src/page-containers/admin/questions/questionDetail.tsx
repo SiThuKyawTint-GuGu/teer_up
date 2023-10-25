@@ -1,6 +1,6 @@
 "use client";
 import { useGetDimension } from "@/services/dimension";
-import { usePostQuestion, useUpdateQuestion } from "@/services/question";
+import { useGetQuestionById, usePostQuestion, useUpdateQuestion } from "@/services/question";
 import { DimensionResponse } from "@/types/Dimension";
 import { yupResolver } from "@hookform/resolvers/yup";
 import SaveIcon from "@mui/icons-material/Save";
@@ -17,7 +17,7 @@ import {
 import { Box } from "@radix-ui/themes";
 import { Editor } from "@tinymce/tinymce-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { AiOutlinePlus } from "react-icons/ai";
 import * as yup from "yup";
@@ -46,8 +46,8 @@ const QuestionDetail = ({ id }: Props) => {
   const [options, setOptions] = useState([{ name: "", score: null, feedback: "" }]);
 
   const { data: dimensions } = useGetDimension<DimensionResponse>();
-  // const { data: question } = useGetQuestionById<any>(id);
-  // console.log("question", question);
+  const { data: question } = useGetQuestionById<any>(id);
+  console.log("question", question);
   const { trigger: postTrigger } = usePostQuestion();
   const { trigger: updateTrigger } = useUpdateQuestion(id);
   const [editor, setEditor] = useState<any>(null);
@@ -68,15 +68,26 @@ const QuestionDetail = ({ id }: Props) => {
     resolver: yupResolver(validationSchema),
   });
 
-  // useEffect(() => {
+  useEffect(() => {
+    if (question?.data) {
+      setValue("name", question?.data?.name);
+      setValue("type", question?.data.type);
+      setOptions(question?.data.options);
+      setValue("dimension_id", question?.data.dimension_id);
+      setSelectedDimension(question?.data.dimension_id);
+      setSelectedType(question?.data.type);
 
-  // if (question?.data) {
-  //   setValue("question", question?.data?.name);
-  //   setValue("type", question?.data.type);
-  //   setOptions(question?.data.options);
-  //   setValue("dimension", question?.data.dimension_id);
-  // }
-  // }, []);
+      const updateOptions = question?.data.options.map((opt: any) => ({
+        name: opt.name,
+        score: opt.score,
+        feedback: opt.feedback,
+      }));
+      setValue("options", updateOptions);
+
+      // console.log("options", updateOptions);
+      setOptions(updateOptions);
+    }
+  }, [question?.data, setValue]);
 
   const handleDimensionChange = (event: SelectChangeEvent) => {
     setSelectedDimension(event.target.value);
@@ -92,12 +103,11 @@ const QuestionDetail = ({ id }: Props) => {
 
   const Submit = async (data: any) => {
     console.log(data);
-    // if (question?.data) {
-    //   await updateTrigger(data);
-    // } else {
-    //   await postTrigger(data);
-    // }
-    await postTrigger(data);
+    if (question?.data) {
+      await updateTrigger(data);
+    } else {
+      await postTrigger(data);
+    }
     router.push("/admin/setting/questions");
   };
 
@@ -179,6 +189,7 @@ const QuestionDetail = ({ id }: Props) => {
                       <TextField
                         {...field}
                         label="Answer"
+                        defaultValue={option.name}
                         size="small"
                         className="w-full"
                         variant="outlined"
@@ -197,6 +208,7 @@ const QuestionDetail = ({ id }: Props) => {
                         {...field}
                         label="Score"
                         type={"number"}
+                        defaultValue={option.score}
                         size="small"
                         className="w-full"
                         variant="outlined"
@@ -223,8 +235,10 @@ const QuestionDetail = ({ id }: Props) => {
                   <Controller
                     name={`options[${index}].feedback` as any}
                     control={control}
+                    defaultValue={option.feedback}
                     render={({ field }) => (
                       <Editor
+                        value={field.value}
                         init={handleEditorInit}
                         onEditorChange={content => {
                           setEditorContent(content);
