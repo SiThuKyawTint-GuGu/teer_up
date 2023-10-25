@@ -233,11 +233,13 @@ const ContentDetail = ({ id }: Props) => {
     }
 
     if (selectedValue === "video") {
-      if (!file) {
+      if (!file || !videoUrl) {
         setEventError("Video is required!");
+        return;
       }
-      if (!thumbnail) {
+      if (!thumbnail || !fileUrl) {
         setEventError("Thumbnail is requried!");
+        return;
       }
       const thumbnailRes: any = thumbnail && (await fileTrigger({ file: thumbnail }));
       const videoRes: any = file && (await fileTrigger({ file }));
