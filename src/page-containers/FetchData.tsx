@@ -1,6 +1,6 @@
 "use client";
 
-import Table from "@/components/ui/Table";
+import MiniDrawer from "@/components/layout/adminLayout";
 
 // import * as yup from "yup";
 
@@ -24,47 +24,7 @@ const FetchData = () => {
   //   console.log("data -> ", data);
   // };
 
-  return (
-    <div className="grid grid-cols-12">
-      <div className="col-span-12">
-        <Table />
-      </div>
-      {/* <div className="col-span-12">
-        count: {count}
-        <Button onClick={increment}>Increase</Button>
-        <Button onClick={decrease}>Decrement</Button>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <FormField
-              control={form.control}
-              name="firstName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Input Name</FormLabel>
-                  <FormControl>
-                    <InputText placeholder="Channel name" {...field} />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="lastName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Input Name</FormLabel>
-                  <FormControl>
-                    <InputText placeholder="Channel name" {...field} />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <Button type="submit">Submit</Button>
-          </form>
-        </Form>
-      </div> */}
-    </div>
-  );
+  return <MiniDrawer />;
 };
 
 export default FetchData;
