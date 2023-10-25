@@ -17,6 +17,8 @@ import { useGetDepartment } from "@/services/department";
 import { useGetFormConfig } from "@/services/formConfig";
 import { useGetIndustry } from "@/services/industry";
 import { useGetKeywords } from "@/services/keyword";
+import { ParamsType as UserParamsType, useGetUsers } from "@/services/user";
+import { USER_ROLE } from "@/shared/enums";
 import "@/styles/checkbox.css";
 import "@/styles/switch.css";
 import "@/styles/tab.css";
@@ -26,6 +28,7 @@ import { DepartmentResponse } from "@/types/Department";
 import { FormConfigResponse } from "@/types/Formconfig";
 import { IndustryResponse } from "@/types/Industry";
 import { KeywordResponse } from "@/types/Keyword";
+import { UserResponse } from "@/types/User";
 import { yupResolver } from "@hookform/resolvers/yup";
 import SaveIcon from "@mui/icons-material/Save";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -66,12 +69,19 @@ interface OptionType {
 
 const ContentDetail = ({ id }: Props) => {
   const router = useRouter();
+  const [searchMentor, setSearchMentor] = useState<string>("");
   const { data: content, isLoading } = useGetContentById<any>(id);
   const { data: contents } = useGetContent<ParamsType, ContentType>();
   const { data: keywords } = useGetKeywords<KeywordResponse>();
   const { data: departments } = useGetDepartment<DepartmentResponse>();
   const { data: industries } = useGetIndustry<IndustryResponse>();
-  // console.log("key words", keywords);
+  const { data: userData } = useGetUsers<UserParamsType, UserResponse>({
+    page: 1,
+    pageSize: 10,
+    role: USER_ROLE.MENTOR,
+    name: searchMentor,
+  });
+  console.log("user data", userData);
   // console.log("get contents...", contents);
 
   const { trigger: updateTrigger, isMutating: updateMutating } = useUpdateContent(id);
@@ -90,6 +100,7 @@ const ContentDetail = ({ id }: Props) => {
   const [image, setImage] = useState<File | null>(null);
   const [selectCategory, setSelectCategory] = useState<string>("");
   const [selectForm, setSelectForm] = useState<string>("");
+  const [selectedMentor, setSelelectedMentor] = useState<any>(null);
 
   const [location, setLocation] = useState<string>("");
   const [oppoLocation, setOppoLocation] = useState<string>("");
@@ -107,10 +118,12 @@ const ContentDetail = ({ id }: Props) => {
   const [contentOptions, setContentOptions] = useState<OptionType[]>([]);
   const [keywordOptions, setKeywordOptions] = useState<OptionType[]>([]);
   const [industryOptions, setIndustryOptions] = useState<OptionType[]>([]);
+  const [mentorOptions, setMentorOptions] = useState<OptionType[]>([]);
   const [departmentOptions, setDepartmentOptions] = useState<OptionType[]>([]);
   const [selectedKeywords, setSelectedKeywords] = useState<OptionType[]>([]);
   const [selectedIndustry, setSelectedIndustry] = useState<OptionType[]>([]);
   const [selectedDepartment, setSelectedDepartment] = useState<OptionType[]>([]);
+
   const handleEditorInit = (evt: any, editor: any) => {
     setEditor(editor);
   };
@@ -186,6 +199,13 @@ const ContentDetail = ({ id }: Props) => {
       }));
       setKeywordOptions(updatedOptions);
     }
+    if (userData?.data) {
+      const updatedOptions = userData?.data.map((user: any) => ({
+        label: user.name,
+        id: user.id,
+      }));
+      setMentorOptions(updatedOptions);
+    }
     if (departments?.data) {
       const updatedOptions = departments?.data.map((option: any) => ({
         label: option.name,
@@ -233,14 +253,6 @@ const ContentDetail = ({ id }: Props) => {
     }
 
     if (selectedValue === "video") {
-      if (!file || !videoUrl) {
-        setEventError("Video is required!");
-        return;
-      }
-      if (!thumbnail || !fileUrl) {
-        setEventError("Thumbnail is requried!");
-        return;
-      }
       const thumbnailRes: any = thumbnail && (await fileTrigger({ file: thumbnail }));
       const videoRes: any = file && (await fileTrigger({ file }));
 
@@ -249,6 +261,15 @@ const ContentDetail = ({ id }: Props) => {
       }
       if (videoRes) {
         setVideoUrl(videoRes.data?.data?.file_path);
+      }
+
+      if (!videoUrl) {
+        setEventError("Video is required!");
+        return;
+      }
+      if (!fileUrl) {
+        setEventError("Thumbnail is requried!");
+        return;
       }
       const keywords = selectedKeywords.map(item => item.id);
       const departments = selectedDepartment.map(item => item.id);
@@ -408,6 +429,23 @@ const ContentDetail = ({ id }: Props) => {
         content_pathways: pathways,
       };
       content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
+    } else if (selectedValue === "mentor") {
+      const keywords = selectedKeywords.map(item => item.id);
+      const departments = selectedDepartment.map(item => item.id);
+      const industries = selectedIndustry.map(item => item.id);
+      const imgurl = imgRes ? imgRes?.data?.data?.file_path : imgUrl;
+      postdata = {
+        title: data?.title,
+        description: data?.description,
+        type: selectedValue,
+        status: "published",
+        keywords,
+        departments,
+        industries,
+        category_id: Number(selectCategory),
+        image_url: imgurl,
+      };
+      // content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
     }
     router.push("/admin/contents/content");
   };
@@ -460,6 +498,10 @@ const ContentDetail = ({ id }: Props) => {
   const handleKeywordChange = (event: any, newValue: any) => {
     setSelectedKeywords(newValue);
   };
+  const handleMentorChange = (event: any, newValue: any) => {
+    setSelelectedMentor(newValue);
+  };
+
   const handleDepartmentChange = (event: any, newValue: any) => {
     setSelectedDepartment(newValue);
   };
@@ -474,6 +516,9 @@ const ContentDetail = ({ id }: Props) => {
 
   const handleInputChange = async (event: any, newInputValue: any) => {
     // console.log(newInputValue);
+  };
+  const handleInputMentorChange = async (event: any, newInputValue: any) => {
+    console.log(newInputValue);
   };
   const handleSelectPathwayChange = (event: any, newValue: any, index: number) => {
     const updatedPathways = [...pathwayContent];
@@ -562,7 +607,20 @@ const ContentDetail = ({ id }: Props) => {
               )}
             />
           </div>
-
+          {/* Keywords */}
+          <div className="my-10">
+            <Autocomplete
+              multiple
+              id="tags-outlined"
+              options={keywordOptions || []}
+              size="small"
+              value={selectedKeywords}
+              onChange={handleKeywordChange}
+              renderInput={params => (
+                <TextField {...params} label="Select keywords" placeholder="Keywords" />
+              )}
+            />
+          </div>
           <div className="mb-10">
             <FormControl size="small" fullWidth>
               <InputLabel id="selectType">Type</InputLabel>
@@ -580,25 +638,12 @@ const ContentDetail = ({ id }: Props) => {
                 <MenuItem value="article">Article</MenuItem>
                 <MenuItem value="opportunity">Opportunity</MenuItem>
                 <MenuItem value="pathway">Pathway</MenuItem>
+                <MenuItem value="mentor">Mentor</MenuItem>
               </Select>
             </FormControl>
             <p className="mt-2 text-red-700">{errors.type?.message}</p>
           </div>
 
-          {/* Keywords */}
-          <div className="my-10">
-            <Autocomplete
-              multiple
-              id="tags-outlined"
-              options={keywordOptions || []}
-              size="small"
-              value={selectedKeywords}
-              onChange={handleKeywordChange}
-              renderInput={params => (
-                <TextField {...params} label="Select keywords" placeholder="Keywords" />
-              )}
-            />
-          </div>
           {selectedValue === "video" && (
             <>
               <div className="mt-10">
@@ -845,6 +890,23 @@ const ContentDetail = ({ id }: Props) => {
                   />
                 </div>
               ))}
+            </>
+          )}
+          {selectedValue === "mentor" && (
+            <>
+              <div className="my-10">
+                <Autocomplete
+                  id="tags-outlined"
+                  options={mentorOptions || []}
+                  size="small"
+                  onInputChange={handleInputMentorChange}
+                  value={selectedMentor}
+                  onChange={handleMentorChange}
+                  renderInput={params => (
+                    <TextField {...params} label="Select Mentor" placeholder="Mentor" />
+                  )}
+                />
+              </div>
             </>
           )}
           <div className="mt-10">
