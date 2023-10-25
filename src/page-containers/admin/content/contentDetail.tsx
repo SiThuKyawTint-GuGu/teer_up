@@ -434,6 +434,7 @@ const ContentDetail = ({ id }: Props) => {
       const departments = selectedDepartment.map(item => item.id);
       const industries = selectedIndustry.map(item => item.id);
       const imgurl = imgRes ? imgRes?.data?.data?.file_path : imgUrl;
+      console.log(selectedMentor.id);
       postdata = {
         title: data?.title,
         description: data?.description,
