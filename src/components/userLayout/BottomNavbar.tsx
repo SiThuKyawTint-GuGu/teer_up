@@ -10,12 +10,11 @@ const BottomNavbar = () => {
 
   return (
     <Flex
-      className="bg-white"
+      className="bg-white w-full max-w-[400px] mx-auto z-[999999]"
       align="center"
       justify="between"
       position="fixed"
       bottom="0"
-      width="100%"
     >
       {NavbarItems.map((item: NavbarType, index: number) => (
         <div key={index} className="p-2">

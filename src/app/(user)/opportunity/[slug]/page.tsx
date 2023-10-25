@@ -6,9 +6,7 @@ import { NextPage } from "next";
 const OpportunityDetailPage: NextPage = () => {
   return (
     <Grid columns="1">
-      <div className="absolute  w-full left-0 top-0 z-[9999] flex flex-wrap">
-        <ContentDetailHeader pathname="/home" title="Opportunity Detail" />
-      </div>
+      <ContentDetailHeader pathname="/home" title="Opportunity Detail" />
       <UserContentDetail />
     </Grid>
   );

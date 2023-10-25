@@ -47,7 +47,7 @@ export interface ContentOpportunity {
 export interface ContentData {
   id: string;
   title: string;
-  description: TrustedHTML;
+  description: string;
   created_at: string;
   type: "video" | "article" | "event" | "opportunity" | "pathway";
   updated_at: string;
@@ -56,6 +56,7 @@ export interface ContentData {
   slug: string;
   status: string;
   likes: number;
+  saves: number;
   is_liked: boolean;
   is_saved: boolean;
   comments: number;
