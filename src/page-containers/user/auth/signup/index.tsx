@@ -6,9 +6,11 @@ import * as yup from "yup";
 import { Button } from "@/components/ui/Button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form";
 import { InputText } from "@/components/ui/Inputs";
+import { Checkbox } from "@/components/ui/Inputs/Checkbox";
 import { Text } from "@/components/ui/Typo/Text";
 import { setUserInfo } from "@/utils/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Flex } from "@radix-ui/themes";
 import { useUserRegister } from "../../../../services/user";
 interface SignUpFormType {
   email: string;
@@ -63,7 +65,12 @@ const SignUp = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <InputText type="text" {...field} placeholder="Enter your emailaddress" />
+                    <InputText
+                      type="text"
+                      {...field}
+                      placeholder="Enter your emailaddress"
+                      className="block w-full rounded-[9px]  bg-white text-gray-400  px-[20px] py-[14px] outline-none"
+                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -74,7 +81,12 @@ const SignUp = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <InputText type="text" {...field} placeholder="Enter your name" />
+                    <InputText
+                      type="text"
+                      {...field}
+                      placeholder="Enter your name"
+                      className="block w-full rounded-[9px]  bg-white text-gray-400  px-[20px] py-[14px] outline-none"
+                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -110,18 +122,15 @@ const SignUp = () => {
                 </FormItem>
               )}
             />
-            <div className="flex w-full flex-wrap gap-x-1">
-              <input
-                id="default-checkbox"
-                type="checkbox"
-                value=""
-                className="w-5 h-5 checked:bg-white border-slateGray bg-white dark:ring-white rounded text-white focus:ring-slateGray focus:ring-2"
-              />
-              <Text as="div">I have read, understood and accept</Text>
-              <Text as="span" className="text-primary">
-                Terms of Use
+            <Flex direction="row" gap="2" align="start">
+              <Checkbox />
+              <Text as="div">
+                I have read, understood and accept{" "}
+                <Text as="span" className="text-primary">
+                  Terms of Use
+                </Text>
               </Text>
-            </div>
+            </Flex>
             <Button type="submit" size="lg" className="mt-5" disabled={isMutating}>
               Sign Up
             </Button>
