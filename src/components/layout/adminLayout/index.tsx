@@ -135,7 +135,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Mini variant drawer
+            TEE-UP
           </Typography>
         </Toolbar>
       </AppBar>
