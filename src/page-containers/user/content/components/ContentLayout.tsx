@@ -83,7 +83,10 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ children, data, contentMu
                   <Icons.saved className="w-[20px] h-[20px]" />
                 )}
 
-                <div>{""}0</div>
+                <div>
+                  {""}
+                  {data.saves}
+                </div>
               </div>
               <div className="flex items-center flex-wrap gap-x-1">
                 <Icons.share className="w-[20px] h-[20px]" />

@@ -65,7 +65,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
           ) : (
             <Icons.saved className="w-[20px] h-[20px]" />
           )}
-          <div>0</div>
+          <div>{data.saves}</div>
         </div>
       </div>
     </div>
