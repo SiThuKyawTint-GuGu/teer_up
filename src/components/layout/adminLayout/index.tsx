@@ -101,8 +101,8 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
-  const [collapseOpen, setCollapseOpen] = React.useState<boolean>(true);
-  const [collapseStates, setCollapseStates] = React.useState(menuList.map(() => false));
+  // const [collapseOpen, setCollapseOpen] = React.useState<boolean>(true);
+  const [collapseStates, setCollapseOpen] = React.useState(menuList.map(() => false));
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -115,7 +115,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({
   const handleCollapseClick = (index: number) => {
     const newCollapseStates = [...collapseStates];
     newCollapseStates[index] = !newCollapseStates[index];
-    setCollapseStates(newCollapseStates);
+    setCollapseOpen(newCollapseStates);
   };
 
   return (
