@@ -15,6 +15,7 @@ import {
   TextField,
 } from "@mui/material";
 import { Box } from "@radix-ui/themes";
+import { Editor } from "@tinymce/tinymce-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -49,6 +50,13 @@ const QuestionDetail = ({ id }: Props) => {
   // console.log("question", question);
   const { trigger: postTrigger } = usePostQuestion();
   const { trigger: updateTrigger } = useUpdateQuestion(id);
+  const [editor, setEditor] = useState<any>(null);
+  const [editorContent, setEditorContent] = useState("");
+
+  const handleEditorInit = (evt: any, editor: any) => {
+    setEditor(editor);
+    editor.setContent(editorContent);
+  };
 
   const {
     register,
@@ -61,13 +69,14 @@ const QuestionDetail = ({ id }: Props) => {
   });
 
   // useEffect(() => {
-  //   if (question?.data) {
-  //     setValue("question", question?.data?.name);
-  //     setValue("type", question?.data.type);
-  //     setOptions(question?.data.options);
-  //     setValue("dimension", question?.data.dimension_id);
-  //   }
-  // }, [question?.data]);
+
+  // if (question?.data) {
+  //   setValue("question", question?.data?.name);
+  //   setValue("type", question?.data.type);
+  //   setOptions(question?.data.options);
+  //   setValue("dimension", question?.data.dimension_id);
+  // }
+  // }, []);
 
   const handleDimensionChange = (event: SelectChangeEvent) => {
     setSelectedDimension(event.target.value);
@@ -82,7 +91,7 @@ const QuestionDetail = ({ id }: Props) => {
   };
 
   const Submit = async (data: any) => {
-    // console.log(data);
+    console.log(data);
     // if (question?.data) {
     //   await updateTrigger(data);
     // } else {
@@ -197,7 +206,7 @@ const QuestionDetail = ({ id }: Props) => {
                   <p className="mt-2 text-red-700">{errors.options?.[index]?.score?.message}</p>
                 </div>
                 <div>
-                  <Controller
+                  {/* <Controller
                     name={`options[${index}].feedback` as any}
                     control={control}
                     render={({ field }) => (
@@ -207,6 +216,20 @@ const QuestionDetail = ({ id }: Props) => {
                         size="small"
                         className="w-full"
                         variant="outlined"
+                      />
+                    )}
+                  />
+                  <p className="mt-2 text-red-700">{errors.options?.[index]?.feedback?.message}</p> */}
+                  <Controller
+                    name={`options[${index}].feedback` as any}
+                    control={control}
+                    render={({ field }) => (
+                      <Editor
+                        init={handleEditorInit}
+                        onEditorChange={content => {
+                          setEditorContent(content);
+                          field.onChange(content);
+                        }}
                       />
                     )}
                   />
