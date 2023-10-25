@@ -7,9 +7,10 @@ import useSWRInfinite, { SWRInfiniteResponse } from "swr/infinite";
 import useSWRMutation from "swr/mutation";
 export type ParamsType = {
   page?: number;
-  pageSize?: number;
+  pagesize?: number;
   name?: string;
   cursor?: number;
+  type?: string;
 };
 
 export interface ContentArgType {
@@ -91,7 +92,16 @@ type CommentArgType = {
 };
 export const usePostComment = () =>
   useSWRMutation(`/content`, (url, { arg }: CommentArgType) => {
-    return appAxios.post<CommentArgType>(`${url}/${arg.id}/comments`, arg);
+    return appAxios.post(`${url}/${arg.id}/comments`, arg);
+  });
+type saveContentArg = {
+  arg: {
+    id: number | string;
+  };
+};
+export const useSaveContent = () =>
+  useSWRMutation(`/content/save`, (url, { arg }: saveContentArg) => {
+    return appAxios.post(`${url}/${arg.id}`, arg);
   });
 
 export const useGetComment = <ParamsType>(

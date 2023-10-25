@@ -14,7 +14,6 @@ import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { useState } from "react";
 import ReactDatePicker from "react-datepicker";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -27,7 +26,6 @@ const validationSchema = yup.object({
 });
 
 const CreateEducation: React.FC = () => {
-  const [open, setOpen] = useState<boolean>(false);
   const { id } = useParams();
   const router = useRouter();
   const { data: profileData } = useGetUserById<UserProfileResponse>(id as string);

@@ -13,14 +13,18 @@ import {
   useUpdateContent,
 } from "@/services/content";
 import { useGetContentCategory } from "@/services/contentCategory";
+import { useGetDepartment } from "@/services/department";
 import { useGetFormConfig } from "@/services/formConfig";
+import { useGetIndustry } from "@/services/industry";
 import { useGetKeywords } from "@/services/keyword";
 import "@/styles/checkbox.css";
 import "@/styles/switch.css";
 import "@/styles/tab.css";
 import { ContentType } from "@/types/Content";
 import { ContentCategoryResponse } from "@/types/ContentCategory";
+import { DepartmentResponse } from "@/types/Department";
 import { FormConfigResponse } from "@/types/Formconfig";
+import { IndustryResponse } from "@/types/Industry";
 import { KeywordResponse } from "@/types/Keyword";
 import { yupResolver } from "@hookform/resolvers/yup";
 import SaveIcon from "@mui/icons-material/Save";
@@ -65,11 +69,13 @@ const ContentDetail = ({ id }: Props) => {
   const { data: content, isLoading } = useGetContentById<any>(id);
   const { data: contents } = useGetContent<ParamsType, ContentType>();
   const { data: keywords } = useGetKeywords<KeywordResponse>();
+  const { data: departments } = useGetDepartment<DepartmentResponse>();
+  const { data: industries } = useGetIndustry<IndustryResponse>();
   // console.log("key words", keywords);
   // console.log("get contents...", contents);
 
   const { trigger: updateTrigger, isMutating: updateMutating } = useUpdateContent(id);
-  const { trigger: fileTrigger } = usePostFile();
+  const { trigger: fileTrigger, isMutating: fileMutating } = usePostFile();
   const { trigger: postTrigger, isMutating: postMutating } = usePostContent();
   const { data: category } = useGetContentCategory<ContentCategoryResponse>();
   const { data: formconfigs } = useGetFormConfig<FormConfigResponse>();
@@ -100,7 +106,11 @@ const ContentDetail = ({ id }: Props) => {
   const [oppoEditor, setOppoEditor] = useState<any>(null);
   const [contentOptions, setContentOptions] = useState<OptionType[]>([]);
   const [keywordOptions, setKeywordOptions] = useState<OptionType[]>([]);
+  const [industryOptions, setIndustryOptions] = useState<OptionType[]>([]);
+  const [departmentOptions, setDepartmentOptions] = useState<OptionType[]>([]);
   const [selectedKeywords, setSelectedKeywords] = useState<OptionType[]>([]);
+  const [selectedIndustry, setSelectedIndustry] = useState<OptionType[]>([]);
+  const [selectedDepartment, setSelectedDepartment] = useState<OptionType[]>([]);
   const handleEditorInit = (evt: any, editor: any) => {
     setEditor(editor);
   };
@@ -147,6 +157,16 @@ const ContentDetail = ({ id }: Props) => {
         id: keyword?.keyword?.id,
       }));
       setSelectedKeywords(selectKeywords);
+      const selectDepartment = content?.data.departments.map((depart: any) => ({
+        label: depart.department?.name,
+        id: depart?.department?.id,
+      }));
+      setSelectedDepartment(selectDepartment);
+      const selectIndustry = content?.data.industries.map((industry: any) => ({
+        label: industry.industry?.name,
+        id: industry?.industry?.id,
+      }));
+      setSelectedIndustry(selectIndustry);
       setValue("title", content?.data.title);
       setValue("description", content?.data.description);
       setValue("category", content?.data?.category?.id);
@@ -165,6 +185,20 @@ const ContentDetail = ({ id }: Props) => {
         id: option.id,
       }));
       setKeywordOptions(updatedOptions);
+    }
+    if (departments?.data) {
+      const updatedOptions = departments?.data.map((option: any) => ({
+        label: option.name,
+        id: option.id,
+      }));
+      setDepartmentOptions(updatedOptions);
+    }
+    if (industries?.data) {
+      const updatedOptions = industries?.data.map((option: any) => ({
+        label: option.name,
+        id: option.id,
+      }));
+      setIndustryOptions(updatedOptions);
     }
   }, [editorContent, editor, oppoEditor, oppoEditorContent, contents?.data, content?.data]);
 
@@ -199,11 +233,13 @@ const ContentDetail = ({ id }: Props) => {
     }
 
     if (selectedValue === "video") {
-      if (!file) {
+      if (!file || !videoUrl) {
         setEventError("Video is required!");
+        return;
       }
-      if (!thumbnail) {
+      if (!thumbnail || !fileUrl) {
         setEventError("Thumbnail is requried!");
+        return;
       }
       const thumbnailRes: any = thumbnail && (await fileTrigger({ file: thumbnail }));
       const videoRes: any = file && (await fileTrigger({ file }));
@@ -214,16 +250,25 @@ const ContentDetail = ({ id }: Props) => {
       if (videoRes) {
         setVideoUrl(videoRes.data?.data?.file_path);
       }
+      const keywords = selectedKeywords.map(item => item.id);
+      const departments = selectedDepartment.map(item => item.id);
+      const industries = selectedIndustry.map(item => item.id);
+      const imgurl = imgRes ? imgRes?.data?.data?.file_path : imgUrl;
+      const videourl = videoRes ? videoRes?.data?.data?.file_path : videoUrl;
+      const thumbnailurl = thumbnailRes ? thumbnailRes?.data?.data?.file_path : fileUrl;
       postdata = {
         title: data?.title,
         description: data.description,
         type: selectedValue,
         status: "published",
         category_id: Number(selectCategory),
-        image_url: imgUrl,
+        image_url: imgurl,
+        keywords,
+        departments,
+        industries,
         content_video: {
-          video_url: videoUrl,
-          thumbnail: fileUrl,
+          video_url: videourl,
+          thumbnail: thumbnailurl,
         },
       };
       content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
@@ -249,14 +294,19 @@ const ContentDetail = ({ id }: Props) => {
         return;
       }
       const keywords = selectedKeywords.map(item => item.id);
+      const departments = selectedDepartment.map(item => item.id);
+      const industries = selectedIndustry.map(item => item.id);
+      const imgurl = imgRes ? imgRes?.data?.data?.file_path : imgUrl;
       postdata = {
         title: data?.title,
         description: data?.description,
         type: selectedValue,
         status: "published",
         category_id: Number(selectCategory),
-        image_url: imgUrl,
+        image_url: imgurl,
         keywords,
+        departments,
+        industries,
         content_event: {
           from_datetime: startDate,
           to_datetime: endDate,
@@ -280,14 +330,19 @@ const ContentDetail = ({ id }: Props) => {
         return;
       }
       const keywords = selectedKeywords.map(item => item.id);
+      const departments = selectedDepartment.map(item => item.id);
+      const industries = selectedIndustry.map(item => item.id);
+      const imgurl = imgRes ? imgRes?.data?.data?.file_path : imgUrl;
       postdata = {
         title: data?.title,
         description: data?.description,
         type: selectedValue,
         status: "published",
         category_id: Number(selectCategory),
-        image_url: imgUrl,
+        image_url: imgurl,
         keywords,
+        departments,
+        industries,
         content_article: {
           body: editor.getContent(),
           published_by: author,
@@ -313,14 +368,19 @@ const ContentDetail = ({ id }: Props) => {
         return;
       }
       const keywords = selectedKeywords.map(item => item.id);
+      const departments = selectedDepartment.map(item => item.id);
+      const industries = selectedIndustry.map(item => item.id);
+      const imgurl = imgRes ? imgRes?.data?.data?.file_path : imgUrl;
       postdata = {
         title: data?.title,
         description: data?.description,
         type: selectedValue,
         status: "published",
         category_id: Number(selectCategory),
-        image_url: imgUrl,
+        image_url: imgurl,
         keywords,
+        departments,
+        industries,
         content_opportunity: {
           link: link,
           formconfig_id: selectForm,
@@ -332,19 +392,23 @@ const ContentDetail = ({ id }: Props) => {
     } else if (selectedValue === "pathway") {
       const pathways = pathwayContent.map((path: any) => ({ pathway_id: path.pathway_id }));
       const keywords = selectedKeywords.map(item => item.id);
+      const departments = selectedDepartment.map(item => item.id);
+      const industries = selectedIndustry.map(item => item.id);
+      const imgurl = imgRes ? imgRes?.data?.data?.file_path : imgUrl;
       postdata = {
         title: data?.title,
         description: data?.description,
         type: selectedValue,
         status: "published",
         keywords,
+        departments,
+        industries,
         category_id: Number(selectCategory),
-        image_url: imgUrl,
+        image_url: imgurl,
         content_pathways: pathways,
       };
       content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
     }
-
     router.push("/admin/contents/content");
   };
 
@@ -395,6 +459,12 @@ const ContentDetail = ({ id }: Props) => {
 
   const handleKeywordChange = (event: any, newValue: any) => {
     setSelectedKeywords(newValue);
+  };
+  const handleDepartmentChange = (event: any, newValue: any) => {
+    setSelectedDepartment(newValue);
+  };
+  const handleIndustryChange = (event: any, newValue: any) => {
+    setSelectedIndustry(newValue);
   };
 
   const handleDeletePathway = (indexValue: number) => {
@@ -464,6 +534,35 @@ const ContentDetail = ({ id }: Props) => {
             </FormControl>
             <p className="mt-2 text-red-700">{errors.category?.message}</p>
           </div>
+          {/* Industry */}
+          <div className="my-10">
+            <Autocomplete
+              multiple
+              id="tags-outlined"
+              options={industryOptions || []}
+              size="small"
+              value={selectedIndustry}
+              onChange={handleIndustryChange}
+              renderInput={params => (
+                <TextField {...params} label="Select Industry" placeholder="Industry" />
+              )}
+            />
+          </div>
+          {/* Department */}
+          <div className="my-10">
+            <Autocomplete
+              multiple
+              id="tags-outlined"
+              options={departmentOptions || []}
+              size="small"
+              value={selectedDepartment}
+              onChange={handleDepartmentChange}
+              renderInput={params => (
+                <TextField {...params} label="Select Departments" placeholder="Departments" />
+              )}
+            />
+          </div>
+
           <div className="mb-10">
             <FormControl size="small" fullWidth>
               <InputLabel id="selectType">Type</InputLabel>
@@ -485,7 +584,7 @@ const ContentDetail = ({ id }: Props) => {
             </FormControl>
             <p className="mt-2 text-red-700">{errors.type?.message}</p>
           </div>
-          {eventError && <p className="text-red-700 mb-3">{eventError}</p>}
+
           {/* Keywords */}
           <div className="my-10">
             <Autocomplete
@@ -559,11 +658,7 @@ const ContentDetail = ({ id }: Props) => {
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DemoContainer components={["DateTimePicker"]}>
                       <DateTimePicker
-                        sx={{
-                          "& .MuiInputBase-root": {
-                            height: "45px",
-                          },
-                        }}
+                        slotProps={{ textField: { size: "small" } }}
                         value={dayjs(startDate)}
                         onChange={handleStartDateChange}
                         label="Start Date"
@@ -576,11 +671,7 @@ const ContentDetail = ({ id }: Props) => {
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DemoContainer components={["DateTimePicker"]}>
                       <DateTimePicker
-                        sx={{
-                          "& .MuiInputBase-root": {
-                            height: "45px",
-                          },
-                        }}
+                        slotProps={{ textField: { size: "small" } }}
                         value={dayjs(endDate)}
                         onChange={handleEndDateChange}
                         label="End Date"
@@ -781,11 +872,11 @@ const ContentDetail = ({ id }: Props) => {
               </div>
             )}
           </div>
-
+          {eventError && <p className="text-red-700 mt-3 mb-3">{eventError}</p>}
           <div style={{ display: "flex", marginTop: 20, justifyContent: "flex-end" }}>
             {content?.data ? (
               <LoadingButton
-                loading={updateMutating}
+                loading={fileMutating || updateMutating}
                 loadingPosition="start"
                 startIcon={<SaveIcon />}
                 variant="contained"
@@ -796,7 +887,7 @@ const ContentDetail = ({ id }: Props) => {
               </LoadingButton>
             ) : (
               <LoadingButton
-                loading={postMutating}
+                loading={fileMutating || postMutating}
                 loadingPosition="start"
                 startIcon={<SaveIcon />}
                 variant="contained"

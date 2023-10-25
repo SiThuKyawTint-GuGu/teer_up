@@ -26,7 +26,7 @@
     "@floating-ui/dom" "^1.0.0"
     use-sync-external-store "^1.2.0"
 
-"@ariakit/react@^0.3.4":
+"@ariakit/react@^0.3.5":
   version "0.3.5"
   resolved "https://registry.yarnpkg.com/@ariakit/react/-/react-0.3.5.tgz#26d92d89f6434657d043376bcc8e6e219c74565d"
   integrity sha512-x7LfGP0on0lVV1NcDNO8+aEBb64sUI6YYB1akEWXkb4lTiU4uG1sHGc8YhfHVh0cFS1kwpQcqyiNPzyB8OgymA==

@@ -1,5 +1,6 @@
 import { Icons } from "@/components/ui/Images";
 import { useLikeContent } from "@/services/content";
+import "@/styles/video.css";
 import { ContentData } from "@/types/Content";
 import { Dialog, DialogContent, DialogTrigger } from "@radix-ui/react-dialog";
 import Image from "next/image";
@@ -28,36 +29,41 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ children, data, co
       <div className="w-full h-full">
         <div className="w-full mx-auto relative p-2">
           {data.content_video ? (
-            <video
-              className="w-full h-[200px]"
-              poster={
-                data.content_video.thumbnail ||
-                "https://teeup-dev.s3.ap-southeast-1.amazonaws.com/1697257229853-125476757-demoimage1.jpeg"
-              }
-              preload="none"
-              data-video="0"
-              muted={false}
-              controls
-            >
-              <source
-                src={data.content_video.video_url}
-                className="object-fill"
-                type="video/mp4"
-              ></source>
-            </video>
+            <div className="video-container">
+              <video
+                className="w-full h-[200px] my-video"
+                id="myVideo"
+                poster={
+                  data.content_video.thumbnail ||
+                  "https://teeup-dev.s3.ap-southeast-1.amazonaws.com/1697257229853-125476757-demoimage1.jpeg"
+                }
+                preload="none"
+                data-video="0"
+                muted={false}
+                controls
+              >
+                <source
+                  src={data.content_video.video_url}
+                  className="object-fill"
+                  type="video/mp4"
+                ></source>
+              </video>
+              <div className="video-text-container">{data.title}</div>
+            </div>
           ) : (
             <Image
               src={data.image_url}
-              className="w-full h-[200px]"
+              className="w-[100vw] h-[200px]"
               width={358}
               height={200}
               alt={data.title}
             />
           )}
-
-          <div className="absolute top-0 right-0 bg-white text-[14px] font-[600] px-[16px] py-[4px] rounded-bl-lg shadow-lg uppercase">
-            {data.type}
-          </div>
+          {data.type !== "video" && (
+            <div className="absolute top-0 right-0 bg-white text-[14px] font-[600] px-[16px] py-[4px] rounded-bl-lg shadow-lg uppercase">
+              {data.type}
+            </div>
+          )}
         </div>
         <div className="w-full px-[16px] bg-white">
           <div>
@@ -90,7 +96,7 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ children, data, co
               <Icons.share className="w-[20px] h-[20px]" />
               <div>
                 {""}
-                Shares
+                Share
               </div>
             </div>
           </div>

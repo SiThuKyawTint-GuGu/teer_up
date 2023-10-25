@@ -1,5 +1,5 @@
 "use client";
-import { useLikeContent } from "@/services/content";
+import { useLikeContent, useSaveContent } from "@/services/content";
 import { ContentData } from "@/types/Content";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import React from "react";
@@ -12,7 +12,17 @@ type Props = {
 };
 const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
   const { trigger: like } = useLikeContent();
-
+  const { trigger: contentSave } = useSaveContent();
+  const saveContent = async () => {
+    await contentSave(
+      {
+        id: data.id,
+      },
+      {
+        onSuccess: () => mutate(),
+      }
+    );
+  };
   const likePost = async () => {
     await like(
       { id: data.id },
@@ -35,11 +45,12 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
       )}
 
       <div className="flex justify-between p-3 w-full flex-1">
-        <div className="flex items-center flex-wrap gap-x-[5px]">
-          <Icons.like
-            className={`w-[20px] h-[20px] ${data.is_liked && "text-primary"}`}
-            onClick={likePost}
-          />
+        <div className="flex items-center flex-wrap gap-x-[5px]" onClick={likePost}>
+          {data.is_liked ? (
+            <Icons.likefill className="w-[20px] h-[20px] text-primary" />
+          ) : (
+            <Icons.like className="w-[20px] h-[20px]" />
+          )}
           <div className="text-[14px]">{data.likes}</div>
         </div>
         <DialogTrigger>
@@ -48,9 +59,13 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
             <div>{data.comments}</div>
           </div>
         </DialogTrigger>
-        <div className="flex items-center flex-wrap  gap-x-[5px]">
-          <Icons.saved className="w-[20px] h-[20px]" />
-          <div>0</div>
+        <div className="flex items-center flex-wrap  gap-x-[5px]" onClick={saveContent}>
+          {data.is_saved ? (
+            <Icons.savedFill className="w-[20px] h-[20px] text-yellow-400" />
+          ) : (
+            <Icons.saved className="w-[20px] h-[20px]" />
+          )}
+          <div>{data.saves}</div>
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import NextImage from "next/image";
-import { AiOutlineForm } from "react-icons/ai";
+import { AiOutlineForm, AiOutlineSetting } from "react-icons/ai";
 import { BiBookContent } from "react-icons/bi";
 import { BsFillPostcardFill } from "react-icons/bs";
 import { CiLogout, CiSettings } from "react-icons/ci";
@@ -8,12 +8,15 @@ import { FcBusinesswoman } from "react-icons/fc";
 import { FiUsers } from "react-icons/fi";
 import { GoCommentDiscussion } from "react-icons/go";
 import {
+  IoBookmark,
   IoBookmarkOutline,
   IoCalendarOutline,
   IoChatbubbleOutline,
   IoCheckmarkCircle,
   IoChevronBack,
+  IoChevronUpSharp,
   IoGlobeOutline,
+  IoHeart,
   IoHeartOutline,
   IoHome,
   IoInformationCircleOutline,
@@ -29,9 +32,9 @@ import { MdDelete, MdOutlineMailOutline } from "react-icons/md";
 import {
   PiAirplaneTiltLight,
   PiArrowDownRightThin,
-  PiArrowUpRightThin,
   PiArrowsLeftRightDuotone,
   PiArrowsLeftRightThin,
+  PiArrowUpRightThin,
   PiBagSimpleThin,
   PiCameraLight,
   PiCameraPlusFill,
@@ -123,6 +126,7 @@ export const Icons = {
   amazon: SiAmazon,
   logo: SiVivawallet,
   setting: CiSettings,
+  setting1: AiOutlineSetting,
   logout: CiLogout,
   userManagement: PiUserGear,
   edit: PiNotePencil,
@@ -134,8 +138,10 @@ export const Icons = {
   globe: IoGlobeOutline,
   people: IoPeopleOutline,
   saved: IoBookmarkOutline,
+  savedFill: IoBookmark,
   person: IoPersonCircleOutline,
   like: IoHeartOutline,
+  likefill: IoHeart,
   comment: IoChatbubbleOutline,
   share: IoShareSocialOutline,
   inputError: IoInformationCircleOutline,
@@ -144,6 +150,7 @@ export const Icons = {
   userProfile: FaUserCircle,
   location: IoLocationOutline,
   calender: IoCalendarOutline,
+  upArrow: IoChevronUpSharp,
 };
 
 interface Image {

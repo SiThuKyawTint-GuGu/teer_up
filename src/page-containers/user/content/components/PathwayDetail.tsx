@@ -1,7 +1,9 @@
 "use client";
+import { Icons } from "@/components/ui/Images";
+import { Text } from "@/components/ui/Typo/Text";
 import { useGetContentBySlug } from "@/services/content";
 import { ContentData } from "@/types/Content";
-import { Grid } from "@radix-ui/themes";
+import { Flex, Grid } from "@radix-ui/themes";
 import { useParams } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import Article from "./Article";
@@ -77,7 +79,7 @@ const PathwayDetail: React.FC = () => {
   };
   return (
     <Grid columns="1">
-      <div>
+      <div className="relative">
         {contentData?.data.content_pathways && (
           <>
             {contentData.data.content_pathways.length > 0 && (
@@ -95,6 +97,10 @@ const PathwayDetail: React.FC = () => {
           </>
         )}
       </div>
+      <Flex justify="between" className="absolute bottom-0 pb-1 w-full left-0 bg-white z-[999]">
+        <Text className="font-[600] text-[16px]">Career paths and all “magic”</Text>
+        <Icons.upArrow className="text-primary w-[20px] h-[20px]" />
+      </Flex>
     </Grid>
   );
 };
