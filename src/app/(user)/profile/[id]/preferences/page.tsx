@@ -1,8 +1,8 @@
-import CareerInterests from "@/page-containers/user/profile/CareerInterests";
+import Preferences from "@/page-containers/user/profile/Preferences";
 import { NextPage } from "next";
 
 const CareerInterestsPage: NextPage = () => {
-  return <CareerInterests />;
+  return <Preferences />;
 };
 
 export default CareerInterestsPage;
