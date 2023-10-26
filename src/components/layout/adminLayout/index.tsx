@@ -1,5 +1,7 @@
 "use client";
+import { Icons } from "@/components/ui/Images";
 import { menuList } from "@/shared/data/Menu";
+import { logout } from "@/utils/auth";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -19,6 +21,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { CSSObject, Theme, styled, useTheme } from "@mui/material/styles";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import * as React from "react";
 import { MdStarBorder } from "react-icons/md";
 
@@ -102,6 +105,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({
   const [open, setOpen] = React.useState(true);
   // const [collapseOpen, setCollapseOpen] = React.useState<boolean>(true);
   const [collapseStates, setCollapseOpen] = React.useState(menuList.map(() => false));
+  const router = useRouter();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -172,11 +176,25 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({
                     {each?.icon}
                   </ListItemIcon>
                   {!each?.child?.length ? (
-                    <Link href={each?.key}>
+                    <Link href={each?.key} className="block w-full">
                       <ListItemText primary={each.title} sx={{ opacity: open ? 1 : 0 }} />
                     </Link>
                   ) : (
-                    <ListItemText primary={each.title} sx={{ opacity: open ? 1 : 0 }} />
+                    <ListItemText
+                      primary={each.title}
+                      secondary={
+                        <>
+                          <Icons.caretRight />
+                        </>
+                      }
+                      sx={{
+                        // width: "100%",
+                        opacity: open ? 1 : 0,
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    />
                   )}
                 </ListItemButton>
               </ListItem>
@@ -196,6 +214,33 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({
               </Collapse>
             </>
           ))}
+          <ListItem
+            disablePadding
+            sx={{ display: "block" }}
+            onClick={() => {
+              logout();
+              router.push("/admin");
+            }}
+          >
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? "initial" : "center",
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : "auto",
+                  justifyContent: "center",
+                }}
+              >
+                <Icons.logout />
+              </ListItemIcon>
+              <ListItemText primary="Logout" sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
+          </ListItem>
         </List>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
