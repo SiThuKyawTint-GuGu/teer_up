@@ -214,7 +214,6 @@ const style = {
 };
 
 function truncateText(text: string, maxWords: number) {
-  console.log("text", text);
   const words = text?.split(" ");
 
   if (words?.length > maxWords) {
