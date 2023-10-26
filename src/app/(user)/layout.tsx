@@ -9,7 +9,7 @@ interface Props {
 const Layout = ({ children }: Props) => {
   return (
     <Grid columns="1">
-      <div className="max-w-[400px] mx-auto py-[50px] h-full relative">{children}</div>
+      <div className="max-w-[400px] w-full mx-auto py-[50px] h-full relative">{children}</div>
     </Grid>
   );
 };
