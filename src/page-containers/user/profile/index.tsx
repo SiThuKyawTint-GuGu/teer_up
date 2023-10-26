@@ -33,7 +33,7 @@ const Profile: React.FC = () => {
     <>
       <Dialog open={open} onOpenChange={val => setOpen(val)}>
         <Grid columns="1">
-          <Box>
+          <Box className="pb-[55px]">
             <Flex justify="center" className="bg-white" p="3">
               <Text size="3" weight="medium">
                 Profile
