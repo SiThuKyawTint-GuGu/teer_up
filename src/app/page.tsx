@@ -1,7 +1,7 @@
-import Home from "./(user)/home/page";
+import { redirect } from "next/navigation";
 
-const Page = async () => {
-  return <Home />;
+const Home = async () => {
+  return redirect("/home");
 };
 
-export default Page;
+export default Home;
