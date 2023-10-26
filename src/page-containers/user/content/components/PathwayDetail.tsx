@@ -71,31 +71,32 @@ const PathwayDetail: React.FC = () => {
       );
     if (data.type === "article" && data.content_article)
       return (
-        <ContentLayout data={data} contentMutate={contentMutate} redir={`/events/${data.slug}`} />
+        <ContentLayout data={data} contentMutate={contentMutate} redir={`/articles/${data.slug}`} />
       );
     if (data.type === "opportunity" && data.content_opportunity)
       return (
-        <ContentLayout data={data} contentMutate={contentMutate} redir={`/events/${data.slug}`} />
+        <ContentLayout
+          data={data}
+          contentMutate={contentMutate}
+          redir={`/opportunity/${data.slug}`}
+        />
       );
     if (data.type === "pathway")
       return (
-        <ContentLayout data={data} contentMutate={contentMutate} redir={`/events/${data.slug}`} />
+        <ContentLayout data={data} contentMutate={contentMutate} redir={`/pathway/${data.slug}`} />
       );
     return <div>This Page is not avaliable right now</div>;
   };
   return (
     <Grid columns="1">
-      <div className="relative">
+      <div className="w-full h-full">
         {contentData?.data.content_pathways && (
           <>
             {contentData.data.content_pathways.length > 0 && (
-              <div className="snap-y flex-col snap-mandatory w-full max-h-[750px] h-[85vh] no-scrollbar overflow-y-scroll">
+              <div className="snap-y flex-col snap-mandatory w-full h-full no-scrollbar overflow-y-scroll">
                 {contentData.data.content_pathways.map((data: ContentData, index: number) => (
-                  <div
-                    key={index}
-                    className="h-full w-full flex justify-center  items-center snap-start"
-                  >
-                    {differentContent(data, index)}
+                  <div key={index} className="h-full w-full flex  snap-start">
+                    <div>{differentContent(data, index)}</div>
                   </div>
                 ))}
               </div>
@@ -103,8 +104,8 @@ const PathwayDetail: React.FC = () => {
           </>
         )}
       </div>
-      <Flex justify="between" className="absolute bottom-0 pb-1 w-full left-0 bg-white z-[999]">
-        <Text className="font-[600] text-[16px]">Career paths and all “magic”</Text>
+      <Flex justify="between" className="absolute bottom-0 pb-1 w-full left-0 bg-white z-[99999]">
+        <Text className="font-[600] text-[16px]">Hello</Text>
         <Icons.upArrow className="text-primary w-[20px] h-[20px]" />
       </Flex>
     </Grid>
