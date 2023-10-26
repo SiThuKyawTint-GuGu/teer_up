@@ -76,7 +76,7 @@ const UserContent = () => {
       return <ContentLayout data={data} contentMutate={mutate} redir={`/articles/${data.slug}`} />;
     if (data.type === "opportunity" && data.content_opportunity)
       return (
-        <ContentLayout data={data} contentMutate={mutate} redir={`/opportunity/${data.slug}`} />
+        <ContentLayout data={data} contentMutate={mutate} redir={`/opportunnity/${data.slug}`} />
       );
     if (data.type === "pathway")
       return <ContentLayout data={data} contentMutate={mutate} redir={`/pathway/${data.slug}`} />;
