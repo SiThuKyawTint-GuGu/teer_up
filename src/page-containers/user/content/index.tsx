@@ -73,11 +73,13 @@ const UserContent = () => {
     if (data.type === "event" && data.content_event)
       return <ContentLayout data={data} contentMutate={mutate} redir={`/events/${data.slug}`} />;
     if (data.type === "article" && data.content_article)
-      return <ContentLayout data={data} contentMutate={mutate} redir={`/events/${data.slug}`} />;
+      return <ContentLayout data={data} contentMutate={mutate} redir={`/articles/${data.slug}`} />;
     if (data.type === "opportunity" && data.content_opportunity)
-      return <ContentLayout data={data} contentMutate={mutate} redir={`/events/${data.slug}`} />;
+      return (
+        <ContentLayout data={data} contentMutate={mutate} redir={`/opportunnity/${data.slug}`} />
+      );
     if (data.type === "pathway")
-      return <ContentLayout data={data} contentMutate={mutate} redir={`/events/${data.slug}`} />;
+      return <ContentLayout data={data} contentMutate={mutate} redir={`/pathway/${data.slug}`} />;
     if (data.type === "onboarding") return <Onboarding data={data} />;
     return <div>This page is not avaliable right now</div>;
   };

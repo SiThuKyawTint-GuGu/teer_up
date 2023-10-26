@@ -81,7 +81,7 @@ const ContentDetail = ({ id }: Props) => {
     role: USER_ROLE.MENTOR,
     name: searchMentor,
   });
-  console.log("user data", userData);
+  // console.log("user data", userData);
   // console.log("get contents...", contents);
 
   const { trigger: updateTrigger, isMutating: updateMutating } = useUpdateContent(id);
@@ -160,6 +160,11 @@ const ContentDetail = ({ id }: Props) => {
       setEventLink(content?.data?.content_event?.link);
       setStartDate(content?.data?.content_event?.from_datetime);
       setEndDate(content?.data?.content_event?.to_datetime);
+      const mentorData = {
+        label: content?.data?.mentor?.name,
+        id: content?.data?.mentor?.id,
+      };
+      setSelelectedMentor(mentorData);
       const pathwayContentData = content?.data.content_pathways.map((pathway: any) => ({
         name: pathway?.title,
         pathway_id: pathway?.id,
@@ -185,9 +190,9 @@ const ContentDetail = ({ id }: Props) => {
       setValue("category", content?.data?.category?.id);
       setValue("type", content?.data.type);
     }
-    if (contents?.data) {
+    if (contents?.data && contents?.data.length > 0) {
       const updatedOptions = contents?.data.map((option: any) => ({
-        label: option.title,
+        label: option.title ? option.title : "",
         id: option.id,
       }));
       setContentOptions(updatedOptions);
@@ -430,11 +435,14 @@ const ContentDetail = ({ id }: Props) => {
       };
       content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
     } else if (selectedValue === "mentor") {
+      if (!selectedMentor) {
+        setEventError("Mentor is required!");
+        return;
+      }
       const keywords = selectedKeywords.map(item => item.id);
       const departments = selectedDepartment.map(item => item.id);
       const industries = selectedIndustry.map(item => item.id);
       const imgurl = imgRes ? imgRes?.data?.data?.file_path : imgUrl;
-      console.log(selectedMentor.id);
       postdata = {
         title: data?.title,
         description: data?.description,
@@ -445,8 +453,9 @@ const ContentDetail = ({ id }: Props) => {
         industries,
         category_id: Number(selectCategory),
         image_url: imgurl,
+        mentor_id: selectedMentor.id,
       };
-      // content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
+      content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
     }
     router.push("/admin/contents/content");
   };
@@ -519,7 +528,7 @@ const ContentDetail = ({ id }: Props) => {
     // console.log(newInputValue);
   };
   const handleInputMentorChange = async (event: any, newInputValue: any) => {
-    console.log(newInputValue);
+    setSearchMentor(newInputValue);
   };
   const handleSelectPathwayChange = (event: any, newValue: any, index: number) => {
     const updatedPathways = [...pathwayContent];
