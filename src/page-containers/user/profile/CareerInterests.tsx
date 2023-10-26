@@ -38,7 +38,7 @@ const CareerInterests: React.FC = () => {
           <Text size="3" weight="medium">
             Career Interests
           </Text>
-          <Link href={`/profile/${id}/education/create`}>
+          <Link href="/" className="opacity-0">
             <Icons.plus className="text-primary w-[23px] h-[23px]" />
           </Link>
         </Flex>
@@ -56,7 +56,7 @@ const CareerInterests: React.FC = () => {
                       </Text>
                     </Flex>
                     <Checkbox
-                      checked={isChecked ? true : false}
+                      defaultChecked={isChecked && true}
                       onCheckedChange={(checked: boolean) => handleCheckedChange(checked, each?.id)}
                     />
                   </Flex>
