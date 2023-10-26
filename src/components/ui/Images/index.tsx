@@ -12,8 +12,10 @@ import {
   IoBookmarkOutline,
   IoCalendarOutline,
   IoChatbubbleOutline,
+  IoCheckmark,
   IoCheckmarkCircle,
   IoChevronBack,
+  IoChevronDownOutline,
   IoChevronUpSharp,
   IoCloseCircleSharp,
   IoGlobeOutline,
@@ -154,6 +156,8 @@ export const Icons = {
   calender: IoCalendarOutline,
   caretDown: PiCaretDownFill,
   upArrow: IoChevronUpSharp,
+  checkMark: IoCheckmark,
+  downArrow: IoChevronDownOutline,
   closeCircle: IoCloseCircleSharp,
 };
 
