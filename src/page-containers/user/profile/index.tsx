@@ -159,30 +159,16 @@ const Profile: React.FC = () => {
                 <Heading as="h6" size="4" align="left" mb="4">
                   Education
                 </Heading>
-                <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
-                  <Flex direction="column" gap="2">
-                    <Text as="label" weight="bold" size="3">
-                      MUFL
-                    </Text>
-                    <Text>Post Graduate Diploma</Text>
-                  </Flex>
-                </div>
-                <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
-                  <Flex direction="column" gap="2">
-                    <Text as="label" weight="bold" size="3">
-                      MUFL
-                    </Text>
-                    <Text>Post Graduate Diploma</Text>
-                  </Flex>
-                </div>
-                <div className="pb-[10px] mb-[10px]">
-                  <Flex direction="column" gap="2">
-                    <Text as="label" weight="bold" size="3">
-                      MUFL
-                    </Text>
-                    <Text>Post Graduate Diploma</Text>
-                  </Flex>
-                </div>
+                {userProfile?.educations?.map((each, key) => (
+                  <div key={key} className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
+                    <Flex direction="column" gap="2">
+                      <Text as="label" weight="bold" size="3">
+                        {each.school_name}
+                      </Text>
+                      <Text>{each.degree}</Text>
+                    </Flex>
+                  </div>
+                ))}
               </Section>
             </Box>
             <Box className="pb-[7px]">

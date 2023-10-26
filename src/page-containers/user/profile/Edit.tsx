@@ -56,8 +56,6 @@ const ProfileEdit: React.FC = () => {
     return files ? files[0] : null;
   };
 
-  console.log("userProfile => ", userProfile);
-
   return (
     <>
       <Dialog open={open} onOpenChange={val => setOpen(val)}>
@@ -192,30 +190,16 @@ const ProfileEdit: React.FC = () => {
                     <Text className="text-primary">Edit</Text>
                   </Link>
                 </Flex>
-                <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
-                  <Flex direction="column" gap="2">
-                    <Text as="label" weight="bold" size="3">
-                      MUFL
-                    </Text>
-                    <Text>Post Graduate Diploma</Text>
-                  </Flex>
-                </div>
-                <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
-                  <Flex direction="column" gap="2">
-                    <Text as="label" weight="bold" size="3">
-                      MUFL
-                    </Text>
-                    <Text>Post Graduate Diploma</Text>
-                  </Flex>
-                </div>
-                <div className="pb-[10px] mb-[10px]">
-                  <Flex direction="column" gap="2">
-                    <Text as="label" weight="bold" size="3">
-                      MUFL
-                    </Text>
-                    <Text>Post Graduate Diploma</Text>
-                  </Flex>
-                </div>
+                {userProfile?.educations?.map((each, key) => (
+                  <div key={key} className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
+                    <Flex direction="column" gap="2">
+                      <Text as="label" weight="bold" size="3">
+                        {each.school_name}
+                      </Text>
+                      <Text>{each.degree}</Text>
+                    </Flex>
+                  </div>
+                ))}
               </Section>
             </Box>
             <Box className="pb-[7px]">
