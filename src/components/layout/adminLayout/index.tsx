@@ -104,7 +104,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
   // const [collapseOpen, setCollapseOpen] = React.useState<boolean>(true);
-  const [collapseStates, setCollapseOpen] = React.useState(menuList.map(() => false));
+  const [collapseOpen, setCollapseOpen] = React.useState(menuList.map(() => false));
   const router = useRouter();
 
   const handleDrawerOpen = () => {
@@ -116,9 +116,9 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const handleCollapseClick = (index: number) => {
-    const newCollapseStates = [...collapseStates];
-    newCollapseStates[index] = !newCollapseStates[index];
-    setCollapseOpen(newCollapseStates);
+    const newCollapseOpen = [...collapseOpen];
+    newCollapseOpen[index] = !newCollapseOpen[index];
+    setCollapseOpen(newCollapseOpen);
   };
 
   return (
@@ -183,12 +183,9 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({
                     <ListItemText
                       primary={each.title}
                       secondary={
-                        <>
-                          <Icons.caretRight />
-                        </>
+                        <>{collapseOpen[index] ? <Icons.arrowDown /> : <Icons.caretRight />}</>
                       }
                       sx={{
-                        // width: "100%",
                         opacity: open ? 1 : 0,
                         display: "flex",
                         justifyContent: "space-between",
@@ -198,7 +195,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({
                   )}
                 </ListItemButton>
               </ListItem>
-              <Collapse in={collapseStates[index]} timeout="auto" unmountOnExit>
+              <Collapse in={collapseOpen[index]} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
                   {each?.child?.map((child, childIdx) => (
                     <ListItemButton key={childIdx} sx={{ pl: 4 }}>
