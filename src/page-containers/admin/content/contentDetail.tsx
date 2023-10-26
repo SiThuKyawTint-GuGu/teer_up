@@ -654,8 +654,8 @@ const ContentDetail = ({ id }: Props) => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(submit)} className="space-y-8">
-        <div className="bg-white p-10 rounded-md">
+      <form onSubmit={handleSubmit(submit)} className="bg-white h-full p-5">
+        <div className="rounded-md">
           <div className="mb-10">
             <TextField
               {...register("title")}
