@@ -18,14 +18,36 @@ export interface PersonalInfo {
   user_id: number;
 }
 
-export interface UserPreferences {
+export interface preference {
   id: number;
   name: string;
+  created_at: string;
+  updated_at: string;
 }
 
-export interface UserCareerInterests {
+export interface Preferences {
+  id: number;
+  created_at: string;
+  updated_at: string;
+  preference_id: number;
+  user_id: number;
+  preference: preference;
+}
+
+export interface Industry {
   id: number;
   name: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Industries {
+  id: number;
+  created_at: string;
+  updated_at: string;
+  industry_id: number;
+  user_id: number;
+  industry: Industry;
 }
 
 export interface UserProfile {
@@ -40,8 +62,8 @@ export interface UserProfile {
   profile_url: string;
   role: USER_ROLE;
   updated_at: string;
-  user_preferences: UserPreferences;
-  usercareer_interests: UserCareerInterests;
+  industries: Industries[];
+  preferences: Preferences[];
 }
 
 export interface UserProfileResponse {

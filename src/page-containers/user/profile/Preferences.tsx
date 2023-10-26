@@ -4,7 +4,7 @@ import { Checkbox } from "@/components/ui/Inputs/Checkbox";
 import { Label } from "@/components/ui/Label";
 import { Text } from "@/components/ui/Typo/Text";
 import { useGetPreferences } from "@/services/preferences";
-import { useGetUserById } from "@/services/user";
+import { useGetUserById, useUpdateProfilePreference } from "@/services/user";
 import { PreferenceResponse } from "@/types/Preferences";
 import { UserProfileResponse } from "@/types/Profile";
 import { Box, Flex, Grid, Section } from "@radix-ui/themes";
@@ -17,6 +17,16 @@ const Preferences: React.FC = () => {
   const { id } = useParams();
   const { data: profileData } = useGetUserById<UserProfileResponse>(id as string);
   const { data: preferencesData } = useGetPreferences<PreferenceResponse>();
+  const { trigger: updateTrigger } = useUpdateProfilePreference();
+  const preferences = profileData?.data?.preferences;
+
+  const handleCheckedChange = (checked: boolean, preference_id: number) => {
+    if (checked) {
+      updateTrigger({
+        preference_id,
+      });
+    }
+  };
 
   return (
     <>
@@ -34,18 +44,27 @@ const Preferences: React.FC = () => {
         </Flex>
         <Box className="pb-[7px]">
           <Section className="bg-white" py="4" px="3">
-            {preferencesData?.data?.map((each, key) => (
-              <Label key={key} className="block mb-[25px]">
-                <Flex justify="between" align="start">
-                  <Flex direction="column" gap="2">
-                    <Text as="label" weight="regular" size="3">
-                      {each.name}
-                    </Text>
+            {preferencesData?.data?.map((each, key) => {
+              const isChecked = preferences?.find(
+                preference => preference.preference_id === each?.id
+              );
+
+              return (
+                <Label key={key} className="block mb-[25px]">
+                  <Flex justify="between" align="start">
+                    <Flex direction="column" gap="2">
+                      <Text as="label" weight="regular" size="3">
+                        {each.name}
+                      </Text>
+                    </Flex>
+                    <Checkbox
+                      checked={isChecked ? true : false}
+                      onCheckedChange={(checked: boolean) => handleCheckedChange(checked, each?.id)}
+                    />
                   </Flex>
-                  <Checkbox />
-                </Flex>
-              </Label>
-            ))}
+                </Label>
+              );
+            })}
           </Section>
         </Box>
       </Grid>
