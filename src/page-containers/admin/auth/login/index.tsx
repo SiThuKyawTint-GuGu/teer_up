@@ -1,8 +1,9 @@
-'use client';
-import React from 'react';
-import Image from 'next/image';
+"use client";
+import Image from "next/image";
+import React from "react";
 
-import LoginForm from '../components/LoginForm';
+import { Flex } from "@radix-ui/themes";
+import LoginForm from "../components/LoginForm";
 
 const Login: React.FC = () => {
   return (
@@ -11,9 +12,9 @@ const Login: React.FC = () => {
         <Image src="/mainLogo.png" width={381} height={166} alt="main logo" />
         <Image src="/loginVector.png" width={200} height={298} alt="login vector" />
       </div>
-      <div className="bg-gray-200 h-full flex justify-center">
+      <Flex justify="center" height="100%" className="bg-gray-200">
         <LoginForm />
-      </div>
+      </Flex>
     </div>
   );
 };
