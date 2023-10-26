@@ -11,6 +11,7 @@ import { Text } from "@/components/ui/Typo/Text";
 import { setUserInfo } from "@/utils/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Flex } from "@radix-ui/themes";
+import { useTransition } from "react";
 import { useUserRegister } from "../../../../services/user";
 interface SignUpFormType {
   email: string;
@@ -37,12 +38,14 @@ const SignUp = () => {
     resolver: yupResolver(validationSchema),
   });
 
+  const [ispending, startTransition] = useTransition();
+
   const { isMutating, trigger, error } = useUserRegister();
   const onSubmit = async (data: SignUpFormType) => {
     await trigger(data, {
       onSuccess: response => {
         setUserInfo(response.data.token, response.data.data);
-        router.push("/auth/otp");
+        startTransition(() => router.push("/auth/otp"));
       },
     });
   };
@@ -131,7 +134,7 @@ const SignUp = () => {
                 </Text>
               </Text>
             </Flex>
-            <Button type="submit" size="lg" className="mt-5" disabled={isMutating}>
+            <Button type="submit" size="lg" className="mt-5" disabled={ispending}>
               Sign Up
             </Button>
           </form>

@@ -10,6 +10,7 @@ import { InputText } from "@/components/ui/Inputs";
 import { useOtpVerified } from "@/services/user";
 import { setUserInfo } from "@/utils/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useTransition } from "react";
 
 const validationSchema = yup.object({
   verificationCode: yup.string().required("Enter verification code"),
@@ -19,7 +20,8 @@ interface OtpFormData {
 }
 const LoginOtp = () => {
   const router = useRouter();
-  const { isMutating: verifiedLoading, trigger: verified, error } = useOtpVerified();
+  const { trigger: verified, error } = useOtpVerified();
+  const [ispending, startTransition] = useTransition();
 
   const form = useForm({
     resolver: yupResolver(validationSchema),
@@ -28,7 +30,9 @@ const LoginOtp = () => {
     await verified(data, {
       onSuccess: res => {
         setUserInfo(res.data.token, res.data.data);
-        router.push("/home");
+        {
+          startTransition(() => router.push("/home"));
+        }
       },
     });
   };
@@ -63,7 +67,7 @@ const LoginOtp = () => {
               )}
             />
 
-            <Button type="submit" disabled={verifiedLoading} size="lg">
+            <Button type="submit" disabled={ispending} size="lg">
               Login
             </Button>
           </form>
