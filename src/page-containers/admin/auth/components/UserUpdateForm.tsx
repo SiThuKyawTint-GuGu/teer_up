@@ -43,6 +43,7 @@ const UserUpdateForm: React.FC<{
   const submit = async (data: any) => {
     const submitData = {
       name: data?.name,
+      role: data?.role,
       id: userId,
     };
     await trigger(submitData, {
