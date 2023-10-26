@@ -21,7 +21,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ data }) => {
               {data.name}
             </Text>
             {option && (
-              <div>
+              <div className="text-center w-full">
                 <div
                   dangerouslySetInnerHTML={{
                     __html: option.feedback,
