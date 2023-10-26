@@ -29,6 +29,8 @@ const Profile: React.FC = () => {
   const { data: profileData } = useGetUserById<UserProfileResponse>(user?.id);
   const userProfile = profileData?.data;
 
+  console.log("user profile => ", userProfile);
+
   return (
     <>
       <Dialog open={open} onOpenChange={val => setOpen(val)}>
@@ -107,7 +109,7 @@ const Profile: React.FC = () => {
                       className="border-2 border-[#F4153D] rounded-[30px] space-x-[5px]"
                     >
                       <Image src="/uploads/icons/pencil.svg" width={20} height={20} alt="pencil" />
-                      <Text>Edit Profile</Text>
+                      <Text className="text-primary">Edit Profile</Text>
                     </Button>
                   </Link>
                 </div>
@@ -189,10 +191,11 @@ const Profile: React.FC = () => {
                   Career interests
                 </Heading>
                 <Flex wrap="wrap" gap="2">
-                  <Button className="bg-[#d1d5d8] text-black">Human Resources</Button>
-                  <Button className="bg-[#d1d5d8] text-black">Design</Button>
-                  <Button className="bg-[#d1d5d8] text-black">Engineering</Button>
-                  <Button className="bg-[#d1d5d8] text-black">Tourism and hospitality</Button>
+                  {userProfile?.industries?.map((each, key) => (
+                    <Button key={key} className="bg-[#d1d5d8] text-black">
+                      {each.industry.name}
+                    </Button>
+                  ))}
                 </Flex>
               </Section>
             </Box>
@@ -202,10 +205,11 @@ const Profile: React.FC = () => {
                   Preferences
                 </Heading>
                 <Flex wrap="wrap" gap="2">
-                  <Button className="bg-[#d1d5d8] text-black">Animation</Button>
-                  <Button className="bg-[#d1d5d8] text-black">Art</Button>
-                  <Button className="bg-[#d1d5d8] text-black">Reading</Button>
-                  <Button className="bg-[#d1d5d8] text-black">Dance</Button>
+                  {userProfile?.preferences?.map((each, key) => (
+                    <Button key={key} className="bg-[#d1d5d8] text-black">
+                      {each.preference.name}
+                    </Button>
+                  ))}
                 </Flex>
               </Section>
             </Box>

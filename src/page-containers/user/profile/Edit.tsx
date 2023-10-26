@@ -229,10 +229,11 @@ const ProfileEdit: React.FC = () => {
                   </Link>
                 </Flex>
                 <Flex wrap="wrap" gap="2">
-                  <Button className="bg-[#d1d5d8] text-black">Human Resources</Button>
-                  <Button className="bg-[#d1d5d8] text-black">Design</Button>
-                  <Button className="bg-[#d1d5d8] text-black">Engineering</Button>
-                  <Button className="bg-[#d1d5d8] text-black">Tourism and hospitality</Button>
+                  {userProfile?.industries?.map((each, key) => (
+                    <Button key={key} className="bg-[#d1d5d8] text-black">
+                      {each.industry.name}
+                    </Button>
+                  ))}
                 </Flex>
               </Section>
             </Box>
@@ -247,10 +248,11 @@ const ProfileEdit: React.FC = () => {
                   </Link>
                 </Flex>
                 <Flex wrap="wrap" gap="2">
-                  <Button className="bg-[#d1d5d8] text-black">Animation</Button>
-                  <Button className="bg-[#d1d5d8] text-black">Art</Button>
-                  <Button className="bg-[#d1d5d8] text-black">Reading</Button>
-                  <Button className="bg-[#d1d5d8] text-black">Dance</Button>
+                  {userProfile?.preferences?.map((each, key) => (
+                    <Button key={key} className="bg-[#d1d5d8] text-black">
+                      {each.preference.name}
+                    </Button>
+                  ))}
                 </Flex>
               </Section>
             </Box>
