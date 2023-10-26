@@ -137,7 +137,7 @@ const PersonalInfo: React.FC = () => {
                                 dateFormat="dd"
                                 className="w-[65px]"
                               />
-                              <Icons.caretDown />
+                              <Icons.arrowDown />
                             </CardBox>
                           </FormControl>
                         </FormItem>
@@ -165,7 +165,7 @@ const PersonalInfo: React.FC = () => {
                                 showFullMonthYearPicker
                                 className="w-[65px]"
                               />
-                              <Icons.caretDown />
+                              <Icons.arrowDown />
                             </CardBox>
                           </FormControl>
                         </FormItem>
@@ -192,7 +192,7 @@ const PersonalInfo: React.FC = () => {
                                 showYearPicker
                                 className="w-[65px]"
                               />
-                              <Icons.caretDown />
+                              <Icons.arrowDown />
                             </CardBox>
                           </FormControl>
                         </FormItem>

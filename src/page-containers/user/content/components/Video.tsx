@@ -1,5 +1,6 @@
 "use client";
 
+import CardBox from "@/components/ui/Card";
 import { Icons } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import { useLikeContent, useSaveContent } from "@/services/content";
@@ -88,7 +89,7 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
     <Dialog open={openModal} onOpenChange={val => setOpenModal(val)}>
       <div className="w-full h-full flex flex-col">
         <div
-          className="w-full h-[90%]  md:aspect-video relative text-white"
+          className="w-full h-[80%]  md:aspect-video relative text-white"
           onClick={() => showCmt && setShowCmt(false)}
         >
           {data.content_video && (
@@ -117,35 +118,27 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
           )}
 
           <div
-            className={`absolute flex flex-col items-baseline w-[300px] cursor-pointer bottom-5 left-3 z-[1000] text-[20px] font-[600] ${
+            className={`absolute flex flex-col items-baseline w-full cursor-pointer bg-slate-700 opacity-[0.5]  bottom-0 px-3 py-3 z-[1000] text-[20px] font-[600] ${
               showDescription && "transition-all duration-1000 ease-in-out"
             }`}
-            onClick={() => setShowDescription(prev => !prev)}
           >
-            <Text>{data.title}</Text>
-            {!showDescription ? (
-              <div className="flex flex-wrap gap-x-1">
-                <div>
-                  {(() => {
-                    const temporaryDiv = document.createElement("div");
-
-                    temporaryDiv.innerHTML = data.description && data.description.toString();
-                    if (!temporaryDiv.textContent) return "";
-                    return temporaryDiv.textContent.substring(0, 50) + "...";
-                  })()}
-                </div>
-                <span>See more</span>
+            {!showDescription && (
+              <div>
+                {data.title.length > 50 ? (
+                  <div onClick={() => setShowDescription(true)}>
+                    {data.title.slice(0, 50)}
+                    <div>...See More</div>
+                  </div>
+                ) : (
+                  <Text>{data.title}</Text>
+                )}
               </div>
-            ) : (
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: data.description,
-                }}
-              />
             )}
+
+            {showDescription && <div onClick={() => setShowDescription(false)}>{data.title}</div>}
           </div>
         </div>
-        <div className="flex justify-between p-3 bg-white">
+        <CardBox className="flex justify-between p-3">
           <div className="flex items-center flex-wrap gap-x-[10px]" onClick={likePost}>
             {data.is_liked ? (
               <Icons.likefill className="w-[20px] h-[20px] text-primary" />
@@ -187,7 +180,8 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
               Share
             </div>
           </div>
-        </div>
+        </CardBox>
+        <div className="py-4 text-center font-[300] w-full">Swipe up for more</div>
       </div>
       {openModal && (
         <DialogContent className="absolute top-[initial] bottom-0 w-full z-[9000000]  bg-white">

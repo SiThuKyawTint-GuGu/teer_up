@@ -49,7 +49,7 @@ const Login = () => {
         {error && <div className="text-primary">{error.response.data.message}</div>}
         <Form {...form}>
           <form
-            className="mx-auto flex flex-col justify-center gap-y-3 w-full"
+            className=" w-full flex flex-col justify-center  flex-wrap gap-y-5"
             onSubmit={form.handleSubmit(loginHandler)}
           >
             <FormField
@@ -64,7 +64,7 @@ const Login = () => {
                 </FormItem>
               )}
             />
-            <div className="flex w-full flex-wrap gap-x-1">
+            <div className="flex w-full flex-wrap gap-x-1 my-5">
               <Checkbox />
               <Text as="div">I have read, understood and accept</Text>
               <Text as="span" className="text-primary">

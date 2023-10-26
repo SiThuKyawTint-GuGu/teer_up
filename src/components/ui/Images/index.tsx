@@ -15,6 +15,7 @@ import {
   IoCheckmarkCircle,
   IoChevronBack,
   IoChevronUpSharp,
+  IoCloseCircleSharp,
   IoGlobeOutline,
   IoHeart,
   IoHeartOutline,
@@ -39,6 +40,7 @@ import {
   PiCameraLight,
   PiCameraPlusFill,
   PiCar,
+  PiCaretDownFill,
   PiCaretDownThin,
   PiCaretLeftThin,
   PiCaretRightThin,
@@ -104,7 +106,7 @@ export const Icons = {
   film: PiFilmSlate,
   planet: PiPlanetThin,
   caretUp: PiCaretUpThin,
-  caretDown: PiCaretDownThin,
+  arrowDown: PiCaretDownThin,
   caretRight: PiCaretRightThin,
   caretLeft: PiCaretLeftThin,
   plus: PiPlusThin,
@@ -150,7 +152,9 @@ export const Icons = {
   userProfile: FaUserCircle,
   location: IoLocationOutline,
   calender: IoCalendarOutline,
+  caretDown: PiCaretDownFill,
   upArrow: IoChevronUpSharp,
+  closeCircle: IoCloseCircleSharp,
 };
 
 interface Image {

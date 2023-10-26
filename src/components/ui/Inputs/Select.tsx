@@ -20,7 +20,7 @@ const SelectTrigger = React.forwardRef<
 >(({ className, children, icon = SELECT_ICONS.DOWN_CARET, ...props }, ref) => {
   const iconComponents: { [key in SELECT_ICONS]: React.ReactNode } = {
     [SELECT_ICONS.PLUS]: <Icons.plus />,
-    [SELECT_ICONS.DOWN_CARET]: <Icons.caretDown />,
+    [SELECT_ICONS.DOWN_CARET]: <Icons.arrowDown />,
   };
 
   const selectedIcon = iconComponents[icon as SELECT_ICONS];
