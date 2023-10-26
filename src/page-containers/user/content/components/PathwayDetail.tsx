@@ -101,13 +101,10 @@ const PathwayDetail: React.FC = () => {
         {contentData?.data.content_pathways && (
           <>
             {contentData.data.content_pathways.length > 0 && (
-              <div className="snap-y flex-col snap-mandatory w-full h-[90vh] bg-[#F8F9FB] no-scrollbar overflow-y-scroll">
+              <div className="snap-y flex-col snap-mandatory w-full h-[80vh] bg-[#F8F9FB] no-scrollbar overflow-y-scroll">
                 {contentData.data.content_pathways.map((data: ContentData, index: number) => (
-                  <div
-                    key={index}
-                    className="h-full  w-full flex justify-center  items-center snap-start"
-                  >
-                    <div>{differentContent(data, index)}</div>
+                  <div className="h-full  w-full snap-start" key={index}>
+                    {differentContent(data, index)}
                   </div>
                 ))}
               </div>

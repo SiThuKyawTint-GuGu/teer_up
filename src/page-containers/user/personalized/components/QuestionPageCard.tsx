@@ -7,7 +7,7 @@ type QuestionPageCardProp = {
 };
 const QuestionPageCard: React.FC<QuestionPageCardProp> = ({ children, title }) => {
   return (
-    <div className="w-full h-full  flex flex-col">
+    <div className="w-full  flex flex-col h-full">
       {title && (
         <Text className="text-[28px] font-[700]  text-center mb-5" as="div">
           {title}
