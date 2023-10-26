@@ -10,7 +10,7 @@ export type ParamsType = {
   page?: number;
   pageSize?: number;
   name?: string;
-  role?: USER_ROLE[];
+  role?: USER_ROLE[] | USER_ROLE;
   cursor?: number;
 };
 
