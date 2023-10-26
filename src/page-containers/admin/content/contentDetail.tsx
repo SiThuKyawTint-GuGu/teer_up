@@ -1,9 +1,4 @@
 "use client";
-import Image from "next/image";
-import { useEffect, useState } from "react";
-
-// import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/Inputs/Select";
-
 import {
   ParamsType,
   useGetContent,
@@ -13,18 +8,19 @@ import {
   useUpdateContent,
 } from "@/services/content";
 import { useGetContentCategory } from "@/services/contentCategory";
+import { useGetContentDimensionById, useUpdateContentDimension } from "@/services/contentDimension";
 import { useGetDepartment } from "@/services/department";
+import { useGetDimension } from "@/services/dimension";
 import { useGetFormConfig } from "@/services/formConfig";
 import { useGetIndustry } from "@/services/industry";
 import { useGetKeywords } from "@/services/keyword";
 import { ParamsType as UserParamsType, useGetUsers } from "@/services/user";
 import { USER_ROLE } from "@/shared/enums";
-import "@/styles/checkbox.css";
-import "@/styles/switch.css";
 import "@/styles/tab.css";
 import { ContentType } from "@/types/Content";
 import { ContentCategoryResponse } from "@/types/ContentCategory";
 import { DepartmentResponse } from "@/types/Department";
+import { DimensionResponse } from "@/types/Dimension";
 import { FormConfigResponse } from "@/types/Formconfig";
 import { IndustryResponse } from "@/types/Industry";
 import { KeywordResponse } from "@/types/Keyword";
@@ -32,7 +28,7 @@ import { UserResponse } from "@/types/User";
 import { yupResolver } from "@hookform/resolvers/yup";
 import SaveIcon from "@mui/icons-material/Save";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { Button as MuiButton, styled } from "@mui/material";
+import { Button as MuiButton, Checkbox, styled } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
@@ -43,9 +39,12 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { Box } from "@radix-ui/themes";
 import { Editor } from "@tinymce/tinymce-react";
 import dayjs from "dayjs";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiFillDelete, AiOutlinePlus } from "react-icons/ai";
 import { BiSolidCloudUpload } from "react-icons/bi";
@@ -81,7 +80,10 @@ const ContentDetail = ({ id }: Props) => {
     role: USER_ROLE.MENTOR,
     name: searchMentor,
   });
-  // console.log("user data", userData);
+  const { data: dimensions } = useGetDimension<DimensionResponse>();
+  const { trigger: updateContentDimensionTrigger } = useUpdateContentDimension(id);
+  const { data: contentDimension } = useGetContentDimensionById<any>(id);
+  // console.log("content dimension data", contentDimension);
   // console.log("get contents...", contents);
 
   const { trigger: updateTrigger, isMutating: updateMutating } = useUpdateContent(id);
@@ -123,6 +125,7 @@ const ContentDetail = ({ id }: Props) => {
   const [selectedKeywords, setSelectedKeywords] = useState<OptionType[]>([]);
   const [selectedIndustry, setSelectedIndustry] = useState<OptionType[]>([]);
   const [selectedDepartment, setSelectedDepartment] = useState<OptionType[]>([]);
+  const [checkboxValues, setCheckboxValues] = useState<any>({});
 
   const handleEditorInit = (evt: any, editor: any) => {
     setEditor(editor);
@@ -137,6 +140,18 @@ const ContentDetail = ({ id }: Props) => {
     }
     if (oppoEditor) {
       oppoEditor?.setContent(oppoEditorContent);
+    }
+    if (contentDimension?.data) {
+      const transformedData = contentDimension?.data?.content_dimensions.reduce(
+        (result: any, item: any) => {
+          const { dimension_id, low, medium, high } = item;
+          result[dimension_id] = { low, medium, high };
+          return result;
+        },
+        {}
+      );
+      console.log("tr.....", transformedData);
+      setCheckboxValues(transformedData);
     }
     if (content?.data) {
       setSelectedValue(content?.data.type);
@@ -225,7 +240,15 @@ const ContentDetail = ({ id }: Props) => {
       }));
       setIndustryOptions(updatedOptions);
     }
-  }, [editorContent, editor, oppoEditor, oppoEditorContent, contents?.data, content?.data]);
+  }, [
+    editorContent,
+    editor,
+    oppoEditor,
+    oppoEditorContent,
+    contents?.data,
+    content?.data,
+    contentDimension?.data,
+  ]);
 
   const {
     register,
@@ -244,6 +267,21 @@ const ContentDetail = ({ id }: Props) => {
       setFile(file);
       setVideoUrl(fileURL);
     }
+  };
+
+  const updatedDimensionData = () => {
+    const transformedData = transformedDimensionData();
+
+    const replacementMapping = transformedData.reduce((map: any, item: any) => {
+      map[item.dimension_id] = item;
+      return map;
+    }, {});
+
+    const updatedDimensions = contentDimension?.data.content_dimensions.map((item: any) => ({
+      ...item,
+      ...replacementMapping[item.dimension_id],
+    }));
+    return updatedDimensions;
   };
 
   const submit = async (data: any) => {
@@ -282,6 +320,7 @@ const ContentDetail = ({ id }: Props) => {
       const imgurl = imgRes ? imgRes?.data?.data?.file_path : imgUrl;
       const videourl = videoRes ? videoRes?.data?.data?.file_path : videoUrl;
       const thumbnailurl = thumbnailRes ? thumbnailRes?.data?.data?.file_path : fileUrl;
+
       postdata = {
         title: data?.title,
         description: data.description,
@@ -297,6 +336,14 @@ const ContentDetail = ({ id }: Props) => {
           thumbnail: thumbnailurl,
         },
       };
+      if (contentDimension?.data) {
+        const data = {
+          content_dimensions: updatedDimensionData(),
+        };
+        await updateContentDimensionTrigger(data);
+      } else {
+        postdata["content_dimensions"] = transformedDimensionData();
+      }
       content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
     } else if (selectedValue === "event") {
       if (!startDate) {
@@ -341,6 +388,14 @@ const ContentDetail = ({ id }: Props) => {
           formconfig_id: selectForm,
         },
       };
+      if (contentDimension?.data) {
+        const data = {
+          content_dimensions: updatedDimensionData(),
+        };
+        await updateContentDimensionTrigger(data);
+      } else {
+        postdata["content_dimensions"] = transformedDimensionData();
+      }
       content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
     } else if (selectedValue === "article") {
       if (!author) {
@@ -375,6 +430,14 @@ const ContentDetail = ({ id }: Props) => {
           formconfig_id: selectForm,
         },
       };
+      if (contentDimension?.data) {
+        const data = {
+          content_dimensions: updatedDimensionData(),
+        };
+        await updateContentDimensionTrigger(data);
+      } else {
+        postdata["content_dimensions"] = transformedDimensionData();
+      }
       content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
     } else if (selectedValue === "opportunity") {
       if (!link) {
@@ -414,6 +477,14 @@ const ContentDetail = ({ id }: Props) => {
           body: oppoEditor.getContent(),
         },
       };
+      if (contentDimension?.data) {
+        const data = {
+          content_dimensions: updatedDimensionData(),
+        };
+        await updateContentDimensionTrigger(data);
+      } else {
+        postdata["content_dimensions"] = transformedDimensionData();
+      }
       content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
     } else if (selectedValue === "pathway") {
       const pathways = pathwayContent.map((path: any) => ({ pathway_id: path.pathway_id }));
@@ -433,6 +504,14 @@ const ContentDetail = ({ id }: Props) => {
         image_url: imgurl,
         content_pathways: pathways,
       };
+      if (contentDimension?.data) {
+        const data = {
+          content_dimensions: updatedDimensionData(),
+        };
+        await updateContentDimensionTrigger(data);
+      } else {
+        postdata["content_dimensions"] = transformedDimensionData();
+      }
       content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
     } else if (selectedValue === "mentor") {
       if (!selectedMentor) {
@@ -455,6 +534,14 @@ const ContentDetail = ({ id }: Props) => {
         image_url: imgurl,
         mentor_id: selectedMentor.id,
       };
+      if (contentDimension?.data) {
+        const data = {
+          content_dimensions: updatedDimensionData(),
+        };
+        await updateContentDimensionTrigger(data);
+      } else {
+        postdata["content_dimensions"] = transformedDimensionData();
+      }
       content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
     }
     router.push("/admin/contents/content");
@@ -535,6 +622,32 @@ const ContentDetail = ({ id }: Props) => {
 
     updatedPathways[index] = { pathway_id: newValue ? newValue.id : "", name: newValue.label };
     setPathwayContent(updatedPathways);
+  };
+
+  const handleCheckboxChange = (event: any, dimension: any) => {
+    const { name, checked } = event.target;
+    setCheckboxValues((prevValues: any) => ({
+      ...prevValues,
+      [Number(dimension)]: {
+        ...prevValues[dimension],
+        [name]: checked,
+      },
+    }));
+  };
+
+  const transformedDimensionData = () => {
+    const dimensionArray = Object.keys(checkboxValues).map(dimension_id => {
+      const dimensionData = checkboxValues[dimension_id];
+      const dimension = {
+        dimension_id: Number(dimension_id),
+        low: dimensionData.low || false,
+        medium: dimensionData.medium || false,
+        high: dimensionData.high || false,
+      };
+      return dimension;
+    });
+
+    return dimensionArray;
   };
 
   if (isLoading) return <p>Loading...</p>;
@@ -944,6 +1057,43 @@ const ContentDetail = ({ id }: Props) => {
               </div>
             )}
           </div>
+
+          {/* Content Matrix */}
+          <div>
+            <Box className="flex items-center mt-10 my-3">
+              <p className="w-[60%] mr-20"></p>
+              <div className="flex">
+                <h1 className="font-semibold">High</h1>
+                <h1 className="font-semibold mx-2">Medium</h1>
+                <h1 className="font-semibold">Low</h1>
+              </div>
+            </Box>
+            {dimensions?.data &&
+              dimensions?.data.map((dimension: any, index: number) => (
+                <Box className="flex  items-center mt-10 my-3" key={index}>
+                  <p className="w-[60%] mr-20">{dimension.name}</p>
+                  <div>
+                    <Checkbox
+                      name="high"
+                      checked={checkboxValues[dimension.id]?.high || false}
+                      onChange={e => handleCheckboxChange(e, dimension.id)}
+                    />
+                    <Checkbox
+                      name="medium"
+                      checked={checkboxValues[dimension.id]?.medium || false}
+                      onChange={e => handleCheckboxChange(e, dimension.id)}
+                      sx={{ margin: "0px 10px" }}
+                    />
+                    <Checkbox
+                      name="low"
+                      checked={checkboxValues[dimension.id]?.low || false}
+                      onChange={e => handleCheckboxChange(e, dimension.id)}
+                    />
+                  </div>
+                </Box>
+              ))}
+          </div>
+
           {eventError && <p className="text-red-700 mt-3 mb-3">{eventError}</p>}
           <div style={{ display: "flex", marginTop: 20, justifyContent: "flex-end" }}>
             {content?.data ? (
