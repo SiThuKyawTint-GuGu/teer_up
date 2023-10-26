@@ -105,7 +105,7 @@ const AdminTable: React.FC = () => {
 
   //UPDATE action
   const handleSaveUser: MRT_TableOptions<User>["onEditingRowSave"] = ({ values, table }) => {
-    const { id, name } = values;
+    const { id, name, role } = values;
     const newValidationErrors = validateUser(values);
     if (Object.values(newValidationErrors).some(error => error)) {
       setValidationErrors(newValidationErrors);
@@ -114,6 +114,7 @@ const AdminTable: React.FC = () => {
     setValidationErrors({});
     const newValues = {
       name,
+      role,
       id,
     };
     updateTrigger(newValues, {
