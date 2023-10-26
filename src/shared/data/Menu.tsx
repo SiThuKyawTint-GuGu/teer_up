@@ -52,7 +52,6 @@ export const menuList: Menu[] = [
     ],
   },
   {
-
     key:
       "/admin/configs/industry" ||
       "/admin/configs/departments" ||

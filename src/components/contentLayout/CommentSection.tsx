@@ -18,6 +18,10 @@ const CommentSection: React.FC<CommentSectionProp> = ({ data, mutateParentData }
     pageSize: 10,
   });
 
+  // const pp: any = useMemo(() => cmtsArray?.flatMap(page => page?.data) || [], [cmtsArray]);
+
+  // console.log(pp);
+
   const { trigger: postComment, isMutating } = usePostComment();
 
   const postSubmitHandler = async () => {
@@ -44,15 +48,15 @@ const CommentSection: React.FC<CommentSectionProp> = ({ data, mutateParentData }
   };
   const [commentValue, setCommentValue] = useState<string>("");
   return (
-    <div className="pb-[100px] h-full w-full min-h-[70%]">
-      <div className="w-fullrounded-t-[16px] bg-white p-[8px] z-[9] text-black">
+    <div className="w-full z-[9999] pb-[50px] h-[60vh] bg-white">
+      <div className="w-full rounded-t-[16px] h-full flex flex-col justify-end p-[8px] z-[9] text-black">
         <div className="bg-primary rounded-[6px] w-[60px] h-[2px] mx-auto" />
         <div className="my-3 text-[16px] font-[600]">
           {cmtsArray && cmtsArray.length > 0 && cmtsArray[0].total}comments
         </div>
         <Flex direction="column" justify="between" className="w-full h-full">
           {cmtsArray && cmtsArray.length > 0 && (
-            <div className="h-[30%] overflow-y-auto">
+            <div className="overflow-y-auto h-[45vh]">
               <div>
                 {cmtsArray.map((cmts: CommentResponse, cmtArrayIndex: number) => (
                   <div key={cmtArrayIndex}>

@@ -85,7 +85,7 @@ const Sidebar: React.FC<Props> = ({ className }: Props) => {
                           {open === item.key ? (
                             <Icons.caretUp className="w-[20px] h-[20px]" />
                           ) : (
-                            <Icons.caretDown className="w-[20px] h-[20px]" />
+                            <Icons.arrowDown className="w-[20px] h-[20px]" />
                           )}
                         </button>
                       )}
@@ -151,7 +151,7 @@ const Sidebar: React.FC<Props> = ({ className }: Props) => {
                           {open === item.key ? (
                             <Icons.caretUp className="w-24 h-24" />
                           ) : (
-                            <Icons.caretDown className="w-24 h-24" />
+                            <Icons.arrowDown className="w-24 h-24" />
                           )}
                         </button>
                       )}

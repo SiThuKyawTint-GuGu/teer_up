@@ -15,7 +15,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <ServerThemeProvider>
       <html lang="en" className={fontSans.className}>
-        <head />
+        <head>
+          <link rel="icon" href="/teeup.svg" />
+        </head>
         <body>
           <Providers>{children}</Providers>
         </body>

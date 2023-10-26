@@ -1,5 +1,6 @@
 "use client";
 
+import { Text } from "@/components/ui/Typo/Text";
 import { ParamsType, useGetContentInfinite } from "@/services/content";
 import { ContentData, ContentType } from "@/types/Content";
 import { Flex, Grid } from "@radix-ui/themes";
@@ -18,14 +19,12 @@ const BrowsePage = () => {
 
   return (
     <Grid columns="1">
-      <Flex justify="between" className="p-3 w-full">
+      <Flex justify="between" className="p-3 max-w-[400px] w-full] overflow-x-visible">
         {BrowsePageHeader.map((data: HeaderType, index: number) => (
-          <div
-            key={index}
-            onClick={() => setType(data.value)}
-            className={`cursor-pointer ${type === data.value && "border-b-[2px] border-primary"}`}
-          >
-            {data.text}
+          <div key={index} onClick={() => setType(data.value)} className="cursor-pointer">
+            <Text as="span" className={`${type === data.value && "border-b-[2px] border-primary"}`}>
+              {data.text}
+            </Text>
           </div>
         ))}
       </Flex>
@@ -39,9 +38,25 @@ const BrowsePage = () => {
                 <div className="w-full h-[85vh] overflow-y-scroll" key={index}>
                   {contentArray.data.map((contentData: ContentData, index: number) => (
                     <div key={index} className="w-full">
-                      <BrowserContentLayout data={contentData} contentMutate={mutate}>
-                        Hello This is description
-                      </BrowserContentLayout>
+                      {contentData.type !== "onboarding" && (
+                        <BrowserContentLayout data={contentData} contentMutate={mutate}>
+                          {contentData.description && (
+                            <div className="w-full h-full">
+                              <div className="flex flex-col w-full h-[40vh]">
+                                <Text>
+                                  {contentData.description.slice(0, 100)}
+
+                                  {contentData.description.length > 100 && (
+                                    <Text as="span" className="text-primary">
+                                      {"..."}See more
+                                    </Text>
+                                  )}
+                                </Text>
+                              </div>
+                            </div>
+                          )}
+                        </BrowserContentLayout>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -79,5 +94,9 @@ const BrowsePageHeader: HeaderType[] = [
   {
     text: "Pathway",
     value: "pathway",
+  },
+  {
+    text: "Article",
+    value: "article",
   },
 ];

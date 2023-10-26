@@ -30,6 +30,13 @@ export interface ContentArticle {
   content_id: string;
 }
 
+export interface OnBoardingOption {
+  id: number | string;
+  name: string;
+  score: number;
+  feedback: string;
+}
+
 export interface ContentPathway {
   content_id: number;
   created_at: Date;
@@ -49,7 +56,7 @@ export interface ContentData {
   title: string;
   description: string;
   created_at: string;
-  type: "video" | "article" | "event" | "opportunity" | "pathway";
+  type: "video" | "article" | "event" | "opportunity" | "pathway" | "onboarding";
   updated_at: string;
   user_id: string;
   image_url: string;
@@ -68,6 +75,10 @@ export interface ContentData {
   content_pathways: ContentPathway[] | null;
   category: string;
   user: User;
+  name: string;
+  dimension_id: 1;
+  options: OnBoardingOption[];
+  question_type: string;
 }
 
 export interface ContentType extends Pagination {
