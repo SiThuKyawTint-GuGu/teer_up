@@ -47,16 +47,19 @@ const QuestionDetail = ({ id }: Props) => {
 
   const { data: dimensions } = useGetDimension<DimensionResponse>();
   const { data: question } = useGetQuestionById<any>(id);
-  console.log("question", question);
-  const { trigger: postTrigger } = usePostQuestion();
-  const { trigger: updateTrigger } = useUpdateQuestion(id);
+  // console.log("question", question);
+  const { trigger: postTrigger, isMutating: postMutating } = usePostQuestion();
+  const { trigger: updateTrigger, isMutating: updateMutating } = useUpdateQuestion(id);
   const [editor, setEditor] = useState<any>(null);
-  const [editorContent, setEditorContent] = useState("");
+  const [initialFeedbackValues, setInitialFeedbackValues] = useState<string[]>([]);
 
-  const handleEditorInit = (evt: any, editor: any) => {
+  const [editorContent, setEditorContent] = useState<any>({});
+
+  const handleEditorInit = (editor: any, name: string) => {
     setEditor(editor);
     editor.setContent(editorContent);
   };
+  // editor.setContent(editorContent[name] || "");
 
   const {
     register,
@@ -71,7 +74,7 @@ const QuestionDetail = ({ id }: Props) => {
   useEffect(() => {
     if (question?.data) {
       setValue("name", question?.data?.name);
-      setValue("type", question?.data.type);
+      setValue("type", question?.data?.type);
       setOptions(question?.data.options);
       setValue("dimension_id", question?.data.dimension_id);
       setSelectedDimension(question?.data.dimension_id);
@@ -83,11 +86,12 @@ const QuestionDetail = ({ id }: Props) => {
         feedback: opt.feedback,
       }));
       setValue("options", updateOptions);
+      setInitialFeedbackValues(updateOptions.map((option: any) => option.feedback || ""));
 
       // console.log("options", updateOptions);
       setOptions(updateOptions);
     }
-  }, [question?.data, setValue]);
+  }, [question?.data, setValue, editor, editorContent]);
 
   const handleDimensionChange = (event: SelectChangeEvent) => {
     setSelectedDimension(event.target.value);
@@ -96,6 +100,11 @@ const QuestionDetail = ({ id }: Props) => {
     setSelectedType(event.target.value);
   };
 
+  // const handleDeleteOption = (name: string) => {
+  //   const updatedFields = options.filter(field => field.name !== name);
+  //   setOptions(updatedFields);
+  // };
+
   const handleAddOptions = () => {
     const updatedOptions = [...options, { name: "", score: null, feedback: "" }];
     setOptions(updatedOptions);
@@ -103,12 +112,17 @@ const QuestionDetail = ({ id }: Props) => {
 
   const Submit = async (data: any) => {
     console.log(data);
-    if (question?.data) {
-      await updateTrigger(data);
-    } else {
-      await postTrigger(data);
-    }
-    router.push("/admin/setting/questions");
+    // const filteredOptions = data.options.filter((item: any) =>
+    //   options.some((opt: any) => opt.name === item.name)
+    // );
+
+    // data.options = filteredOptions;
+    // if (question?.data) {
+    //   await updateTrigger(data);
+    // } else {
+    //   await postTrigger(data);
+    // }
+    // router.push("/admin/setting/questions");
   };
 
   return (
@@ -217,53 +231,68 @@ const QuestionDetail = ({ id }: Props) => {
                   />
                   <p className="mt-2 text-red-700">{errors.options?.[index]?.score?.message}</p>
                 </div>
+
                 <div>
-                  {/* <Controller
-                    name={`options[${index}].feedback` as any}
-                    control={control}
-                    render={({ field }) => (
-                      <TextField
-                        {...field}
-                        label="Feedback"
-                        size="small"
-                        className="w-full"
-                        variant="outlined"
-                      />
-                    )}
-                  />
-                  <p className="mt-2 text-red-700">{errors.options?.[index]?.feedback?.message}</p> */}
                   <Controller
                     name={`options[${index}].feedback` as any}
                     control={control}
-                    defaultValue={option.feedback}
                     render={({ field }) => (
                       <Editor
-                        value={field.value}
-                        init={handleEditorInit}
+                        // initialValue={field.value}
+                        // init={handleEditorInit}
+                        init={(editorInit: any) => handleEditorInit(editorInit, field.name)}
                         onEditorChange={content => {
-                          setEditorContent(content);
+                          // setEditorContent(content);
+                          setEditorContent({ ...editorContent, [field.name]: content });
                           field.onChange(content);
                         }}
                       />
                     )}
                   />
+
                   <p className="mt-2 text-red-700">{errors.options?.[index]?.feedback?.message}</p>
                 </div>
+                {/* <div className="flex justify-between">
+                  <div></div>
+                  <Button
+                    onClick={() => handleDeleteOption(option.name)}
+                    color="error"
+                    variant="contained"
+                    sx={{ textTransform: "none" }}
+                  >
+                    Delete
+                  </Button>
+                </div> */}
               </Box>
             </>
           ))}
           <div className="flex justify-between">
             <div></div>
-            <LoadingButton
-              loading={false}
-              loadingPosition="start"
-              startIcon={<SaveIcon />}
-              variant="contained"
-              type="submit"
-              color="error"
-            >
-              Save
-            </LoadingButton>
+            <div>
+              {question?.data ? (
+                <LoadingButton
+                  loading={updateMutating}
+                  loadingPosition="start"
+                  startIcon={<SaveIcon />}
+                  variant="contained"
+                  type="submit"
+                  color="error"
+                >
+                  Update
+                </LoadingButton>
+              ) : (
+                <LoadingButton
+                  loading={postMutating}
+                  loadingPosition="start"
+                  startIcon={<SaveIcon />}
+                  variant="contained"
+                  type="submit"
+                  color="error"
+                >
+                  Save
+                </LoadingButton>
+              )}
+            </div>
           </div>
         </Box>
       </form>

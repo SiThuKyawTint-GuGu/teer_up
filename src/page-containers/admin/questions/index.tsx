@@ -16,7 +16,7 @@ const Questions: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [id, setId] = useState<string>("");
   const { data: questions, isLoading } = useGetQuestion<QuestionResponse>();
-  console.log(questions);
+  // console.log(questions);
   const { trigger: deleteTrigger } = useDeleteQuestion();
 
   const columns = useMemo(
@@ -62,12 +62,6 @@ const Questions: React.FC = () => {
     setOpen(false);
     await deleteTrigger({ id });
   };
-  // const openDeleteConfirmModal = async (row: MRT_Row<any>) => {
-  //   const { id } = row;
-  //   if (window.confirm("Are you sure you want to delete this content?")) {
-  //     await deleteTrigger({ id });
-  //   }
-  // };
 
   const table = useMaterialReactTable({
     columns,
