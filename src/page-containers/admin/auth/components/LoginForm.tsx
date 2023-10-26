@@ -3,13 +3,13 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
-import { Button } from "@/components/ui/Button";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/Form";
-import { InputText } from "@/components/ui/Inputs";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form";
 
 import { useUserLogin } from "@/services/user";
 import { setUserInfo } from "@/utils/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { TextField } from "@mui/material";
 
 const validationSchema = yup.object({
   email: yup.string().email().required("Email address is required!"),
@@ -36,7 +36,7 @@ const LoginForm = () => {
 
   return (
     <>
-      <div className="flex flex-col h-screen justify-center">
+      <div className="flex flex-col h-screen justify-center w-[330px]">
         <h2 className="text-3xl mb-10 font-medium" style={{ color: "#da291c" }}>
           Sign In
         </h2>
@@ -48,9 +48,15 @@ const LoginForm = () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email Address</FormLabel>
                   <FormControl>
-                    <InputText placeholder="Email Address" {...field} />
+                    <TextField
+                      label="Email Address"
+                      size="medium"
+                      className="w-full"
+                      variant="outlined"
+                      autoComplete="false"
+                      {...field}
+                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -60,16 +66,34 @@ const LoginForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <InputText type="password" placeholder="Password" {...field} />
+                    <TextField
+                      type="password"
+                      label="Password"
+                      size="medium"
+                      className="w-full"
+                      variant="outlined"
+                      autoComplete="false"
+                      {...field}
+                    />
                   </FormControl>
                 </FormItem>
               )}
             />
-            <Button className="p-2 mt-[50px] rounded-md bg-red-700 w-full text-white" type="submit">
+            <LoadingButton
+              sx={{
+                width: "100%",
+              }}
+              type="submit"
+              variant="contained"
+              size="large"
+              loading={isMutating}
+            >
               Submit
-            </Button>
+            </LoadingButton>
+            {/* <Button className="p-2 mt-[50px] rounded-md bg-red-700 w-full text-white" type="submit">
+              Submit
+            </Button> */}
           </form>
         </Form>
       </div>
