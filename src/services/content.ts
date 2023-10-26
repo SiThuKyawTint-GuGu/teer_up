@@ -104,12 +104,31 @@ export const useSaveContent = () =>
     return appAxios.post(`${url}/${arg.id}`, arg);
   });
 
+// const getKey = (pageIndex: number) => {
+//   return `/demo?page=${pageIndex + 1}`;
+// };
+
+// const { data, isLoading } = useSWRInfinite(getKey, {
+//   revalidateFirstPage: false,
+//   revalidateAll: true,
+//   parallel: true,
+// });
+
+// const demos: Demo[] = useMemo(
+//   () => data?.flatMap((page) => page?.data) || [],
+//   [data]
+// );
+
 export const useGetComment = <ParamsType>(
   id: number | string,
   params?: ParamsType
 ): SWRInfiniteResponse => {
   const getKey = () => `/content/${id}/comments?${routeFilter(params)}`;
-  return useSWRInfinite<CommentResponse>(getKey);
+  return useSWRInfinite<CommentResponse>(getKey, {
+    revalidateFirstPage: false,
+    revalidateAll: true,
+    parallel: true,
+  });
 };
 
 export const useGetContentBySlug = <ContentData>(slug: string): SWRResponse => {
@@ -124,3 +143,15 @@ export const useGetSavedContents = <ParamsType, SavedContentResponse>(
 ): SWRResponse<SavedContentResponse, any> => {
   return useSWR<SavedContentResponse>(`/content/save?${routeFilter(params)}`);
 };
+
+type PostOnBoardingArg = {
+  arg: {
+    question_id: string | number;
+    option_id: string | number;
+  };
+};
+
+export const usePostOnboarding = () =>
+  useSWRMutation(`/user/onboarding`, (url, { arg }: PostOnBoardingArg) => {
+    return appAxios.post(url, arg);
+  });

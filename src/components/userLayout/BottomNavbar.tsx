@@ -10,7 +10,7 @@ const BottomNavbar = () => {
 
   return (
     <Flex
-      className="bg-white w-full max-w-[400px] mx-auto z-[999999]"
+      className="bg-white w-full max-w-[400px] mx-auto z-[9]"
       align="center"
       justify="between"
       position="fixed"

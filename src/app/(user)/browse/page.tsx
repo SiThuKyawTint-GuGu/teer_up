@@ -1,15 +1,12 @@
-import BottomNavbar from "@/components/userLayout/BottomNavbar";
-import Header from "@/components/userLayout/Header";
+import MainPageLayout from "@/components/userLayout/MainPageLayout";
 import BrowsePage from "@/page-containers/user/browse";
 import { NextPage } from "next";
 
 const Browse: NextPage = () => {
   return (
-    <>
-      <Header />
+    <MainPageLayout>
       <BrowsePage />
-      <BottomNavbar />
-    </>
+    </MainPageLayout>
   );
 };
 

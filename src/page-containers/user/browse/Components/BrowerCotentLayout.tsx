@@ -48,7 +48,6 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ children, data, co
                   type="video/mp4"
                 ></source>
               </video>
-              <div className="video-text-container">{data.title}</div>
             </div>
           ) : (
             <Image

@@ -10,7 +10,7 @@ export type ParamsType = {
   page?: number;
   pageSize?: number;
   name?: string;
-  role?: USER_ROLE;
+  role?: USER_ROLE[];
   cursor?: number;
 };
 
@@ -40,6 +40,7 @@ export const useCreateUser = () =>
 interface UpdateUserResType {
   arg: {
     name: string;
+    role: string;
     id: string;
   };
 }
@@ -139,3 +140,16 @@ export const useUploadProfile = () =>
       },
     });
   });
+
+export const useUpdateProfileIndustry = () =>
+  useSWRMutation(`/user/profile/industries`, (url, { arg }: { arg: { industry_id: number } }) => {
+    return appAxios.put<{ arg: { industry_id: number } }>(url, arg);
+  });
+
+export const useUpdateProfilePreference = () =>
+  useSWRMutation(
+    `/user/profile/preferences`,
+    (url, { arg }: { arg: { preference_id: number } }) => {
+      return appAxios.put<{ arg: { preference_id: number } }>(url, arg);
+    }
+  );
