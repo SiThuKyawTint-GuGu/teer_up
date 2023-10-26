@@ -261,7 +261,7 @@ const ProfileEdit: React.FC = () => {
                 height={20}
                 alt={profileTrigger[triggerType as PROFILE_TRIGGER]}
               />
-              <Text>{profileTrigger[triggerType as PROFILE_TRIGGER]}</Text>
+              <Text className="text-black">{profileTrigger[triggerType as PROFILE_TRIGGER]}</Text>
             </Flex>
           </Box>
         </DialogContent>

@@ -214,21 +214,8 @@ const Profile: React.FC = () => {
                 height={20}
                 alt={profileTrigger[triggerType as PROFILE_TRIGGER]}
               />
-              <Text>{profileTrigger[triggerType as PROFILE_TRIGGER]}</Text>
+              <Text className="text-black">{profileTrigger[triggerType as PROFILE_TRIGGER]}</Text>
             </Flex>
-            {/* <Flex
-              justify="start"
-              align="center"
-              className="pb-[20px] mb-[20px] border-b border-b-[#BDC7D5] gap-[10px]"
-            >
-              <Image
-                src="/uploads/icons/select-profile.svg"
-                width={20}
-                height={20}
-                alt="select profile"
-              />
-              <Text>Select profile picture</Text>
-            </Flex> */}
           </Box>
         </DialogContent>
       </Dialog>
