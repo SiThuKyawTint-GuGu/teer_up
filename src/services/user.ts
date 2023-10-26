@@ -10,7 +10,7 @@ export type ParamsType = {
   page?: number;
   pageSize?: number;
   name?: string;
-  role?: USER_ROLE;
+  role?: USER_ROLE[];
   cursor?: number;
 };
 
@@ -40,6 +40,7 @@ export const useCreateUser = () =>
 interface UpdateUserResType {
   arg: {
     name: string;
+    role: string;
     id: string;
   };
 }
