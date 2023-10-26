@@ -58,7 +58,7 @@ const EditEducation: React.FC = () => {
     };
     await trigger(newData, {
       onSuccess: () => {
-        router.push(`/profile/${id}/educations`);
+        router.push(`/profile/${id}/education`);
       },
     });
   };
