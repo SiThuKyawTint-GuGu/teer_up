@@ -44,7 +44,7 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
 
   return (
     <Dialog open={openModal} onOpenChange={val => setOpenModal(val)}>
-      <div className="w-full h-full">
+      <div className="w-full h-[100%]">
         <div className="w-full mx-auto relative p-2">
           <Link href={redir}>
             <Image
@@ -60,7 +60,7 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
             {data.type}
           </div>
         </div>
-        <div className="w-full h-full bg-white">
+        <div className="w-full  bg-white">
           <CardBox className="w-full px-3">
             <h1 className="font-[700] text-[24px]">{data.title}</h1>
             <div>

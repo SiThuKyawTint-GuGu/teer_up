@@ -14,7 +14,6 @@ const Layout = ({ children }: Props) => {
       <Head>
         <title>TeeUp</title>
         <link rel="icon" href="/teeup.svg" />
-        {/* Add any other meta tags, styles, or scripts as needed */}
       </Head>
       <Grid columns="1">
         <VerifyPop />
