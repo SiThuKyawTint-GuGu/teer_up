@@ -44,7 +44,7 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
 
   return (
     <Dialog open={openModal} onOpenChange={val => setOpenModal(val)}>
-      <div className="w-full h-[100%]">
+      <div className="w-full h-[35vh] justify-start flex-col">
         <div className="w-full mx-auto relative p-2">
           <Link href={redir}>
             <Image
@@ -60,27 +60,29 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
             {data.type}
           </div>
         </div>
-        <div className="w-full  bg-white">
-          <CardBox className="w-full px-3">
-            <h1 className="font-[700] text-[24px]">{data.title}</h1>
-            <div>
+        <div className="w-full h-full bg-white">
+          <CardBox className="w-full h-full px-3">
+            <div className="flex flex-col justify-between w-full h-full">
               <Link href={redir}>
-                <div className="mt-2 cursor-pointer  h-full w-full flex justify-between flex-col">
-                  {data.description && (
-                    <div className="w-full h-full">
-                      <div className="flex flex-col w-full h-[40vh]">
-                        <Text>
-                          {data.description.slice(0, 100)}
+                <h1 className="font-[700] text-[24px]">{data.title}</h1>
+                {data.description && (
+                  <div className="w-full h-full">
+                    <div className="flex flex-col w-full">
+                      <Text>
+                        {data.description.slice(0, 100)}
 
-                          {data.description.length > 100 && (
-                            <Text as="span" className="text-primary">
-                              {"..."}See more
-                            </Text>
-                          )}
-                        </Text>
-                      </div>
+                        {data.description.length > 100 && (
+                          <Text as="span" className="text-primary">
+                            {"..."}See more
+                          </Text>
+                        )}
+                      </Text>
                     </div>
-                  )}
+                  </div>
+                )}
+              </Link>
+              <div>
+                <div className="mt-2 cursor-pointer  w-full flex justify-between flex-col">
                   {data.type === "event" && (
                     <Button onClick={() => router.push(redir)}>Join Now</Button>
                   )}
@@ -91,46 +93,46 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
                     <Button onClick={() => router.push(redir)}>Join Now</Button>
                   )}
                 </div>
-              </Link>
-            </div>
-            <div className="flex justify-between p-3 w-full">
-              <div className="flex items-center flex-wrap gap-x-[10px]" onClick={likePost}>
-                {data.is_liked ? (
-                  <Icons.likefill className="w-[20px] h-[20px] text-primary" />
-                ) : (
-                  <Icons.like className="w-[20px] h-[20px]" />
-                )}
-                <div>
-                  {""}
-                  {data.likes}
-                </div>
-              </div>
-              <DialogTrigger>
-                <div className="flex items-center flex-wrap gap-x-[10px]">
-                  <Icons.comment className="w-[20px] h-[20px]" />
-                  <div>
-                    {""}
-                    {data.comments}
+                <div className="flex justify-between p-3 w-full">
+                  <div className="flex items-center flex-wrap gap-x-[10px]" onClick={likePost}>
+                    {data.is_liked ? (
+                      <Icons.likefill className="w-[20px] h-[20px] text-primary" />
+                    ) : (
+                      <Icons.like className="w-[20px] h-[20px]" />
+                    )}
+                    <div>
+                      {""}
+                      {data.likes}
+                    </div>
                   </div>
-                </div>
-              </DialogTrigger>
-              <div className="flex items-center flex-wrap gap-x-[10px]" onClick={saveContent}>
-                {data.is_saved ? (
-                  <Icons.savedFill className="w-[20px] h-[20px] text-yellow-400" />
-                ) : (
-                  <Icons.saved className="w-[20px] h-[20px]" />
-                )}
+                  <DialogTrigger>
+                    <div className="flex items-center flex-wrap gap-x-[10px]">
+                      <Icons.comment className="w-[20px] h-[20px]" />
+                      <div>
+                        {""}
+                        {data.comments}
+                      </div>
+                    </div>
+                  </DialogTrigger>
+                  <div className="flex items-center flex-wrap gap-x-[10px]" onClick={saveContent}>
+                    {data.is_saved ? (
+                      <Icons.savedFill className="w-[20px] h-[20px] text-yellow-400" />
+                    ) : (
+                      <Icons.saved className="w-[20px] h-[20px]" />
+                    )}
 
-                <div>
-                  {""}
-                  {data.saves}
-                </div>
-              </div>
-              <div className="flex items-center flex-wrap gap-x-1">
-                <Icons.share className="w-[20px] h-[20px]" />
-                <div>
-                  {""}
-                  Share
+                    <div>
+                      {""}
+                      {data.saves}
+                    </div>
+                  </div>
+                  <div className="flex items-center flex-wrap gap-x-1">
+                    <Icons.share className="w-[20px] h-[20px]" />
+                    <div>
+                      {""}
+                      Share
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
