@@ -51,26 +51,10 @@ const QuestionDetail = ({ id }: Props) => {
   const { trigger: postTrigger, isMutating: postMutating } = usePostQuestion();
   const { trigger: updateTrigger, isMutating: updateMutating } = useUpdateQuestion(id);
   const [editor, setEditor] = useState<any>(null);
-  // const [initialFeedbackValues, setInitialFeedbackValues] = useState<string[]>([]);
-
   const [editorContent, setEditorContent] = useState<any>({});
 
-  // const handleEditorInit = (editor: any, name: string) => {
-  //   setEditor(editor);
-  //   editor.setContent(editorContent);
-  //   // editor.setContent(editorContent[name] || "");
-  // };
   const handleEditorInit = (editor: any, name: string) => {
     setEditor(editor);
-    // If you have initial content available in your data
-    // if (question?.data) {
-    //   const initialContent = question.data.options.find((option: any) => option.name === name)
-    //     ?.feedback;
-    //   if (editor) {
-    //     editor.setContent(initialContent || ""); // Set the initial content
-    //     setEditorContent({ ...editorContent, [name]: initialContent || "" });
-    //   }
-    // }
   };
 
   const {
@@ -88,19 +72,17 @@ const QuestionDetail = ({ id }: Props) => {
       editor?.setContent(editorContent);
     }
     if (question?.data) {
-      question.data.options.forEach((option: any) => {
-        if (option.name in editorContent) {
+      question.data.options.forEach((option: any, index: number) => {
+        const optionName = `options[${index}].feedback`;
+        if (optionName in editorContent) {
           return;
         }
         const initialContent = option.feedback || "";
-        console.log(`Setting content for option "${option.name}": ${initialContent}`);
 
-        // if (editor) {
-        console.log(".........editor", initialContent);
-        editor?.setContent(initialContent);
-        setEditorContent({ ...editorContent, [option.name]: initialContent });
-        console.log("eidtor content", editorContent);
-        // }
+        if (editor) {
+          editor.setContent(initialContent);
+        }
+        setEditorContent({ ...editorContent, [optionName]: initialContent });
       });
     }
 
@@ -118,21 +100,8 @@ const QuestionDetail = ({ id }: Props) => {
         feedback: opt.feedback,
       }));
       setValue("options", updateOptions);
-      // setInitialFeedbackValues(updateOptions.map((option: any) => option.feedback || ""));
-
-      // console.log("options", updateOptions);
       setOptions(updateOptions);
-
-      // question.data.options.forEach((option: any) => {
-      //   // console.log("editor content", option.feedback);
-      //   // if (editor) {
-
-      //   editor?.setContent(option.feedback || ""); // Set the editor content
-      //   setEditorContent({ ...editorContent, [option.name]: option.feedback || "" });
-      //   // }
-      // });
     }
-    // console.log("editor content", editorContent);
   }, [question?.data, setValue, editor, editorContent]);
 
   const handleDimensionChange = (event: SelectChangeEvent) => {
@@ -152,6 +121,8 @@ const QuestionDetail = ({ id }: Props) => {
     setOptions(updatedOptions);
   };
 
+  console.log("option......", options);
+
   const Submit = async (data: any) => {
     const newData = data.options.map((item: any, index: number) => {
       const newItem = { ...item };
@@ -166,8 +137,7 @@ const QuestionDetail = ({ id }: Props) => {
       return newItem;
     });
     data.options = newData;
-
-    console.log("new data", newData);
+    console.log(data);
     // const filteredOptions = data.options.filter((item: any) =>
     //   options.some((opt: any) => opt.name === item.name)
     // );
@@ -294,7 +264,7 @@ const QuestionDetail = ({ id }: Props) => {
                     control={control}
                     render={({ field }) => (
                       <Editor
-                        // initialValue={field.value}
+                        value={editorContent[field.name] || ""}
                         init={(editorInit: any) => handleEditorInit(editorInit, field.name)}
                         onEditorChange={content => {
                           setEditorContent({ ...editorContent, [field.name]: content });
