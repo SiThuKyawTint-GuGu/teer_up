@@ -9,7 +9,7 @@ import { Icons } from "../ui/Images";
 import Modal from "../ui/Modal";
 import { Text } from "../ui/Typo/Text";
 
-const VerfiyPop: React.FC = () => {
+const VerifyPop: React.FC = () => {
   const { openVerifyModal, verifyModalCloseHandler } = useVerifyModal();
   const router = useRouter();
   console.log(openVerifyModal);
@@ -42,4 +42,4 @@ const VerfiyPop: React.FC = () => {
   );
 };
 
-export default VerfiyPop;
+export default VerifyPop;

@@ -1,4 +1,4 @@
-import VerfiyPop from "@/components/auth/VerfiyPop";
+import VerfiyPop from "@/components/auth/VerifyPop";
 import { useVerifyModal } from "@/store/authStore";
 import { Grid } from "@radix-ui/themes";
 import Head from "next/head";
