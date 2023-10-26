@@ -10,6 +10,7 @@ type OnboardingProps = {
 };
 const Onboarding: React.FC<OnboardingProps> = ({ data }) => {
   const [option, setOption] = useState<OnBoardingOption | null>(null);
+  const [modalOpen, setOpenModal] = useState<boolean>(false);
   const { trigger } = usePostOnboarding();
 
   return (
@@ -66,6 +67,8 @@ const Onboarding: React.FC<OnboardingProps> = ({ data }) => {
         </CardBox>
         <div className="py-4 text-center font-[300] w-full">Swipe up for more</div>
       </div>
+      {/* {modalOpen && <Modal onClose={()=>setOpenModal()
+      }>{option && option.feedback}</Modal>} */}
     </QuestionPageCard>
   );
 };
