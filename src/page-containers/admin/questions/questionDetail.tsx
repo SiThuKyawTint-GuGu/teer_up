@@ -51,15 +51,27 @@ const QuestionDetail = ({ id }: Props) => {
   const { trigger: postTrigger, isMutating: postMutating } = usePostQuestion();
   const { trigger: updateTrigger, isMutating: updateMutating } = useUpdateQuestion(id);
   const [editor, setEditor] = useState<any>(null);
-  const [initialFeedbackValues, setInitialFeedbackValues] = useState<string[]>([]);
+  // const [initialFeedbackValues, setInitialFeedbackValues] = useState<string[]>([]);
 
   const [editorContent, setEditorContent] = useState<any>({});
 
+  // const handleEditorInit = (editor: any, name: string) => {
+  //   setEditor(editor);
+  //   editor.setContent(editorContent);
+  //   // editor.setContent(editorContent[name] || "");
+  // };
   const handleEditorInit = (editor: any, name: string) => {
     setEditor(editor);
-    editor.setContent(editorContent);
+    // If you have initial content available in your data
+    // if (question?.data) {
+    //   const initialContent = question.data.options.find((option: any) => option.name === name)
+    //     ?.feedback;
+    //   if (editor) {
+    //     editor.setContent(initialContent || ""); // Set the initial content
+    //     setEditorContent({ ...editorContent, [name]: initialContent || "" });
+    //   }
+    // }
   };
-  // editor.setContent(editorContent[name] || "");
 
   const {
     register,
@@ -72,6 +84,26 @@ const QuestionDetail = ({ id }: Props) => {
   });
 
   useEffect(() => {
+    if (editor) {
+      editor?.setContent(editorContent);
+    }
+    if (question?.data) {
+      question.data.options.forEach((option: any) => {
+        if (option.name in editorContent) {
+          return;
+        }
+        const initialContent = option.feedback || "";
+        console.log(`Setting content for option "${option.name}": ${initialContent}`);
+
+        // if (editor) {
+        console.log(".........editor", initialContent);
+        editor?.setContent(initialContent);
+        setEditorContent({ ...editorContent, [option.name]: initialContent });
+        console.log("eidtor content", editorContent);
+        // }
+      });
+    }
+
     if (question?.data) {
       setValue("name", question?.data?.name);
       setValue("type", question?.data?.type);
@@ -86,11 +118,21 @@ const QuestionDetail = ({ id }: Props) => {
         feedback: opt.feedback,
       }));
       setValue("options", updateOptions);
-      setInitialFeedbackValues(updateOptions.map((option: any) => option.feedback || ""));
+      // setInitialFeedbackValues(updateOptions.map((option: any) => option.feedback || ""));
 
       // console.log("options", updateOptions);
       setOptions(updateOptions);
+
+      // question.data.options.forEach((option: any) => {
+      //   // console.log("editor content", option.feedback);
+      //   // if (editor) {
+
+      //   editor?.setContent(option.feedback || ""); // Set the editor content
+      //   setEditorContent({ ...editorContent, [option.name]: option.feedback || "" });
+      //   // }
+      // });
     }
+    // console.log("editor content", editorContent);
   }, [question?.data, setValue, editor, editorContent]);
 
   const handleDimensionChange = (event: SelectChangeEvent) => {
@@ -111,18 +153,32 @@ const QuestionDetail = ({ id }: Props) => {
   };
 
   const Submit = async (data: any) => {
-    console.log(data);
+    const newData = data.options.map((item: any, index: number) => {
+      const newItem = { ...item };
+
+      // Check if there is a replacement feedback value for this item
+      const replacementKey = `options[${index}].feedback`;
+      if (editorContent[replacementKey] !== undefined) {
+        // If a replacement exists, update the feedback property
+        newItem.feedback = editorContent[replacementKey];
+      }
+
+      return newItem;
+    });
+    data.options = newData;
+
+    console.log("new data", newData);
     // const filteredOptions = data.options.filter((item: any) =>
     //   options.some((opt: any) => opt.name === item.name)
     // );
-
     // data.options = filteredOptions;
-    // if (question?.data) {
-    //   await updateTrigger(data);
-    // } else {
-    //   await postTrigger(data);
-    // }
-    // router.push("/admin/setting/questions");
+
+    if (question?.data) {
+      await updateTrigger(data);
+    } else {
+      await postTrigger(data);
+    }
+    router.push("/admin/setting/questions");
   };
 
   return (
@@ -239,10 +295,8 @@ const QuestionDetail = ({ id }: Props) => {
                     render={({ field }) => (
                       <Editor
                         // initialValue={field.value}
-                        // init={handleEditorInit}
                         init={(editorInit: any) => handleEditorInit(editorInit, field.name)}
                         onEditorChange={content => {
-                          // setEditorContent(content);
                           setEditorContent({ ...editorContent, [field.name]: content });
                           field.onChange(content);
                         }}
