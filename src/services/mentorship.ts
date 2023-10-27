@@ -2,7 +2,6 @@ import appAxios from "@/lib/appAxios";
 import { routeFilter } from "@/utils";
 import useSWR, { SWRResponse } from "swr";
 import useSWRMutation from "swr/mutation";
-("use client");
 
 export type ParamsType = {
   page: number;
