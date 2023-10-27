@@ -106,7 +106,10 @@ const InputTextArea = React.forwardRef<HTMLInputElement, Props>(
         </label>
         <div className="relative mt-1 rounded-md">
           <TextArea
-            className={cn("w-full rounded-[8px] bg-[#5b6770] bg-opacity-10 font-light", className)}
+            className={cn(
+              "w-full rounded-[8px] bg-[#5b6770] bg-opacity-10 font-regular",
+              className
+            )}
             placeholder={placeholder}
             defaultValue={defaultValue || ""}
             size="3"
@@ -131,6 +134,9 @@ const InputStyled = styled.div<{ inputType: USER_ROLE }>`
       css`
         /* box-shadow: 0px 26px 30px 0px rgba(0, 0, 0, 0.05); */
       `}
+  }
+  & textarea {
+    font-size: 14px;
   }
   & .rt-TextFieldChrome,
   .rt-TextAreaChrome {

@@ -12,7 +12,7 @@ const RequestMentorship = () => {
     <Grid>
       <Box>
         <Section p="0" mx="3" my="6">
-          <CardBox p="4" className="space-y-[16px]">
+          <CardBox p="4" className="space-y-[16px] bg-white">
             <Heading as="h4" size="4">
               Mentorship session with{" "}
               <Text as="span" className="text-primary">
@@ -21,18 +21,20 @@ const RequestMentorship = () => {
             </Heading>
             <div>
               <Flex justify="start" align="center">
-                <Text className="w-1/4">Status:</Text>
-                <Text className=" w-3/4">Accepted</Text>
+                <Text className="w-1/4 font-light">Status:</Text>
+                <Text className="px-4 py-1 border-2 border-[#AADF9F] bg-[#E4F5E1] text-black rounded-full">
+                  Accepted
+                </Text>
               </Flex>
               <Flex justify="start" align="center">
-                <Text className="w-1/4">Student:</Text>
-                <Text className=" w-3/4">
+                <Text className="w-1/4 font-light">Student:</Text>
+                <Text className="w-3/4">
                   Lorem ipsum do amet ipsum mattis ipsum dolor sit am Lorem ipsum do amet ipsum{" "}
                 </Text>
               </Flex>
               <Flex justify="start" align="center">
-                <Text className="w-1/4">Mentor:</Text>
-                <Text className=" w-3/4">
+                <Text className="w-1/4 font-light">Mentor:</Text>
+                <Text className="w-3/4">
                   Lorem ipsum do amet ipsum mattis ipsum dolor sit am Lorem ipsum do amet ipsum{" "}
                 </Text>
               </Flex>
@@ -40,7 +42,8 @@ const RequestMentorship = () => {
                 <Flex justify="start" align="center" direction="column" gap="2">
                   <InputTextArea
                     inputType={USER_ROLE.ADMIN}
-                    defaultValue="Enter message for student"
+                    className="text-sm h-[130px]"
+                    placeholder="Enter message for student"
                   />
                   <Flex align="start" gap="1">
                     <Icons.inputError className="w-[20px] h-[20px]" />
