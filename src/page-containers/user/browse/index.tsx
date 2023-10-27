@@ -18,8 +18,8 @@ const BrowsePage = () => {
   });
 
   return (
-    <>
-      <Flex className="p-3  w-full overflow-auto">
+    <div className="relative w-full h-full">
+      <Flex className="p-3 w-full  overflow-auto no-scrollbar relative">
         {BrowsePageHeader.map((data: HeaderType, index: number) => (
           <div key={index} onClick={() => setType(data.value)} className="cursor-pointer">
             <Text
@@ -38,7 +38,7 @@ const BrowsePage = () => {
             (contentArray: ContentType, index: number) =>
               contentArray.data &&
               contentArray.data.length > 0 && (
-                <div className="w-full h-[85vh] overflow-y-scroll" key={index}>
+                <div className="w-full h-full overflow-y-scroll no-scrollbar" key={index}>
                   {contentArray.data.map((contentData: ContentData, index: number) => (
                     <div key={index} className="w-full">
                       {contentData.type !== "onboarding" && (
@@ -66,7 +66,7 @@ const BrowsePage = () => {
               )
           )}
       </Flex>
-    </>
+    </div>
   );
 };
 
