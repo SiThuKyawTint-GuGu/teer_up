@@ -17,7 +17,9 @@ const Layout = ({ children }: Props) => {
       </Head>
       <Grid columns="1">
         <VerifyPop />
-        <div className="max-w-[400px] w-full mx-auto py-[50px] h-full relative">{children}</div>
+        <div className="max-w-[400px] w-full mx-auto py-[30px] overflow-auto no-scrollbar relative">
+          {children}
+        </div>
       </Grid>
     </>
   );
