@@ -1,4 +1,5 @@
 "use client";
+import { useWindowSize } from "@/hooks/useWindowSize";
 import { ParamsType, useDeleteContent, useGetContent } from "@/services/content";
 import { ContentType } from "@/types/Content";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -24,17 +25,15 @@ const ContentTable: React.FC = () => {
   const [globalFilter, setGlobalFilter] = useState<string>("");
   const [open, setOpen] = useState<boolean>(false);
   const [id, setId] = useState<string>("");
-  const {
-    data: contents,
-    isLoading,
-    mutate,
-  } = useGetContent<ParamsType, ContentType>({
+  const { data: contents, isLoading } = useGetContent<ParamsType, ContentType>({
     page: pagination.pageIndex + 1,
     pagesize: pagination.pageSize,
     name: globalFilter || "",
   });
   // console.log(contents);
   const { trigger: deleteTrigger } = useDeleteContent();
+  const { windowHeight } = useWindowSize();
+  const height = windowHeight - 100 + "px";
 
   const columns = useMemo(
     () => [
@@ -84,13 +83,6 @@ const ContentTable: React.FC = () => {
     await deleteTrigger({ id });
   };
 
-  // const openDeleteConfirmModal = async (row: MRT_Row<any>) => {
-  //   const { id } = row;
-  //   if (window.confirm("Are you sure you want to delete this content?")) {
-  //     await deleteTrigger({ id });
-  //   }
-  // };
-
   const table = useMaterialReactTable({
     columns,
     data: (contents?.data as any) || [],
@@ -106,7 +98,7 @@ const ContentTable: React.FC = () => {
       : undefined,
     muiTableContainerProps: {
       sx: {
-        minHeight: "300px",
+        maxHeight: height,
       },
     },
     positionActionsColumn: "last",
@@ -140,7 +132,6 @@ const ContentTable: React.FC = () => {
         <Tooltip title="Delete">
           <IconButton
             color="error"
-            // onClick={() => openDeleteConfirmModal(row)}
             onClick={() => {
               setId(row.id);
               setOpen(true);
