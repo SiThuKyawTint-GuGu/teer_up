@@ -38,9 +38,9 @@ const SignUp = () => {
     resolver: yupResolver(validationSchema),
   });
 
-  const [ispending, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition();
 
-  const { isMutating, trigger, error } = useUserRegister();
+  const { trigger, error, isMutating } = useUserRegister();
   const onSubmit = async (data: SignUpFormType) => {
     await trigger(data, {
       onSuccess: response => {
@@ -134,7 +134,7 @@ const SignUp = () => {
                 </Text>
               </Text>
             </Flex>
-            <Button type="submit" size="lg" className="mt-5" disabled={ispending}>
+            <Button type="submit" size="lg" className="mt-5" disabled={isPending || isMutating}>
               Sign Up
             </Button>
           </form>

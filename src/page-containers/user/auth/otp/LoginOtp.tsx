@@ -20,8 +20,8 @@ interface OtpFormData {
 }
 const LoginOtp = () => {
   const router = useRouter();
-  const { trigger: verified, error } = useOtpVerified();
-  const [ispending, startTransition] = useTransition();
+  const { trigger: verified, error, isMutating } = useOtpVerified();
+  const [isPending, startTransition] = useTransition();
 
   const form = useForm({
     resolver: yupResolver(validationSchema),
@@ -67,7 +67,7 @@ const LoginOtp = () => {
               )}
             />
 
-            <Button type="submit" disabled={ispending} size="lg">
+            <Button type="submit" disabled={isPending || isMutatingx} size="lg">
               Login
             </Button>
           </form>

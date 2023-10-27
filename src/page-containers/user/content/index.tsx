@@ -5,7 +5,6 @@ import { ContentData, ContentType } from "@/types/Content";
 import Loading from "@/app/loading";
 import Video from "@/page-containers/user/content/components/Video";
 import { useGetContentInfinite } from "@/services/content";
-import { useVerifyModal } from "@/store/authStore";
 import { useEffect, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ContentLayout from "./components/ContentLayout";
@@ -14,7 +13,6 @@ import Onboarding from "./components/Onboarding";
 const UserContent = () => {
   const [page, setPage] = useState<number>(1);
   const videoRefs = useRef<HTMLVideoElement[]>([]);
-  const { verifyModalOpenHandler } = useVerifyModal();
 
   const { data, mutate, isLoading } = useGetContentInfinite<ParamsType>({
     page: page,
@@ -87,7 +85,7 @@ const UserContent = () => {
   const hasMoreData = (contentData: ContentType) => {
     return contentData.total > contentData.current_page * contentData.per_page;
   };
-  mutate();
+
   return (
     <>
       {isLoading ? (

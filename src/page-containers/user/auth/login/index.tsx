@@ -11,6 +11,7 @@ import { Text } from "@/components/ui/Typo/Text";
 import { useUserLogin } from "@/services/user";
 import { setUserInfo } from "@/utils/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useTransition } from "react";
 
 const validationSchema = yup.object({
   email: yup.string().email().required("Email is required!").default(""),
@@ -29,12 +30,15 @@ const Login = () => {
   });
 
   const { isMutating, trigger, error } = useUserLogin();
+  const [isPending, startTransition] = useTransition();
 
   const loginHandler = async (data: Login) => {
     await trigger(data, {
       onSuccess: res => {
         setUserInfo(res.data.token, res.data.data);
-        router.push("/auth/otp");
+        startTransition(() => {
+          router.push("/auth/otp");
+        });
       },
     });
   };
@@ -72,7 +76,7 @@ const Login = () => {
               </Text>
             </div>
 
-            <Button type="submit" size="lg" disabled={isMutating}>
+            <Button type="submit" size="lg" disabled={isPending || isMutating}>
               Send OTP
             </Button>
           </form>
