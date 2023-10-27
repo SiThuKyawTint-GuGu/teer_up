@@ -42,6 +42,7 @@ const ContentTable: React.FC = () => {
         accessorKey: "id",
         header: "ID",
         enableEditing: false,
+        size: 2,
       },
       {
         accessorKey: "title",
@@ -58,6 +59,7 @@ const ContentTable: React.FC = () => {
         accessorKey: "type",
         header: "Type",
         enableEditing: false,
+        size: 3,
       },
       // {
       //   accessorKey: "keywords",
@@ -69,6 +71,7 @@ const ContentTable: React.FC = () => {
         accessorKey: "created_at",
         header: "Created At",
         enableEditing: false,
+        size: 3,
         Cell: ({ value }: any) => dayjs(value).format("YYYY-MM-DD"),
       },
     ],
