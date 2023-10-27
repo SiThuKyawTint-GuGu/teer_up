@@ -26,8 +26,16 @@ export const menuList: Menu[] = [
     icon: <Icons.contents className="w-[20px] h-[20px]" />,
     title: "Contents",
     child: [
-      { key: "/admin/contents/content", title: "Content" },
-      { key: "/admin/contents/category", title: "Category" },
+      {
+        key: "/admin/contents/content",
+        title: "Content",
+        icon: <Icons.content className="w-[20px] h-[20px]" />,
+      },
+      {
+        key: "/admin/contents/category",
+        title: "Category",
+        icon: <Icons.category className="w-[20px] h-[20px]" />,
+      },
     ],
   },
   {
@@ -47,8 +55,16 @@ export const menuList: Menu[] = [
     icon: <Icons.blogs className="w-[20px] h-[20px]" />,
     title: "Blogs",
     child: [
-      { key: "/admin/blogs/category", title: "Category" },
-      { key: "/admin/blogs/posts", title: "Posts" },
+      {
+        key: "/admin/blogs/category",
+        title: "Category",
+        icon: <Icons.category className="w-[20px] h-[20px]" />,
+      },
+      {
+        key: "/admin/blogs/posts",
+        title: "Posts",
+        icon: <Icons.post className="w-[20px] h-[20px]" />,
+      },
     ],
   },
   {
@@ -61,10 +77,26 @@ export const menuList: Menu[] = [
 
     title: "Configurations",
     child: [
-      { key: "/admin/configs/industry", title: "Industry" },
-      { key: "/admin/configs/departments", title: "Departments" },
-      { key: "/admin/configs/preferences", title: "Preferences" },
-      { key: "/admin/configs/keywords", title: "Keywords" },
+      {
+        key: "/admin/configs/industry",
+        title: "Industry",
+        icon: <Icons.industry className="w-[20px] h-[20px]" />,
+      },
+      {
+        key: "/admin/configs/departments",
+        title: "Departments",
+        icon: <Icons.department className="w-[20px] h-[20px]" />,
+      },
+      {
+        key: "/admin/configs/preferences",
+        title: "Preferences",
+        icon: <Icons.preference className="w-[20px] h-[20px]" />,
+      },
+      {
+        key: "/admin/configs/keywords",
+        title: "Keywords",
+        icon: <Icons.keyword className="w-[20px] h-[20px]" />,
+      },
     ],
   },
   {
@@ -72,8 +104,16 @@ export const menuList: Menu[] = [
     icon: <Icons.setting1 className="w-[20px] h-[20px]" />,
     title: "Recommendation",
     child: [
-      { key: "/admin/setting/dimension", title: "Dimensions" },
-      { key: "/admin/setting/questions", title: "Questions" },
+      {
+        key: "/admin/setting/dimension",
+        title: "Dimensions",
+        icon: <Icons.dimension className="w-[20px] h-[20px]" />,
+      },
+      {
+        key: "/admin/setting/questions",
+        title: "Questions",
+        icon: <Icons.question className="w-[20px] h-[20px]" />,
+      },
     ],
   },
   {
@@ -90,10 +130,12 @@ export const menuList: Menu[] = [
       {
         key: "/admin/users/admin-list",
         title: "Admin",
+        icon: <Icons.admin className="w-[20px] h-[20px]" />,
       },
       {
         key: "/admin/users/user-list",
         title: "User",
+        icon: <Icons.userManagement className="w-[20px] h-[20px]" />,
       },
     ],
   },

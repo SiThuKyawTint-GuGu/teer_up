@@ -23,7 +23,6 @@ import Typography from "@mui/material/Typography";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import * as React from "react";
-import { MdStarBorder } from "react-icons/md";
 
 const drawerWidth = 245;
 
@@ -200,7 +199,8 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({
                   {each?.child?.map((child, childIdx) => (
                     <ListItemButton key={childIdx} sx={{ pl: 4 }}>
                       <ListItemIcon>
-                        <MdStarBorder />
+                        {/* <MdStarBorder /> */}
+                        {child.icon}
                       </ListItemIcon>
                       <Link href={child.key}>
                         <ListItemText primary={child.title} />
