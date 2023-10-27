@@ -106,7 +106,10 @@ const InputTextArea = React.forwardRef<HTMLInputElement, Props>(
         </label>
         <div className="relative mt-1 rounded-md">
           <TextArea
-            className={cn(className, inputType !== USER_ROLE.ADMIN ? "shadow-theme" : "")}
+            className={cn(
+              "w-full rounded-[8px] bg-[#5b6770] bg-opacity-10 font-regular",
+              className
+            )}
             placeholder={placeholder}
             defaultValue={defaultValue || ""}
             size="3"
@@ -124,6 +127,7 @@ InputTextArea.displayName = "InputTextArea";
 export { InputSearch, InputText, InputTextArea };
 
 const InputStyled = styled.div<{ inputType: USER_ROLE }>`
+  width: 100%;
   & input {
     ${({ inputType }) =>
       inputType !== USER_ROLE.ADMIN &&
@@ -131,7 +135,12 @@ const InputStyled = styled.div<{ inputType: USER_ROLE }>`
         /* box-shadow: 0px 26px 30px 0px rgba(0, 0, 0, 0.05); */
       `}
   }
-  & .rt-TextFieldChrome {
+  & textarea {
+    font-size: 14px;
+  }
+  & .rt-TextFieldChrome,
+  .rt-TextAreaChrome {
     box-shadow: none;
+    background-color: transparent;
   }
 `;

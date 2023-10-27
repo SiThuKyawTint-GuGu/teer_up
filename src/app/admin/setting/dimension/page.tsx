@@ -3,7 +3,7 @@ import { Box } from "@radix-ui/themes";
 
 const DimensionPage = () => {
   return (
-    <Box className="pt-5 px-2">
+    <Box className="pt-2 px-2">
       <Dimension />
     </Box>
   );
