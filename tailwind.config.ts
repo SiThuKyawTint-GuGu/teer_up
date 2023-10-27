@@ -19,6 +19,7 @@ const config: Config = {
         primary: "#DA291C",
         secondary: "#F9E9EA",
         slateGray: "#BBC7D6",
+        layout: "#F8F9FB",
       },
       boxShadow: {
         theme: "0px 6px 35px 5px rgba(0, 0, 0, 0.2)",
