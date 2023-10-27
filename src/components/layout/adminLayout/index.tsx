@@ -25,7 +25,7 @@ import { useRouter } from "next/navigation";
 import * as React from "react";
 import { MdStarBorder } from "react-icons/md";
 
-const drawerWidth = 240;
+const drawerWidth = 245;
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,

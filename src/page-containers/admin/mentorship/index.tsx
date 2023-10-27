@@ -46,16 +46,16 @@ const MentorshipTable: React.FC = () => {
         enableEditing: false,
         size: 2,
       },
-      {
-        accessorKey: "student_reply",
-        header: "Student Reply",
-        enableEditing: false,
-      },
-      {
-        accessorKey: "mentor_reply",
-        header: "Mentor Reply",
-        enableEditing: false,
-      },
+      // {
+      //   accessorKey: "student_reply",
+      //   header: "Student Reply",
+      //   enableEditing: false,
+      // },
+      // {
+      //   accessorKey: "mentor_reply",
+      //   header: "Mentor Reply",
+      //   enableEditing: false,
+      // },
       {
         accessorKey: "created_at",
         header: "Created At",

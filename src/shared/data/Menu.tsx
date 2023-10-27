@@ -57,7 +57,7 @@ export const menuList: Menu[] = [
       "/admin/configs/departments" ||
       "/admin/configs/preferences" ||
       "/admin/configs/keywords",
-    icon: <Icons.setting className="w-[20px] h-[20px]" />,
+    icon: <Icons.setting1 className="w-[20px] h-[20px]" />,
 
     title: "Configurations",
     child: [
