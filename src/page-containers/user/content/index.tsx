@@ -5,7 +5,6 @@ import { ContentData, ContentType } from "@/types/Content";
 import Loading from "@/app/loading";
 import Video from "@/page-containers/user/content/components/Video";
 import { useGetContentInfinite } from "@/services/content";
-import { useVerifyModal } from "@/store/authStore";
 import { useEffect, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ContentLayout from "./components/ContentLayout";
@@ -14,7 +13,6 @@ import Onboarding from "./components/Onboarding";
 const UserContent = () => {
   const [page, setPage] = useState<number>(1);
   const videoRefs = useRef<HTMLVideoElement[]>([]);
-  const { verifyModalOpenHandler } = useVerifyModal();
 
   const { data, mutate, isLoading } = useGetContentInfinite<ParamsType>({
     page: page,
@@ -81,13 +79,15 @@ const UserContent = () => {
     if (data.type === "pathway")
       return <ContentLayout data={data} contentMutate={mutate} redir={`/pathway/${data.slug}`} />;
     if (data.type === "onboarding") return <Onboarding data={data} />;
+    if (data.type === "mentor")
+      return <ContentLayout data={data} contentMutate={mutate} redir={`/mentor/${data.slug}`} />;
     return <div>This page is not avaliable right now</div>;
   };
 
   const hasMoreData = (contentData: ContentType) => {
     return contentData.total > contentData.current_page * contentData.per_page;
   };
-  mutate();
+
   return (
     <>
       {isLoading ? (
@@ -107,7 +107,7 @@ const UserContent = () => {
                     hasMore={hasMoreData(data)}
                     loader={<p></p>}
                   >
-                    <div className="snap-y flex-col snap-mandatory w-full h-[80vh] bg-[#F8F9FB] no-scrollbar overflow-y-scroll">
+                    <div className="snap-y flex-col snap-mandatory w-full h-[calc(100vh-100px)] bg-[#F8F9FB] no-scrollbar overflow-y-scroll">
                       {data.data.map((data: ContentData, index: number) => (
                         <div className="h-full  w-full snap-start" key={index}>
                           {differentContent(data, index)}

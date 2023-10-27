@@ -5,7 +5,7 @@ import { Box } from "@radix-ui/themes";
 const AdminList: React.FC = () => {
   return (
     <>
-      <Box className="bg-white p-10 rounded-md">
+      <Box className="pt-5 px-2">
         {/* {userData?.data && <UserTable tableColumns={UserColumns} tableData={userData?.data} />} */}
         <AdminTable />
       </Box>

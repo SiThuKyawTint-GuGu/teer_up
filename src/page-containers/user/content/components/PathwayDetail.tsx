@@ -86,14 +86,17 @@ const PathwayDetail: React.FC = () => {
       return (
         <ContentLayout data={data} contentMutate={contentMutate} redir={`/pathway/${data.slug}`} />
       );
-    return <div>This Page is not avaliable right now</div>;
+    return <div>This Page is not available right now</div>;
   };
 
-  const linkToDir = (data: ContentData) => {
-    if (data.type === "event") return <Link href={`/events/${data.slug}`}>{data.title}</Link>;
-    if (data.type === "article") return <Link href={`/articles/${data.slug}`}>{data.title}</Link>;
-    if (data.type === "opportunity")
-      return <Link href={`/opportunity/${data.slug}`}>{data.title}</Link>;
+  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    e.preventDefault();
+    const href = e.currentTarget.href;
+    const targetId = href.replace(/.*\#/, "");
+    const elem = document.getElementById(targetId);
+    elem?.scrollIntoView({
+      behavior: "smooth",
+    });
   };
   return (
     <Grid columns="1">
@@ -103,7 +106,7 @@ const PathwayDetail: React.FC = () => {
             {contentData.data.content_pathways.length > 0 && (
               <div className="snap-y flex-col snap-mandatory w-full h-[80vh] bg-[#F8F9FB] no-scrollbar overflow-y-scroll">
                 {contentData.data.content_pathways.map((data: ContentData, index: number) => (
-                  <div className="h-full  w-full snap-start" key={index}>
+                  <div className="h-full  w-full snap-start" id={data.slug} key={index}>
                     {differentContent(data, index)}
                   </div>
                 ))}
@@ -118,7 +121,7 @@ const PathwayDetail: React.FC = () => {
         direction="column"
         className="absolute bottom-0 py-3 w-full h-auto p-3 flex-wrap left-0 bg-white z-[99999]"
       >
-        <div className="w-full h-full relative" onClick={() => setShowPathTitle(!showPathTitle)}>
+        <div className="w-full h-full relative">
           <Flex justify="between" className="w-full">
             <div className="font-[600] text-[16px]">{contentData?.data?.title}</div>
             {!showPathTitle ? (
@@ -139,7 +142,11 @@ const PathwayDetail: React.FC = () => {
                 contentData.data.content_pathways.map((data: ContentData, index: number) => (
                   <div key={index} className="font-[600]flex flex-col w-full text-[16px] py-1">
                     <Flex justify="between" className="w-full py-2">
-                      <div>{linkToDir(data)}</div>
+                      <div>
+                        <Link href={`${data.slug}`} scroll={true} onClick={handleScroll}>
+                          {data.title}
+                        </Link>
+                      </div>
                       <Icons.checkMark className="w-[20px] h-[20px]" />
                     </Flex>
                     <hr className="w-full h-[2px] bg-slateGray" />

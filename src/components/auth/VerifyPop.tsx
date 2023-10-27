@@ -12,7 +12,7 @@ import { Text } from "../ui/Typo/Text";
 const VerifyPop: React.FC = () => {
   const { openVerifyModal, verifyModalCloseHandler } = useVerifyModal();
   const router = useRouter();
-  console.log(openVerifyModal);
+
   return (
     <>
       {openVerifyModal && (
