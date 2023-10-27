@@ -21,10 +21,6 @@ export interface QuestionArgType {
   };
 }
 
-// export const useGetBlogs = <BlogResponse>(): SWRResponse<BlogResponse, any> => {
-//   return useSWR<BlogResponse>(`/admin/blog`);
-// };
-
 export const useGetQuestion = <QuestionType>(): SWRResponse<QuestionType, any> => {
   return useSWR<QuestionType>(`/admin/onboarding/questions`);
 };
@@ -40,7 +36,7 @@ export const usePostQuestion = () =>
   });
 
 export const useUpdateQuestion = (id: string) =>
-  useSWRMutation(`/admin/onboarding/questions${id}`, (url, { arg }: QuestionArgType) => {
+  useSWRMutation(`/admin/onboarding/questions/${id}`, (url, { arg }: QuestionArgType) => {
     return appAxios.put<QuestionArgType>(url, arg);
   });
 

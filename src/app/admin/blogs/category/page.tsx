@@ -3,7 +3,7 @@ import { Box } from "@radix-ui/themes";
 
 const CategoriesPage = () => {
   return (
-    <Box className="bg-white p-5">
+    <Box className="pt-5 px-2">
       <BlogCategory />
     </Box>
   );

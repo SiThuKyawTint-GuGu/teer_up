@@ -1,6 +1,5 @@
 "use client";
-import { useDeleteContent } from "@/services/content";
-import { useGetQuestion } from "@/services/question";
+import { useDeleteQuestion, useGetQuestion } from "@/services/question";
 import { QuestionResponse } from "@/types/Question";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -17,8 +16,8 @@ const Questions: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [id, setId] = useState<string>("");
   const { data: questions, isLoading } = useGetQuestion<QuestionResponse>();
-  console.log(questions);
-  const { trigger: deleteTrigger } = useDeleteContent();
+  // console.log(questions);
+  const { trigger: deleteTrigger } = useDeleteQuestion();
 
   const columns = useMemo(
     () => [
@@ -26,6 +25,7 @@ const Questions: React.FC = () => {
         accessorKey: "id",
         header: "ID",
         enableEditing: false,
+        size: 2,
       },
       {
         accessorKey: "name",
@@ -41,17 +41,20 @@ const Questions: React.FC = () => {
         accessorKey: "type",
         header: "Type",
         enableEditing: false,
+        size: 2,
       },
       {
         accessorKey: "created_at",
         header: "Created At",
         enableEditing: false,
+        size: 4,
         Cell: ({ value }: any) => dayjs(value).format("YYYY-MM-DD"),
       },
       {
         accessorKey: "updated_at",
         header: "Updated At",
         enableEditing: false,
+        size: 4,
         Cell: ({ value }: any) => dayjs(value).format("YYYY-MM-DD"),
       },
     ],
@@ -63,12 +66,6 @@ const Questions: React.FC = () => {
     setOpen(false);
     await deleteTrigger({ id });
   };
-  // const openDeleteConfirmModal = async (row: MRT_Row<any>) => {
-  //   const { id } = row;
-  //   if (window.confirm("Are you sure you want to delete this content?")) {
-  //     await deleteTrigger({ id });
-  //   }
-  // };
 
   const table = useMaterialReactTable({
     columns,
@@ -95,7 +92,7 @@ const Questions: React.FC = () => {
     },
 
     renderRowActions: ({ row, table }) => (
-      <Box sx={{ display: "flex", gap: "1rem" }}>
+      <Box sx={{ display: "flex", gap: "1rem", width: "100%" }}>
         <Tooltip title="Edit">
           <Link href={`/admin/setting/questions/${row.id}`}>
             <IconButton>
@@ -129,7 +126,7 @@ const Questions: React.FC = () => {
   });
 
   return (
-    <>
+    <Box sx={{ width: "100%" }}>
       <MaterialReactTable table={table} />
       <Modal open={open} onClose={() => setOpen(false)}>
         <Box sx={style}>
@@ -168,7 +165,7 @@ const Questions: React.FC = () => {
           </div>
         </Box>
       </Modal>
-    </>
+    </Box>
   );
 };
 

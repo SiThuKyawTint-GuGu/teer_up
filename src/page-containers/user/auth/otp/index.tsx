@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -26,6 +26,7 @@ const Otp = () => {
   const router = useRouter();
   const { isMutating: verifiedLoading, trigger: verified, error } = useOtpVerified();
   const { isMutating, trigger: getOtpCode } = useGetOtp();
+  const [isPending, startTransition] = useTransition();
   const getOtp = async () => {
     await getOtpCode();
   };
@@ -36,7 +37,9 @@ const Otp = () => {
     await verified(data, {
       onSuccess: res => {
         setUserInfo(res.data.token, res.data.data);
-        router.push("/home");
+        startTransition(() => {
+          router.push("/home");
+        });
       },
     });
   };
@@ -74,7 +77,7 @@ const Otp = () => {
               )}
             />
 
-            <Button type="submit" disabled={verifiedLoading} size="lg">
+            <Button type="submit" disabled={isPending || verifiedLoading} size="lg">
               Verify
             </Button>
           </form>

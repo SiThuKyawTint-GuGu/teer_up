@@ -13,7 +13,7 @@ import { setUserInfo } from "@/utils/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Flex, Grid, Heading } from "@radix-ui/themes";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 
 const validationSchema = yup.object({
   email: yup.string().email().required("Please enter email address").default(""),
@@ -33,12 +33,15 @@ const Login: React.FC = () => {
   });
 
   const { isMutating, trigger, error } = useUserLogin();
+  const [isPending, startTransition] = useTransition();
 
   const loginHandler = async (data: Login) => {
     await trigger(data, {
       onSuccess: res => {
         setUserInfo(res.data.token, res.data.data);
-        router.push("/auth/otp");
+        startTransition(() => {
+          router.push("/auth/otp");
+        });
       },
     });
   };
@@ -92,7 +95,7 @@ const Login: React.FC = () => {
                 </Text>
               </Flex>
 
-              <Button type="submit" disabled={isMutating || !checked}>
+              <Button type="submit" disabled={isPending || isMutating || !checked}>
                 Send OTP code
               </Button>
             </form>

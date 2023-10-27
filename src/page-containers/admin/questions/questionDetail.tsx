@@ -1,6 +1,6 @@
 "use client";
 import { useGetDimension } from "@/services/dimension";
-import { usePostQuestion, useUpdateQuestion } from "@/services/question";
+import { useGetQuestionById, usePostQuestion, useUpdateQuestion } from "@/services/question";
 import { DimensionResponse } from "@/types/Dimension";
 import { yupResolver } from "@hookform/resolvers/yup";
 import SaveIcon from "@mui/icons-material/Save";
@@ -15,8 +15,9 @@ import {
   TextField,
 } from "@mui/material";
 import { Box } from "@radix-ui/themes";
+import { Editor } from "@tinymce/tinymce-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { AiOutlinePlus } from "react-icons/ai";
 import * as yup from "yup";
@@ -45,10 +46,17 @@ const QuestionDetail = ({ id }: Props) => {
   const [options, setOptions] = useState([{ name: "", score: null, feedback: "" }]);
 
   const { data: dimensions } = useGetDimension<DimensionResponse>();
-  // const { data: question } = useGetQuestionById<any>(id);
+  const { data: question } = useGetQuestionById<any>(id);
   // console.log("question", question);
-  const { trigger: postTrigger } = usePostQuestion();
-  const { trigger: updateTrigger } = useUpdateQuestion(id);
+  const { trigger: postTrigger, isMutating: postMutating } = usePostQuestion();
+  const { trigger: updateTrigger, isMutating: updateMutating } = useUpdateQuestion(id);
+  const [editor, setEditor] = useState<any>(null);
+  const [editorContent, setEditorContent] = useState<any>({});
+  const [editorInitial, setEditorInitial] = useState<boolean>(false);
+
+  const handleEditorInit = (editor: any, name: string) => {
+    setEditor(editor);
+  };
 
   const {
     register,
@@ -60,14 +68,44 @@ const QuestionDetail = ({ id }: Props) => {
     resolver: yupResolver(validationSchema),
   });
 
-  // useEffect(() => {
-  //   if (question?.data) {
-  //     setValue("question", question?.data?.name);
-  //     setValue("type", question?.data.type);
-  //     setOptions(question?.data.options);
-  //     setValue("dimension", question?.data.dimension_id);
-  //   }
-  // }, [question?.data]);
+  useEffect(() => {
+    if (editorInitial === false) {
+      if (editor) {
+        editor?.setContent(editorContent);
+      }
+      if (question?.data) {
+        question.data.options.forEach((option: any, index: number) => {
+          const optionName = `options[${index}].feedback`;
+          if (optionName in editorContent) {
+            return;
+          }
+          const initialContent = option.feedback || "";
+
+          if (editor) {
+            editor.setContent(initialContent);
+          }
+          setEditorContent({ ...editorContent, [optionName]: initialContent });
+        });
+      }
+
+      if (question?.data) {
+        setValue("name", question?.data?.name);
+        setValue("type", question?.data?.type);
+        setOptions(question?.data.options);
+        setValue("dimension_id", question?.data.dimension_id);
+        setSelectedDimension(question?.data.dimension_id);
+        setSelectedType(question?.data.type);
+
+        const updateOptions = question?.data.options.map((opt: any) => ({
+          name: opt.name,
+          score: opt.score,
+          feedback: opt.feedback,
+        }));
+        setValue("options", updateOptions);
+        setOptions(updateOptions);
+      }
+    }
+  }, [question?.data, setValue, editor, editorContent]);
 
   const handleDimensionChange = (event: SelectChangeEvent) => {
     setSelectedDimension(event.target.value);
@@ -76,19 +114,42 @@ const QuestionDetail = ({ id }: Props) => {
     setSelectedType(event.target.value);
   };
 
+  // const handleDeleteOption = (name: string) => {
+  //   const updatedFields = options.filter(field => field.name !== name);
+  //   setOptions(updatedFields);
+  // };
+
   const handleAddOptions = () => {
+    setEditorInitial(true);
     const updatedOptions = [...options, { name: "", score: null, feedback: "" }];
     setOptions(updatedOptions);
   };
 
   const Submit = async (data: any) => {
-    // console.log(data);
-    // if (question?.data) {
-    //   await updateTrigger(data);
-    // } else {
-    //   await postTrigger(data);
-    // }
-    await postTrigger(data);
+    const newData = data.options.map((item: any, index: number) => {
+      const newItem = { ...item };
+
+      // Check if there is a replacement feedback value for this item
+      const replacementKey = `options[${index}].feedback`;
+      if (editorContent[replacementKey] !== undefined) {
+        // If a replacement exists, update the feedback property
+        newItem.feedback = editorContent[replacementKey];
+      }
+
+      return newItem;
+    });
+    data.options = newData;
+    console.log(data);
+    // const filteredOptions = data.options.filter((item: any) =>
+    //   options.some((opt: any) => opt.name === item.name)
+    // );
+    // data.options = filteredOptions;
+
+    if (question?.data) {
+      await updateTrigger(data);
+    } else {
+      await postTrigger(data);
+    }
     router.push("/admin/setting/questions");
   };
 
@@ -170,6 +231,7 @@ const QuestionDetail = ({ id }: Props) => {
                       <TextField
                         {...field}
                         label="Answer"
+                        defaultValue={option.name}
                         size="small"
                         className="w-full"
                         variant="outlined"
@@ -188,6 +250,7 @@ const QuestionDetail = ({ id }: Props) => {
                         {...field}
                         label="Score"
                         type={"number"}
+                        defaultValue={option.score}
                         size="small"
                         className="w-full"
                         variant="outlined"
@@ -196,37 +259,68 @@ const QuestionDetail = ({ id }: Props) => {
                   />
                   <p className="mt-2 text-red-700">{errors.options?.[index]?.score?.message}</p>
                 </div>
+
                 <div>
                   <Controller
                     name={`options[${index}].feedback` as any}
                     control={control}
                     render={({ field }) => (
-                      <TextField
-                        {...field}
-                        label="Feedback"
-                        size="small"
-                        className="w-full"
-                        variant="outlined"
+                      <Editor
+                        value={editorContent[field.name] || ""}
+                        init={(editorInit: any) => handleEditorInit(editorInit, field.name)}
+                        onEditorChange={content => {
+                          console.log(content);
+                          console.log(field.name);
+                          setEditorContent({ ...editorContent, [field.name]: content });
+                          field.onChange(content);
+                        }}
                       />
                     )}
                   />
+
                   <p className="mt-2 text-red-700">{errors.options?.[index]?.feedback?.message}</p>
                 </div>
+                {/* <div className="flex justify-between">
+                  <div></div>
+                  <Button
+                    onClick={() => handleDeleteOption(option.name)}
+                    color="error"
+                    variant="contained"
+                    sx={{ textTransform: "none" }}
+                  >
+                    Delete
+                  </Button>
+                </div> */}
               </Box>
             </>
           ))}
           <div className="flex justify-between">
             <div></div>
-            <LoadingButton
-              loading={false}
-              loadingPosition="start"
-              startIcon={<SaveIcon />}
-              variant="contained"
-              type="submit"
-              color="error"
-            >
-              Save
-            </LoadingButton>
+            <div>
+              {question?.data ? (
+                <LoadingButton
+                  loading={updateMutating}
+                  loadingPosition="start"
+                  startIcon={<SaveIcon />}
+                  variant="contained"
+                  type="submit"
+                  color="error"
+                >
+                  Update
+                </LoadingButton>
+              ) : (
+                <LoadingButton
+                  loading={postMutating}
+                  loadingPosition="start"
+                  startIcon={<SaveIcon />}
+                  variant="contained"
+                  type="submit"
+                  color="error"
+                >
+                  Save
+                </LoadingButton>
+              )}
+            </div>
           </div>
         </Box>
       </form>

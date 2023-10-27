@@ -3,7 +3,7 @@
 import { Text } from "@/components/ui/Typo/Text";
 import { ParamsType, useGetContentInfinite } from "@/services/content";
 import { ContentData, ContentType } from "@/types/Content";
-import { Flex, Grid } from "@radix-ui/themes";
+import { Flex } from "@radix-ui/themes";
 import { useState } from "react";
 import BrowserContentLayout from "./Components/BrowerCotentLayout";
 
@@ -18,11 +18,14 @@ const BrowsePage = () => {
   });
 
   return (
-    <Grid columns="1">
-      <Flex justify="between" className="p-3 max-w-[400px] w-full] overflow-x-visible">
+    <>
+      <Flex className="p-3  w-full overflow-auto">
         {BrowsePageHeader.map((data: HeaderType, index: number) => (
           <div key={index} onClick={() => setType(data.value)} className="cursor-pointer">
-            <Text as="span" className={`${type === data.value && "border-b-[2px] border-primary"}`}>
+            <Text
+              as="div"
+              className={`w-auto px-3 ${type === data.value && "border-b-[2px] border-primary"}`}
+            >
               {data.text}
             </Text>
           </div>
@@ -63,7 +66,7 @@ const BrowsePage = () => {
               )
           )}
       </Flex>
-    </Grid>
+    </>
   );
 };
 
@@ -98,5 +101,9 @@ const BrowsePageHeader: HeaderType[] = [
   {
     text: "Article",
     value: "article",
+  },
+  {
+    text: "Mentor",
+    value: "mentor",
   },
 ];

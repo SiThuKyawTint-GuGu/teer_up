@@ -1,9 +1,9 @@
 import ContentTable from "@/page-containers/admin/content/contentTable";
-import { Box } from "@radix-ui/themes";
+import { Box } from "@mui/material";
 
 const ContentPage = () => {
   return (
-    <Box className="bg-white p-5 rounded-md w-[980px]">
+    <Box className="pt-5 px-2 h-full rounded-md">
       <ContentTable />
     </Box>
   );

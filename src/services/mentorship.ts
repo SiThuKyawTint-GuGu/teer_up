@@ -1,16 +1,14 @@
 import appAxios from "@/lib/appAxios";
-import { USER_ROLE } from "@/shared/enums";
 import { routeFilter } from "@/utils";
 import useSWR, { SWRResponse } from "swr";
 import useSWRMutation from "swr/mutation";
 ("use client");
 
 export type ParamsType = {
-  page?: number;
-  pageSize?: number;
-  name?: string;
-  role?: USER_ROLE[] | USER_ROLE;
-  cursor?: number;
+  page: number;
+  pagesize: number;
+  status?: string;
+  search?: string;
 };
 
 export const useGetMentorship = <ParamsType, MentorshipResponse>(
