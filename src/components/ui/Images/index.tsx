@@ -1,6 +1,6 @@
 import NextImage from "next/image";
 import { AiOutlineForm, AiOutlineSetting } from "react-icons/ai";
-import { BiBookContent } from "react-icons/bi";
+import { BiBookContent, BiSolidUserRectangle } from "react-icons/bi";
 import { BsFillPostcardFill } from "react-icons/bs";
 import { CiLogout, CiSettings } from "react-icons/ci";
 import { FaArrowRight, FaLightbulb, FaUserCircle } from "react-icons/fa";
@@ -35,9 +35,9 @@ import { MdDelete, MdOutlineMailOutline } from "react-icons/md";
 import {
   PiAirplaneTiltLight,
   PiArrowDownRightThin,
-  PiArrowUpRightThin,
   PiArrowsLeftRightDuotone,
   PiArrowsLeftRightThin,
+  PiArrowUpRightThin,
   PiBagSimpleThin,
   PiCameraLight,
   PiCameraPlusFill,
@@ -93,6 +93,7 @@ export const Icons = {
   innovates: FaLightbulb,
   users: FiUsers,
   form: AiOutlineForm,
+  mentor: BiSolidUserRectangle,
   discussions: GoCommentDiscussion,
   contents: BiBookContent,
   wallet: PiWallet,

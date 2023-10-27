@@ -77,6 +77,12 @@ export const menuList: Menu[] = [
     ],
   },
   {
+    key: "/admin/mentorship",
+    icon: <Icons.mentor className="w-[20px] h-[20px]" />,
+    title: "Mentorship",
+    child: [],
+  },
+  {
     key: "/admin/user-management",
     icon: <Icons.userManagement className="w-[20px] h-[20px]" />,
     title: "Users",
