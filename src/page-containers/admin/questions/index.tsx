@@ -92,7 +92,7 @@ const Questions: React.FC = () => {
     },
 
     renderRowActions: ({ row, table }) => (
-      <Box sx={{ display: "flex", gap: "1rem" }}>
+      <Box sx={{ display: "flex", gap: "1rem", width: "100%" }}>
         <Tooltip title="Edit">
           <Link href={`/admin/setting/questions/${row.id}`}>
             <IconButton>
@@ -126,7 +126,7 @@ const Questions: React.FC = () => {
   });
 
   return (
-    <>
+    <Box sx={{ width: "100%" }}>
       <MaterialReactTable table={table} />
       <Modal open={open} onClose={() => setOpen(false)}>
         <Box sx={style}>
@@ -165,7 +165,7 @@ const Questions: React.FC = () => {
           </div>
         </Box>
       </Modal>
-    </>
+    </Box>
   );
 };
 
