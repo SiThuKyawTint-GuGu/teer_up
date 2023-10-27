@@ -56,7 +56,7 @@ export interface ContentData {
   title: string;
   description: string;
   created_at: string;
-  type: "video" | "article" | "event" | "opportunity" | "pathway" | "onboarding";
+  type: "video" | "article" | "event" | "opportunity" | "pathway" | "onboarding" | "mentor";
   updated_at: string;
   user_id: string;
   image_url: string;

@@ -49,7 +49,7 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
           <Link href={redir}>
             <Image
               src={data.image_url}
-              className="w-full"
+              className="w-full max-w-[400px] max-h-[30vh]"
               width={400}
               height={200}
               alt={data.title}
@@ -91,6 +91,9 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
                   )}
                   {data.type === "pathway" && (
                     <Button onClick={() => router.push(redir)}>Join Now</Button>
+                  )}
+                  {data.type === "mentor" && (
+                    <Button onClick={() => router.push(redir)}>Request Mentorship</Button>
                   )}
                 </div>
                 <div className="flex justify-between p-3 w-full">
