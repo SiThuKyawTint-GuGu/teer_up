@@ -17,9 +17,9 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import { CSSObject, styled, Theme, useTheme } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { CSSObject, Theme, styled, useTheme } from "@mui/material/styles";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import * as React from "react";
@@ -240,7 +240,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({
           </ListItem>
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box component="main" sx={{ flexGrow: 1 }}>
         <DrawerHeader />
         {children}
       </Box>
