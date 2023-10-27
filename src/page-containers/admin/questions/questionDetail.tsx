@@ -52,6 +52,7 @@ const QuestionDetail = ({ id }: Props) => {
   const { trigger: updateTrigger, isMutating: updateMutating } = useUpdateQuestion(id);
   const [editor, setEditor] = useState<any>(null);
   const [editorContent, setEditorContent] = useState<any>({});
+  const [editorInitial, setEditorInitial] = useState<boolean>(false);
 
   const handleEditorInit = (editor: any, name: string) => {
     setEditor(editor);
@@ -68,39 +69,41 @@ const QuestionDetail = ({ id }: Props) => {
   });
 
   useEffect(() => {
-    if (editor) {
-      editor?.setContent(editorContent);
-    }
-    if (question?.data) {
-      question.data.options.forEach((option: any, index: number) => {
-        const optionName = `options[${index}].feedback`;
-        if (optionName in editorContent) {
-          return;
-        }
-        const initialContent = option.feedback || "";
+    if (editorInitial === false) {
+      if (editor) {
+        editor?.setContent(editorContent);
+      }
+      if (question?.data) {
+        question.data.options.forEach((option: any, index: number) => {
+          const optionName = `options[${index}].feedback`;
+          if (optionName in editorContent) {
+            return;
+          }
+          const initialContent = option.feedback || "";
 
-        if (editor) {
-          editor.setContent(initialContent);
-        }
-        setEditorContent({ ...editorContent, [optionName]: initialContent });
-      });
-    }
+          if (editor) {
+            editor.setContent(initialContent);
+          }
+          setEditorContent({ ...editorContent, [optionName]: initialContent });
+        });
+      }
 
-    if (question?.data) {
-      setValue("name", question?.data?.name);
-      setValue("type", question?.data?.type);
-      setOptions(question?.data.options);
-      setValue("dimension_id", question?.data.dimension_id);
-      setSelectedDimension(question?.data.dimension_id);
-      setSelectedType(question?.data.type);
+      if (question?.data) {
+        setValue("name", question?.data?.name);
+        setValue("type", question?.data?.type);
+        setOptions(question?.data.options);
+        setValue("dimension_id", question?.data.dimension_id);
+        setSelectedDimension(question?.data.dimension_id);
+        setSelectedType(question?.data.type);
 
-      const updateOptions = question?.data.options.map((opt: any) => ({
-        name: opt.name,
-        score: opt.score,
-        feedback: opt.feedback,
-      }));
-      setValue("options", updateOptions);
-      setOptions(updateOptions);
+        const updateOptions = question?.data.options.map((opt: any) => ({
+          name: opt.name,
+          score: opt.score,
+          feedback: opt.feedback,
+        }));
+        setValue("options", updateOptions);
+        setOptions(updateOptions);
+      }
     }
   }, [question?.data, setValue, editor, editorContent]);
 
@@ -117,11 +120,10 @@ const QuestionDetail = ({ id }: Props) => {
   // };
 
   const handleAddOptions = () => {
+    setEditorInitial(true);
     const updatedOptions = [...options, { name: "", score: null, feedback: "" }];
     setOptions(updatedOptions);
   };
-
-  console.log("option......", options);
 
   const Submit = async (data: any) => {
     const newData = data.options.map((item: any, index: number) => {
@@ -267,6 +269,8 @@ const QuestionDetail = ({ id }: Props) => {
                         value={editorContent[field.name] || ""}
                         init={(editorInit: any) => handleEditorInit(editorInit, field.name)}
                         onEditorChange={content => {
+                          console.log(content);
+                          console.log(field.name);
                           setEditorContent({ ...editorContent, [field.name]: content });
                           field.onChange(content);
                         }}
