@@ -155,3 +155,13 @@ export const usePostOnboarding = () =>
   useSWRMutation(`/user/onboarding`, (url, { arg }: PostOnBoardingArg) => {
     return appAxios.post(url, arg);
   });
+type RequestMentorShipArg = {
+  arg: {
+    content_id: number | string;
+    message: string;
+  };
+};
+export const useRequestMentorship = () =>
+  useSWRMutation(`/mentorships`, (url, { arg }: RequestMentorShipArg) => {
+    return appAxios.post(url, arg);
+  });

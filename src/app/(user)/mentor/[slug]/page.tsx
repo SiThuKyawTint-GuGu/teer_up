@@ -5,7 +5,7 @@ const Mentor = () => {
   return (
     <>
       <div className="absolute  w-full left-0 top-0 z-[9999] flex flex-wrap">
-        <ContentDetailHeader pathname="/home" title="Mentor Detail" />
+        <ContentDetailHeader pathname="/home" title="Mentor Detailπ" />
       </div>
       <MentorProfile />
     </>

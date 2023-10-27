@@ -1,38 +1,39 @@
 "use client";
 import { Button } from "@/components/ui/Button";
-import { Dialog, DialogContent } from "@/components/ui/Dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form";
 import { Icons, Image } from "@/components/ui/Images";
+import { InputTextArea } from "@/components/ui/Inputs";
 import { Text } from "@/components/ui/Typo/Text";
-import { useGetContentBySlug } from "@/services/content";
-import { useGetUserById } from "@/services/user";
-import { PROFILE_TRIGGER } from "@/shared/enums";
+import { useGetContentBySlug, useRequestMentorship } from "@/services/content";
 import { ContentData } from "@/types/Content";
-import { UserProfileResponse } from "@/types/Profile";
-import { getUserInfo } from "@/utils/auth";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import { useParams } from "next/navigation";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
 
-const profileTrigger = {
-  [PROFILE_TRIGGER.COVER]: "See cover picture",
-  [PROFILE_TRIGGER.PROFILE]: "See profile picture",
-};
-
-const profileTriggerIcon = {
-  [PROFILE_TRIGGER.COVER]: "/uploads/icons/select-profile.svg",
-  [PROFILE_TRIGGER.PROFILE]: "/uploads/icons/see-profile.svg",
-};
-
+const validationSchema = yup.object({
+  message: yup.string().required("Message is reuquired"),
+});
 const MentorProfile: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
-  const [triggerType, setTriggerType] = useState<PROFILE_TRIGGER>();
-  const user = getUserInfo();
+
   const { slug }: { slug: string } = useParams();
   const { data } = useGetContentBySlug<ContentData>(slug);
 
-  const { data: profileData } = useGetUserById<UserProfileResponse>(user?.id);
-  const userProfile = profileData?.data;
-  console.log(data?.data);
+  const { trigger, isMutating } = useRequestMentorship();
+  const form = useForm({
+    resolver: yupResolver(validationSchema),
+  });
+
+  const submit = async (formData: { message: string }) => {
+    await trigger({
+      message: formData.message,
+      content_id: data?.data.id,
+    });
+  };
   return (
     <>
       <Dialog open={open} onOpenChange={val => setOpen(val)}>
@@ -41,7 +42,7 @@ const MentorProfile: React.FC = () => {
             <Box className="pb-[55px]">
               <Box className="pb-[7px]">
                 <Section p="0">
-                  {userProfile?.cover_url ? (
+                  {data.data?.profile_url ? (
                     <div
                       style={{
                         background: `url(${data.data.mentor.cover_url}) center / cover`,
@@ -116,7 +117,7 @@ const MentorProfile: React.FC = () => {
                       <Text as="label" weight="bold" size="3">
                         Email
                       </Text>
-                      <Text>{userProfile?.email}</Text>
+                      <Text>{data.data.name}</Text>
                     </Flex>
                   </div>
                 </Section>
@@ -137,11 +138,7 @@ const MentorProfile: React.FC = () => {
                     Career interests
                   </Heading>
                   <Flex wrap="wrap" gap="2">
-                    {userProfile?.industries?.map((each, key) => (
-                      <Button key={key} className="bg-[#d1d5d8] text-black">
-                        {each.industry.name}
-                      </Button>
-                    ))}
+                    Industry
                   </Flex>
                 </Section>
               </Box>
@@ -172,27 +169,43 @@ const MentorProfile: React.FC = () => {
                 </div>
               </Section>
             </Box>
-            <DialogContent className="bg-white top-[initial] bottom-0 px-4 pt-8 pb-2 translate-y-0 rounded-10px-tl-tr">
-              <Box className="space-y-[40px]">
-                <Flex
-                  justify="start"
-                  align="center"
-                  className="pb-[20px] mb-[20px] border-b border-b-[#BDC7D5] gap-[10px]"
-                >
-                  <Image
-                    src={profileTriggerIcon[triggerType as PROFILE_TRIGGER]}
-                    width={20}
-                    height={20}
-                    alt={profileTrigger[triggerType as PROFILE_TRIGGER]}
-                  />
-                  <Text className="text-black">
-                    {profileTrigger[triggerType as PROFILE_TRIGGER]}
-                  </Text>
-                </Flex>
-              </Box>
-            </DialogContent>
           </Grid>
         )}
+        <DialogTrigger>
+          <div className="fixed w-full max-w-[400px] shadow-inner bottom-0  z-[9999] p-3 bg-white">
+            <Button size="sm" className="w-full">
+              Send Request
+            </Button>
+          </div>
+        </DialogTrigger>
+        <DialogContent className="bg-white top-[initial] h-auto bottom-0 px-4 pt-8 pb-2 translate-y-0 rounded-10px-tl-tr">
+          <Flex gap="3" direction="column" className="bg-white h-full">
+            <div className="bg-primary rounded-[6px] w-[60px] h-[2px] my-3 mx-auto" />
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(submit)}>
+                <FormField
+                  control={form.control}
+                  name="message"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <InputTextArea
+                          type="text"
+                          placeholder="Include you available time and describe why you want this mentorship"
+                          {...field}
+                          className="p-3"
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit" className="w-full my-5">
+                  Send
+                </Button>
+              </form>
+            </Form>
+          </Flex>
+        </DialogContent>
       </Dialog>
     </>
   );
