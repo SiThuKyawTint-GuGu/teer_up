@@ -26,13 +26,13 @@ const RequestMentorship = () => {
                   Accepted
                 </Text>
               </Flex>
-              <Flex justify="start" align="center">
+              <Flex justify="start" align="start">
                 <Text className="w-1/4 font-light">Student:</Text>
                 <Text className="w-3/4">
                   Lorem ipsum do amet ipsum mattis ipsum dolor sit am Lorem ipsum do amet ipsum{" "}
                 </Text>
               </Flex>
-              <Flex justify="start" align="center">
+              <Flex justify="start" align="start">
                 <Text className="w-1/4 font-light">Mentor:</Text>
                 <Text className="w-3/4">
                   Lorem ipsum do amet ipsum mattis ipsum dolor sit am Lorem ipsum do amet ipsum{" "}

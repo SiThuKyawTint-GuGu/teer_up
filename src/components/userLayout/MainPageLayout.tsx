@@ -5,11 +5,12 @@ import Header from "./Header";
 
 type MainPageLayoutProp = {
   children: React.ReactNode;
+  hideHeader?: boolean;
 };
-const MainPageLayout: React.FC<MainPageLayoutProp> = ({ children }) => {
+const MainPageLayout: React.FC<MainPageLayoutProp> = ({ children, hideHeader }) => {
   return (
     <>
-      <Header />
+      {!hideHeader && <Header />}
       {children}
       <BottomNavbar />
     </>
