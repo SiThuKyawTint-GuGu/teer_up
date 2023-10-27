@@ -67,7 +67,7 @@ const LoginOtp = () => {
               )}
             />
 
-            <Button type="submit" disabled={isPending || isMutatingx} size="lg">
+            <Button type="submit" disabled={isPending || isMutating} size="lg">
               Login
             </Button>
           </form>

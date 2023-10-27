@@ -86,7 +86,7 @@ const PathwayDetail: React.FC = () => {
       return (
         <ContentLayout data={data} contentMutate={contentMutate} redir={`/pathway/${data.slug}`} />
       );
-    return <div>This Page is not avaliable right now</div>;
+    return <div>This Page is not available right now</div>;
   };
 
   const linkToDir = (data: ContentData) => {
