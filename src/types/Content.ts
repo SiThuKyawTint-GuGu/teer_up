@@ -51,6 +51,16 @@ export interface ContentOpportunity {
   link: string;
   location: string;
 }
+
+export interface ContentMentor {
+  bio: string;
+  education: [];
+  email: string;
+  expericence: [];
+  id: number | string;
+  industries: [];
+  profile_url: string;
+}
 export interface ContentData {
   id: string;
   title: string;

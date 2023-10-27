@@ -14,6 +14,13 @@ const defaultTheme = createTheme({
       main: "#F9E9EA",
     },
   },
+  components: {
+    MuiTextField: {
+      defaultProps: {
+        size: "medium",
+      },
+    },
+  },
 });
 
 export default defaultTheme;
