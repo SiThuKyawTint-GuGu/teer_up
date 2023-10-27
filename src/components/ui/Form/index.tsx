@@ -66,9 +66,8 @@ const FormItem = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivEl
       <FormItemContext.Provider value={{ id }}>
         <div ref={ref} className={cn("space-y-1", className)} {...props} />
         {error && (
-          <div className="text-primary flex items-center ">
+          <div className="text-primary flex items-center mt-1">
             <div className="me-1">
-              {""}
               <Icons.inputError />
             </div>
             {error?.message}

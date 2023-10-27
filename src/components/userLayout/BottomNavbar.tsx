@@ -1,9 +1,9 @@
 "use client";
 
+import { NavbarItems, NavbarType } from "@/shared/data/UserTabbar";
 import { Flex } from "@radix-ui/themes";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Icons } from "../ui/Images";
 
 const BottomNavbar = () => {
   const pathName = usePathname();
@@ -34,36 +34,3 @@ const BottomNavbar = () => {
 };
 
 export default BottomNavbar;
-
-type NavbarType = {
-  text: string;
-  path: string;
-  icon: React.ReactNode;
-};
-const NavbarItems: NavbarType[] = [
-  {
-    text: "Home",
-    path: "/home",
-    icon: <Icons.home width={24} height={24} />,
-  },
-  {
-    text: "Browse",
-    path: "/browse",
-    icon: <Icons.globe width={24} height={24} />,
-  },
-  {
-    text: "Network",
-    path: "/network",
-    icon: <Icons.people width={24} height={24} />,
-  },
-  {
-    text: "Saved",
-    path: "saved",
-    icon: <Icons.saved width={24} height={24} />,
-  },
-  {
-    text: "Profile",
-    path: "/profile",
-    icon: <Icons.person width={24} height={24} />,
-  },
-];

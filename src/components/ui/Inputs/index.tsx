@@ -43,7 +43,10 @@ const InputText = React.forwardRef<HTMLInputElement, Props>(
           <TextField.Root>
             <TextField.Input
               type={type}
-              className={cn(className, inputType !== USER_ROLE.ADMIN ? "shadow-theme" : "")}
+              className={cn(
+                `font-light ${className}`,
+                inputType !== USER_ROLE.ADMIN ? "shadow-theme" : ""
+              )}
               placeholder={placeholder}
               defaultValue={defaultValue || ""}
               size="3"

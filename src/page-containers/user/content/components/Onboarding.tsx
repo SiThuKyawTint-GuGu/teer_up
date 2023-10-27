@@ -1,4 +1,5 @@
 import CardBox from "@/components/ui/Card";
+import Modal from "@/components/ui/Modal";
 import { Text } from "@/components/ui/Typo/Text";
 import { usePostOnboarding } from "@/services/content";
 import { ContentData, OnBoardingOption } from "@/types/Content";
@@ -46,6 +47,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ data }) => {
                         {
                           onSuccess: () => {
                             setOption(q);
+                            setOpenModal(true);
                           },
                         }
                       );
@@ -67,8 +69,19 @@ const Onboarding: React.FC<OnboardingProps> = ({ data }) => {
         </CardBox>
         <div className="py-4 text-center font-[300] w-full">Swipe up for more</div>
       </div>
-      {/* {modalOpen && <Modal onClose={()=>setOpenModal()
-      }>{option && option.feedback}</Modal>} */}
+      {modalOpen && (
+        <Modal onClose={() => setOpenModal(false)}>
+          <div className="w-100 p-10">
+            {option && (
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: option.feedback,
+                }}
+              />
+            )}
+          </div>
+        </Modal>
+      )}
     </QuestionPageCard>
   );
 };
