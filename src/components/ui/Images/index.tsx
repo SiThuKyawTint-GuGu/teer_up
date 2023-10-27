@@ -1,8 +1,14 @@
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import ChromeReaderModeIcon from "@mui/icons-material/ChromeReaderMode";
+import CreateIcon from "@mui/icons-material/Create";
+import FeedIcon from "@mui/icons-material/Feed";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import LogoutIcon from "@mui/icons-material/Logout";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import SettingsIcon from "@mui/icons-material/Settings";
 import NextImage from "next/image";
-import { AiOutlineForm, AiOutlineSetting } from "react-icons/ai";
-import { BiBookContent } from "react-icons/bi";
-import { BsFillPostcardFill } from "react-icons/bs";
-import { CiLogout, CiSettings } from "react-icons/ci";
+import { CiSettings } from "react-icons/ci";
 import { FaArrowRight, FaLightbulb, FaUserCircle } from "react-icons/fa";
 import { FcBusinesswoman } from "react-icons/fc";
 import { FiUsers } from "react-icons/fi";
@@ -35,17 +41,15 @@ import { MdDelete, MdOutlineMailOutline } from "react-icons/md";
 import {
   PiAirplaneTiltLight,
   PiArrowDownRightThin,
-  PiArrowUpRightThin,
   PiArrowsLeftRightDuotone,
   PiArrowsLeftRightThin,
+  PiArrowUpRightThin,
   PiBagSimpleThin,
   PiCameraLight,
   PiCameraPlusFill,
   PiCar,
   PiCaretDownFill,
-  PiCaretDownThin,
   PiCaretLeftThin,
-  PiCaretRightThin,
   PiCaretUpThin,
   PiChatTeardropTextThin,
   PiCheckThin,
@@ -57,7 +61,6 @@ import {
   PiNotePencil,
   PiPlanetThin,
   PiPlusThin,
-  PiUserGear,
   PiUserThin,
   PiWallet,
 } from "react-icons/pi";
@@ -92,11 +95,12 @@ export const Icons = {
   },
   innovates: FaLightbulb,
   users: FiUsers,
-  form: AiOutlineForm,
+  form: CreateIcon,
+  mentor: AccountBoxIcon,
   discussions: GoCommentDiscussion,
-  contents: BiBookContent,
+  contents: ChromeReaderModeIcon,
   wallet: PiWallet,
-  blogs: BsFillPostcardFill,
+  blogs: FeedIcon,
   transactions: PiArrowsLeftRightDuotone,
   cashback: PiDatabaseThin,
   payments: PiCurrencyCircleDollarThin,
@@ -108,8 +112,8 @@ export const Icons = {
   film: PiFilmSlate,
   planet: PiPlanetThin,
   caretUp: PiCaretUpThin,
-  arrowDown: PiCaretDownThin,
-  caretRight: PiCaretRightThin,
+  arrowDown: KeyboardArrowDownIcon,
+  caretRight: KeyboardArrowRightIcon,
   caretLeft: PiCaretLeftThin,
   plus: PiPlusThin,
   check: PiCheckThin,
@@ -130,9 +134,9 @@ export const Icons = {
   amazon: SiAmazon,
   logo: SiVivawallet,
   setting: CiSettings,
-  setting1: AiOutlineSetting,
-  logout: CiLogout,
-  userManagement: PiUserGear,
+  setting1: SettingsIcon,
+  logout: LogoutIcon,
+  userManagement: PeopleAltIcon,
   edit: PiNotePencil,
   delete: MdDelete,
   mark: IoCheckmarkCircle,

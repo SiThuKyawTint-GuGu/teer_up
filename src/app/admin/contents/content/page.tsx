@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 
 const ContentPage = () => {
   return (
-    <Box className="bg-white pt-5 px-2 h-full rounded-md">
+    <Box className="pt-5 px-2 h-full rounded-md">
       <ContentTable />
     </Box>
   );

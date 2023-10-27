@@ -3,7 +3,7 @@ import { Box } from "@radix-ui/themes";
 
 const IndustryPage = () => {
   return (
-    <Box className="bg-white p-5">
+    <Box className="pt-5 px-2">
       <Industry />
     </Box>
   );

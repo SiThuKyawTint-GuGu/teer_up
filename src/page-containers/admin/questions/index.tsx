@@ -25,6 +25,7 @@ const Questions: React.FC = () => {
         accessorKey: "id",
         header: "ID",
         enableEditing: false,
+        size: 2,
       },
       {
         accessorKey: "name",
@@ -40,17 +41,20 @@ const Questions: React.FC = () => {
         accessorKey: "type",
         header: "Type",
         enableEditing: false,
+        size: 2,
       },
       {
         accessorKey: "created_at",
         header: "Created At",
         enableEditing: false,
+        size: 4,
         Cell: ({ value }: any) => dayjs(value).format("YYYY-MM-DD"),
       },
       {
         accessorKey: "updated_at",
         header: "Updated At",
         enableEditing: false,
+        size: 4,
         Cell: ({ value }: any) => dayjs(value).format("YYYY-MM-DD"),
       },
     ],
