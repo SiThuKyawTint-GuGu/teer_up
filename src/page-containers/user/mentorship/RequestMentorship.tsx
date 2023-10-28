@@ -4,10 +4,15 @@ import CardBox from "@/components/ui/Card";
 import { Icons } from "@/components/ui/Images";
 import { InputTextArea } from "@/components/ui/Inputs";
 import { Text } from "@/components/ui/Typo/Text";
+import { ParamsType, useGetMentorship } from "@/services/mentorship";
 import { USER_ROLE } from "@/shared/enums";
+import { MentorshipResponse } from "@/types/Mentorship";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
+import React from "react";
 
-const RequestMentorship = () => {
+const RequestMentorship: React.FC = () => {
+  const { data: requestMentorship } = useGetMentorship<ParamsType, MentorshipResponse>();
+
   return (
     <Grid>
       <Box>
@@ -20,24 +25,29 @@ const RequestMentorship = () => {
               </Text>
             </Heading>
             <div>
-              <Flex justify="start" align="center">
-                <Text className="w-1/4 font-light">Status:</Text>
-                <Text className="px-4 py-1 border-2 border-[#AADF9F] bg-[#E4F5E1] text-black rounded-full">
-                  Accepted
-                </Text>
-              </Flex>
-              <Flex justify="start" align="center">
-                <Text className="w-1/4 font-light">Student:</Text>
-                <Text className="w-3/4">
-                  Lorem ipsum do amet ipsum mattis ipsum dolor sit am Lorem ipsum do amet ipsum{" "}
-                </Text>
-              </Flex>
-              <Flex justify="start" align="center">
-                <Text className="w-1/4 font-light">Mentor:</Text>
-                <Text className="w-3/4">
-                  Lorem ipsum do amet ipsum mattis ipsum dolor sit am Lorem ipsum do amet ipsum{" "}
-                </Text>
-              </Flex>
+              <div className="space-y-3">
+                <Flex justify="start" align="center">
+                  <Text className="w-1/4 font-light">Status:</Text>
+                  <Text className="px-4 py-1 border-2 border-[#AADF9F] bg-[#E4F5E1] text-black rounded-full">
+                    Accepted
+                  </Text>
+                </Flex>
+                <Flex justify="start" align="start">
+                  <Text className="w-1/4 font-light">Student:</Text>
+                  <Text className="w-3/4">
+                    Lorem ipsum do amet ipsum mattis ipsum dolor sit am Lorem ipsum do amet ipsum{" "}
+                  </Text>
+                </Flex>
+                <Flex justify="start" align="start">
+                  <Text className="w-1/4 font-light">Mentor:</Text>
+                  <Text className="w-3/4">
+                    Lorem ipsum do amet ipsum mattis ipsum dolor sit am Lorem ipsum do amet ipsum{" "}
+                  </Text>
+                </Flex>
+                <Flex justify="start" align="center">
+                  <Button className="bg-primary w-full">Confirm</Button>
+                </Flex>
+              </div>
               <div className="pt-[20px] mt-[20px] border-t border-t-[#BDC7D5]">
                 <Flex justify="start" align="center" direction="column" gap="2">
                   <InputTextArea
@@ -55,7 +65,7 @@ const RequestMentorship = () => {
               </div>
             </div>
             <Flex justify="start" align="center">
-              <Button className="bg-primary w-full">Confirm</Button>
+              <Button className="bg-primary w-full">Accept & Send</Button>
             </Flex>
           </CardBox>
         </Section>
