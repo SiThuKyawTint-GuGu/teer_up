@@ -4,8 +4,9 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form";
 import { Icons } from "@/components/ui/Images";
 import { InputTextArea } from "@/components/ui/Inputs";
 import { Text } from "@/components/ui/Typo/Text";
-import { useUpdateBio } from "@/services/user";
+import { useGetUserById, useUpdateBio } from "@/services/user";
 import { USER_ROLE } from "@/shared/enums";
+import { UserProfileResponse } from "@/types/Profile";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import Link from "next/link";
@@ -21,6 +22,7 @@ const Bio: React.FC = () => {
   const { id } = useParams();
   const router = useRouter();
   const { trigger } = useUpdateBio();
+  const { data: profileData } = useGetUserById<UserProfileResponse>(id as string);
 
   const form = useForm({
     resolver: yupResolver(validationSchema),
@@ -29,7 +31,7 @@ const Bio: React.FC = () => {
   const submit = async (data: { bio: string }) => {
     await trigger(data, {
       onSuccess: () => {
-        router.push(`/profile`);
+        router.push(`/profile${id}`);
       },
     });
   };
@@ -43,7 +45,7 @@ const Bio: React.FC = () => {
         >
           <Grid columns="1">
             <Flex justify="between" align="center" className="bg-white" p="3">
-              <Link href="/profile">
+              <Link href={`/profile/${id}`}>
                 <Icons.caretLeft className="text-[#373A36] w-[23px] h-[23px]" />
               </Link>
               <Text size="3" weight="medium">
@@ -65,9 +67,10 @@ const Bio: React.FC = () => {
                     <FormItem>
                       <FormControl>
                         <InputTextArea
-                          type="text"
-                          inputType={USER_ROLE.STUDENT}
+                          inputType={USER_ROLE.ADMIN}
+                          className="text-sm h-[130px]"
                           placeholder="Ex: Boston University"
+                          defaultValue={profileData?.data?.bio}
                           {...field}
                         />
                       </FormControl>
