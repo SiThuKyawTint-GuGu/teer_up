@@ -11,6 +11,7 @@ import { useGetGenders, useGetUserById, useUpdatePersonalInfo } from "@/services
 import { USER_ROLE } from "@/shared/enums";
 import { UserProfileResponse } from "@/types/Profile";
 import { Gender } from "@/types/User";
+import { cn } from "@/utils/cn";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
@@ -101,9 +102,13 @@ const PersonalInfo: React.FC = () => {
                                 {genders?.map((each, key) => (
                                   <Label
                                     key={key}
-                                    className="block pb-[10px] border-b border-b-[#BDC7D5]"
+                                    className={cn(
+                                      "block pb-[10px]",
+                                      key !== (genders ? genders.length - 1 : -1) &&
+                                        "border-b border-b-[#BDC7D5]"
+                                    )}
                                   >
-                                    <Flex justify="between" align="center">
+                                    <Flex className="capitalize" justify="between" align="center">
                                       {each.type}
                                       <RadioItem value={each.id.toString()} />
                                     </Flex>
@@ -168,7 +173,7 @@ const PersonalInfo: React.FC = () => {
                                 dateFormat="MM"
                                 showMonthYearPicker
                                 showFullMonthYearPicker
-                                className="w-[65px] bg-white"
+                                className="w-[45px] bg-white"
                               />
                               <Icons.arrowDown />
                             </CardBox>
