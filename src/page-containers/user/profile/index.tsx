@@ -34,8 +34,6 @@ const Profile: React.FC = () => {
   const { data: profileData } = useGetUserById<UserProfileResponse>(user?.id);
   const userProfile = profileData?.data;
 
-  console.log(viewImage);
-
   return (
     <>
       <Dialog

@@ -8,8 +8,7 @@ interface Props {
   children: ReactNode;
 }
 
-const Layout = (props: Props) => {
-  console.log(props);
+const Layout = ({ children }: Props) => {
   return (
     <>
       <Head>
@@ -18,8 +17,8 @@ const Layout = (props: Props) => {
       </Head>
       <Grid columns="1">
         <VerifyPop />
-        <div className="max-w-[400px] w-full mx-auto py-[50px] pt-[36px] h-full relative bg-layout">
-          {props.children}
+        <div className="max-w-[400px] w-full mx-auto pb-[50px] h-full relative bg-layout">
+          {children}
         </div>
       </Grid>
     </>
