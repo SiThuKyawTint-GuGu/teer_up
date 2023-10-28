@@ -1,4 +1,6 @@
 "use client";
+import BGImage from "@/components/shared/BGImage";
+import { WIDTH_TYPES } from "@/components/shared/enums";
 import { Button } from "@/components/ui/Button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons, Image } from "@/components/ui/Images";
@@ -62,12 +64,7 @@ const Profile: React.FC = () => {
                   className="w-full"
                 >
                   {userProfile?.cover_url ? (
-                    <div
-                      style={{
-                        background: `url(${userProfile?.cover_url}) center / cover`,
-                        height: "130px",
-                      }}
-                    />
+                    <BGImage width={WIDTH_TYPES.FULL} height={130} url={userProfile?.cover_url} />
                   ) : (
                     <Flex className="h-[130px] bg-[#D9D9D9]" justify="center" align="center">
                       <Icons.profileCamera className="w-[24px] h-[24px]" />
