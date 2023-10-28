@@ -14,7 +14,7 @@ import {
   useMaterialReactTable,
 } from "material-react-table";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const ContentTable: React.FC = () => {
   const [pagination, setPagination] = useState<MRT_PaginationState>({
@@ -24,17 +24,18 @@ const ContentTable: React.FC = () => {
   const [globalFilter, setGlobalFilter] = useState<string>("");
   const [open, setOpen] = useState<boolean>(false);
   const [id, setId] = useState<string>("");
-  const {
-    data: contents,
-    isLoading,
-    mutate,
-  } = useGetContent<ParamsType, ContentType>({
+  const { data: contents, isLoading } = useGetContent<ParamsType, ContentType>({
     page: pagination.pageIndex + 1,
     pagesize: pagination.pageSize,
     name: globalFilter || "",
   });
   // console.log(contents);
+  const [contentData, setContentData] = useState<any>();
   const { trigger: deleteTrigger } = useDeleteContent();
+
+  useEffect(() => {
+    setContentData(contents?.data);
+  }, [contents?.data]);
 
   const columns = useMemo(
     () => [
@@ -82,21 +83,16 @@ const ContentTable: React.FC = () => {
   );
 
   //DELETE action
-  const handleDelete = async () => {
+  const handleDeleteConfirm = async () => {
     setOpen(false);
+    const data = contentData.filter((content: any) => content.id !== id);
+    setContentData(data);
     await deleteTrigger({ id });
   };
 
-  // const openDeleteConfirmModal = async (row: MRT_Row<any>) => {
-  //   const { id } = row;
-  //   if (window.confirm("Are you sure you want to delete this content?")) {
-  //     await deleteTrigger({ id });
-  //   }
-  // };
-
   const table = useMaterialReactTable({
     columns,
-    data: (contents?.data as any) || [],
+    data: (contentData as any) || [],
     createDisplayMode: "row",
     editDisplayMode: "row",
     enableEditing: true,
@@ -141,7 +137,6 @@ const ContentTable: React.FC = () => {
         <Tooltip title="Delete">
           <IconButton
             color="error"
-            // onClick={() => openDeleteConfirmModal(row)}
             onClick={() => {
               setId(row.id);
               setOpen(true);
@@ -171,7 +166,10 @@ const ContentTable: React.FC = () => {
           <Typography color={"error"} variant="h6" component="h2">
             Delete Confirm
           </Typography>
-          <Typography sx={{ mt: 2 }}>Are you sure you want to delete this content?</Typography>
+          <Typography sx={{ mt: 2 }}>
+            Are you sure you want to delete this content ID{" "}
+            <span className="text-red-700 font-semibold">[{id}]</span>?
+          </Typography>
           <div className="flex justify-between mt-4">
             <div></div>
             <div>
@@ -192,7 +190,7 @@ const ContentTable: React.FC = () => {
                 Cancel
               </Button>
               <Button
-                onClick={handleDelete}
+                onClick={handleDeleteConfirm}
                 color="error"
                 sx={{ textTransform: "none" }}
                 variant="contained"
