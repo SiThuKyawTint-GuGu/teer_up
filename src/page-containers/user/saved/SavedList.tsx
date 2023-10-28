@@ -71,7 +71,7 @@ const SavedList: React.FC = () => {
             </Heading>
             <DialogTrigger>
               <Button variant="ghost" className="text-primary">
-                {filteredType.value}
+                {filteredType.key === SAVED_CONTENT_TYPES.ALL ? "All" : filteredType.value}
                 <Icons.caretDown />
               </Button>
             </DialogTrigger>
