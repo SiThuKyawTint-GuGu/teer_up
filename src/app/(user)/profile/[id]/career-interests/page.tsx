@@ -4,7 +4,7 @@ import { NextPage } from "next";
 
 const CareerInterestsPage: NextPage = () => {
   return (
-    <MainPageLayout>
+    <MainPageLayout hideHeader>
       <CareerInterests />
     </MainPageLayout>
   );

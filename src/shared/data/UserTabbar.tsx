@@ -23,7 +23,7 @@ export const NavbarItems: NavbarType[] = [
   },
   {
     text: "Saved",
-    path: "saved",
+    path: "/saved",
     icon: <Icons.saved width={24} height={24} />,
   },
   {

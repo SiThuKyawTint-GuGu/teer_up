@@ -1,6 +1,7 @@
 "use client";
 
 import { NavbarItems, NavbarType } from "@/shared/data/UserTabbar";
+import { cn } from "@/utils/cn";
 import { Flex } from "@radix-ui/themes";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -20,9 +21,10 @@ const BottomNavbar = () => {
         <div key={index} className="p-2">
           <Link
             href={item.path}
-            className={`flex justify-center items-center flex-col ${
+            className={cn(
+              "flex justify-center items-center flex-col",
               pathName === item.path && "text-primary"
-            }`}
+            )}
           >
             {item.icon}
             <p>{item.text}</p>

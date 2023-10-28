@@ -15,13 +15,14 @@ import { getUserInfo } from "@/utils/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
+import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import ReactDatePicker from "react-datepicker";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 const validationSchema = yup.object({
-  gender: yup.string().required("Gender is required!"),
+  gender: yup.string(),
   email: yup.string().email(),
   day: yup.date().required("Day is required!").typeError("Invalid date"),
   month: yup.date().required("Month is required!").typeError("Invalid date"),
@@ -48,7 +49,7 @@ const PersonalInfo: React.FC = () => {
     const year = dayjs(data?.year).year();
 
     const newData = {
-      gender_id: Number(data.gender),
+      gender_id: Number(data.gender) || +defaultChecked,
       birthday: `${year}-${month}-${day}`,
     };
 
@@ -68,10 +69,16 @@ const PersonalInfo: React.FC = () => {
         >
           <Grid columns="1">
             <Box>
-              <Flex justify="center" className="bg-white" p="3">
+              <Flex justify="between" align="center" className="bg-white" p="3">
+                <Link href={`/profile/${id}`}>
+                  <Icons.caretLeft className="text-[#373A36] w-[23px] h-[23px]" />
+                </Link>
                 <Text size="3" weight="medium">
                   Personal Information
                 </Text>
+                <Link href="/" className="opacity-0">
+                  <Icons.plus className="text-primary w-[23px] h-[23px]" />
+                </Link>
               </Flex>
               <Box className="pb-[7px]">
                 <Section className="bg-white" py="4" px="3">
@@ -135,7 +142,7 @@ const PersonalInfo: React.FC = () => {
                                 selected={dayjs(field.value).toDate()}
                                 onChange={date => field.onChange(dayjs(date).format())}
                                 dateFormat="dd"
-                                className="w-[65px]"
+                                className="w-[65px] bg-white"
                               />
                               <Icons.arrowDown />
                             </CardBox>
@@ -163,7 +170,7 @@ const PersonalInfo: React.FC = () => {
                                 dateFormat="MM"
                                 showMonthYearPicker
                                 showFullMonthYearPicker
-                                className="w-[65px]"
+                                className="w-[65px] bg-white"
                               />
                               <Icons.arrowDown />
                             </CardBox>
@@ -190,7 +197,7 @@ const PersonalInfo: React.FC = () => {
                                 onChange={date => field.onChange(dayjs(date).format())}
                                 dateFormat="yyyy"
                                 showYearPicker
-                                className="w-[65px]"
+                                className="w-[65px] bg-white"
                               />
                               <Icons.arrowDown />
                             </CardBox>

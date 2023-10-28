@@ -7,11 +7,16 @@ import { Text } from "@/components/ui/Typo/Text";
 import { ParamsType, useGetSavedContents } from "@/services/content";
 import { SavedContentResponse } from "@/types/SavedContent";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import React, { useState } from "react";
+dayjs.extend(relativeTime);
 
 const SavedList: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const { data: savedContents } = useGetSavedContents<ParamsType, SavedContentResponse>();
+
+  console.log(savedContents);
 
   return (
     <Dialog open={open} onOpenChange={val => setOpen(val)}>
@@ -36,16 +41,16 @@ const SavedList: React.FC = () => {
                     <CardBox className="p-[8px]">
                       <Flex justify="start" align="start" gap="2">
                         <Image
-                          src={each?.image_url}
+                          src={each?.content?.image_url}
                           className="w-[128px] h-[100px]"
                           width={128}
                           height={100}
                           alt="saved image"
                         />
                         <Flex className="text-[#373A36] space-y-1" direction="column" wrap="wrap">
-                          <Text>{each.title}</Text>
+                          <Text>{each?.content?.title}</Text>
                           <Text size="2" weight="light">
-                            {each.type} . Saved 2d ago
+                            {each?.content?.type} . Saved {dayjs(each?.created_at).fromNow()}
                           </Text>
                         </Flex>
                       </Flex>

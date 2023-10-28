@@ -12,7 +12,7 @@ export type ParamsType = {
 };
 
 export const useGetMentorship = <ParamsType, MentorshipResponse>(
-  params: ParamsType
+  params?: ParamsType
 ): SWRResponse<MentorshipResponse, any> => {
   return useSWR<MentorshipResponse>(`/mentorships?${routeFilter(params)}`);
 };

@@ -1,10 +1,11 @@
 import { Button } from "@/components/ui/Button";
 import CardBox from "@/components/ui/Card";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import { useLikeContent, useSaveContent } from "@/services/content";
 import { ContentData } from "@/types/Content";
-import { Dialog, DialogContent, DialogTrigger } from "@radix-ui/react-dialog";
+
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -144,7 +145,8 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
         </div>
       </div>
       {openModal && (
-        <DialogContent className="absolute top-[initial] bottom-0 w-full z-[99999]">
+        // <DialogContent className="top-[initial] bottom-0 w-full z-[99999]">
+        <DialogContent className="bg-white top-[initial] bottom-0 px-4 pt-8 pb-2 translate-y-0 rounded-10px-tl-tr">
           <CommentSection data={data} mutateParentData={contentMutate} />
         </DialogContent>
       )}

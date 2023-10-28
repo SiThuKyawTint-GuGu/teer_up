@@ -1,29 +1,37 @@
-import { ContentPathway } from "./Content";
-import { ContentCategory } from "./ContentCategory";
-import { User } from "./User";
+import { ContentArticle, ContentEvent, ContentOpportunity } from "./Content";
 
-export interface SavedContent {
+export interface ContentVideo {
+  id: number;
+  video_url: string;
+  thumbnail: string;
+}
+
+export interface Content {
   id: number;
   title: string;
   description: string;
   created_at: string;
   type: string;
+  updated_at: string;
   image_url: string;
   user_id: number;
   slug: string;
   status: string;
-  likes: number;
-  comments: number;
-  category: ContentCategory;
-  content_video: null;
-  content_event: null;
-  content_article: null;
-  content_pathways: ContentPathway[];
-  content_opportunity: null;
-  user: User;
-  is_liked: boolean;
-  is_saved: boolean;
-  watched_count: number;
+  category_id: number;
+  mentor_id: number;
+  content_video: ContentVideo | null;
+  content_article: ContentArticle | null;
+  content_opportunity: ContentOpportunity | null;
+  content_event: ContentEvent | null;
+}
+
+export interface SavedContent {
+  id: number;
+  user_id: number;
+  content_id: number;
+  created_at: string;
+  updated_at: string;
+  content: Content;
 }
 
 export interface SavedContentResponse {
