@@ -122,11 +122,11 @@ export const menuList: Menu[] = [
   },
 ];
 
-// export const actionMenu: Menu[] = [
-//   {
-//     key: ["/admin/logout"],
-//     icon: <Icons.logout className="w-[20px] h-[20px]" />,
-//     title: "Logout",
-//     child: [],
-//   },
-// ];
+export const actionMenu: Menu[] = [
+  {
+    key: "/admin/logout",
+    icon: <Icons.logout className="w-[20px] h-[20px]" />,
+    title: "Logout",
+    child: [],
+  },
+];

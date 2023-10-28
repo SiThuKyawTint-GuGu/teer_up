@@ -116,33 +116,20 @@ const BlogPostDetail = ({ id }: Props) => {
       <div className="bg-white p-10 rounded-md">
         <form onSubmit={handleSubmit(submit)} className="space-y-8">
           <div>
-            <TextField
-              {...register("name")}
-              label="Name"
-              size="small"
-              className="w-full"
-              variant="outlined"
-            />
+            <TextField {...register("name")} label="Name" className="w-full" variant="outlined" />
             <p className="mt-2 text-red-700">{errors.name?.message}</p>
           </div>
 
           <div>
-            <TextField
-              {...register("link")}
-              label="Link"
-              size="small"
-              className="w-full"
-              variant="outlined"
-            />
+            <TextField {...register("link")} label="Link" className="w-full" variant="outlined" />
             <p className="mt-2 text-red-700">{errors.link?.message}</p>
           </div>
 
           <div className="mb-10">
-            <FormControl size="small" fullWidth>
+            <FormControl fullWidth>
               <InputLabel id="category">Category</InputLabel>
               <Select
                 {...register("category")}
-                size="small"
                 labelId="category"
                 id="category"
                 value={selectedValue}
@@ -159,11 +146,10 @@ const BlogPostDetail = ({ id }: Props) => {
             <p className="mt-2 text-red-700">{errors.category?.message}</p>
           </div>
           <div className="mb-10">
-            <FormControl size="small" fullWidth>
+            <FormControl fullWidth>
               <InputLabel id="form">Form</InputLabel>
               <Select
                 {...register("form")}
-                size="small"
                 labelId="form"
                 id="form"
                 value={selectFormValue}
