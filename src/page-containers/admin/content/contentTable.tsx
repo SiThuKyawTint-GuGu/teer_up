@@ -105,7 +105,7 @@ const ContentTable: React.FC = () => {
       : undefined,
     muiTableContainerProps: {
       sx: {
-        minHeight: "500px",
+        maxHeight: "calc(100vh - 200px)",
       },
     },
     positionActionsColumn: "last",
@@ -123,6 +123,8 @@ const ContentTable: React.FC = () => {
       pagination,
       isLoading,
     },
+    enableStickyHeader: true,
+    enableStickyFooter: true,
     onGlobalFilterChange: setGlobalFilter,
     onPaginationChange: setPagination,
     renderRowActions: ({ row, table }) => (
