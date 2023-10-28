@@ -10,10 +10,8 @@ import { UserProfileResponse } from "@/types/Profile";
 import { Box, Flex, Grid, Section } from "@radix-ui/themes";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useState } from "react";
 
 const CareerInterests: React.FC = () => {
-  const [open, setOpen] = useState<boolean>(false);
   const { id } = useParams();
   const { data: profileData } = useGetUserById<UserProfileResponse>(id as string);
   const { data: industryData } = useGetIndustry<IndustryResponse>();
@@ -32,7 +30,7 @@ const CareerInterests: React.FC = () => {
     <>
       <Grid columns="1">
         <Flex justify="between" align="center" className="bg-white" p="3">
-          <Link href="/profile">
+          <Link href={`/profile/${id}`}>
             <Icons.caretLeft className="text-[#373A36] w-[23px] h-[23px]" />
           </Link>
           <Text size="3" weight="medium">

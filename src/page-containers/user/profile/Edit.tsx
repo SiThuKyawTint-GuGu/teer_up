@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/Button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
-import { Image } from "@/components/ui/Images";
+import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import { useGetUserById, useUploadCover, useUploadProfile } from "@/services/user";
 import { PROFILE_TRIGGER } from "@/shared/enums";
@@ -9,12 +9,12 @@ import { UserProfileResponse } from "@/types/Profile";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 
 const profileTrigger = {
-  [PROFILE_TRIGGER.COVER]: "See cover picture",
-  [PROFILE_TRIGGER.PROFILE]: "See profile picture",
+  [PROFILE_TRIGGER.COVER]: "select cover picture",
+  [PROFILE_TRIGGER.PROFILE]: "select profile picture",
 };
 
 const profileTriggerIcon = {
@@ -26,8 +26,7 @@ const ProfileEdit: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [triggerType, setTriggerType] = useState<PROFILE_TRIGGER>();
   const { id } = useParams();
-  const router = useRouter();
-  const { data: profileData } = useGetUserById<UserProfileResponse>(id as string);
+  const { data: profileData, mutate } = useGetUserById<UserProfileResponse>(id as string);
   const { trigger: uploadProfileTrigger } = useUploadProfile();
   const { trigger: uploadCoverTrigger } = useUploadCover();
   const userProfile = profileData?.data;
@@ -43,7 +42,8 @@ const ProfileEdit: React.FC = () => {
 
       try {
         await triggerFunction;
-        router.push("/profile");
+        await mutate();
+        setOpen(!open);
       } catch (error) {
         console.error("Upload failed =>", error);
       }
@@ -61,10 +61,16 @@ const ProfileEdit: React.FC = () => {
       <Dialog open={open} onOpenChange={val => setOpen(val)}>
         <Grid columns="1">
           <Box className="pb-[55px]">
-            <Flex justify="center" className="bg-white" p="3">
+            <Flex justify="between" align="center" className="bg-white" p="3">
+              <Link href="/profile">
+                <Icons.caretLeft className="text-[#373A36] w-[23px] h-[23px]" />
+              </Link>
               <Text size="3" weight="medium">
                 Edit Profile
               </Text>
+              <Link href="/" className="opacity-0">
+                <Icons.plus className="text-primary w-[23px] h-[23px]" />
+              </Link>
             </Flex>
             <Box className="pb-[7px]">
               <Section className="bg-white" py="4" px="3">
@@ -214,7 +220,7 @@ const ProfileEdit: React.FC = () => {
                 </Flex>
                 <Flex wrap="wrap" gap="2">
                   {userProfile?.industries?.map((each, key) => (
-                    <Button key={key} className="bg-[#d1d5d8] text-black">
+                    <Button key={key} className="bg-[#d1d5d8] text-black hover:bg-[#d1d5d8]">
                       {each.industry.name}
                     </Button>
                   ))}
@@ -233,7 +239,7 @@ const ProfileEdit: React.FC = () => {
                 </Flex>
                 <Flex wrap="wrap" gap="2">
                   {userProfile?.preferences?.map((each, key) => (
-                    <Button key={key} className="bg-[#d1d5d8] text-black">
+                    <Button key={key} className="bg-[#d1d5d8] text-black hover:bg-[#d1d5d8]">
                       {each.preference.name}
                     </Button>
                   ))}

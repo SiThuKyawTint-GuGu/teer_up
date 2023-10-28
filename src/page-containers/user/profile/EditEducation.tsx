@@ -164,7 +164,7 @@ const EditEducation: React.FC = () => {
                             selected={dayjs(field.value).toDate()}
                             onChange={date => field.onChange(dayjs(date).format())}
                             dateFormat="dd/MM/yyyy"
-                            className="w-full"
+                            className="w-full bg-white"
                           />
                           <Icons.calender />
                         </CardBox>
@@ -192,7 +192,7 @@ const EditEducation: React.FC = () => {
                             selected={dayjs(field.value).toDate()}
                             onChange={date => field.onChange(dayjs(date).format())}
                             dateFormat="dd/MM/yyyy"
-                            className="w-full"
+                            className="w-full bg-white"
                           />
                           <Icons.calender />
                         </CardBox>
