@@ -88,7 +88,7 @@ const UserTable: React.FC = () => {
         header: "Role",
         enableEditing: true,
         editVariant: "select",
-        editSelectOptions: ["Student", "Mentor"],
+        editSelectOptions: ["student", "mentor"],
         muiEditTextFieldProps: {
           select: true,
           type: "role",
@@ -99,7 +99,7 @@ const UserTable: React.FC = () => {
           onFocus: () =>
             setValidationErrors({
               ...validationErrors,
-              role: undefined,
+              role: "undefined",
             }),
         },
       },
