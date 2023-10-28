@@ -48,17 +48,20 @@ const ContentTable: React.FC = () => {
         header: "Title",
         enableEditing: false,
       },
-      {
-        accessorKey: "description",
-        header: "Description",
-        enableEditing: false,
-        Cell: ({ row }: any) => <div>{truncateText(row.original.description, 20)}</div>,
-      },
+      // {
+      //   accessorKey: "description",
+      //   header: "Description",
+      //   enableEditing: false,
+      //   Cell: ({ row }: any) => <div>{truncateText(row.original.description, 20)}</div>,
+      // },
       {
         accessorKey: "type",
         header: "Type",
         enableEditing: false,
         size: 3,
+        Cell: ({ row }: any) => (
+          <p>{row?.original?.type?.charAt(0).toUpperCase() + row?.original?.type?.slice(1)}</p>
+        ),
       },
       // {
       //   accessorKey: "keywords",
@@ -209,13 +212,13 @@ const style = {
   p: 4,
 };
 
-function truncateText(text: string, maxWords: number) {
-  const words = text?.split(" ");
+// function truncateText(text: string, maxWords: number) {
+//   const words = text?.split(" ");
 
-  if (words?.length > maxWords) {
-    const truncatedText = words?.slice(0, maxWords).join(" ");
-    return `${truncatedText}...`;
-  } else {
-    return text;
-  }
-}
+//   if (words?.length > maxWords) {
+//     const truncatedText = words?.slice(0, maxWords).join(" ");
+//     return `${truncatedText}...`;
+//   } else {
+//     return text;
+//   }
+// }
