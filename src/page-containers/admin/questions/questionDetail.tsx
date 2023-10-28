@@ -155,132 +155,121 @@ const QuestionDetail = ({ id }: Props) => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(Submit)}>
-        <Box className="bg-white p-10 rounded-md">
-          <div className="mb-10">
-            <TextField
-              {...register("name")}
-              label="Question"
-              size="small"
-              className="w-full"
-              variant="outlined"
-            />
-            <p className="mt-2 text-red-700">{errors.name?.message}</p>
-          </div>
-          <div className="mb-10">
-            <FormControl size="small" fullWidth>
-              <InputLabel id="dimension">Dimension</InputLabel>
-              <Select
-                {...register("dimension_id")}
-                size="small"
-                labelId="dimension"
-                id="dimension"
-                value={selectedDimension}
-                label="Dimension"
-                onChange={handleDimensionChange}
-              >
-                {dimensions?.data.map((dim: any, index: number) => (
-                  <MenuItem key={index} value={dim.id}>
-                    {dim.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <p className="mt-2 text-red-700">{errors.dimension_id?.message}</p>
-          </div>
-          <div className="mb-10">
-            <FormControl size="small" fullWidth>
-              <InputLabel id="Type">Type</InputLabel>
-              <Select
-                {...register("type")}
-                size="small"
-                labelId="Type"
-                id="Type"
-                value={selectedType}
-                label="Type"
-                onChange={handleChangeType}
-              >
-                <MenuItem value="certainly">Certainly</MenuItem>
-                <MenuItem value="skill">Skill</MenuItem>
-              </Select>
-            </FormControl>
-            <p className="mt-2 text-red-700">{errors.type?.message}</p>
-          </div>
-          <div>
-            <Button
-              sx={{ textTransform: "none" }}
-              color="error"
-              variant="contained"
-              startIcon={<AiOutlinePlus />}
-              onClick={handleAddOptions}
+      <form onSubmit={handleSubmit(Submit)} className="bg-white h-full p-5">
+        <div className="mb-10">
+          <TextField {...register("name")} label="Question" className="w-full" variant="outlined" />
+          <p className="mt-2 text-red-700">{errors.name?.message}</p>
+        </div>
+        <div className="mb-10">
+          <FormControl fullWidth>
+            <InputLabel id="dimension">Dimension</InputLabel>
+            <Select
+              {...register("dimension_id")}
+              labelId="dimension"
+              id="dimension"
+              value={selectedDimension}
+              label="Dimension"
+              onChange={handleDimensionChange}
             >
-              Add Option
-            </Button>
-          </div>
-          {options?.map((option: any, index: number) => (
-            <>
-              <Box
-                key={index}
-                className="flex flex-col justify-center border border-gray-300 p-5 my-5 rounded-md"
-              >
-                <div className="mb-10">
-                  <Controller
-                    name={`options[${index}].name` as any}
-                    control={control}
-                    render={({ field }) => (
-                      <TextField
-                        {...field}
-                        label="Answer"
-                        defaultValue={option.name}
-                        size="small"
-                        className="w-full"
-                        variant="outlined"
-                      />
-                    )}
-                  />
-                  <p className="mt-2 text-red-700">{errors.options?.[index]?.name?.message}</p>
-                </div>
+              {dimensions?.data.map((dim: any, index: number) => (
+                <MenuItem key={index} value={dim.id}>
+                  {dim.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <p className="mt-2 text-red-700">{errors.dimension_id?.message}</p>
+        </div>
+        <div className="mb-10">
+          <FormControl fullWidth>
+            <InputLabel id="Type">Type</InputLabel>
+            <Select
+              {...register("type")}
+              labelId="Type"
+              id="Type"
+              value={selectedType}
+              label="Type"
+              onChange={handleChangeType}
+            >
+              <MenuItem value="certainly">Certainly</MenuItem>
+              <MenuItem value="skill">Skill</MenuItem>
+            </Select>
+          </FormControl>
+          <p className="mt-2 text-red-700">{errors.type?.message}</p>
+        </div>
+        <div>
+          <Button
+            sx={{ textTransform: "none" }}
+            color="error"
+            variant="contained"
+            startIcon={<AiOutlinePlus />}
+            onClick={handleAddOptions}
+          >
+            Add Option
+          </Button>
+        </div>
+        {options?.map((option: any, index: number) => (
+          <>
+            <Box
+              key={index}
+              className="flex flex-col justify-center border border-gray-300 p-5 my-5 rounded-md"
+            >
+              <div className="mb-10">
+                <Controller
+                  name={`options[${index}].name` as any}
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Answer"
+                      defaultValue={option.name}
+                      className="w-full"
+                      variant="outlined"
+                    />
+                  )}
+                />
+                <p className="mt-2 text-red-700">{errors.options?.[index]?.name?.message}</p>
+              </div>
 
-                <div className="mb-10">
-                  <Controller
-                    name={`options[${index}].score` as any}
-                    control={control}
-                    render={({ field }) => (
-                      <TextField
-                        {...field}
-                        label="Score"
-                        type={"number"}
-                        defaultValue={option.score}
-                        size="small"
-                        className="w-full"
-                        variant="outlined"
-                      />
-                    )}
-                  />
-                  <p className="mt-2 text-red-700">{errors.options?.[index]?.score?.message}</p>
-                </div>
+              <div className="mb-10">
+                <Controller
+                  name={`options[${index}].score` as any}
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Score"
+                      type={"number"}
+                      defaultValue={option.score}
+                      className="w-full"
+                      variant="outlined"
+                    />
+                  )}
+                />
+                <p className="mt-2 text-red-700">{errors.options?.[index]?.score?.message}</p>
+              </div>
 
-                <div>
-                  <Controller
-                    name={`options[${index}].feedback` as any}
-                    control={control}
-                    render={({ field }) => (
-                      <Editor
-                        value={editorContent[field.name] || ""}
-                        init={(editorInit: any) => handleEditorInit(editorInit, field.name)}
-                        onEditorChange={content => {
-                          console.log(content);
-                          console.log(field.name);
-                          setEditorContent({ ...editorContent, [field.name]: content });
-                          field.onChange(content);
-                        }}
-                      />
-                    )}
-                  />
+              <div>
+                <Controller
+                  name={`options[${index}].feedback` as any}
+                  control={control}
+                  render={({ field }) => (
+                    <Editor
+                      value={editorContent[field.name] || ""}
+                      init={(editorInit: any) => handleEditorInit(editorInit, field.name)}
+                      onEditorChange={content => {
+                        console.log(content);
+                        console.log(field.name);
+                        setEditorContent({ ...editorContent, [field.name]: content });
+                        field.onChange(content);
+                      }}
+                    />
+                  )}
+                />
 
-                  <p className="mt-2 text-red-700">{errors.options?.[index]?.feedback?.message}</p>
-                </div>
-                {/* <div className="flex justify-between">
+                <p className="mt-2 text-red-700">{errors.options?.[index]?.feedback?.message}</p>
+              </div>
+              {/* <div className="flex justify-between">
                   <div></div>
                   <Button
                     onClick={() => handleDeleteOption(option.name)}
@@ -291,38 +280,37 @@ const QuestionDetail = ({ id }: Props) => {
                     Delete
                   </Button>
                 </div> */}
-              </Box>
-            </>
-          ))}
-          <div className="flex justify-between">
-            <div></div>
-            <div>
-              {question?.data ? (
-                <LoadingButton
-                  loading={updateMutating}
-                  loadingPosition="start"
-                  startIcon={<SaveIcon />}
-                  variant="contained"
-                  type="submit"
-                  color="error"
-                >
-                  Update
-                </LoadingButton>
-              ) : (
-                <LoadingButton
-                  loading={postMutating}
-                  loadingPosition="start"
-                  startIcon={<SaveIcon />}
-                  variant="contained"
-                  type="submit"
-                  color="error"
-                >
-                  Save
-                </LoadingButton>
-              )}
-            </div>
+            </Box>
+          </>
+        ))}
+        <div className="flex justify-between">
+          <div></div>
+          <div>
+            {question?.data ? (
+              <LoadingButton
+                loading={updateMutating}
+                loadingPosition="start"
+                startIcon={<SaveIcon />}
+                variant="contained"
+                type="submit"
+                color="error"
+              >
+                Update
+              </LoadingButton>
+            ) : (
+              <LoadingButton
+                loading={postMutating}
+                loadingPosition="start"
+                startIcon={<SaveIcon />}
+                variant="contained"
+                type="submit"
+                color="error"
+              >
+                Save
+              </LoadingButton>
+            )}
           </div>
-        </Box>
+        </div>
       </form>
     </>
   );

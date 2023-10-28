@@ -5,11 +5,7 @@ interface Props {
 }
 
 const QuestionDetailPage = ({ params: { id } }: Props) => {
-  return (
-    <div>
-      <QuestionDetail id={id} />
-    </div>
-  );
+  return <QuestionDetail id={id} />;
 };
 
 export default QuestionDetailPage;

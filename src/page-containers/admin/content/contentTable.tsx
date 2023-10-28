@@ -75,7 +75,7 @@ const ContentTable: React.FC = () => {
         header: "Created At",
         enableEditing: false,
         size: 3,
-        Cell: ({ value }: any) => dayjs(value).format("YYYY-MM-DD"),
+        Cell: ({ value }: any) => dayjs(value).format("MMM D, YYYY h:mm A"),
       },
     ],
     []

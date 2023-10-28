@@ -35,6 +35,7 @@ const Dimension: React.FC = () => {
         accessorKey: "id",
         header: "ID",
         enableEditing: false,
+        size: 3,
       },
 
       {
