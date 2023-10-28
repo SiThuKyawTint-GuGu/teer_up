@@ -11,7 +11,6 @@ import { useGetGenders, useGetUserById, useUpdatePersonalInfo } from "@/services
 import { USER_ROLE } from "@/shared/enums";
 import { UserProfileResponse } from "@/types/Profile";
 import { Gender } from "@/types/User";
-import { getUserInfo } from "@/utils/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
@@ -32,9 +31,8 @@ const validationSchema = yup.object({
 const PersonalInfo: React.FC = () => {
   const { id } = useParams();
   const router = useRouter();
-  const userInfo = getUserInfo();
   const { data: profileData } = useGetUserById<UserProfileResponse>(id as string);
-  const { data: genders, isLoading: genderLoading } = useGetGenders<Gender[]>();
+  const { data: genders } = useGetGenders<Gender[]>();
   const { trigger } = useUpdatePersonalInfo();
   const userProfile = profileData?.data;
   const defaultChecked = userProfile?.personal_info?.gender?.id.toString() || "1";
