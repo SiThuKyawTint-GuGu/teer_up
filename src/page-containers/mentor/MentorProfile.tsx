@@ -178,34 +178,36 @@ const MentorProfile: React.FC = () => {
             </Button>
           </div>
         </DialogTrigger>
-        <DialogContent className="bg-white top-[initial] h-auto bottom-0 px-4 pt-8 pb-2 translate-y-0 rounded-10px-tl-tr">
-          <Flex gap="3" direction="column" className="bg-white h-full">
-            <div className="bg-primary rounded-[6px] w-[60px] h-[2px] my-3 mx-auto" />
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(submit)}>
-                <FormField
-                  control={form.control}
-                  name="message"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <InputTextArea
-                          type="text"
-                          placeholder="Include you available time and describe why you want this mentorship"
-                          {...field}
-                          className="p-3"
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                <Button type="submit" className="w-full my-5">
-                  Send
-                </Button>
-              </form>
-            </Form>
-          </Flex>
-        </DialogContent>
+        {open && (
+          <DialogContent className="bg-white top-[initial] h-auto bottom-0 max-w-[400px] px-4 pt-8 pb-2 translate-y-0 rounded-10px-tl-tr">
+            <Flex gap="3" direction="column" className="bg-white h-full">
+              <div className="bg-primary rounded-[6px] w-[60px] h-[2px] my-3 mx-auto"></div>
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(submit)}>
+                  <FormField
+                    control={form.control}
+                    name="message"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <InputTextArea
+                            type="text"
+                            placeholder="Include you available time and describe why you want this mentorship"
+                            {...field}
+                            className="p-3"
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  <Button type="submit" className="w-full my-5" disabled={isMutating}>
+                    Send
+                  </Button>
+                </form>
+              </Form>
+            </Flex>
+          </DialogContent>
+        )}
       </Dialog>
     </>
   );

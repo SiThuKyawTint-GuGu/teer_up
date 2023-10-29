@@ -66,7 +66,7 @@ const Login: React.FC = () => {
         <div className="space-y-[10px]">
           <Form {...form}>
             <form
-              className="w-full flex flex-col justify-center flex-wrap"
+              className="w-full flex flex-col justify-center flex-wrap gap-y-[20px]"
               onSubmit={form.handleSubmit(loginHandler)}
             >
               <FormField
@@ -76,7 +76,7 @@ const Login: React.FC = () => {
                   <FormItem>
                     <FormControl>
                       <InputText
-                        className="border-2 border-primary"
+                        className="bg-white shadow-md"
                         placeholder="Enter your email address"
                         type="text"
                         {...field}

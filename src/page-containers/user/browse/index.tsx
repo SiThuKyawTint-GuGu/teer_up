@@ -16,10 +16,37 @@ const BrowsePage = () => {
     pagesize: 20,
     type: type,
   });
+  const differentContent = (data: ContentData, index: number) => {
+    if (data.type === "event" && data.content_event)
+      return (
+        <BrowserContentLayout data={data} contentMutate={mutate} redir={`/events/${data.slug}`} />
+      );
+    if (data.type === "article" && data.content_article)
+      return (
+        <BrowserContentLayout data={data} contentMutate={mutate} redir={`/articles/${data.slug}`} />
+      );
+    if (data.type === "opportunity" && data.content_opportunity)
+      return (
+        <BrowserContentLayout
+          data={data}
+          contentMutate={mutate}
+          redir={`/opportunity/${data.slug}`}
+        />
+      );
+    if (data.type === "pathway")
+      return (
+        <BrowserContentLayout data={data} contentMutate={mutate} redir={`/pathway/${data.slug}`} />
+      );
+    if (data.type === "mentor")
+      return (
+        <BrowserContentLayout data={data} contentMutate={mutate} redir={`/mentor/${data.slug}`} />
+      );
+    return <div>This page is not avaliable right now</div>;
+  };
 
   return (
     <div className="relative w-full h-full">
-      <Flex className="p-3 w-full  overflow-auto no-scrollbar relative">
+      <Flex className="p-3 w-full overflow-auto no-scrollbar relative">
         {BrowsePageHeader.map((data: HeaderType, index: number) => (
           <div key={index} onClick={() => setType(data.value)} className="cursor-pointer">
             <Text
@@ -41,25 +68,7 @@ const BrowsePage = () => {
                 <div className="w-full h-full overflow-y-scroll no-scrollbar" key={index}>
                   {contentArray.data.map((contentData: ContentData, index: number) => (
                     <div key={index} className="w-full">
-                      {contentData.type !== "onboarding" && (
-                        <BrowserContentLayout data={contentData} contentMutate={mutate}>
-                          {contentData.description && (
-                            <div className="w-full h-full">
-                              <div className="flex flex-col w-full h-[40vh]">
-                                <Text>
-                                  {contentData.description.slice(0, 100)}
-
-                                  {contentData.description.length > 100 && (
-                                    <Text as="span" className="text-primary">
-                                      {"..."}See more
-                                    </Text>
-                                  )}
-                                </Text>
-                              </div>
-                            </div>
-                          )}
-                        </BrowserContentLayout>
-                      )}
+                      {differentContent(contentData, index)}
                     </div>
                   ))}
                 </div>
