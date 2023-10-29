@@ -1,12 +1,22 @@
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import ApartmentIcon from "@mui/icons-material/Apartment";
+import ArticleIcon from "@mui/icons-material/Article";
+import BallotIcon from "@mui/icons-material/Ballot";
 import ChromeReaderModeIcon from "@mui/icons-material/ChromeReaderMode";
+import CorporateFareIcon from "@mui/icons-material/CorporateFare";
 import CreateIcon from "@mui/icons-material/Create";
 import FeedIcon from "@mui/icons-material/Feed";
+import HelpIcon from "@mui/icons-material/Help";
+import KeyIcon from "@mui/icons-material/Key";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import LogoutIcon from "@mui/icons-material/Logout";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
+import PostAddIcon from "@mui/icons-material/PostAdd";
+import RoomPreferencesIcon from "@mui/icons-material/RoomPreferences";
 import SettingsIcon from "@mui/icons-material/Settings";
+import TextSnippetIcon from "@mui/icons-material/TextSnippet";
 import NextImage from "next/image";
 import { CiSettings } from "react-icons/ci";
 import { FaArrowRight, FaLightbulb, FaUserCircle } from "react-icons/fa";
@@ -95,7 +105,17 @@ export const Icons = {
   },
   innovates: FaLightbulb,
   users: FiUsers,
+  content: ArticleIcon,
+  category: BallotIcon,
+  post: PostAddIcon,
   form: CreateIcon,
+  keyword: KeyIcon,
+  question: HelpIcon,
+  dimension: TextSnippetIcon,
+  admin: PeopleOutlineIcon,
+  preference: RoomPreferencesIcon,
+  industry: CorporateFareIcon,
+  department: ApartmentIcon,
   mentor: AccountBoxIcon,
   discussions: GoCommentDiscussion,
   contents: ChromeReaderModeIcon,

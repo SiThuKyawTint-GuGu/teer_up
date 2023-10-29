@@ -1,14 +1,8 @@
-'use client';
-import React from 'react';
-
-import { Icons } from '@/components/ui/Images';
+"use client";
+import Spinner from "@/components/ui/Spinner";
 
 const Loading = () => {
-  return (
-    <div className="flex justify-center items-center h-screen w-full">
-      <Icons.loading className="w-[40px] h-[40px`]" />
-    </div>
-  );
+  return <Spinner color="#DA291C" width={35} height={35} />;
 };
 
 export default Loading;

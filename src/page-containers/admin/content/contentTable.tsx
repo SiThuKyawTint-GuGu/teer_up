@@ -1,4 +1,5 @@
 "use client";
+import { useWindowSize } from "@/hooks/useWindowSize";
 import { ParamsType, useDeleteContent, useGetContent } from "@/services/content";
 import { ContentType } from "@/types/Content";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -14,7 +15,7 @@ import {
   useMaterialReactTable,
 } from "material-react-table";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const ContentTable: React.FC = () => {
   const [pagination, setPagination] = useState<MRT_PaginationState>({
@@ -24,17 +25,20 @@ const ContentTable: React.FC = () => {
   const [globalFilter, setGlobalFilter] = useState<string>("");
   const [open, setOpen] = useState<boolean>(false);
   const [id, setId] = useState<string>("");
-  const {
-    data: contents,
-    isLoading,
-    mutate,
-  } = useGetContent<ParamsType, ContentType>({
+  const { data: contents, isLoading } = useGetContent<ParamsType, ContentType>({
     page: pagination.pageIndex + 1,
     pagesize: pagination.pageSize,
     name: globalFilter || "",
   });
   // console.log(contents);
+  const [contentData, setContentData] = useState<any>();
   const { trigger: deleteTrigger } = useDeleteContent();
+  const { windowHeight } = useWindowSize();
+  const height = windowHeight - 100 + "px";
+
+  useEffect(() => {
+    setContentData(contents?.data);
+  }, [contents?.data]);
 
   const columns = useMemo(
     () => [
@@ -49,17 +53,20 @@ const ContentTable: React.FC = () => {
         header: "Title",
         enableEditing: false,
       },
-      {
-        accessorKey: "description",
-        header: "Description",
-        enableEditing: false,
-        Cell: ({ row }: any) => <div>{truncateText(row.original.description, 20)}</div>,
-      },
+      // {
+      //   accessorKey: "description",
+      //   header: "Description",
+      //   enableEditing: false,
+      //   Cell: ({ row }: any) => <div>{truncateText(row.original.description, 20)}</div>,
+      // },
       {
         accessorKey: "type",
         header: "Type",
         enableEditing: false,
         size: 3,
+        Cell: ({ row }: any) => (
+          <p>{row?.original?.type?.charAt(0).toUpperCase() + row?.original?.type?.slice(1)}</p>
+        ),
       },
       // {
       //   accessorKey: "keywords",
@@ -72,28 +79,23 @@ const ContentTable: React.FC = () => {
         header: "Created At",
         enableEditing: false,
         size: 3,
-        Cell: ({ value }: any) => dayjs(value).format("YYYY-MM-DD"),
+        Cell: ({ value }: any) => dayjs(value).format("MMM D, YYYY h:mm A"),
       },
     ],
     []
   );
 
   //DELETE action
-  const handleDelete = async () => {
+  const handleDeleteConfirm = async () => {
     setOpen(false);
+    const data = contentData.filter((content: any) => content.id !== id);
+    setContentData(data);
     await deleteTrigger({ id });
   };
 
-  // const openDeleteConfirmModal = async (row: MRT_Row<any>) => {
-  //   const { id } = row;
-  //   if (window.confirm("Are you sure you want to delete this content?")) {
-  //     await deleteTrigger({ id });
-  //   }
-  // };
-
   const table = useMaterialReactTable({
     columns,
-    data: (contents?.data as any) || [],
+    data: (contentData as any) || [],
     createDisplayMode: "row",
     editDisplayMode: "row",
     enableEditing: true,
@@ -106,7 +108,7 @@ const ContentTable: React.FC = () => {
       : undefined,
     muiTableContainerProps: {
       sx: {
-        minHeight: "500px",
+        maxHeight: "calc(100vh - 200px)",
       },
     },
     positionActionsColumn: "last",
@@ -124,6 +126,8 @@ const ContentTable: React.FC = () => {
       pagination,
       isLoading,
     },
+    enableStickyHeader: true,
+    enableStickyFooter: true,
     onGlobalFilterChange: setGlobalFilter,
     onPaginationChange: setPagination,
     renderRowActions: ({ row, table }) => (
@@ -138,7 +142,6 @@ const ContentTable: React.FC = () => {
         <Tooltip title="Delete">
           <IconButton
             color="error"
-            // onClick={() => openDeleteConfirmModal(row)}
             onClick={() => {
               setId(row.id);
               setOpen(true);
@@ -168,7 +171,10 @@ const ContentTable: React.FC = () => {
           <Typography color={"error"} variant="h6" component="h2">
             Delete Confirm
           </Typography>
-          <Typography sx={{ mt: 2 }}>Are you sure you want to delete this content?</Typography>
+          <Typography sx={{ mt: 2 }}>
+            Are you sure you want to delete this content ID{" "}
+            <span className="text-red-700 font-semibold">[{id}]</span>?
+          </Typography>
           <div className="flex justify-between mt-4">
             <div></div>
             <div>
@@ -189,7 +195,7 @@ const ContentTable: React.FC = () => {
                 Cancel
               </Button>
               <Button
-                onClick={handleDelete}
+                onClick={handleDeleteConfirm}
                 color="error"
                 sx={{ textTransform: "none" }}
                 variant="contained"
@@ -216,13 +222,13 @@ const style = {
   p: 4,
 };
 
-function truncateText(text: string, maxWords: number) {
-  const words = text?.split(" ");
+// function truncateText(text: string, maxWords: number) {
+//   const words = text?.split(" ");
 
-  if (words?.length > maxWords) {
-    const truncatedText = words?.slice(0, maxWords).join(" ");
-    return `${truncatedText}...`;
-  } else {
-    return text;
-  }
-}
+//   if (words?.length > maxWords) {
+//     const truncatedText = words?.slice(0, maxWords).join(" ");
+//     return `${truncatedText}...`;
+//   } else {
+//     return text;
+//   }
+// }

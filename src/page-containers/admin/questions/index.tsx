@@ -42,20 +42,23 @@ const Questions: React.FC = () => {
         header: "Type",
         enableEditing: false,
         size: 2,
+        Cell: ({ row }: any) => (
+          <p>{row?.original?.type?.charAt(0).toUpperCase() + row?.original?.type?.slice(1)}</p>
+        ),
       },
       {
         accessorKey: "created_at",
         header: "Created At",
         enableEditing: false,
         size: 4,
-        Cell: ({ value }: any) => dayjs(value).format("YYYY-MM-DD"),
+        Cell: ({ value }: any) => dayjs(value).format("MMM D, YYYY h:mm A"),
       },
       {
         accessorKey: "updated_at",
         header: "Updated At",
         enableEditing: false,
         size: 4,
-        Cell: ({ value }: any) => dayjs(value).format("YYYY-MM-DD"),
+        Cell: ({ value }: any) => dayjs(value).format("MMM D, YYYY h:mm A"),
       },
     ],
     []
@@ -133,7 +136,10 @@ const Questions: React.FC = () => {
           <Typography color={"error"} variant="h6" component="h2">
             Delete Confirm
           </Typography>
-          <Typography sx={{ mt: 2 }}>Are you sure you want to delete this question?</Typography>
+          <Typography sx={{ mt: 2 }}>
+            Are you sure you want to delete this question ID{" "}
+            <span className="text-red-700 font-semibold">[{id}]</span>?
+          </Typography>
           <div className="flex justify-between mt-4">
             <div></div>
             <div>

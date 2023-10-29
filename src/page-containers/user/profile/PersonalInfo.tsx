@@ -11,17 +11,18 @@ import { useGetGenders, useGetUserById, useUpdatePersonalInfo } from "@/services
 import { USER_ROLE } from "@/shared/enums";
 import { UserProfileResponse } from "@/types/Profile";
 import { Gender } from "@/types/User";
-import { getUserInfo } from "@/utils/auth";
+import { cn } from "@/utils/cn";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
+import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import ReactDatePicker from "react-datepicker";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 const validationSchema = yup.object({
-  gender: yup.string().required("Gender is required!"),
+  gender: yup.string(),
   email: yup.string().email(),
   day: yup.date().required("Day is required!").typeError("Invalid date"),
   month: yup.date().required("Month is required!").typeError("Invalid date"),
@@ -31,9 +32,8 @@ const validationSchema = yup.object({
 const PersonalInfo: React.FC = () => {
   const { id } = useParams();
   const router = useRouter();
-  const userInfo = getUserInfo();
   const { data: profileData } = useGetUserById<UserProfileResponse>(id as string);
-  const { data: genders, isLoading: genderLoading } = useGetGenders<Gender[]>();
+  const { data: genders } = useGetGenders<Gender[]>();
   const { trigger } = useUpdatePersonalInfo();
   const userProfile = profileData?.data;
   const defaultChecked = userProfile?.personal_info?.gender?.id.toString() || "1";
@@ -48,7 +48,7 @@ const PersonalInfo: React.FC = () => {
     const year = dayjs(data?.year).year();
 
     const newData = {
-      gender_id: Number(data.gender),
+      gender_id: Number(data.gender) || +defaultChecked,
       birthday: `${year}-${month}-${day}`,
     };
 
@@ -68,10 +68,16 @@ const PersonalInfo: React.FC = () => {
         >
           <Grid columns="1">
             <Box>
-              <Flex justify="center" className="bg-white" p="3">
+              <Flex justify="between" align="center" className="bg-white" p="3">
+                <Link href={`/profile/${id}`}>
+                  <Icons.caretLeft className="text-[#373A36] w-[23px] h-[23px]" />
+                </Link>
                 <Text size="3" weight="medium">
                   Personal Information
                 </Text>
+                <Link href="/" className="opacity-0">
+                  <Icons.plus className="text-primary w-[23px] h-[23px]" />
+                </Link>
               </Flex>
               <Box className="pb-[7px]">
                 <Section className="bg-white" py="4" px="3">
@@ -96,9 +102,13 @@ const PersonalInfo: React.FC = () => {
                                 {genders?.map((each, key) => (
                                   <Label
                                     key={key}
-                                    className="block pb-[10px] border-b border-b-[#BDC7D5]"
+                                    className={cn(
+                                      "block pb-[10px]",
+                                      key !== (genders ? genders.length - 1 : -1) &&
+                                        "border-b border-b-[#BDC7D5]"
+                                    )}
                                   >
-                                    <Flex justify="between" align="center">
+                                    <Flex className="capitalize" justify="between" align="center">
                                       {each.type}
                                       <RadioItem value={each.id.toString()} />
                                     </Flex>
@@ -135,7 +145,7 @@ const PersonalInfo: React.FC = () => {
                                 selected={dayjs(field.value).toDate()}
                                 onChange={date => field.onChange(dayjs(date).format())}
                                 dateFormat="dd"
-                                className="w-[65px]"
+                                className="w-[65px] bg-white"
                               />
                               <Icons.arrowDown />
                             </CardBox>
@@ -163,7 +173,7 @@ const PersonalInfo: React.FC = () => {
                                 dateFormat="MM"
                                 showMonthYearPicker
                                 showFullMonthYearPicker
-                                className="w-[65px]"
+                                className="w-[45px] bg-white"
                               />
                               <Icons.arrowDown />
                             </CardBox>
@@ -190,7 +200,7 @@ const PersonalInfo: React.FC = () => {
                                 onChange={date => field.onChange(dayjs(date).format())}
                                 dateFormat="yyyy"
                                 showYearPicker
-                                className="w-[65px]"
+                                className="w-[65px] bg-white"
                               />
                               <Icons.arrowDown />
                             </CardBox>

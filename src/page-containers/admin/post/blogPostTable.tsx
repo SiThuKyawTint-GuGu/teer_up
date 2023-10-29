@@ -10,7 +10,7 @@ import {
   useMaterialReactTable,
 } from "material-react-table";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const BlogTable: React.FC = () => {
   const [pagination, setPagination] = useState<MRT_PaginationState>({
@@ -30,6 +30,11 @@ const BlogTable: React.FC = () => {
     name: globalFilter || "",
   });
   const { trigger: deleteTrigger } = useDeleteBlog();
+  const [blogData, setBlogData] = useState<any>();
+
+  useEffect(() => {
+    setBlogData(blogs?.data);
+  }, [blogs?.data]);
 
   const columns = useMemo(
     () => [
@@ -65,19 +70,19 @@ const BlogTable: React.FC = () => {
   //DELETE action
   const handleDelete = async () => {
     setOpen(false);
+    const data = blogData.filter((blog: any) => blog.id !== id);
+    setBlogData(data);
     await deleteTrigger(
       { id },
       {
-        onSuccess: () => {
-          mutate();
-        },
+        onSuccess: () => mutate(),
       }
     );
   };
 
   const table = useMaterialReactTable({
     columns,
-    data: (blogs?.data as any) || [],
+    data: (blogData as any) || [],
     createDisplayMode: "row",
     editDisplayMode: "row",
     enableEditing: true,
@@ -147,7 +152,10 @@ const BlogTable: React.FC = () => {
           <Typography color={"error"} variant="h6" component="h2">
             Delete Confirm
           </Typography>
-          <Typography sx={{ mt: 2 }}>Are you sure you want to delete this blog?</Typography>
+          <Typography sx={{ mt: 2 }}>
+            Are you sure you want to delete this blog ID{" "}
+            <span className="text-red-700 font-semibold">[{id}]</span>?
+          </Typography>
           <div className="flex justify-between mt-4">
             <div></div>
             <div>

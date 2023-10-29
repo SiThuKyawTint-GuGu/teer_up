@@ -657,14 +657,7 @@ const ContentDetail = ({ id }: Props) => {
       <form onSubmit={handleSubmit(submit)} className="bg-white h-full p-5">
         <div className="rounded-md">
           <div className="mb-10">
-            <TextField
-              {...register("title")}
-              // required
-              label="Title"
-              size="small"
-              className="w-full"
-              variant="outlined"
-            />
+            <TextField {...register("title")} label="Title" className="w-full" variant="outlined" />
             <p className="mt-2 text-red-700">{errors.title?.message}</p>
           </div>
           <div className="mb-10">
@@ -672,7 +665,6 @@ const ContentDetail = ({ id }: Props) => {
               <TextField
                 {...register("description")}
                 label="Description"
-                size="small"
                 multiline
                 rows={4}
                 className="w-full"
@@ -682,11 +674,10 @@ const ContentDetail = ({ id }: Props) => {
             </div>
           </div>
           <div className="mb-10">
-            <FormControl size="small" fullWidth>
+            <FormControl fullWidth>
               <InputLabel id="category">Category</InputLabel>
               <Select
                 {...register("category")}
-                size="small"
                 labelId="category"
                 id="category"
                 value={selectCategory}
@@ -708,7 +699,6 @@ const ContentDetail = ({ id }: Props) => {
               multiple
               id="tags-outlined"
               options={industryOptions || []}
-              size="small"
               value={selectedIndustry}
               onChange={handleIndustryChange}
               renderInput={params => (
@@ -722,7 +712,6 @@ const ContentDetail = ({ id }: Props) => {
               multiple
               id="tags-outlined"
               options={departmentOptions || []}
-              size="small"
               value={selectedDepartment}
               onChange={handleDepartmentChange}
               renderInput={params => (
@@ -736,7 +725,6 @@ const ContentDetail = ({ id }: Props) => {
               multiple
               id="tags-outlined"
               options={keywordOptions || []}
-              size="small"
               value={selectedKeywords}
               onChange={handleKeywordChange}
               renderInput={params => (
@@ -745,11 +733,10 @@ const ContentDetail = ({ id }: Props) => {
             />
           </div>
           <div className="mb-10">
-            <FormControl size="small" fullWidth>
+            <FormControl fullWidth>
               <InputLabel id="selectType">Type</InputLabel>
               <Select
                 {...register("type")}
-                size="small"
                 labelId="selectType"
                 id="selectType"
                 value={selectedValue}
@@ -826,7 +813,7 @@ const ContentDetail = ({ id }: Props) => {
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DemoContainer components={["DateTimePicker"]}>
                       <DateTimePicker
-                        slotProps={{ textField: { size: "small" } }}
+                        // slotProps={{ textField: { size: "small" } }}
                         value={dayjs(startDate)}
                         onChange={handleStartDateChange}
                         label="Start Date"
@@ -839,7 +826,7 @@ const ContentDetail = ({ id }: Props) => {
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DemoContainer components={["DateTimePicker"]}>
                       <DateTimePicker
-                        slotProps={{ textField: { size: "small" } }}
+                        // slotProps={{ textField: { size: "small" } }}
                         value={dayjs(endDate)}
                         onChange={handleEndDateChange}
                         label="End Date"
@@ -853,7 +840,6 @@ const ContentDetail = ({ id }: Props) => {
                   onChange={e => setLocation(e.target.value)}
                   value={location}
                   label="Location"
-                  size="small"
                   className="w-full"
                   variant="outlined"
                 />
@@ -863,16 +849,14 @@ const ContentDetail = ({ id }: Props) => {
                   onChange={e => setEventLink(e.target.value)}
                   value={eventLink}
                   label="Link"
-                  size="small"
                   className="w-full"
                   variant="outlined"
                 />
               </div>
               <div className="mb-10">
-                <FormControl size="small" fullWidth>
+                <FormControl fullWidth>
                   <InputLabel id="selectForm">Form</InputLabel>
                   <Select
-                    size="small"
                     labelId="selectForm"
                     id="selectForm"
                     value={selectForm}
@@ -896,16 +880,14 @@ const ContentDetail = ({ id }: Props) => {
                   onChange={e => setAuthor(e.target.value)}
                   value={author}
                   label="Published By"
-                  size="small"
                   className="w-full"
                   variant="outlined"
                 />
               </div>
               <div className="mb-10">
-                <FormControl size="small" fullWidth>
+                <FormControl fullWidth>
                   <InputLabel id="selectForm">Form</InputLabel>
                   <Select
-                    size="small"
                     labelId="selectForm"
                     id="selectForm"
                     value={selectForm}
@@ -933,7 +915,6 @@ const ContentDetail = ({ id }: Props) => {
                   onChange={e => setLink(e.target.value)}
                   value={link}
                   label="Link"
-                  size="small"
                   className="w-full"
                   variant="outlined"
                 />
@@ -943,16 +924,14 @@ const ContentDetail = ({ id }: Props) => {
                   onChange={e => setOppoLocation(e.target.value)}
                   value={oppoLocation}
                   label="Location"
-                  size="small"
                   className="w-full"
                   variant="outlined"
                 />
               </div>
               <div className="mb-10">
-                <FormControl size="small" fullWidth>
+                <FormControl fullWidth>
                   <InputLabel id="selectForm">Form</InputLabel>
                   <Select
-                    size="small"
                     labelId="selectForm"
                     id="selectForm"
                     value={selectForm}
@@ -1021,7 +1000,6 @@ const ContentDetail = ({ id }: Props) => {
                 <Autocomplete
                   id="tags-outlined"
                   options={mentorOptions || []}
-                  size="small"
                   onInputChange={handleInputMentorChange}
                   value={selectedMentor}
                   onChange={handleMentorChange}

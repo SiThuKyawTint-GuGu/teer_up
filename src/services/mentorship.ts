@@ -1,8 +1,8 @@
+"use client";
 import appAxios from "@/lib/appAxios";
 import { routeFilter } from "@/utils";
 import useSWR, { SWRResponse } from "swr";
 import useSWRMutation from "swr/mutation";
-("use client");
 
 export type ParamsType = {
   page: number;
@@ -12,7 +12,7 @@ export type ParamsType = {
 };
 
 export const useGetMentorship = <ParamsType, MentorshipResponse>(
-  params: ParamsType
+  params?: ParamsType
 ): SWRResponse<MentorshipResponse, any> => {
   return useSWR<MentorshipResponse>(`/mentorships?${routeFilter(params)}`);
 };

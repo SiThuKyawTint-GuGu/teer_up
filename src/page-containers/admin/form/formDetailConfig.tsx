@@ -303,13 +303,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
     <form onSubmit={handleSubmit(handleAddFormConfig)}>
       <div className="bg-white p-7 rounded-md">
         <div className="mb-10">
-          <TextField
-            {...register("name")}
-            label="Name"
-            size="small"
-            className="w-full"
-            variant="outlined"
-          />
+          <TextField {...register("name")} label="Name" className="w-full" variant="outlined" />
           <p className="mt-2 text-red-700">{errors.name?.message}</p>
         </div>
 
@@ -317,7 +311,6 @@ const FormDetailConfigPage = ({ id }: Props) => {
           <TextField
             // {...register("name")}
             label="Button Label"
-            size="small"
             className="w-full"
             variant="outlined"
           />
@@ -352,10 +345,9 @@ const FormDetailConfigPage = ({ id }: Props) => {
                       className="flex flex-col border border-gray-300 p-5 m-3 rounded-md"
                     >
                       <p className="font-weight-500 text-sm ">{field.name}</p>
-                      <div className="flex justify-center my-5">
+                      <div className="flex justify-center items-center my-5">
                         <TextField
                           label={field.name}
-                          size="small"
                           type={field.type === "number" ? "number" : "text"}
                           placeholder={field.placeholder}
                           className="w-full"
@@ -431,14 +423,13 @@ const FormDetailConfigPage = ({ id }: Props) => {
                         //   </SelectContent>
                         // </Select>
                         <FormControl fullWidth>
-                          <InputLabel size="small" id="input-config">
+                          <InputLabel id="input-config">
                             {field.placeholder || selectInputConfig}
                           </InputLabel>
                           <Select
                             labelId="input-config"
                             value={selectInputConfig}
                             label="Age"
-                            size="small"
                             onChange={handleSelectInputConfig}
                           >
                             {field.input_options.map((dropdown: any, index: number) => (
@@ -568,7 +559,6 @@ const FormDetailConfigPage = ({ id }: Props) => {
 
                     <TextField
                       label="Name"
-                      size="small"
                       defaultValue={inputConfigName || ""}
                       onChange={e => setInputConfigName(e.target.value)}
                       className="w-full"
@@ -581,7 +571,6 @@ const FormDetailConfigPage = ({ id }: Props) => {
 
                     <TextField
                       label="Placeholder"
-                      size="small"
                       defaultValue={inputConfigPlaceholder || ""}
                       onChange={e => setInputConfigPlaceholder(e.target.value)}
                       className="w-full"
@@ -592,14 +581,11 @@ const FormDetailConfigPage = ({ id }: Props) => {
                     <p className="mb-5">Type*</p>
 
                     <FormControl fullWidth>
-                      <InputLabel size="small" id="select-type">
-                        {"Type"}
-                      </InputLabel>
+                      <InputLabel id="select-type">{"Type"}</InputLabel>
                       <Select
                         labelId="select-type"
                         value={selectType}
                         onChange={handleSelectChange}
-                        size="small"
                       >
                         <MenuItem value="text">Text</MenuItem>
                         <MenuItem value="email">Email</MenuItem>
@@ -725,7 +711,6 @@ const FormDetailConfigPage = ({ id }: Props) => {
                           <div className="flex">
                             <TextField
                               label={"Name"}
-                              size="small"
                               placeholder={field.input_config.name}
                               className="w-full"
                               defaultValue={""}
@@ -739,7 +724,6 @@ const FormDetailConfigPage = ({ id }: Props) => {
                           <div className="flex">
                             <TextField
                               label={"Placeholder"}
-                              size="small"
                               defaultValue={""}
                               type={field.type === "number" ? "number" : "text"}
                               placeholder={field.input_config.placeholder}
@@ -781,15 +765,10 @@ const FormDetailConfigPage = ({ id }: Props) => {
                           <p className="text-sm mb-5">{field.input_config.name}</p>
 
                           <FormControl fullWidth>
-                            <InputLabel size="small" id="drop">
+                            <InputLabel id="drop">
                               {field.input_config.placeholder || selectInputConfig}
                             </InputLabel>
-                            <Select
-                              labelId="drop"
-                              value={selectType}
-                              size="small"
-                              onChange={handleSelectChange}
-                            >
+                            <Select labelId="drop" value={selectType} onChange={handleSelectChange}>
                               {field.input_config.input_options.map(
                                 (dropdown: any, index: number) => (
                                   <MenuItem key={index} value={dropdown.value}>
@@ -852,20 +831,31 @@ const FormDetailConfigPage = ({ id }: Props) => {
                         </div>
                       </form>
                       <div className="flex justify-center">
-                        <button disabled={index === 0}>
+                        <div
+                          // disabled={index === 0}
+                          onClick={
+                            index === 0 ? undefined : () => handleMoveField(index, index - 1)
+                          }
+                        >
                           <MdKeyboardArrowUp
                             size={25}
-                            onClick={() => handleMoveField(index, index - 1)}
                             className="text-gray-700 hover:text-red-700 cursor-pointer"
                           />
-                        </button>
-                        <button disabled={index === editFormFields.length - 1}>
+                        </div>
+                        <div
+                          // disabled={index === editFormFields.length - 1}
+                          // onClick={() => handleMoveField(index, index + 1)}
+                          onClick={
+                            index === editFormFields.length - 1
+                              ? undefined
+                              : () => handleMoveField(index, index + 1)
+                          }
+                        >
                           <MdOutlineKeyboardArrowDown
                             size={25}
-                            onClick={() => handleMoveField(index, index + 1)}
                             className="text-gray-700 hover:text-red-700 cursor-pointer"
                           />
-                        </button>
+                        </div>
                       </div>
                       <button onClick={() => handleDeleteField(field.order)}>
                         <AiFillDelete size={20} className="text-red-500 cursor-pointer" />
@@ -896,7 +886,6 @@ const FormDetailConfigPage = ({ id }: Props) => {
                         <div className="flex mb-5">
                           <TextField
                             label="Name"
-                            size="small"
                             type={field.input_config.type === "number" ? "number" : "text"}
                             className="w-full"
                             placeholder={field.input_config.placeholder}
@@ -935,13 +924,12 @@ const FormDetailConfigPage = ({ id }: Props) => {
 
                           <div className="mb-5">
                             <FormControl fullWidth>
-                              <InputLabel size="small" id="drop">
+                              <InputLabel id="drop">
                                 {field.input_config.placeholder || selectInputConfig}
                               </InputLabel>
                               <Select
                                 labelId="drop"
                                 value={selectType}
-                                size="small"
                                 onChange={handleSelectChange}
                               >
                                 {field.input_config.input_options.map(

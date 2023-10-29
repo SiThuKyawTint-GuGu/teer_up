@@ -54,13 +54,13 @@ const Keywords: React.FC = () => {
         accessorKey: "created_at",
         header: "Created At",
         enableEditing: false,
-        Cell: ({ value }: any) => dayjs(value).format("YYYY-MM-DD"),
+        Cell: ({ value }: any) => dayjs(value).format("MMM D, YYYY h:mm A"),
       },
       {
         accessorKey: "updated_at",
         header: "Upated At",
         enableEditing: false,
-        Cell: ({ value }: any) => dayjs(value).format("YYYY-MM-DD"),
+        Cell: ({ value }: any) => dayjs(value).format("MMM D, YYYY h:mm A"),
       },
     ],
     [validationErrors]
@@ -185,7 +185,10 @@ const Keywords: React.FC = () => {
           <Typography color={"error"} variant="h6" component="h2">
             Delete Confirm
           </Typography>
-          <Typography sx={{ mt: 2 }}>Are you sure you want to delete this keyword?</Typography>
+          <Typography sx={{ mt: 2 }}>
+            Are you sure you want to delete this keyword ID{" "}
+            <span className="text-red-700 font-semibold">[{id}]</span>?
+          </Typography>
           <div className="flex justify-between mt-4">
             <div></div>
             <div>

@@ -21,9 +21,8 @@ import { CSSObject, styled, Theme, useTheme } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import * as React from "react";
-import { MdStarBorder } from "react-icons/md";
 
 const drawerWidth = 245;
 
@@ -106,6 +105,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({
   // const [collapseOpen, setCollapseOpen] = React.useState<boolean>(true);
   const [collapseOpen, setCollapseOpen] = React.useState(menuList.map(() => false));
   const router = useRouter();
+  const pathname = usePathname();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -156,7 +156,10 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({
               <ListItem
                 key={index}
                 disablePadding
-                sx={{ display: "block" }}
+                sx={{
+                  display: "block",
+                  color: pathname.includes(each.key) ? "#DA291C" : "inherit",
+                }}
                 onClick={() => handleCollapseClick(index)}
               >
                 <ListItemButton
@@ -171,6 +174,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({
                       minWidth: 0,
                       mr: open ? 3 : "auto",
                       justifyContent: "center",
+                      color: pathname === each.key ? "#DA291C" : "inherit",
                     }}
                   >
                     {each?.icon}
@@ -183,7 +187,17 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({
                     <ListItemText
                       primary={each.title}
                       secondary={
-                        <>{collapseOpen[index] ? <Icons.arrowDown /> : <Icons.caretRight />}</>
+                        <>
+                          {collapseOpen[index] ? (
+                            <Icons.arrowDown
+                              sx={{ color: pathname.includes(each.key) ? "#DA291C" : "inherit" }}
+                            />
+                          ) : (
+                            <Icons.caretRight
+                              sx={{ color: pathname.includes(each.key) ? "#DA291C" : "inherit" }}
+                            />
+                          )}
+                        </>
                       }
                       sx={{
                         opacity: open ? 1 : 0,
@@ -198,14 +212,21 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({
               <Collapse in={collapseOpen[index]} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
                   {each?.child?.map((child, childIdx) => (
-                    <ListItemButton key={childIdx} sx={{ pl: 4 }}>
-                      <ListItemIcon>
-                        <MdStarBorder />
-                      </ListItemIcon>
+                    <>
                       <Link href={child.key}>
-                        <ListItemText primary={child.title} />
+                        <ListItemButton
+                          key={childIdx}
+                          sx={{ pl: 4, color: pathname === child.key ? "#DA291C" : "inherit" }}
+                        >
+                          <ListItemIcon
+                            sx={{ color: pathname === child.key ? "#DA291C" : "inherit" }}
+                          >
+                            {child.icon}
+                          </ListItemIcon>
+                          <ListItemText primary={child.title} />
+                        </ListItemButton>
                       </Link>
-                    </ListItemButton>
+                    </>
                   ))}
                 </List>
               </Collapse>
