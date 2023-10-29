@@ -15,7 +15,7 @@ import {
   useMaterialReactTable,
 } from "material-react-table";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const ContentTable: React.FC = () => {
   const [pagination, setPagination] = useState<MRT_PaginationState>({
@@ -31,9 +31,14 @@ const ContentTable: React.FC = () => {
     name: globalFilter || "",
   });
   // console.log(contents);
+  const [contentData, setContentData] = useState<any>();
   const { trigger: deleteTrigger } = useDeleteContent();
   const { windowHeight } = useWindowSize();
   const height = windowHeight - 100 + "px";
+
+  useEffect(() => {
+    setContentData(contents?.data);
+  }, [contents?.data]);
 
   const columns = useMemo(
     () => [
@@ -81,14 +86,16 @@ const ContentTable: React.FC = () => {
   );
 
   //DELETE action
-  const handleDelete = async () => {
+  const handleDeleteConfirm = async () => {
     setOpen(false);
+    const data = contentData.filter((content: any) => content.id !== id);
+    setContentData(data);
     await deleteTrigger({ id });
   };
 
   const table = useMaterialReactTable({
     columns,
-    data: (contents?.data as any) || [],
+    data: (contentData as any) || [],
     createDisplayMode: "row",
     editDisplayMode: "row",
     enableEditing: true,
@@ -101,7 +108,9 @@ const ContentTable: React.FC = () => {
       : undefined,
     muiTableContainerProps: {
       sx: {
-        maxHeight: height,
+
+        maxHeight: "calc(100vh - 200px)",
+
       },
     },
     positionActionsColumn: "last",
@@ -164,7 +173,10 @@ const ContentTable: React.FC = () => {
           <Typography color={"error"} variant="h6" component="h2">
             Delete Confirm
           </Typography>
-          <Typography sx={{ mt: 2 }}>Are you sure you want to delete this content?</Typography>
+          <Typography sx={{ mt: 2 }}>
+            Are you sure you want to delete this content ID{" "}
+            <span className="text-red-700 font-semibold">[{id}]</span>?
+          </Typography>
           <div className="flex justify-between mt-4">
             <div></div>
             <div>
@@ -185,7 +197,7 @@ const ContentTable: React.FC = () => {
                 Cancel
               </Button>
               <Button
-                onClick={handleDelete}
+                onClick={handleDeleteConfirm}
                 color="error"
                 sx={{ textTransform: "none" }}
                 variant="contained"

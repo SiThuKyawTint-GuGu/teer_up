@@ -190,7 +190,10 @@ const Industry: React.FC = () => {
           <Typography color={"error"} variant="h6" component="h2">
             Delete Confirm
           </Typography>
-          <Typography sx={{ mt: 2 }}>Are you sure you want to delete this industry?</Typography>
+          <Typography sx={{ mt: 2 }}>
+            Are you sure you want to delete this industry ID{" "}
+            <span className="text-red-700 font-semibold">[{id}]</span>?
+          </Typography>
           <div className="flex justify-between mt-4">
             <div></div>
             <div>
