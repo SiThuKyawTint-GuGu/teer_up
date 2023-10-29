@@ -1,4 +1,6 @@
 "use client";
+import BGImage from "@/components/shared/BGImage";
+import { WIDTH_TYPES } from "@/components/shared/enums";
 import { Button } from "@/components/ui/Button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons, Image } from "@/components/ui/Images";
@@ -26,6 +28,7 @@ const profileTriggerIcon = {
 
 const Profile: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
+  const [viewImage, setViewImage] = useState<boolean>(false);
   const [triggerType, setTriggerType] = useState<PROFILE_TRIGGER>();
   const [isPending, startTransition] = useTransition();
   const user = getUserInfo();
@@ -61,12 +64,7 @@ const Profile: React.FC = () => {
                   className="w-full"
                 >
                   {userProfile?.cover_url ? (
-                    <div
-                      style={{
-                        background: `url(${userProfile?.cover_url}) center / cover`,
-                        height: "130px",
-                      }}
-                    />
+                    <BGImage width={WIDTH_TYPES.FULL} height={130} url={userProfile?.cover_url} />
                   ) : (
                     <Flex className="h-[130px] bg-[#D9D9D9]" justify="center" align="center">
                       <Icons.profileCamera className="w-[24px] h-[24px]" />
@@ -229,22 +227,39 @@ const Profile: React.FC = () => {
             </Box>
           </Box>
         </Grid>
-        <DialogContent className="bg-white top-[initial] bottom-0 px-4 pt-8 pb-2 translate-y-0 rounded-10px-tl-tr">
-          <Box className="space-y-[40px]">
-            <Flex
-              justify="start"
-              align="center"
-              className="pb-[20px] mb-[20px] border-b border-b-[#BDC7D5] gap-[10px]"
-            >
-              <Image
-                src={profileTriggerIcon[triggerType as PROFILE_TRIGGER]}
-                width={20}
-                height={20}
-                alt={profileTrigger[triggerType as PROFILE_TRIGGER]}
-              />
-              <Text className="text-black">{profileTrigger[triggerType as PROFILE_TRIGGER]}</Text>
+        <DialogContent
+          className={cn(
+            "bg-white top-[initial] bottom-0 px-4 pt-8 pb-2 translate-y-0 rounded-10px-tl-tr",
+            viewImage && "top-0 rounded-none"
+          )}
+          handleOnClose={setViewImage}
+        >
+          {!viewImage ? (
+            <Box className="space-y-[40px]">
+              <Flex
+                justify="start"
+                align="center"
+                className="pb-[20px] mb-[20px] border-b border-b-[#BDC7D5] gap-[10px]"
+                onClick={() => setViewImage(true)}
+              >
+                <Image
+                  src={profileTriggerIcon[triggerType as PROFILE_TRIGGER]}
+                  width={20}
+                  height={20}
+                  alt={profileTrigger[triggerType as PROFILE_TRIGGER]}
+                />
+                <Text className="text-black">{profileTrigger[triggerType as PROFILE_TRIGGER]}</Text>
+              </Flex>
+            </Box>
+          ) : (
+            <Flex justify="center" align="center">
+              {triggerType === PROFILE_TRIGGER.COVER ? (
+                <img src={userProfile?.cover_url} alt="" />
+              ) : (
+                <img src={userProfile?.profile_url} alt="" />
+              )}
             </Flex>
-          </Box>
+          )}
         </DialogContent>
       </Dialog>
     </>

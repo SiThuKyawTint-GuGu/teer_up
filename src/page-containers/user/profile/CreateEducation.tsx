@@ -6,9 +6,7 @@ import { Icons } from "@/components/ui/Images";
 import { InputText } from "@/components/ui/Inputs";
 import { Text } from "@/components/ui/Typo/Text";
 import { useCreateEducation } from "@/services/education";
-import { useGetUserById } from "@/services/user";
 import { USER_ROLE } from "@/shared/enums";
-import { UserProfileResponse } from "@/types/Profile";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
@@ -28,9 +26,7 @@ const validationSchema = yup.object({
 const CreateEducation: React.FC = () => {
   const { id } = useParams();
   const router = useRouter();
-  const { data: profileData } = useGetUserById<UserProfileResponse>(id as string);
   const { trigger } = useCreateEducation();
-  const userProfile = profileData?.data;
 
   const form = useForm({
     resolver: yupResolver(validationSchema),

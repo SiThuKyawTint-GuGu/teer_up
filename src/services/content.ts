@@ -5,6 +5,7 @@ import { routeFilter } from "@/utils";
 import useSWR, { SWRResponse } from "swr";
 import useSWRInfinite, { SWRInfiniteResponse } from "swr/infinite";
 import useSWRMutation from "swr/mutation";
+
 export type ParamsType = {
   page?: number;
   pagesize?: number;
@@ -137,9 +138,25 @@ export const useGetContentBySlug = <ContentData>(slug: string): SWRResponse => {
 };
 
 // saved content
+export enum SAVED_CONTENT_TYPES {
+  ALL = "all",
+  ARTICLE = "article",
+  EVENT = "event",
+  OPPORTUNITY = "opportunity",
+  PATHWAY = "pathway",
+  VIDEO = "video",
+  MENTOR = "mentor",
+}
 
-export const useGetSavedContents = <ParamsType, SavedContentResponse>(
-  params?: ParamsType
+export type SavedContentParams = {
+  page?: number;
+  pagesize?: number;
+  type?: SAVED_CONTENT_TYPES | string;
+  status?: string;
+};
+
+export const useGetSavedContents = <SavedContentParams, SavedContentResponse>(
+  params?: SavedContentParams
 ): SWRResponse<SavedContentResponse, any> => {
   return useSWR<SavedContentResponse>(`/content/save?${routeFilter(params)}`);
 };
