@@ -6,8 +6,8 @@ interface Props {
 
 const AuthLayout = ({ children }: Props) => {
   return (
-    <main className="bg-[#F8F9FB]">
-      <div className="w-full max-w-[390px] mx-auto">{children}</div>
+    <main className="bg-layout">
+      <div className="w-full max-w-[400px] mx-auto">{children}</div>
     </main>
   );
 };
