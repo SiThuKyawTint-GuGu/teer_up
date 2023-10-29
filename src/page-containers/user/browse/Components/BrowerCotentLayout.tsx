@@ -69,26 +69,27 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, conte
                 </div>
               )}
             </div>
-            <Link href={redir}>
-              <div className="w-full px-[16px] bg-white cursor-pointer">
-                <h1 className="font-[700] text-[24px]">{data.title}</h1>
-                {data.description && (
-                  <div className="w-full h-full">
-                    <div className="flex flex-col w-full">
-                      <Text>
-                        {data.description.slice(0, 100)}
+            <div>
+              <Link href={redir}>
+                <div className="w-full px-[16px] bg-white cursor-pointer">
+                  <h1 className="font-[700] text-[24px]">{data.title}</h1>
+                  {data.description && (
+                    <div className="w-full h-full">
+                      <div className="flex flex-col w-full">
+                        <Text>
+                          {data.description.slice(0, 100)}
 
-                        {data.description.length > 100 && (
-                          <Text as="span" className="text-primary">
-                            {"..."}See more
-                          </Text>
-                        )}
-                      </Text>
+                          {data.description.length > 100 && (
+                            <Text as="span" className="text-primary">
+                              {"..."}See more
+                            </Text>
+                          )}
+                        </Text>
+                      </div>
                     </div>
-                  </div>
-                )}
-              </div>
-
+                  )}
+                </div>
+              </Link>
               <div className="flex justify-between p-3">
                 <div className="flex items-center flex-wrap gap-x-[10px]">
                   <Icons.like className="w-[20px] h-[20px]" onClick={likePost} />
@@ -118,7 +119,7 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, conte
                   </div>
                 </div>
               </div>
-            </Link>
+            </div>
           </div>
         </CardBox>
       </div>
