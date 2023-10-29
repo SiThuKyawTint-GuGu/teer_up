@@ -69,7 +69,6 @@ interface RegisterArgType {
   arg: {
     name: string;
     email: string;
-    country: number | string;
   };
 }
 export const useUserRegister = () => {

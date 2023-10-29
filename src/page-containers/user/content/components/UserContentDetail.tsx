@@ -1,11 +1,12 @@
 "use client";
 
 import LikeCmtBar from "@/components/contentLayout/LikeCmtBar";
+import { Dialog, DialogContent } from "@/components/ui/Dialog";
 import { Icons } from "@/components/ui/Images";
 
 import { useGetContentBySlug } from "@/services/content";
 import { ContentData } from "@/types/Content";
-import { Dialog, DialogContent } from "@radix-ui/react-dialog";
+
 import { Grid } from "@radix-ui/themes";
 import dayjs from "dayjs";
 import Image from "next/image";
@@ -82,8 +83,8 @@ const UserContentDetail: React.FC<ContentlayoutProps> = () => {
           </div>
         )}
         {openModal && (
-          <DialogContent className="absolute top-[]initial] bottom-0 w-full  bg-white">
-            <CommentSection data={contentData.data} mutateParentData={contentMutate} />
+          <DialogContent className="bg-white top-[initial] bottom-0 max-w-[400px] px-4 pt-8 pb-2 translate-y-0 rounded-10px-tl-tr">
+            <CommentSection data={contentData} mutateParentData={contentMutate} />
           </DialogContent>
         )}
       </Grid>
