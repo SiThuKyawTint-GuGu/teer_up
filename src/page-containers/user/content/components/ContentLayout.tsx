@@ -6,7 +6,6 @@ import { Text } from "@/components/ui/Typo/Text";
 import { useLikeContent, useSaveContent } from "@/services/content";
 import { ContentData } from "@/types/Content";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -48,18 +47,19 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
       <div className="w-full h-[35vh] justify-start flex-col">
         <div className="w-full mx-auto relative p-2">
           <Link href={redir}>
-            <Image
-              src={data.image_url}
-              className="w-full max-w-[400px] max-h-[30vh]"
-              width={400}
-              height={200}
-              alt={data.title}
-            />
+            <div
+              className="relative w-full max-w-[400px] h-[30vh]"
+              style={{
+                background: `url(${data.image_url}) center / cover`,
+              }}
+            >
+              {data.type !== "video" && (
+                <div className="absolute top-0 right-0 bg-white text-[14px] font-[600] px-[16px] py-[4px] rounded-bl-lg shadow-lg uppercase">
+                  {data.type}
+                </div>
+              )}
+            </div>
           </Link>
-
-          <div className="absolute z-[999] top-0 right-0 bg-white text-[14px] font-[600] px-[16px] py-[4px] rounded-bl-lg shadow-lg uppercase">
-            {data.type}
-          </div>
         </div>
         <div className="w-full h-full bg-white">
           <CardBox className="w-full h-full px-3">
