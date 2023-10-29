@@ -1,19 +1,22 @@
 import CardBox from "@/components/ui/Card";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons } from "@/components/ui/Images";
+import { Text } from "@/components/ui/Typo/Text";
 import { useLikeContent } from "@/services/content";
 import "@/styles/video.css";
 import { ContentData } from "@/types/Content";
-import { Dialog, DialogContent, DialogTrigger } from "@radix-ui/react-dialog";
+import Link from "next/link";
+
 import React, { useState } from "react";
 import CommentSection from "../../../../components/contentLayout/CommentSection";
 
 type ContentlayoutProps = {
-  children: React.ReactNode;
   data: ContentData;
   contentMutate: any;
+  redir: string;
 };
 
-const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ children, data, contentMutate }) => {
+const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, contentMutate }) => {
   const { trigger: like } = useLikeContent();
   const likePost = async () => {
     await like(
@@ -66,10 +69,24 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ children, data, co
                 </div>
               )}
             </div>
-            <div className="w-full px-[16px] bg-white">
-              <div>
+            <Link href={redir}>
+              <div className="w-full px-[16px] bg-white cursor-pointer">
                 <h1 className="font-[700] text-[24px]">{data.title}</h1>
-                <div className="h-[10vh]">{children}</div>
+                {data.description && (
+                  <div className="w-full h-full">
+                    <div className="flex flex-col w-full">
+                      <Text>
+                        {data.description.slice(0, 100)}
+
+                        {data.description.length > 100 && (
+                          <Text as="span" className="text-primary">
+                            {"..."}See more
+                          </Text>
+                        )}
+                      </Text>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div className="flex justify-between p-3">
@@ -101,13 +118,13 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ children, data, co
                   </div>
                 </div>
               </div>
-            </div>
+            </Link>
           </div>
         </CardBox>
       </div>
 
       {openModal && (
-        <DialogContent className="absolute top-[initial] bottom-0 w-full z-[999999]  bg-white">
+        <DialogContent className="bg-white top-[initial] bottom-0 max-w-[400px] px-4 pt-8 pb-2 translate-y-0 rounded-10px-tl-tr">
           <CommentSection data={data} mutateParentData={contentMutate} />
         </DialogContent>
       )}

@@ -48,7 +48,7 @@ const CommentSection: React.FC<CommentSectionProp> = ({ data, mutateParentData }
   };
   const [commentValue, setCommentValue] = useState<string>("");
   return (
-    <div className="w-full z-[9999] pb-[50px] h-[60vh] bg-white">
+    <div className="w-full z-[9999]  h-[60vh] bg-white">
       <div className="w-full rounded-t-[16px] h-full flex flex-col justify-end p-[8px] z-[9] text-black">
         <div className="bg-primary rounded-[6px] w-[60px] h-[2px] mx-auto" />
         <div className="my-3 text-[16px] font-[600]">
