@@ -184,7 +184,7 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
         <div className="py-4 text-center font-[300] w-full">Swipe up for more</div>
       </div>
       {openModal && (
-        <DialogContent className="absolute top-[initial] bottom-0 w-full z-[9000000]  bg-white">
+        <DialogContent className="bg-white top-[initial] bottom-0 max-w-[400px] px-4 pt-8 pb-2 translate-y-0 rounded-10px-tl-tr">
           <CommentSection data={data} mutateParentData={contentMutate} />
         </DialogContent>
       )}
