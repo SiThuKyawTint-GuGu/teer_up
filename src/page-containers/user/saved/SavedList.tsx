@@ -1,22 +1,65 @@
 "use client";
+import BGImage from "@/components/shared/BGImage";
 import { Button } from "@/components/ui/Button";
 import CardBox from "@/components/ui/Card";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
-import { Icons, Image } from "@/components/ui/Images";
+import { Dialog, DialogClose, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
+import { Icons } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
-import { ParamsType, useGetSavedContents } from "@/services/content";
+import { SAVED_CONTENT_TYPES, SavedContentParams, useGetSavedContents } from "@/services/content";
 import { SavedContentResponse } from "@/types/SavedContent";
+import { cn } from "@/utils/cn";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import Link from "next/link";
 import React, { useState } from "react";
 dayjs.extend(relativeTime);
 
+// "All content types", "Article", "Event", "Opportunity", "Pathway", "Video"
+
+const filterNames = [
+  {
+    key: SAVED_CONTENT_TYPES.ALL,
+    value: "All content types",
+  },
+  {
+    key: SAVED_CONTENT_TYPES.ARTICLE,
+    value: "Article",
+  },
+  {
+    key: SAVED_CONTENT_TYPES.EVENT,
+    value: "Event",
+  },
+  {
+    key: SAVED_CONTENT_TYPES.MENTOR,
+    value: "Mentor",
+  },
+  {
+    key: SAVED_CONTENT_TYPES.OPPORTUNITY,
+    value: "Opportunity",
+  },
+  {
+    key: SAVED_CONTENT_TYPES.PATHWAY,
+    value: "Pathway",
+  },
+  {
+    key: SAVED_CONTENT_TYPES.VIDEO,
+    value: "Video",
+  },
+];
+
 const SavedList: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
-  const { data: savedContents } = useGetSavedContents<ParamsType, SavedContentResponse>();
-
-  console.log(savedContents);
+  const [filteredType, setFilterTypes] = useState<{
+    key: SAVED_CONTENT_TYPES;
+    value: string;
+  }>({
+    key: filterNames[0].key,
+    value: filterNames[0].value,
+  });
+  const { data: savedContents } = useGetSavedContents<SavedContentParams, SavedContentResponse>({
+    type: filteredType.key === SAVED_CONTENT_TYPES.ALL ? "" : filteredType.key,
+  });
 
   return (
     <Dialog open={open} onOpenChange={val => setOpen(val)}>
@@ -28,7 +71,7 @@ const SavedList: React.FC = () => {
             </Heading>
             <DialogTrigger>
               <Button variant="ghost" className="text-primary">
-                All
+                {filteredType.key === SAVED_CONTENT_TYPES.ALL ? "All" : filteredType.value}
                 <Icons.caretDown />
               </Button>
             </DialogTrigger>
@@ -37,25 +80,28 @@ const SavedList: React.FC = () => {
             <Section className="" py="4" px="3">
               {savedContents?.data?.length ? (
                 savedContents?.data?.map((each, key) => (
-                  <Box key={key} pb="4">
-                    <CardBox className="p-[8px]">
-                      <Flex justify="start" align="start" gap="2">
-                        <Image
-                          src={each?.content?.image_url}
-                          className="w-[128px] h-[100px]"
-                          width={128}
-                          height={100}
-                          alt="saved image"
-                        />
-                        <Flex className="text-[#373A36] space-y-1" direction="column" wrap="wrap">
-                          <Text>{each?.content?.title}</Text>
-                          <Text size="2" weight="light">
-                            {each?.content?.type} . Saved {dayjs(each?.created_at).fromNow()}
-                          </Text>
+                  <Link key={key} href={`/${each?.content?.type}/${each?.content?.slug}`}>
+                    <Box pb="4">
+                      <CardBox className="p-[8px]">
+                        <Flex justify="start" align="start" gap="2">
+                          <BGImage width={128} height={100} url={each?.content?.image_url} />
+                          <Flex
+                            className="text-[#373A36] space-y-1 w-3/4"
+                            direction="column"
+                            wrap="wrap"
+                          >
+                            <Text>{each?.content?.title}</Text>
+                            <Text size="2" weight="light">
+                              <Text as="span" className="capitalize">
+                                {each?.content?.type}
+                              </Text>{" "}
+                              . Saved {dayjs(each?.created_at).fromNow()}
+                            </Text>
+                          </Flex>
                         </Flex>
-                      </Flex>
-                    </CardBox>
-                  </Box>
+                      </CardBox>
+                    </Box>
+                  </Link>
                 ))
               ) : (
                 <Flex justify="center">No save contents found!</Flex>
@@ -67,49 +113,25 @@ const SavedList: React.FC = () => {
       <DialogContent className="bg-white top-[initial] bottom-0 px-4 py-8 translate-y-0 rounded-10px-tl-tr">
         <Text className="text-[20px] font-bold">Show only</Text>
         <Box>
-          <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5] text-primary">
-            <Flex justify="between" align="center" gap="2">
-              <Text as="label" color="" weight="bold" size="3">
-                All content types
-              </Text>
-              <Icons.check />
-            </Flex>
-          </div>
-          <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
-            <Flex justify="between" align="center" gap="2">
-              <Text as="label" weight="bold" size="3">
-                Article
-              </Text>
-            </Flex>
-          </div>
-          <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
-            <Flex justify="between" align="center" gap="2">
-              <Text as="label" weight="bold" size="3">
-                Event
-              </Text>
-            </Flex>
-          </div>
-          <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
-            <Flex justify="between" align="center" gap="2">
-              <Text as="label" weight="bold" size="3">
-                Opportunity
-              </Text>
-            </Flex>
-          </div>
-          <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
-            <Flex justify="between" align="center" gap="2">
-              <Text as="label" weight="bold" size="3">
-                Pathway
-              </Text>
-            </Flex>
-          </div>
-          <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
-            <Flex justify="between" align="center" gap="2">
-              <Text as="label" weight="bold" size="3">
-                Video
-              </Text>
-            </Flex>
-          </div>
+          {filterNames.map((each, key) => (
+            <div
+              key={key}
+              className={cn(
+                "pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]",
+                each.key === filteredType.key && "text-primary"
+              )}
+              onClick={() => setFilterTypes(each)}
+            >
+              <DialogClose className="w-full">
+                <Flex justify="between" align="center" gap="2">
+                  <Text as="label" color="" weight="bold" size="3">
+                    {each.value}
+                  </Text>
+                  <Icons.check />
+                </Flex>
+              </DialogClose>
+            </div>
+          ))}
         </Box>
       </DialogContent>
     </Dialog>

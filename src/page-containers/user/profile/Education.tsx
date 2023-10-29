@@ -2,20 +2,14 @@
 import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import { EducationParamsType, useGetUserEducations } from "@/services/education";
-import { useGetUserById } from "@/services/user";
 import { EducationResponse } from "@/types/Education";
-import { UserProfileResponse } from "@/types/Profile";
 import { Box, Flex, Grid, Section } from "@radix-ui/themes";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useState } from "react";
 
 const Education: React.FC = () => {
-  const [open, setOpen] = useState<boolean>(false);
   const { id } = useParams();
-  const { data: profileData } = useGetUserById<UserProfileResponse>(id as string);
   const { data: educationList } = useGetUserEducations<EducationParamsType, EducationResponse>();
-  const userProfile = profileData?.data;
 
   return (
     <>
