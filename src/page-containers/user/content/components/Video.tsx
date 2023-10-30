@@ -1,11 +1,12 @@
 "use client";
 
 import CardBox from "@/components/ui/Card";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import { useLikeContent, useSaveContent } from "@/services/content";
 import { ContentData } from "@/types/Content";
-import { Dialog, DialogContent, DialogTrigger } from "@radix-ui/react-dialog";
+
 import { useEffect, useRef, useState } from "react";
 import CommentSection from "../../../../components/contentLayout/CommentSection";
 type VideoProps = {
@@ -139,7 +140,7 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
           </div>
         </div>
         <CardBox className="flex justify-between p-3">
-          <div className="flex items-center flex-wrap gap-x-[10px]" onClick={likePost}>
+          <button className="flex items-center flex-wrap gap-x-[10px]" onClick={likePost}>
             {data.is_liked ? (
               <Icons.likefill className="w-[20px] h-[20px] text-primary" />
             ) : (
@@ -149,7 +150,7 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
               {""}
               {data.likes}
             </div>
-          </div>
+          </button>
           {/* <DialogTrigger> */}
           <DialogTrigger>
             <div className="flex items-center flex-wrap gap-x-[10px]">
@@ -161,7 +162,7 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
             </div>
           </DialogTrigger>
           {/* </DialogTrigger> */}
-          <div className="flex items-center flex-wrap gap-x-[10px]" onClick={saveContent}>
+          <button className="flex items-center flex-wrap gap-x-[10px]" onClick={saveContent}>
             {data.is_saved ? (
               <Icons.savedFill className="w-[20px] h-[20px] text-primary" />
             ) : (
@@ -172,14 +173,14 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
               {""}
               {data.saves}
             </div>
-          </div>
-          <div className="flex items-center flex-wrap gap-x-1">
+          </button>
+          <button className="flex items-center flex-wrap gap-x-1">
             <Icons.share className="w-[20px] h-[20px]" />
             <div>
               {""}
               Share
             </div>
-          </div>
+          </button>
         </CardBox>
       </div>
       {openModal && (

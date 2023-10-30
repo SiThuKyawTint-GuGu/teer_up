@@ -44,7 +44,7 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
 
   return (
     <Dialog open={openModal} onOpenChange={val => setOpenModal(val)}>
-      <div className="w-full bg-white shadow-lg h-[90%] justify-start flex-col">
+      <div className="w-full bg-white shadow-lg rounded-lg h-[90%] justify-start flex-col">
         <div className="h-full w-full flex flex-col">
           <div className="w-full h-[70%]  mx-auto relative">
             <Link href={redir}>
@@ -111,7 +111,7 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
                         </div>
                       </div>
                     </DialogTrigger>
-                    <div className="flex items-center flex-wrap gap-x-[10px]" onClick={saveContent}>
+                    <button className="flex items-center flex-wrap gap-x-[10px]" onClick={saveContent}>
                       {data.is_saved ? (
                         <Icons.savedFill className="w-[20px] h-[20px] text-primary" />
                       ) : (
@@ -122,7 +122,7 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
                         {""}
                         {data.saves}
                       </div>
-                    </div>
+                    </button>
                     <button className="flex items-center flex-wrap gap-x-1">
                       <Icons.share className="w-[20px] h-[20px]" />
                       <div>

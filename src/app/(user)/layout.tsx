@@ -1,4 +1,3 @@
-import VerifyPop from "@/components/auth/VerifyPop";
 import { Grid } from "@radix-ui/themes";
 import Head from "next/head";
 import { ReactNode } from "react";
@@ -16,7 +15,6 @@ const Layout = ({ children }: Props) => {
         <link rel="icon" href="/teeup.svg" />
       </Head>
       <Grid columns="1">
-        <VerifyPop />
         <div className="max-w-[400px] w-full mx-auto  h-full relative bg-layout">{children}</div>
       </Grid>
     </>

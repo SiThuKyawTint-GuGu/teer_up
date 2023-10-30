@@ -72,7 +72,6 @@ const UserContent = () => {
     if (data.type === "onboarding") return <Onboarding data={data} />;
     if (data.type === "mentor")
       return <ContentLayout data={data} contentMutate={mutate} redir={`/mentor/${data.slug}`} />;
-    return <div>This page is not avaliable right now</div>;
   };
 
   const hasMoreData = (contentData: ContentType) => {
