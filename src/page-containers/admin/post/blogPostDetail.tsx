@@ -44,11 +44,7 @@ const validationSchema = yup.object({
 const BlogPostDetail = ({ id }: Props) => {
   const router = useRouter();
   const { trigger: postTrigger, isMutating: postMutating, error: postError } = usePostBlog();
-  const {
-    trigger: updateTrigger,
-    isMutating: updateMutating,
-    error: updateError,
-  } = useUpdateBlog(id);
+  const { trigger: updateTrigger, isMutating: updateMutating, error: updateError } = useUpdateBlog(id);
   const { data: categories } = useGetBlogCategory<any>();
   const { data: formconfigs } = useGetFormConfig<any>();
 

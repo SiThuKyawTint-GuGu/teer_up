@@ -62,13 +62,12 @@ const PathwayDetail: React.FC = () => {
         <Video data={data} setVideoRef={handleVideoRef(index)} autoplay={index === 0} contentMutate={contentMutate} />
       );
     if (data.type === "event" && data.content_event)
-      return <ContentLayout data={data} contentMutate={contentMutate} redir={`/events/${data.slug}`} />;
+      return <ContentLayout data={data} contentMutate={contentMutate} redir={`/content/${data.slug}`} />;
     if (data.type === "article" && data.content_article)
-      return <ContentLayout data={data} contentMutate={contentMutate} redir={`/articles/${data.slug}`} />;
+      return <ContentLayout data={data} contentMutate={contentMutate} redir={`/content/${data.slug}`} />;
     if (data.type === "opportunity" && data.content_opportunity)
-      return <ContentLayout data={data} contentMutate={contentMutate} redir={`/opportunity/${data.slug}`} />;
-    if (data.type === "pathway")
-      return <ContentLayout data={data} contentMutate={contentMutate} redir={`/pathway/${data.slug}`} />;
+      return <ContentLayout data={data} contentMutate={contentMutate} redir={`/content/${data.slug}`} />;
+
     return <div>This Page is not available right now</div>;
   };
 
