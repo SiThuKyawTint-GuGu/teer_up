@@ -2,7 +2,7 @@ import { NextURL } from "next/dist/server/web/next-url";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-const protectedRoutes = ["/admin", "/dashboard"];
+// const protectedRoutes = ["/admin", "/dashboard"];
 
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl as NextURL;
@@ -19,8 +19,8 @@ export function middleware(req: NextRequest) {
 
   // Get the user's info from cookies
   const token = req.cookies.get("token")?.value;
-  const userInfo = req.cookies.get("user_info")?.value;
-  console.log(userInfo);
+  const userInfo = req.cookies.get("userInfo")?.value;
+  console.log("userInfo => ", userInfo);
 
   // If the user is not logged in, redirect to the login page
   if (!token) {
@@ -30,12 +30,10 @@ export function middleware(req: NextRequest) {
     return NextResponse.rewrite(new URL(loginPath, req.url));
   }
 
-  // Redirect to home if there has token in cookie
-  // if (token) {
-  //   if (pathname.includes("/auth")) {
-  //     return NextResponse.rewrite(new URL("/home", req.url));
-  //   }
-  // }
+  // If the user is already logged in and has a token, redirect to the home page
+  if (token && (pathname === "/login" || pathname === "/auth/login")) {
+    return NextResponse.rewrite(new URL("/home", req.url));
+  }
 
   // If the user is already logged in and tries to access protected routes, redirect to the admin dashboard
   // if (protectedRoutes.some(prefix => pathname.startsWith(prefix))) {
@@ -46,5 +44,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/dashboard/:path*"],
+  matcher: ["/admin/:path*", "/auth/:path*"],
 };
