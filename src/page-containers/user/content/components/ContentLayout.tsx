@@ -85,18 +85,10 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
               </Link>
               <div>
                 <div className="mt-2 cursor-pointer  w-full flex justify-between flex-col">
-                  {data.type === "event" && (
-                    <Button onClick={() => router.push(redir)}>Join Now</Button>
-                  )}
-                  {data.type === "opportunity" && (
-                    <Button onClick={() => router.push(redir)}>Apply Now</Button>
-                  )}
-                  {data.type === "pathway" && (
-                    <Button onClick={() => router.push(redir)}>Join Now</Button>
-                  )}
-                  {data.type === "mentor" && (
-                    <Button onClick={() => router.push(redir)}>Request Mentorship</Button>
-                  )}
+                  {data.type === "event" && <Button onClick={() => router.push(redir)}>Join Now</Button>}
+                  {data.type === "opportunity" && <Button onClick={() => router.push(redir)}>Apply Now</Button>}
+                  {data.type === "pathway" && <Button onClick={() => router.push(redir)}>Join Now</Button>}
+                  {data.type === "mentor" && <Button onClick={() => router.push(redir)}>Request Mentorship</Button>}
                 </div>
                 <div className="flex justify-between p-3 w-full">
                   <div className="flex items-center flex-wrap gap-x-[10px]" onClick={likePost}>

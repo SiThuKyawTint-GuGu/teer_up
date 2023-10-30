@@ -5,15 +5,7 @@ import { DimensionResponse } from "@/types/Dimension";
 import { yupResolver } from "@hookform/resolvers/yup";
 import SaveIcon from "@mui/icons-material/Save";
 import LoadingButton from "@mui/lab/LoadingButton";
-import {
-  Button,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  TextField,
-} from "@mui/material";
+import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
 import { Box } from "@radix-ui/themes";
 import { Editor } from "@tinymce/tinymce-react";
 import { useRouter } from "next/navigation";
@@ -210,10 +202,7 @@ const QuestionDetail = ({ id }: Props) => {
         </div>
         {options?.map((option: any, index: number) => (
           <>
-            <Box
-              key={index}
-              className="flex flex-col justify-center border border-gray-300 p-5 my-5 rounded-md"
-            >
+            <Box key={index} className="flex flex-col justify-center border border-gray-300 p-5 my-5 rounded-md">
               <div className="mb-10">
                 <Controller
                   name={`options[${index}].name` as any}

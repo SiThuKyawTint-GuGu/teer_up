@@ -78,28 +78,22 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-const Drawer = styled(MuiDrawer, { shouldForwardProp: prop => prop !== "open" })(
-  ({ theme, open }) => ({
-    width: drawerWidth,
-    flexShrink: 0,
-    whiteSpace: "nowrap",
-    boxSizing: "border-box",
-    ...(open && {
-      ...openedMixin(theme),
-      "& .MuiDrawer-paper": openedMixin(theme),
-    }),
-    ...(!open && {
-      ...closedMixin(theme),
-      "& .MuiDrawer-paper": closedMixin(theme),
-    }),
-  })
-);
+const Drawer = styled(MuiDrawer, { shouldForwardProp: prop => prop !== "open" })(({ theme, open }) => ({
+  width: drawerWidth,
+  flexShrink: 0,
+  whiteSpace: "nowrap",
+  boxSizing: "border-box",
+  ...(open && {
+    ...openedMixin(theme),
+    "& .MuiDrawer-paper": openedMixin(theme),
+  }),
+  ...(!open && {
+    ...closedMixin(theme),
+    "& .MuiDrawer-paper": closedMixin(theme),
+  }),
+}));
 
-const AdminLayout: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }: { children: React.ReactNode }) => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
   // const [collapseOpen, setCollapseOpen] = React.useState<boolean>(true);
@@ -189,13 +183,9 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({
                       secondary={
                         <>
                           {collapseOpen[index] ? (
-                            <Icons.arrowDown
-                              sx={{ color: pathname.includes(each.key) ? "#DA291C" : "inherit" }}
-                            />
+                            <Icons.arrowDown sx={{ color: pathname.includes(each.key) ? "#DA291C" : "inherit" }} />
                           ) : (
-                            <Icons.caretRight
-                              sx={{ color: pathname.includes(each.key) ? "#DA291C" : "inherit" }}
-                            />
+                            <Icons.caretRight sx={{ color: pathname.includes(each.key) ? "#DA291C" : "inherit" }} />
                           )}
                         </>
                       }
@@ -218,9 +208,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({
                           key={childIdx}
                           sx={{ pl: 4, color: pathname === child.key ? "#DA291C" : "inherit" }}
                         >
-                          <ListItemIcon
-                            sx={{ color: pathname === child.key ? "#DA291C" : "inherit" }}
-                          >
+                          <ListItemIcon sx={{ color: pathname === child.key ? "#DA291C" : "inherit" }}>
                             {child.icon}
                           </ListItemIcon>
                           <ListItemText primary={child.title} />

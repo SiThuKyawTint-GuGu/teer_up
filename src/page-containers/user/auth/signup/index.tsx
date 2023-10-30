@@ -77,12 +77,7 @@ const SignUp = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <InputText
-                      type="text"
-                      className="bg-white shadow-md"
-                      {...field}
-                      placeholder="Enter your name"
-                    />
+                    <InputText type="text" className="bg-white shadow-md" {...field} placeholder="Enter your name" />
                   </FormControl>
                 </FormItem>
               )}
@@ -97,12 +92,7 @@ const SignUp = () => {
                 </Text>
               </Text>
             </Flex>
-            <Button
-              type="submit"
-              size="lg"
-              className="mt-5"
-              disabled={isPending || isMutating || !checked}
-            >
+            <Button type="submit" size="lg" className="mt-5" disabled={isPending || isMutating || !checked}>
               Sign Up
             </Button>
           </form>

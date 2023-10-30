@@ -5,11 +5,7 @@ import { UserResponse } from "@/types/User";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { Box, Button, IconButton, Modal, Tooltip, Typography } from "@mui/material";
-import {
-  MaterialReactTable,
-  useMaterialReactTable,
-  type MRT_TableOptions,
-} from "material-react-table";
+import { MaterialReactTable, useMaterialReactTable, type MRT_TableOptions } from "material-react-table";
 import { useMemo, useState } from "react";
 import { type User } from "./makeData";
 
@@ -91,10 +87,7 @@ const AdminTable: React.FC = () => {
   );
 
   //CREATE action
-  const handleCreateUser: MRT_TableOptions<User>["onCreatingRowSave"] = async ({
-    values,
-    table,
-  }) => {
+  const handleCreateUser: MRT_TableOptions<User>["onCreatingRowSave"] = async ({ values, table }) => {
     const newValidationErrors = validateUser(values);
     if (Object.values(newValidationErrors).some(error => error)) {
       setValidationErrors(newValidationErrors);
@@ -203,8 +196,7 @@ const AdminTable: React.FC = () => {
             Delete Confirm
           </Typography>
           <Typography sx={{ mt: 2 }}>
-            Are you sure you want to delete this admin ID{" "}
-            <span className="text-red-700 font-semibold">[{id}]</span>?
+            Are you sure you want to delete this admin ID <span className="text-red-700 font-semibold">[{id}]</span>?
           </Typography>
           <div className="flex justify-between mt-4">
             <div></div>
@@ -225,12 +217,7 @@ const AdminTable: React.FC = () => {
               >
                 Cancel
               </Button>
-              <Button
-                onClick={handleDelete}
-                color="error"
-                sx={{ textTransform: "none" }}
-                variant="contained"
-              >
+              <Button onClick={handleDelete} color="error" sx={{ textTransform: "none" }} variant="contained">
                 Delete
               </Button>
             </div>
