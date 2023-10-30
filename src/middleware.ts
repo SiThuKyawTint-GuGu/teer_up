@@ -48,7 +48,7 @@ export function middleware(req: NextRequest) {
   }
 
   if (userRole !== USER_ROLE.ADMIN) {
-    if (token && (pathname === "/login" || pathname === "/auth/login")) {
+    if ((token && pathname.includes("/admin")) || (token && (pathname === "/login" || pathname === "/auth/login"))) {
       return NextResponse.rewrite(new URL("/home", req.url));
     }
   } else {
