@@ -48,13 +48,17 @@ const Home: React.FC = () => {
             </div>
           </Box>
           <Box className="space-y-6">
-            <Button className="w-full">
-              Get Started
-              <Icons.rightArrow />
-            </Button>
-            <Button variant="outline" className="w-full">
-              Login
-            </Button>
+            <Link className="block" href="/home">
+              <Button className="w-full">
+                Get Started
+                <Icons.rightArrow />
+              </Button>
+            </Link>
+            <Link className="block" href="/auth/login">
+              <Button variant="outline" className="w-full">
+                Login
+              </Button>
+            </Link>
           </Box>
           <Box>
             <Flex justify="center" align="center" gap="2">
