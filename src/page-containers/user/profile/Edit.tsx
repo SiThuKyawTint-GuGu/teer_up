@@ -143,7 +143,7 @@ const ProfileEdit: React.FC = () => {
                     <Text className="text-primary">Edit</Text>
                   </Link>
                 </Flex>
-                <Text>{userProfile?.bio}</Text>
+                <Text>{userProfile?.bio ? userProfile?.bio : "-"}</Text>
               </Section>
             </CardBox>
             <CardBox className="mb-[7px] rounded-none">
@@ -161,7 +161,9 @@ const ProfileEdit: React.FC = () => {
                     <Text as="label" weight="bold" size="3">
                       Gender
                     </Text>
-                    <Text>Male</Text>
+                    <Text className="capitalize">
+                      {userProfile?.personal_info?.gender ? userProfile?.personal_info?.gender?.type : "-"}
+                    </Text>
                   </Flex>
                 </div>
                 <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
@@ -181,7 +183,7 @@ const ProfileEdit: React.FC = () => {
                     <Text as="label" weight="bold" size="3">
                       Email
                     </Text>
-                    <Text>{userProfile?.email}</Text>
+                    <Text>{userProfile?.email ? userProfile?.email : "-"}</Text>
                   </Flex>
                 </div>
               </Section>
