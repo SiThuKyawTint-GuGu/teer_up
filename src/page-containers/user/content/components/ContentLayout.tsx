@@ -91,7 +91,7 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
                     {data.type === "mentor" && <Button onClick={() => router.push(redir)}>Request Mentorship</Button>}
                   </div>
                   <div className="flex justify-between p-3 w-full">
-                    <div className="flex items-center flex-wrap gap-x-[10px]" onClick={likePost}>
+                    <button className="flex items-center flex-wrap gap-x-[10px]" onClick={likePost}>
                       {data.is_liked ? (
                         <Icons.likefill className="w-[20px] h-[20px] text-primary" />
                       ) : (
@@ -101,7 +101,7 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
                         {""}
                         {data.likes}
                       </div>
-                    </div>
+                    </button>
                     <DialogTrigger>
                       <div className="flex items-center flex-wrap gap-x-[10px]">
                         <Icons.comment className="w-[20px] h-[20px]" />
@@ -123,13 +123,13 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
                         {data.saves}
                       </div>
                     </div>
-                    <div className="flex items-center flex-wrap gap-x-1">
+                    <button className="flex items-center flex-wrap gap-x-1">
                       <Icons.share className="w-[20px] h-[20px]" />
                       <div>
                         {""}
                         Share
                       </div>
-                    </div>
+                    </button>
                   </div>
                 </div>
               </div>

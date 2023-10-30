@@ -63,29 +63,29 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
       )}
 
       <div className="flex justify-between p-3 w-full flex-1">
-        <div className="flex items-center flex-wrap gap-x-[5px]" onClick={likePost}>
+        <button className="flex items-center flex-wrap gap-x-[5px]" onClick={likePost}>
           {data.is_liked ? (
             <Icons.likefill className="w-[20px] h-[20px] text-primary" />
           ) : (
             <Icons.like className="w-[20px] h-[20px]" />
           )}
           <div className="text-[14px]">{data.likes}</div>
-        </div>
+        </button>
         <DialogTrigger>
           <div className="flex items-center flex-wrap  gap-x-[5px]">
             <Icons.comment className="w-[20px] h-[20px]" />
             <div>{data.comments}</div>
           </div>
         </DialogTrigger>
-        git
-        <div className="flex items-center flex-wrap  gap-x-[5px]" onClick={saveContent}>
+
+        <button className="flex items-center flex-wrap  gap-x-[5px]" onClick={saveContent}>
           {data.is_saved ? (
             <Icons.savedFill className="w-[20px] h-[20px] text-primary" />
           ) : (
             <Icons.saved className="w-[20px] h-[20px]" />
           )}
           <div>{data.saves}</div>
-        </div>
+        </button>
       </div>
       {openModal && (
         <Modal onClose={() => setOpenModal(false)}>
