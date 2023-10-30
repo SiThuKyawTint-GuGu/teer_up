@@ -37,9 +37,7 @@ const BlogPostDetail = ({ id }: Props) => {
   const { data: formconfigs } = useGetFormConfig<any>();
 
   const { data: blog } = useGetBlogById<any>(id);
-  const { data: inputForms } = useGetFormConfigById<any>(
-    blog?.data ? blog.data.formconfig_id : null
-  );
+  const { data: inputForms } = useGetFormConfigById<any>(blog?.data ? blog.data.formconfig_id : null);
   // console.log("blog by id", blog);
 
   const [selectedValue, setSelectedValue] = useState<string>("");

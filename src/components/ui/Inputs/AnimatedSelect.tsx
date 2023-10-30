@@ -6,14 +6,13 @@ import * as Ariakit from "@ariakit/react";
 
 import "@/styles/Select.css";
 
-const SelectItem = React.forwardRef<
-  HTMLDivElement,
-  { className?: string; value: string; children: React.ReactNode }
->(({ className, value, children, ...props }, ref) => (
-  <Ariakit.SelectItem ref={ref} value={value} className={cn("flex scroll-", className)} {...props}>
-    {children}
-  </Ariakit.SelectItem>
-));
+const SelectItem = React.forwardRef<HTMLDivElement, { className?: string; value: string; children: React.ReactNode }>(
+  ({ className, value, children, ...props }, ref) => (
+    <Ariakit.SelectItem ref={ref} value={value} className={cn("flex scroll-", className)} {...props}>
+      {children}
+    </Ariakit.SelectItem>
+  )
+);
 SelectItem.displayName = "SelectItem";
 
 const AnimatedSelect = React.forwardRef<

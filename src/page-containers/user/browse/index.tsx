@@ -18,29 +18,15 @@ const BrowsePage = () => {
   });
   const differentContent = (data: ContentData, index: number) => {
     if (data.type === "event" && data.content_event)
-      return (
-        <BrowserContentLayout data={data} contentMutate={mutate} redir={`/events/${data.slug}`} />
-      );
+      return <BrowserContentLayout data={data} contentMutate={mutate} redir={`/events/${data.slug}`} />;
     if (data.type === "article" && data.content_article)
-      return (
-        <BrowserContentLayout data={data} contentMutate={mutate} redir={`/articles/${data.slug}`} />
-      );
+      return <BrowserContentLayout data={data} contentMutate={mutate} redir={`/articles/${data.slug}`} />;
     if (data.type === "opportunity" && data.content_opportunity)
-      return (
-        <BrowserContentLayout
-          data={data}
-          contentMutate={mutate}
-          redir={`/opportunity/${data.slug}`}
-        />
-      );
+      return <BrowserContentLayout data={data} contentMutate={mutate} redir={`/opportunity/${data.slug}`} />;
     if (data.type === "pathway")
-      return (
-        <BrowserContentLayout data={data} contentMutate={mutate} redir={`/pathway/${data.slug}`} />
-      );
+      return <BrowserContentLayout data={data} contentMutate={mutate} redir={`/pathway/${data.slug}`} />;
     if (data.type === "mentor")
-      return (
-        <BrowserContentLayout data={data} contentMutate={mutate} redir={`/mentor/${data.slug}`} />
-      );
+      return <BrowserContentLayout data={data} contentMutate={mutate} redir={`/mentor/${data.slug}`} />;
     return <div>This page is not avaliable right now</div>;
   };
 
@@ -49,10 +35,7 @@ const BrowsePage = () => {
       <Flex className="p-3 w-full overflow-auto no-scrollbar relative">
         {BrowsePageHeader.map((data: HeaderType, index: number) => (
           <div key={index} onClick={() => setType(data.value)} className="cursor-pointer">
-            <Text
-              as="div"
-              className={`w-auto px-3 ${type === data.value && "border-b-[2px] border-primary"}`}
-            >
+            <Text as="div" className={`w-auto px-3 ${type === data.value && "border-b-[2px] border-primary"}`}>
               {data.text}
             </Text>
           </div>

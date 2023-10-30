@@ -48,14 +48,7 @@ const Login: React.FC = () => {
 
   return (
     <Grid columns="1" px="4" className="h-screen bg-layout">
-      <Flex
-        direction="column"
-        justify="center"
-        align="center"
-        width="100%"
-        wrap="wrap"
-        height="100%"
-      >
+      <Flex direction="column" justify="center" align="center" width="100%" wrap="wrap" height="100%">
         <Flex justify="center" width="100%" direction="column" wrap="wrap" mb="4">
           <Heading as="h4" size="7" weight="bold">
             Login
@@ -65,10 +58,7 @@ const Login: React.FC = () => {
         {error && <div className="text-primary">{error.response.data.message}</div>}
         <div className="space-y-[10px]">
           <Form {...form}>
-            <form
-              className="w-full flex flex-col justify-center flex-wrap gap-y-[20px]"
-              onSubmit={form.handleSubmit(loginHandler)}
-            >
+            <form className="w-full flex flex-col justify-center flex-wrap" onSubmit={form.handleSubmit(loginHandler)}>
               <FormField
                 control={form.control}
                 name="email"
@@ -95,7 +85,7 @@ const Login: React.FC = () => {
                 </Text>
               </Flex>
 
-              <Button type="submit" disabled={isPending || isMutating || !checked}>
+              <Button type="submit" loading={isPending || isMutating} disabled={isPending || isMutating || !checked}>
                 Send OTP code
               </Button>
             </form>

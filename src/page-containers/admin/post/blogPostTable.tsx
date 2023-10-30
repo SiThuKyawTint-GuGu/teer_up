@@ -4,11 +4,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { Box, IconButton, Modal, Tooltip, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
-import {
-  MaterialReactTable,
-  MRT_PaginationState,
-  useMaterialReactTable,
-} from "material-react-table";
+import { MaterialReactTable, MRT_PaginationState, useMaterialReactTable } from "material-react-table";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
@@ -153,8 +149,7 @@ const BlogTable: React.FC = () => {
             Delete Confirm
           </Typography>
           <Typography sx={{ mt: 2 }}>
-            Are you sure you want to delete this blog ID{" "}
-            <span className="text-red-700 font-semibold">[{id}]</span>?
+            Are you sure you want to delete this blog ID <span className="text-red-700 font-semibold">[{id}]</span>?
           </Typography>
           <div className="flex justify-between mt-4">
             <div></div>
@@ -175,12 +170,7 @@ const BlogTable: React.FC = () => {
               >
                 Cancel
               </Button>
-              <Button
-                onClick={handleDelete}
-                color="error"
-                sx={{ textTransform: "none" }}
-                variant="contained"
-              >
+              <Button onClick={handleDelete} color="error" sx={{ textTransform: "none" }} variant="contained">
                 Delete
               </Button>
             </div>
