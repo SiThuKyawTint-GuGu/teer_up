@@ -15,7 +15,32 @@ export interface User {
   name: string;
   email: string;
 }
-export interface ContentEvent {
+export interface Input_config {
+  id: number;
+  input_options: Input_options[] | [];
+  name: string;
+  placeholder: string;
+  type: "text" | "password" | "radio";
+}
+
+export interface Input_options {
+  id: number | string;
+  label: string;
+  value: string;
+}
+
+export interface FormConfig {
+  form_config: {
+    created_at: string;
+    formdetails_configs: {
+      id: number;
+      input_config: Input_config[];
+    }[];
+  };
+  from_datetime: string;
+  id: number;
+}
+export interface ContentEvent extends FormConfig {
   id: number;
   from_datetime: string;
   to_datetime: string;
