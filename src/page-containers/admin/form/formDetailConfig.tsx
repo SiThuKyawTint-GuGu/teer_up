@@ -475,14 +475,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
                           <div className="mb-2">
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                               <DemoContainer components={["DatePicker"]}>
-                                <DatePicker
-                                  sx={{
-                                    "& .MuiInputBase-root": {
-                                      height: "50px",
-                                    },
-                                  }}
-                                  label={field.name}
-                                />
+                                <DatePicker label={field.name} />
                               </DemoContainer>
                             </LocalizationProvider>
                           </div>
@@ -549,8 +542,14 @@ const FormDetailConfigPage = ({ id }: Props) => {
                     <p className="mb-5">Type*</p>
 
                     <FormControl fullWidth>
-                      <InputLabel id="select-type">{"Type"}</InputLabel>
-                      <Select labelId="select-type" value={selectType} onChange={handleSelectChange}>
+                      <InputLabel id="selectType-label">Type</InputLabel>
+                      <Select
+                        labelId="selectType-label"
+                        id="selectType"
+                        value={selectType}
+                        onChange={handleSelectChange}
+                        label="Type"
+                      >
                         <MenuItem value="text">Text</MenuItem>
                         <MenuItem value="email">Email</MenuItem>
                         <MenuItem value="phone">Phone</MenuItem>
@@ -717,8 +716,14 @@ const FormDetailConfigPage = ({ id }: Props) => {
                         <p className="text-sm mb-5">{field.input_config.name}</p>
 
                         <FormControl fullWidth>
-                          <InputLabel id="drop">{field.input_config.placeholder || selectInputConfig}</InputLabel>
-                          <Select labelId="drop" value={selectType} onChange={handleSelectChange}>
+                          <InputLabel id="drop-label">{field.input_config.placeholder || selectInputConfig}</InputLabel>
+                          <Select
+                            labelId="drop-label"
+                            id="drop"
+                            value={selectType}
+                            onChange={handleSelectChange}
+                            label={field.input_config.placeholder || selectInputConfig}
+                          >
                             {field.input_config.input_options.map((dropdown: any, index: number) => (
                               <MenuItem key={index} value={dropdown.value}>
                                 {dropdown.label}
@@ -747,14 +752,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
                           <p className="my-3">{field.input_config.name}</p>
                           <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DemoContainer components={["DatePicker"]}>
-                              <DatePicker
-                                sx={{
-                                  "& .MuiInputBase-root": {
-                                    height: "50px",
-                                  },
-                                }}
-                                label={field.input_config.name}
-                              />
+                              <DatePicker label={field.input_config.name} />
                             </DemoContainer>
                           </LocalizationProvider>
                         </div>
@@ -862,7 +860,12 @@ const FormDetailConfigPage = ({ id }: Props) => {
                         <div className="mb-5">
                           <FormControl fullWidth>
                             <InputLabel id="drop">{field.input_config.placeholder || selectInputConfig}</InputLabel>
-                            <Select labelId="drop" value={selectType} onChange={handleSelectChange}>
+                            <Select
+                              labelId="drop"
+                              value={selectType}
+                              onChange={handleSelectChange}
+                              label={field.input_config.placeholder || selectInputConfig}
+                            >
                               {field.input_config.input_options.map((dropdown: any, index: number) => (
                                 <MenuItem key={index} value={dropdown.value}>
                                   {dropdown.label}
@@ -903,14 +906,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
                           <p>{field.input_config.name}</p>
                           <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DemoContainer components={["DatePicker"]}>
-                              <DatePicker
-                                sx={{
-                                  "& .MuiInputBase-root": {
-                                    height: "50px",
-                                  },
-                                }}
-                                label={field.input_config.name}
-                              />
+                              <DatePicker label={field.input_config.name} />
                             </DemoContainer>
                           </LocalizationProvider>
                         </div>

@@ -148,15 +148,12 @@ const ContentDetail = ({ id }: Props) => {
       oppoEditor?.setContent(oppoEditorContent);
     }
     if (contentDimension?.data) {
+      const transformedData = contentDimension?.data?.content_dimensions.reduce((result: any, item: any) => {
+        const { dimension_id, low, medium, high } = item;
+        result[dimension_id] = { low, medium, high };
+        return result;
+      }, {});
 
-      const transformedData = contentDimension?.data?.content_dimensions.reduce(
-        (result: any, item: any) => {
-          const { dimension_id, low, medium, high } = item;
-          result[dimension_id] = { low, medium, high };
-          return result;
-        },
-        {}
-      );
       // console.log("tr.....", transformedData);
 
       setCheckboxValues(transformedData);
@@ -253,7 +250,6 @@ const ContentDetail = ({ id }: Props) => {
       }));
       setIndustryOptions(updatedOptions);
     }
-
   }, [
     editorContent,
     editor,
@@ -264,7 +260,6 @@ const ContentDetail = ({ id }: Props) => {
     content?.data,
     contentDimension?.data,
   ]);
-
 
   const {
     register,
@@ -985,7 +980,6 @@ const ContentDetail = ({ id }: Props) => {
                     options={contentOptions || []}
                     sx={{ width: 300 }}
                     value={pathway.name}
-
                     // onInputChange={handleInputChange}
                     onInputChange={(event, newInputValue) =>
                       handleInputChange(event, newInputValue, index)
@@ -993,7 +987,6 @@ const ContentDetail = ({ id }: Props) => {
                     onChange={(event, newValue) =>
                       handleSelectPathwayChange(event, newValue, index)
                     }
-
                     renderInput={params => <TextField {...params} label="Contents" />}
                   />
                   <AiFillDelete
