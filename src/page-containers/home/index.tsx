@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/Button";
 import { Icons } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";

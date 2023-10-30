@@ -1,13 +1,15 @@
+import CryptoJS from "crypto-js";
 import { NextURL } from "next/dist/server/web/next-url";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { USER_ROLE } from "./shared/enums";
+import { User } from "./types/User";
 
 // const protectedRoutes = ["/admin", "/dashboard"];
 
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl as NextURL;
   // const requestHeaders = new Headers(req.headers);
-  console.log(pathname);
 
   // example header set
   // TODO: Review and potentially update the headers
@@ -19,8 +21,16 @@ export function middleware(req: NextRequest) {
 
   // Get the user's info from cookies
   const token = req.cookies.get("token")?.value;
-  const userInfo = req.cookies.get("userInfo")?.value;
-  console.log("userInfo => ", userInfo);
+  const getValue = req.cookies.get("userInfo")?.value;
+
+  // decrypt user info
+  let userRole;
+
+  if (getValue && typeof getValue === "string") {
+    const bytes = CryptoJS.AES.decrypt(getValue, "userInfo");
+    const decryptedUserInfo = JSON.parse(bytes.toString(CryptoJS.enc.Utf8)) as User;
+    userRole = decryptedUserInfo?.role;
+  }
 
   // If the user is not logged in, redirect to the login page
   if (!token) {
@@ -31,16 +41,14 @@ export function middleware(req: NextRequest) {
   }
 
   // If the user is already logged in and has a token, redirect to the home page
-  if (token && (pathname === "/login" || pathname === "/auth/login")) {
-    return NextResponse.rewrite(new URL("/home", req.url));
+  if (userRole !== USER_ROLE.ADMIN) {
+    if (token && (pathname === "/login" || pathname === "/auth/login")) {
+      return NextResponse.rewrite(new URL("/home", req.url));
+    }
+  } else {
+    if (token) {
+    }
   }
-
-  // If the user is already logged in and tries to access protected routes, redirect to the admin dashboard
-  // if (protectedRoutes.some(prefix => pathname.startsWith(prefix))) {
-  //   return NextResponse.redirect(new URL("/admin", req.nextUrl));
-  // }
-
-  // If the user is logged in and accessing other routes, continue processing the request
 }
 
 export const config = {
