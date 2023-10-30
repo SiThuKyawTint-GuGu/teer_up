@@ -7,13 +7,11 @@ import { Text } from "@/components/ui/Typo/Text";
 import { ParamsType, useGetMentorship } from "@/services/mentorship";
 import { USER_ROLE } from "@/shared/enums";
 import { MentorshipResponse } from "@/types/Mentorship";
-import { getUserInfo } from "@/utils/auth";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
-import React, { useMemo } from "react";
+import React from "react";
 
 const RequestMentorship: React.FC = () => {
   const { data: requestMentorship } = useGetMentorship<ParamsType, MentorshipResponse>();
-  const userInfo = useMemo(() => getUserInfo(), []);
 
   return (
     <Grid>

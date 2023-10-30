@@ -33,7 +33,7 @@ export enum PROFILE_TRIGGER {
   COVER = "COVER",
 }
 
-export enum REQUEST_TYPE {
+export enum REQUEST_TYPES {
   ACCEPTED = "ACCEPTED",
   CONFIRMED = "CONFIRMED",
   PENDING = "PENDING",
