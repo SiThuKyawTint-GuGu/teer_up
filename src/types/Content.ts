@@ -34,7 +34,7 @@ export interface FormConfig {
     created_at: string;
     formdetails_configs: {
       id: number;
-      input_config: Input_config[];
+      input_config: Input_config;
     }[];
   };
   from_datetime: string;
