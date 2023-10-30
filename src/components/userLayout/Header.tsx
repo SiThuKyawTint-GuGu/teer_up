@@ -1,6 +1,5 @@
-import Image from "next/image";
 import React from "react";
-import { Icons } from "../ui/Images";
+import { Icons, Image } from "../ui/Images";
 
 const Header: React.FC = () => {
   return (

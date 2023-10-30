@@ -22,14 +22,6 @@ interface SignUpFormType {
 const validationSchema = yup.object({
   email: yup.string().email().required("Email is required!"),
   name: yup.string().required("Name is required!"),
-  // country: yup.string().required("Country is required!"),
-  // password: yup
-  //   .string()
-  //   .min(
-  //     8,
-  //     'password must contain 8 or more characters with at least one of each: uppercase, lowercase, number and special'
-  //   )
-  //   .required('Password is required!'),
 });
 
 const SignUp = () => {
@@ -85,12 +77,7 @@ const SignUp = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <InputText
-                      type="text"
-                      className="bg-white shadow-md"
-                      {...field}
-                      placeholder="Enter your name"
-                    />
+                    <InputText type="text" className="bg-white shadow-md" {...field} placeholder="Enter your name" />
                   </FormControl>
                 </FormItem>
               )}
@@ -105,12 +92,7 @@ const SignUp = () => {
                 </Text>
               </Text>
             </Flex>
-            <Button
-              type="submit"
-              size="lg"
-              className="mt-5"
-              disabled={isPending || isMutating || !checked}
-            >
+            <Button type="submit" size="lg" className="mt-5" disabled={isPending || isMutating || !checked}>
               Sign Up
             </Button>
           </form>

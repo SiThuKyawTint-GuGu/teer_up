@@ -12,11 +12,7 @@ import { Box, IconButton, Tooltip } from "@mui/material";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
-import {
-  MaterialReactTable,
-  useMaterialReactTable,
-  type MRT_TableOptions,
-} from "material-react-table";
+import { MaterialReactTable, useMaterialReactTable, type MRT_TableOptions } from "material-react-table";
 import { useMemo, useState } from "react";
 
 const Preferences: React.FC = () => {
@@ -57,10 +53,7 @@ const Preferences: React.FC = () => {
   );
 
   //CREATE action
-  const handleCreatePreference: MRT_TableOptions<any>["onCreatingRowSave"] = async ({
-    values,
-    table,
-  }) => {
+  const handleCreatePreference: MRT_TableOptions<any>["onCreatingRowSave"] = async ({ values, table }) => {
     const { id, name } = values;
     const newValidationErrors = validatePreference(values);
     if (Object.values(newValidationErrors).some(error => error)) {
@@ -198,12 +191,7 @@ const Preferences: React.FC = () => {
               >
                 Cancel
               </Button>
-              <Button
-                onClick={handleDeletePreference}
-                color="error"
-                sx={{ textTransform: "none" }}
-                variant="contained"
-              >
+              <Button onClick={handleDeletePreference} color="error" sx={{ textTransform: "none" }} variant="contained">
                 Delete
               </Button>
             </div>

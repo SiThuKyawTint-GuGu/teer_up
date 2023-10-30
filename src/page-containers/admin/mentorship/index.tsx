@@ -1,11 +1,7 @@
 "use client";
 import { ParamsType, useGetMentorship } from "@/services/mentorship";
 import dayjs from "dayjs";
-import {
-  MaterialReactTable,
-  MRT_PaginationState,
-  useMaterialReactTable,
-} from "material-react-table";
+import { MaterialReactTable, MRT_PaginationState, useMaterialReactTable } from "material-react-table";
 import { useMemo, useState } from "react";
 
 const MentorshipTable: React.FC = () => {

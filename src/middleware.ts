@@ -7,6 +7,7 @@ const protectedRoutes = ["/admin", "/dashboard"];
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl as NextURL;
   // const requestHeaders = new Headers(req.headers);
+  console.log(pathname);
 
   // example header set
   // TODO: Review and potentially update the headers
@@ -16,8 +17,10 @@ export function middleware(req: NextRequest) {
   const loginPath = "/auth/login";
   const adminLoginPath = "/admin/auth/login";
 
-  // Get the user's token from cookies
+  // Get the user's info from cookies
   const token = req.cookies.get("token")?.value;
+  const userInfo = req.cookies.get("user_info")?.value;
+  console.log(userInfo);
 
   // If the user is not logged in, redirect to the login page
   if (!token) {
@@ -26,6 +29,13 @@ export function middleware(req: NextRequest) {
     }
     return NextResponse.rewrite(new URL(loginPath, req.url));
   }
+
+  // Redirect to home if there has token in cookie
+  // if (token) {
+  //   if (pathname.includes("/auth")) {
+  //     return NextResponse.rewrite(new URL("/home", req.url));
+  //   }
+  // }
 
   // If the user is already logged in and tries to access protected routes, redirect to the admin dashboard
   // if (protectedRoutes.some(prefix => pathname.startsWith(prefix))) {

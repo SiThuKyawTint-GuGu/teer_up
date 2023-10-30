@@ -146,9 +146,6 @@ export const useUpdateProfileIndustry = () =>
   });
 
 export const useUpdateProfilePreference = () =>
-  useSWRMutation(
-    `/user/profile/preferences`,
-    (url, { arg }: { arg: { preference_id: number } }) => {
-      return appAxios.put<{ arg: { preference_id: number } }>(url, arg);
-    }
-  );
+  useSWRMutation(`/user/profile/preferences`, (url, { arg }: { arg: { preference_id: number } }) => {
+    return appAxios.put<{ arg: { preference_id: number } }>(url, arg);
+  });

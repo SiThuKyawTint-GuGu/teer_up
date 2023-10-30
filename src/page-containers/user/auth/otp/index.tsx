@@ -70,7 +70,12 @@ const Otp = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <InputText type="text" {...field} placeholder="Enter a otp" />
+                    <InputText
+                      type="text"
+                      className="bg-white shadow-md"
+                      {...field}
+                      placeholder="Enter a otp"
+                    />
                     {/* <OtpInput /> */}
                   </FormControl>
                 </FormItem>
