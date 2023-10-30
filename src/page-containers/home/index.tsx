@@ -7,9 +7,9 @@ import React from "react";
 
 const Home: React.FC = () => {
   return (
-    <Grid rows="1">
+    <Grid rows="1" className="max-w-[400px] m-auto">
       <Container className="h-screen">
-        <header className="border-b border-[#e5e7eb] fixed top-0 left-0 w-full bg-white">
+        <header className="border-b border-[#e5e7eb] w-[400px] fixed top-0 bg-white">
           <Box px="3">
             <div className="h-[72px] flex items-center justify-between">
               <Link href="/">
