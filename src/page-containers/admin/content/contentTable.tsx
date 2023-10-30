@@ -1,5 +1,4 @@
 "use client";
-import { useWindowSize } from "@/hooks/useWindowSize";
 import { ParamsType, useDeleteContent, useGetContent } from "@/services/content";
 import { ContentType } from "@/types/Content";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -29,8 +28,6 @@ const ContentTable: React.FC = () => {
   // console.log(contents);
   const [contentData, setContentData] = useState<any>();
   const { trigger: deleteTrigger } = useDeleteContent();
-  const { windowHeight } = useWindowSize();
-  const height = windowHeight - 100 + "px";
 
   useEffect(() => {
     setContentData(contents?.data);

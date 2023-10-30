@@ -28,7 +28,7 @@ import { UserResponse } from "@/types/User";
 import { yupResolver } from "@hookform/resolvers/yup";
 import SaveIcon from "@mui/icons-material/Save";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { Button as MuiButton, Checkbox, styled } from "@mui/material";
+import { Alert, Button as MuiButton, Checkbox, styled } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
@@ -86,9 +86,9 @@ const ContentDetail = ({ id }: Props) => {
   // console.log("content dimension data", contentDimension);
   // console.log("get contents...", contents);
 
-  const { trigger: updateTrigger, isMutating: updateMutating } = useUpdateContent(id);
+  const { trigger: updateTrigger, isMutating: updateMutating, error: updateError } = useUpdateContent(id);
   const { trigger: fileTrigger, isMutating: fileMutating } = usePostFile();
-  const { trigger: postTrigger, isMutating: postMutating } = usePostContent();
+  const { trigger: postTrigger, isMutating: postMutating, error: createError } = usePostContent();
   const { data: category } = useGetContentCategory<ContentCategoryResponse>();
   const { data: formconfigs } = useGetFormConfig<FormConfigResponse>();
 
@@ -142,14 +142,11 @@ const ContentDetail = ({ id }: Props) => {
       oppoEditor?.setContent(oppoEditorContent);
     }
     if (contentDimension?.data) {
-      const transformedData = contentDimension?.data?.content_dimensions.reduce(
-        (result: any, item: any) => {
-          const { dimension_id, low, medium, high } = item;
-          result[dimension_id] = { low, medium, high };
-          return result;
-        },
-        {}
-      );
+      const transformedData = contentDimension?.data?.content_dimensions.reduce((result: any, item: any) => {
+        const { dimension_id, low, medium, high } = item;
+        result[dimension_id] = { low, medium, high };
+        return result;
+      }, {});
       console.log("tr.....", transformedData);
       setCheckboxValues(transformedData);
     }
@@ -240,15 +237,7 @@ const ContentDetail = ({ id }: Props) => {
       }));
       setIndustryOptions(updatedOptions);
     }
-  }, [
-    editorContent,
-    editor,
-    oppoEditor,
-    oppoEditorContent,
-    contents?.data,
-    content?.data,
-    contentDimension?.data,
-  ]);
+  }, [editorContent, editor, oppoEditor, oppoEditorContent, contents?.data, content?.data, contentDimension?.data]);
 
   const {
     register,
@@ -620,7 +609,7 @@ const ContentDetail = ({ id }: Props) => {
   const handleSelectPathwayChange = (event: any, newValue: any, index: number) => {
     const updatedPathways = [...pathwayContent];
 
-    updatedPathways[index] = { pathway_id: newValue ? newValue.id : "", name: newValue.label };
+    updatedPathways[index] = { pathway_id: newValue ? newValue.id : "", name: newValue?.label };
     setPathwayContent(updatedPathways);
   };
 
@@ -701,9 +690,7 @@ const ContentDetail = ({ id }: Props) => {
               options={industryOptions || []}
               value={selectedIndustry}
               onChange={handleIndustryChange}
-              renderInput={params => (
-                <TextField {...params} label="Select Industry" placeholder="Industry" />
-              )}
+              renderInput={params => <TextField {...params} label="Select Industry" placeholder="Industry" />}
             />
           </div>
           {/* Department */}
@@ -714,9 +701,7 @@ const ContentDetail = ({ id }: Props) => {
               options={departmentOptions || []}
               value={selectedDepartment}
               onChange={handleDepartmentChange}
-              renderInput={params => (
-                <TextField {...params} label="Select Departments" placeholder="Departments" />
-              )}
+              renderInput={params => <TextField {...params} label="Select Departments" placeholder="Departments" />}
             />
           </div>
           {/* Keywords */}
@@ -727,9 +712,7 @@ const ContentDetail = ({ id }: Props) => {
               options={keywordOptions || []}
               value={selectedKeywords}
               onChange={handleKeywordChange}
-              renderInput={params => (
-                <TextField {...params} label="Select keywords" placeholder="Keywords" />
-              )}
+              renderInput={params => <TextField {...params} label="Select keywords" placeholder="Keywords" />}
             />
           </div>
           <div className="mb-10">
@@ -793,13 +776,7 @@ const ContentDetail = ({ id }: Props) => {
                 {fileUrl && (
                   <div className="mt-4">
                     <p className="font-bold mb-2">Thumbnail Preview:</p>
-                    <Image
-                      width={300}
-                      height={300}
-                      src={fileUrl}
-                      alt="File Preview"
-                      className="max-w-full h-auto"
-                    />
+                    <Image width={300} height={300} src={fileUrl} alt="File Preview" className="max-w-full h-auto" />
                   </div>
                 )}
               </div>
@@ -954,12 +931,7 @@ const ContentDetail = ({ id }: Props) => {
           )}
           {selectedValue === "pathway" && (
             <>
-              <MuiButton
-                style={{ textTransform: "none" }}
-                color="error"
-                variant="contained"
-                onClick={handleAddPathway}
-              >
+              <MuiButton style={{ textTransform: "none" }} color="error" variant="contained" onClick={handleAddPathway}>
                 <AiOutlinePlus size={20} />
                 Add Pathway
               </MuiButton>
@@ -978,11 +950,9 @@ const ContentDetail = ({ id }: Props) => {
                     sx={{ width: 300 }}
                     value={pathway.name}
                     onInputChange={handleInputChange}
-                    onChange={(event, newValue) =>
-                      handleSelectPathwayChange(event, newValue, index)
-                    }
+                    onChange={(event, newValue) => handleSelectPathwayChange(event, newValue, index)}
                     // onChange={handleSelectPathwayChange}
-                    renderInput={params => <TextField {...params} size="small" label="Contents" />}
+                    renderInput={params => <TextField {...params} label="Contents" />}
                   />
                   <AiFillDelete
                     onClick={() => handleDeletePathway(index)}
@@ -1003,9 +973,7 @@ const ContentDetail = ({ id }: Props) => {
                   onInputChange={handleInputMentorChange}
                   value={selectedMentor}
                   onChange={handleMentorChange}
-                  renderInput={params => (
-                    <TextField {...params} label="Select Mentor" placeholder="Mentor" />
-                  )}
+                  renderInput={params => <TextField {...params} label="Select Mentor" placeholder="Mentor" />}
                 />
               </div>
             </>
@@ -1025,13 +993,7 @@ const ContentDetail = ({ id }: Props) => {
             {imgUrl && (
               <div className="mt-4">
                 <p className="font-bold mb-2">Image Preview:</p>
-                <Image
-                  width={300}
-                  height={300}
-                  src={imgUrl}
-                  alt="File Preview"
-                  className="max-w-full h-auto"
-                />
+                <Image width={300} height={300} src={imgUrl} alt="File Preview" className="max-w-full h-auto" />
               </div>
             )}
           </div>
@@ -1071,8 +1033,17 @@ const ContentDetail = ({ id }: Props) => {
                 </Box>
               ))}
           </div>
-
-          {eventError && <p className="text-red-700 mt-3 mb-3">{eventError}</p>}
+          {updateError && (
+            <Alert severity="error" sx={{ width: "60%", marginTop: "10px" }}>
+              {updateError.response.data.message}
+            </Alert>
+          )}
+          {createError && (
+            <Alert severity="error" sx={{ width: "60%", marginTop: "10px" }}>
+              {createError.response.data.message}
+            </Alert>
+          )}
+          {!updateError && !createError && eventError && <p className="text-red-700 mt-3 mb-3">{eventError}</p>}
           <div style={{ display: "flex", marginTop: 20, justifyContent: "flex-end" }}>
             {content?.data ? (
               <LoadingButton

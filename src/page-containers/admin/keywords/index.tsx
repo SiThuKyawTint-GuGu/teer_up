@@ -17,7 +17,7 @@ const Keywords: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [id, setId] = useState<string>("");
   const { data: keywords, isLoading, mutate } = useGetKeywords<KeywordResponse>();
-  console.log("keywords", keywords);
+  // console.log("keywords", keywords);
   const { trigger: createTrigger } = useCreateKeywords();
   const { trigger: updateTrigger } = useUpdateKeywords();
   const { trigger: deleteTrigger } = useDeleteKeywords();
@@ -125,9 +125,12 @@ const Keywords: React.FC = () => {
       : undefined,
     muiTableContainerProps: {
       sx: {
-        minHeight: "500px",
+        maxHeight: "calc(100vh - 200px)",
+        minHeight: "480px",
       },
     },
+    enableStickyFooter: true,
+    enableStickyHeader: true,
     onCreatingRowCancel: () => setValidationErrors({}),
     onCreatingRowSave: handleCreatePreference,
     onEditingRowCancel: () => setValidationErrors({}),
