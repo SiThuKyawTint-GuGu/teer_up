@@ -29,7 +29,7 @@ const EditEducation: React.FC = () => {
   const { id, edu_id } = useParams();
   const router = useRouter();
   const { data: educationData } = useGetEducationById<EducationById>(edu_id as string);
-  const { trigger } = useUpdateEducation();
+  const { trigger, isMutating } = useUpdateEducation();
   const { trigger: deleteTrigger } = useDeleteEducation();
 
   const form = useForm({
@@ -40,12 +40,7 @@ const EditEducation: React.FC = () => {
     },
   });
 
-  const submit = async (data: {
-    school_name: string;
-    degree: string;
-    start_date: any;
-    end_date: any;
-  }) => {
+  const submit = async (data: { school_name: string; degree: string; start_date: any; end_date: any }) => {
     const newData = {
       ...data,
       educationId: edu_id as string,
@@ -79,10 +74,7 @@ const EditEducation: React.FC = () => {
   return (
     <>
       <Form {...form}>
-        <form
-          className="mx-auto flex flex-col justify-center gap-y-3 w-full"
-          onSubmit={form.handleSubmit(submit)}
-        >
+        <form className="mx-auto flex flex-col justify-center gap-y-3 w-full" onSubmit={form.handleSubmit(submit)}>
           <Grid columns="1">
             <Flex justify="between" align="center" className="bg-white" p="3">
               <Link href={`/profile/${id}/education`}>
@@ -201,15 +193,10 @@ const EditEducation: React.FC = () => {
 
             <Box className="pb-[7px]">
               <Section py="4" px="3" className="space-y-[15px]">
-                <Button type="submit" className="bg-primary w-full">
+                <Button type="submit" loading={isMutating} className="bg-primary w-full">
                   Save
                 </Button>
-                <Button
-                  type="button"
-                  onClick={handleDelete}
-                  variant="outline"
-                  className="border-primary w-full"
-                >
+                <Button type="button" onClick={handleDelete} variant="outline" className="border-primary w-full">
                   Delete
                 </Button>
               </Section>

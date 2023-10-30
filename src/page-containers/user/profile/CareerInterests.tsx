@@ -20,11 +20,9 @@ const CareerInterests: React.FC = () => {
   const industries = profileData?.data?.industries;
 
   const handleCheckedChange = (checked: boolean, industry_id: number) => {
-    if (checked) {
-      updateTrigger({
-        industry_id,
-      });
-    }
+    updateTrigger({
+      industry_id,
+    });
   };
 
   return (

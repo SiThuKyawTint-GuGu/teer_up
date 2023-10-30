@@ -18,7 +18,7 @@ const UserTable: React.FC = () => {
   const [validationErrors, setValidationErrors] = useState<Record<string, string | undefined>>({});
   const [globalFilter, setGlobalFilter] = useState<string>("");
   const [pagination, setPagination] = useState<MRT_PaginationState>({
-    pageIndex: 1,
+    pageIndex: 0,
     pageSize: 10,
   });
   const [open, setOpen] = useState<boolean>(false);
@@ -188,9 +188,12 @@ const UserTable: React.FC = () => {
       : undefined,
     muiTableContainerProps: {
       sx: {
-        minHeight: "500px",
+        maxHeight: "calc(100vh - 200px)",
+        minHeight: "480px",
       },
     },
+    enableStickyFooter: true,
+    enableStickyHeader: true,
     onCreatingRowCancel: () => setValidationErrors({}),
     onCreatingRowSave: handleCreateUser,
     onEditingRowCancel: () => setValidationErrors({}),
@@ -201,7 +204,7 @@ const UserTable: React.FC = () => {
     initialState: {
       pagination: {
         pageSize: 10,
-        pageIndex: 1,
+        pageIndex: 0,
       },
     },
     state: {

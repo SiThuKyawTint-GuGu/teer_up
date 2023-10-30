@@ -2,7 +2,7 @@
 import { useLikeContent, useSaveContent } from "@/services/content";
 import { ContentData } from "@/types/Content";
 
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form";
+import { FormControl, FormField, FormItem } from "@/components/ui/Form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -50,7 +50,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
   };
   const onSubmit = async (data: any) => {};
   return (
-    <div className="bg-white flex py-5 items-center">
+    <div className="bg-white flex py-2 items-center">
       {data.type === "event" && (
         <Button size="sm" className="w-[166px]" onClick={() => setOpenModal(true)}>
           Join now
@@ -63,28 +63,29 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
       )}
 
       <div className="flex justify-between p-3 w-full flex-1">
-        <div className="flex items-center flex-wrap gap-x-[5px]" onClick={likePost}>
+        <button className="flex items-center flex-wrap gap-x-[5px]" onClick={likePost}>
           {data.is_liked ? (
             <Icons.likefill className="w-[20px] h-[20px] text-primary" />
           ) : (
             <Icons.like className="w-[20px] h-[20px]" />
           )}
           <div className="text-[14px]">{data.likes}</div>
-        </div>
+        </button>
         <DialogTrigger>
           <div className="flex items-center flex-wrap  gap-x-[5px]">
             <Icons.comment className="w-[20px] h-[20px]" />
             <div>{data.comments}</div>
           </div>
         </DialogTrigger>
-        <div className="flex items-center flex-wrap  gap-x-[5px]" onClick={saveContent}>
+
+        <button className="flex items-center flex-wrap  gap-x-[5px]" onClick={saveContent}>
           {data.is_saved ? (
-            <Icons.savedFill className="w-[20px] h-[20px] text-yellow-400" />
+            <Icons.savedFill className="w-[20px] h-[20px] text-primary" />
           ) : (
             <Icons.saved className="w-[20px] h-[20px]" />
           )}
           <div>{data.saves}</div>
-        </div>
+        </button>
       </div>
       {openModal && (
         <Modal onClose={() => setOpenModal(false)}>
@@ -92,78 +93,74 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
             <Text as="div" className="text-[28px] font-700">
               Join Event
             </Text>
-            <Form {...form}>
-              <form
-                className="mx-auto flex flex-col h-full justify-center flex-wrap gap-y-[30px] w-full"
-                onSubmit={form.handleSubmit(onSubmit)}
-              >
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <InputText
-                          type="text"
-                          className="bg-white shadow-sm placeholder:text-[16px]"
-                          {...field}
-                          placeholder="Enter your name"
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <InputText
-                          type="text"
-                          className="bg-white shadow-sm placeholder:text-[16px]"
-                          {...field}
-                          placeholder="Enter your email address"
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="position"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <InputText
-                          type="text"
-                          className="bg-white shadow-sm placeholder:text-[16px]"
-                          {...field}
-                          placeholder="Enter your position"
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="reason"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <InputTextArea
-                          type="text"
-                          className="bg-white shadow-sm placeholder:text-[16px]"
-                          {...field}
-                          placeholder="Explain the reason why you want to join this event "
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                <Button type="submit">Submit</Button>
-              </form>
-            </Form>
+
+            <div className="mx-auto flex flex-col h-full justify-center flex-wrap gap-y-[30px] w-full">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <InputText
+                        type="text"
+                        className="bg-white shadow-sm placeholder:text-[16px]"
+                        {...field}
+                        placeholder="Enter your name"
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <InputText
+                        type="text"
+                        className="bg-white shadow-sm placeholder:text-[16px]"
+                        {...field}
+                        placeholder="Enter your email address"
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="position"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <InputText
+                        type="text"
+                        className="bg-white shadow-sm placeholder:text-[16px]"
+                        {...field}
+                        placeholder="Enter your position"
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="reason"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <InputTextArea
+                        type="text"
+                        className="bg-white shadow-sm placeholder:text-[16px]"
+                        {...field}
+                        placeholder="Explain the reason why you want to join this event "
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <Button>Submit</Button>
+            </div>
           </div>
         </Modal>
       )}

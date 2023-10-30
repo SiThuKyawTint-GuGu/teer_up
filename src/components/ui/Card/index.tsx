@@ -2,9 +2,10 @@ import React from "react";
 import styled from "styled-components";
 
 import { cn } from "@/utils/cn";
-import { Box, LayoutProps } from "@radix-ui/themes";
+import { Box } from "@radix-ui/themes";
+import { BoxProps } from "@radix-ui/themes/dist/cjs/components/box";
 
-interface Props extends LayoutProps {
+interface Props extends BoxProps {
   className?: string;
   children: React.ReactNode;
 }

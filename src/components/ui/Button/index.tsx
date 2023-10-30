@@ -45,7 +45,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const Component = asChild ? Slot : "button";
     return (
       <Component className={cn("space-x-[5px]", buttonVariants({ variant, size, className }))} ref={ref} {...props}>
-        {loading ? <Spinner width={25} height={25} color="#ffffff" /> : <span>{children}</span>}
+        {loading ? (
+          <Spinner width={25} height={25} color="#ffffff" />
+        ) : (
+          <span className="flex justify-center items-center gap-[5px]">{children}</span>
+        )}
       </Component>
     );
   }

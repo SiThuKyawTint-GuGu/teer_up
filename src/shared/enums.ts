@@ -34,8 +34,8 @@ export enum PROFILE_TRIGGER {
 }
 
 export enum REQUEST_TYPES {
-  ACCEPTED = "ACCEPTED",
-  CONFIRMED = "CONFIRMED",
-  PENDING = "PENDING",
-  DENIED = "DENIED",
+  ACCEPTED = "accepted",
+  CONFIRMED = "confirmed",
+  PENDING = "pending",
+  DENIED = "denied",
 }

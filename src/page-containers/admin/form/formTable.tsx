@@ -51,9 +51,12 @@ const FormConfigTable: React.FC = () => {
       : undefined,
     muiTableContainerProps: {
       sx: {
-        minHeight: "500px",
+        maxHeight: "calc(100vh-200px)",
+        minHeight: "480px",
       },
     },
+    enableStickyFooter: true,
+    enableStickyHeader: true,
     positionActionsColumn: "last",
     state: {
       showSkeletons: isLoading ?? false,

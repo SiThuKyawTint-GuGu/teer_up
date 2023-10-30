@@ -28,7 +28,7 @@ import { UserResponse } from "@/types/User";
 import { yupResolver } from "@hookform/resolvers/yup";
 import SaveIcon from "@mui/icons-material/Save";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { Button as MuiButton, Checkbox, styled } from "@mui/material";
+import { Alert, Button as MuiButton, Checkbox, styled } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
@@ -86,9 +86,13 @@ const ContentDetail = ({ id }: Props) => {
   // console.log("content dimension data", contentDimension);
   // console.log("get contents...", contents);
 
-  const { trigger: updateTrigger, isMutating: updateMutating } = useUpdateContent(id);
+  const {
+    trigger: updateTrigger,
+    isMutating: updateMutating,
+    error: updateError,
+  } = useUpdateContent(id);
   const { trigger: fileTrigger, isMutating: fileMutating } = usePostFile();
-  const { trigger: postTrigger, isMutating: postMutating } = usePostContent();
+  const { trigger: postTrigger, isMutating: postMutating, error: createError } = usePostContent();
   const { data: category } = useGetContentCategory<ContentCategoryResponse>();
   const { data: formconfigs } = useGetFormConfig<FormConfigResponse>();
 
@@ -620,7 +624,7 @@ const ContentDetail = ({ id }: Props) => {
   const handleSelectPathwayChange = (event: any, newValue: any, index: number) => {
     const updatedPathways = [...pathwayContent];
 
-    updatedPathways[index] = { pathway_id: newValue ? newValue.id : "", name: newValue.label };
+    updatedPathways[index] = { pathway_id: newValue ? newValue.id : "", name: newValue?.label };
     setPathwayContent(updatedPathways);
   };
 
@@ -982,7 +986,7 @@ const ContentDetail = ({ id }: Props) => {
                       handleSelectPathwayChange(event, newValue, index)
                     }
                     // onChange={handleSelectPathwayChange}
-                    renderInput={params => <TextField {...params} size="small" label="Contents" />}
+                    renderInput={params => <TextField {...params} label="Contents" />}
                   />
                   <AiFillDelete
                     onClick={() => handleDeletePathway(index)}
@@ -1071,8 +1075,19 @@ const ContentDetail = ({ id }: Props) => {
                 </Box>
               ))}
           </div>
-
-          {eventError && <p className="text-red-700 mt-3 mb-3">{eventError}</p>}
+          {updateError && (
+            <Alert severity="error" sx={{ width: "60%", marginTop: "10px" }}>
+              {updateError.response.data.message}
+            </Alert>
+          )}
+          {createError && (
+            <Alert severity="error" sx={{ width: "60%", marginTop: "10px" }}>
+              {createError.response.data.message}
+            </Alert>
+          )}
+          {!updateError && !createError && eventError && (
+            <p className="text-red-700 mt-3 mb-3">{eventError}</p>
+          )}
           <div style={{ display: "flex", marginTop: 20, justifyContent: "flex-end" }}>
             {content?.data ? (
               <LoadingButton
