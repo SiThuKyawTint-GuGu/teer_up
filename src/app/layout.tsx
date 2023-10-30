@@ -7,7 +7,7 @@ import type { Metadata } from "next";
 import Providers from "./providers";
 
 export const metadata: Metadata = {
-  title: "TeeUP",
+  title: "TEE-UP",
   description: "TeeUP Web App",
 };
 

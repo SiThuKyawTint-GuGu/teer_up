@@ -52,9 +52,9 @@ import { MdDelete, MdOutlineMailOutline } from "react-icons/md";
 import {
   PiAirplaneTiltLight,
   PiArrowDownRightThin,
+  PiArrowUpRightThin,
   PiArrowsLeftRightDuotone,
   PiArrowsLeftRightThin,
-  PiArrowUpRightThin,
   PiBagSimpleThin,
   PiCameraLight,
   PiCameraPlusFill,
@@ -77,6 +77,7 @@ import {
 } from "react-icons/pi";
 import { RxCross2, RxMagnifyingGlass } from "react-icons/rx";
 import { SiAmazon, SiNetflix, SiTesla, SiVivawallet } from "react-icons/si";
+import { LandingIcon, TeeupFooterIcon, TeeupIcon } from "./Icons";
 
 export const Icons = {
   loading: ({ ...props }) => {
@@ -101,6 +102,9 @@ export const Icons = {
       </svg>
     );
   },
+  landing: LandingIcon,
+  teeUp: TeeupIcon,
+  teeupFooter: TeeupFooterIcon,
   innovates: FaLightbulb,
   users: FiUsers,
   content: ArticleIcon,
