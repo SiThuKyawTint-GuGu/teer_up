@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 import { USER_ROLE } from "./shared/enums";
 import { User } from "./types/User";
 
-// const protectedRoutes = ["/admin", "/dashboard"];
+const protectedUserRoutes = ["/profile"];
 
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl as NextURL;
@@ -33,6 +33,7 @@ export function middleware(req: NextRequest) {
   }
 
   // If the user is not logged in, redirect to the login page
+  //? admin
   if (!token) {
     if (pathname.includes("/admin")) {
       return NextResponse.rewrite(new URL(adminLoginPath, req.url));
@@ -41,6 +42,11 @@ export function middleware(req: NextRequest) {
   }
 
   // If the user is already logged in and has a token, redirect to the home page
+  //? user
+  if (!token && protectedUserRoutes.includes(pathname)) {
+    return NextResponse.rewrite(new URL("/auth/login", req.url));
+  }
+
   if (userRole !== USER_ROLE.ADMIN) {
     if (token && (pathname === "/login" || pathname === "/auth/login")) {
       return NextResponse.rewrite(new URL("/home", req.url));
@@ -52,5 +58,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/auth/:path*"],
+  matcher: ["/admin/:path*", "/auth/:path*", "/profile/:path*"],
 };
