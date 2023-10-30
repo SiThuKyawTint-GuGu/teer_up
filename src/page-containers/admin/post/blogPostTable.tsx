@@ -10,7 +10,7 @@ import { useEffect, useMemo, useState } from "react";
 
 const BlogTable: React.FC = () => {
   const [pagination, setPagination] = useState<MRT_PaginationState>({
-    pageIndex: 1,
+    pageIndex: 0,
     pageSize: 10,
   });
   const [globalFilter, setGlobalFilter] = useState<string>("");
@@ -91,9 +91,12 @@ const BlogTable: React.FC = () => {
       : undefined,
     muiTableContainerProps: {
       sx: {
-        minHeight: "500px",
+        maxHeight: "calc(100vh-200px)",
+        minHeight: "480px",
       },
     },
+    enableStickyFooter: true,
+    enableStickyHeader: true,
     positionActionsColumn: "last",
     manualFiltering: true,
     manualPagination: true,
@@ -101,7 +104,7 @@ const BlogTable: React.FC = () => {
     initialState: {
       pagination: {
         pageSize: 10,
-        pageIndex: 1,
+        pageIndex: 0,
       },
     },
     state: {

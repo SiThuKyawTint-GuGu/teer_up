@@ -115,9 +115,12 @@ const CategoryTable: React.FC = () => {
       : undefined,
     muiTableContainerProps: {
       sx: {
-        minHeight: "500px",
+        maxHeight: "calc(100vh-200px)",
+        minHeight: "480px",
       },
     },
+    enableStickyHeader: true,
+    enableStickyFooter: true,
     onCreatingRowCancel: () => setValidationErrors({}),
     onCreatingRowSave: handleCreateCategory,
     onEditingRowCancel: () => setValidationErrors({}),
