@@ -6,6 +6,7 @@ import { Text } from "@/components/ui/Typo/Text";
 import { useGetUserById, useUploadCover, useUploadProfile } from "@/services/user";
 import { PROFILE_TRIGGER } from "@/shared/enums";
 import { UserProfileResponse } from "@/types/Profile";
+import { cn } from "@/utils/cn";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
 import Link from "next/link";
@@ -36,9 +37,7 @@ const ProfileEdit: React.FC = () => {
 
     if (file) {
       const triggerFunction =
-        triggerType === PROFILE_TRIGGER.PROFILE
-          ? uploadProfileTrigger({ file })
-          : uploadCoverTrigger({ file });
+        triggerType === PROFILE_TRIGGER.PROFILE ? uploadProfileTrigger({ file }) : uploadCoverTrigger({ file });
 
       try {
         await triggerFunction;
@@ -196,16 +195,25 @@ const ProfileEdit: React.FC = () => {
                     <Text className="text-primary">Edit</Text>
                   </Link>
                 </Flex>
-                {userProfile?.educations?.map((each, key) => (
-                  <div key={key} className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
-                    <Flex direction="column" gap="2">
-                      <Text as="label" weight="bold" size="3">
-                        {each.school_name}
-                      </Text>
-                      <Text>{each.degree}</Text>
-                    </Flex>
-                  </div>
-                ))}
+                {userProfile?.educations?.length
+                  ? userProfile?.educations?.map((each, key) => (
+                      <div
+                        key={key}
+                        className={cn(
+                          "pb-[10px] mb-[10px]",
+                          key !== (userProfile?.educations ? userProfile.educations.length - 1 : -1) &&
+                            "border-b border-b-[#BDC7D5]"
+                        )}
+                      >
+                        <Flex direction="column" gap="2">
+                          <Text as="label" weight="bold" size="3">
+                            {each.school_name}
+                          </Text>
+                          <Text>{each.degree}</Text>
+                        </Flex>
+                      </div>
+                    ))
+                  : "-"}
               </Section>
             </Box>
             <Box className="pb-[7px]">
@@ -219,11 +227,13 @@ const ProfileEdit: React.FC = () => {
                   </Link>
                 </Flex>
                 <Flex wrap="wrap" gap="2">
-                  {userProfile?.industries?.map((each, key) => (
-                    <Button key={key} className="bg-[#d1d5d8] text-black hover:bg-[#d1d5d8]">
-                      {each.industry.name}
-                    </Button>
-                  ))}
+                  {userProfile?.industries?.length
+                    ? userProfile?.industries?.map((each, key) => (
+                        <Button key={key} className="bg-[#d1d5d8] text-black hover:bg-[#d1d5d8]">
+                          {each.industry.name}
+                        </Button>
+                      ))
+                    : "-"}
                 </Flex>
               </Section>
             </Box>
@@ -238,11 +248,13 @@ const ProfileEdit: React.FC = () => {
                   </Link>
                 </Flex>
                 <Flex wrap="wrap" gap="2">
-                  {userProfile?.preferences?.map((each, key) => (
-                    <Button key={key} className="bg-[#d1d5d8] text-black hover:bg-[#d1d5d8]">
-                      {each.preference.name}
-                    </Button>
-                  ))}
+                  {userProfile?.preferences?.length
+                    ? userProfile?.preferences?.map((each, key) => (
+                        <Button key={key} className="bg-[#d1d5d8] text-black hover:bg-[#d1d5d8]">
+                          {each.preference.name}
+                        </Button>
+                      ))
+                    : "-"}
                 </Flex>
               </Section>
             </Box>

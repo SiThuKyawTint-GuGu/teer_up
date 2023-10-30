@@ -59,10 +59,7 @@ const Profile: React.FC = () => {
             </Flex>
             <Box className="pb-[7px]">
               <Section p="0">
-                <DialogTrigger
-                  onClick={() => setTriggerType(PROFILE_TRIGGER.COVER)}
-                  className="w-full"
-                >
+                <DialogTrigger onClick={() => setTriggerType(PROFILE_TRIGGER.COVER)} className="w-full">
                   {userProfile?.cover_url ? (
                     <BGImage width={WIDTH_TYPES.FULL} height={130} url={userProfile?.cover_url} />
                   ) : (
@@ -73,10 +70,7 @@ const Profile: React.FC = () => {
                 </DialogTrigger>
               </Section>
               <Section className="bg-white pt-[70px]" pb="4" px="3" position="relative">
-                <DialogTrigger
-                  onClick={() => setTriggerType(PROFILE_TRIGGER.PROFILE)}
-                  className="w-full"
-                >
+                <DialogTrigger onClick={() => setTriggerType(PROFILE_TRIGGER.PROFILE)} className="w-full">
                   <div className="absolute -top-[30%]">
                     {userProfile?.profile_url ? (
                       <Flex
@@ -123,10 +117,7 @@ const Profile: React.FC = () => {
                 </DialogTrigger>
                 <div className="absolute top-2 right-2">
                   <Link href={`/profile/${user?.id}`}>
-                    <Button
-                      variant="outline"
-                      className="border-2 border-[#F4153D] rounded-[30px] space-x-[5px]"
-                    >
+                    <Button variant="outline" className="border-2 border-[#F4153D] rounded-[30px] space-x-[5px]">
                       <Image src="/uploads/icons/pencil.svg" width={20} height={20} alt="pencil" />
                       <Text className="text-primary">Edit Profile</Text>
                     </Button>
@@ -178,23 +169,25 @@ const Profile: React.FC = () => {
                 <Heading as="h6" size="4" align="left" mb="4">
                   Education
                 </Heading>
-                {userProfile?.educations?.map((each, key) => (
-                  <div
-                    key={key}
-                    className={cn(
-                      "pb-[10px] mb-[10px]",
-                      key !== (userProfile?.educations ? userProfile.educations.length - 1 : -1) &&
-                        "border-b border-b-[#BDC7D5]"
-                    )}
-                  >
-                    <Flex direction="column" gap="2">
-                      <Text as="label" weight="bold" size="3">
-                        {each.school_name}
-                      </Text>
-                      <Text>{each.degree}</Text>
-                    </Flex>
-                  </div>
-                ))}
+                {userProfile?.educations?.length
+                  ? userProfile?.educations?.map((each, key) => (
+                      <div
+                        key={key}
+                        className={cn(
+                          "pb-[10px] mb-[10px]",
+                          key !== (userProfile?.educations ? userProfile.educations.length - 1 : -1) &&
+                            "border-b border-b-[#BDC7D5]"
+                        )}
+                      >
+                        <Flex direction="column" gap="2">
+                          <Text as="label" weight="bold" size="3">
+                            {each.school_name}
+                          </Text>
+                          <Text>{each.degree}</Text>
+                        </Flex>
+                      </div>
+                    ))
+                  : "-"}
               </Section>
             </Box>
             <Box className="pb-[7px]">
@@ -203,11 +196,13 @@ const Profile: React.FC = () => {
                   Career interests
                 </Heading>
                 <Flex wrap="wrap" gap="2">
-                  {userProfile?.industries?.map((each, key) => (
-                    <Button key={key} className="bg-[#d1d5d8] text-black hover:bg-[#d1d5d8]">
-                      {each.industry.name}
-                    </Button>
-                  ))}
+                  {userProfile?.industries?.length
+                    ? userProfile?.industries?.map((each, key) => (
+                        <Button key={key} className="bg-[#d1d5d8] text-black hover:bg-[#d1d5d8]">
+                          {each.industry.name}
+                        </Button>
+                      ))
+                    : "-"}
                 </Flex>
               </Section>
             </Box>
@@ -217,11 +212,13 @@ const Profile: React.FC = () => {
                   Preferences
                 </Heading>
                 <Flex wrap="wrap" gap="2">
-                  {userProfile?.preferences?.map((each, key) => (
-                    <Button key={key} className="bg-[#d1d5d8] text-black hover:bg-[#d1d5d8]">
-                      {each.preference.name}
-                    </Button>
-                  ))}
+                  {userProfile?.preferences?.length
+                    ? userProfile?.preferences?.map((each, key) => (
+                        <Button key={key} className="bg-[#d1d5d8] text-black hover:bg-[#d1d5d8]">
+                          {each.preference.name}
+                        </Button>
+                      ))
+                    : "-"}
                 </Flex>
               </Section>
             </Box>
