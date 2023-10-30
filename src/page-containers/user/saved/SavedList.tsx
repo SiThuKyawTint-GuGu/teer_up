@@ -120,7 +120,7 @@ const SavedList: React.FC = () => {
             >
               <DialogClose className="w-full">
                 <Flex justify="between" align="center" gap="2">
-                  <Text as="label" color="" weight="bold" size="3">
+                  <Text as="label" weight="bold" size="3">
                     {each.value}
                   </Text>
                   <Icons.check />
