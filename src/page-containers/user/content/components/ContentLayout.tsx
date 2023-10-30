@@ -142,7 +142,6 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
               </div>
             </div>
           </CardBox>
-          <div className="py-4 text-center font-[300] w-full">Swipe up for more</div>
         </div>
       </div>
       {openModal && (

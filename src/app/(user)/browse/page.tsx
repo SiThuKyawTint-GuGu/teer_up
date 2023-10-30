@@ -4,7 +4,7 @@ import { NextPage } from "next";
 
 const Browse: NextPage = () => {
   return (
-    <MainPageLayout hideHeader>
+    <MainPageLayout>
       <BrowsePage />
     </MainPageLayout>
   );

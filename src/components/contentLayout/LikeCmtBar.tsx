@@ -2,7 +2,7 @@
 import { useLikeContent, useSaveContent } from "@/services/content";
 import { ContentData } from "@/types/Content";
 
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form";
+import { FormControl, FormField, FormItem } from "@/components/ui/Form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -92,78 +92,74 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
             <Text as="div" className="text-[28px] font-700">
               Join Event
             </Text>
-            <Form {...form}>
-              <form
-                className="mx-auto flex flex-col h-full justify-center flex-wrap gap-y-[30px] w-full"
-                onSubmit={form.handleSubmit(onSubmit)}
-              >
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <InputText
-                          type="text"
-                          className="bg-white shadow-sm placeholder:text-[16px]"
-                          {...field}
-                          placeholder="Enter your name"
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <InputText
-                          type="text"
-                          className="bg-white shadow-sm placeholder:text-[16px]"
-                          {...field}
-                          placeholder="Enter your email address"
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="position"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <InputText
-                          type="text"
-                          className="bg-white shadow-sm placeholder:text-[16px]"
-                          {...field}
-                          placeholder="Enter your position"
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="reason"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <InputTextArea
-                          type="text"
-                          className="bg-white shadow-sm placeholder:text-[16px]"
-                          {...field}
-                          placeholder="Explain the reason why you want to join this event "
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                <Button type="submit">Submit</Button>
-              </form>
-            </Form>
+
+            <div className="mx-auto flex flex-col h-full justify-center flex-wrap gap-y-[30px] w-full">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <InputText
+                        type="text"
+                        className="bg-white shadow-sm placeholder:text-[16px]"
+                        {...field}
+                        placeholder="Enter your name"
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <InputText
+                        type="text"
+                        className="bg-white shadow-sm placeholder:text-[16px]"
+                        {...field}
+                        placeholder="Enter your email address"
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="position"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <InputText
+                        type="text"
+                        className="bg-white shadow-sm placeholder:text-[16px]"
+                        {...field}
+                        placeholder="Enter your position"
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="reason"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <InputTextArea
+                        type="text"
+                        className="bg-white shadow-sm placeholder:text-[16px]"
+                        {...field}
+                        placeholder="Explain the reason why you want to join this event "
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <Button>Submit</Button>
+            </div>
           </div>
         </Modal>
       )}
