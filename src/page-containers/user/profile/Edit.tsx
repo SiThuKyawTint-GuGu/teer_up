@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/Button";
+import CardBox from "@/components/ui/Card";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
@@ -71,7 +72,7 @@ const ProfileEdit: React.FC = () => {
                 <Icons.plus className="text-primary w-[23px] h-[23px]" />
               </Link>
             </Flex>
-            <Box className="pb-[7px]">
+            <CardBox className="mb-[7px] rounded-none">
               <Section className="bg-white" py="4" px="3">
                 <div>
                   <Flex justify="between" align="center" mb="4">
@@ -131,8 +132,8 @@ const ProfileEdit: React.FC = () => {
                   </div>
                 </div>
               </Section>
-            </Box>
-            <Box className="pb-[7px]">
+            </CardBox>
+            <CardBox className="pb-[7px]">
               <Section className="bg-white" py="4" px="3">
                 <Flex justify="between" align="center" mb="4">
                   <Heading as="h6" size="4" align="left">
@@ -144,8 +145,8 @@ const ProfileEdit: React.FC = () => {
                 </Flex>
                 <Text>{userProfile?.bio}</Text>
               </Section>
-            </Box>
-            <Box className="pb-[7px]">
+            </CardBox>
+            <CardBox className="mb-[7px] rounded-none">
               <Section className="bg-white" py="4" px="3">
                 <Flex justify="between" align="center" mb="4">
                   <Heading as="h6" size="4" align="left">
@@ -184,8 +185,8 @@ const ProfileEdit: React.FC = () => {
                   </Flex>
                 </div>
               </Section>
-            </Box>
-            <Box className="pb-[7px]">
+            </CardBox>
+            <CardBox className="mb-[7px] rounded-none">
               <Section className="bg-white" py="4" px="3">
                 <Flex justify="between" align="center" mb="4">
                   <Heading as="h6" size="4" align="left">
@@ -215,8 +216,8 @@ const ProfileEdit: React.FC = () => {
                     ))
                   : "-"}
               </Section>
-            </Box>
-            <Box className="pb-[7px]">
+            </CardBox>
+            <CardBox className="mb-[7px] rounded-none">
               <Section className="bg-white" py="4" px="3">
                 <Flex justify="between" align="center" mb="4">
                   <Heading as="h6" size="4" align="left">
@@ -236,8 +237,8 @@ const ProfileEdit: React.FC = () => {
                     : "-"}
                 </Flex>
               </Section>
-            </Box>
-            <Box className="pb-[7px]">
+            </CardBox>
+            <CardBox className="pb-[7px]">
               <Section className="bg-white" py="4" px="3">
                 <Flex justify="between" align="center" mb="4">
                   <Heading as="h6" size="4" align="left">
@@ -257,7 +258,7 @@ const ProfileEdit: React.FC = () => {
                     : "-"}
                 </Flex>
               </Section>
-            </Box>
+            </CardBox>
           </Box>
         </Grid>
         <DialogContent className="bg-white top-[initial] bottom-0 px-4 pt-8 pb-2 translate-y-0 rounded-10px-tl-tr">

@@ -60,28 +60,18 @@ const UserContent = () => {
 
   const differentContent = (data: ContentData, index: number) => {
     if (data.type === "video" && data.content_video)
-      return (
-        <Video
-          data={data}
-          setVideoRef={handleVideoRef(index)}
-          autoplay={index === 0}
-          contentMutate={mutate}
-        />
-      );
+      return <Video data={data} setVideoRef={handleVideoRef(index)} autoplay={index === 0} contentMutate={mutate} />;
     if (data.type === "event" && data.content_event)
       return <ContentLayout data={data} contentMutate={mutate} redir={`/events/${data.slug}`} />;
     if (data.type === "article" && data.content_article)
       return <ContentLayout data={data} contentMutate={mutate} redir={`/articles/${data.slug}`} />;
     if (data.type === "opportunity" && data.content_opportunity)
-      return (
-        <ContentLayout data={data} contentMutate={mutate} redir={`/opportunity/${data.slug}`} />
-      );
+      return <ContentLayout data={data} contentMutate={mutate} redir={`/opportunity/${data.slug}`} />;
     if (data.type === "pathway")
       return <ContentLayout data={data} contentMutate={mutate} redir={`/pathway/${data.slug}`} />;
     if (data.type === "onboarding") return <Onboarding data={data} />;
     if (data.type === "mentor")
       return <ContentLayout data={data} contentMutate={mutate} redir={`/mentor/${data.slug}`} />;
-    return <div>This page is not avaliable right now</div>;
   };
 
   const hasMoreData = (contentData: ContentType) => {
@@ -109,8 +99,9 @@ const UserContent = () => {
                   >
                     <div className="snap-y flex-col snap-mandatory w-full h-[calc(100vh-100px)] bg-[#F8F9FB] no-scrollbar overflow-y-scroll">
                       {data.data.map((data: ContentData, index: number) => (
-                        <div className="h-full  w-full snap-start" key={index}>
+                        <div className="h-full flex flex-col p-2 rounded-lg w-full snap-start" key={index}>
                           {differentContent(data, index)}
+                          {index == 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
                         </div>
                       ))}
                     </div>

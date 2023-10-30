@@ -2,6 +2,7 @@
 import BGImage from "@/components/shared/BGImage";
 import { WIDTH_TYPES } from "@/components/shared/enums";
 import { Button } from "@/components/ui/Button";
+import CardBox from "@/components/ui/Card";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
@@ -57,7 +58,7 @@ const Profile: React.FC = () => {
                 Profile
               </Text>
             </Flex>
-            <Box className="pb-[7px]">
+            <CardBox className="mb-[7px] rounded-none">
               <Section p="0">
                 <DialogTrigger onClick={() => setTriggerType(PROFILE_TRIGGER.COVER)} className="w-full">
                   {userProfile?.cover_url ? (
@@ -128,8 +129,8 @@ const Profile: React.FC = () => {
                 </Heading>
                 <Text>{userProfile?.bio}</Text>
               </Section>
-            </Box>
-            <Box className="pb-[7px]">
+            </CardBox>
+            <CardBox className="mb-[7px] rounded-none">
               <Section className="bg-white" py="4" px="3">
                 <Heading as="h6" size="4" align="left" mb="4">
                   Personal information
@@ -163,8 +164,8 @@ const Profile: React.FC = () => {
                   </Flex>
                 </div>
               </Section>
-            </Box>
-            <Box className="pb-[7px]">
+            </CardBox>
+            <CardBox className="mb-[7px] rounded-none">
               <Section className="bg-white" py="4" px="3">
                 <Heading as="h6" size="4" align="left" mb="4">
                   Education
@@ -189,8 +190,8 @@ const Profile: React.FC = () => {
                     ))
                   : "-"}
               </Section>
-            </Box>
-            <Box className="pb-[7px]">
+            </CardBox>
+            <CardBox className="mb-[7px] rounded-none">
               <Section className="bg-white" py="4" px="3">
                 <Heading as="h6" size="4" align="left" mb="4">
                   Career interests
@@ -205,8 +206,8 @@ const Profile: React.FC = () => {
                     : "-"}
                 </Flex>
               </Section>
-            </Box>
-            <Box className="pb-[7px]">
+            </CardBox>
+            <CardBox className="mb-[7px] rounded-none">
               <Section className="bg-white" py="4" px="3">
                 <Heading as="h6" size="4" align="left" mb="4">
                   Preferences
@@ -221,7 +222,7 @@ const Profile: React.FC = () => {
                     : "-"}
                 </Flex>
               </Section>
-            </Box>
+            </CardBox>
           </Box>
         </Grid>
         <DialogContent

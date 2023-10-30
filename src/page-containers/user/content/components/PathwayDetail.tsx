@@ -59,33 +59,16 @@ const PathwayDetail: React.FC = () => {
     console.log(data.type);
     if (data.type === "video" && data.content_video)
       return (
-        <Video
-          data={data}
-          setVideoRef={handleVideoRef(index)}
-          autoplay={index === 0}
-          contentMutate={contentMutate}
-        />
+        <Video data={data} setVideoRef={handleVideoRef(index)} autoplay={index === 0} contentMutate={contentMutate} />
       );
     if (data.type === "event" && data.content_event)
-      return (
-        <ContentLayout data={data} contentMutate={contentMutate} redir={`/events/${data.slug}`} />
-      );
+      return <ContentLayout data={data} contentMutate={contentMutate} redir={`/events/${data.slug}`} />;
     if (data.type === "article" && data.content_article)
-      return (
-        <ContentLayout data={data} contentMutate={contentMutate} redir={`/articles/${data.slug}`} />
-      );
+      return <ContentLayout data={data} contentMutate={contentMutate} redir={`/articles/${data.slug}`} />;
     if (data.type === "opportunity" && data.content_opportunity)
-      return (
-        <ContentLayout
-          data={data}
-          contentMutate={contentMutate}
-          redir={`/opportunity/${data.slug}`}
-        />
-      );
+      return <ContentLayout data={data} contentMutate={contentMutate} redir={`/opportunity/${data.slug}`} />;
     if (data.type === "pathway")
-      return (
-        <ContentLayout data={data} contentMutate={contentMutate} redir={`/pathway/${data.slug}`} />
-      );
+      return <ContentLayout data={data} contentMutate={contentMutate} redir={`/pathway/${data.slug}`} />;
     return <div>This Page is not available right now</div>;
   };
 
@@ -100,11 +83,11 @@ const PathwayDetail: React.FC = () => {
   };
   return (
     <Grid columns="1">
-      <div className="w-full h-full">
+      <div className="w-full h-screen pt-[48px] flex flex-col justify-between">
         {contentData?.data.content_pathways && (
           <>
             {contentData.data.content_pathways.length > 0 && (
-              <div className="snap-y flex-col snap-mandatory w-full h-[80vh] bg-[#F8F9FB] no-scrollbar overflow-y-scroll">
+              <div className="snap-y flex-col snap-mandatory w-full h-full  bg-[#F8F9FB] no-scrollbar overflow-y-scroll">
                 {contentData.data.content_pathways.map((data: ContentData, index: number) => (
                   <div className="h-full  w-full snap-start" id={data.slug} key={index}>
                     {differentContent(data, index)}
@@ -114,48 +97,47 @@ const PathwayDetail: React.FC = () => {
             )}
           </>
         )}
-      </div>
-
-      <Flex
-        justify="between"
-        direction="column"
-        className="absolute bottom-0 py-3 w-full h-auto p-3 flex-wrap left-0 bg-white z-[99999]"
-      >
-        <div className="w-full h-full relative">
-          <Flex justify="between" className="w-full">
-            <div className="font-[600] text-[16px]">{contentData?.data?.title}</div>
-            {!showPathTitle ? (
-              <Icons.upArrow
-                className="text-primary w-[20px] h-[20px] absolute top-0 right-0"
-                onClick={() => setShowPathTitle(true)}
-              />
-            ) : (
-              <Icons.downArrow
-                className="text-primary w-[20px] h-[20px] absolute top-0 right-0"
-                onClick={() => setShowPathTitle(false)}
-              />
+        <Flex
+          justify="between"
+          direction="column"
+          className="max-w-[400px] mx-auto py-3 w-full  p-3 flex-wrap left-0 bg-white z-[99999]"
+        >
+          <div className="w-full h-full relative">
+            <Flex justify="between" className="w-full">
+              <div className="font-[600] text-[16px]">{contentData?.data?.title}</div>
+              {!showPathTitle ? (
+                <Icons.upArrow
+                  className="text-primary w-[20px] h-[20px] absolute top-0 right-0"
+                  onClick={() => setShowPathTitle(true)}
+                />
+              ) : (
+                <Icons.downArrow
+                  className="text-primary w-[20px] h-[20px] absolute top-0 right-0"
+                  onClick={() => setShowPathTitle(false)}
+                />
+              )}
+            </Flex>
+            {showPathTitle && (
+              <div className="py-5">
+                {contentData?.data?.content_pathways.length > 0 &&
+                  contentData.data.content_pathways.map((data: ContentData, index: number) => (
+                    <div key={index} className="font-[600]flex flex-col w-full text-[16px] py-1">
+                      <Flex justify="between" className="w-full py-2">
+                        <div>
+                          <Link href={`${data.slug}`} scroll={true} onClick={handleScroll}>
+                            {data.title}
+                          </Link>
+                        </div>
+                        <Icons.checkMark className="w-[20px] h-[20px]" />
+                      </Flex>
+                      <hr className="w-full h-[2px] bg-slateGray" />
+                    </div>
+                  ))}
+              </div>
             )}
-          </Flex>
-          {showPathTitle && (
-            <div className="py-5">
-              {contentData?.data?.content_pathways.length > 0 &&
-                contentData.data.content_pathways.map((data: ContentData, index: number) => (
-                  <div key={index} className="font-[600]flex flex-col w-full text-[16px] py-1">
-                    <Flex justify="between" className="w-full py-2">
-                      <div>
-                        <Link href={`${data.slug}`} scroll={true} onClick={handleScroll}>
-                          {data.title}
-                        </Link>
-                      </div>
-                      <Icons.checkMark className="w-[20px] h-[20px]" />
-                    </Flex>
-                    <hr className="w-full h-[2px] bg-slateGray" />
-                  </div>
-                ))}
-            </div>
-          )}
-        </div>
-      </Flex>
+          </div>
+        </Flex>
+      </div>
     </Grid>
   );
 };

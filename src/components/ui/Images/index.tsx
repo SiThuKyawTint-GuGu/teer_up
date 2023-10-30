@@ -19,7 +19,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import TextSnippetIcon from "@mui/icons-material/TextSnippet";
 import NextImage from "next/image";
 import { CiSettings } from "react-icons/ci";
-import { FaArrowRight, FaLightbulb, FaUserCircle } from "react-icons/fa";
+import { FaArrowRight, FaFacebook, FaLightbulb, FaTelegram, FaUserCircle } from "react-icons/fa";
 import { FcBusinesswoman } from "react-icons/fc";
 import { FiUsers } from "react-icons/fi";
 import { GoCommentDiscussion } from "react-icons/go";
@@ -39,6 +39,7 @@ import {
   IoHeartOutline,
   IoHome,
   IoInformationCircleOutline,
+  IoLink,
   IoLocationOutline,
   IoLogoApple,
   IoNotificationsOutline,
@@ -182,6 +183,9 @@ export const Icons = {
   downArrow: IoChevronDownOutline,
   closeCircle: IoCloseCircleSharp,
   landing: LandingIcon,
+  shareLink: IoLink,
+  facebook: FaFacebook,
+  telegram: FaTelegram,
 };
 
 interface Image {

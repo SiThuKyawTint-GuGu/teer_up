@@ -54,6 +54,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "cookies-next": "^4.0.0",
+    "copy-to-clipboard": "^3.3.3",
     "crypto-js": "^4.1.1",
     "dayjs": "^1.11.10",
     "immer": "^10.0.3",

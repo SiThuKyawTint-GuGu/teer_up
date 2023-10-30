@@ -6,7 +6,9 @@ const PathwayPage = () => {
   return (
     <Grid columns="1">
       <ContentDetailHeader pathname="/home" title="Pathway Detail" />
-      <PathwayDetail />
+      <div className="pt-[48px] w-full h-full">
+        <PathwayDetail />
+      </div>
     </Grid>
   );
 };

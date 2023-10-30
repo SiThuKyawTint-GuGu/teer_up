@@ -1,5 +1,4 @@
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -9,7 +8,7 @@ import { useUserLogin } from "@/services/user";
 import { setUserInfo } from "@/utils/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { TextField } from "@mui/material";
+import { Alert, TextField } from "@mui/material";
 
 const validationSchema = yup.object({
   email: yup.string().email().required("Email address is required!"),
@@ -18,7 +17,6 @@ const validationSchema = yup.object({
 
 const LoginForm = () => {
   const router = useRouter();
-  const [error, setError] = useState<string | null>(null);
   const form = useForm({
     resolver: yupResolver(validationSchema),
   });
@@ -29,7 +27,7 @@ const LoginForm = () => {
       onSuccess: res => {
         const { token, data } = res.data;
         setUserInfo(token, data);
-        router.push("/admin");
+        router.push("/admin/contents/content");
       },
     });
   };
@@ -40,7 +38,11 @@ const LoginForm = () => {
         <h2 className="text-3xl mb-10 font-medium" style={{ color: "#da291c" }}>
           Sign In
         </h2>
-        {error && <div className="text-primary">{error}</div>}
+        {loginError && (
+          <Alert sx={{ marginBottom: "20px" }} severity="error">
+            {loginError.response.data.message}
+          </Alert>
+        )}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(loginHandler)} className="space-y-8">
             <FormField
