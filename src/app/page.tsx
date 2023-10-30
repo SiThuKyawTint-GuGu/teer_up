@@ -1,7 +1,8 @@
-import { redirect } from "next/navigation";
+import Home from "@/page-containers/home";
+import { NextPage } from "next";
 
-const Home = async () => {
-  return redirect("/home");
+const LandingPage: NextPage = async () => {
+  return <Home />;
 };
 
-export default Home;
+export default LandingPage;

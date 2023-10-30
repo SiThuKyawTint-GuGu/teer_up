@@ -6,6 +6,8 @@ import { Text as RText, textPropDefs } from "@radix-ui/themes";
 
 type SizePropValues = (typeof textPropDefs)["size"]["values"][number];
 type WeightPropsValues = (typeof textPropDefs)["weight"]["values"][number];
+type ColorPropsValues = (typeof textPropDefs)["color"]["values"][number];
+type AlignProps = (typeof textPropDefs)["align"]["values"][number];
 
 interface Props {
   children?: React.ReactNode;
@@ -13,7 +15,8 @@ interface Props {
   as?: "p" | "div" | "span" | "label";
   size?: SizePropValues;
   weight?: WeightPropsValues;
-  color?: string;
+  color?: ColorPropsValues;
+  align?: AlignProps;
   dangerouslySetInnerHTML?: {
     __html: string;
     __typename?: string;
