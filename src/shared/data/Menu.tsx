@@ -41,14 +41,14 @@ export const menuList: Menu[] = [
     title: "Blogs",
     child: [
       {
-        key: "/admin/blogs/category",
-        title: "Category",
-        icon: <Icons.category className="w-[20px] h-[20px]" />,
-      },
-      {
         key: "/admin/blogs/posts",
         title: "Posts",
         icon: <Icons.post className="w-[20px] h-[20px]" />,
+      },
+      {
+        key: "/admin/blogs/category",
+        title: "Category",
+        icon: <Icons.category className="w-[20px] h-[20px]" />,
       },
     ],
   },

@@ -12,6 +12,7 @@ export type ParamsType = {
   name?: string;
   cursor?: number;
   type?: string;
+  search?: string;
 };
 
 export interface ContentArgType {

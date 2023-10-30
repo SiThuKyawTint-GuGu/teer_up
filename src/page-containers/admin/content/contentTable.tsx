@@ -100,6 +100,7 @@ const ContentTable: React.FC = () => {
     muiTableContainerProps: {
       sx: {
         maxHeight: "calc(100vh - 200px)",
+        minHeight: "480px",
       },
     },
     positionActionsColumn: "last",
