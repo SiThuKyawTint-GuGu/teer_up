@@ -5,7 +5,7 @@ interface ApiResponse {
   name: string;
 }
 
-const fetcher = async (url: string): Promise<ApiResponse[]> => {
+export const fetcher = async (url: string): Promise<ApiResponse[]> => {
   const response = await fetch(url);
   console.log("resp", response);
 
