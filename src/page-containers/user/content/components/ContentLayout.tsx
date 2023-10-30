@@ -22,6 +22,7 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
   const { trigger: contentSave } = useSaveContent();
   const router = useRouter();
   const [openModal, setOpenModal] = useState<boolean>(false);
+
   const likePost = async () => {
     await like(
       { id: data.id },
