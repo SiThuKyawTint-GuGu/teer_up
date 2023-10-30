@@ -1,5 +1,6 @@
 "use client";
 
+import ContentDetailHeader from "@/components/contentLayout/ContentDetailHeader";
 import LikeCmtBar from "@/components/contentLayout/LikeCmtBar";
 import { Dialog, DialogContent } from "@/components/ui/Dialog";
 import { Icons } from "@/components/ui/Images";
@@ -22,11 +23,14 @@ const UserContentDetail: React.FC<ContentlayoutProps> = () => {
 
   return (
     <Dialog open={openModal} onOpenChange={val => setOpenModal(val)}>
+      <div className="fixed max-w-[400px]  w-full  top-0 z-[9999] mx-auto flex flex-wrap">
+        <ContentDetailHeader pathname="/home" title="Detail Page" />
+      </div>
       <Grid columns="1">
         {contentData && (
-          <div className="w-full h-full py-[48px]">
+          <div className="w-full h-full pt-[48px] pb-[100px]">
             {" "}
-            <div className="w-full mx-auto h-[50%] relative p-2">
+            <div className="w-full mx-auto h-[40vh] relative p-2">
               <div
                 className="relative w-full max-w-[400px] rounded-lg h-full"
                 style={{
@@ -40,11 +44,10 @@ const UserContentDetail: React.FC<ContentlayoutProps> = () => {
                 )}
               </div>
             </div>
-            <div className="w-full px-[16px] bg-white">
-              <div>
+            <div className="w-full h-full px-[16px] bg-white">
+              <div className="w-full h-full">
                 <h1 className="font-[700] text-[24px]">{contentData.data.title}</h1>
-
-                <div className="h-full min-h-[50vh] flex flex-col flex-wrap gap-y-3">
+                <div className="h-full min-h-[50%] flex flex-col flex-wrap gap-y-3">
                   <div
                     dangerouslySetInnerHTML={{
                       __html: contentData.data.description,
