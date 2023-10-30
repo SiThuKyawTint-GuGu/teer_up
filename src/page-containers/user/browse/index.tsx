@@ -16,7 +16,7 @@ const BrowsePage = () => {
     pagesize: 20,
     type: type,
   });
-  const differentContent = (data: ContentData, index: number) => {
+  const differentContent = (data: ContentData) => {
     if (data.type === "event" && data.content_event)
       return <BrowserContentLayout data={data} contentMutate={mutate} redir={`/events/${data.slug}`} />;
     if (data.type === "article" && data.content_article)
@@ -27,12 +27,11 @@ const BrowsePage = () => {
       return <BrowserContentLayout data={data} contentMutate={mutate} redir={`/pathway/${data.slug}`} />;
     if (data.type === "mentor")
       return <BrowserContentLayout data={data} contentMutate={mutate} redir={`/mentor/${data.slug}`} />;
-    return <div>This page is not avaliable right now</div>;
   };
 
   return (
     <div className="relative w-full h-full">
-      <Flex className="p-3 w-full overflow-auto no-scrollbar relative">
+      <Flex className="p-3 w-full sticky top-0 overflow-auto no-scrollbar">
         {BrowsePageHeader.map((data: HeaderType, index: number) => (
           <div key={index} onClick={() => setType(data.value)} className="cursor-pointer">
             <Text as="div" className={`w-auto px-3 ${type === data.value && "border-b-[2px] border-primary"}`}>
@@ -51,7 +50,7 @@ const BrowsePage = () => {
                 <div className="w-full h-full overflow-y-scroll no-scrollbar" key={index}>
                   {contentArray.data.map((contentData: ContentData, index: number) => (
                     <div key={index} className="w-full">
-                      {differentContent(contentData, index)}
+                      {differentContent(contentData)}
                     </div>
                   ))}
                 </div>

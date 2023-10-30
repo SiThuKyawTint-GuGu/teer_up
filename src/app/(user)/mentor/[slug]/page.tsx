@@ -4,10 +4,10 @@ import MentorProfile from "@/page-containers/mentor/MentorProfile";
 const Mentor = () => {
   return (
     <>
-      <div className="absolute  w-full left-0 top-0 z-[9999] flex flex-wrap">
-        <ContentDetailHeader pathname="/home" title="Mentor Detailπ" />
+      <ContentDetailHeader pathname="/home" title="Mentors Detail" />
+      <div className="pt-[48px]">
+        <MentorProfile />
       </div>
-      <MentorProfile />
     </>
   );
 };
