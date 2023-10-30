@@ -30,7 +30,7 @@ const UserContentDetail: React.FC<ContentlayoutProps> = () => {
         {contentData && (
           <div className="w-full h-full pt-[48px] pb-[100px]">
             {" "}
-            <div className="w-full mx-auto h-[50%] relative p-2">
+            <div className="w-full mx-auto h-[40vh] relative p-2">
               <div
                 className="relative w-full max-w-[400px] rounded-lg h-full"
                 style={{
