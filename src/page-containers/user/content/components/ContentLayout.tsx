@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/Button";
-import CardBox from "@/components/ui/Card";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
@@ -45,95 +44,97 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
 
   return (
     <Dialog open={openModal} onOpenChange={val => setOpenModal(val)}>
-      <div className="w-full h-[35vh] justify-start flex-col">
-        <div className="w-full mx-auto relative p-2">
-          <Link href={redir}>
-            <div
-              className="relative w-full max-w-[400px] h-[30vh]"
-              style={{
-                background: `url(${data.image_url}) center / cover`,
-              }}
-            >
-              {data.type !== "video" && (
-                <div className="absolute top-0 right-0 bg-white text-[14px] font-[600] px-[16px] py-[4px] rounded-bl-lg shadow-lg uppercase">
-                  {data.type}
-                </div>
-              )}
-            </div>
-          </Link>
-        </div>
-        <div className="w-full h-full bg-white">
-          <CardBox className="w-full h-full px-3">
-            <div className="flex flex-col justify-between w-full h-full">
-              <Link href={redir}>
-                <h1 className="font-[700] text-[24px]">{data.title}</h1>
-                {data.description && (
-                  <div className="w-full h-full">
-                    <div className="flex flex-col w-full">
-                      <Text>
-                        {data.description.slice(0, 100)}
-
-                        {data.description.length > 100 && (
-                          <Text as="span" className="text-primary">
-                            {"..."}See more
-                          </Text>
-                        )}
-                      </Text>
-                    </div>
+      <div className="w-full bg-white shadow-lg h-[90%] justify-start flex-col p-1">
+        <div className="h-full w-full flex flex-col">
+          <div className="w-full h-[70%]  mx-auto relative p-2">
+            <Link href={redir}>
+              <div
+                className="relative w-full max-w-[400px] rounded-lg h-full"
+                style={{
+                  background: `url(${data.image_url}) center / cover`,
+                }}
+              >
+                {data.type !== "video" && (
+                  <div className="absolute top-0 right-0 bg-white text-[14px] font-[600] px-[16px] py-[4px] rounded-bl-lg shadow-lg uppercase">
+                    {data.type}
                   </div>
                 )}
-              </Link>
-              <div>
-                <div className="mt-2 cursor-pointer  w-full flex justify-between flex-col">
-                  {data.type === "event" && <Button onClick={() => router.push(redir)}>Join Now</Button>}
-                  {data.type === "opportunity" && <Button onClick={() => router.push(redir)}>Apply Now</Button>}
-                  {data.type === "pathway" && <Button onClick={() => router.push(redir)}>Join Now</Button>}
-                  {data.type === "mentor" && <Button onClick={() => router.push(redir)}>Request Mentorship</Button>}
-                </div>
-                <div className="flex justify-between p-3 w-full">
-                  <div className="flex items-center flex-wrap gap-x-[10px]" onClick={likePost}>
-                    {data.is_liked ? (
-                      <Icons.likefill className="w-[20px] h-[20px] text-primary" />
-                    ) : (
-                      <Icons.like className="w-[20px] h-[20px]" />
-                    )}
-                    <div>
-                      {""}
-                      {data.likes}
-                    </div>
-                  </div>
-                  <DialogTrigger>
-                    <div className="flex items-center flex-wrap gap-x-[10px]">
-                      <Icons.comment className="w-[20px] h-[20px]" />
-                      <div>
-                        {""}
-                        {data.comments}
+              </div>
+            </Link>
+          </div>
+          <div className="w-full h-full">
+            <div className="w-full h-full px-3">
+              <div className="flex flex-col justify-between w-full h-full">
+                <Link href={redir}>
+                  <h1 className="font-[700] text-[24px]">{data.title}</h1>
+                  {data.description && (
+                    <div className="w-full h-full">
+                      <div className="flex flex-col w-full">
+                        <Text>
+                          {data.description.slice(0, 100)}
+
+                          {data.description.length > 100 && (
+                            <Text as="span" className="text-primary">
+                              {"..."}See more
+                            </Text>
+                          )}
+                        </Text>
                       </div>
                     </div>
-                  </DialogTrigger>
-                  <div className="flex items-center flex-wrap gap-x-[10px]" onClick={saveContent}>
-                    {data.is_saved ? (
-                      <Icons.savedFill className="w-[20px] h-[20px] text-yellow-400" />
-                    ) : (
-                      <Icons.saved className="w-[20px] h-[20px]" />
-                    )}
-
-                    <div>
-                      {""}
-                      {data.saves}
-                    </div>
+                  )}
+                </Link>
+                <div>
+                  <div className="mt-2 cursor-pointer  w-full flex justify-between flex-col">
+                    {data.type === "event" && <Button onClick={() => router.push(redir)}>Join Now</Button>}
+                    {data.type === "opportunity" && <Button onClick={() => router.push(redir)}>Apply Now</Button>}
+                    {data.type === "pathway" && <Button onClick={() => router.push(redir)}>Join Now</Button>}
+                    {data.type === "mentor" && <Button onClick={() => router.push(redir)}>Request Mentorship</Button>}
                   </div>
-                  <div className="flex items-center flex-wrap gap-x-1">
-                    <Icons.share className="w-[20px] h-[20px]" />
-                    <div>
-                      {""}
-                      Share
+                  <div className="flex justify-between p-3 w-full">
+                    <div className="flex items-center flex-wrap gap-x-[10px]" onClick={likePost}>
+                      {data.is_liked ? (
+                        <Icons.likefill className="w-[20px] h-[20px] text-primary" />
+                      ) : (
+                        <Icons.like className="w-[20px] h-[20px]" />
+                      )}
+                      <div>
+                        {""}
+                        {data.likes}
+                      </div>
+                    </div>
+                    <DialogTrigger>
+                      <div className="flex items-center flex-wrap gap-x-[10px]">
+                        <Icons.comment className="w-[20px] h-[20px]" />
+                        <div>
+                          {""}
+                          {data.comments}
+                        </div>
+                      </div>
+                    </DialogTrigger>
+                    <div className="flex items-center flex-wrap gap-x-[10px]" onClick={saveContent}>
+                      {data.is_saved ? (
+                        <Icons.savedFill className="w-[20px] h-[20px] text-yellow-400" />
+                      ) : (
+                        <Icons.saved className="w-[20px] h-[20px]" />
+                      )}
+
+                      <div>
+                        {""}
+                        {data.saves}
+                      </div>
+                    </div>
+                    <div className="flex items-center flex-wrap gap-x-1">
+                      <Icons.share className="w-[20px] h-[20px]" />
+                      <div>
+                        {""}
+                        Share
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </CardBox>
+          </div>
         </div>
       </div>
       {openModal && (

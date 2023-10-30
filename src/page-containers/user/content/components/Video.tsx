@@ -181,7 +181,6 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
             </div>
           </div>
         </CardBox>
-        <div className="py-4 text-center font-[300] w-full">Swipe up for more</div>
       </div>
       {openModal && (
         <DialogContent className="bg-white top-[initial] bottom-0 max-w-[400px] px-4 pt-8 pb-2 translate-y-0 rounded-10px-tl-tr">
