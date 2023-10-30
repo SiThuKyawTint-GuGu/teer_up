@@ -77,7 +77,7 @@ import {
 } from "react-icons/pi";
 import { RxCross2, RxMagnifyingGlass } from "react-icons/rx";
 import { SiAmazon, SiNetflix, SiTesla, SiVivawallet } from "react-icons/si";
-import LandingIcon from "./LandingIcon";
+import { LandingIcon, TeeupFooterIcon, TeeupIcon } from "./Icons";
 
 export const Icons = {
   loading: ({ ...props }) => {
@@ -102,6 +102,9 @@ export const Icons = {
       </svg>
     );
   },
+  landing: LandingIcon,
+  teeUp: TeeupIcon,
+  teeupFooter: TeeupFooterIcon,
   innovates: FaLightbulb,
   users: FiUsers,
   content: ArticleIcon,
@@ -182,7 +185,6 @@ export const Icons = {
   checkMark: IoCheckmark,
   downArrow: IoChevronDownOutline,
   closeCircle: IoCloseCircleSharp,
-  landing: LandingIcon,
   shareLink: IoLink,
   facebook: FaFacebook,
   telegram: FaTelegram,
