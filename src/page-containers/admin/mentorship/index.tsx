@@ -86,16 +86,19 @@ const MentorshipTable: React.FC = () => {
       : undefined,
     muiTableContainerProps: {
       sx: {
-        minHeight: "500px",
+        maxHeight: "calc(100vh - 200px)",
+        minHeight: "480px",
       },
     },
+    enableStickyFooter: true,
+    enableStickyHeader: true,
     manualFiltering: true,
     manualPagination: true,
     rowCount: mentorships?.total,
     initialState: {
       pagination: {
         pageSize: 10,
-        pageIndex: 1,
+        pageIndex: 0,
       },
     },
 

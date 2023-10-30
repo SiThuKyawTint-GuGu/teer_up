@@ -31,7 +31,6 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import * as Switch from "@radix-ui/react-switch";
-import { Editor } from "@tinymce/tinymce-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
@@ -135,8 +134,10 @@ const FormDetailConfigPage = ({ id }: Props) => {
   const handleAddInputConfig = async () => {
     if (!inputConfigName) {
       setError("Name is required!");
+      return;
     } else if (!inputConfigPlaceholder) {
       setError("Placeholder is required!");
+      return;
     } else {
       if (!updateInputConfg) {
         if (selectType === "radio" || selectType === "dropdown") {
@@ -307,24 +308,24 @@ const FormDetailConfigPage = ({ id }: Props) => {
           <p className="mt-2 text-red-700">{errors.name?.message}</p>
         </div>
 
-        <div className="mb-10">
+        {/* <div className="mb-10">
           <TextField
             // {...register("name")}
             label="Button Label"
             className="w-full"
             variant="outlined"
           />
-          {/* <p className="mt-2 text-red-700">{errors.title?.message}</p> */}
-        </div>
+          <p className="mt-2 text-red-700">{errors.title?.message}</p>
+        </div> */}
 
-        <div className="mb-10">
+        {/* <div className="mb-10">
           <p className="font-weight-600 mb-3">Header</p>
           <Editor onInit={(evt, editor) => (editorRef.current = editor)} />
         </div>
         <div className="mb-10">
           <p className="font-weight-600 mb-3">Fooder</p>
           <Editor onInit={(evt, editor) => (editorRef.current = editor)} />
-        </div>
+        </div> */}
         {/* Input Config */}
         {/* {error && <p className="text-red-600 mb-2">{error}</p>} */}
         <div className="flex justify-between">

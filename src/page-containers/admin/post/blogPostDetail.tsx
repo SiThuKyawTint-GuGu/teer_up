@@ -6,13 +6,25 @@ import "@/styles/checkbox.css";
 import "@/styles/radio.css";
 import "@/styles/tab.css";
 import { yupResolver } from "@hookform/resolvers/yup";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import SaveIcon from "@mui/icons-material/Save";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import {
+  Alert,
+  FormControl,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  SelectChangeEvent,
+} from "@mui/material";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import TextField from "@mui/material/TextField";
 import { Editor } from "@tinymce/tinymce-react";
+import copy from "copy-to-clipboard";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -31,8 +43,12 @@ const validationSchema = yup.object({
 
 const BlogPostDetail = ({ id }: Props) => {
   const router = useRouter();
-  const { trigger: postTrigger, isMutating: postMutating } = usePostBlog();
-  const { trigger: updateTrigger, isMutating: updateMutating } = useUpdateBlog(id);
+  const { trigger: postTrigger, isMutating: postMutating, error: postError } = usePostBlog();
+  const {
+    trigger: updateTrigger,
+    isMutating: updateMutating,
+    error: updateError,
+  } = useUpdateBlog(id);
   const { data: categories } = useGetBlogCategory<any>();
   const { data: formconfigs } = useGetFormConfig<any>();
 
@@ -48,6 +64,7 @@ const BlogPostDetail = ({ id }: Props) => {
   const [editorContent, setEditorContent] = useState<any>("");
   const [editor, setEditor] = useState<any>(null);
   const [contentError, setContentError] = useState<string>("");
+  const [blogLink, setBlogLink] = useState<string>("");
 
   const handleEditorInit = (evt: any, editor: any) => {
     setEditor(editor);
@@ -71,6 +88,7 @@ const BlogPostDetail = ({ id }: Props) => {
       setSelectFormValue(blog.data.formconfig_id);
       setIsSwitchOn(blog.data.is_public);
       setEditorContent(blog?.data.content);
+      setBlogLink(blog?.data.link);
       setValue("name", blog?.data.name);
       setValue("link", blog?.data.link);
       setValue("category", blog?.data.category_id);
@@ -119,9 +137,24 @@ const BlogPostDetail = ({ id }: Props) => {
             <TextField {...register("name")} label="Name" className="w-full" variant="outlined" />
             <p className="mt-2 text-red-700">{errors.name?.message}</p>
           </div>
-
           <div>
-            <TextField {...register("link")} label="Link" className="w-full" variant="outlined" />
+            <FormControl disabled={blog?.data ? true : false} className="w-full" variant="outlined">
+              <InputLabel htmlFor="link">Link</InputLabel>
+              <OutlinedInput
+                id="link"
+                {...register("link")}
+                endAdornment={
+                  <InputAdornment position="end">
+                    {blog?.data ? (
+                      <IconButton onClick={() => copy(blogLink)} edge="end">
+                        <ContentCopyIcon />
+                      </IconButton>
+                    ) : null}
+                  </InputAdornment>
+                }
+                label="Link"
+              />
+            </FormControl>
             <p className="mt-2 text-red-700">{errors.link?.message}</p>
           </div>
 
@@ -177,6 +210,18 @@ const BlogPostDetail = ({ id }: Props) => {
             <p className="font-weight-600 mb-3">Content</p>
             <Editor onInit={handleEditorInit} />
             {contentError && <p className="mt-2 text-red-700">{contentError}</p>}
+          </div>
+          <div>
+            {postError && (
+              <Alert severity="error" sx={{ width: "60%" }}>
+                {postError?.response.data.message}
+              </Alert>
+            )}
+            {updateError && (
+              <Alert severity="error" sx={{ width: "60%" }}>
+                {updateError?.response.data.message}
+              </Alert>
+            )}
           </div>
 
           {/* {blog?.data && inputForms?.data && (

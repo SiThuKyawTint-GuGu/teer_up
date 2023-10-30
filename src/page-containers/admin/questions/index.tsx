@@ -85,11 +85,13 @@ const Questions: React.FC = () => {
       : undefined,
     muiTableContainerProps: {
       sx: {
-        minHeight: "500px",
+        maxHeight: "calc(100vh - 200px)",
+        minHeight: "480px",
       },
     },
     positionActionsColumn: "last",
-
+    enableStickyFooter: true,
+    enableStickyHeader: true,
     state: {
       showSkeletons: isLoading ?? false,
     },
