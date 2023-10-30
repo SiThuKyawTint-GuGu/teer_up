@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 import { USER_ROLE } from "./shared/enums";
 import { User } from "./types/User";
 
-const protectedUserRoutes = ["/profile"];
+const protectedUserRoutes = ["/profile", "/saved"];
 
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl as NextURL;
@@ -38,7 +38,9 @@ export function middleware(req: NextRequest) {
     if (pathname.includes("/admin")) {
       return NextResponse.rewrite(new URL(adminLoginPath, req.url));
     }
-    return NextResponse.rewrite(new URL(loginPath, req.url));
+    if (protectedUserRoutes.includes(pathname)) {
+      return NextResponse.rewrite(new URL(loginPath, req.url));
+    }
   }
 
   // If the user is already logged in and has a token, redirect to the home page
@@ -53,10 +55,29 @@ export function middleware(req: NextRequest) {
     }
   } else {
     if (token) {
+      if (!pathname.startsWith("/admin")) {
+        return NextResponse.rewrite(new URL("/admin", req.url));
+      }
     }
   }
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/auth/:path*", "/profile/:path*"],
+  matcher: [
+    "/admin/:path*",
+    "/auth/:path*",
+    "/profile/:path*",
+    "/saved/:path*",
+    "/articles/:path*",
+    "/behaviour/:path*",
+    "/browse/:path*",
+    "/content/:path*",
+    "/home/:path*",
+    "/mentor/:path*",
+    "/opportunity/:path*",
+    "/blog/:path*",
+    "/mentorship/:path*",
+    "/pathway/:path*",
+    "/events/:path*",
+  ],
 };
