@@ -70,7 +70,13 @@ const ContentDetail = ({ id }: Props) => {
   const router = useRouter();
   const [searchMentor, setSearchMentor] = useState<string>("");
   const { data: content, isLoading } = useGetContentById<any>(id);
-  const { data: contents } = useGetContent<ParamsType, ContentType>();
+  const [searchContent, setSearchContent] = useState<string>("");
+  const [initialSearchContent, setInitialSearchContent] = useState<boolean>(false);
+  const { data: contents } = useGetContent<ParamsType, ContentType>({
+    page: 1,
+    pagesize: 10,
+    search: searchContent,
+  });
   const { data: keywords } = useGetKeywords<KeywordResponse>();
   const { data: departments } = useGetDepartment<DepartmentResponse>();
   const { data: industries } = useGetIndustry<IndustryResponse>();
@@ -154,7 +160,7 @@ const ContentDetail = ({ id }: Props) => {
         },
         {}
       );
-      console.log("tr.....", transformedData);
+      // console.log("tr.....", transformedData);
       setCheckboxValues(transformedData);
     }
     if (content?.data) {
@@ -184,11 +190,13 @@ const ContentDetail = ({ id }: Props) => {
         id: content?.data?.mentor?.id,
       };
       setSelelectedMentor(mentorData);
-      const pathwayContentData = content?.data.content_pathways.map((pathway: any) => ({
-        name: pathway?.title,
-        pathway_id: pathway?.id,
-      }));
-      setPathwayContent(pathwayContentData);
+      if (initialSearchContent === false) {
+        const pathwayContentData = content?.data.content_pathways.map((pathway: any) => ({
+          name: pathway?.title,
+          pathway_id: pathway?.id,
+        }));
+        setPathwayContent(pathwayContentData);
+      }
       const selectKeywords = content?.data.content_keywords.map((keyword: any) => ({
         label: keyword.keyword?.keyword,
         id: keyword?.keyword?.id,
@@ -209,13 +217,16 @@ const ContentDetail = ({ id }: Props) => {
       setValue("category", content?.data?.category?.id);
       setValue("type", content?.data.type);
     }
+
     if (contents?.data && contents?.data.length > 0) {
-      const updatedOptions = contents?.data.map((option: any) => ({
+      const filteredContents = contents?.data.filter((content: any) => content.type !== "pathway");
+      const updatedOptions = filteredContents.map((option: any) => ({
         label: option.title ? option.title : "",
         id: option.id,
       }));
       setContentOptions(updatedOptions);
     }
+
     if (keywords?.data) {
       const updatedOptions = keywords?.data.map((option: any) => ({
         label: option.keyword,
@@ -250,6 +261,7 @@ const ContentDetail = ({ id }: Props) => {
     oppoEditor,
     oppoEditorContent,
     contents?.data,
+    searchContent,
     content?.data,
     contentDimension?.data,
   ]);
@@ -492,6 +504,10 @@ const ContentDetail = ({ id }: Props) => {
       content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
     } else if (selectedValue === "pathway") {
       const pathways = pathwayContent.map((path: any) => ({ pathway_id: path.pathway_id }));
+      if (!pathways[0].pathway_id) {
+        setEventError("Please add pathway!");
+        return;
+      }
       const keywords = selectedKeywords.map(item => item.id);
       const departments = selectedDepartment.map(item => item.id);
       const industries = selectedIndustry.map(item => item.id);
@@ -592,6 +608,7 @@ const ContentDetail = ({ id }: Props) => {
   };
 
   const handleAddPathway = () => {
+    setInitialSearchContent(true);
     const updatedOptions = [...pathwayContent, { name: "", pathway_id: "" }];
     setPathwayContent(updatedOptions);
   };
@@ -615,9 +632,13 @@ const ContentDetail = ({ id }: Props) => {
     setPathwayContent(updatedFields);
   };
 
-  const handleInputChange = async (event: any, newInputValue: any) => {
-    // console.log(newInputValue);
+  const handleInputChange = (event: any, newInputValue: any, index: number) => {
+    const updatedPathwayContent = [...pathwayContent];
+    updatedPathwayContent[index] = { ...updatedPathwayContent[index], name: newInputValue };
+    setPathwayContent(updatedPathwayContent);
+    setSearchContent(newInputValue);
   };
+
   const handleInputMentorChange = async (event: any, newInputValue: any) => {
     setSearchMentor(newInputValue);
   };
@@ -981,11 +1002,13 @@ const ContentDetail = ({ id }: Props) => {
                     options={contentOptions || []}
                     sx={{ width: 300 }}
                     value={pathway.name}
-                    onInputChange={handleInputChange}
+                    // onInputChange={handleInputChange}
+                    onInputChange={(event, newInputValue) =>
+                      handleInputChange(event, newInputValue, index)
+                    }
                     onChange={(event, newValue) =>
                       handleSelectPathwayChange(event, newValue, index)
                     }
-                    // onChange={handleSelectPathwayChange}
                     renderInput={params => <TextField {...params} label="Contents" />}
                   />
                   <AiFillDelete
