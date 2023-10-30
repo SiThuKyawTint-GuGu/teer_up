@@ -76,7 +76,7 @@ const PersonalInfo: React.FC = () => {
                   <Icons.plus className="text-primary w-[23px] h-[23px]" />
                 </Link>
               </Flex>
-              <Box className="pb-[7px]">
+              <CardBox className="mb-[7px] rounded-none">
                 <Section className="bg-white" py="4" px="3">
                   <Flex justify="between" align="center" mb="4">
                     <Heading as="h6" size="4" align="left">
@@ -118,8 +118,8 @@ const PersonalInfo: React.FC = () => {
                     />
                   )}
                 </Section>
-              </Box>
-              <Box className="pb-[7px]">
+              </CardBox>
+              <CardBox className="mb-[7px] rounded-none">
                 <Section className="bg-white" py="4" px="3">
                   <Heading as="h6" size="4" align="left" mb="4">
                     Birthday
@@ -206,8 +206,8 @@ const PersonalInfo: React.FC = () => {
                     />
                   </Flex>
                 </Section>
-              </Box>
-              <Box className="pb-[7px]">
+              </CardBox>
+              <CardBox className="mb-[7px] rounded-none">
                 <Section className="bg-white" py="4" px="3">
                   <Heading as="h6" size="4" align="left" mb="4">
                     Email
@@ -230,14 +230,14 @@ const PersonalInfo: React.FC = () => {
                     )}
                   />
                 </Section>
-              </Box>
-              <Box className="pb-[7px]">
+              </CardBox>
+              <CardBox className="mb-[7px] rounded-none">
                 <Section py="4" px="3">
                   <Button type="submit" loading={isMutating} className="bg-primary w-full">
                     Save
                   </Button>
                 </Section>
-              </Box>
+              </CardBox>
             </Box>
           </Grid>
         </form>
