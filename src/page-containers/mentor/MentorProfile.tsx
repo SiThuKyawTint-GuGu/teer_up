@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/Button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form";
-import { Icons, Image } from "@/components/ui/Images";
+import { Image } from "@/components/ui/Images";
 import { InputTextArea } from "@/components/ui/Inputs";
 import { Text } from "@/components/ui/Typo/Text";
 import { useGetContentBySlug, useRequestMentorship } from "@/services/content";
@@ -42,18 +42,12 @@ const MentorProfile: React.FC = () => {
             <Box className="pb-[55px]">
               <Box className="pb-[7px]">
                 <Section p="0">
-                  {data.data?.profile_url ? (
-                    <div
-                      style={{
-                        background: `url(${data.data.mentor.cover_url}) center / cover`,
-                        height: "130px",
-                      }}
-                    />
-                  ) : (
-                    <Flex className="h-[130px] bg-[#D9D9D9]" justify="center" align="center">
-                      <Icons.profileCamera className="w-[24px] h-[24px]" />
-                    </Flex>
-                  )}
+                  <div
+                    style={{
+                      background: `url(${data?.data?.mentor?.cover_url}) center / cover`,
+                      height: "130px",
+                    }}
+                  />
                 </Section>
                 <Section className="bg-white pt-[70px]" pb="4" px="3" position="relative">
                   <div className="absolute -top-[36%]">

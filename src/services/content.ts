@@ -35,7 +35,11 @@ interface FileArgType {
 }
 export const useGetContentInfinite = <ParamsType>(params?: ParamsType): SWRInfiniteResponse<ContentType> => {
   const getKey = () => `/content?${routeFilter(params)}`;
-  return useSWRInfinite<ContentType>(getKey);
+  return useSWRInfinite<ContentType>(getKey, {
+    revalidateFirstPage: false,
+    revalidateAll: true,
+    parallel: true,
+  });
 };
 
 export const useGetContent = <ParamsType, ContentType>(params?: ParamsType): SWRResponse<ContentType, any> => {
