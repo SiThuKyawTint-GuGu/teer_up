@@ -153,6 +153,7 @@ const ContentDetail = ({ id }: Props) => {
         result[dimension_id] = { low, medium, high };
         return result;
       }, {});
+
       // console.log("tr.....", transformedData);
 
       setCheckboxValues(transformedData);
@@ -980,8 +981,12 @@ const ContentDetail = ({ id }: Props) => {
                     sx={{ width: 300 }}
                     value={pathway.name}
                     // onInputChange={handleInputChange}
-                    onInputChange={(event, newInputValue) => handleInputChange(event, newInputValue, index)}
-                    onChange={(event, newValue) => handleSelectPathwayChange(event, newValue, index)}
+                    onInputChange={(event, newInputValue) =>
+                      handleInputChange(event, newInputValue, index)
+                    }
+                    onChange={(event, newValue) =>
+                      handleSelectPathwayChange(event, newValue, index)
+                    }
                     renderInput={params => <TextField {...params} label="Contents" />}
                   />
                   <AiFillDelete
