@@ -44,12 +44,12 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
 
   return (
     <Dialog open={openModal} onOpenChange={val => setOpenModal(val)}>
-      <div className="w-full bg-white shadow-lg h-[90%] justify-start flex-col p-1">
+      <div className="w-full bg-white shadow-lg h-[90%] justify-start flex-col">
         <div className="h-full w-full flex flex-col">
-          <div className="w-full h-[70%]  mx-auto relative p-2">
+          <div className="w-full h-[70%]  mx-auto relative">
             <Link href={redir}>
               <div
-                className="relative w-full max-w-[400px] rounded-lg h-full"
+                className="relative w-full max-w-[400px] rounded-t-lg h-full"
                 style={{
                   background: `url(${data.image_url}) center / cover`,
                 }}
@@ -113,7 +113,7 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
                     </DialogTrigger>
                     <div className="flex items-center flex-wrap gap-x-[10px]" onClick={saveContent}>
                       {data.is_saved ? (
-                        <Icons.savedFill className="w-[20px] h-[20px] text-yellow-400" />
+                        <Icons.savedFill className="w-[20px] h-[20px] text-primary" />
                       ) : (
                         <Icons.saved className="w-[20px] h-[20px]" />
                       )}

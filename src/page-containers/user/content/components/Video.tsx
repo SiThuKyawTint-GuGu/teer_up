@@ -163,7 +163,7 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
           {/* </DialogTrigger> */}
           <div className="flex items-center flex-wrap gap-x-[10px]" onClick={saveContent}>
             {data.is_saved ? (
-              <Icons.savedFill className="w-[20px] h-[20px] text-yellow-400" />
+              <Icons.savedFill className="w-[20px] h-[20px] text-primary" />
             ) : (
               <Icons.saved className="w-[20px] h-[20px]" />
             )}

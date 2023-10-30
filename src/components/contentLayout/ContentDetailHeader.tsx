@@ -9,7 +9,7 @@ type ContentDetailHeaderProps = {
 };
 const ContentDetailHeader: React.FC<ContentDetailHeaderProps> = ({ pathname, title }) => {
   return (
-    <div className="flex justify-between py-2  bg-white fixed top-0 w-full max-w-[400px] mx-auto z-[9999]">
+    <div className="flex justify-between h-[48px] items-center  bg-white fixed top-0 w-full max-w-[400px] mx-auto z-[9999]">
       <Link href={pathname}>
         <Icons.back className="w-[20px] h-[20px]" />
       </Link>

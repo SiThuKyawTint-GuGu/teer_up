@@ -9,7 +9,6 @@ import { ContentData } from "@/types/Content";
 
 import { Grid } from "@radix-ui/themes";
 import dayjs from "dayjs";
-import Image from "next/image";
 import { useParams } from "next/navigation";
 import React, { useState } from "react";
 import CommentSection from "../../../../components/contentLayout/CommentSection";
@@ -25,18 +24,20 @@ const UserContentDetail: React.FC<ContentlayoutProps> = () => {
     <Dialog open={openModal} onOpenChange={val => setOpenModal(val)}>
       <Grid columns="1">
         {contentData && (
-          <div className="w-full h-full">
+          <div className="w-full h-full py-[48px]">
             {" "}
-            <div className="w-full mx-auto relative p-2">
-              <Image
-                src={contentData.data.image_url}
-                className="w-full h-[30%]"
-                width={358}
-                height={200}
-                alt={contentData.data.title}
-              />
-              <div className="absolute capitalize top-0 right-0 bg-white text-[14px] font-[600] px-[16px] py-[4px] rounded-bl-lg shadow-lg">
-                {contentData.data.type}
+            <div className="w-full mx-auto h-[50%] relative p-2">
+              <div
+                className="relative w-full max-w-[400px] rounded-lg h-full"
+                style={{
+                  background: `url(${contentData.data.image_url}) center / cover`,
+                }}
+              >
+                {contentData.type !== "video" && (
+                  <div className="absolute top-0 right-0 bg-white text-[14px] font-[600] px-[16px] py-[4px] rounded-bl-lg shadow-lg uppercase">
+                    {contentData.data.type}
+                  </div>
+                )}
               </div>
             </div>
             <div className="w-full px-[16px] bg-white">
@@ -53,6 +54,13 @@ const UserContentDetail: React.FC<ContentlayoutProps> = () => {
                     <div
                       dangerouslySetInnerHTML={{
                         __html: contentData.data.content_article.article_body,
+                      }}
+                    />
+                  )}
+                  {contentData.data.content_opportunity && (
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: contentData.data.content_opportunity.body,
                       }}
                     />
                   )}
@@ -77,7 +85,7 @@ const UserContentDetail: React.FC<ContentlayoutProps> = () => {
                 </div>
               </div>
             </div>
-            <div className="w-full">
+            <div className="w-full fixed bottom-0 max-w-[400px] px-2">
               <LikeCmtBar data={contentData.data} mutate={contentMutate} />
             </div>
           </div>

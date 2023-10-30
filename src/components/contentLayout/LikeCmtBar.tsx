@@ -50,7 +50,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
   };
   const onSubmit = async (data: any) => {};
   return (
-    <div className="bg-white flex py-5 items-center">
+    <div className="bg-white flex py-2 items-center">
       {data.type === "event" && (
         <Button size="sm" className="w-[166px]" onClick={() => setOpenModal(true)}>
           Join now
@@ -77,9 +77,10 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
             <div>{data.comments}</div>
           </div>
         </DialogTrigger>
+        git
         <div className="flex items-center flex-wrap  gap-x-[5px]" onClick={saveContent}>
           {data.is_saved ? (
-            <Icons.savedFill className="w-[20px] h-[20px] text-yellow-400" />
+            <Icons.savedFill className="w-[20px] h-[20px] text-primary" />
           ) : (
             <Icons.saved className="w-[20px] h-[20px]" />
           )}
