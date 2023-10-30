@@ -1,10 +1,5 @@
 "use client";
-import {
-  useCreateDepartment,
-  useDeleteDepartment,
-  useGetDepartment,
-  useUpdateDepartment,
-} from "@/services/department";
+import { useCreateDepartment, useDeleteDepartment, useGetDepartment, useUpdateDepartment } from "@/services/department";
 import { DepartmentResponse } from "@/types/Department";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -13,11 +8,7 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";
-import {
-  MaterialReactTable,
-  useMaterialReactTable,
-  type MRT_TableOptions,
-} from "material-react-table";
+import { MaterialReactTable, useMaterialReactTable, type MRT_TableOptions } from "material-react-table";
 import { useMemo, useState } from "react";
 
 const Department: React.FC = () => {
@@ -59,23 +50,20 @@ const Department: React.FC = () => {
         accessorKey: "created_at",
         header: "Created At",
         enableEditing: false,
-        Cell: ({ value }: any) => dayjs(value).format("YYYY-MM-DD"),
+        Cell: ({ value }: any) => dayjs(value).format("MMM D, YYYY h:mm A"),
       },
       {
         accessorKey: "updated_at",
         header: "Upated At",
         enableEditing: false,
-        Cell: ({ value }: any) => dayjs(value).format("YYYY-MM-DD"),
+        Cell: ({ value }: any) => dayjs(value).format("MMM D, YYYY h:mm A"),
       },
     ],
     [validationErrors]
   );
 
   //CREATE action
-  const handleCreateDepartment: MRT_TableOptions<any>["onCreatingRowSave"] = async ({
-    values,
-    table,
-  }) => {
+  const handleCreateDepartment: MRT_TableOptions<any>["onCreatingRowSave"] = async ({ values, table }) => {
     const { id, name } = values;
     const newValidationErrors = validatePreference(values);
     if (Object.values(newValidationErrors).some(error => error)) {
@@ -190,7 +178,10 @@ const Department: React.FC = () => {
           <Typography color={"error"} variant="h6" component="h2">
             Delete Confirm
           </Typography>
-          <Typography sx={{ mt: 2 }}>Are you sure you want to delete this department?</Typography>
+          <Typography sx={{ mt: 2 }}>
+            Are you sure you want to delete this department ID{" "}
+            <span className="text-red-700 font-semibold">[{id}]</span>?
+          </Typography>
           <div className="flex justify-between mt-4">
             <div></div>
             <div>
@@ -210,12 +201,7 @@ const Department: React.FC = () => {
               >
                 Cancel
               </Button>
-              <Button
-                onClick={handleDeleteDepartment}
-                color="error"
-                sx={{ textTransform: "none" }}
-                variant="contained"
-              >
+              <Button onClick={handleDeleteDepartment} color="error" sx={{ textTransform: "none" }} variant="contained">
                 Delete
               </Button>
             </div>

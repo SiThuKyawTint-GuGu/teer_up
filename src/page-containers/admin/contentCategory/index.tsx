@@ -12,22 +12,14 @@ import { Box, IconButton, Tooltip } from "@mui/material";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
-import {
-  MaterialReactTable,
-  useMaterialReactTable,
-  type MRT_TableOptions,
-} from "material-react-table";
+import { MaterialReactTable, useMaterialReactTable, type MRT_TableOptions } from "material-react-table";
 import { useMemo, useState } from "react";
 
 const CategoryTable: React.FC = () => {
   const [validationErrors, setValidationErrors] = useState<Record<string, string | undefined>>({});
   const [open, setOpen] = useState<boolean>(false);
   const [id, setId] = useState<string>("");
-  const {
-    data: contentCategories,
-    isLoading,
-    mutate,
-  } = useGetContentCategory<ContentCategoryResponse>();
+  const { data: contentCategories, isLoading, mutate } = useGetContentCategory<ContentCategoryResponse>();
   const { trigger: createTrigger } = useCreateContentCategory();
   const { trigger: updateTrigger } = useUpdateContentCategory();
   const { trigger: deleteTrigger } = useDeleteContentCategory();
@@ -61,10 +53,7 @@ const CategoryTable: React.FC = () => {
   );
 
   //CREATE action
-  const handleCreateCategory: MRT_TableOptions<any>["onCreatingRowSave"] = async ({
-    values,
-    table,
-  }) => {
+  const handleCreateCategory: MRT_TableOptions<any>["onCreatingRowSave"] = async ({ values, table }) => {
     const { id, name } = values;
     const newValidationErrors = validateUser(values);
     if (Object.values(newValidationErrors).some(error => error)) {
@@ -180,7 +169,8 @@ const CategoryTable: React.FC = () => {
             Delete Confirm
           </Typography>
           <Typography sx={{ mt: 2 }}>
-            Are you sure you want to delete this content category?
+            Are you sure you want to delete this content category ID{" "}
+            <span className="text-red-700 font-semibold">[{id}]</span>?
           </Typography>
           <div className="flex justify-between mt-4">
             <div></div>
@@ -201,12 +191,7 @@ const CategoryTable: React.FC = () => {
               >
                 Cancel
               </Button>
-              <Button
-                onClick={handleDelete}
-                color="error"
-                sx={{ textTransform: "none" }}
-                variant="contained"
-              >
+              <Button onClick={handleDelete} color="error" sx={{ textTransform: "none" }} variant="contained">
                 Delete
               </Button>
             </div>

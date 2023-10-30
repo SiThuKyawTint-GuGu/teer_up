@@ -12,17 +12,8 @@ export interface Menu {
 }
 
 export const menuList: Menu[] = [
-  // {
-  //   key: "/admin/innovates/projects" || "/admin/innovates/challenges",
-  //   icon: <Icons.innovates className="w-[20px] h-[20px]" />,
-  //   title: "Innovates",
-  //   child: [
-  //     { key: "/admin/innovates/projects", title: "Projects" },
-  //     { key: "/admin/innovates/challenges", title: "Challenges" },
-  //   ],
-  // },
   {
-    key: "/admin/contents/content" || "/admin/contents/category",
+    key: "/admin/contents",
     icon: <Icons.contents className="w-[20px] h-[20px]" />,
     title: "Contents",
     child: [
@@ -44,14 +35,8 @@ export const menuList: Menu[] = [
     title: "Form Config",
     child: [],
   },
-  // {
-  //   key: "/admin/users",
-  //   icon: <Icons.users className="w-[20px] h-[20px]" />,
-  //   title: "Users",
-  //   child: [],
-  // },
   {
-    key: "/admin/blogs/category" || "/admin/blogs/posts",
+    key: "/admin/blogs",
     icon: <Icons.blogs className="w-[20px] h-[20px]" />,
     title: "Blogs",
     child: [
@@ -68,11 +53,7 @@ export const menuList: Menu[] = [
     ],
   },
   {
-    key:
-      "/admin/configs/industry" ||
-      "/admin/configs/departments" ||
-      "/admin/configs/preferences" ||
-      "/admin/configs/keywords",
+    key: "/admin/configs",
     icon: <Icons.setting1 className="w-[20px] h-[20px]" />,
 
     title: "Configurations",
@@ -100,7 +81,7 @@ export const menuList: Menu[] = [
     ],
   },
   {
-    key: "/admin/setting/dimension" || "/admin/setting/questions",
+    key: "/admin/setting",
     icon: <Icons.setting1 className="w-[20px] h-[20px]" />,
     title: "Recommendation",
     child: [
@@ -123,7 +104,7 @@ export const menuList: Menu[] = [
     child: [],
   },
   {
-    key: "/admin/user-management",
+    key: "/admin/users",
     icon: <Icons.userManagement className="w-[20px] h-[20px]" />,
     title: "Users",
     child: [
@@ -139,49 +120,6 @@ export const menuList: Menu[] = [
       },
     ],
   },
-  // {
-  //   key: '/payments',
-  //   icon: <Icons.payments className="w-[20px] h-[20px]" />,
-  //   title: 'Payments',
-  //   child: [],
-  // },
-  // {
-  //   key: '/investment',
-  //   icon: <Icons.investment className="w-[20px] h-[20px]" />,
-  //   title: 'Investment',
-  //   child: [],
-  // },
-  // {
-  //   key: '/profile',
-  //   icon: <Icons.user className="w-[20px] h-[20px]" />,
-  //   title: 'Profile',
-  //   child: [],
-  // },
-  // {
-  //   key: '/support',
-  //   icon: <Icons.support className="w-[20px] h-[20px]" />,
-  //   title: 'Support',
-  //   child: [],
-  // },
-  // {
-  //   key: '/client',
-  //   icon: <PersonIcon />,
-  //   title: 'Clients',
-  //   child: [
-  //     {
-  //       icon: <TableIcon />,
-  //       title: 'Listing',
-  //     },
-  //     {
-  //       icon: <EnterIcon />,
-  //       title: 'Payment',
-  //     },
-  //     {
-  //       icon: <ImageIcon />,
-  //       title: 'Gallary',
-  //     },
-  //   ],
-  // },
 ];
 
 export const actionMenu: Menu[] = [

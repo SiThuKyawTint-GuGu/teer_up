@@ -4,13 +4,8 @@ import { USER_ROLE } from "@/shared/enums";
 import { UserResponse } from "@/types/User";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { Box, IconButton, Tooltip } from "@mui/material";
-import {
-  MaterialReactTable,
-  useMaterialReactTable,
-  type MRT_Row,
-  type MRT_TableOptions,
-} from "material-react-table";
+import { Box, Button, IconButton, Modal, Tooltip, Typography } from "@mui/material";
+import { MaterialReactTable, useMaterialReactTable, type MRT_TableOptions } from "material-react-table";
 import { useMemo, useState } from "react";
 import { type User } from "./makeData";
 
@@ -26,6 +21,9 @@ const AdminTable: React.FC = () => {
   const { trigger: updateTrigger } = useUpdateUser();
 
   const { trigger: deleteTrigger } = useDeleteUser();
+  const [open, setOpen] = useState<boolean>(false);
+  const [id, setId] = useState<string>("");
+
   const columns = useMemo(
     () => [
       {
@@ -89,10 +87,7 @@ const AdminTable: React.FC = () => {
   );
 
   //CREATE action
-  const handleCreateUser: MRT_TableOptions<User>["onCreatingRowSave"] = async ({
-    values,
-    table,
-  }) => {
+  const handleCreateUser: MRT_TableOptions<User>["onCreatingRowSave"] = async ({ values, table }) => {
     const newValidationErrors = validateUser(values);
     if (Object.values(newValidationErrors).some(error => error)) {
       setValidationErrors(newValidationErrors);
@@ -126,18 +121,22 @@ const AdminTable: React.FC = () => {
   };
 
   //DELETE action
-  const openDeleteConfirmModal = async (row: MRT_Row<any>) => {
-    const { id } = row;
-    if (window.confirm("Are you sure you want to delete this user?")) {
-      await deleteTrigger(
-        { id },
-        {
-          onSuccess: () => {
-            mutate();
-          },
-        }
-      );
-    }
+  // const openDeleteConfirmModal = async (row: MRT_Row<any>) => {
+  //   const { id } = row;
+  //   if (window.confirm("Are you sure you want to delete this user?")) {
+  //     await deleteTrigger(
+  //       { id },
+  //       {
+  //         onSuccess: () => {
+  //           mutate();
+  //         },
+  //       }
+  //     );
+  //   }
+  // };
+  const handleDelete = async () => {
+    setOpen(false);
+    await deleteTrigger({ id });
   };
 
   const table = useMaterialReactTable({
@@ -174,7 +173,13 @@ const AdminTable: React.FC = () => {
           </IconButton>
         </Tooltip>
         <Tooltip title="Delete">
-          <IconButton color="error" onClick={() => openDeleteConfirmModal(row)}>
+          <IconButton
+            color="error"
+            onClick={() => {
+              setId(row.id);
+              setOpen(true);
+            }}
+          >
             <DeleteIcon />
           </IconButton>
         </Tooltip>
@@ -182,7 +187,45 @@ const AdminTable: React.FC = () => {
     ),
   });
 
-  return <MaterialReactTable table={table} />;
+  return (
+    <>
+      <MaterialReactTable table={table} />
+      <Modal open={open} onClose={() => setOpen(false)}>
+        <Box sx={style}>
+          <Typography color={"error"} variant="h6" component="h2">
+            Delete Confirm
+          </Typography>
+          <Typography sx={{ mt: 2 }}>
+            Are you sure you want to delete this admin ID <span className="text-red-700 font-semibold">[{id}]</span>?
+          </Typography>
+          <div className="flex justify-between mt-4">
+            <div></div>
+            <div>
+              <Button
+                onClick={() => setOpen(false)}
+                sx={{
+                  textTransform: "none",
+                  marginRight: "10px",
+                  color: "white",
+                  background: "gray",
+                  ":hover": {
+                    color: "white",
+                    background: "gray",
+                  },
+                }}
+                variant="contained"
+              >
+                Cancel
+              </Button>
+              <Button onClick={handleDelete} color="error" sx={{ textTransform: "none" }} variant="contained">
+                Delete
+              </Button>
+            </div>
+          </div>
+        </Box>
+      </Modal>
+    </>
+  );
 };
 
 export default AdminTable;
@@ -201,3 +244,14 @@ function validateUser(user: User) {
     name: !validateRequired(user.name) ? "First Name is Required" : "",
   };
 }
+
+const style = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 4,
+};

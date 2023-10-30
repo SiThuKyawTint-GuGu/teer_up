@@ -1,10 +1,5 @@
 "use client";
-import {
-  useCreateDimension,
-  useDeleteDimension,
-  useGetDimension,
-  useUpdateDimension,
-} from "@/services/dimension";
+import { useCreateDimension, useDeleteDimension, useGetDimension, useUpdateDimension } from "@/services/dimension";
 import { IndustryResponse } from "@/types/Industry";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -12,11 +7,7 @@ import { Box, IconButton, Tooltip } from "@mui/material";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
-import {
-  MaterialReactTable,
-  useMaterialReactTable,
-  type MRT_TableOptions,
-} from "material-react-table";
+import { MaterialReactTable, useMaterialReactTable, type MRT_TableOptions } from "material-react-table";
 import { useMemo, useState } from "react";
 
 const Dimension: React.FC = () => {
@@ -35,6 +26,7 @@ const Dimension: React.FC = () => {
         accessorKey: "id",
         header: "ID",
         enableEditing: false,
+        size: 3,
       },
 
       {
@@ -59,10 +51,7 @@ const Dimension: React.FC = () => {
   );
 
   //CREATE action
-  const handleCreateIndustry: MRT_TableOptions<any>["onCreatingRowSave"] = async ({
-    values,
-    table,
-  }) => {
+  const handleCreateIndustry: MRT_TableOptions<any>["onCreatingRowSave"] = async ({ values, table }) => {
     const { id, name } = values;
     const newValidationErrors = validatePreference(values);
     if (Object.values(newValidationErrors).some(error => error)) {
@@ -177,7 +166,10 @@ const Dimension: React.FC = () => {
           <Typography color={"error"} variant="h6" component="h2">
             Delete Confirm
           </Typography>
-          <Typography sx={{ mt: 2 }}>Are you sure you want to delete this dimension?</Typography>
+          <Typography sx={{ mt: 2 }}>
+            Are you sure you want to delete this dimension ID <span className="text-red-700 font-semibold">[{id}]</span>
+            ?
+          </Typography>
           <div className="flex justify-between mt-4">
             <div></div>
             <div>
@@ -197,12 +189,7 @@ const Dimension: React.FC = () => {
               >
                 Cancel
               </Button>
-              <Button
-                onClick={handleDeleteIndustry}
-                color="error"
-                sx={{ textTransform: "none" }}
-                variant="contained"
-              >
+              <Button onClick={handleDeleteIndustry} color="error" sx={{ textTransform: "none" }} variant="contained">
                 Delete
               </Button>
             </div>

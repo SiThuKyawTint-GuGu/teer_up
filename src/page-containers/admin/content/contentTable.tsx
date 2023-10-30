@@ -9,13 +9,9 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";
-import {
-  MaterialReactTable,
-  MRT_PaginationState,
-  useMaterialReactTable,
-} from "material-react-table";
+import { MaterialReactTable, MRT_PaginationState, useMaterialReactTable } from "material-react-table";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const ContentTable: React.FC = () => {
   const [pagination, setPagination] = useState<MRT_PaginationState>({
@@ -31,9 +27,14 @@ const ContentTable: React.FC = () => {
     name: globalFilter || "",
   });
   // console.log(contents);
+  const [contentData, setContentData] = useState<any>();
   const { trigger: deleteTrigger } = useDeleteContent();
   const { windowHeight } = useWindowSize();
   const height = windowHeight - 100 + "px";
+
+  useEffect(() => {
+    setContentData(contents?.data);
+  }, [contents?.data]);
 
   const columns = useMemo(
     () => [
@@ -48,17 +49,18 @@ const ContentTable: React.FC = () => {
         header: "Title",
         enableEditing: false,
       },
-      {
-        accessorKey: "description",
-        header: "Description",
-        enableEditing: false,
-        Cell: ({ row }: any) => <div>{truncateText(row.original.description, 20)}</div>,
-      },
+      // {
+      //   accessorKey: "description",
+      //   header: "Description",
+      //   enableEditing: false,
+      //   Cell: ({ row }: any) => <div>{truncateText(row.original.description, 20)}</div>,
+      // },
       {
         accessorKey: "type",
         header: "Type",
         enableEditing: false,
         size: 3,
+        Cell: ({ row }: any) => <p>{row?.original?.type?.charAt(0).toUpperCase() + row?.original?.type?.slice(1)}</p>,
       },
       // {
       //   accessorKey: "keywords",
@@ -71,21 +73,23 @@ const ContentTable: React.FC = () => {
         header: "Created At",
         enableEditing: false,
         size: 3,
-        Cell: ({ value }: any) => dayjs(value).format("YYYY-MM-DD"),
+        Cell: ({ value }: any) => dayjs(value).format("MMM D, YYYY h:mm A"),
       },
     ],
     []
   );
 
   //DELETE action
-  const handleDelete = async () => {
+  const handleDeleteConfirm = async () => {
     setOpen(false);
+    const data = contentData.filter((content: any) => content.id !== id);
+    setContentData(data);
     await deleteTrigger({ id });
   };
 
   const table = useMaterialReactTable({
     columns,
-    data: (contents?.data as any) || [],
+    data: (contentData as any) || [],
     createDisplayMode: "row",
     editDisplayMode: "row",
     enableEditing: true,
@@ -98,7 +102,7 @@ const ContentTable: React.FC = () => {
       : undefined,
     muiTableContainerProps: {
       sx: {
-        maxHeight: height,
+        maxHeight: "calc(100vh - 200px)",
       },
     },
     positionActionsColumn: "last",
@@ -143,11 +147,7 @@ const ContentTable: React.FC = () => {
       </Box>
     ),
     renderTopToolbarCustomActions: ({ table }) => (
-      <Button
-        variant="contained"
-        color="error"
-        sx={{ background: "#DA291C", textTransform: "none" }}
-      >
+      <Button variant="contained" color="error" sx={{ background: "#DA291C", textTransform: "none" }}>
         <Link href={"/admin/contents/content/0"}>Create New Content</Link>
       </Button>
     ),
@@ -161,7 +161,9 @@ const ContentTable: React.FC = () => {
           <Typography color={"error"} variant="h6" component="h2">
             Delete Confirm
           </Typography>
-          <Typography sx={{ mt: 2 }}>Are you sure you want to delete this content?</Typography>
+          <Typography sx={{ mt: 2 }}>
+            Are you sure you want to delete this content ID <span className="text-red-700 font-semibold">[{id}]</span>?
+          </Typography>
           <div className="flex justify-between mt-4">
             <div></div>
             <div>
@@ -181,12 +183,7 @@ const ContentTable: React.FC = () => {
               >
                 Cancel
               </Button>
-              <Button
-                onClick={handleDelete}
-                color="error"
-                sx={{ textTransform: "none" }}
-                variant="contained"
-              >
+              <Button onClick={handleDeleteConfirm} color="error" sx={{ textTransform: "none" }} variant="contained">
                 Delete
               </Button>
             </div>
@@ -209,13 +206,13 @@ const style = {
   p: 4,
 };
 
-function truncateText(text: string, maxWords: number) {
-  const words = text?.split(" ");
+// function truncateText(text: string, maxWords: number) {
+//   const words = text?.split(" ");
 
-  if (words?.length > maxWords) {
-    const truncatedText = words?.slice(0, maxWords).join(" ");
-    return `${truncatedText}...`;
-  } else {
-    return text;
-  }
-}
+//   if (words?.length > maxWords) {
+//     const truncatedText = words?.slice(0, maxWords).join(" ");
+//     return `${truncatedText}...`;
+//   } else {
+//     return text;
+//   }
+// }

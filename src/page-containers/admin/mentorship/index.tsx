@@ -1,11 +1,7 @@
 "use client";
 import { ParamsType, useGetMentorship } from "@/services/mentorship";
 import dayjs from "dayjs";
-import {
-  MaterialReactTable,
-  MRT_PaginationState,
-  useMaterialReactTable,
-} from "material-react-table";
+import { MaterialReactTable, MRT_PaginationState, useMaterialReactTable } from "material-react-table";
 import { useMemo, useState } from "react";
 
 const MentorshipTable: React.FC = () => {
@@ -20,7 +16,7 @@ const MentorshipTable: React.FC = () => {
     pagesize: pagination.pageSize,
     search: globalFilter || "",
   });
-  console.log("mentorships...", mentorships);
+  // console.log("mentorships...", mentorships);
 
   const columns = useMemo(
     () => [
@@ -61,14 +57,14 @@ const MentorshipTable: React.FC = () => {
         header: "Created At",
         enableEditing: false,
         size: 3,
-        Cell: ({ value }: any) => dayjs(value).format("YYYY-MM-DD"),
+        Cell: ({ value }: any) => dayjs(value).format("MMM D, YYYY h:mm A"),
       },
       {
         accessorKey: "updated_at",
         header: "Upated At",
         enableEditing: false,
         size: 3,
-        Cell: ({ value }: any) => dayjs(value).format("YYYY-MM-DD"),
+        Cell: ({ value }: any) => dayjs(value).format("MMM D, YYYY h:mm A"),
       },
     ],
     []

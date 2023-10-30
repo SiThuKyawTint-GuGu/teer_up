@@ -22,7 +22,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ data }) => {
             <Text className="text-[28px] font-[700]  text-center mb-5" as="div">
               {data.name}
             </Text>
-            {option && (
+            {/* {option && (
               <div className="text-center w-full">
                 <div
                   dangerouslySetInnerHTML={{
@@ -30,7 +30,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ data }) => {
                   }}
                 />
               </div>
-            )}
+            )} */}
             <div className="w-full cursor-pointer  flex flex-col flex-wrap gap-y-10 justify-center h-full items-center">
               {data.options &&
                 data.options.length &&
@@ -63,9 +63,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ data }) => {
                 ))}
             </div>
           </div>
-          <div className="text-center w-full pb-3">
-            Tips: Choose the answer that best describes you currently.
-          </div>
+          <div className="text-center w-full pb-3">Tips: Choose the answer that best describes you currently.</div>
         </CardBox>
         <div className="py-4 text-center font-[300] w-full">Swipe up for more</div>
       </div>

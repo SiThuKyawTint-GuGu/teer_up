@@ -66,7 +66,7 @@ const Login: React.FC = () => {
                   <FormItem>
                     <FormControl>
                       <InputText
-                        className="border-2 border-primary"
+                        className="bg-white shadow-md"
                         placeholder="Enter your email address"
                         type="text"
                         {...field}

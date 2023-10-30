@@ -1,9 +1,10 @@
 "use client";
 import { useLikeContent, useSaveContent } from "@/services/content";
 import { ContentData } from "@/types/Content";
-import { DialogTrigger } from "@radix-ui/react-dialog";
+
 import React from "react";
 import { Button } from "../ui/Button";
+import { DialogTrigger } from "../ui/Dialog";
 import { Icons } from "../ui/Images";
 
 type Props = {
