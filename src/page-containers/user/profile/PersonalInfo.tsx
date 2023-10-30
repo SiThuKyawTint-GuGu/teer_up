@@ -34,7 +34,7 @@ const PersonalInfo: React.FC = () => {
   const router = useRouter();
   const { data: profileData } = useGetUserById<UserProfileResponse>(id as string);
   const { data: genders } = useGetGenders<Gender[]>();
-  const { trigger } = useUpdatePersonalInfo();
+  const { trigger, isMutating } = useUpdatePersonalInfo();
   const userProfile = profileData?.data;
   const defaultChecked = userProfile?.personal_info?.gender?.id.toString() || "1";
 
@@ -62,10 +62,7 @@ const PersonalInfo: React.FC = () => {
   return (
     <>
       <Form {...form}>
-        <form
-          className="mx-auto flex flex-col justify-center gap-y-3 w-full"
-          onSubmit={form.handleSubmit(submit)}
-        >
+        <form className="mx-auto flex flex-col justify-center gap-y-3 w-full" onSubmit={form.handleSubmit(submit)}>
           <Grid columns="1">
             <Box>
               <Flex justify="between" align="center" className="bg-white" p="3">
@@ -79,7 +76,7 @@ const PersonalInfo: React.FC = () => {
                   <Icons.plus className="text-primary w-[23px] h-[23px]" />
                 </Link>
               </Flex>
-              <Box className="pb-[7px]">
+              <CardBox className="mb-[7px] rounded-none">
                 <Section className="bg-white" py="4" px="3">
                   <Flex justify="between" align="center" mb="4">
                     <Heading as="h6" size="4" align="left">
@@ -104,8 +101,7 @@ const PersonalInfo: React.FC = () => {
                                     key={key}
                                     className={cn(
                                       "block pb-[10px]",
-                                      key !== (genders ? genders.length - 1 : -1) &&
-                                        "border-b border-b-[#BDC7D5]"
+                                      key !== (genders ? genders.length - 1 : -1) && "border-b border-b-[#BDC7D5]"
                                     )}
                                   >
                                     <Flex className="capitalize" justify="between" align="center">
@@ -122,8 +118,8 @@ const PersonalInfo: React.FC = () => {
                     />
                   )}
                 </Section>
-              </Box>
-              <Box className="pb-[7px]">
+              </CardBox>
+              <CardBox className="mb-[7px] rounded-none">
                 <Section className="bg-white" py="4" px="3">
                   <Heading as="h6" size="4" align="left" mb="4">
                     Birthday
@@ -210,8 +206,8 @@ const PersonalInfo: React.FC = () => {
                     />
                   </Flex>
                 </Section>
-              </Box>
-              <Box className="pb-[7px]">
+              </CardBox>
+              <CardBox className="mb-[7px] rounded-none">
                 <Section className="bg-white" py="4" px="3">
                   <Heading as="h6" size="4" align="left" mb="4">
                     Email
@@ -234,14 +230,14 @@ const PersonalInfo: React.FC = () => {
                     )}
                   />
                 </Section>
-              </Box>
-              <Box className="pb-[7px]">
+              </CardBox>
+              <CardBox className="mb-[7px] rounded-none">
                 <Section py="4" px="3">
-                  <Button type="submit" className="bg-primary w-full">
+                  <Button type="submit" loading={isMutating} className="bg-primary w-full">
                     Save
                   </Button>
                 </Section>
-              </Box>
+              </CardBox>
             </Box>
           </Grid>
         </form>

@@ -1,10 +1,5 @@
 "use client";
-import {
-  useCreateDepartment,
-  useDeleteDepartment,
-  useGetDepartment,
-  useUpdateDepartment,
-} from "@/services/department";
+import { useCreateDepartment, useDeleteDepartment, useGetDepartment, useUpdateDepartment } from "@/services/department";
 import { DepartmentResponse } from "@/types/Department";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -13,11 +8,7 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";
-import {
-  MaterialReactTable,
-  useMaterialReactTable,
-  type MRT_TableOptions,
-} from "material-react-table";
+import { MaterialReactTable, useMaterialReactTable, type MRT_TableOptions } from "material-react-table";
 import { useMemo, useState } from "react";
 
 const Department: React.FC = () => {
@@ -72,10 +63,7 @@ const Department: React.FC = () => {
   );
 
   //CREATE action
-  const handleCreateDepartment: MRT_TableOptions<any>["onCreatingRowSave"] = async ({
-    values,
-    table,
-  }) => {
+  const handleCreateDepartment: MRT_TableOptions<any>["onCreatingRowSave"] = async ({ values, table }) => {
     const { id, name } = values;
     const newValidationErrors = validatePreference(values);
     if (Object.values(newValidationErrors).some(error => error)) {
@@ -216,12 +204,7 @@ const Department: React.FC = () => {
               >
                 Cancel
               </Button>
-              <Button
-                onClick={handleDeleteDepartment}
-                color="error"
-                sx={{ textTransform: "none" }}
-                variant="contained"
-              >
+              <Button onClick={handleDeleteDepartment} color="error" sx={{ textTransform: "none" }} variant="contained">
                 Delete
               </Button>
             </div>

@@ -84,11 +84,7 @@ const FormConfigTable: React.FC = () => {
       </Box>
     ),
     renderTopToolbarCustomActions: ({ table }) => (
-      <Button
-        variant="contained"
-        color="error"
-        sx={{ background: "#DA291C", textTransform: "none" }}
-      >
+      <Button variant="contained" color="error" sx={{ background: "#DA291C", textTransform: "none" }}>
         <Link href={"/admin/form/0"}>Create New Form</Link>
       </Button>
     ),
@@ -125,12 +121,7 @@ const FormConfigTable: React.FC = () => {
               >
                 Cancel
               </Button>
-              <Button
-                onClick={handleDelete}
-                color="error"
-                sx={{ textTransform: "none" }}
-                variant="contained"
-              >
+              <Button onClick={handleDelete} color="error" sx={{ textTransform: "none" }} variant="contained">
                 Delete
               </Button>
             </div>

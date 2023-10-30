@@ -42,9 +42,7 @@ const Questions: React.FC = () => {
         header: "Type",
         enableEditing: false,
         size: 2,
-        Cell: ({ row }: any) => (
-          <p>{row?.original?.type?.charAt(0).toUpperCase() + row?.original?.type?.slice(1)}</p>
-        ),
+        Cell: ({ row }: any) => <p>{row?.original?.type?.charAt(0).toUpperCase() + row?.original?.type?.slice(1)}</p>,
       },
       {
         accessorKey: "created_at",
@@ -120,11 +118,7 @@ const Questions: React.FC = () => {
       </Box>
     ),
     renderTopToolbarCustomActions: ({ table }) => (
-      <Button
-        variant="contained"
-        color="error"
-        sx={{ background: "#DA291C", textTransform: "none" }}
-      >
+      <Button variant="contained" color="error" sx={{ background: "#DA291C", textTransform: "none" }}>
         <Link href={"/admin/setting/questions/0"}>Create New Question</Link>
       </Button>
     ),
@@ -139,8 +133,7 @@ const Questions: React.FC = () => {
             Delete Confirm
           </Typography>
           <Typography sx={{ mt: 2 }}>
-            Are you sure you want to delete this question ID{" "}
-            <span className="text-red-700 font-semibold">[{id}]</span>?
+            Are you sure you want to delete this question ID <span className="text-red-700 font-semibold">[{id}]</span>?
           </Typography>
           <div className="flex justify-between mt-4">
             <div></div>
@@ -161,12 +154,7 @@ const Questions: React.FC = () => {
               >
                 Cancel
               </Button>
-              <Button
-                onClick={handleDelete}
-                color="error"
-                sx={{ textTransform: "none" }}
-                variant="contained"
-              >
+              <Button onClick={handleDelete} color="error" sx={{ textTransform: "none" }} variant="contained">
                 Delete
               </Button>
             </div>

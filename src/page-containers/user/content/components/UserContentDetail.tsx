@@ -1,5 +1,6 @@
 "use client";
 
+import ContentDetailHeader from "@/components/contentLayout/ContentDetailHeader";
 import LikeCmtBar from "@/components/contentLayout/LikeCmtBar";
 import { Dialog, DialogContent } from "@/components/ui/Dialog";
 import { Icons } from "@/components/ui/Images";
@@ -9,7 +10,6 @@ import { ContentData } from "@/types/Content";
 
 import { Grid } from "@radix-ui/themes";
 import dayjs from "dayjs";
-import Image from "next/image";
 import { useParams } from "next/navigation";
 import React, { useState } from "react";
 import CommentSection from "../../../../components/contentLayout/CommentSection";
@@ -23,27 +23,31 @@ const UserContentDetail: React.FC<ContentlayoutProps> = () => {
 
   return (
     <Dialog open={openModal} onOpenChange={val => setOpenModal(val)}>
+      <div className="fixed max-w-[400px]  w-full  top-0 z-[9999] mx-auto flex flex-wrap">
+        <ContentDetailHeader pathname="/home" title="Detail Page" />
+      </div>
       <Grid columns="1">
         {contentData && (
-          <div className="w-full h-full">
+          <div className="w-full h-full pt-[48px] pb-[100px]">
             {" "}
-            <div className="w-full mx-auto relative p-2">
-              <Image
-                src={contentData.data.image_url}
-                className="w-full h-[30%]"
-                width={358}
-                height={200}
-                alt={contentData.data.title}
-              />
-              <div className="absolute capitalize top-0 right-0 bg-white text-[14px] font-[600] px-[16px] py-[4px] rounded-bl-lg shadow-lg">
-                {contentData.data.type}
+            <div className="w-full mx-auto h-[40vh] relative p-2">
+              <div
+                className="relative w-full max-w-[400px] rounded-lg h-full"
+                style={{
+                  background: `url(${contentData.data.image_url}) center / cover`,
+                }}
+              >
+                {contentData.type !== "video" && (
+                  <div className="absolute top-0 right-0 bg-white text-[14px] font-[600] px-[16px] py-[4px] rounded-bl-lg shadow-lg uppercase">
+                    {contentData.data.type}
+                  </div>
+                )}
               </div>
             </div>
-            <div className="w-full px-[16px] bg-white">
-              <div>
+            <div className="w-full h-full px-[16px] bg-white">
+              <div className="w-full h-full">
                 <h1 className="font-[700] text-[24px]">{contentData.data.title}</h1>
-
-                <div className="h-full min-h-[50vh] flex flex-col flex-wrap gap-y-3">
+                <div className="h-full min-h-[50%] flex flex-col flex-wrap gap-y-3">
                   <div
                     dangerouslySetInnerHTML={{
                       __html: contentData.data.description,
@@ -53,6 +57,13 @@ const UserContentDetail: React.FC<ContentlayoutProps> = () => {
                     <div
                       dangerouslySetInnerHTML={{
                         __html: contentData.data.content_article.article_body,
+                      }}
+                    />
+                  )}
+                  {contentData.data.content_opportunity && (
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: contentData.data.content_opportunity.body,
                       }}
                     />
                   )}
@@ -77,7 +88,7 @@ const UserContentDetail: React.FC<ContentlayoutProps> = () => {
                 </div>
               </div>
             </div>
-            <div className="w-full">
+            <div className="w-full fixed bottom-0 max-w-[400px] px-2">
               <LikeCmtBar data={contentData.data} mutate={contentMutate} />
             </div>
           </div>

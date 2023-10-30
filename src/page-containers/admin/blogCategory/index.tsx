@@ -10,20 +10,12 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { Box, IconButton, Modal, Tooltip, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
-import {
-  MaterialReactTable,
-  useMaterialReactTable,
-  type MRT_TableOptions,
-} from "material-react-table";
+import { MaterialReactTable, useMaterialReactTable, type MRT_TableOptions } from "material-react-table";
 import { useMemo, useState } from "react";
 
 const BlogCategory: React.FC = () => {
   const [validationErrors, setValidationErrors] = useState<Record<string, string | undefined>>({});
-  const {
-    data: contentCategories,
-    isLoading,
-    mutate,
-  } = useGetBlogCategory<ContentCategoryResponse>();
+  const { data: contentCategories, isLoading, mutate } = useGetBlogCategory<ContentCategoryResponse>();
   const [open, setOpen] = useState<boolean>(false);
   const [id, setId] = useState<string>("");
   const { trigger: createTrigger } = usePostBlogCategory();
@@ -59,10 +51,7 @@ const BlogCategory: React.FC = () => {
   );
 
   //CREATE action
-  const handleCreateCategory: MRT_TableOptions<any>["onCreatingRowSave"] = async ({
-    values,
-    table,
-  }) => {
+  const handleCreateCategory: MRT_TableOptions<any>["onCreatingRowSave"] = async ({ values, table }) => {
     const { id, name } = values;
     const newValidationErrors = validateUser(values);
     if (Object.values(newValidationErrors).some(error => error)) {
@@ -181,8 +170,7 @@ const BlogCategory: React.FC = () => {
             Delete Confirm
           </Typography>
           <Typography sx={{ mt: 2 }}>
-            Are you sure you want to delete this category ID{" "}
-            <span className="text-red-700 font-semibold">[{id}]</span>?
+            Are you sure you want to delete this category ID <span className="text-red-700 font-semibold">[{id}]</span>?
           </Typography>
           <div className="flex justify-between mt-4">
             <div></div>
@@ -203,12 +191,7 @@ const BlogCategory: React.FC = () => {
               >
                 Cancel
               </Button>
-              <Button
-                onClick={handleDelete}
-                color="error"
-                sx={{ textTransform: "none" }}
-                variant="contained"
-              >
+              <Button onClick={handleDelete} color="error" sx={{ textTransform: "none" }} variant="contained">
                 Delete
               </Button>
             </div>

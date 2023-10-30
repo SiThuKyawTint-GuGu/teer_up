@@ -76,7 +76,7 @@ const SavedList: React.FC = () => {
               </Button>
             </DialogTrigger>
           </Flex>
-          <Box className="pb-[7px] bg-[#F8F9FB]">
+          <Box className="pb-[7px]">
             <Section className="" py="4" px="3">
               {savedContents?.data?.length ? (
                 savedContents?.data?.map((each, key) => (
@@ -85,11 +85,7 @@ const SavedList: React.FC = () => {
                       <CardBox className="p-[8px]">
                         <Flex justify="start" align="start" gap="2">
                           <BGImage width={128} height={100} url={each?.content?.image_url} />
-                          <Flex
-                            className="text-[#373A36] space-y-1 w-3/4"
-                            direction="column"
-                            wrap="wrap"
-                          >
+                          <Flex className="text-[#373A36] space-y-1 w-3/4" direction="column" wrap="wrap">
                             <Text>{each?.content?.title}</Text>
                             <Text size="2" weight="light">
                               <Text as="span" className="capitalize">
@@ -124,7 +120,7 @@ const SavedList: React.FC = () => {
             >
               <DialogClose className="w-full">
                 <Flex justify="between" align="center" gap="2">
-                  <Text as="label" color="" weight="bold" size="3">
+                  <Text as="label" weight="bold" size="3">
                     {each.value}
                   </Text>
                   <Icons.check />

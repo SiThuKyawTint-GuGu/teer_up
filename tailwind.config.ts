@@ -23,6 +23,7 @@ const config: Config = {
       },
       boxShadow: {
         theme: "0px 6px 35px 5px rgba(0, 0, 0, 0.2)",
+        input: "0px 26px 30px 0px rgba(0, 0, 0, 0.05)",
       },
       borderRadius: {
         "10px-tl-tr": "10px 10px 0 0",

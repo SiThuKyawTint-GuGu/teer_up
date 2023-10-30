@@ -1,14 +1,6 @@
 "use client";
-import {
-  useGetFormConfigById,
-  usePostFormConfig,
-  useUpdateFormConfig,
-} from "@/services/formConfig";
-import {
-  useGetInputConfig,
-  usePostInputConfig,
-  useUpdateInputConfig,
-} from "@/services/inputConfig";
+import { useGetFormConfigById, usePostFormConfig, useUpdateFormConfig } from "@/services/formConfig";
+import { useGetInputConfig, usePostInputConfig, useUpdateInputConfig } from "@/services/inputConfig";
 import "@/styles/switch.css";
 import "@/styles/tab.css";
 import { InputConfigResponse } from "@/types/InputConfig";
@@ -212,17 +204,13 @@ const FormDetailConfigPage = ({ id }: Props) => {
   const handleOptionChange = (e: any, optionValue: string) => {
     const { name, value } = e.target;
     setOptions(prevOptions =>
-      prevOptions.map(option =>
-        option.value === optionValue ? { ...option, [name]: value } : option
-      )
+      prevOptions.map(option => (option.value === optionValue ? { ...option, [name]: value } : option))
     );
   };
 
   const handleFieldChange = (index: number, fieldName: string, value: string) => {
     const updatedFields = editFormFields.map((field, i) =>
-      i === index
-        ? { ...field, input_config: { ...field.input_config, [fieldName]: value } }
-        : field
+      i === index ? { ...field, input_config: { ...field.input_config, [fieldName]: value } } : field
     );
     setEditFormFields(updatedFields);
   };
@@ -249,9 +237,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
   };
 
   const handleSwitchChange = (index: number, isChecked: boolean) => {
-    const updatedFields = editFormFields.map((field, i) =>
-      i === index ? { ...field, required: isChecked } : field
-    );
+    const updatedFields = editFormFields.map((field, i) => (i === index ? { ...field, required: isChecked } : field));
     setEditFormFields(updatedFields);
   };
 
@@ -341,10 +327,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
                     field.type === "email" ||
                     field.type === "phone" ||
                     field.type === "number") && (
-                    <div
-                      key={index}
-                      className="flex flex-col border border-gray-300 p-5 m-3 rounded-md"
-                    >
+                    <div key={index} className="flex flex-col border border-gray-300 p-5 m-3 rounded-md">
                       <p className="font-weight-500 text-sm ">{field.name}</p>
                       <div className="flex justify-center items-center my-5">
                         <TextField
@@ -424,9 +407,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
                         //   </SelectContent>
                         // </Select>
                         <FormControl fullWidth>
-                          <InputLabel id="input-config">
-                            {field.placeholder || selectInputConfig}
-                          </InputLabel>
+                          <InputLabel id="input-config">{field.placeholder || selectInputConfig}</InputLabel>
                           <Select
                             labelId="input-config"
                             value={selectInputConfig}
@@ -459,17 +440,11 @@ const FormDetailConfigPage = ({ id }: Props) => {
                     </div>
                   )}
                   {field.type === "checkbox" && (
-                    <div
-                      key={index}
-                      className="flex flex-col border border-gray-300 p-5 m-3 rounded-md"
-                    >
+                    <div key={index} className="flex flex-col border border-gray-300 p-5 m-3 rounded-md">
                       <p className="font-weight-500 text-sm mb-2">{field.name}</p>
                       <div className="flex justify-between">
                         <FormGroup>
-                          <FormControlLabel
-                            control={<Checkbox defaultChecked />}
-                            label={field.placeholder}
-                          />
+                          <FormControlLabel control={<Checkbox defaultChecked />} label={field.placeholder} />
                         </FormGroup>
 
                         <AiTwotoneEdit
@@ -490,10 +465,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
                   )}
                   {field.type === "date" && (
                     <>
-                      <div
-                        key={index}
-                        className="flex flex-col border border-gray-300 p-5 m-3 rounded-md"
-                      >
+                      <div key={index} className="flex flex-col border border-gray-300 p-5 m-3 rounded-md">
                         <p>{field.name}</p>
                         <div className="flex mt-3 justify-between">
                           {/* <DatePicker
@@ -537,12 +509,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
 
             <div className="flex justify-between">
               <div></div>
-              <Button
-                onClick={() => setShowModal(true)}
-                color="error"
-                variant="contained"
-                sx={{ width: "50px" }}
-              >
+              <Button onClick={() => setShowModal(true)} color="error" variant="contained" sx={{ width: "50px" }}>
                 +
               </Button>
             </div>
@@ -583,11 +550,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
 
                     <FormControl fullWidth>
                       <InputLabel id="select-type">{"Type"}</InputLabel>
-                      <Select
-                        labelId="select-type"
-                        value={selectType}
-                        onChange={handleSelectChange}
-                      >
+                      <Select labelId="select-type" value={selectType} onChange={handleSelectChange}>
                         <MenuItem value="text">Text</MenuItem>
                         <MenuItem value="email">Email</MenuItem>
                         <MenuItem value="phone">Phone</MenuItem>
@@ -604,10 +567,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
                       <p>Options</p>
                       {options.map((field, index) => (
                         <>
-                          <div
-                            key={index}
-                            className="flex justify-evenly p-5 rounded-md border border-gray-300 my-2"
-                          >
+                          <div key={index} className="flex justify-evenly p-5 rounded-md border border-gray-300 my-2">
                             <div className="mb-2 mr-2">
                               <p className="font-weight-600 mb-3">Label*</p>
                               <fieldset className="Fieldset mb-10">
@@ -695,10 +655,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
               editFormFields.length > 0 &&
               editFormFields.map((field, index) => (
                 <>
-                  <div
-                    key={index}
-                    className=" flex flex-col border border-gray-300 p-5 m-3 rounded-md"
-                  >
+                  <div key={index} className=" flex flex-col border border-gray-300 p-5 m-3 rounded-md">
                     {(field.input_config.type === "text" ||
                       field.input_config.type === "Text" ||
                       field.input_config.type === "email" ||
@@ -729,58 +686,48 @@ const FormDetailConfigPage = ({ id }: Props) => {
                               type={field.type === "number" ? "number" : "text"}
                               placeholder={field.input_config.placeholder}
                               className="w-full"
-                              onChange={e =>
-                                handleFieldChange(index, "placeholder", e.target.value)
-                              }
+                              onChange={e => handleFieldChange(index, "placeholder", e.target.value)}
                               variant="outlined"
                             />
                           </div>
                         </div>
                       </>
                     )}
-                    {field.input_config.type === "radio" &&
-                      field.input_config.input_options.length > 0 && (
-                        <div>
-                          <p className="text-sm">{field.input_config.name}</p>
-                          <FormControl>
-                            <RadioGroup defaultValue="" name="radio-buttons-group">
-                              {field.input_config.input_options.map(
-                                (option: any, index: number) => (
-                                  <>
-                                    <FormControlLabel
-                                      key={index}
-                                      value={option.value}
-                                      control={<Radio />}
-                                      label={option.label}
-                                    />
-                                  </>
-                                )
-                              )}
-                            </RadioGroup>
-                          </FormControl>
-                        </div>
-                      )}
-                    {field.input_config.type === "dropdown" &&
-                      field.input_config.input_options.length > 0 && (
-                        <>
-                          <p className="text-sm mb-5">{field.input_config.name}</p>
+                    {field.input_config.type === "radio" && field.input_config.input_options.length > 0 && (
+                      <div>
+                        <p className="text-sm">{field.input_config.name}</p>
+                        <FormControl>
+                          <RadioGroup defaultValue="" name="radio-buttons-group">
+                            {field.input_config.input_options.map((option: any, index: number) => (
+                              <>
+                                <FormControlLabel
+                                  key={index}
+                                  value={option.value}
+                                  control={<Radio />}
+                                  label={option.label}
+                                />
+                              </>
+                            ))}
+                          </RadioGroup>
+                        </FormControl>
+                      </div>
+                    )}
+                    {field.input_config.type === "dropdown" && field.input_config.input_options.length > 0 && (
+                      <>
+                        <p className="text-sm mb-5">{field.input_config.name}</p>
 
-                          <FormControl fullWidth>
-                            <InputLabel id="drop">
-                              {field.input_config.placeholder || selectInputConfig}
-                            </InputLabel>
-                            <Select labelId="drop" value={selectType} onChange={handleSelectChange}>
-                              {field.input_config.input_options.map(
-                                (dropdown: any, index: number) => (
-                                  <MenuItem key={index} value={dropdown.value}>
-                                    {dropdown.label}
-                                  </MenuItem>
-                                )
-                              )}
-                            </Select>
-                          </FormControl>
-                        </>
-                      )}
+                        <FormControl fullWidth>
+                          <InputLabel id="drop">{field.input_config.placeholder || selectInputConfig}</InputLabel>
+                          <Select labelId="drop" value={selectType} onChange={handleSelectChange}>
+                            {field.input_config.input_options.map((dropdown: any, index: number) => (
+                              <MenuItem key={index} value={dropdown.value}>
+                                {dropdown.label}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
+                      </>
+                    )}
 
                     {field.input_config.type === "checkbox" && (
                       <>
@@ -834,22 +781,15 @@ const FormDetailConfigPage = ({ id }: Props) => {
                       <div className="flex justify-center">
                         <div
                           // disabled={index === 0}
-                          onClick={
-                            index === 0 ? undefined : () => handleMoveField(index, index - 1)
-                          }
+                          onClick={index === 0 ? undefined : () => handleMoveField(index, index - 1)}
                         >
-                          <MdKeyboardArrowUp
-                            size={25}
-                            className="text-gray-700 hover:text-red-700 cursor-pointer"
-                          />
+                          <MdKeyboardArrowUp size={25} className="text-gray-700 hover:text-red-700 cursor-pointer" />
                         </div>
                         <div
                           // disabled={index === editFormFields.length - 1}
                           // onClick={() => handleMoveField(index, index + 1)}
                           onClick={
-                            index === editFormFields.length - 1
-                              ? undefined
-                              : () => handleMoveField(index, index + 1)
+                            index === editFormFields.length - 1 ? undefined : () => handleMoveField(index, index + 1)
                           }
                         >
                           <MdOutlineKeyboardArrowDown
@@ -896,55 +836,43 @@ const FormDetailConfigPage = ({ id }: Props) => {
                       </div>
                     )}
 
-                    {field.input_config.type === "radio" &&
-                      field.input_config.input_options.length > 0 && (
-                        <div className="mb-4">
-                          <p className="text-sm">{field.input_config.name}</p>
-                          <FormControl>
-                            <RadioGroup defaultValue="" name="radio-buttons-group">
-                              {field.input_config.input_options.map(
-                                (option: any, index: number) => (
-                                  <>
-                                    <FormControlLabel
-                                      key={index}
-                                      value={option.value}
-                                      control={<Radio />}
-                                      label={option.label}
-                                    />
-                                  </>
-                                )
-                              )}
-                            </RadioGroup>
+                    {field.input_config.type === "radio" && field.input_config.input_options.length > 0 && (
+                      <div className="mb-4">
+                        <p className="text-sm">{field.input_config.name}</p>
+                        <FormControl>
+                          <RadioGroup defaultValue="" name="radio-buttons-group">
+                            {field.input_config.input_options.map((option: any, index: number) => (
+                              <>
+                                <FormControlLabel
+                                  key={index}
+                                  value={option.value}
+                                  control={<Radio />}
+                                  label={option.label}
+                                />
+                              </>
+                            ))}
+                          </RadioGroup>
+                        </FormControl>
+                      </div>
+                    )}
+                    {field.input_config.type === "dropdown" && field.input_config.input_options.length > 0 && (
+                      <>
+                        <p className="text-sm my-2 mb-2">{field.input_config.name}</p>
+
+                        <div className="mb-5">
+                          <FormControl fullWidth>
+                            <InputLabel id="drop">{field.input_config.placeholder || selectInputConfig}</InputLabel>
+                            <Select labelId="drop" value={selectType} onChange={handleSelectChange}>
+                              {field.input_config.input_options.map((dropdown: any, index: number) => (
+                                <MenuItem key={index} value={dropdown.value}>
+                                  {dropdown.label}
+                                </MenuItem>
+                              ))}
+                            </Select>
                           </FormControl>
                         </div>
-                      )}
-                    {field.input_config.type === "dropdown" &&
-                      field.input_config.input_options.length > 0 && (
-                        <>
-                          <p className="text-sm my-2 mb-2">{field.input_config.name}</p>
-
-                          <div className="mb-5">
-                            <FormControl fullWidth>
-                              <InputLabel id="drop">
-                                {field.input_config.placeholder || selectInputConfig}
-                              </InputLabel>
-                              <Select
-                                labelId="drop"
-                                value={selectType}
-                                onChange={handleSelectChange}
-                              >
-                                {field.input_config.input_options.map(
-                                  (dropdown: any, index: number) => (
-                                    <MenuItem key={index} value={dropdown.value}>
-                                      {dropdown.label}
-                                    </MenuItem>
-                                  )
-                                )}
-                              </Select>
-                            </FormControl>
-                          </div>
-                        </>
-                      )}
+                      </>
+                    )}
 
                     {field.input_config.type === "checkbox" && (
                       <div className="my-3">

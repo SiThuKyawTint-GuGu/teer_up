@@ -43,10 +43,7 @@ const InputText = React.forwardRef<HTMLInputElement, Props>(
           <TextField.Root>
             <TextField.Input
               type={type}
-              className={cn(
-                `font-light ${className}`,
-                inputType !== USER_ROLE.ADMIN ? "shadow-theme" : ""
-              )}
+              className={cn(`font-light ${className}`, inputType !== USER_ROLE.ADMIN ? "shadow-theme" : "")}
               placeholder={placeholder}
               defaultValue={defaultValue || ""}
               size="3"
@@ -69,34 +66,25 @@ InputText.defaultProps = {
 
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
 
-const InputSearch = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ type, placeholder, className }, ref) => {
-    return (
+const InputSearch = React.forwardRef<HTMLInputElement, InputProps>(({ type = "text", placeholder, className }, ref) => {
+  return (
+    <InputStyled className="w-full shadow-input">
       <TextField.Root>
-        <TextField.Input className={className} placeholder={placeholder} size="3" ref={ref} />
         <TextField.Slot pr="3">
           <IconButton size="2" variant="ghost">
-            <Icons.search height="16" width="16" />
+            <Icons.search className={cn("w-[24px] h-[24px] text-[#5B6770]", className)} />
           </IconButton>
         </TextField.Slot>
+        <TextField.Input type={type} className={className} placeholder={placeholder} size="3" ref={ref} />
       </TextField.Root>
-    );
-  }
-);
+    </InputStyled>
+  );
+});
 InputSearch.displayName = "InputSearch";
 
 const InputTextArea = React.forwardRef<HTMLInputElement, Props>(
   (
-    {
-      label,
-      error,
-      className,
-      placeholder,
-      defaultValue,
-      inputType = USER_ROLE.ADMIN,
-      disabled = false,
-      ...props
-    },
+    { label, error, className, placeholder, defaultValue, inputType = USER_ROLE.ADMIN, disabled = false, ...props },
     ref
   ) => {
     return (
@@ -106,10 +94,7 @@ const InputTextArea = React.forwardRef<HTMLInputElement, Props>(
         </label>
         <div className="relative mt-1 rounded-md">
           <TextArea
-            className={cn(
-              "w-full rounded-[8px] bg-[#5b6770] bg-opacity-10 font-regular",
-              className
-            )}
+            className={cn("w-full rounded-[8px] bg-[#5b6770] bg-opacity-10 font-regular", className)}
             placeholder={placeholder}
             defaultValue={defaultValue || ""}
             size="3"
@@ -126,7 +111,7 @@ InputTextArea.displayName = "InputTextArea";
 
 export { InputSearch, InputText, InputTextArea };
 
-const InputStyled = styled.div<{ inputType: USER_ROLE }>`
+const InputStyled = styled.div<{ inputType?: USER_ROLE }>`
   width: 100%;
   & input {
     ${({ inputType }) =>

@@ -7,6 +7,7 @@ import * as yup from "yup";
 import { Button } from "@/components/ui/Button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form";
 import { InputText } from "@/components/ui/Inputs";
+import OtpInput from "@/page-containers/admin/auth/components/OtpInput";
 import { useOtpVerified } from "@/services/user";
 import { setUserInfo } from "@/utils/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -60,14 +61,16 @@ const LoginOtp = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <InputText type="text" {...field} placeholder="Enter a otp" />
+                    <InputText type="text" className="bg-white shadow-md" {...field} placeholder="Enter a otp" />
                     {/* <OtpInput /> */}
                   </FormControl>
                 </FormItem>
               )}
             />
 
-            <Button type="submit" disabled={isPending || isMutating} size="lg">
+            <OtpInput />
+
+            <Button type="submit" disabled={isPending || isMutating}>
               Login
             </Button>
           </form>

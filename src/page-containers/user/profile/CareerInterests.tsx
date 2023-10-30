@@ -1,5 +1,6 @@
 "use client";
 import { Icons } from "@/components/ui/Images";
+import { InputSearch } from "@/components/ui/Inputs";
 import { Checkbox } from "@/components/ui/Inputs/Checkbox";
 import { Label } from "@/components/ui/Label";
 import { Text } from "@/components/ui/Typo/Text";
@@ -19,11 +20,9 @@ const CareerInterests: React.FC = () => {
   const industries = profileData?.data?.industries;
 
   const handleCheckedChange = (checked: boolean, industry_id: number) => {
-    if (checked) {
-      updateTrigger({
-        industry_id,
-      });
-    }
+    updateTrigger({
+      industry_id,
+    });
   };
 
   return (
@@ -42,6 +41,9 @@ const CareerInterests: React.FC = () => {
         </Flex>
         <Box className="pb-[7px]">
           <Section className="bg-white" py="4" px="3">
+            <Flex justify="center" align="center" className="mb-[25px]">
+              <InputSearch placeholder="Search Interests" />
+            </Flex>
             {industryData?.data?.map((each, key) => {
               const isChecked = industries?.find(industry => industry.industry_id === each?.id);
 

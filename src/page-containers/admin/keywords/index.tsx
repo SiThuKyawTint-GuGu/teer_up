@@ -9,11 +9,7 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";
-import {
-  MaterialReactTable,
-  useMaterialReactTable,
-  type MRT_TableOptions,
-} from "material-react-table";
+import { MaterialReactTable, useMaterialReactTable, type MRT_TableOptions } from "material-react-table";
 import { useMemo, useState } from "react";
 
 const Keywords: React.FC = () => {
@@ -67,10 +63,7 @@ const Keywords: React.FC = () => {
   );
 
   //CREATE action
-  const handleCreatePreference: MRT_TableOptions<any>["onCreatingRowSave"] = async ({
-    values,
-    table,
-  }) => {
+  const handleCreatePreference: MRT_TableOptions<any>["onCreatingRowSave"] = async ({ values, table }) => {
     const { id, keyword } = values;
     const newValidationErrors = validatePreference(values);
     if (Object.values(newValidationErrors).some(error => error)) {
@@ -189,8 +182,7 @@ const Keywords: React.FC = () => {
             Delete Confirm
           </Typography>
           <Typography sx={{ mt: 2 }}>
-            Are you sure you want to delete this keyword ID{" "}
-            <span className="text-red-700 font-semibold">[{id}]</span>?
+            Are you sure you want to delete this keyword ID <span className="text-red-700 font-semibold">[{id}]</span>?
           </Typography>
           <div className="flex justify-between mt-4">
             <div></div>
@@ -211,12 +203,7 @@ const Keywords: React.FC = () => {
               >
                 Cancel
               </Button>
-              <Button
-                onClick={handleDeletePreference}
-                color="error"
-                sx={{ textTransform: "none" }}
-                variant="contained"
-              >
+              <Button onClick={handleDeletePreference} color="error" sx={{ textTransform: "none" }} variant="contained">
                 Delete
               </Button>
             </div>

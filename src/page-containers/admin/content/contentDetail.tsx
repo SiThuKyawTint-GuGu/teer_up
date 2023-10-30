@@ -92,11 +92,7 @@ const ContentDetail = ({ id }: Props) => {
   // console.log("content dimension data", contentDimension);
   // console.log("get contents...", contents);
 
-  const {
-    trigger: updateTrigger,
-    isMutating: updateMutating,
-    error: updateError,
-  } = useUpdateContent(id);
+  const { trigger: updateTrigger, isMutating: updateMutating, error: updateError } = useUpdateContent(id);
   const { trigger: fileTrigger, isMutating: fileMutating } = usePostFile();
   const { trigger: postTrigger, isMutating: postMutating, error: createError } = usePostContent();
   const { data: category } = useGetContentCategory<ContentCategoryResponse>();
@@ -152,6 +148,7 @@ const ContentDetail = ({ id }: Props) => {
       oppoEditor?.setContent(oppoEditorContent);
     }
     if (contentDimension?.data) {
+
       const transformedData = contentDimension?.data?.content_dimensions.reduce(
         (result: any, item: any) => {
           const { dimension_id, low, medium, high } = item;
@@ -161,6 +158,7 @@ const ContentDetail = ({ id }: Props) => {
         {}
       );
       // console.log("tr.....", transformedData);
+
       setCheckboxValues(transformedData);
     }
     if (content?.data) {
@@ -255,6 +253,7 @@ const ContentDetail = ({ id }: Props) => {
       }));
       setIndustryOptions(updatedOptions);
     }
+
   }, [
     editorContent,
     editor,
@@ -265,6 +264,7 @@ const ContentDetail = ({ id }: Props) => {
     content?.data,
     contentDimension?.data,
   ]);
+
 
   const {
     register,
@@ -726,9 +726,7 @@ const ContentDetail = ({ id }: Props) => {
               options={industryOptions || []}
               value={selectedIndustry}
               onChange={handleIndustryChange}
-              renderInput={params => (
-                <TextField {...params} label="Select Industry" placeholder="Industry" />
-              )}
+              renderInput={params => <TextField {...params} label="Select Industry" placeholder="Industry" />}
             />
           </div>
           {/* Department */}
@@ -739,9 +737,7 @@ const ContentDetail = ({ id }: Props) => {
               options={departmentOptions || []}
               value={selectedDepartment}
               onChange={handleDepartmentChange}
-              renderInput={params => (
-                <TextField {...params} label="Select Departments" placeholder="Departments" />
-              )}
+              renderInput={params => <TextField {...params} label="Select Departments" placeholder="Departments" />}
             />
           </div>
           {/* Keywords */}
@@ -752,9 +748,7 @@ const ContentDetail = ({ id }: Props) => {
               options={keywordOptions || []}
               value={selectedKeywords}
               onChange={handleKeywordChange}
-              renderInput={params => (
-                <TextField {...params} label="Select keywords" placeholder="Keywords" />
-              )}
+              renderInput={params => <TextField {...params} label="Select keywords" placeholder="Keywords" />}
             />
           </div>
           <div className="mb-10">
@@ -818,13 +812,7 @@ const ContentDetail = ({ id }: Props) => {
                 {fileUrl && (
                   <div className="mt-4">
                     <p className="font-bold mb-2">Thumbnail Preview:</p>
-                    <Image
-                      width={300}
-                      height={300}
-                      src={fileUrl}
-                      alt="File Preview"
-                      className="max-w-full h-auto"
-                    />
+                    <Image width={300} height={300} src={fileUrl} alt="File Preview" className="max-w-full h-auto" />
                   </div>
                 )}
               </div>
@@ -979,12 +967,7 @@ const ContentDetail = ({ id }: Props) => {
           )}
           {selectedValue === "pathway" && (
             <>
-              <MuiButton
-                style={{ textTransform: "none" }}
-                color="error"
-                variant="contained"
-                onClick={handleAddPathway}
-              >
+              <MuiButton style={{ textTransform: "none" }} color="error" variant="contained" onClick={handleAddPathway}>
                 <AiOutlinePlus size={20} />
                 Add Pathway
               </MuiButton>
@@ -1002,6 +985,7 @@ const ContentDetail = ({ id }: Props) => {
                     options={contentOptions || []}
                     sx={{ width: 300 }}
                     value={pathway.name}
+
                     // onInputChange={handleInputChange}
                     onInputChange={(event, newInputValue) =>
                       handleInputChange(event, newInputValue, index)
@@ -1009,6 +993,7 @@ const ContentDetail = ({ id }: Props) => {
                     onChange={(event, newValue) =>
                       handleSelectPathwayChange(event, newValue, index)
                     }
+
                     renderInput={params => <TextField {...params} label="Contents" />}
                   />
                   <AiFillDelete
@@ -1030,9 +1015,7 @@ const ContentDetail = ({ id }: Props) => {
                   onInputChange={handleInputMentorChange}
                   value={selectedMentor}
                   onChange={handleMentorChange}
-                  renderInput={params => (
-                    <TextField {...params} label="Select Mentor" placeholder="Mentor" />
-                  )}
+                  renderInput={params => <TextField {...params} label="Select Mentor" placeholder="Mentor" />}
                 />
               </div>
             </>
@@ -1052,13 +1035,7 @@ const ContentDetail = ({ id }: Props) => {
             {imgUrl && (
               <div className="mt-4">
                 <p className="font-bold mb-2">Image Preview:</p>
-                <Image
-                  width={300}
-                  height={300}
-                  src={imgUrl}
-                  alt="File Preview"
-                  className="max-w-full h-auto"
-                />
+                <Image width={300} height={300} src={imgUrl} alt="File Preview" className="max-w-full h-auto" />
               </div>
             )}
           </div>
@@ -1108,9 +1085,7 @@ const ContentDetail = ({ id }: Props) => {
               {createError.response.data.message}
             </Alert>
           )}
-          {!updateError && !createError && eventError && (
-            <p className="text-red-700 mt-3 mb-3">{eventError}</p>
-          )}
+          {!updateError && !createError && eventError && <p className="text-red-700 mt-3 mb-3">{eventError}</p>}
           <div style={{ display: "flex", marginTop: 20, justifyContent: "flex-end" }}>
             {content?.data ? (
               <LoadingButton

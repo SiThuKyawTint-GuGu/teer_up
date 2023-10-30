@@ -5,7 +5,7 @@ import { ParamsType } from "@/services/user";
 import { CommentData, CommentResponse, ContentData } from "@/types/Content";
 import { showTime } from "@/utils/time";
 import { Flex } from "@radix-ui/themes";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Text } from "../ui/Typo/Text";
 type CommentSectionProp = {
   data: ContentData;
@@ -17,10 +17,11 @@ const CommentSection: React.FC<CommentSectionProp> = ({ data, mutateParentData }
     cursor: cursor,
     pageSize: 10,
   });
+  console.log("cmtsArray", cmtsArray);
 
-  // const pp: any = useMemo(() => cmtsArray?.flatMap(page => page?.data) || [], [cmtsArray]);
+  const pp: any = useMemo(() => cmtsArray?.flatMap(page => page?.data) || [], [cmtsArray]);
 
-  // console.log(pp);
+  console.log("pp", pp);
 
   const { trigger: postComment, isMutating } = usePostComment();
 
@@ -60,7 +61,7 @@ const CommentSection: React.FC<CommentSectionProp> = ({ data, mutateParentData }
               <div>
                 {cmtsArray.map((cmts: CommentResponse, cmtArrayIndex: number) => (
                   <div key={cmtArrayIndex}>
-                    {cmts?.data.length !== 0 && (
+                    {cmts?.data.length > 0 && (
                       <>
                         {cmts?.data.map((data: CommentData, index: number) => (
                           <div className="flex items-start  w-full h-full mb-2  " key={index}>

@@ -8,11 +8,7 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";
-import {
-  MaterialReactTable,
-  MRT_PaginationState,
-  useMaterialReactTable,
-} from "material-react-table";
+import { MaterialReactTable, MRT_PaginationState, useMaterialReactTable } from "material-react-table";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
@@ -61,9 +57,7 @@ const ContentTable: React.FC = () => {
         header: "Type",
         enableEditing: false,
         size: 3,
-        Cell: ({ row }: any) => (
-          <p>{row?.original?.type?.charAt(0).toUpperCase() + row?.original?.type?.slice(1)}</p>
-        ),
+        Cell: ({ row }: any) => <p>{row?.original?.type?.charAt(0).toUpperCase() + row?.original?.type?.slice(1)}</p>,
       },
       // {
       //   accessorKey: "keywords",
@@ -151,11 +145,7 @@ const ContentTable: React.FC = () => {
       </Box>
     ),
     renderTopToolbarCustomActions: ({ table }) => (
-      <Button
-        variant="contained"
-        color="error"
-        sx={{ background: "#DA291C", textTransform: "none" }}
-      >
+      <Button variant="contained" color="error" sx={{ background: "#DA291C", textTransform: "none" }}>
         <Link href={"/admin/contents/content/0"}>Create New Content</Link>
       </Button>
     ),
@@ -170,8 +160,7 @@ const ContentTable: React.FC = () => {
             Delete Confirm
           </Typography>
           <Typography sx={{ mt: 2 }}>
-            Are you sure you want to delete this content ID{" "}
-            <span className="text-red-700 font-semibold">[{id}]</span>?
+            Are you sure you want to delete this content ID <span className="text-red-700 font-semibold">[{id}]</span>?
           </Typography>
           <div className="flex justify-between mt-4">
             <div></div>
@@ -192,12 +181,7 @@ const ContentTable: React.FC = () => {
               >
                 Cancel
               </Button>
-              <Button
-                onClick={handleDeleteConfirm}
-                color="error"
-                sx={{ textTransform: "none" }}
-                variant="contained"
-              >
+              <Button onClick={handleDeleteConfirm} color="error" sx={{ textTransform: "none" }} variant="contained">
                 Delete
               </Button>
             </div>

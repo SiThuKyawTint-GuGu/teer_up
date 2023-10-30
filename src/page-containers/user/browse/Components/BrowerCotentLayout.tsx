@@ -47,11 +47,7 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, conte
                     muted={false}
                     controls
                   >
-                    <source
-                      src={data.content_video.video_url}
-                      className="object-fill"
-                      type="video/mp4"
-                    ></source>
+                    <source src={data.content_video.video_url} className="object-fill" type="video/mp4"></source>
                   </video>
                 </div>
               ) : (
