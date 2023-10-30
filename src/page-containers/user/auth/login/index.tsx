@@ -10,6 +10,7 @@ import { Checkbox } from "@/components/ui/Inputs/Checkbox";
 import { Text } from "@/components/ui/Typo/Text";
 import { useUserLogin } from "@/services/user";
 import { setUserInfo } from "@/utils/auth";
+import { cn } from "@/utils/cn";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Flex, Grid, Heading } from "@radix-ui/themes";
 import Link from "next/link";
@@ -28,7 +29,7 @@ interface Login {
 const Login: React.FC = () => {
   const [checked, setChecked] = useState<boolean>(false);
   const router = useRouter();
-  const form = useForm({
+  const { ...form } = useForm({
     resolver: yupResolver(validationSchema),
   });
 
@@ -66,7 +67,10 @@ const Login: React.FC = () => {
                   <FormItem>
                     <FormControl>
                       <InputText
-                        className="bg-white shadow-md"
+                        className={cn(
+                          "bg-white shadow-md",
+                          form.formState.errors.email && "border-2 border-primary focus:outline-0"
+                        )}
                         placeholder="Enter your email address"
                         type="text"
                         {...field}

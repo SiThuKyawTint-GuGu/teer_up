@@ -34,7 +34,7 @@ const PersonalInfo: React.FC = () => {
   const router = useRouter();
   const { data: profileData } = useGetUserById<UserProfileResponse>(id as string);
   const { data: genders } = useGetGenders<Gender[]>();
-  const { trigger } = useUpdatePersonalInfo();
+  const { trigger, isMutating } = useUpdatePersonalInfo();
   const userProfile = profileData?.data;
   const defaultChecked = userProfile?.personal_info?.gender?.id.toString() || "1";
 
@@ -62,10 +62,7 @@ const PersonalInfo: React.FC = () => {
   return (
     <>
       <Form {...form}>
-        <form
-          className="mx-auto flex flex-col justify-center gap-y-3 w-full"
-          onSubmit={form.handleSubmit(submit)}
-        >
+        <form className="mx-auto flex flex-col justify-center gap-y-3 w-full" onSubmit={form.handleSubmit(submit)}>
           <Grid columns="1">
             <Box>
               <Flex justify="between" align="center" className="bg-white" p="3">
@@ -104,8 +101,7 @@ const PersonalInfo: React.FC = () => {
                                     key={key}
                                     className={cn(
                                       "block pb-[10px]",
-                                      key !== (genders ? genders.length - 1 : -1) &&
-                                        "border-b border-b-[#BDC7D5]"
+                                      key !== (genders ? genders.length - 1 : -1) && "border-b border-b-[#BDC7D5]"
                                     )}
                                   >
                                     <Flex className="capitalize" justify="between" align="center">
@@ -237,7 +233,7 @@ const PersonalInfo: React.FC = () => {
               </Box>
               <Box className="pb-[7px]">
                 <Section py="4" px="3">
-                  <Button type="submit" className="bg-primary w-full">
+                  <Button type="submit" loading={isMutating} className="bg-primary w-full">
                     Save
                   </Button>
                 </Section>
