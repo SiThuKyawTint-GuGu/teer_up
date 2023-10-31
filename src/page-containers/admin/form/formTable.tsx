@@ -4,6 +4,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { Box, IconButton, Modal, Tooltip, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
+import dayjs from "dayjs";
 import { MaterialReactTable, useMaterialReactTable } from "material-react-table";
 import Link from "next/link";
 import { useMemo, useState } from "react";
@@ -20,11 +21,24 @@ const FormConfigTable: React.FC = () => {
         accessorKey: "id",
         header: "ID",
         enableEditing: false,
+        size: 2,
       },
       {
         accessorKey: "name",
         header: "Name",
         enableEditing: false,
+      },
+      {
+        accessorKey: "created_at",
+        header: "Created At",
+        enableEditing: false,
+        Cell: ({ value }: any) => dayjs(value).format("MMM D, YYYY h:mm A"),
+      },
+      {
+        accessorKey: "updated_at",
+        header: "Upated At",
+        enableEditing: false,
+        Cell: ({ value }: any) => dayjs(value).format("MMM D, YYYY h:mm A"),
       },
     ],
     []
