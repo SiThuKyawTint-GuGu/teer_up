@@ -1,16 +1,15 @@
 "use client";
 
 import { Dialog } from "@/components/ui/Dialog";
-import { useGetContentBySlug } from "@/services/content";
 import { ContentData } from "@/types/Content";
 import { Flex, Grid } from "@radix-ui/themes";
-import { useParams } from "next/navigation";
 import React from "react";
 
-const VideoDetail: React.FC = () => {
-  const { slug }: { slug: string } = useParams();
-  const { data: contentVideo, mutate: contentMutate } = useGetContentBySlug<ContentData>(slug);
-  const data = contentVideo?.data;
+type VideoDetailProp = {
+  data: ContentData;
+  contentMutate: any;
+};
+const VideoDetail: React.FC<VideoDetailProp> = ({ data, contentMutate }) => {
   return (
     <Dialog>
       <Grid columns="1">

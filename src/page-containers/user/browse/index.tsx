@@ -16,18 +16,6 @@ const BrowsePage = () => {
     pagesize: 20,
     type: type,
   });
-  const differentContent = (data: ContentData) => {
-    if (data.type === "event" && data.content_event)
-      return <BrowserContentLayout data={data} contentMutate={mutate} redir={`/events/${data.slug}`} />;
-    if (data.type === "article" && data.content_article)
-      return <BrowserContentLayout data={data} contentMutate={mutate} redir={`/articles/${data.slug}`} />;
-    if (data.type === "opportunity" && data.content_opportunity)
-      return <BrowserContentLayout data={data} contentMutate={mutate} redir={`/opportunity/${data.slug}`} />;
-    if (data.type === "pathway")
-      return <BrowserContentLayout data={data} contentMutate={mutate} redir={`/pathway/${data.slug}`} />;
-    if (data.type === "mentor")
-      return <BrowserContentLayout data={data} contentMutate={mutate} redir={`/mentor/${data.slug}`} />;
-  };
 
   return (
     <div className="relative w-full h-full">
@@ -50,7 +38,11 @@ const BrowsePage = () => {
                 <div className="w-full h-full overflow-y-scroll no-scrollbar" key={index}>
                   {contentArray.data.map((contentData: ContentData, index: number) => (
                     <div key={index} className="w-full">
-                      {differentContent(contentData)}
+                      <BrowserContentLayout
+                        data={contentData}
+                        contentMutate={mutate}
+                        redir={`/content/${contentData.slug}`}
+                      />
                     </div>
                   ))}
                 </div>

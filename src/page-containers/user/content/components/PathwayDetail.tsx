@@ -1,22 +1,22 @@
 "use client";
 import { Icons } from "@/components/ui/Images";
-import { useGetContentBySlug } from "@/services/content";
 import { ContentData } from "@/types/Content";
 import { Flex, Grid } from "@radix-ui/themes";
-import { useParams } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import ContentLayout from "./ContentLayout";
 import Video from "./Video";
 
-const PathwayDetail: React.FC = () => {
-  const { slug }: { slug: string } = useParams();
-  const { data: contentData, mutate: contentMutate } = useGetContentBySlug<ContentData>(slug);
+type PathwayDetailProp = {
+  data: ContentData;
+  contentMutate: any;
+};
+const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => {
   const [videos, setVideos] = useState<any>([]);
   const [showPathTitle, setShowPathTitle] = useState<boolean>(false);
   const videoRefs = useRef<HTMLVideoElement[]>([]);
   const targetRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    setVideos(contentData);
+    setVideos(data);
   }, []);
   useEffect(() => {
     const observerOptions = {
@@ -55,6 +55,8 @@ const PathwayDetail: React.FC = () => {
       videoRefs.current[index] = ref;
     }
   };
+
+  console.log("patwayDetail", data);
   const differentContent = (data: ContentData, index: number) => {
     console.log(data.type);
     if (data.type === "video" && data.content_video)
@@ -84,12 +86,21 @@ const PathwayDetail: React.FC = () => {
   };
   return (
     <Grid columns="1">
-      <div className="w-full h-screen flex flex-col">
-        {contentData?.data.content_pathways && (
+      <div className="snap-y flex-col snap-mandatory w-full h-[90vh]   bg-[#F8F9FB] no-scrollbar overflow-y-scroll">
+        {data?.content_pathways &&
+          data?.content_pathways.length > 0 &&
+          data?.content_pathways.map((data, index) => (
+            <div className="h-full w-full snap-start" key={index}>
+              {differentContent(data, index)}
+            </div>
+          ))}
+      </div>
+      {/* <div className="w-full h-screen flex flex-col">
+        {data?.content_pathways && (
           <>
-            {contentData.data.content_pathways.length > 0 && (
+            {data?.content_pathways.length > 0 && (
               <div className="snap-y flex-col snap-mandatory w-full h-[calc(100vh-5vh)]  bg-[#F8F9FB] no-scrollbar overflow-y-scroll">
-                {contentData.data.content_pathways.map((data: ContentData, index: number) => (
+                {data?.content_pathways.map((data: ContentData, index: number) => (
                   <div className="h-full  w-full snap-start" id={data.slug} ref={targetRef} key={index}>
                     {differentContent(data, index)}
                   </div>
@@ -98,11 +109,11 @@ const PathwayDetail: React.FC = () => {
             )}
           </>
         )}
-      </div>
+      </div> */}
       <div className="max-w-[400px] mx-auto py-3 w-full flex flex-column fixed bottom-0  p-3 flex-wrap  bg-white z-[99999]">
         <div className="w-full h-full relative">
           <Flex justify="between" className="w-full">
-            <div className="font-[600] text-[16px]">{contentData?.data?.title}</div>
+            <div className="font-[600] text-[16px]">{data?.title}</div>
             {!showPathTitle ? (
               <Icons.upArrow
                 className="text-primary w-[20px] h-[20px] absolute top-0 right-0"
@@ -115,10 +126,10 @@ const PathwayDetail: React.FC = () => {
               />
             )}
           </Flex>
-          {showPathTitle && (
+          {/* {showPathTitle && (
             <div className="py-5">
               {contentData?.data?.content_pathways.length > 0 &&
-                contentData.data.content_pathways.map((data: ContentData, index: number) => (
+                data?.content_pathways.map((data: ContentData, index: number) => (
                   <div key={index} className="font-[600] flex flex-col w-full text-[16px] py-1">
                     <Flex justify="between" className="w-full py-2">
                       <div onClick={scrollToTarget}>{data.title}</div>
@@ -128,7 +139,7 @@ const PathwayDetail: React.FC = () => {
                   </div>
                 ))}
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </Grid>

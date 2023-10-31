@@ -80,69 +80,67 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, conte
                 </div>
               )}
             </div>
-            <div>
-              <Link href={redir}>
-                <div className="w-full px-[16px] bg-white cursor-pointer">
-                  <h1 className="font-[700] text-[24px]">{data.title}</h1>
-                  {data.description && (
-                    <div className="w-full h-full">
-                      <div className="flex flex-col w-full">
-                        <Text>
-                          {data.description.slice(0, 100)}
+            <Link href={redir} scroll>
+              <div className="w-full px-[16px] bg-white cursor-pointer">
+                <h1 className="font-[700] text-[24px]">{data.title}</h1>
+                {data.description && (
+                  <div className="w-full h-full">
+                    <div className="flex flex-col w-full">
+                      <Text>
+                        {data.description.slice(0, 100)}
 
-                          {data.description.length > 100 && (
-                            <Text as="span" className="text-primary">
-                              {"..."}See more
-                            </Text>
-                          )}
-                        </Text>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </Link>
-              <div className="flex justify-between p-3 w-full">
-                <button className="flex items-center flex-wrap gap-x-[10px]" onClick={likePost}>
-                  {data.is_liked ? (
-                    <Icons.likefill className="w-[20px] h-[20px] text-primary" />
-                  ) : (
-                    <Icons.like className="w-[20px] h-[20px]" />
-                  )}
-                  <div>
-                    {""}
-                    {data.likes}
-                  </div>
-                </button>
-                <DialogTrigger>
-                  <div className="flex items-center flex-wrap gap-x-[10px]">
-                    <Icons.comment className="w-[20px] h-[20px]" />
-                    <div>
-                      {""}
-                      {data.comments}
+                        {data.description.length > 100 && (
+                          <Text as="span" className="text-primary">
+                            {"..."}See more
+                          </Text>
+                        )}
+                      </Text>
                     </div>
                   </div>
-                </DialogTrigger>
-                <button className="flex items-center flex-wrap gap-x-[10px]" onClick={saveContent}>
-                  {data.is_saved ? (
-                    <Icons.savedFill className="w-[20px] h-[20px] text-primary" />
-                  ) : (
-                    <Icons.saved className="w-[20px] h-[20px]" />
-                  )}
-
-                  <div>
-                    {""}
-                    {data.saves}
-                  </div>
-                </button>
-
-                <button className="flex items-center flex-wrap gap-x-1" onClick={() => setOpenShare(true)}>
-                  <Icons.share className="w-[20px] h-[20px]" />
-                  <div>
-                    {""}
-                    Share
-                  </div>
-                </button>
+                )}
               </div>
+            </Link>
+            <div className="flex justify-between p-3 w-full">
+              <button className="flex items-center flex-wrap gap-x-[10px]" onClick={likePost}>
+                {data.is_liked ? (
+                  <Icons.likefill className="w-[20px] h-[20px] text-primary" />
+                ) : (
+                  <Icons.like className="w-[20px] h-[20px]" />
+                )}
+                <div>
+                  {""}
+                  {data.likes}
+                </div>
+              </button>
+              <DialogTrigger>
+                <div className="flex items-center flex-wrap gap-x-[10px]">
+                  <Icons.comment className="w-[20px] h-[20px]" />
+                  <div>
+                    {""}
+                    {data.comments}
+                  </div>
+                </div>
+              </DialogTrigger>
+              <button className="flex items-center flex-wrap gap-x-[10px]" onClick={saveContent}>
+                {data.is_saved ? (
+                  <Icons.savedFill className="w-[20px] h-[20px] text-primary" />
+                ) : (
+                  <Icons.saved className="w-[20px] h-[20px]" />
+                )}
+
+                <div>
+                  {""}
+                  {data.saves}
+                </div>
+              </button>
+
+              <button className="flex items-center flex-wrap gap-x-1" onClick={() => setOpenShare(true)}>
+                <Icons.share className="w-[20px] h-[20px]" />
+                <div>
+                  {""}
+                  Share
+                </div>
+              </button>
             </div>
           </div>
         </CardBox>
