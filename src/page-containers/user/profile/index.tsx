@@ -58,7 +58,7 @@ const Profile: React.FC = () => {
                 Profile
               </Text>
               <Flex justify="center" align="center" className="absolute top-0 right-2 bottom-0">
-                <Link href={`/profile/${user?.id}/setting`}>
+                <Link href={`/profile/setting`}>
                   <Icons.profileSetting />
                 </Link>
               </Flex>
