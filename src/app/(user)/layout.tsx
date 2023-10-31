@@ -15,7 +15,7 @@ const Layout = ({ children }: Props) => {
         <link rel="icon" href="/teeup.svg" />
       </Head>
       <Grid columns="1">
-        <div className="max-w-[400px] w-full mx-auto  h-full relative bg-layout">{children}</div>
+        <div className="max-w-[400px] w-full mx-auto h-screen relative bg-layout">{children}</div>
       </Grid>
     </>
   );

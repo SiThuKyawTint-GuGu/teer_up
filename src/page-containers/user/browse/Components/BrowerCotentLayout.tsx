@@ -1,14 +1,16 @@
 import CardBox from "@/components/ui/Card";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons } from "@/components/ui/Images";
+import Modal from "@/components/ui/Modal";
 import { Text } from "@/components/ui/Typo/Text";
-import { useLikeContent } from "@/services/content";
+import { useLikeContent, useSaveContent } from "@/services/content";
 import "@/styles/video.css";
 import { ContentData } from "@/types/Content";
 import Link from "next/link";
 
 import React, { useState } from "react";
 import CommentSection from "../../../../components/contentLayout/CommentSection";
+import Share from "../../content/components/Share";
 
 type ContentlayoutProps = {
   data: ContentData;
@@ -17,7 +19,10 @@ type ContentlayoutProps = {
 };
 
 const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, contentMutate }) => {
+  const [openModal, setOpenModal] = useState<boolean>(false);
   const { trigger: like } = useLikeContent();
+  const { trigger: contentSave } = useSaveContent();
+  const [openShare, setOpenShare] = useState<boolean>(false);
   const likePost = async () => {
     await like(
       { id: data.id },
@@ -26,7 +31,17 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, conte
       }
     );
   };
-  const [openModal, setOpenModal] = useState<boolean>(false);
+  const saveContent = async () => {
+    await contentSave(
+      {
+        id: data.id,
+      },
+      {
+        onSuccess: () => contentMutate(),
+      }
+    );
+  };
+
   return (
     <Dialog open={openModal} onOpenChange={val => setOpenModal(val)}>
       <div className="w-full h-full p-2">
@@ -86,14 +101,18 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, conte
                   )}
                 </div>
               </Link>
-              <div className="flex justify-between p-3">
-                <div className="flex items-center flex-wrap gap-x-[10px]">
-                  <Icons.like className="w-[20px] h-[20px]" onClick={likePost} />
+              <div className="flex justify-between p-3 w-full">
+                <button className="flex items-center flex-wrap gap-x-[10px]" onClick={likePost}>
+                  {data.is_liked ? (
+                    <Icons.likefill className="w-[20px] h-[20px] text-primary" />
+                  ) : (
+                    <Icons.like className="w-[20px] h-[20px]" />
+                  )}
                   <div>
                     {""}
                     {data.likes}
                   </div>
-                </div>
+                </button>
                 <DialogTrigger>
                   <div className="flex items-center flex-wrap gap-x-[10px]">
                     <Icons.comment className="w-[20px] h-[20px]" />
@@ -103,17 +122,26 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, conte
                     </div>
                   </div>
                 </DialogTrigger>
-                <div className="flex items-center flex-wrap gap-x-[10px]">
-                  <Icons.saved className="w-[20px] h-[20px]" />
-                  <div>{""}0</div>
-                </div>
-                <div className="flex items-center flex-wrap gap-x-1">
+                <button className="flex items-center flex-wrap gap-x-[10px]" onClick={saveContent}>
+                  {data.is_saved ? (
+                    <Icons.savedFill className="w-[20px] h-[20px] text-primary" />
+                  ) : (
+                    <Icons.saved className="w-[20px] h-[20px]" />
+                  )}
+
+                  <div>
+                    {""}
+                    {data.saves}
+                  </div>
+                </button>
+
+                <button className="flex items-center flex-wrap gap-x-1" onClick={() => setOpenShare(true)}>
                   <Icons.share className="w-[20px] h-[20px]" />
                   <div>
                     {""}
                     Share
                   </div>
-                </div>
+                </button>
               </div>
             </div>
           </div>
@@ -124,6 +152,11 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, conte
         <DialogContent className="bg-white top-[initial] bottom-0 max-w-[400px] px-4 pt-8 pb-2 translate-y-0 rounded-10px-tl-tr">
           <CommentSection data={data} mutateParentData={contentMutate} />
         </DialogContent>
+      )}
+      {openShare && (
+        <Modal onClose={() => setOpenShare(false)}>
+          <Share />
+        </Modal>
       )}
     </Dialog>
   );
