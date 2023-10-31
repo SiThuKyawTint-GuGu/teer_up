@@ -1,11 +1,16 @@
 export interface User {
-  created_at?: string;
-  email?: string;
-  id?: string;
-  name?: string;
-  role?: string;
-  updated_at?: string;
-  verified?: boolean;
+  id: number;
+  created_at: string;
+  updated_at: string;
+  email: string;
+  password: string;
+  name: string;
+  role: string;
+  bio: string;
+  profile_url: string;
+  cover_url: string;
+  country_id: number;
+  verified: boolean;
 }
 
 export type UserResponse = {

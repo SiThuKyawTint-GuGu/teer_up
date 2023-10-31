@@ -1,35 +1,28 @@
 "use client";
 import { useLikeContent, useSaveContent } from "@/services/content";
-import { ContentData } from "@/types/Content";
+import { ContentData, Input_config, Input_options } from "@/types/Content";
 
-import { FormControl, FormField, FormItem } from "@/components/ui/Form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import * as yup from "yup";
+import { Flex } from "@radix-ui/themes";
+
+import React, { useMemo, useState } from "react";
 import { Button } from "../ui/Button";
 import { DialogTrigger } from "../ui/Dialog";
 import { Icons } from "../ui/Images";
-import { InputText, InputTextArea } from "../ui/Inputs";
+import { InputText } from "../ui/Inputs";
+import { Checkbox } from "../ui/Inputs/Checkbox";
 import Modal from "../ui/Modal";
 import { Text } from "../ui/Typo/Text";
 type Props = {
   data: ContentData;
   mutate: any;
 };
-const validationSchema = yup.object({
-  email: yup.string().email().required("Email is required!"),
-  name: yup.string().required("Name is required!"),
-  position: yup.string().required("Position is required!"),
-  reason: yup.string().required("Reason is required!"),
-});
+
 const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
   const { trigger: like } = useLikeContent();
   const { trigger: contentSave } = useSaveContent();
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const form = useForm({
-    resolver: yupResolver(validationSchema),
-  });
+  const form = useMemo(() => data.content_event?.form_config.formdetails_configs, [data]);
+
   const saveContent = async () => {
     await contentSave(
       {
@@ -48,7 +41,22 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
       }
     );
   };
-  const onSubmit = async (data: any) => {};
+
+  const formElements = (data: Input_config) => {
+    console.log(data);
+    if (data.type === "radio") {
+      return data.input_options.map((input: Input_options, index: number) => (
+        <div key={index} className="flex w-full flex-wrap gap-x-2">
+          <Checkbox />
+          <label>{input.label}</label>
+        </div>
+      ));
+    }
+    if (data.type === "text") {
+      return <InputText type={data.type} placeholder={data.placeholder} className="shadow bg-white" />;
+    }
+  };
+
   return (
     <div className="bg-white flex py-2 items-center">
       {data.type === "event" && (
@@ -57,7 +65,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
         </Button>
       )}
       {data.type === "opportunity" && (
-        <Button size="sm" className="w-[166px]">
+        <Button size="sm" className="w-[166px]" onClick={() => setOpenModal(true)}>
           Apply now
         </Button>
       )}
@@ -94,71 +102,16 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
               Join Event
             </Text>
 
-            <div className="mx-auto flex flex-col h-full justify-center flex-wrap gap-y-[30px] w-full">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <InputText
-                        type="text"
-                        className="bg-white shadow-sm placeholder:text-[16px]"
-                        {...field}
-                        placeholder="Enter your name"
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <InputText
-                        type="text"
-                        className="bg-white shadow-sm placeholder:text-[16px]"
-                        {...field}
-                        placeholder="Enter your email address"
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="position"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <InputText
-                        type="text"
-                        className="bg-white shadow-sm placeholder:text-[16px]"
-                        {...field}
-                        placeholder="Enter your position"
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="reason"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <InputTextArea
-                        type="text"
-                        className="bg-white shadow-sm placeholder:text-[16px]"
-                        {...field}
-                        placeholder="Explain the reason why you want to join this event "
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
+            <div className="mx-auto flex flex-col h-full bg-layout justify-center flex-wrap gap-y-[30px] w-full">
+              <Flex direction="column">
+                {form &&
+                  form.length > 0 &&
+                  form.map((data, index: number) => (
+                    <div key={index} className="mb-3">
+                      {formElements(data.input_config)}
+                    </div>
+                  ))}
+              </Flex>
               <Button>Submit</Button>
             </div>
           </div>

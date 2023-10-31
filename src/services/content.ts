@@ -33,16 +33,16 @@ interface FileArgType {
     data?: any;
   };
 }
-export const useGetContentInfinite = <ParamsType>(
-  params?: ParamsType
-): SWRInfiniteResponse<ContentType> => {
+export const useGetContentInfinite = <ParamsType>(params?: ParamsType): SWRInfiniteResponse<ContentType> => {
   const getKey = () => `/content?${routeFilter(params)}`;
-  return useSWRInfinite<ContentType>(getKey);
+  return useSWRInfinite<ContentType>(getKey, {
+    revalidateFirstPage: false,
+    revalidateAll: true,
+    parallel: true,
+  });
 };
 
-export const useGetContent = <ParamsType, ContentType>(
-  params?: ParamsType
-): SWRResponse<ContentType, any> => {
+export const useGetContent = <ParamsType, ContentType>(params?: ParamsType): SWRResponse<ContentType, any> => {
   return useSWR<ContentType>(`/content?${routeFilter(params)}`);
 };
 
@@ -121,10 +121,7 @@ export const useSaveContent = () =>
 //   [data]
 // );
 
-export const useGetComment = <ParamsType>(
-  id: number | string,
-  params?: ParamsType
-): SWRInfiniteResponse => {
+export const useGetComment = <ParamsType>(id: number | string, params?: ParamsType): SWRInfiniteResponse => {
   const getKey = () => `/content/${id}/comments?${routeFilter(params)}`;
   return useSWRInfinite<CommentResponse>(getKey, {
     revalidateFirstPage: false,
