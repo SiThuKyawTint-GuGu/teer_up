@@ -22,6 +22,7 @@ const BottomNavbar = () => {
           <div key={index} className="p-2">
             <Link
               href={item.path}
+              scroll={false}
               className={cn(
                 "flex justify-center items-center flex-col",
                 (pathName === item.path || pathName.includes(item.path)) && "text-primary"

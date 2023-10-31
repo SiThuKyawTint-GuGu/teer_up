@@ -1,5 +1,6 @@
 import { Icons } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
+import { copyToClipboard } from "@/utils/helper";
 import { Flex } from "@radix-ui/themes";
 import React from "react";
 
@@ -12,20 +13,21 @@ const Share: React.FC = () => {
         <Flex direction="column" align="center">
           <Flex
             justify="center"
-            className="bg-slateGray w-[40px] h-[40px] flex justify-center items-center rounded-full"
+            className="bg-slateGray w-[40px] h-[40px] flex justify-center items-center rounded-full cursor-pointer"
+            onClick={copyToClipboard}
           >
             <Icons.shareLink className="text-[24px]  text-white text-center" />
           </Flex>
           <Text as="div">Copy Link</Text>
         </Flex>
 
-        <Flex direction="column" align="center">
+        <Flex direction="column" align="center" className="cursor-pointer">
           <Icons.facebook className="w-[40px] h-[40px] text-[#4167b2]" />
 
           <Text as="div">Facebook</Text>
         </Flex>
 
-        <Flex direction="column" align="center">
+        <Flex direction="column" align="center" className="curosr-pointer">
           <Icons.telegram className="w-[40px] h-[40px] text-[#26a4e2]" />
           <Text as="div">Telegram</Text>
         </Flex>

@@ -46,6 +46,7 @@ import {
   IoPeopleOutline,
   IoPersonCircleOutline,
   IoSearch,
+  IoSettingsOutline,
   IoShareSocialOutline,
 } from "react-icons/io5";
 import { MdDelete, MdOutlineMailOutline } from "react-icons/md";
@@ -188,6 +189,7 @@ export const Icons = {
   shareLink: IoLink,
   facebook: FaFacebook,
   telegram: FaTelegram,
+  profileSetting: IoSettingsOutline,
 };
 
 interface Image {
