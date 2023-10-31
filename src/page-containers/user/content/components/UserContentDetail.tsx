@@ -57,7 +57,7 @@ const UserContentDetail: React.FC<ContentlayoutProps> = () => {
                   {contentData.data.content_article && (
                     <div
                       dangerouslySetInnerHTML={{
-                        __html: contentData.data.content_article.article_body,
+                        __html: contentData.data.content_article.body,
                       }}
                     />
                   )}
@@ -68,6 +68,7 @@ const UserContentDetail: React.FC<ContentlayoutProps> = () => {
                       }}
                     />
                   )}
+
                   {contentData.data.content_event && (
                     <div className="flex flex-wrap gap-x-2 items-center text-[16px] font-[700]">
                       <Icons.location className="w-[20px] h-[20px]" />
