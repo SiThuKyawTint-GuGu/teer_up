@@ -82,6 +82,7 @@ const UserTable: React.FC = () => {
         header: "Role",
         enableEditing: true,
         editVariant: "select",
+        Cell: ({ row }: any) => <p>{row?.original?.role?.charAt(0).toUpperCase() + row?.original?.role?.slice(1)}</p>,
         editSelectOptions: ["student", "mentor"],
         muiEditTextFieldProps: {
           select: true,
@@ -93,7 +94,7 @@ const UserTable: React.FC = () => {
           onFocus: () =>
             setValidationErrors({
               ...validationErrors,
-              role: "undefined",
+              // role: "undefined",
             }),
         },
       },
@@ -145,20 +146,6 @@ const UserTable: React.FC = () => {
     table.setEditingRow(null); //exit editing mode
   };
 
-  //DELETE action
-  // const openDeleteConfirmModal = async (row: MRT_Row<any>) => {
-  //   const { id } = row;
-  //   if (window.confirm("Are you sure you want to delete this user?")) {
-  //     await deleteTrigger(
-  //       { id },
-  //       {
-  //         onSuccess: () => {
-  //           mutate();
-  //         },
-  //       }
-  //     );
-  //   }
-  // };
   const handleDelete = async () => {
     setOpen(false);
     await deleteTrigger(
@@ -305,6 +292,7 @@ const validateEmail = (email: string) =>
 function validateUser(user: User) {
   return {
     name: !validateRequired(user.name) ? "First Name is Required" : "",
+    role: !validateRequired(user.role) ? "Role is Required" : "",
   };
 }
 
