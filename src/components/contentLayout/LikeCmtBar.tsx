@@ -4,7 +4,7 @@ import { ContentData, Input_config, Input_options } from "@/types/Content";
 
 import { Flex } from "@radix-ui/themes";
 
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Button } from "../ui/Button";
 import { DialogTrigger } from "../ui/Dialog";
 import { Icons } from "../ui/Images";
@@ -21,8 +21,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
   const { trigger: like } = useLikeContent();
   const { trigger: contentSave } = useSaveContent();
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const form = data.content_event?.form_config.formdetails_configs;
-  console.log(form);
+  const form = useMemo(() => data.content_event?.form_config.formdetails_configs, [data]);
 
   const saveContent = async () => {
     await contentSave(
@@ -66,7 +65,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
         </Button>
       )}
       {data.type === "opportunity" && (
-        <Button size="sm" className="w-[166px]">
+        <Button size="sm" className="w-[166px]" onClick={() => setOpenModal(true)}>
           Apply now
         </Button>
       )}

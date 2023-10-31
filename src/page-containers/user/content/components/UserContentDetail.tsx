@@ -22,11 +22,12 @@ const UserContentDetail: React.FC<ContentlayoutProps> = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   return (
-    <Dialog open={openModal} onOpenChange={val => setOpenModal(val)}>
-      <div className="fixed max-w-[400px]  w-full  top-0 z-[9999] mx-auto flex flex-wrap">
-        <ContentDetailHeader pathname="/home" title="Detail Page" />
-      </div>
-      <Grid columns="1">
+    <Grid columns="1">
+      <Dialog open={openModal} onOpenChange={val => setOpenModal(val)}>
+        <div className="fixed max-w-[400px]  w-full  top-0 z-[9999] mx-auto flex flex-wrap">
+          <ContentDetailHeader pathname="/home" title="Detail Page" />
+        </div>
+
         {contentData && (
           <div className="w-full h-full pt-[48px] pb-[100px]">
             {" "}
@@ -98,8 +99,8 @@ const UserContentDetail: React.FC<ContentlayoutProps> = () => {
             <CommentSection data={contentData} mutateParentData={contentMutate} />
           </DialogContent>
         )}
-      </Grid>
-    </Dialog>
+      </Dialog>
+    </Grid>
   );
 };
 
