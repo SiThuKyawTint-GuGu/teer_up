@@ -62,8 +62,6 @@ const UserContent = () => {
     if (data.type === "video" && data.content_video)
       return <Video data={data} setVideoRef={handleVideoRef(index)} autoplay={index === 0} contentMutate={mutate} />;
     if (data.type === "onboarding") return <Onboarding data={data} />;
-    if (data.type === "mentor")
-      return <ContentLayout data={data} contentMutate={mutate} redir={`/mentor/${data.slug}`} />;
     return <ContentLayout data={data} contentMutate={mutate} redir={`/content/${data.slug}`} />;
   };
 

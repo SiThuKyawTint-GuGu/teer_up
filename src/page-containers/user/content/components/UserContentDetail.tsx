@@ -11,6 +11,7 @@ import { Grid } from "@radix-ui/themes";
 import { useParams } from "next/navigation";
 import React, { useMemo, useState } from "react";
 import NormalContentDetail from "./ContentDetail";
+import MentorDetail from "./MentorDetail";
 import PathwayDetail from "./PathwayDetail";
 import VideoDetail from "./VideoDetail";
 
@@ -27,6 +28,8 @@ const UserContentDetail: React.FC<ContentlayoutProps> = () => {
       return <NormalContentDetail data={contentData} contentMutate={contentMutate} />;
     if (contentData?.type === "video") return <VideoDetail data={contentData} contentMutate={contentMutate} />;
     if (contentData?.type === "pathway") return <PathwayDetail data={contentData} contentMutate={contentMutate} />;
+    if (contentData?.type === "video") return <VideoDetail data={contentData} contentMutate={contentMutate} />;
+    if (contentData?.type === "mentor") return <MentorDetail data={contentData} contentMutate={contentMutate} />;
   };
   return (
     <Grid columns="1">
