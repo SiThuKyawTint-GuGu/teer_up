@@ -981,12 +981,8 @@ const ContentDetail = ({ id }: Props) => {
                     sx={{ width: 300 }}
                     value={pathway.name}
                     // onInputChange={handleInputChange}
-                    onInputChange={(event, newInputValue) =>
-                      handleInputChange(event, newInputValue, index)
-                    }
-                    onChange={(event, newValue) =>
-                      handleSelectPathwayChange(event, newValue, index)
-                    }
+                    onInputChange={(event, newInputValue) => handleInputChange(event, newInputValue, index)}
+                    onChange={(event, newValue) => handleSelectPathwayChange(event, newValue, index)}
                     renderInput={params => <TextField {...params} label="Contents" />}
                   />
                   <AiFillDelete
