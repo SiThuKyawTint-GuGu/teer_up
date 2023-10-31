@@ -18,13 +18,13 @@ const BrowsePage = () => {
   });
   const differentContent = (data: ContentData) => {
     if (data.type === "event" && data.content_event)
-      return <BrowserContentLayout data={data} contentMutate={mutate} redir={`/events/${data.slug}`} />;
+      return <BrowserContentLayout data={data} contentMutate={mutate} redir={`/content/${data.slug}`} />;
     if (data.type === "article" && data.content_article)
-      return <BrowserContentLayout data={data} contentMutate={mutate} redir={`/articles/${data.slug}`} />;
+      return <BrowserContentLayout data={data} contentMutate={mutate} redir={`/content/${data.slug}`} />;
     if (data.type === "opportunity" && data.content_opportunity)
-      return <BrowserContentLayout data={data} contentMutate={mutate} redir={`/opportunity/${data.slug}`} />;
+      return <BrowserContentLayout data={data} contentMutate={mutate} redir={`/content/${data.slug}`} />;
     if (data.type === "pathway")
-      return <BrowserContentLayout data={data} contentMutate={mutate} redir={`/pathway/${data.slug}`} />;
+      return <BrowserContentLayout data={data} contentMutate={mutate} redir={`/content/${data.slug}`} />;
     if (data.type === "mentor")
       return <BrowserContentLayout data={data} contentMutate={mutate} redir={`/mentor/${data.slug}`} />;
   };

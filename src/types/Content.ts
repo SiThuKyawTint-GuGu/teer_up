@@ -46,11 +46,13 @@ export interface ContentEvent extends FormConfig {
   to_datetime: string;
   location: string;
   content_id: string;
+  body: TrustedHTML;
 }
 
 export interface ContentArticle {
   id: number;
   article_body: TrustedHTML;
+  body: TrustedHTML;
   published_by: string;
   content_id: string;
 }
@@ -75,6 +77,7 @@ export interface ContentOpportunity {
   form_config_id: number | string;
   link: string;
   location: string;
+  body: TrustedHTML;
 }
 
 export interface ContentMentor {
@@ -107,7 +110,7 @@ export interface ContentData {
   content_event: ContentEvent | null;
   content_article: ContentArticle | null;
   content_opportunity: ContentOpportunity | null;
-  content_pathways: ContentPathway[] | null;
+  content_pathways: ContentData[] | null;
   category: string;
   user: User;
   name: string;

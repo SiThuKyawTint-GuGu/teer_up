@@ -4,7 +4,7 @@ import MentorProfile from "@/page-containers/mentor/MentorProfile";
 const Mentor = () => {
   return (
     <>
-      <ContentDetailHeader pathname="/home" title="Mentors Detail" />
+      <ContentDetailHeader title="Mentors Detail" />
       <div className="pt-[48px]">
         <MentorProfile />
       </div>

@@ -5,7 +5,7 @@ import { Grid } from "@radix-ui/themes";
 const PathwayPage = () => {
   return (
     <Grid columns="1">
-      <ContentDetailHeader pathname="/home" title="Pathway Detail" />
+      <ContentDetailHeader title="Pathway Detail" />
       <div className="pt-[48px] w-full h-full">
         <PathwayDetail />
       </div>
