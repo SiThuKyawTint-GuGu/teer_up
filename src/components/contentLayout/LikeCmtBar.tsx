@@ -58,7 +58,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
   };
 
   return (
-    <div className="bg-white flex py-2 items-center">
+    <div className="bg-white flex py-1 items-center">
       {data.type === "event" && (
         <Button size="sm" className="w-[166px]" onClick={() => setOpenModal(true)}>
           Join now
