@@ -69,6 +69,7 @@ const AdminTable: React.FC = () => {
         accessorKey: "role",
         header: "Role",
         enableEditing: false,
+        Cell: ({ row }: any) => <p>{row?.original?.role?.charAt(0).toUpperCase() + row?.original?.role?.slice(1)}</p>,
         muiEditTextFieldProps: {
           type: "email",
           required: true,
