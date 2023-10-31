@@ -18,7 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <head>
           <link rel="icon" href="/teeup.svg" />
         </head>
-        <body>
+        <body className="bg-layout">
           <Providers>{children}</Providers>
         </body>
       </html>
