@@ -82,6 +82,7 @@ const UserTable: React.FC = () => {
         header: "Role",
         enableEditing: true,
         editVariant: "select",
+        Cell: ({ row }: any) => <p>{row?.original?.role?.charAt(0).toUpperCase() + row?.original?.role?.slice(1)}</p>,
         editSelectOptions: ["student", "mentor"],
         muiEditTextFieldProps: {
           select: true,

@@ -393,25 +393,12 @@ const FormDetailConfigPage = ({ id }: Props) => {
                     <div className="border border-gray-300 p-5 m-3 rounded-md">
                       <p className="text-sm mb-2">{field.name}</p>
                       {field.input_options.length > 0 && (
-                        // <Select onValueChange={handleSelectChange}>
-                        //   <SelectTrigger className="p-2 h-5 border-2  bg-white border-gray-700 ">
-                        //     {field.placeholder || selectType}
-                        //   </SelectTrigger>
-
-                        //   <SelectContent className="bg-white">
-                        //     {field.input_options.map((dropdown: any, index: number) => (
-                        //       <SelectItem key={index} value={dropdown.value}>
-                        //         {dropdown.label}
-                        //       </SelectItem>
-                        //     ))}
-                        //   </SelectContent>
-                        // </Select>
                         <FormControl fullWidth>
                           <InputLabel id="input-config">{field.placeholder || selectInputConfig}</InputLabel>
                           <Select
                             labelId="input-config"
                             value={selectInputConfig}
-                            label="Age"
+                            label={field.placeholder || selectInputConfig}
                             onChange={handleSelectInputConfig}
                           >
                             {field.input_options.map((dropdown: any, index: number) => (
@@ -422,7 +409,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
                           </Select>
                         </FormControl>
                       )}
-                      <div className="flex justify-between mt-5">
+                      <div className="flex justify-between items-center mt-5">
                         <Button
                           color="error"
                           variant="contained"
@@ -433,7 +420,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
                         </Button>
                         <AiTwotoneEdit
                           onClick={() => handleUpdateInputConfig(field)}
-                          className="ml-2 mt-2 cursor-pointer text-red-700"
+                          className="ml-2 cursor-pointer text-red-700"
                           size={25}
                         />
                       </div>
@@ -467,12 +454,8 @@ const FormDetailConfigPage = ({ id }: Props) => {
                     <>
                       <div key={index} className="flex flex-col border border-gray-300 p-5 m-3 rounded-md">
                         <p>{field.name}</p>
-                        <div className="flex mt-3 justify-between">
-                          {/* <DatePicker
-                              selected={new Date()}
-                              onChange={date => console.log(date)}
-                            /> */}
-                          <div className="mb-2">
+                        <div className="flex justify-center items-center my-3">
+                          <div>
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                               <DemoContainer components={["DatePicker"]}>
                                 <DatePicker label={field.name} />
@@ -482,7 +465,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
 
                           <AiTwotoneEdit
                             onClick={() => handleUpdateInputConfig(field)}
-                            className="ml-2  mt-2 cursor-pointer text-red-700"
+                            className="ml-2 cursor-pointer text-red-700"
                             size={25}
                           />
                         </div>
@@ -880,18 +863,6 @@ const FormDetailConfigPage = ({ id }: Props) => {
                     {field.input_config.type === "checkbox" && (
                       <div className="my-3">
                         <p className="my-2">{field.input_config.name}</p>
-                        {/* <form>
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                          <Checkbox.Root className="CheckboxRoot" defaultChecked id="c1">
-                            <Checkbox.Indicator className="CheckboxIndicator">
-                              <AiOutlineCheck size={25} className="text-red-700" />
-                            </Checkbox.Indicator>
-                          </Checkbox.Root>
-                          <label className="Label" htmlFor="c1">
-                            {field.input_config.placeholder}
-                          </label>
-                        </div>
-                      </form> */}
                         <FormGroup>
                           <FormControlLabel
                             control={<Checkbox defaultChecked />}

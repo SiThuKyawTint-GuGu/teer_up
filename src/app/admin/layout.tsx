@@ -18,10 +18,10 @@ const AdminLayout = ({ children }: Props) => {
     <ThemeRegistry options={{ key: "mui" }}>
       {token ? (
         <PageLayout>
-          <main className="bg-gray-100 h-full w-full p-0">{children}</main>
+          <main className="h-full w-full p-0">{children}</main>
         </PageLayout>
       ) : (
-        <main className="bg-gray-100 h-full w-full p-0">{children}</main>
+        <main className="h-full w-full p-0">{children}</main>
       )}
     </ThemeRegistry>
   );

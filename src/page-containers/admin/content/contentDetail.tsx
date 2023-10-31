@@ -145,6 +145,7 @@ const ContentDetail = ({ id }: Props) => {
     if (editor) {
       editor?.setContent(editorContent);
     }
+
     if (oppoEditor) {
       oppoEditor?.setContent(oppoEditorContent);
     }
@@ -969,22 +970,14 @@ const ContentDetail = ({ id }: Props) => {
               </MuiButton>
               {pathwayContent.map((pathway: any, index: number) => (
                 <div key={index} className="flex items-center gap-4 mt-10">
-                  {/* <TextField
-                      size="small"
-                      id="outlined-basic"
-                      label="Pathway Name"
-                      variant="outlined"
-                    /> */}
                   <Autocomplete
                     disablePortal
-                    id="combo-box-demo"
+                    id={`pathway-${index}`}
                     options={contentOptions || []}
                     sx={{ width: 300 }}
                     value={pathway.name}
-                    // onInputChange={handleInputChange}
                     onInputChange={(event, newInputValue) => handleInputChange(event, newInputValue, index)}
                     onChange={(event, newValue) => handleSelectPathwayChange(event, newValue, index)}
-
                     renderInput={params => <TextField {...params} label="Contents" />}
                   />
                   <AiFillDelete

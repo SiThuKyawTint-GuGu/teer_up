@@ -40,6 +40,9 @@ const MentorshipTable: React.FC = () => {
         accessorKey: "status",
         header: "Status",
         enableEditing: false,
+        Cell: ({ row }: any) => (
+          <p>{row?.original?.status?.charAt(0).toUpperCase() + row?.original?.status?.slice(1)}</p>
+        ),
         size: 2,
       },
       // {
