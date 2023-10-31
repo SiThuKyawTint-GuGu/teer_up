@@ -1,69 +1,11 @@
 export type User = {
   id: string;
   name: string;
+  role: string;
   lastName?: string;
   email?: string;
   state?: string;
 };
-
-export const fakeData: User[] = [
-  {
-    id: "9s41rp",
-    name: "Kelvin",
-    lastName: "Langosh",
-    email: "Jerod14@hotmail.com",
-    state: "Ohio",
-  },
-  {
-    id: "08m6rx",
-    name: "Molly",
-    lastName: "Purdy",
-    email: "Hugh.Dach79@hotmail.com",
-    state: "Rhode Island",
-  },
-  {
-    id: "5ymtrc",
-    name: "Henry",
-    lastName: "Lynch",
-    email: "Camden.Macejkovic@yahoo.com",
-    state: "California",
-  },
-  {
-    id: "ek5b97",
-    name: "Glenda",
-    lastName: "Douglas",
-    email: "Eric0@yahoo.com",
-    state: "Montana",
-  },
-  {
-    id: "xxtydd",
-    name: "Leone",
-    lastName: "Williamson",
-    email: "Ericka_Mueller52@yahoo.com",
-    state: "Colorado",
-  },
-  {
-    id: "wzxj9m",
-    name: "Mckenna",
-    lastName: "Friesen",
-    email: "Veda_Feeney@yahoo.com",
-    state: "New York",
-  },
-  {
-    id: "21dwtz",
-    name: "Wyman",
-    lastName: "Jast",
-    email: "Melvin.Pacocha@yahoo.com",
-    state: "Montana",
-  },
-  {
-    id: "o8oe4k",
-    name: "Janick",
-    lastName: "Willms",
-    email: "Delfina12@gmail.com",
-    state: "Nebraska",
-  },
-];
 
 //50 us states array
 export const usStates = [

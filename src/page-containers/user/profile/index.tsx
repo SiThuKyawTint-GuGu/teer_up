@@ -53,10 +53,15 @@ const Profile: React.FC = () => {
       >
         <Grid columns="1">
           <Box className="pb-[55px]">
-            <Flex justify="center" className="bg-white" p="3">
+            <Flex justify="center" position="relative" className="bg-white" p="3">
               <Text size="3" weight="medium">
                 Profile
               </Text>
+              <Flex justify="center" align="center" className="absolute top-0 right-2 bottom-0">
+                <Link href={`/profile/setting`}>
+                  <Icons.profileSetting />
+                </Link>
+              </Flex>
             </Flex>
             <CardBox className="mb-[7px] rounded-none">
               <Section p="0">
