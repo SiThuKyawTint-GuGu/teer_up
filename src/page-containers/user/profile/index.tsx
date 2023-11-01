@@ -179,8 +179,10 @@ const Profile: React.FC = () => {
                 </Heading>
                 {userProfile?.educations?.length
                   ? userProfile?.educations?.map((each, key) => (
-                      <div
+                      <Flex
                         key={key}
+                        justify="between"
+                        align="start"
                         className={cn(
                           "pb-[10px] mb-[10px]",
                           key !== (userProfile?.educations ? userProfile.educations.length - 1 : -1) &&
@@ -191,9 +193,20 @@ const Profile: React.FC = () => {
                           <Text as="label" weight="bold" size="3">
                             {each.school_name}
                           </Text>
-                          <Text size="2">{each.degree}</Text>
+                          <Text size="1">{each.degree}</Text>
                         </Flex>
-                      </div>
+                        <Flex justify="end" align="center" gap="1">
+                          <Text size="2" weight="light">
+                            {dayjs(each?.start_date).format("YYYY")}
+                          </Text>
+                          <Text size="2" weight="light">
+                            -
+                          </Text>
+                          <Text size="2" weight="light">
+                            {each?.end_date ? dayjs(each?.end_date).format("YYYY") : "present"}
+                          </Text>
+                        </Flex>
+                      </Flex>
                     ))
                   : "-"}
               </Section>
