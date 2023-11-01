@@ -1,6 +1,11 @@
 "use client";
 import { useGetFormConfigById, usePostFormConfig, useUpdateFormConfig } from "@/services/formConfig";
-import { useGetInputConfig, usePostInputConfig, useUpdateInputConfig } from "@/services/inputConfig";
+import {
+  useDeleteInputConfig,
+  useGetInputConfig,
+  usePostInputConfig,
+  useUpdateInputConfig,
+} from "@/services/inputConfig";
 // import "@/styles/switch.css";
 import "@/styles/tab.css";
 import { InputConfigResponse } from "@/types/InputConfig";
@@ -88,6 +93,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
 
   const { trigger: inputConfigTrigger } = usePostInputConfig();
   const { trigger: formConfigTrigger, isMutating: postMutating } = usePostFormConfig();
+  const { trigger: deleteInputConfigTrigger } = useDeleteInputConfig();
 
   const {
     register,
@@ -133,7 +139,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
       return;
     } else {
       if (!updateInputConfg) {
-        if (selectType === "radio" || selectType === "dropdown") {
+        if (selectType === "radio" || selectType === "dropdown" || selectType === "checkbox") {
           const submitData = {
             name: inputConfigName,
             placeholder: inputConfigPlaceholder,
@@ -163,7 +169,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
         setShowModal(false);
       } else {
         let updateData;
-        if (selectType === "radio" || selectType === "dropdown") {
+        if (selectType === "radio" || selectType === "dropdown" || selectType === "checkbox") {
           updateData = {
             name: inputConfigName,
             placeholder: inputConfigPlaceholder,
@@ -299,6 +305,10 @@ const FormDetailConfigPage = ({ id }: Props) => {
     setSelectType(field.type);
   };
 
+  const handleDeleteInputConfig = async (id: string) => {
+    await deleteInputConfigTrigger({ id });
+  };
+
   return (
     <form onSubmit={handleSubmit(handleAddFormConfig)}>
       <div className="bg-white p-7 rounded-md">
@@ -367,14 +377,19 @@ const FormDetailConfigPage = ({ id }: Props) => {
                           </IconButton>
                         </div>
                       </div>
-                      <Button
-                        color="error"
-                        variant="contained"
-                        sx={{ width: "50px" }}
-                        onClick={() => handleAddField(field)}
-                      >
-                        ADD
-                      </Button>
+                      <div className="flex justify-between">
+                        <Button
+                          color="error"
+                          variant="contained"
+                          sx={{ width: "50px" }}
+                          onClick={() => handleAddField(field)}
+                        >
+                          ADD
+                        </Button>
+                        <IconButton color="error" onClick={() => handleDeleteInputConfig(field.id)}>
+                          <DeleteIcon fontSize="inherit" />
+                        </IconButton>
+                      </div>
                     </div>
                   )}
                   {field.type === "radio" && (
@@ -404,15 +419,14 @@ const FormDetailConfigPage = ({ id }: Props) => {
                         >
                           ADD
                         </Button>
-                        {/* <AiTwotoneEdit
-                          onClick={() => handleUpdateInputConfig(field)}
-                          className="ml-2 cursor-pointer text-red-700"
-                          size={25}
-                        /> */}
-
-                        <IconButton onClick={() => handleUpdateInputConfig(field)} color="error">
-                          <BorderColorIcon fontSize="inherit" />
-                        </IconButton>
+                        <div>
+                          <IconButton onClick={() => handleUpdateInputConfig(field)} color="error">
+                            <BorderColorIcon fontSize="inherit" />
+                          </IconButton>
+                          <IconButton color="error" onClick={() => handleDeleteInputConfig(field.id)}>
+                            <DeleteIcon fontSize="inherit" />
+                          </IconButton>
+                        </div>
                       </div>
                     </div>
                   )}
@@ -446,14 +460,12 @@ const FormDetailConfigPage = ({ id }: Props) => {
                         >
                           ADD
                         </Button>
-                        {/* <AiTwotoneEdit
-                          onClick={() => handleUpdateInputConfig(field)}
-                          className="ml-2 cursor-pointer text-red-700"
-                          size={25}
-                        /> */}
                         <div className="ml-2">
                           <IconButton onClick={() => handleUpdateInputConfig(field)} color="error">
                             <BorderColorIcon fontSize="inherit" />
+                          </IconButton>
+                          <IconButton color="error" onClick={() => handleDeleteInputConfig(field.id)}>
+                            <DeleteIcon fontSize="inherit" />
                           </IconButton>
                         </div>
                       </div>
@@ -464,28 +476,29 @@ const FormDetailConfigPage = ({ id }: Props) => {
                       <p className="font-weight-500 text-sm mb-2">{field.name}</p>
                       <div className="flex justify-between">
                         <FormGroup>
-                          <FormControlLabel control={<Checkbox defaultChecked />} label={field.placeholder} />
+                          {field.input_options.map((box: any, index: number) => (
+                            <FormControlLabel key={index} control={<Checkbox defaultChecked />} label={box.label} />
+                          ))}
                         </FormGroup>
-
-                        {/* <AiTwotoneEdit
-                          onClick={() => handleUpdateInputConfig(field)}
-                          className="ml-2 cursor-pointer text-red-700"
-                          size={25}
-                        /> */}
+                      </div>
+                      <div className="flex justify-between">
+                        <Button
+                          color="error"
+                          variant="contained"
+                          sx={{ width: "50px" }}
+                          onClick={() => handleAddField(field)}
+                        >
+                          ADD
+                        </Button>
                         <div className="ml-2">
                           <IconButton onClick={() => handleUpdateInputConfig(field)} color="error">
                             <BorderColorIcon fontSize="inherit" />
                           </IconButton>
+                          <IconButton color="error" onClick={() => handleDeleteInputConfig(field.id)}>
+                            <DeleteIcon fontSize="inherit" />
+                          </IconButton>
                         </div>
                       </div>
-                      <Button
-                        color="error"
-                        variant="contained"
-                        sx={{ width: "50px" }}
-                        onClick={() => handleAddField(field)}
-                      >
-                        ADD
-                      </Button>
                     </div>
                   )}
                   {field.type === "date" && (
@@ -512,14 +525,19 @@ const FormDetailConfigPage = ({ id }: Props) => {
                             </IconButton>
                           </div>
                         </div>
-                        <Button
-                          color="error"
-                          variant="contained"
-                          sx={{ width: "50px" }}
-                          onClick={() => handleAddField(field)}
-                        >
-                          ADD
-                        </Button>
+                        <div className="flex justify-between">
+                          <Button
+                            color="error"
+                            variant="contained"
+                            sx={{ width: "50px" }}
+                            onClick={() => handleAddField(field)}
+                          >
+                            ADD
+                          </Button>
+                          <IconButton color="error" onClick={() => handleDeleteInputConfig(field.id)}>
+                            <DeleteIcon fontSize="inherit" />
+                          </IconButton>
+                        </div>
                       </div>
                     </>
                   )}
@@ -581,7 +599,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
                       </Select>
                     </FormControl>
                   </div>
-                  {(selectType === "radio" || selectType === "dropdown") && (
+                  {(selectType === "radio" || selectType === "dropdown" || selectType === "checkbox") && (
                     <>
                       <p>Options</p>
                       {options.map((field, index) => (
@@ -752,15 +770,13 @@ const FormDetailConfigPage = ({ id }: Props) => {
                       </>
                     )}
 
-                    {field.input_config.type === "checkbox" && (
+                    {field.input_config.type === "checkbox" && field.input_config.input_options.length > 0 && (
                       <>
                         <p className="my-3">{field.input_config.name}</p>
-
                         <FormGroup>
-                          <FormControlLabel
-                            control={<Checkbox defaultChecked />}
-                            label={field.input_config.placeholder}
-                          />
+                          {field.input_config.input_options.map((box: any, index: number) => (
+                            <FormControlLabel key={index} control={<Checkbox defaultChecked />} label={box.label} />
+                          ))}
                         </FormGroup>
                       </>
                     )}
@@ -892,14 +908,13 @@ const FormDetailConfigPage = ({ id }: Props) => {
                       </>
                     )}
 
-                    {field.input_config.type === "checkbox" && (
+                    {field.input_config.type === "checkbox" && field.input_config.input_options.length > 0 && (
                       <div className="my-3">
                         <p className="my-2">{field.input_config.name}</p>
                         <FormGroup>
-                          <FormControlLabel
-                            control={<Checkbox defaultChecked />}
-                            label={field.input_config.placeholder}
-                          />
+                          {field.input_config.input_options.map((box: any, index: number) => (
+                            <FormControlLabel key={index} control={<Checkbox defaultChecked />} label={box.label} />
+                          ))}
                         </FormGroup>
                       </div>
                     )}
