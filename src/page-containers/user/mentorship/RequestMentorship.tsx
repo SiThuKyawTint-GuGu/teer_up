@@ -15,7 +15,10 @@ import React, { useCallback, useMemo } from "react";
 const RequestMentorship: React.FC = () => {
   const { data: requestMentorship } = useGetMentorship<ParamsType, MentorshipResponse>();
   const { trigger: approvedTrigger } = useApproveMentorship();
-  const { role } = useMemo(() => getUserInfo(), []) as User;
+  const role = useMemo(() => {
+    const userInfo = getUserInfo() as User;
+    return userInfo?.role;
+  }, []);
 
   const getStatus = useCallback((status: string) => {
     switch (status) {
