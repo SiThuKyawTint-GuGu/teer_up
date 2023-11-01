@@ -1,5 +1,6 @@
 import { USER_ROLE } from "@/shared/enums";
 import { Education } from "./Education";
+import { Experience } from "./Experience";
 
 export interface Gender {
   id: number;
@@ -55,6 +56,7 @@ export interface UserProfile {
   cover_url: string;
   created_at: string;
   educations: Education[];
+  experiences: Experience[];
   email: string;
   id: number;
   name: string;
