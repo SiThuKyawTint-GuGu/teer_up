@@ -45,3 +45,27 @@ export interface Gender {
   created_at: string;
   updated_at: string;
 }
+
+export interface Dimension {
+  id: number;
+  name: string;
+  created_at: Date;
+  updated_at: Date;
+  short_name: string;
+  high_body: null;
+  medium_body: null;
+  low_body: null;
+}
+export interface UserScores {
+  id: number;
+  created_at: Date;
+  updated_at: Date;
+  user_id: number;
+  skill: number;
+  certainty: number;
+  dimension_id: number;
+  dimension: Dimension;
+}
+export interface UserScoresResponse {
+  data: UserScores[];
+}

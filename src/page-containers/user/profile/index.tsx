@@ -16,6 +16,7 @@ import dayjs from "dayjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
+import RadarChart from "./RadarChart";
 
 const profileTrigger = {
   [PROFILE_TRIGGER.COVER]: "See cover picture",
@@ -281,6 +282,9 @@ const Profile: React.FC = () => {
                     : "-"}
                 </Flex>
               </Section>
+            </CardBox>
+            <CardBox className="mb-[7px] rounded-none">
+              <RadarChart />
             </CardBox>
           </Box>
         </Grid>
