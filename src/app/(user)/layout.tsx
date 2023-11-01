@@ -2,7 +2,6 @@
 
 import VerifyEmailModal from "@/components/auth/VerifyEmailModal";
 import VerifyPop from "@/components/auth/VerifyPop";
-import { Button } from "@/components/ui/Button";
 import appAxios from "@/lib/appAxios";
 import { useVerifyEmailModal, useVerifyModal } from "@/store/authStore";
 import { getToken } from "@/utils/auth";
@@ -63,7 +62,6 @@ const Layout = ({ children }: Props) => {
         {openVerifyEmailModal && <VerifyEmailModal />}
         <div className="max-w-[400px] w-full mx-auto h-screen relative bg-layout">{children}</div>
       </Grid>
-      <Button>Hello</Button>
     </>
   );
 };
