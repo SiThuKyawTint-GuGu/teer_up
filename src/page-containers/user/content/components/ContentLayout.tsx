@@ -45,8 +45,6 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
     );
   };
 
-  console.log(openVerifyModal);
-
   return (
     <Dialog open={openModal} onOpenChange={val => setOpenModal(val)}>
       <div className="w-full bg-white shadow-lg rounded-lg h-[90%] justify-start flex-col">
