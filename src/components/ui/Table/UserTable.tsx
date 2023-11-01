@@ -4,7 +4,7 @@ import { USER_ROLE } from "@/shared/enums";
 import { UserResponse } from "@/types/User";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { Box, Button, IconButton, Modal, Tooltip, Typography } from "@mui/material";
+import { Alert, Box, Button, IconButton, Modal, Tooltip, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import {
   MaterialReactTable,
@@ -34,8 +34,8 @@ const UserTable: React.FC = () => {
     pageSize: pagination.pageSize,
     name: globalFilter || "",
   });
-  const { trigger: createTrigger } = useCreateUser();
-  const { trigger: updateTrigger } = useUpdateUser();
+  const { trigger: createTrigger, error: createError } = useCreateUser();
+  const { trigger: updateTrigger, error: updateError } = useUpdateUser();
   const { trigger: deleteTrigger } = useDeleteUser();
   const columns = useMemo<any>(
     () => [
@@ -107,14 +107,14 @@ const UserTable: React.FC = () => {
         header: "Created At",
         enableEditing: false,
         size: 3,
-        Cell: ({ value }: any) => dayjs(value).format("MMM D, YYYY h:mm A"),
+        Cell: ({ row }: any) => dayjs(row.original.created_at).format("MMM D, YYYY h:mm A"),
       },
       {
         accessorKey: "updated_at",
         header: "Updated At",
         enableEditing: false,
         size: 3,
-        Cell: ({ value }: any) => dayjs(value).format("MMM D, YYYY h:mm A"),
+        Cell: ({ row }: any) => dayjs(row.original.updated_at).format("MMM D, YYYY h:mm A"),
       },
     ],
     [validationErrors]
@@ -257,6 +257,16 @@ const UserTable: React.FC = () => {
 
   return (
     <>
+      {createError && (
+        <Alert sx={{ marginBottom: "20px", width: "60%", marginLeft: "12px" }} severity="error">
+          {createError.response.data.message}
+        </Alert>
+      )}
+      {updateError && (
+        <Alert sx={{ marginBottom: "20px", width: "60%", marginLeft: "12px" }} severity="error">
+          {updateError.response.data.message}
+        </Alert>
+      )}
       <MaterialReactTable table={table} />
       <Modal open={open} onClose={() => setOpen(false)}>
         <Box sx={style}>
