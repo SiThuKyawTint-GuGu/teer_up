@@ -80,7 +80,7 @@ const Search: React.FC = () => {
               {searchData?.data?.length ? (
                 searchData?.data?.map((each, key) => (
                   <>
-                    <Link key={key} href={`/browse/${each?.slug}`}>
+                    <Link key={key} href={`/content/${each?.slug}`}>
                       <Text className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">{each?.title}</Text>
                     </Link>
                   </>
