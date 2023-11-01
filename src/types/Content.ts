@@ -79,6 +79,8 @@ export interface ContentOpportunity {
   link: string;
   location: string;
   body: TrustedHTML;
+  formconfig_id: number | string;
+  form_config: FormConfig;
 }
 export interface MentorEducation {
   id: number | string;

@@ -3,3 +3,9 @@ export type VerifyModalState = {
   verifyModalOpenHandler: () => void;
   verifyModalCloseHandler: () => void;
 };
+
+export type VerifyEmailModalState = {
+  openVerifyEmailModal: boolean;
+  verifyEmailModalOpenHandler: () => void;
+  verifyEmailModalCloseHandler: () => void;
+};

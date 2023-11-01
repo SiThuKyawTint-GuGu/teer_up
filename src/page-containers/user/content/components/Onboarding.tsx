@@ -63,7 +63,6 @@ const Onboarding: React.FC<OnboardingProps> = ({ data }) => {
                 ))}
             </div>
           </div>
-          <div className="text-center w-full pb-3">Tips: Choose the answer that best describes you currently.</div>
         </CardBox>
       </div>
       {modalOpen && (
