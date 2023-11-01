@@ -1,9 +1,10 @@
 "use client";
 
+import VerifyEmailModal from "@/components/auth/VerifyEmailModal";
 import VerifyPop from "@/components/auth/VerifyPop";
 import { Button } from "@/components/ui/Button";
 import appAxios from "@/lib/appAxios";
-import { useVerifyModal } from "@/store/authStore";
+import { useVerifyEmailModal, useVerifyModal } from "@/store/authStore";
 import { getToken } from "@/utils/auth";
 import { Grid } from "@radix-ui/themes";
 import Head from "next/head";
@@ -16,6 +17,7 @@ interface Props {
 const token = getToken();
 const Layout = ({ children }: Props) => {
   const { openVerifyModal, verifyModalOpenHandler } = useVerifyModal();
+  const { openVerifyEmailModal, verifyEmailModalOpenHandler } = useVerifyEmailModal();
   useEffect(() => {
     const requestInterceptor = appAxios.interceptors.request.use(
       function (config) {
@@ -36,9 +38,11 @@ const Layout = ({ children }: Props) => {
         return response;
       },
       function (error) {
-        if ((error.response.status = 401)) {
+        if (error.response.status == 401) {
           verifyModalOpenHandler();
-          console.log("error", error.response.status);
+        }
+        if (error.response.status == 403) {
+          verifyEmailModalOpenHandler();
         }
         return Promise.reject(error);
       }
@@ -56,6 +60,7 @@ const Layout = ({ children }: Props) => {
       </Head>
       <Grid columns="1">
         {openVerifyModal && <VerifyPop />}
+        {openVerifyEmailModal && <VerifyEmailModal />}
         <div className="max-w-[400px] w-full mx-auto h-screen relative bg-layout">{children}</div>
       </Grid>
       <Button>Hello</Button>
