@@ -1,8 +1,10 @@
 // import { useVerifyModal } from "@/store/authStore";
+// import { getToken } from "@/utils/auth";
 // import { useEffect } from "react";
 // import appAxios from "./appAxios";
 
 // const requestHook = () => {
+//     const token = getToken();
 //   useEffect(() => {
 //     const requestInterceptor = appAxios.interceptors.request.use(
 //       function (config) {
@@ -19,7 +21,7 @@
 //       response => {
 //         if (response.status === 201 || response.status === 204) {
 //           // showToast("success", "Success");
-//         }
+
 //         return response;
 //       },
 //       function (error) {

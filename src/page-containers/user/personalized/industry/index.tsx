@@ -22,7 +22,7 @@ const IndustryPage = () => {
               key={index}
               onClick={() => setSelectData(each.name)}
               className={`flex justify-center items-center w-full h-full p-[24px] border-[1px]
-            shadow-md bg-[#fefefe] rounded-md 
+                 shadow-md bg-[#fefefe] rounded-md cursor-pointer
              ${selectData === each.name && "border-[1px] border-primary bg-secondary"}
         
             `}
