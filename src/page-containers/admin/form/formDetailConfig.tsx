@@ -29,7 +29,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -63,7 +63,6 @@ const validationSchema = yup.object({
 });
 const FormDetailConfigPage = ({ id }: Props) => {
   const router = useRouter();
-  const editorRef = useRef<any>();
   const { mutate, data: fields } = useGetInputConfig<InputConfigResponse>();
   // console.log('input config fields', fields);
   const { data: formConfigs } = useGetFormConfigById<any>(id);
@@ -79,7 +78,6 @@ const FormDetailConfigPage = ({ id }: Props) => {
   const [inputConfigName, setInputConfigName] = useState<string>("");
   const [inputConfigPlaceholder, setInputConfigPlaceholder] = useState<string>("");
   const [previewOptions, setPreviewOptions] = useState<OptionsProps[]>([]);
-  const [formName, setFormName] = useState<string>(formConfigs?.data.name || "");
   const [editFormFields, setEditFormFields] = useState<any[]>([]);
   const [updateInputConfg, setUpdateInputConfig] = useState<any>();
   const { trigger: updateInputConfigTrigger } = useUpdateInputConfig(
@@ -187,6 +185,9 @@ const FormDetailConfigPage = ({ id }: Props) => {
         setShowModal(false);
       }
     }
+    setInputConfigPlaceholder("");
+    setInputConfigName(""), setOptions([]);
+    setSelectType("");
   };
 
   const handleAddOption = () => {
@@ -204,10 +205,18 @@ const FormDetailConfigPage = ({ id }: Props) => {
     setOptions(updatedFields);
   };
 
-  const handleOptionChange = (e: any, optionValue: string) => {
+  const handleOptionChange = (e: any, optionValue: string, index: number) => {
     const { name, value } = e.target;
+    // setOptions(prevOptions =>
+    //   prevOptions.map(option => (option.value === optionValue ? { ...option, [name]: value } : option))
+    // );
     setOptions(prevOptions =>
-      prevOptions.map(option => (option.value === optionValue ? { ...option, [name]: value } : option))
+      prevOptions.map((option, i) => {
+        if (i === index) {
+          return option.value === optionValue ? { ...option, [name]: value } : option;
+        }
+        return option;
+      })
     );
   };
 
@@ -294,7 +303,13 @@ const FormDetailConfigPage = ({ id }: Props) => {
     <form onSubmit={handleSubmit(handleAddFormConfig)}>
       <div className="bg-white p-7 rounded-md">
         <div className="mb-10">
-          <TextField {...register("name")} label="Name" className="w-full" variant="outlined" />
+          <TextField
+            InputLabelProps={{ shrink: !!formConfigs?.data.name }}
+            {...register("name")}
+            label="Name"
+            className="w-full"
+            variant="outlined"
+          />
           <p className="mt-2 text-red-700">{errors.name?.message}</p>
         </div>
 
@@ -578,7 +593,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
                             <div className="mb-2 mr-2">
                               <TextField
                                 name="label"
-                                onChange={e => handleOptionChange(e, field.value)}
+                                onChange={e => handleOptionChange(e, field.value, index)}
                                 defaultValue={field.label}
                                 label="Label"
                                 variant="outlined"
@@ -587,7 +602,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
                             <div className="mb-2">
                               <TextField
                                 name="value"
-                                onChange={e => handleOptionChange(e, field.value)}
+                                onChange={e => handleOptionChange(e, field.value, index)}
                                 defaultValue={field.value}
                                 label="Value"
                                 variant="outlined"
@@ -629,6 +644,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
                         variant="contained"
                         onClick={() => {
                           setShowModal(false);
+                          setInputConfigName(""), setSelectType(""), setInputConfigPlaceholder(""), setOptions([]);
                         }}
                       >
                         Cancel

@@ -33,7 +33,7 @@ const UserContentDetail: React.FC<ContentlayoutProps> = () => {
     <Grid columns="1">
       <Dialog open={openModal} onOpenChange={val => setOpenModal(val)}>
         <div className="fixed max-w-[400px]  w-full  top-0 z-[9999] mx-auto flex flex-wrap">
-          <ContentDetailHeader title="Detail Page" />
+          <ContentDetailHeader title={`${contentData?.type} detail`} />
         </div>
         <div className="pt-[48px] w-full h-screen">{getContentDetail()}</div>
 

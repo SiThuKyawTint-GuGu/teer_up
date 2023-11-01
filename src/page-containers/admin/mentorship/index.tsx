@@ -60,14 +60,14 @@ const MentorshipTable: React.FC = () => {
         header: "Created At",
         enableEditing: false,
         size: 3,
-        Cell: ({ value }: any) => dayjs(value).format("MMM D, YYYY h:mm A"),
+        Cell: ({ row }: any) => dayjs(row.original.created_at).format("MMM D, YYYY h:mm A"),
       },
       {
         accessorKey: "updated_at",
         header: "Upated At",
         enableEditing: false,
         size: 3,
-        Cell: ({ value }: any) => dayjs(value).format("MMM D, YYYY h:mm A"),
+        Cell: ({ row }: any) => dayjs(row.original.updated_at).format("MMM D, YYYY h:mm A"),
       },
     ],
     []
@@ -76,7 +76,7 @@ const MentorshipTable: React.FC = () => {
   const table = useMaterialReactTable({
     columns,
     data: (mentorships?.data as any) || [],
-
+    enableColumnFilters: false,
     muiToolbarAlertBannerProps: isLoading
       ? {
           color: "error",
