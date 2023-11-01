@@ -1,7 +1,8 @@
+import Search from "@/page-containers/search";
 import { NextPage } from "next";
 
 const SearchPage: NextPage = () => {
-  return <div>SearchPage</div>;
+  return <Search />;
 };
 
 export default SearchPage;

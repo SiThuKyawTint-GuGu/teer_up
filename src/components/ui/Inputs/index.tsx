@@ -64,22 +64,32 @@ InputText.defaultProps = {
   type: "text",
 };
 
-export type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
+export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
+  variant?: "contain";
+};
 
-const InputSearch = React.forwardRef<HTMLInputElement, InputProps>(({ type = "text", placeholder, className }, ref) => {
-  return (
-    <InputStyled className="w-full shadow-input">
-      <TextField.Root>
-        <TextField.Slot pr="3">
-          <IconButton size="2" variant="ghost">
-            <Icons.search className={cn("w-[24px] h-[24px] text-[#5B6770]", className)} />
-          </IconButton>
-        </TextField.Slot>
-        <TextField.Input type={type} className={className} placeholder={placeholder} size="3" ref={ref} />
-      </TextField.Root>
-    </InputStyled>
-  );
-});
+const InputSearch = React.forwardRef<HTMLInputElement, InputProps>(
+  ({ type = "text", placeholder, className, variant }, ref) => {
+    return (
+      <InputStyled className={cn("w-full shadow-input", variant && "rounded-full bg-[#e1e5e9]")}>
+        <TextField.Root>
+          <TextField.Slot pr="3">
+            <IconButton size="2" variant="ghost">
+              <Icons.search className={cn("w-[24px] h-[24px] text-[#5B6770]", variant && "text-[#8d9499]")} />
+            </IconButton>
+          </TextField.Slot>
+          <TextField.Input
+            type={type}
+            className={cn(className, variant && "placeholder-[#373A36]")}
+            placeholder={placeholder}
+            size="3"
+            ref={ref}
+          />
+        </TextField.Root>
+      </InputStyled>
+    );
+  }
+);
 InputSearch.displayName = "InputSearch";
 
 const InputTextArea = React.forwardRef<HTMLInputElement, Props>(
@@ -127,5 +137,6 @@ const InputStyled = styled.div<{ inputType?: USER_ROLE }>`
   .rt-TextAreaChrome {
     box-shadow: none;
     background-color: transparent;
+    outline: 0;
   }
 `;
