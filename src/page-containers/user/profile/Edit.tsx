@@ -223,6 +223,51 @@ const ProfileEdit: React.FC = () => {
               <Section className="bg-white" py="4" px="3">
                 <Flex justify="between" align="center" mb="4">
                   <Heading as="h6" size="4" align="left">
+                    Experience
+                  </Heading>
+                  <Text className="text-primary">Edit</Text>
+                  {/* <Link href={`/profile/${id}/experience`}>
+                    <Text className="text-primary">Edit</Text>
+                  </Link> */}
+                </Flex>
+                {userProfile?.experiences?.length
+                  ? userProfile?.experiences?.map((each, key) => (
+                      <Flex
+                        key={key}
+                        justify="between"
+                        align="start"
+                        className={cn(
+                          "pb-[10px] mb-[10px]",
+                          key !== (userProfile?.experiences ? userProfile.experiences.length - 1 : -1) &&
+                            "border-b border-b-[#BDC7D5]"
+                        )}
+                      >
+                        <Flex direction="column" gap="2">
+                          <Text as="label" weight="bold" size="3">
+                            {each?.position}
+                          </Text>
+                          <Text size="1">{each?.company}</Text>
+                        </Flex>
+                        <Flex justify="end" align="center" gap="1">
+                          <Text size="2" weight="light">
+                            {dayjs(each?.start_date).format("YYYY")}
+                          </Text>
+                          <Text size="2" weight="light">
+                            -
+                          </Text>
+                          <Text size="2" weight="light">
+                            {each?.end_date ? dayjs(each?.end_date).format("YYYY") : "present"}
+                          </Text>
+                        </Flex>
+                      </Flex>
+                    ))
+                  : "-"}
+              </Section>
+            </CardBox>
+            <CardBox className="mb-[7px] rounded-none">
+              <Section className="bg-white" py="4" px="3">
+                <Flex justify="between" align="center" mb="4">
+                  <Heading as="h6" size="4" align="left">
                     Career interests
                   </Heading>
                   <Link href={`/profile/${id}/career-interests`}>

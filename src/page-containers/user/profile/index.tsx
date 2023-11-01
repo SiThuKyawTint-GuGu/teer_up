@@ -191,9 +191,48 @@ const Profile: React.FC = () => {
                           <Text as="label" weight="bold" size="3">
                             {each.school_name}
                           </Text>
-                          <Text>{each.degree}</Text>
+                          <Text size="2">{each.degree}</Text>
                         </Flex>
                       </div>
+                    ))
+                  : "-"}
+              </Section>
+            </CardBox>
+            <CardBox className="mb-[7px] rounded-none">
+              <Section className="bg-white" py="4" px="3">
+                <Heading as="h6" size="4" align="left" mb="4">
+                  Experience
+                </Heading>
+                {userProfile?.experiences?.length
+                  ? userProfile?.experiences?.map((each, key) => (
+                      <Flex
+                        key={key}
+                        justify="between"
+                        align="start"
+                        className={cn(
+                          "pb-[10px] mb-[10px]",
+                          key !== (userProfile?.experiences ? userProfile.experiences.length - 1 : -1) &&
+                            "border-b border-b-[#BDC7D5]"
+                        )}
+                      >
+                        <Flex direction="column" gap="2">
+                          <Text as="label" weight="bold" size="3">
+                            {each?.position}
+                          </Text>
+                          <Text size="1">{each?.company}</Text>
+                        </Flex>
+                        <Flex justify="end" align="center" gap="1">
+                          <Text size="2" weight="light">
+                            {dayjs(each?.start_date).format("YYYY")}
+                          </Text>
+                          <Text size="2" weight="light">
+                            -
+                          </Text>
+                          <Text size="2" weight="light">
+                            {each?.end_date ? dayjs(each?.end_date).format("YYYY") : "present"}
+                          </Text>
+                        </Flex>
+                      </Flex>
                     ))
                   : "-"}
               </Section>
