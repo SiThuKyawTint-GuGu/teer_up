@@ -14,21 +14,19 @@ import NormalContentDetail from "./ContentDetail";
 import MentorDetail from "./MentorDetail";
 import PathwayDetail from "./PathwayDetail";
 import VideoDetail from "./VideoDetail";
-
 type ContentlayoutProps = {};
 
 const UserContentDetail: React.FC<ContentlayoutProps> = () => {
   const { slug }: { slug: string } = useParams();
   const { data, mutate: contentMutate } = useGetContentBySlug<ContentData>(slug);
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const contentData = useMemo(() => data?.data, [data]);
+  const contentData: ContentData = useMemo(() => data?.data, [data]);
 
   const getContentDetail = () => {
     if (contentData?.type === "article" || contentData?.type === "event" || contentData?.type === "opportunity")
       return <NormalContentDetail data={contentData} contentMutate={contentMutate} />;
     if (contentData?.type === "video") return <VideoDetail data={contentData} contentMutate={contentMutate} />;
     if (contentData?.type === "pathway") return <PathwayDetail data={contentData} contentMutate={contentMutate} />;
-    if (contentData?.type === "video") return <VideoDetail data={contentData} contentMutate={contentMutate} />;
     if (contentData?.type === "mentor") return <MentorDetail data={contentData} contentMutate={contentMutate} />;
   };
   return (
