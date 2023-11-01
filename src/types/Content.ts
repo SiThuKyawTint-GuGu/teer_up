@@ -30,23 +30,24 @@ export interface Input_options {
 }
 
 export interface FormConfig {
-  form_config: {
-    created_at: string;
-    formdetails_configs: {
-      id: number;
-      input_config: Input_config;
-    }[];
-  };
+  created_at: string;
+  id: number | string;
+  formdetails_configs: {
+    id: number;
+    input_config: Input_config[];
+  }[];
+  name: string;
   from_datetime: string;
-  id: number;
 }
-export interface ContentEvent extends FormConfig {
+export interface ContentEvent {
   id: number;
   from_datetime: string;
   to_datetime: string;
   location: string;
   content_id: string;
   body: TrustedHTML;
+  formconfig_id: number | string;
+  form_config: FormConfig;
 }
 
 export interface ContentArticle {
