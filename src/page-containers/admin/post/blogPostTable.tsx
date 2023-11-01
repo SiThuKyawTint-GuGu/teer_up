@@ -4,6 +4,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { Box, IconButton, Modal, Tooltip, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
+import dayjs from "dayjs";
 import { MaterialReactTable, MRT_PaginationState, useMaterialReactTable } from "material-react-table";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
@@ -13,7 +14,7 @@ const BlogTable: React.FC = () => {
     pageIndex: 0,
     pageSize: 10,
   });
-  const [globalFilter, setGlobalFilter] = useState<string>("");
+  // const [globalFilter, setGlobalFilter] = useState<string>("");
   const [open, setOpen] = useState<boolean>(false);
   const [id, setId] = useState<string>("");
   const {
@@ -23,7 +24,7 @@ const BlogTable: React.FC = () => {
   } = useGetBlogs<ParamsType, any>({
     page: pagination.pageIndex + 1,
     pageSize: pagination.pageSize,
-    name: globalFilter || "",
+    // name: globalFilter || "",
   });
   const { trigger: deleteTrigger } = useDeleteBlog();
   const [blogData, setBlogData] = useState<any>();
@@ -38,6 +39,7 @@ const BlogTable: React.FC = () => {
         accessorKey: "id",
         header: "ID",
         enableEditing: false,
+        size: 1,
       },
       {
         accessorKey: "name",
@@ -53,6 +55,18 @@ const BlogTable: React.FC = () => {
         accessorKey: "link",
         header: "Link",
         enableEditing: false,
+      },
+      {
+        accessorKey: "created_at",
+        header: "Created At",
+        enableEditing: false,
+        Cell: ({ row }: any) => dayjs(row.original.created_at).format("MMM D, YYYY h:mm A"),
+      },
+      {
+        accessorKey: "updated_at",
+        header: "Upated At",
+        enableEditing: false,
+        Cell: ({ row }: any) => dayjs(row.original.updated_at).format("MMM D, YYYY h:mm A"),
       },
       // {
       //   accessorKey: "is_public",
@@ -98,7 +112,7 @@ const BlogTable: React.FC = () => {
     enableStickyFooter: true,
     enableStickyHeader: true,
     positionActionsColumn: "last",
-    manualFiltering: true,
+    // manualFiltering: true,
     manualPagination: true,
     rowCount: blogs?.total,
     initialState: {
@@ -112,7 +126,7 @@ const BlogTable: React.FC = () => {
       pagination,
       isLoading,
     },
-    onGlobalFilterChange: setGlobalFilter,
+    // onGlobalFilterChange: setGlobalFilter,
     onPaginationChange: setPagination,
     renderRowActions: ({ row, table }) => (
       <Box sx={{ display: "flex", gap: "1rem" }}>
