@@ -80,7 +80,7 @@ const SavedList: React.FC = () => {
             <Section className="" py="4" px="3">
               {savedContents?.data?.length ? (
                 savedContents?.data?.map((each, key) => (
-                  <Link key={key} href={`/${each?.content?.type}/${each?.content?.slug}`}>
+                  <Link key={key} href={`content/${each?.content?.slug}`}>
                     <Box pb="4">
                       <CardBox className="p-[8px]">
                         <Flex justify="start" align="start" gap="2">
