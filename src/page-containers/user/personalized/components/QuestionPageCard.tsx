@@ -9,8 +9,9 @@ type QuestionPageCardProp = {
   title?: string;
   layout?: boolean;
   subTitle?: string;
+  nextPage?: string;
 };
-const QuestionPageCard: React.FC<QuestionPageCardProp> = ({ children, title, layout, subTitle }) => {
+const QuestionPageCard: React.FC<QuestionPageCardProp> = ({ children, title, layout, subTitle, nextPage }) => {
   const router = useRouter();
   return (
     <>
@@ -19,7 +20,7 @@ const QuestionPageCard: React.FC<QuestionPageCardProp> = ({ children, title, lay
           <div onClick={() => router.back()}>
             <Icons.back className="w-[20px] h-[20px]" />
           </div>
-          <Link href={"/home"}>
+          <Link href={nextPage || "/home"}>
             <Text className="text-primary">Skip for now</Text>
           </Link>
         </div>
