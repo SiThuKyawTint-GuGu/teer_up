@@ -51,6 +51,7 @@ const QuestionDetail = ({ id }: Props) => {
   const [editorContent, setEditorContent] = useState<any>({});
   const [editorInitial, setEditorInitial] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+  const [name, setName] = useState<string>("name");
 
   const handleEditorInit = (editor: any, name: string) => {
     setEditor(editor);
@@ -87,6 +88,7 @@ const QuestionDetail = ({ id }: Props) => {
       }
 
       if (question?.data) {
+        setName(question?.data?.name);
         setValue("name", question?.data?.name);
         setValue("type", question?.data?.type);
         setOptions(question?.data.options);
@@ -156,7 +158,13 @@ const QuestionDetail = ({ id }: Props) => {
     <>
       <form onSubmit={handleSubmit(Submit)} className="bg-white h-full p-5">
         <div className="mb-10">
-          <TextField {...register("name")} label="Question" className="w-full" variant="outlined" />
+          <TextField
+            InputLabelProps={{ shrink: !!name }}
+            {...register("name")}
+            label="Question"
+            className="w-full"
+            variant="outlined"
+          />
           <p className="mt-2 text-red-700">{errors.name?.message}</p>
         </div>
         <div className="mb-10">
@@ -218,6 +226,7 @@ const QuestionDetail = ({ id }: Props) => {
                     <TextField
                       {...field}
                       label="Answer"
+                      InputLabelProps={{ shrink: !!option.name }}
                       defaultValue={option.name}
                       className="w-full"
                       variant="outlined"
@@ -236,6 +245,7 @@ const QuestionDetail = ({ id }: Props) => {
                       {...field}
                       label="Score"
                       type={"number"}
+                      InputLabelProps={{ shrink: !!option.score }}
                       defaultValue={option.score}
                       className="w-full"
                       variant="outlined"

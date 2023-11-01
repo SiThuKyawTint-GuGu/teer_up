@@ -2,9 +2,6 @@
 import { useGetBlogCategory } from "@/services/blogCategory";
 import { useGetBlogById, usePostBlog, useUpdateBlog } from "@/services/blogPost";
 import { useGetFormConfig, useGetFormConfigById } from "@/services/formConfig";
-import "@/styles/checkbox.css";
-import "@/styles/radio.css";
-import "@/styles/tab.css";
 import { yupResolver } from "@hookform/resolvers/yup";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import SaveIcon from "@mui/icons-material/Save";
@@ -88,7 +85,7 @@ const BlogPostDetail = ({ id }: Props) => {
       setValue("category", blog?.data.category_id);
       setValue("form", blog?.data.formconfig_id);
     }
-  }, [editor, editorContent, blog?.data]);
+  }, [editor, editorContent, setValue, blog?.data]);
 
   const handleSelectChange = (event: SelectChangeEvent) => {
     setSelectedValue(event.target.value);
@@ -128,14 +125,24 @@ const BlogPostDetail = ({ id }: Props) => {
       <div className="bg-white p-10 rounded-md">
         <form onSubmit={handleSubmit(submit)} className="space-y-8">
           <div>
-            <TextField {...register("name")} label="Name" className="w-full" variant="outlined" />
+            <TextField
+              InputLabelProps={{ shrink: !!blog?.data.name }}
+              {...register("name")}
+              id="name"
+              label="Name"
+              className="w-full"
+              variant="outlined"
+            />
             <p className="mt-2 text-red-700">{errors.name?.message}</p>
           </div>
           <div>
             <FormControl disabled={blog?.data ? true : false} className="w-full" variant="outlined">
-              <InputLabel htmlFor="link">Link</InputLabel>
+              <InputLabel shrink={!!blogLink} htmlFor="link">
+                Link
+              </InputLabel>
               <OutlinedInput
                 id="link"
+                defaultValue={blogLink}
                 {...register("link")}
                 endAdornment={
                   <InputAdornment position="end">

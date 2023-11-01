@@ -23,7 +23,7 @@ const ContentTable: React.FC = () => {
   const { data: contents, isLoading } = useGetContent<ParamsType, ContentType>({
     page: pagination.pageIndex + 1,
     pagesize: pagination.pageSize,
-    name: globalFilter || "",
+    search: globalFilter || "",
   });
   // console.log(contents);
   const [contentData, setContentData] = useState<any>();
@@ -70,7 +70,7 @@ const ContentTable: React.FC = () => {
         header: "Created At",
         enableEditing: false,
         size: 3,
-        Cell: ({ value }: any) => dayjs(value).format("MMM D, YYYY h:mm A"),
+        Cell: ({ row }: any) => dayjs(row.original.created_at).format("MMM D, YYYY h:mm A"),
       },
     ],
     []
@@ -104,7 +104,7 @@ const ContentTable: React.FC = () => {
       },
     },
     positionActionsColumn: "last",
-    manualFiltering: true,
+    // manualFiltering: true,
     manualPagination: true,
     rowCount: contents?.total,
     initialState: {

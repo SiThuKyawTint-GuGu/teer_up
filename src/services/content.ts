@@ -180,3 +180,18 @@ export const useRequestMentorship = () =>
   useSWRMutation(`/mentorships`, (url, { arg }: RequestMentorShipArg) => {
     return appAxios.post(url, arg);
   });
+
+interface ContentFormArg {
+  arg: {
+    formconfig_id: number | string;
+    inputs: {
+      inputconfig_id: number | string;
+      value: string;
+    }[];
+  };
+}
+
+export const useContentForm = () =>
+  useSWRMutation(`/forms`, (url, { arg }: ContentFormArg) => {
+    return appAxios.post(url, arg);
+  });

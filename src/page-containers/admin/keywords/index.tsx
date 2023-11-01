@@ -50,13 +50,13 @@ const Keywords: React.FC = () => {
         accessorKey: "created_at",
         header: "Created At",
         enableEditing: false,
-        Cell: ({ value }: any) => dayjs(value).format("MMM D, YYYY h:mm A"),
+        Cell: ({ row }: any) => dayjs(row.original.created_at).format("MMM D, YYYY h:mm A"),
       },
       {
         accessorKey: "updated_at",
         header: "Upated At",
         enableEditing: false,
-        Cell: ({ value }: any) => dayjs(value).format("MMM D, YYYY h:mm A"),
+        Cell: ({ row }: any) => dayjs(row.original.updated_at).format("MMM D, YYYY h:mm A"),
       },
     ],
     [validationErrors]
@@ -114,6 +114,7 @@ const Keywords: React.FC = () => {
     columns,
     data: (keywords?.data as any) || [],
     createDisplayMode: "row",
+    enableColumnFilters: false,
     editDisplayMode: "row",
     enableEditing: true,
     getRowId: row => row.id,
