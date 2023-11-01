@@ -3,7 +3,7 @@ import QuestionPageCard from "../components/QuestionPageCard";
 const IndustryPage = () => {
   return (
     <QuestionPageCard title="Which industry are you most interested in?">
-      <div className="grid grid-cols-2 gap-7 grid-flow-row">
+      <div className="grid grid-cols-2 gap-7 px-2 grid-flow-row">
         {dummyText.map((d: any, index: number) => (
           <div
             key={index}

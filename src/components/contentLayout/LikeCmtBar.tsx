@@ -22,7 +22,10 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
   const { trigger: contentSave } = useSaveContent();
   const { trigger: postForm, isMutating, data: formResponse } = useContentForm();
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const form = useMemo(() => data.content_event?.form_config?.formdetails_configs, [data]);
+  const form = useMemo(() => {
+    if (data?.type === "event") return data.content_event?.form_config?.formdetails_configs;
+    if (data?.type === "opportunity") return data.content_opportunity?.form_config?.formdetails_configs;
+  }, [data]);
   const [selectedOptions, setSelectedOptions] = useState<{ inputconfig_id: number | string; value: string }[] | []>([]);
   const [message, setMessage] = useState<string>("");
 
@@ -78,18 +81,17 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
 
   console.log(formResponse);
 
-  const formElements = (data: Input_config) => {
-    if (data.type === "radio") {
-      return data.input_options.map((input: Input_options, index: number) => (
+  const formElements = (inputData: Input_config) => {
+    console.log("inputData", inputData.type);
+    if (inputData.type === "radio") {
+      return inputData.input_options.map((input: Input_options, index: number) => (
         <div key={index} className="flex w-full flex-wrap items-center gap-x-2">
-          <RadioButton changeHandler={() => handleChange(input, data.id)} />
+          <RadioButton changeHandler={() => handleChange(input, inputData.id)} />
           <label>{input.label}</label>
         </div>
       ));
     }
-    if (data.type === "text") {
-      return <InputText type={data.type} placeholder={data.placeholder} className="shadow bg-white" />;
-    }
+    if (inputData.type === "text") return <InputText />;
   };
 
   return (
@@ -146,7 +148,9 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
                 {form &&
                   form.length > 0 &&
                   form.map((formData: any, formIndex) => (
-                    <div key={formIndex}>{formElements(formData.input_config)}</div>
+                    <div key={formIndex} className="mb-3">
+                      {formElements(formData.input_config)}
+                    </div>
                   ))}
               </Flex>
               <Button disabled={isMutating} onClick={formSubmit}>
