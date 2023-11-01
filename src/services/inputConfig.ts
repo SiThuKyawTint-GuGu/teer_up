@@ -25,3 +25,8 @@ export const useUpdateInputConfig = (id: string) =>
   useSWRMutation(`/admin/inputconfig/${id}`, (url, { arg }: InputConfigArgType) => {
     return appAxios.put<InputConfigArgType>(url, arg);
   });
+
+export const useDeleteInputConfig = () =>
+  useSWRMutation(`/admin/inputconfig`, (url, { arg }: { arg: { id: string } }) => {
+    return appAxios.delete<InputConfigArgType>(`${url}/${arg.id}`);
+  });
