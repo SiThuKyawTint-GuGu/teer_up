@@ -195,3 +195,16 @@ export const useContentForm = () =>
   useSWRMutation(`/forms`, (url, { arg }: ContentFormArg) => {
     return appAxios.post(url, arg);
   });
+
+export interface SearchParamsType {
+  type?: string;
+  status?: string;
+  search: string;
+  pageSize?: number;
+  page?: number;
+}
+export const useGetContentSearch = <SearchParamsType, ContentType>(
+  params: SearchParamsType
+): SWRResponse<ContentType, any> => {
+  return useSWR<ContentType>(`/content/search?${routeFilter(params)}`);
+};

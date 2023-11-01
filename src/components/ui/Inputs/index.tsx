@@ -66,10 +66,11 @@ InputText.defaultProps = {
 
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   variant?: "contain";
+  onChange?: () => void;
 };
 
 const InputSearch = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ type = "text", placeholder, className, variant }, ref) => {
+  ({ type = "text", placeholder, className, variant, onChange }, ref) => {
     return (
       <InputStyled className={cn("w-full shadow-input", variant && "rounded-full bg-[#e1e5e9]")}>
         <TextField.Root>
@@ -82,8 +83,8 @@ const InputSearch = React.forwardRef<HTMLInputElement, InputProps>(
             type={type}
             className={cn(className, variant && "placeholder-[#373A36]")}
             placeholder={placeholder}
-            size="3"
             ref={ref}
+            onChange={onChange}
           />
         </TextField.Root>
       </InputStyled>
