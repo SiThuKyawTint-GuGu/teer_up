@@ -1,13 +1,18 @@
 "use client";
 import { useGetFormConfigById, usePostFormConfig, useUpdateFormConfig } from "@/services/formConfig";
-import { useGetInputConfig, usePostInputConfig, useUpdateInputConfig } from "@/services/inputConfig";
-import "@/styles/switch.css";
+import {
+  useDeleteInputConfig,
+  useGetInputConfig,
+  usePostInputConfig,
+  useUpdateInputConfig,
+} from "@/services/inputConfig";
+// import "@/styles/switch.css";
 import "@/styles/tab.css";
 import { InputConfigResponse } from "@/types/InputConfig";
 import { yupResolver } from "@hookform/resolvers/yup";
 import SaveIcon from "@mui/icons-material/Save";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { Box, InputLabel, TextField } from "@mui/material";
+import { Box, IconButton, InputLabel, Switch, TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import FormControl from "@mui/material/FormControl";
@@ -22,13 +27,16 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import * as Switch from "@radix-ui/react-switch";
+// import * as Switch from "@radix-ui/react-switch";
+import AddIcon from "@mui/icons-material/Add";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
+import DeleteIcon from "@mui/icons-material/Delete";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { useForm } from "react-hook-form";
-import { AiFillDelete, AiTwotoneEdit } from "react-icons/ai";
-import { MdKeyboardArrowUp, MdOutlineKeyboardArrowDown } from "react-icons/md";
 import * as yup from "yup";
 
 interface InputConfigFieldsProps {
@@ -60,7 +68,6 @@ const validationSchema = yup.object({
 });
 const FormDetailConfigPage = ({ id }: Props) => {
   const router = useRouter();
-  const editorRef = useRef<any>();
   const { mutate, data: fields } = useGetInputConfig<InputConfigResponse>();
   // console.log('input config fields', fields);
   const { data: formConfigs } = useGetFormConfigById<any>(id);
@@ -76,7 +83,6 @@ const FormDetailConfigPage = ({ id }: Props) => {
   const [inputConfigName, setInputConfigName] = useState<string>("");
   const [inputConfigPlaceholder, setInputConfigPlaceholder] = useState<string>("");
   const [previewOptions, setPreviewOptions] = useState<OptionsProps[]>([]);
-  const [formName, setFormName] = useState<string>(formConfigs?.data.name || "");
   const [editFormFields, setEditFormFields] = useState<any[]>([]);
   const [updateInputConfg, setUpdateInputConfig] = useState<any>();
   const { trigger: updateInputConfigTrigger } = useUpdateInputConfig(
@@ -87,6 +93,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
 
   const { trigger: inputConfigTrigger } = usePostInputConfig();
   const { trigger: formConfigTrigger, isMutating: postMutating } = usePostFormConfig();
+  const { trigger: deleteInputConfigTrigger } = useDeleteInputConfig();
 
   const {
     register,
@@ -132,7 +139,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
       return;
     } else {
       if (!updateInputConfg) {
-        if (selectType === "radio" || selectType === "dropdown") {
+        if (selectType === "radio" || selectType === "dropdown" || selectType === "checkbox") {
           const submitData = {
             name: inputConfigName,
             placeholder: inputConfigPlaceholder,
@@ -162,7 +169,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
         setShowModal(false);
       } else {
         let updateData;
-        if (selectType === "radio" || selectType === "dropdown") {
+        if (selectType === "radio" || selectType === "dropdown" || selectType === "checkbox") {
           updateData = {
             name: inputConfigName,
             placeholder: inputConfigPlaceholder,
@@ -184,6 +191,9 @@ const FormDetailConfigPage = ({ id }: Props) => {
         setShowModal(false);
       }
     }
+    setInputConfigPlaceholder("");
+    setInputConfigName(""), setOptions([]);
+    setSelectType("");
   };
 
   const handleAddOption = () => {
@@ -201,10 +211,18 @@ const FormDetailConfigPage = ({ id }: Props) => {
     setOptions(updatedFields);
   };
 
-  const handleOptionChange = (e: any, optionValue: string) => {
+  const handleOptionChange = (e: any, optionValue: string, index: number) => {
     const { name, value } = e.target;
+    // setOptions(prevOptions =>
+    //   prevOptions.map(option => (option.value === optionValue ? { ...option, [name]: value } : option))
+    // );
     setOptions(prevOptions =>
-      prevOptions.map(option => (option.value === optionValue ? { ...option, [name]: value } : option))
+      prevOptions.map((option, i) => {
+        if (i === index) {
+          return option.value === optionValue ? { ...option, [name]: value } : option;
+        }
+        return option;
+      })
     );
   };
 
@@ -236,7 +254,8 @@ const FormDetailConfigPage = ({ id }: Props) => {
     setEditFormFields(updatedFields);
   };
 
-  const handleSwitchChange = (index: number, isChecked: boolean) => {
+  const handleSwitchChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
+    const isChecked = event.target.checked;
     const updatedFields = editFormFields.map((field, i) => (i === index ? { ...field, required: isChecked } : field));
     setEditFormFields(updatedFields);
   };
@@ -286,11 +305,21 @@ const FormDetailConfigPage = ({ id }: Props) => {
     setSelectType(field.type);
   };
 
+  const handleDeleteInputConfig = async (id: string) => {
+    await deleteInputConfigTrigger({ id });
+  };
+
   return (
     <form onSubmit={handleSubmit(handleAddFormConfig)}>
       <div className="bg-white p-7 rounded-md">
         <div className="mb-10">
-          <TextField {...register("name")} label="Name" className="w-full" variant="outlined" />
+          <TextField
+            InputLabelProps={{ shrink: !!formConfigs?.data.name }}
+            {...register("name")}
+            label="Name"
+            className="w-full"
+            variant="outlined"
+          />
           <p className="mt-2 text-red-700">{errors.name?.message}</p>
         </div>
 
@@ -316,7 +345,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
         {/* {error && <p className="text-red-600 mb-2">{error}</p>} */}
         <div className="flex justify-between">
           <div className=" flex-1 border border-gray-300 p-1 py-3 m-1 rounded-md">
-            <p>Input Config</p>
+            <h1 className="m-3 text-lg font-semibold">Input Config</h1>
 
             {fields?.data &&
               fields?.data.length > 0 &&
@@ -337,20 +366,30 @@ const FormDetailConfigPage = ({ id }: Props) => {
                           className="w-full"
                           variant="outlined"
                         />
-                        <AiTwotoneEdit
+                        {/* <AiTwotoneEdit
                           onClick={() => handleUpdateInputConfig(field)}
                           className="ml-2 cursor-pointer text-red-700"
                           size={25}
-                        />
+                        /> */}
+                        <div className="ml-2">
+                          <IconButton onClick={() => handleUpdateInputConfig(field)} color="error">
+                            <BorderColorIcon fontSize="inherit" />
+                          </IconButton>
+                        </div>
                       </div>
-                      <Button
-                        color="error"
-                        variant="contained"
-                        sx={{ width: "50px" }}
-                        onClick={() => handleAddField(field)}
-                      >
-                        ADD
-                      </Button>
+                      <div className="flex justify-between">
+                        <Button
+                          color="error"
+                          variant="contained"
+                          sx={{ width: "50px" }}
+                          onClick={() => handleAddField(field)}
+                        >
+                          ADD
+                        </Button>
+                        <IconButton color="error" onClick={() => handleDeleteInputConfig(field.id)}>
+                          <DeleteIcon fontSize="inherit" />
+                        </IconButton>
+                      </div>
                     </div>
                   )}
                   {field.type === "radio" && (
@@ -380,11 +419,14 @@ const FormDetailConfigPage = ({ id }: Props) => {
                         >
                           ADD
                         </Button>
-                        <AiTwotoneEdit
-                          onClick={() => handleUpdateInputConfig(field)}
-                          className="ml-2 cursor-pointer text-red-700"
-                          size={25}
-                        />
+                        <div>
+                          <IconButton onClick={() => handleUpdateInputConfig(field)} color="error">
+                            <BorderColorIcon fontSize="inherit" />
+                          </IconButton>
+                          <IconButton color="error" onClick={() => handleDeleteInputConfig(field.id)}>
+                            <DeleteIcon fontSize="inherit" />
+                          </IconButton>
+                        </div>
                       </div>
                     </div>
                   )}
@@ -393,25 +435,12 @@ const FormDetailConfigPage = ({ id }: Props) => {
                     <div className="border border-gray-300 p-5 m-3 rounded-md">
                       <p className="text-sm mb-2">{field.name}</p>
                       {field.input_options.length > 0 && (
-                        // <Select onValueChange={handleSelectChange}>
-                        //   <SelectTrigger className="p-2 h-5 border-2  bg-white border-gray-700 ">
-                        //     {field.placeholder || selectType}
-                        //   </SelectTrigger>
-
-                        //   <SelectContent className="bg-white">
-                        //     {field.input_options.map((dropdown: any, index: number) => (
-                        //       <SelectItem key={index} value={dropdown.value}>
-                        //         {dropdown.label}
-                        //       </SelectItem>
-                        //     ))}
-                        //   </SelectContent>
-                        // </Select>
                         <FormControl fullWidth>
                           <InputLabel id="input-config">{field.placeholder || selectInputConfig}</InputLabel>
                           <Select
                             labelId="input-config"
                             value={selectInputConfig}
-                            label="Age"
+                            label={field.placeholder || selectInputConfig}
                             onChange={handleSelectInputConfig}
                           >
                             {field.input_options.map((dropdown: any, index: number) => (
@@ -422,7 +451,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
                           </Select>
                         </FormControl>
                       )}
-                      <div className="flex justify-between mt-5">
+                      <div className="flex justify-between items-center mt-5">
                         <Button
                           color="error"
                           variant="contained"
@@ -431,11 +460,14 @@ const FormDetailConfigPage = ({ id }: Props) => {
                         >
                           ADD
                         </Button>
-                        <AiTwotoneEdit
-                          onClick={() => handleUpdateInputConfig(field)}
-                          className="ml-2 mt-2 cursor-pointer text-red-700"
-                          size={25}
-                        />
+                        <div className="ml-2">
+                          <IconButton onClick={() => handleUpdateInputConfig(field)} color="error">
+                            <BorderColorIcon fontSize="inherit" />
+                          </IconButton>
+                          <IconButton color="error" onClick={() => handleDeleteInputConfig(field.id)}>
+                            <DeleteIcon fontSize="inherit" />
+                          </IconButton>
+                        </div>
                       </div>
                     </div>
                   )}
@@ -444,48 +476,12 @@ const FormDetailConfigPage = ({ id }: Props) => {
                       <p className="font-weight-500 text-sm mb-2">{field.name}</p>
                       <div className="flex justify-between">
                         <FormGroup>
-                          <FormControlLabel control={<Checkbox defaultChecked />} label={field.placeholder} />
+                          {field.input_options.map((box: any, index: number) => (
+                            <FormControlLabel key={index} control={<Checkbox defaultChecked />} label={box.label} />
+                          ))}
                         </FormGroup>
-
-                        <AiTwotoneEdit
-                          onClick={() => handleUpdateInputConfig(field)}
-                          className="ml-2 cursor-pointer text-red-700"
-                          size={25}
-                        />
                       </div>
-                      <Button
-                        color="error"
-                        variant="contained"
-                        sx={{ width: "50px" }}
-                        onClick={() => handleAddField(field)}
-                      >
-                        ADD
-                      </Button>
-                    </div>
-                  )}
-                  {field.type === "date" && (
-                    <>
-                      <div key={index} className="flex flex-col border border-gray-300 p-5 m-3 rounded-md">
-                        <p>{field.name}</p>
-                        <div className="flex mt-3 justify-between">
-                          {/* <DatePicker
-                              selected={new Date()}
-                              onChange={date => console.log(date)}
-                            /> */}
-                          <div className="mb-2">
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                              <DemoContainer components={["DatePicker"]}>
-                                <DatePicker label={field.name} />
-                              </DemoContainer>
-                            </LocalizationProvider>
-                          </div>
-
-                          <AiTwotoneEdit
-                            onClick={() => handleUpdateInputConfig(field)}
-                            className="ml-2  mt-2 cursor-pointer text-red-700"
-                            size={25}
-                          />
-                        </div>
+                      <div className="flex justify-between">
                         <Button
                           color="error"
                           variant="contained"
@@ -494,6 +490,54 @@ const FormDetailConfigPage = ({ id }: Props) => {
                         >
                           ADD
                         </Button>
+                        <div className="ml-2">
+                          <IconButton onClick={() => handleUpdateInputConfig(field)} color="error">
+                            <BorderColorIcon fontSize="inherit" />
+                          </IconButton>
+                          <IconButton color="error" onClick={() => handleDeleteInputConfig(field.id)}>
+                            <DeleteIcon fontSize="inherit" />
+                          </IconButton>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  {field.type === "date" && (
+                    <>
+                      <div key={index} className="flex flex-col border border-gray-300 p-5 m-3 rounded-md">
+                        <p>{field.name}</p>
+                        <div className="flex justify-center items-center my-3">
+                          <div>
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                              <DemoContainer components={["DatePicker"]}>
+                                <DatePicker label={field.name} />
+                              </DemoContainer>
+                            </LocalizationProvider>
+                          </div>
+
+                          {/* <AiTwotoneEdit
+                            onClick={() => handleUpdateInputConfig(field)}
+                            className="ml-2 cursor-pointer text-red-700"
+                            size={25}
+                          /> */}
+                          <div className="ml-2">
+                            <IconButton onClick={() => handleUpdateInputConfig(field)} color="error">
+                              <BorderColorIcon fontSize="inherit" />
+                            </IconButton>
+                          </div>
+                        </div>
+                        <div className="flex justify-between">
+                          <Button
+                            color="error"
+                            variant="contained"
+                            sx={{ width: "50px" }}
+                            onClick={() => handleAddField(field)}
+                          >
+                            ADD
+                          </Button>
+                          <IconButton color="error" onClick={() => handleDeleteInputConfig(field.id)}>
+                            <DeleteIcon fontSize="inherit" />
+                          </IconButton>
+                        </div>
                       </div>
                     </>
                   )}
@@ -503,7 +547,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
             <div className="flex justify-between">
               <div></div>
               <Button onClick={() => setShowModal(true)} color="error" variant="contained" sx={{ width: "50px" }}>
-                +
+                <AddIcon />
               </Button>
             </div>
             <div className="flex justify-between">
@@ -512,12 +556,10 @@ const FormDetailConfigPage = ({ id }: Props) => {
                 {/* Dialog Box */}
                 <Box sx={style}>
                   <div className="mb-3">
-                    <h1>Input Config</h1>
+                    <h1 className="text-xl font-semibold mb-7">Input Config</h1>
                   </div>
                   {error && <p className="text-red-600">{error}</p>}
-                  <div className="mb-5">
-                    <p className="font-weight-600 mb-3">Name*</p>
-
+                  <div className="mb-10">
                     <TextField
                       label="Name"
                       defaultValue={inputConfigName || ""}
@@ -527,9 +569,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
                     />
                   </div>
 
-                  <div className="mb-5">
-                    <p className="font-weight-600 mb-3">Placeholder*</p>
-
+                  <div className="mb-10">
                     <TextField
                       label="Placeholder"
                       defaultValue={inputConfigPlaceholder || ""}
@@ -539,8 +579,6 @@ const FormDetailConfigPage = ({ id }: Props) => {
                     />
                   </div>
                   <div className="mb-10">
-                    <p className="mb-5">Type*</p>
-
                     <FormControl fullWidth>
                       <InputLabel id="selectType-label">Type</InputLabel>
                       <Select
@@ -561,41 +599,38 @@ const FormDetailConfigPage = ({ id }: Props) => {
                       </Select>
                     </FormControl>
                   </div>
-                  {(selectType === "radio" || selectType === "dropdown") && (
+                  {(selectType === "radio" || selectType === "dropdown" || selectType === "checkbox") && (
                     <>
                       <p>Options</p>
                       {options.map((field, index) => (
                         <>
-                          <div key={index} className="flex justify-evenly p-5 rounded-md border border-gray-300 my-2">
+                          <div
+                            key={index}
+                            className="flex justify-between items-center p-5 rounded-md border border-gray-300 my-2"
+                          >
                             <div className="mb-2 mr-2">
-                              <p className="font-weight-600 mb-3">Label*</p>
-                              <fieldset className="Fieldset mb-10">
-                                <input
-                                  className="Input"
-                                  name="label"
-                                  defaultValue={field.label}
-                                  onChange={e => handleOptionChange(e, field.value)}
-                                />
-                              </fieldset>
+                              <TextField
+                                name="label"
+                                onChange={e => handleOptionChange(e, field.value, index)}
+                                defaultValue={field.label}
+                                label="Label"
+                                variant="outlined"
+                              />
                             </div>
                             <div className="mb-2">
-                              <p className="font-weight-600 mb-3">Value*</p>
-                              <fieldset className="Fieldset mb-10">
-                                <input
-                                  className="Input"
-                                  name="value"
-                                  defaultValue={field.value}
-                                  onChange={e => handleOptionChange(e, field.value)}
-                                />
-                              </fieldset>
-                            </div>
-                            <button onClick={() => handleDeleteOption(field.value)}>
-                              <AiFillDelete
-                                // onClick={() => setShowModal(true)}
-                                size={20}
-                                className="text-red-500 cursor-pointer"
+                              <TextField
+                                name="value"
+                                onChange={e => handleOptionChange(e, field.value, index)}
+                                defaultValue={field.value}
+                                label="Value"
+                                variant="outlined"
                               />
-                            </button>
+                            </div>
+                            <div>
+                              <IconButton onClick={() => handleDeleteOption(field.value)} color="error" size="large">
+                                <DeleteIcon fontSize="inherit" />
+                              </IconButton>
+                            </div>
                           </div>
                         </>
                       ))}
@@ -627,6 +662,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
                         variant="contained"
                         onClick={() => {
                           setShowModal(false);
+                          setInputConfigName(""), setSelectType(""), setInputConfigPlaceholder(""), setOptions([]);
                         }}
                       >
                         Cancel
@@ -649,7 +685,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
 
           {/* Edit form config */}
           <div className=" flex-1 border border-gray-300 p-1 py-3 m-1 rounded-md">
-            <p>Edit Form Config</p>
+            <h1 className="m-3 text-lg font-semibold">Edit Form Config</h1>
             {editFormFields &&
               editFormFields.length > 0 &&
               editFormFields.map((field, index) => (
@@ -734,15 +770,13 @@ const FormDetailConfigPage = ({ id }: Props) => {
                       </>
                     )}
 
-                    {field.input_config.type === "checkbox" && (
+                    {field.input_config.type === "checkbox" && field.input_config.input_options.length > 0 && (
                       <>
                         <p className="my-3">{field.input_config.name}</p>
-
                         <FormGroup>
-                          <FormControlLabel
-                            control={<Checkbox defaultChecked />}
-                            label={field.input_config.placeholder}
-                          />
+                          {field.input_config.input_options.map((box: any, index: number) => (
+                            <FormControlLabel key={index} control={<Checkbox defaultChecked />} label={box.label} />
+                          ))}
                         </FormGroup>
                       </>
                     )}
@@ -762,43 +796,40 @@ const FormDetailConfigPage = ({ id }: Props) => {
                     <div className=" mt-3 flex items-center justify-between">
                       <form>
                         <div style={{ display: "flex", alignItems: "center" }}>
-                          <label className="Label mr-1" htmlFor="airplane-mode">
-                            Is Required
-                          </label>
-                          <Switch.Root
-                            className="SwitchRoot mr-3"
-                            id="airplane-mode"
-                            checked={field.required}
-                            // onChange={}
-                            onCheckedChange={isChecked => handleSwitchChange(index, isChecked)}
-                          >
-                            <Switch.Thumb className="SwitchThumb" />
-                          </Switch.Root>
+                          <FormControlLabel
+                            control={
+                              <Switch
+                                checked={field.required}
+                                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                                  handleSwitchChange(index, event)
+                                }
+                                color="error"
+                              />
+                            }
+                            sx={{ color: "gray" }}
+                            label="Required"
+                          />
                         </div>
                       </form>
                       <div className="flex justify-center">
-                        <div
-                          // disabled={index === 0}
-                          onClick={index === 0 ? undefined : () => handleMoveField(index, index - 1)}
+                        <IconButton
+                          disabled={index === 0}
+                          onClick={() => handleMoveField(index, index - 1)}
+                          color="error"
                         >
-                          <MdKeyboardArrowUp size={25} className="text-gray-700 hover:text-red-700 cursor-pointer" />
-                        </div>
-                        <div
-                          // disabled={index === editFormFields.length - 1}
-                          // onClick={() => handleMoveField(index, index + 1)}
-                          onClick={
-                            index === editFormFields.length - 1 ? undefined : () => handleMoveField(index, index + 1)
-                          }
+                          <KeyboardArrowUpIcon fontSize="inherit" />
+                        </IconButton>
+                        <IconButton
+                          disabled={index === editFormFields.length - 1}
+                          onClick={() => handleMoveField(index, index + 1)}
+                          color="error"
                         >
-                          <MdOutlineKeyboardArrowDown
-                            size={25}
-                            className="text-gray-700 hover:text-red-700 cursor-pointer"
-                          />
-                        </div>
+                          <KeyboardArrowDownIcon fontSize="inherit" />
+                        </IconButton>
                       </div>
-                      <button onClick={() => handleDeleteField(field.order)}>
-                        <AiFillDelete size={20} className="text-red-500 cursor-pointer" />
-                      </button>
+                      <IconButton onClick={() => handleDeleteField(field.order)} color="error">
+                        <DeleteIcon fontSize="inherit" />
+                      </IconButton>
                     </div>
                   </div>
                 </>
@@ -807,7 +838,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
 
           {/* Preview */}
           <div className="flex-1 border border-gray-300 p-1 py-3 m-1 rounded-md">
-            <p>Preview</p>
+            <h1 className="m-3 text-lg font-semibold">Preview</h1>
             <div className=" flex flex-col pb-10 m-3 rounded-md">
               {editFormFields.length > 0 &&
                 editFormFields.map((field, index) => (
@@ -877,26 +908,13 @@ const FormDetailConfigPage = ({ id }: Props) => {
                       </>
                     )}
 
-                    {field.input_config.type === "checkbox" && (
+                    {field.input_config.type === "checkbox" && field.input_config.input_options.length > 0 && (
                       <div className="my-3">
                         <p className="my-2">{field.input_config.name}</p>
-                        {/* <form>
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                          <Checkbox.Root className="CheckboxRoot" defaultChecked id="c1">
-                            <Checkbox.Indicator className="CheckboxIndicator">
-                              <AiOutlineCheck size={25} className="text-red-700" />
-                            </Checkbox.Indicator>
-                          </Checkbox.Root>
-                          <label className="Label" htmlFor="c1">
-                            {field.input_config.placeholder}
-                          </label>
-                        </div>
-                      </form> */}
                         <FormGroup>
-                          <FormControlLabel
-                            control={<Checkbox defaultChecked />}
-                            label={field.input_config.placeholder}
-                          />
+                          {field.input_config.input_options.map((box: any, index: number) => (
+                            <FormControlLabel key={index} control={<Checkbox defaultChecked />} label={box.label} />
+                          ))}
                         </FormGroup>
                       </div>
                     )}

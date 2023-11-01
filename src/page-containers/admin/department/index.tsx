@@ -50,13 +50,13 @@ const Department: React.FC = () => {
         accessorKey: "created_at",
         header: "Created At",
         enableEditing: false,
-        Cell: ({ value }: any) => dayjs(value).format("MMM D, YYYY h:mm A"),
+        Cell: ({ row }: any) => dayjs(row.original.created_at).format("MMM D, YYYY h:mm A"),
       },
       {
         accessorKey: "updated_at",
         header: "Upated At",
         enableEditing: false,
-        Cell: ({ value }: any) => dayjs(value).format("MMM D, YYYY h:mm A"),
+        Cell: ({ row }: any) => dayjs(row.original.updated_at).format("MMM D, YYYY h:mm A"),
       },
     ],
     [validationErrors]
@@ -115,6 +115,7 @@ const Department: React.FC = () => {
     data: (departments?.data as any) || [],
     createDisplayMode: "row",
     editDisplayMode: "row",
+    enableColumnFilters: false,
     enableEditing: true,
     getRowId: row => row.id,
     muiToolbarAlertBannerProps: isLoading

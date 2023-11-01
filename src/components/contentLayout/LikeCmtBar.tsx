@@ -1,15 +1,12 @@
 "use client";
-import { useLikeContent, useSaveContent } from "@/services/content";
+import { useContentForm, useLikeContent, useSaveContent } from "@/services/content";
 import { ContentData, Input_config, Input_options } from "@/types/Content";
-
-import { Flex } from "@radix-ui/themes";
 
 import React, { useMemo, useState } from "react";
 import { Button } from "../ui/Button";
 import { DialogTrigger } from "../ui/Dialog";
 import { Icons } from "../ui/Images";
 import { InputText } from "../ui/Inputs";
-import { Checkbox } from "../ui/Inputs/Checkbox";
 import Modal from "../ui/Modal";
 import { Text } from "../ui/Typo/Text";
 type Props = {
@@ -20,9 +17,11 @@ type Props = {
 const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
   const { trigger: like } = useLikeContent();
   const { trigger: contentSave } = useSaveContent();
+  const { trigger: postForm, isMutating } = useContentForm();
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const form = useMemo(() => data.content_event?.form_config.formdetails_configs, [data]);
-
+  const form = useMemo(() => data.content_event?.form_config?.formdetails_configs, [data]);
+  const [selectedOptions, setSelectedOptions] = useState<{ inputconfig_id: number | string; value: string }[] | []>([]);
+  console.log(form, "form");
   const saveContent = async () => {
     await contentSave(
       {
@@ -42,12 +41,31 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
     );
   };
 
+  console.log("data", data);
+
+  console.log(selectedOptions);
+  const handleChange = (input: Input_options) => {
+    const config = {
+      inputconfig_id: input.id,
+      value: input.value,
+    };
+    setSelectedOptions(prev => [...prev, config]);
+  };
+
+  const formSubmit = () => {
+    if (data && data.content_event) {
+      postForm({
+        formconfig_id: data.content_event.formconfig_id,
+        inputs: selectedOptions,
+      });
+    }
+  };
+
   const formElements = (data: Input_config) => {
-    console.log(data);
     if (data.type === "radio") {
       return data.input_options.map((input: Input_options, index: number) => (
         <div key={index} className="flex w-full flex-wrap gap-x-2">
-          <Checkbox />
+          <input type="radio" value={input.value} onChange={() => handleChange(input)} />
           <label>{input.label}</label>
         </div>
       ));
@@ -58,7 +76,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
   };
 
   return (
-    <div className="bg-white flex py-2 items-center">
+    <div className="bg-white flex py-1 items-center">
       {data.type === "event" && (
         <Button size="sm" className="w-[166px]" onClick={() => setOpenModal(true)}>
           Join now
@@ -103,16 +121,12 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
             </Text>
 
             <div className="mx-auto flex flex-col h-full bg-layout justify-center flex-wrap gap-y-[30px] w-full">
-              <Flex direction="column">
-                {form &&
-                  form.length > 0 &&
-                  form.map((data, index: number) => (
-                    <div key={index} className="mb-3">
-                      {formElements(data.input_config)}
-                    </div>
-                  ))}
-              </Flex>
-              <Button>Submit</Button>
+              {/* <Flex direction="column">
+                {form && form.length > 0 && form.map((input: Input_config, index: number) => <div key={index}></div>)}
+              </Flex> */}
+              <Button disabled={isMutating} onClick={formSubmit}>
+                Submit
+              </Button>
             </div>
           </div>
         </Modal>

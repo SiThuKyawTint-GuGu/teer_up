@@ -7,11 +7,18 @@ interface Props {
   children: ReactNode;
 }
 
+export const metadata = {
+  title: "TeeUp",
+  openGraph: {
+    title: "Acme",
+    description: "Acme is a...",
+  },
+};
 const Layout = ({ children }: Props) => {
   return (
     <>
       <Head>
-        <title>TeeUp</title>
+        {/* <title>TeeUp</title> */}
         <link rel="icon" href="/teeup.svg" />
       </Head>
       <Grid columns="1">

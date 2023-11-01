@@ -1,5 +1,6 @@
 "use client";
 import appAxios from "@/lib/appAxios";
+import { REQUEST_TYPES } from "@/shared/enums";
 import { routeFilter } from "@/utils";
 import useSWR, { SWRResponse } from "swr";
 import useSWRMutation from "swr/mutation";
@@ -33,6 +34,11 @@ interface RequestArgType {
 export const useRequestMentorship = () =>
   useSWRMutation(`/mentorships`, (url, { arg }: RequestArgType) => {
     return appAxios.post<RequestArgType>(url, arg);
+  });
+
+export const useApproveMentorship = () =>
+  useSWRMutation(`/mentorships`, (url, { arg }: { arg: { status: REQUEST_TYPES } }) => {
+    return appAxios.put<{ arg: { status: REQUEST_TYPES } }>(url, arg);
   });
 
 interface UpdateUserResType {

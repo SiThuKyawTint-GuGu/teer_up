@@ -10,6 +10,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { Box, IconButton, Modal, Tooltip, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
+import dayjs from "dayjs";
 import { MaterialReactTable, useMaterialReactTable, type MRT_TableOptions } from "material-react-table";
 import { useMemo, useState } from "react";
 
@@ -45,6 +46,20 @@ const BlogCategory: React.FC = () => {
             }),
           //optionally add validation checking for onBlur or onChange
         },
+      },
+      {
+        accessorKey: "created_at",
+        header: "Created At",
+        enableEditing: false,
+        size: 3,
+        Cell: ({ row }: any) => dayjs(row.original.created_at).format("MMM D, YYYY h:mm A"),
+      },
+      {
+        accessorKey: "updated_at",
+        header: "Updated At",
+        enableEditing: false,
+        size: 3,
+        Cell: ({ row }: any) => dayjs(row.original.updated_at).format("MMM D, YYYY h:mm A"),
       },
     ],
     [validationErrors]
@@ -113,7 +128,7 @@ const BlogCategory: React.FC = () => {
       : undefined,
     muiTableContainerProps: {
       sx: {
-        maxHeight: "calc(100vh-200px)",
+        maxHeight: "calc(100vh - 200px)",
         minHeight: "480px",
       },
     },
