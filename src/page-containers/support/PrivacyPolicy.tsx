@@ -9,7 +9,7 @@ const PrivacyPolicy: React.FC = () => {
     <Grid columns="1">
       <Box>
         <Flex justify="between" align="center" className="bg-white" p="3">
-          <Link href={`/profile/setting`}>
+          <Link href="/profile/setting">
             <Icons.caretLeft className="text-[#373A36] w-[23px] h-[23px]" />
           </Link>
           <Text size="3" weight="medium">
