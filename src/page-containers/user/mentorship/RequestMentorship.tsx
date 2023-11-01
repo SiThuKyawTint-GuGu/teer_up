@@ -4,20 +4,20 @@ import CardBox from "@/components/ui/Card";
 import { Icons } from "@/components/ui/Images";
 import { InputTextArea } from "@/components/ui/Inputs";
 import { Text } from "@/components/ui/Typo/Text";
-import { ParamsType, useGetMentorship } from "@/services/mentorship";
+import { ParamsType, useApproveMentorship, useGetMentorship } from "@/services/mentorship";
 import { REQUEST_TYPES, USER_ROLE } from "@/shared/enums";
 import { MentorshipResponse } from "@/types/Mentorship";
+import { User } from "@/types/User";
 import { getUserInfo } from "@/utils/auth";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 
 const RequestMentorship: React.FC = () => {
   const { data: requestMentorship } = useGetMentorship<ParamsType, MentorshipResponse>();
-  const userInfo = useMemo(() => getUserInfo(), []);
+  const { trigger: approvedTrigger } = useApproveMentorship();
+  const { role } = useMemo(() => getUserInfo(), []) as User;
 
-  console.log("user info => ", userInfo);
-
-  const getStatus = (status: string) => {
+  const getStatus = useCallback((status: string) => {
     switch (status) {
       case REQUEST_TYPES.ACCEPTED:
         return (
@@ -37,7 +37,16 @@ const RequestMentorship: React.FC = () => {
       default:
         return null;
     }
-  };
+  }, []);
+
+  const handleApprovedRequest = useCallback(
+    async (status: REQUEST_TYPES) => {
+      await approvedTrigger({
+        status,
+      });
+    },
+    [approvedTrigger]
+  );
 
   return (
     <Grid>
@@ -48,7 +57,7 @@ const RequestMentorship: React.FC = () => {
               <Heading as="h4" size="4">
                 Mentorship session with{" "}
                 <Text as="span" className="text-primary">
-                  {userInfo?.name}
+                  {role === USER_ROLE.STUDENT ? each?.mentor?.name : each?.student?.name}
                 </Text>
               </Heading>
               <div>
@@ -69,12 +78,18 @@ const RequestMentorship: React.FC = () => {
                       <Text className="w-3/4">{each?.mentor_reply}</Text>
                     </Flex>
                   )}
-                  {userInfo?.role === USER_ROLE.MENTOR && (
+                  {role === USER_ROLE.STUDENT && each?.status === REQUEST_TYPES.ACCEPTED && (
+                    <Flex justify="start" align="center">
+                      <Button
+                        onClick={() => handleApprovedRequest(REQUEST_TYPES.CONFIRMED)}
+                        className="bg-primary w-full"
+                      >
+                        Confirm
+                      </Button>
+                    </Flex>
+                  )}
+                  {each?.status === REQUEST_TYPES.PENDING && role === USER_ROLE.MENTOR && (
                     <>
-                      <Flex justify="start" align="center">
-                        <Button className="bg-primary w-full">Confirm</Button>
-                      </Flex>
-
                       <div className="pt-[20px] mt-[20px] border-t border-t-[#BDC7D5]">
                         <Flex justify="start" align="center" direction="column" gap="2">
                           <InputTextArea
@@ -90,13 +105,18 @@ const RequestMentorship: React.FC = () => {
                           </Flex>
                         </Flex>
                       </div>
+                      <Flex justify="start" align="center">
+                        <Button
+                          onClick={() => handleApprovedRequest(REQUEST_TYPES.ACCEPTED)}
+                          className="bg-primary w-full"
+                        >
+                          Accept & Send
+                        </Button>
+                      </Flex>
                     </>
                   )}
                 </div>
               </div>
-              <Flex justify="start" align="center">
-                <Button className="bg-primary w-full">Accept & Send</Button>
-              </Flex>
             </CardBox>
           ))}
         </Section>
