@@ -46,12 +46,6 @@ const ContentTable: React.FC = () => {
         header: "Title",
         enableEditing: false,
       },
-      // {
-      //   accessorKey: "description",
-      //   header: "Description",
-      //   enableEditing: false,
-      //   Cell: ({ row }: any) => <div>{truncateText(row.original.description, 20)}</div>,
-      // },
       {
         accessorKey: "type",
         header: "Type",
@@ -59,12 +53,6 @@ const ContentTable: React.FC = () => {
         size: 3,
         Cell: ({ row }: any) => <p>{row?.original?.type?.charAt(0).toUpperCase() + row?.original?.type?.slice(1)}</p>,
       },
-      // {
-      //   accessorKey: "keywords",
-      //   header: "Keywords",
-      //   enableEditing: false,
-
-      // },
       {
         accessorKey: "created_at",
         header: "Created At",

@@ -35,6 +35,7 @@ const Dimension: React.FC = () => {
         header: "Name",
         muiEditTextFieldProps: {
           type: "text",
+          multiline: true,
           required: true,
           error: !!validationErrors?.name,
           helperText: validationErrors?.name,
@@ -48,6 +49,21 @@ const Dimension: React.FC = () => {
         },
       },
       {
+        accessorKey: "short_name",
+        header: "Short Name",
+        muiEditTextFieldProps: {
+          type: "text",
+          required: true,
+          error: !!validationErrors?.short_name,
+          helperText: validationErrors?.short_name,
+          onFocus: () =>
+            setValidationErrors({
+              ...validationErrors,
+              short_name: undefined,
+            }),
+        },
+      },
+      {
         accessorKey: "created_at",
         header: "Created At",
         enableEditing: false,
@@ -56,7 +72,7 @@ const Dimension: React.FC = () => {
       },
       {
         accessorKey: "updated_at",
-        header: "Created At",
+        header: "Updated At",
         enableEditing: false,
         size: 3,
         Cell: ({ row }: any) => dayjs(row.original.updated_at).format("MMM D, YYYY h:mm A"),
@@ -67,7 +83,7 @@ const Dimension: React.FC = () => {
 
   //CREATE action
   const handleCreateIndustry: MRT_TableOptions<any>["onCreatingRowSave"] = async ({ values, table }) => {
-    const { id, name } = values;
+    const { id, name, short_name } = values;
     const newValidationErrors = validatePreference(values);
     if (Object.values(newValidationErrors).some(error => error)) {
       setValidationErrors(newValidationErrors);
@@ -76,6 +92,7 @@ const Dimension: React.FC = () => {
     setValidationErrors({});
     const newValues = {
       name,
+      short_name,
       values,
     };
     createTrigger(newValues, {
@@ -88,7 +105,7 @@ const Dimension: React.FC = () => {
 
   //UPDATE action
   const handleUpdateIndustry: MRT_TableOptions<any>["onEditingRowSave"] = ({ values, table }) => {
-    const { id, name } = values;
+    const { id, name, short_name } = values;
     const newValidationErrors = validatePreference(values);
     if (Object.values(newValidationErrors).some(error => error)) {
       setValidationErrors(newValidationErrors);
@@ -97,6 +114,7 @@ const Dimension: React.FC = () => {
     setValidationErrors({});
     const newValues = {
       name,
+      short_name,
       id,
     };
     updateTrigger(newValues, {
@@ -225,6 +243,7 @@ const validateRequired = (value: string) => !!value.length;
 function validatePreference(pre: any) {
   return {
     name: !validateRequired(pre.name) ? "Name is Required" : "",
+    short_name: !validateRequired(pre.short_name) ? "Short Name is Required" : "",
   };
 }
 
