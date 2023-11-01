@@ -2,6 +2,8 @@
 import { useContentForm, useLikeContent, useSaveContent } from "@/services/content";
 import { ContentData, Input_config, Input_options } from "@/types/Content";
 
+import { Flex } from "@radix-ui/themes";
+
 import React, { useMemo, useState } from "react";
 import { Button } from "../ui/Button";
 import { DialogTrigger } from "../ui/Dialog";
@@ -75,6 +77,8 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
     }
   };
 
+  console.log("form", form);
+
   return (
     <div className="bg-white flex py-1 items-center">
       {data.type === "event" && (
@@ -121,9 +125,11 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
             </Text>
 
             <div className="mx-auto flex flex-col h-full bg-layout justify-center flex-wrap gap-y-[30px] w-full">
-              {/* <Flex direction="column">
-                {form && form.length > 0 && form.map((input: Input_config, index: number) => <div key={index}></div>)}
-              </Flex> */}
+              <Flex direction="column">
+                {form &&
+                  form.length > 0 &&
+                  form.map((formData, formIndex) => <div key={formIndex}>{formElements(formData.input_config)}</div>)}
+              </Flex>
               <Button disabled={isMutating} onClick={formSubmit}>
                 Submit
               </Button>
