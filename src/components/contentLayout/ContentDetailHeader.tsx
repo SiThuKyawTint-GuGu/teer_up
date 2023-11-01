@@ -1,22 +1,34 @@
 "use client";
 
-import Link from "next/link";
+import Share from "@/page-containers/user/content/components/Share";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { Icons } from "../ui/Images";
+import Modal from "../ui/Modal";
+import { Text } from "../ui/Typo/Text";
 
 type ContentDetailHeaderProps = {
-  pathname: string;
   title: string;
 };
-const ContentDetailHeader: React.FC<ContentDetailHeaderProps> = ({ pathname, title }) => {
+const ContentDetailHeader: React.FC<ContentDetailHeaderProps> = ({ title }) => {
+  const router = useRouter();
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
   return (
-    <div className="flex justify-between h-[48px] items-center   bg-white fixed top-0 w-full max-w-[400px] mx-auto z-[9999]">
-      <Link href={pathname}>
+    <div className="flex justify-between h-[48px] items-center   bg-white fixed top-0 w-full max-w-[400px] mx-auto">
+      <div onClick={() => router.back()}>
         <Icons.back className="w-[20px] h-[20px]" />
-      </Link>
-      <div>{title}</div>
-      <div>
+      </div>
+      <Text as="div" className="capitalize">
+        {title}
+      </Text>
+      <div onClick={() => setModalOpen(true)}>
         <Icons.share className="w-[20px] h-[20px]" />
       </div>
+      {modalOpen && (
+        <Modal onClose={() => setModalOpen(false)}>
+          <Share />
+        </Modal>
+      )}
     </div>
   );
 };

@@ -49,6 +49,7 @@ import { useForm } from "react-hook-form";
 import { AiFillDelete, AiOutlinePlus } from "react-icons/ai";
 import { BiSolidCloudUpload } from "react-icons/bi";
 import * as yup from "yup";
+import SubmissionTable from "./submissionTable";
 
 interface Props {
   id: string;
@@ -70,7 +71,13 @@ const ContentDetail = ({ id }: Props) => {
   const router = useRouter();
   const [searchMentor, setSearchMentor] = useState<string>("");
   const { data: content, isLoading } = useGetContentById<any>(id);
-  const { data: contents } = useGetContent<ParamsType, ContentType>();
+  const [searchContent, setSearchContent] = useState<string>("");
+  const [initialSearchContent, setInitialSearchContent] = useState<boolean>(false);
+  const { data: contents } = useGetContent<ParamsType, ContentType>({
+    page: 1,
+    pagesize: 10,
+    search: searchContent,
+  });
   const { data: keywords } = useGetKeywords<KeywordResponse>();
   const { data: departments } = useGetDepartment<DepartmentResponse>();
   const { data: industries } = useGetIndustry<IndustryResponse>();
@@ -95,10 +102,10 @@ const ContentDetail = ({ id }: Props) => {
   const [selectedValue, setSelectedValue] = useState<string>("");
 
   const [videoUrl, setVideoUrl] = useState<string>("");
-  const [fileUrl, setFileUrl] = useState<string>("");
+  // const [fileUrl, setFileUrl] = useState<string>("");
   const [imgUrl, setImgUrl] = useState<string>("");
   const [file, setFile] = useState<File | null>(null);
-  const [thumbnail, setThumbnail] = useState<File | null>(null);
+  // const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [image, setImage] = useState<File | null>(null);
   const [selectCategory, setSelectCategory] = useState<string>("");
   const [selectForm, setSelectForm] = useState<string>("");
@@ -138,6 +145,7 @@ const ContentDetail = ({ id }: Props) => {
     if (editor) {
       editor?.setContent(editorContent);
     }
+
     if (oppoEditor) {
       oppoEditor?.setContent(oppoEditorContent);
     }
@@ -147,7 +155,9 @@ const ContentDetail = ({ id }: Props) => {
         result[dimension_id] = { low, medium, high };
         return result;
       }, {});
-      console.log("tr.....", transformedData);
+
+      // console.log("tr.....", transformedData);
+
       setCheckboxValues(transformedData);
     }
     if (content?.data) {
@@ -166,7 +176,7 @@ const ContentDetail = ({ id }: Props) => {
         setSelectForm(content?.data?.content_article?.formconfig_id);
       }
       setImgUrl(content?.data.image_url);
-      setFileUrl(content?.data?.content_video?.thumbnail);
+      // setFileUrl(content?.data?.content_video?.thumbnail);
       setVideoUrl(content?.data?.content_video?.video_url);
       setLocation(content?.data?.content_event?.location);
       setEventLink(content?.data?.content_event?.link);
@@ -177,11 +187,13 @@ const ContentDetail = ({ id }: Props) => {
         id: content?.data?.mentor?.id,
       };
       setSelelectedMentor(mentorData);
-      const pathwayContentData = content?.data.content_pathways.map((pathway: any) => ({
-        name: pathway?.title,
-        pathway_id: pathway?.id,
-      }));
-      setPathwayContent(pathwayContentData);
+      if (initialSearchContent === false) {
+        const pathwayContentData = content?.data.content_pathways.map((pathway: any) => ({
+          name: pathway?.title,
+          pathway_id: pathway?.id,
+        }));
+        setPathwayContent(pathwayContentData);
+      }
       const selectKeywords = content?.data.content_keywords.map((keyword: any) => ({
         label: keyword.keyword?.keyword,
         id: keyword?.keyword?.id,
@@ -202,13 +214,16 @@ const ContentDetail = ({ id }: Props) => {
       setValue("category", content?.data?.category?.id);
       setValue("type", content?.data.type);
     }
+
     if (contents?.data && contents?.data.length > 0) {
-      const updatedOptions = contents?.data.map((option: any) => ({
+      const filteredContents = contents?.data.filter((content: any) => content.type !== "pathway");
+      const updatedOptions = filteredContents.map((option: any) => ({
         label: option.title ? option.title : "",
         id: option.id,
       }));
       setContentOptions(updatedOptions);
     }
+
     if (keywords?.data) {
       const updatedOptions = keywords?.data.map((option: any) => ({
         label: option.keyword,
@@ -237,7 +252,16 @@ const ContentDetail = ({ id }: Props) => {
       }));
       setIndustryOptions(updatedOptions);
     }
-  }, [editorContent, editor, oppoEditor, oppoEditorContent, contents?.data, content?.data, contentDimension?.data]);
+  }, [
+    editorContent,
+    editor,
+    oppoEditor,
+    oppoEditorContent,
+    contents?.data,
+    searchContent,
+    content?.data,
+    contentDimension?.data,
+  ]);
 
   const {
     register,
@@ -285,12 +309,12 @@ const ContentDetail = ({ id }: Props) => {
     }
 
     if (selectedValue === "video") {
-      const thumbnailRes: any = thumbnail && (await fileTrigger({ file: thumbnail }));
+      // const thumbnailRes: any = thumbnail && (await fileTrigger({ file: thumbnail }));
       const videoRes: any = file && (await fileTrigger({ file }));
 
-      if (thumbnailRes) {
-        setFileUrl(thumbnailRes.data?.data?.file_path);
-      }
+      // if (thumbnailRes) {
+      //   setFileUrl(thumbnailRes.data?.data?.file_path);
+      // }
       if (videoRes) {
         setVideoUrl(videoRes.data?.data?.file_path);
       }
@@ -299,16 +323,16 @@ const ContentDetail = ({ id }: Props) => {
         setEventError("Video is required!");
         return;
       }
-      if (!fileUrl) {
-        setEventError("Thumbnail is requried!");
-        return;
-      }
+      // if (!fileUrl) {
+      //   setEventError("Thumbnail is requried!");
+      //   return;
+      // }
       const keywords = selectedKeywords.map(item => item.id);
       const departments = selectedDepartment.map(item => item.id);
       const industries = selectedIndustry.map(item => item.id);
       const imgurl = imgRes ? imgRes?.data?.data?.file_path : imgUrl;
       const videourl = videoRes ? videoRes?.data?.data?.file_path : videoUrl;
-      const thumbnailurl = thumbnailRes ? thumbnailRes?.data?.data?.file_path : fileUrl;
+      // const thumbnailurl = thumbnailRes ? thumbnailRes?.data?.data?.file_path : fileUrl;
 
       postdata = {
         title: data?.title,
@@ -322,7 +346,7 @@ const ContentDetail = ({ id }: Props) => {
         industries,
         content_video: {
           video_url: videourl,
-          thumbnail: thumbnailurl,
+          // thumbnail: thumbnailurl,
         },
       };
       if (contentDimension?.data) {
@@ -477,6 +501,10 @@ const ContentDetail = ({ id }: Props) => {
       content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
     } else if (selectedValue === "pathway") {
       const pathways = pathwayContent.map((path: any) => ({ pathway_id: path.pathway_id }));
+      if (!pathways[0].pathway_id) {
+        setEventError("Please add pathway!");
+        return;
+      }
       const keywords = selectedKeywords.map(item => item.id);
       const departments = selectedDepartment.map(item => item.id);
       const industries = selectedIndustry.map(item => item.id);
@@ -536,14 +564,14 @@ const ContentDetail = ({ id }: Props) => {
     router.push("/admin/contents/content");
   };
 
-  const handlePhotoChange = (event: any) => {
-    const file = event.target.files[0];
-    if (file) {
-      setThumbnail(file);
-      const fileURL = URL.createObjectURL(file);
-      setFileUrl(fileURL);
-    }
-  };
+  // const handlePhotoChange = (event: any) => {
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     setThumbnail(file);
+  //     const fileURL = URL.createObjectURL(file);
+  //     setFileUrl(fileURL);
+  //   }
+  // };
 
   const handleImageChange = (event: any) => {
     const file = event.target.files[0];
@@ -577,6 +605,7 @@ const ContentDetail = ({ id }: Props) => {
   };
 
   const handleAddPathway = () => {
+    setInitialSearchContent(true);
     const updatedOptions = [...pathwayContent, { name: "", pathway_id: "" }];
     setPathwayContent(updatedOptions);
   };
@@ -600,9 +629,13 @@ const ContentDetail = ({ id }: Props) => {
     setPathwayContent(updatedFields);
   };
 
-  const handleInputChange = async (event: any, newInputValue: any) => {
-    // console.log(newInputValue);
+  const handleInputChange = (event: any, newInputValue: any, index: number) => {
+    const updatedPathwayContent = [...pathwayContent];
+    updatedPathwayContent[index] = { ...updatedPathwayContent[index], name: newInputValue };
+    setPathwayContent(updatedPathwayContent);
+    setSearchContent(newInputValue);
   };
+
   const handleInputMentorChange = async (event: any, newInputValue: any) => {
     setSearchMentor(newInputValue);
   };
@@ -761,7 +794,7 @@ const ContentDetail = ({ id }: Props) => {
                   </div>
                 )}
               </div>
-              <div className="mt-10">
+              {/* <div className="mt-10">
                 <MuiButton
                   component="label"
                   variant="contained"
@@ -779,7 +812,7 @@ const ContentDetail = ({ id }: Props) => {
                     <Image width={300} height={300} src={fileUrl} alt="File Preview" className="max-w-full h-auto" />
                   </div>
                 )}
-              </div>
+              </div> */}
             </>
           )}
           {selectedValue === "event" && (
@@ -937,21 +970,14 @@ const ContentDetail = ({ id }: Props) => {
               </MuiButton>
               {pathwayContent.map((pathway: any, index: number) => (
                 <div key={index} className="flex items-center gap-4 mt-10">
-                  {/* <TextField
-                      size="small"
-                      id="outlined-basic"
-                      label="Pathway Name"
-                      variant="outlined"
-                    /> */}
                   <Autocomplete
                     disablePortal
-                    id="combo-box-demo"
+                    id={`pathway-${index}`}
                     options={contentOptions || []}
                     sx={{ width: 300 }}
                     value={pathway.name}
-                    onInputChange={handleInputChange}
+                    onInputChange={(event, newInputValue) => handleInputChange(event, newInputValue, index)}
                     onChange={(event, newValue) => handleSelectPathwayChange(event, newValue, index)}
-                    // onChange={handleSelectPathwayChange}
                     renderInput={params => <TextField {...params} label="Contents" />}
                   />
                   <AiFillDelete
@@ -1033,6 +1059,12 @@ const ContentDetail = ({ id }: Props) => {
                 </Box>
               ))}
           </div>
+          {content?.data.submissions.length > 0 && (
+            <div className="my-10">
+              <h1 className=" text-lg mb-5 font-semibold">Submissions</h1>
+              <SubmissionTable data={content?.data.submissions} />
+            </div>
+          )}
           {updateError && (
             <Alert severity="error" sx={{ width: "60%", marginTop: "10px" }}>
               {updateError.response.data.message}

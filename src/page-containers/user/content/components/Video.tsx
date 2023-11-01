@@ -108,6 +108,7 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
                 videoRef.current = ref;
                 setVideoRef(ref);
               }}
+              playsInline={true}
               className={`w-full h-full object-cover absolute`}
             >
               <source

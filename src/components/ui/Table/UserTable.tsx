@@ -4,7 +4,8 @@ import { USER_ROLE } from "@/shared/enums";
 import { UserResponse } from "@/types/User";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { Box, Button, IconButton, Modal, Tooltip, Typography } from "@mui/material";
+import { Alert, Box, Button, IconButton, Modal, Tooltip, Typography } from "@mui/material";
+import dayjs from "dayjs";
 import {
   MaterialReactTable,
   MRT_PaginationState,
@@ -33,8 +34,8 @@ const UserTable: React.FC = () => {
     pageSize: pagination.pageSize,
     name: globalFilter || "",
   });
-  const { trigger: createTrigger } = useCreateUser();
-  const { trigger: updateTrigger } = useUpdateUser();
+  const { trigger: createTrigger, error: createError } = useCreateUser();
+  const { trigger: updateTrigger, error: updateError } = useUpdateUser();
   const { trigger: deleteTrigger } = useDeleteUser();
   const columns = useMemo<any>(
     () => [
@@ -42,10 +43,12 @@ const UserTable: React.FC = () => {
         accessorKey: "id",
         header: "ID",
         enableEditing: false,
+        size: 1,
       },
       {
         accessorKey: "name",
         header: "Name",
+        size: 2,
         muiEditTextFieldProps: {
           type: "text",
           required: true,
@@ -81,7 +84,9 @@ const UserTable: React.FC = () => {
         accessorKey: "role",
         header: "Role",
         enableEditing: true,
+        size: 1,
         editVariant: "select",
+        Cell: ({ row }: any) => <p>{row?.original?.role?.charAt(0).toUpperCase() + row?.original?.role?.slice(1)}</p>,
         editSelectOptions: ["student", "mentor"],
         muiEditTextFieldProps: {
           select: true,
@@ -93,9 +98,23 @@ const UserTable: React.FC = () => {
           onFocus: () =>
             setValidationErrors({
               ...validationErrors,
-              role: "undefined",
+              // role: "undefined",
             }),
         },
+      },
+      {
+        accessorKey: "created_at",
+        header: "Created At",
+        enableEditing: false,
+        size: 3,
+        Cell: ({ row }: any) => dayjs(row.original.created_at).format("MMM D, YYYY h:mm A"),
+      },
+      {
+        accessorKey: "updated_at",
+        header: "Updated At",
+        enableEditing: false,
+        size: 3,
+        Cell: ({ row }: any) => dayjs(row.original.updated_at).format("MMM D, YYYY h:mm A"),
       },
     ],
     [validationErrors]
@@ -145,20 +164,6 @@ const UserTable: React.FC = () => {
     table.setEditingRow(null); //exit editing mode
   };
 
-  //DELETE action
-  // const openDeleteConfirmModal = async (row: MRT_Row<any>) => {
-  //   const { id } = row;
-  //   if (window.confirm("Are you sure you want to delete this user?")) {
-  //     await deleteTrigger(
-  //       { id },
-  //       {
-  //         onSuccess: () => {
-  //           mutate();
-  //         },
-  //       }
-  //     );
-  //   }
-  // };
   const handleDelete = async () => {
     setOpen(false);
     await deleteTrigger(
@@ -252,6 +257,16 @@ const UserTable: React.FC = () => {
 
   return (
     <>
+      {createError && (
+        <Alert sx={{ marginBottom: "20px", width: "60%", marginLeft: "12px" }} severity="error">
+          {createError.response.data.message}
+        </Alert>
+      )}
+      {updateError && (
+        <Alert sx={{ marginBottom: "20px", width: "60%", marginLeft: "12px" }} severity="error">
+          {updateError.response.data.message}
+        </Alert>
+      )}
       <MaterialReactTable table={table} />
       <Modal open={open} onClose={() => setOpen(false)}>
         <Box sx={style}>
@@ -305,6 +320,7 @@ const validateEmail = (email: string) =>
 function validateUser(user: User) {
   return {
     name: !validateRequired(user.name) ? "First Name is Required" : "",
+    role: !validateRequired(user.role) ? "Role is Required" : "",
   };
 }
 

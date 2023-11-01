@@ -30,12 +30,17 @@ const validationSchema = yup.object({
 interface Props {
   id: string;
 }
+interface OptionType {
+  name: string;
+  score: any;
+  feedback: string;
+}
 
 const QuestionDetail = ({ id }: Props) => {
   const router = useRouter();
   const [selectedDimension, setSelectedDimension] = useState<string>("");
   const [selectedType, setSelectedType] = useState<string>("");
-  const [options, setOptions] = useState([{ name: "", score: null, feedback: "" }]);
+  const [options, setOptions] = useState<OptionType[]>([{ name: "", score: null, feedback: "" }]);
 
   const { data: dimensions } = useGetDimension<DimensionResponse>();
   const { data: question } = useGetQuestionById<any>(id);
@@ -45,6 +50,8 @@ const QuestionDetail = ({ id }: Props) => {
   const [editor, setEditor] = useState<any>(null);
   const [editorContent, setEditorContent] = useState<any>({});
   const [editorInitial, setEditorInitial] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
+  const [name, setName] = useState<string>("name");
 
   const handleEditorInit = (editor: any, name: string) => {
     setEditor(editor);
@@ -81,6 +88,7 @@ const QuestionDetail = ({ id }: Props) => {
       }
 
       if (question?.data) {
+        setName(question?.data?.name);
         setValue("name", question?.data?.name);
         setValue("type", question?.data?.type);
         setOptions(question?.data.options);
@@ -97,7 +105,7 @@ const QuestionDetail = ({ id }: Props) => {
         setOptions(updateOptions);
       }
     }
-  }, [question?.data, setValue, editor, editorContent]);
+  }, [question?.data, editor, editorContent]);
 
   const handleDimensionChange = (event: SelectChangeEvent) => {
     setSelectedDimension(event.target.value);
@@ -106,15 +114,17 @@ const QuestionDetail = ({ id }: Props) => {
     setSelectedType(event.target.value);
   };
 
-  // const handleDeleteOption = (name: string) => {
-  //   const updatedFields = options.filter(field => field.name !== name);
-  //   setOptions(updatedFields);
-  // };
+  const handleDeleteOption = (index: number) => {
+    const updatedFields = options.filter((_, i) => i !== index);
+    setOptions(updatedFields);
+    setValue("options", updatedFields);
+  };
 
   const handleAddOptions = () => {
     setEditorInitial(true);
     const updatedOptions = [...options, { name: "", score: null, feedback: "" }];
     setOptions(updatedOptions);
+    // setValue("options", updatedOptions);
   };
 
   const Submit = async (data: any) => {
@@ -131,12 +141,11 @@ const QuestionDetail = ({ id }: Props) => {
       return newItem;
     });
     data.options = newData;
-    console.log(data);
-    // const filteredOptions = data.options.filter((item: any) =>
-    //   options.some((opt: any) => opt.name === item.name)
-    // );
-    // data.options = filteredOptions;
-
+    if (data.options.length <= 0) {
+      setError("Please add options!");
+      return;
+    }
+    // console.log(data);
     if (question?.data) {
       await updateTrigger(data);
     } else {
@@ -149,7 +158,13 @@ const QuestionDetail = ({ id }: Props) => {
     <>
       <form onSubmit={handleSubmit(Submit)} className="bg-white h-full p-5">
         <div className="mb-10">
-          <TextField {...register("name")} label="Question" className="w-full" variant="outlined" />
+          <TextField
+            InputLabelProps={{ shrink: !!name }}
+            {...register("name")}
+            label="Question"
+            className="w-full"
+            variant="outlined"
+          />
           <p className="mt-2 text-red-700">{errors.name?.message}</p>
         </div>
         <div className="mb-10">
@@ -183,7 +198,7 @@ const QuestionDetail = ({ id }: Props) => {
               label="Type"
               onChange={handleChangeType}
             >
-              <MenuItem value="certainly">Certainly</MenuItem>
+              <MenuItem value="certainty">Certainty</MenuItem>
               <MenuItem value="skill">Skill</MenuItem>
             </Select>
           </FormControl>
@@ -211,6 +226,7 @@ const QuestionDetail = ({ id }: Props) => {
                     <TextField
                       {...field}
                       label="Answer"
+                      InputLabelProps={{ shrink: !!option.name }}
                       defaultValue={option.name}
                       className="w-full"
                       variant="outlined"
@@ -229,6 +245,7 @@ const QuestionDetail = ({ id }: Props) => {
                       {...field}
                       label="Score"
                       type={"number"}
+                      InputLabelProps={{ shrink: !!option.score }}
                       defaultValue={option.score}
                       className="w-full"
                       variant="outlined"
@@ -247,8 +264,6 @@ const QuestionDetail = ({ id }: Props) => {
                       value={editorContent[field.name] || ""}
                       init={(editorInit: any) => handleEditorInit(editorInit, field.name)}
                       onEditorChange={content => {
-                        console.log(content);
-                        console.log(field.name);
                         setEditorContent({ ...editorContent, [field.name]: content });
                         field.onChange(content);
                       }}
@@ -258,20 +273,20 @@ const QuestionDetail = ({ id }: Props) => {
 
                 <p className="mt-2 text-red-700">{errors.options?.[index]?.feedback?.message}</p>
               </div>
-              {/* <div className="flex justify-between">
-                  <div></div>
-                  <Button
-                    onClick={() => handleDeleteOption(option.name)}
-                    color="error"
-                    variant="contained"
-                    sx={{ textTransform: "none" }}
-                  >
-                    Delete
-                  </Button>
-                </div> */}
+              <div>
+                <Button
+                  onClick={() => handleDeleteOption(index)}
+                  color="error"
+                  variant="contained"
+                  sx={{ textTransform: "none" }}
+                >
+                  Delete
+                </Button>
+              </div>
             </Box>
           </>
         ))}
+        {error && <p className="text-red-700 mt-5">{error}</p>}
         <div className="flex justify-between">
           <div></div>
           <div>
