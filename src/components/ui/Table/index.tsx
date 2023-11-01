@@ -93,7 +93,7 @@ const AdminTable: React.FC = () => {
         header: "Created At",
         enableEditing: false,
         size: 1,
-        Cell: ({ value }: any) => dayjs(value).format("MMM D, YYYY h:mm A"),
+        Cell: ({ row }: any) => dayjs(row.original.created_at).format("MMM D, YYYY h:mm A"),
       },
       // {
       //   accessorKey: "updated_at",
