@@ -9,7 +9,7 @@ import BrowserContentLayout from "./Components/BrowerCotentLayout";
 
 const BrowsePage = () => {
   const [page, setPage] = useState<number>(1);
-  const [type, setType] = useState<string>("");
+  const [type, setType] = useState<string>("all");
 
   const { data, mutate } = useGetContentInfinite<ParamsType>({
     page: page,
