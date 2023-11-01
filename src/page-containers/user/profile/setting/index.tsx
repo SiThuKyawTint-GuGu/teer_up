@@ -1,8 +1,10 @@
 "use client";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
+import { Button } from "@/components/ui/Button";
+import { Dialog, DialogClose, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons } from "@/components/ui/Images";
 import { Switch } from "@/components/ui/Switch";
 import { Text } from "@/components/ui/Typo/Text";
+import { logout } from "@/utils/auth";
 import { Box, Flex, Grid, Section } from "@radix-ui/themes";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -70,20 +72,36 @@ const Setting: React.FC = () => {
         </Box>
         <Box className="bg-white" mt="5" p="2">
           <DialogTrigger className="w-full text-primary">
-            <Flex
-              justify="center"
-              align="center"
-              // onClick={() => {
-              //   logout();
-              //   router.push("/home");
-              // }}
-            >
+            <Flex justify="center" align="center">
               Log out
             </Flex>
           </DialogTrigger>
         </Box>
       </Grid>
-      <DialogContent className="bg-white">Hello</DialogContent>
+      <DialogContent isClose={false} className="border-none shadow-none">
+        <div className="text-center space-y-[10px] bg-white p-4 rounded-lg">
+          <Text className="text-[#373A36] text-[20px] font-[700]">Are you sure to log out of account?</Text>
+          <Text className="text-[#373A36]">
+            You won’t receive any messages from the app. But you could log in again with your email address.
+          </Text>
+          <Flex justify="center" className="gap-3">
+            <Button
+              className="w-1/2"
+              onClick={() => {
+                logout();
+                router.push("/home");
+              }}
+            >
+              Log out
+            </Button>
+            <DialogClose className="w-1/2">
+              <Button className="w-full" variant="outline">
+                Cancel
+              </Button>
+            </DialogClose>
+          </Flex>
+        </div>
+      </DialogContent>
     </Dialog>
   );
 };
