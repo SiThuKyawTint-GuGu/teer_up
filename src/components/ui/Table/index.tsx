@@ -5,6 +5,7 @@ import { UserResponse } from "@/types/User";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { Box, Button, IconButton, Modal, Tooltip, Typography } from "@mui/material";
+import dayjs from "dayjs";
 import { MaterialReactTable, useMaterialReactTable, type MRT_TableOptions } from "material-react-table";
 import { useMemo, useState } from "react";
 import { type User } from "./makeData";
@@ -30,10 +31,12 @@ const AdminTable: React.FC = () => {
         accessorKey: "id",
         header: "ID",
         enableEditing: false,
+        size: 1,
       },
       {
         accessorKey: "name",
         header: "First Name",
+        size: 1,
         muiEditTextFieldProps: {
           type: "text",
           required: true,
@@ -52,6 +55,7 @@ const AdminTable: React.FC = () => {
         accessorKey: "email",
         header: "Email",
         enableEditing: false,
+        size: 2,
         muiEditTextFieldProps: {
           type: "email",
           required: true,
@@ -68,6 +72,7 @@ const AdminTable: React.FC = () => {
       {
         accessorKey: "role",
         header: "Role",
+        size: 1,
         enableEditing: false,
         Cell: ({ row }: any) => <p>{row?.original?.role?.charAt(0).toUpperCase() + row?.original?.role?.slice(1)}</p>,
         muiEditTextFieldProps: {
@@ -83,6 +88,20 @@ const AdminTable: React.FC = () => {
             }),
         },
       },
+      {
+        accessorKey: "created_at",
+        header: "Created At",
+        enableEditing: false,
+        size: 1,
+        Cell: ({ value }: any) => dayjs(value).format("MMM D, YYYY h:mm A"),
+      },
+      // {
+      //   accessorKey: "updated_at",
+      //   header: "Updated At",
+      //   enableEditing: false,
+      //   size: 1,
+      //   Cell: ({ value }: any) => dayjs(value).format("MMM D, YYYY h:mm A"),
+      // },
     ],
     [validationErrors]
   );
