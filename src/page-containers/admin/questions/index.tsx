@@ -25,12 +25,13 @@ const Questions: React.FC = () => {
         accessorKey: "id",
         header: "ID",
         enableEditing: false,
-        size: 2,
+        size: 1,
       },
       {
         accessorKey: "name",
         header: "Name",
         enableEditing: false,
+        size: 1,
       },
       {
         accessorKey: "dimension.name",
@@ -42,7 +43,7 @@ const Questions: React.FC = () => {
         header: "Type",
         enableEditing: false,
         size: 2,
-        Cell: ({ row }: any) => <p>{row?.original?.type?.charAt(0).toUpperCase() + row?.original?.type?.slice(1)}</p>,
+        Cell: ({ row }: any) => <p>{row.original.type === "skill" ? "Feedback" : "Onboarding"}</p>,
       },
       {
         accessorKey: "created_at",
