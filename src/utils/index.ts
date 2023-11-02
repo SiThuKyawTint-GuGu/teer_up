@@ -10,5 +10,5 @@ export const setLocalStorage = (key: string, value: any) => {
 
 export const getLocalStorage = (key: string) => {
   const storedData = localStorage.getItem(key);
-  return storedData && JSON.parse(storedData);
+  return storedData ? JSON.parse(storedData) : [];
 };
