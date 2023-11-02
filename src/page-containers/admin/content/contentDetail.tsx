@@ -1,4 +1,5 @@
 "use client";
+import HtmlEditor from "@/components/ui/Editor";
 import {
   ParamsType,
   useGetContent,
@@ -40,7 +41,6 @@ import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { Box } from "@radix-ui/themes";
-import { Editor } from "@tinymce/tinymce-react";
 import dayjs from "dayjs";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -742,7 +742,7 @@ const ContentDetail = ({ id }: Props) => {
               options={departmentOptions || []}
               value={selectedDepartment}
               onChange={handleDepartmentChange}
-              renderInput={params => <TextField {...params} label="Select Departments" placeholder="Departments" />}
+              renderInput={params => <TextField {...params} label="Career Interest" placeholder="Career Interest" />}
             />
           </div>
           {/* Keywords */}
@@ -938,7 +938,8 @@ const ContentDetail = ({ id }: Props) => {
               </div>
               <div className="mb-10">
                 <p className="text-md font-semibold mb-3">Content</p>
-                <Editor onInit={handleEditorInit} />
+                {/* <Editor onInit={handleEditorInit} /> */}
+                <HtmlEditor handleEditorInit={handleEditorInit} />
               </div>
             </>
           )}
@@ -982,7 +983,8 @@ const ContentDetail = ({ id }: Props) => {
               </div>
               <div className="mb-10">
                 <p className="text-md font-semibold mb-3">Opportunity Content</p>
-                <Editor onInit={handleOppoEditorInit} />
+                {/* <Editor onInit={handleOppoEditorInit} /> */}
+                <HtmlEditor handleEditorInit={handleOppoEditorInit} />
               </div>
             </>
           )}
