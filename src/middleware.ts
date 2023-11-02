@@ -24,12 +24,12 @@ export function middleware(req: NextRequest) {
   const getValue = req.cookies.get("userInfo")?.value;
 
   // decrypt user info
-  let userRole;
+  let user;
 
   if (getValue && typeof getValue === "string") {
     const bytes = CryptoJS.AES.decrypt(getValue, "userInfo");
     const decryptedUserInfo = JSON.parse(bytes.toString(CryptoJS.enc.Utf8)) as User;
-    userRole = decryptedUserInfo?.role;
+    user = decryptedUserInfo;
   }
 
   // If the user is not logged in, redirect to the login page
@@ -49,9 +49,18 @@ export function middleware(req: NextRequest) {
     return NextResponse.rewrite(new URL("/auth/login", req.url));
   }
 
-  if (userRole !== USER_ROLE.ADMIN) {
+  //? user does not verified
+  if (protectedUserRoutes.includes(pathname)) {
+    if (token && !user?.verified) {
+      return NextResponse.redirect(new URL(`${loginPath}?verified=false`, req.url));
+    }
+  }
+
+  if (user?.role !== USER_ROLE.ADMIN) {
     if (token && (pathname.includes("/admin") || pathname === "/login" || pathname === "/auth/login")) {
-      return NextResponse.rewrite(new URL("/home", req.url));
+      if (user?.verified) {
+        return NextResponse.rewrite(new URL("/home", req.url));
+      }
     }
   } else {
     if (token) {

@@ -161,10 +161,11 @@ const ContentDetail = ({ id }: Props) => {
     }
     if (contentDimension?.data) {
       const transformedData = contentDimension?.data?.content_dimensions.reduce((result: any, item: any) => {
-        const { dimension_id, low, medium, high } = item;
-        result[dimension_id] = { low, medium, high };
+        const { dimension_id, low, medium, high, scores } = item;
+        result[dimension_id] = { low, medium, high, scores };
         return result;
       }, {});
+      // console.log("transf data", transformedData);
       setCheckboxValues(transformedData);
     }
     if (content?.data) {
@@ -565,7 +566,7 @@ const ContentDetail = ({ id }: Props) => {
         image_url: imgurl,
         content_pathways: pathways,
       };
-      console.log(postdata);
+
       if (contentDimension?.data) {
         const data = {
           content_dimensions: updatedDimensionData(),
@@ -699,14 +700,31 @@ const ContentDetail = ({ id }: Props) => {
   };
 
   const handleCheckboxChange = (event: any, dimension: any) => {
-    const { name, checked } = event.target;
-    setCheckboxValues((prevValues: any) => ({
-      ...prevValues,
-      [Number(dimension)]: {
-        ...prevValues[dimension],
-        [name]: checked,
-      },
-    }));
+    const { name, checked, value } = event.target;
+    // setCheckboxValues((prevValues: any) => ({
+    //   ...prevValues,
+    //   [Number(dimension)]: {
+    //     ...prevValues[dimension],
+    //     [name]: checked,
+    //   },
+    // }));
+    if (name === "scores") {
+      setCheckboxValues((prevValues: any) => ({
+        ...prevValues,
+        [Number(dimension)]: {
+          ...prevValues[dimension],
+          [name]: value, // Set the value for 'scores' name
+        },
+      }));
+    } else {
+      setCheckboxValues((prevValues: any) => ({
+        ...prevValues,
+        [Number(dimension)]: {
+          ...prevValues[dimension],
+          [name]: checked,
+        },
+      }));
+    }
   };
 
   const transformedDimensionData = () => {
@@ -717,6 +735,7 @@ const ContentDetail = ({ id }: Props) => {
         low: dimensionData.low || false,
         medium: dimensionData.medium || false,
         high: dimensionData.high || false,
+        scores: parseInt(dimensionData.scores) || 0,
       };
       return dimension;
     });
@@ -1151,13 +1170,14 @@ const ContentDetail = ({ id }: Props) => {
                 <h1 className="font-semibold">High</h1>
                 <h1 className="font-semibold mx-2">Medium</h1>
                 <h1 className="font-semibold">Low</h1>
+                <h1 className="font-semibold ml-2 text-center">Increase skill after 30s</h1>
               </div>
             </Box>
             {dimensions?.data &&
               dimensions?.data.map((dimension: any, index: number) => (
                 <Box className="flex  items-center mt-10 my-3" key={index}>
                   <p className="w-[60%] mr-20">{dimension.name}</p>
-                  <div>
+                  <div className="flex">
                     <Checkbox
                       name="high"
                       checked={checkboxValues[dimension.id]?.high || false}
@@ -1174,6 +1194,22 @@ const ContentDetail = ({ id }: Props) => {
                       checked={checkboxValues[dimension.id]?.low || false}
                       onChange={e => handleCheckboxChange(e, dimension.id)}
                     />
+                    {/* <Checkbox
+                      sx={{ marginLeft: "60px" }}
+                      name="scores"
+                      checked={checkboxValues[dimension.id]?.scores || false}
+                      onChange={e => handleCheckboxChange(e, dimension.id)}
+                    /> */}
+                    <div className="ml-2 flex justify-center">
+                      <TextField
+                        value={checkboxValues[dimension.id]?.scores || ""}
+                        name="scores"
+                        onChange={e => handleCheckboxChange(e, dimension.id)}
+                        id={`scores-${index}`}
+                        label="Scores"
+                        variant="outlined"
+                      />
+                    </div>
                   </div>
                 </Box>
               ))}
