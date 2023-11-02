@@ -16,6 +16,7 @@ import dayjs from "dayjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
+import RadarChart from "./RadarChart";
 
 const profileTrigger = {
   [PROFILE_TRIGGER.COVER]: "See cover picture",
@@ -179,8 +180,10 @@ const Profile: React.FC = () => {
                 </Heading>
                 {userProfile?.educations?.length
                   ? userProfile?.educations?.map((each, key) => (
-                      <div
+                      <Flex
                         key={key}
+                        justify="between"
+                        align="start"
                         className={cn(
                           "pb-[10px] mb-[10px]",
                           key !== (userProfile?.educations ? userProfile.educations.length - 1 : -1) &&
@@ -191,9 +194,59 @@ const Profile: React.FC = () => {
                           <Text as="label" weight="bold" size="3">
                             {each.school_name}
                           </Text>
-                          <Text>{each.degree}</Text>
+                          <Text size="1">{each.degree}</Text>
                         </Flex>
-                      </div>
+                        <Flex justify="end" align="center" gap="1">
+                          <Text size="2" weight="light">
+                            {dayjs(each?.start_date).format("YYYY")}
+                          </Text>
+                          <Text size="2" weight="light">
+                            -
+                          </Text>
+                          <Text size="2" weight="light">
+                            {each?.end_date ? dayjs(each?.end_date).format("YYYY") : "present"}
+                          </Text>
+                        </Flex>
+                      </Flex>
+                    ))
+                  : "-"}
+              </Section>
+            </CardBox>
+            <CardBox className="mb-[7px] rounded-none">
+              <Section className="bg-white" py="4" px="3">
+                <Heading as="h6" size="4" align="left" mb="4">
+                  Experience
+                </Heading>
+                {userProfile?.experiences?.length
+                  ? userProfile?.experiences?.map((each, key) => (
+                      <Flex
+                        key={key}
+                        justify="between"
+                        align="start"
+                        className={cn(
+                          "pb-[10px] mb-[10px]",
+                          key !== (userProfile?.experiences ? userProfile.experiences.length - 1 : -1) &&
+                            "border-b border-b-[#BDC7D5]"
+                        )}
+                      >
+                        <Flex direction="column" gap="2">
+                          <Text as="label" weight="bold" size="3">
+                            {each?.position}
+                          </Text>
+                          <Text size="1">{each?.company}</Text>
+                        </Flex>
+                        <Flex justify="end" align="center" gap="1">
+                          <Text size="2" weight="light">
+                            {dayjs(each?.start_date).format("YYYY")}
+                          </Text>
+                          <Text size="2" weight="light">
+                            -
+                          </Text>
+                          <Text size="2" weight="light">
+                            {each?.end_date ? dayjs(each?.end_date).format("YYYY") : "present"}
+                          </Text>
+                        </Flex>
+                      </Flex>
                     ))
                   : "-"}
               </Section>
@@ -229,6 +282,9 @@ const Profile: React.FC = () => {
                     : "-"}
                 </Flex>
               </Section>
+            </CardBox>
+            <CardBox className="mb-[7px] rounded-none">
+              <RadarChart />
             </CardBox>
           </Box>
         </Grid>

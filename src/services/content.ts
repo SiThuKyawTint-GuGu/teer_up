@@ -183,6 +183,7 @@ export const useRequestMentorship = () =>
 
 interface ContentFormArg {
   arg: {
+    content_id: string | number;
     formconfig_id: number | string;
     inputs: {
       inputconfig_id: number | string;

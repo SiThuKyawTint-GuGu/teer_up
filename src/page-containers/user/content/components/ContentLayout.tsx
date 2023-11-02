@@ -52,7 +52,7 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
           <div className="w-full h-[70%]  mx-auto relative">
             <Link href={redir}>
               <div
-                className="relative w-full max-w-[400px]  rounded-t-lg"
+                className="relative w-full max-w-[400px] h-full  rounded-t-lg"
                 style={{
                   background: `url(${data.image_url}) center / cover`,
                 }}

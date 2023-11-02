@@ -1,6 +1,9 @@
 "use client";
+import RadioButton from "@/page-containers/user/personalized/components/RadioButton";
 import { useContentForm, useLikeContent, useSaveContent } from "@/services/content";
 import { ContentData, Input_config, Input_options } from "@/types/Content";
+
+import { Flex } from "@radix-ui/themes";
 
 import React, { useMemo, useState } from "react";
 import { Button } from "../ui/Button";
@@ -17,11 +20,15 @@ type Props = {
 const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
   const { trigger: like } = useLikeContent();
   const { trigger: contentSave } = useSaveContent();
-  const { trigger: postForm, isMutating } = useContentForm();
+  const { trigger: postForm, isMutating, data: formResponse } = useContentForm();
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const form = useMemo(() => data.content_event?.form_config?.formdetails_configs, [data]);
+  const form = useMemo(() => {
+    if (data?.type === "event") return data.content_event?.form_config?.formdetails_configs;
+    if (data?.type === "opportunity") return data.content_opportunity?.form_config?.formdetails_configs;
+  }, [data]);
   const [selectedOptions, setSelectedOptions] = useState<{ inputconfig_id: number | string; value: string }[] | []>([]);
-  console.log(form, "form");
+  const [message, setMessage] = useState<string>("");
+
   const saveContent = async () => {
     await contentSave(
       {
@@ -41,12 +48,9 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
     );
   };
 
-  console.log("data", data);
-
-  console.log(selectedOptions);
-  const handleChange = (input: Input_options) => {
+  const handleChange = (input: Input_options, InputConfigId: number | string) => {
     const config = {
-      inputconfig_id: input.id,
+      inputconfig_id: InputConfigId,
       value: input.value,
     };
     setSelectedOptions(prev => [...prev, config]);
@@ -54,25 +58,40 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
 
   const formSubmit = () => {
     if (data && data.content_event) {
-      postForm({
-        formconfig_id: data.content_event.formconfig_id,
-        inputs: selectedOptions,
-      });
+      postForm(
+        {
+          content_id: data.id,
+          formconfig_id: data.content_event.formconfig_id,
+          inputs: selectedOptions,
+        },
+        {
+          onSuccess: () => {
+            if (formResponse?.status == 201) {
+              setMessage("Form submit Successfully");
+              setTimeout(() => {
+                setOpenModal(false);
+                setMessage("");
+              }, 3000);
+            }
+          },
+        }
+      );
     }
   };
 
-  const formElements = (data: Input_config) => {
-    if (data.type === "radio") {
-      return data.input_options.map((input: Input_options, index: number) => (
-        <div key={index} className="flex w-full flex-wrap gap-x-2">
-          <input type="radio" value={input.value} onChange={() => handleChange(input)} />
+  console.log(formResponse);
+
+  const formElements = (inputData: Input_config) => {
+    console.log("inputData", inputData.type);
+    if (inputData.type === "radio") {
+      return inputData.input_options.map((input: Input_options, index: number) => (
+        <div key={index} className="flex w-full flex-wrap items-center gap-x-2">
+          <RadioButton changeHandler={() => handleChange(input, inputData.id)} />
           <label>{input.label}</label>
         </div>
       ));
     }
-    if (data.type === "text") {
-      return <InputText type={data.type} placeholder={data.placeholder} className="shadow bg-white" />;
-    }
+    if (inputData.type === "text") return <InputText />;
   };
 
   return (
@@ -117,13 +136,23 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
         <Modal onClose={() => setOpenModal(false)}>
           <div className="w-[400px] p-5">
             <Text as="div" className="text-[28px] font-700">
-              Join Event
+              {data?.content_event?.form_config.name}
             </Text>
-
+            {message && (
+              <Text as="div" className="text-center w-full text-green-600 font-[600] text-sm">
+                {message}
+              </Text>
+            )}
             <div className="mx-auto flex flex-col h-full bg-layout justify-center flex-wrap gap-y-[30px] w-full">
-              {/* <Flex direction="column">
-                {form && form.length > 0 && form.map((input: Input_config, index: number) => <div key={index}></div>)}
-              </Flex> */}
+              <Flex direction="column" justify="center">
+                {form &&
+                  form.length > 0 &&
+                  form.map((formData: any, formIndex) => (
+                    <div key={formIndex} className="mb-3">
+                      {formElements(formData.input_config)}
+                    </div>
+                  ))}
+              </Flex>
               <Button disabled={isMutating} onClick={formSubmit}>
                 Submit
               </Button>

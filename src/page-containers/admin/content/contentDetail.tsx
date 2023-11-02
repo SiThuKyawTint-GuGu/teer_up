@@ -60,6 +60,7 @@ const validationSchema = yup.object({
   description: yup.string().required("Description is required!"),
   category: yup.string().required("Please select category!"),
   type: yup.string().required("Please select type!"),
+  status: yup.string().required("Please select status!"),
 });
 
 interface OptionType {
@@ -100,6 +101,7 @@ const ContentDetail = ({ id }: Props) => {
   const { data: formconfigs } = useGetFormConfig<FormConfigResponse>();
 
   const [selectedValue, setSelectedValue] = useState<string>("");
+  const [selectedStatus, setSelectedStatus] = useState<string>("");
 
   const [videoUrl, setVideoUrl] = useState<string>("");
   // const [fileUrl, setFileUrl] = useState<string>("");
@@ -162,6 +164,7 @@ const ContentDetail = ({ id }: Props) => {
     }
     if (content?.data) {
       setSelectedValue(content?.data.type);
+      setSelectedStatus(content?.data?.status);
       setSelectCategory(content?.data?.category?.id);
       setEditorContent(content?.data?.content_article?.body);
       setOppoEditorContent(content?.data?.content_opportunity?.body);
@@ -213,6 +216,7 @@ const ContentDetail = ({ id }: Props) => {
       setValue("description", content?.data.description);
       setValue("category", content?.data?.category?.id);
       setValue("type", content?.data.type);
+      setValue("status", content?.data.status);
     }
 
     if (contents?.data && contents?.data.length > 0) {
@@ -338,7 +342,7 @@ const ContentDetail = ({ id }: Props) => {
         title: data?.title,
         description: data.description,
         type: selectedValue,
-        status: "published",
+        status: selectedStatus,
         category_id: Number(selectCategory),
         image_url: imgurl,
         keywords,
@@ -387,7 +391,7 @@ const ContentDetail = ({ id }: Props) => {
         title: data?.title,
         description: data?.description,
         type: selectedValue,
-        status: "published",
+        status: selectedStatus,
         category_id: Number(selectCategory),
         image_url: imgurl,
         keywords,
@@ -431,7 +435,7 @@ const ContentDetail = ({ id }: Props) => {
         title: data?.title,
         description: data?.description,
         type: selectedValue,
-        status: "published",
+        status: selectedStatus,
         category_id: Number(selectCategory),
         image_url: imgurl,
         keywords,
@@ -477,7 +481,7 @@ const ContentDetail = ({ id }: Props) => {
         title: data?.title,
         description: data?.description,
         type: selectedValue,
-        status: "published",
+        status: selectedStatus,
         category_id: Number(selectCategory),
         image_url: imgurl,
         keywords,
@@ -513,7 +517,7 @@ const ContentDetail = ({ id }: Props) => {
         title: data?.title,
         description: data?.description,
         type: selectedValue,
-        status: "published",
+        status: selectedStatus,
         keywords,
         departments,
         industries,
@@ -543,7 +547,7 @@ const ContentDetail = ({ id }: Props) => {
         title: data?.title,
         description: data?.description,
         type: selectedValue,
-        status: "published",
+        status: selectedStatus,
         keywords,
         departments,
         industries,
@@ -585,6 +589,9 @@ const ContentDetail = ({ id }: Props) => {
   const handleSelectChange = (event: SelectChangeEvent) => {
     setSelectedValue(event.target.value);
     setSelectForm("");
+  };
+  const handleSelectStatus = (event: SelectChangeEvent) => {
+    setSelectedStatus(event.target.value);
   };
 
   const handleStartDateChange = (date: any) => {
@@ -750,6 +757,23 @@ const ContentDetail = ({ id }: Props) => {
           </div>
           <div className="mb-10">
             <FormControl fullWidth>
+              <InputLabel id="selectStatus">Status</InputLabel>
+              <Select
+                {...register("status")}
+                labelId="selectStatus"
+                id="selectStatus"
+                value={selectedStatus}
+                label="Status"
+                onChange={handleSelectStatus}
+              >
+                <MenuItem value="published">Published</MenuItem>
+                <MenuItem value="unpublished">Unpublished</MenuItem>
+              </Select>
+            </FormControl>
+            <p className="mt-2 text-red-700">{errors.status?.message}</p>
+          </div>
+          <div className="mb-10">
+            <FormControl fullWidth>
               <InputLabel id="selectType">Type</InputLabel>
               <Select
                 {...register("type")}
@@ -769,20 +793,22 @@ const ContentDetail = ({ id }: Props) => {
             </FormControl>
             <p className="mt-2 text-red-700">{errors.type?.message}</p>
           </div>
-
           {selectedValue === "video" && (
             <>
               <div className="mt-10">
-                <MuiButton
-                  sx={{ textTransform: "none", background: "#DA291C" }}
-                  component="label"
-                  color="error"
-                  variant="contained"
-                  startIcon={<BiSolidCloudUpload />}
-                >
-                  Upload Video
-                  <VisuallyHiddenInput accept="video/*" onChange={handleFileChange} type="file" />
-                </MuiButton>
+                <div className="border border-dashed w-[30%] flex flex-col items-center justify-center p-10 border-gray-400 rounded-lg">
+                  <MuiButton
+                    sx={{ textTransform: "none", background: "#DA291C" }}
+                    component="label"
+                    color="error"
+                    variant="contained"
+                    startIcon={<BiSolidCloudUpload />}
+                  >
+                    Upload Video
+                    <VisuallyHiddenInput accept="video/*" onChange={handleFileChange} type="file" />
+                  </MuiButton>
+                  <p className="mt-3">Please upload 4:3 ratio</p>
+                </div>
 
                 {videoUrl && (
                   <div className="mt-4">
@@ -819,7 +845,6 @@ const ContentDetail = ({ id }: Props) => {
             <>
               <div className="flex mb-10">
                 <div className="mr-10">
-                  <p className="text-sm font-semibold">Start Date</p>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DemoContainer components={["DateTimePicker"]}>
                       <DateTimePicker
@@ -832,7 +857,6 @@ const ContentDetail = ({ id }: Props) => {
                   </LocalizationProvider>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold">End Date</p>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DemoContainer components={["DateTimePicker"]}>
                       <DateTimePicker
@@ -1005,17 +1029,18 @@ const ContentDetail = ({ id }: Props) => {
             </>
           )}
           <div className="mt-10">
-            <MuiButton
-              sx={{ textTransform: "none", background: "#DA291C" }}
-              component="label"
-              variant="contained"
-              startIcon={<BiSolidCloudUpload />}
-              color="error"
-            >
-              Upload Image
-              <VisuallyHiddenInput accept="image/*" onChange={handleImageChange} type="file" />
-            </MuiButton>
-
+            <div className="border border-dashed w-[30%] flex flex-col items-center justify-center p-10 border-gray-400 rounded-lg">
+              <MuiButton
+                sx={{ textTransform: "none", background: "#DA291C" }}
+                component="label"
+                variant="contained"
+                startIcon={<BiSolidCloudUpload />}
+                color="error"
+              >
+                Upload Image
+                <VisuallyHiddenInput accept="image/*" onChange={handleImageChange} type="file" />
+              </MuiButton>
+            </div>
             {imgUrl && (
               <div className="mt-4">
                 <p className="font-bold mb-2">Image Preview:</p>

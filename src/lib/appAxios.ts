@@ -20,8 +20,6 @@ appAxios.interceptors.request.use(
     return config;
   },
   (error: AxiosError) => {
-    // if (error.response?.status == 401 || error.response?.status === 403) {
-    // }
     return Promise.reject(error);
   }
 );
@@ -34,9 +32,6 @@ appAxios.interceptors.response.use(
     return response;
   },
   async (error: AxiosError) => {
-    // if (error.response?.status === 401 || error.response?.status === 403) {
-    //   useVerifyModal().verifyModalOpenHandler();
-    // }
     return Promise.reject(error);
   }
 );

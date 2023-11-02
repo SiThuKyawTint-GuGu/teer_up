@@ -1,5 +1,4 @@
 import QuestionPageCard from "../components/QuestionPageCard";
-import RadioButton from "../components/RadioButton";
 
 const AttitudePage = () => {
   return (
@@ -20,7 +19,7 @@ const AttitudePage = () => {
             Exceptional at one or a few things
           </div>
         </div>
-        <div className="flex items-center gap-1">
+        {/* <div className="flex items-center gap-1">
           <RadioButton />
           <div className="h-[1px] w-[77px] border-[1px] border-[#BBC7D6]" />
           <RadioButton />
@@ -28,7 +27,7 @@ const AttitudePage = () => {
           <RadioButton />
           <div className="h-[1px] w-[77px] border-[1px] border-[#BBC7D6]" />
           <RadioButton />
-        </div>
+        </div> */}
         <div className="flex justify-between items-start">
           <div>Agree alot</div>
           <div>Agree a little</div>
@@ -37,8 +36,8 @@ const AttitudePage = () => {
         </div>
       </div>
       <div className="text-center text-slateGray text-[14px] font-[300]">
-        Tips: If both fit, choose one you agree with more. If neither fits, choose the one you’re
-        closest to agreeing with.
+        Tips: If both fit, choose one you agree with more. If neither fits, choose the one you’re closest to agreeing
+        with.
       </div>
     </QuestionPageCard>
   );
