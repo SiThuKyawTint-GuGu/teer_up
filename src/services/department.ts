@@ -15,9 +15,7 @@ export const useGetDepartment = <DepartmentResponse>(): SWRResponse<DepartmentRe
   return useSWR<DepartmentResponse>(`/details/departments`);
 };
 
-export const useGetDepartmentById = <DepartmentResponse>(
-  id: number
-): SWRResponse<DepartmentResponse, any> => {
+export const useGetDepartmentById = <DepartmentResponse>(id: number): SWRResponse<DepartmentResponse, any> => {
   // const key = id != 0 ? `/admin/contentcategories/${id}` : null;
   return useSWR<DepartmentResponse>(`/details/departments/${id}`);
 };
@@ -35,4 +33,8 @@ export const useUpdateDepartment = () =>
 export const useDeleteDepartment = () =>
   useSWRMutation(`/details/departments`, (url, { arg }: { arg: { id: string } }) => {
     return appAxios.delete<DepartmentArgType>(`${url}/${arg.id}`);
+  });
+export const useUpdateUserDepartment = () =>
+  useSWRMutation(`/user/onboarding/departments`, (url, { arg }: { arg: { departments: number[] } }) => {
+    return appAxios.put(url, arg);
   });

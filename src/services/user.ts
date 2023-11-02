@@ -1,7 +1,7 @@
 "use client";
 import appAxios from "@/lib/appAxios";
 import { USER_ROLE } from "@/shared/enums";
-import { AuthResponse } from "@/types/User";
+import { AuthResponse, UserScoresResponse } from "@/types/User";
 import { routeFilter } from "@/utils";
 import useSWR, { SWRResponse } from "swr";
 import useSWRMutation from "swr/mutation";
@@ -149,3 +149,7 @@ export const useUpdateProfilePreference = () =>
   useSWRMutation(`/user/profile/preferences`, (url, { arg }: { arg: { preference_id: number } }) => {
     return appAxios.put<{ arg: { preference_id: number } }>(url, arg);
   });
+
+export const useGetUserScores = (): SWRResponse => {
+  return useSWR<UserScoresResponse>(`/user/scores`);
+};
