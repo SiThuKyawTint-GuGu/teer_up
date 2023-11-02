@@ -64,15 +64,17 @@ const FormItem = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivEl
 
     return (
       <FormItemContext.Provider value={{ id }}>
-        <div ref={ref} className={cn("space-y-1", className)} {...props} />
-        {error && (
-          <div className="text-primary flex items-center mt-1">
-            <div className="me-1">
-              <Icons.inputError />
+        <div>
+          <div ref={ref} className={cn("space-y-1", className)} {...props} />
+          {error && (
+            <div className="text-primary flex items-center mt-1">
+              <div className="me-1">
+                <Icons.inputError />
+              </div>
+              {error?.message}
             </div>
-            {error?.message}
-          </div>
-        )}
+          )}
+        </div>
       </FormItemContext.Provider>
     );
   }
@@ -88,14 +90,13 @@ const FormLabel = React.forwardRef<
 });
 FormLabel.displayName = "FormLabel";
 
-const FormControl = React.forwardRef<
-  React.ElementRef<typeof Slot>,
-  React.ComponentPropsWithoutRef<typeof Slot>
->(({ ...props }, ref) => {
-  const { error } = useFormField();
+const FormControl = React.forwardRef<React.ElementRef<typeof Slot>, React.ComponentPropsWithoutRef<typeof Slot>>(
+  ({ ...props }, ref) => {
+    const { error } = useFormField();
 
-  return <Slot ref={ref} aria-invalid={!!error} {...props} />;
-});
+    return <Slot ref={ref} aria-invalid={!!error} {...props} />;
+  }
+);
 FormControl.displayName = "FormControl";
 
 export { Form, FormControl, FormField, FormItem, FormLabel, useFormField };
