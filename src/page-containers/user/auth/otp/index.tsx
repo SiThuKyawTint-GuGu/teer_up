@@ -6,7 +6,7 @@ import * as yup from "yup";
 
 import { Button } from "@/components/ui/Button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form";
-import { Image } from "@/components/ui/Images";
+import { Icons, Image } from "@/components/ui/Images";
 import Modal from "@/components/ui/Modal";
 import { Text } from "@/components/ui/Typo/Text";
 import { useGetOtp, useOtpVerified } from "@/services/user";
@@ -50,12 +50,15 @@ const Otp = () => {
     <Grid columns="1">
       <Box className="h-screen" px="4">
         <Flex direction="column" position="relative" height="100%">
-          <Flex justify="end">
+          <Flex justify="between" align="center">
+            <Button onClick={() => router.back()} className="p-0" variant="ghost">
+              <Icons.back className="text-[#373A36] w-[23px] h-[23px]" />
+            </Button>
             <Button className="text-primary p-0" variant="ghost" onClick={() => setModalOpen(true)}>
               Skip for now
             </Button>
           </Flex>
-          <div className="flex flex-col justify-center flex-wrap gap-y-5  h-full items-center w-full flex-1">
+          <Flex direction="column" justify="start" align="center" wrap="wrap" mt="9">
             <div>{error && <div className="text-primary">{error.response.data.message}</div>}</div>
             <Flex justify="center" align="center" mb="6">
               <Image src="/uploads/icons/auth/otp.svg" width={180} height={180} alt="login" />
@@ -110,7 +113,7 @@ const Otp = () => {
             Resend Varification
           </Button> */}
             </Form>
-          </div>
+          </Flex>
           {modalOpen && (
             <Modal onClose={() => setModalOpen(false)}>
               <div className="bg-white w-[398px]">
