@@ -153,7 +153,7 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, conte
       )}
       {openShare && (
         <Modal onClose={() => setOpenShare(false)}>
-          <Share />
+          <Share url={`/content/${data.slug}`} />
         </Modal>
       )}
     </Dialog>
