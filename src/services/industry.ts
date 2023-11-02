@@ -15,9 +15,7 @@ export const useGetIndustry = <IndustryResponse>(): SWRResponse<IndustryResponse
   return useSWR<IndustryResponse>(`/details/industries`);
 };
 
-export const useGetIndustryById = <IndustryResponse>(
-  id: number
-): SWRResponse<IndustryResponse, any> => {
+export const useGetIndustryById = <IndustryResponse>(id: number): SWRResponse<IndustryResponse, any> => {
   // const key = id != 0 ? `/admin/contentcategories/${id}` : null;
   return useSWR<IndustryResponse>(`/details/industries/${id}`);
 };
@@ -35,4 +33,9 @@ export const useUpdateIndustry = () =>
 export const useDeleteIndustry = () =>
   useSWRMutation(`/details/industries`, (url, { arg }: { arg: { id: string } }) => {
     return appAxios.delete<IndustryArgType>(`${url}/${arg.id}`);
+  });
+
+export const useUpdateUserIndustry = () =>
+  useSWRMutation(`/user/onboarding/industries`, (url, { arg }: { arg: { industries: number[] } }) => {
+    return appAxios.put(url, arg);
   });

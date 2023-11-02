@@ -1,16 +1,17 @@
 "use client";
 
 import { Button } from "@/components/ui/Button";
-import { useGetIndustry, useUpdateUserIndustry } from "@/services/industry";
-import { IndustryData, IndustryResponse } from "@/types/Industry";
+import { useGetDepartment, useUpdateUserDepartment } from "@/services/department";
+import { DepartmentResponse } from "@/types/Department";
+import { IndustryData } from "@/types/Industry";
 import { useRouter } from "next/navigation";
 import { useMemo, useState, useTransition } from "react";
 import QuestionPageCard from "../components/QuestionPageCard";
-const IndustryPage = () => {
+const DepartmentPage = () => {
   const router = useRouter();
-  const { trigger } = useUpdateUserIndustry();
+  const { trigger } = useUpdateUserDepartment();
   const [isPending, startTransition] = useTransition();
-  const { data } = useGetIndustry<IndustryResponse>();
+  const { data } = useGetDepartment<DepartmentResponse>();
   const [selectData, setSelectData] = useState<number[]>([]);
   const onChange = (data: number) => {
     const sameId = selectData.find(e => e === data);
@@ -27,11 +28,11 @@ const IndustryPage = () => {
   const submitHandler = () => {
     trigger(
       {
-        industries: selectData,
+        departments: selectData,
       },
       {
         onSuccess: () => {
-          startTransition(() => router.push("/department"));
+          startTransition(() => router.push("/home"));
         },
       }
     );
@@ -39,7 +40,7 @@ const IndustryPage = () => {
 
   return (
     <QuestionPageCard
-      nextPage="/department"
+      nextPage="/home"
       title="Which industry are you most interested in?"
       layout
       subTitle="select one or more industry"
@@ -72,4 +73,4 @@ const IndustryPage = () => {
   );
 };
 
-export default IndustryPage;
+export default DepartmentPage;
