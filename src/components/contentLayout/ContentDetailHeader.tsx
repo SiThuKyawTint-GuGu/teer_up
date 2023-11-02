@@ -16,7 +16,7 @@ const ContentDetailHeader: React.FC<ContentDetailHeaderProps> = ({ title }) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   return (
-    <div className="flex justify-between h-[48px] items-center   bg-white fixed top-0 w-full max-w-[400px] mx-auto">
+    <div className="flex justify-between h-[48px] z-[3] items-center bg-white fixed top-0 w-full max-w-[400px] mx-auto">
       <div onClick={() => router.back()}>
         <Icons.back className="w-[20px] h-[20px]" />
       </div>
