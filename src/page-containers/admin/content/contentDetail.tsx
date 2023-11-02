@@ -41,6 +41,7 @@ import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { Box } from "@radix-ui/themes";
+import { Editor } from "@tinymce/tinymce-react";
 import dayjs from "dayjs";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -122,10 +123,12 @@ const ContentDetail = ({ id }: Props) => {
   const [author, setAuthor] = useState<string>("");
   const [editorContent, setEditorContent] = useState<any>("");
   const [oppoEditorContent, setOppoEditorContent] = useState<any>("");
+  const [htmlContent, setHtmlContent] = useState<any>({});
   const [link, setLink] = useState<string>("");
-  const [pathwayContent, setPathwayContent] = useState([{ name: "", pathway_id: "" }]);
+  const [pathwayContent, setPathwayContent] = useState<any[]>([]);
   const [editor, setEditor] = useState<any>(null);
   const [oppoEditor, setOppoEditor] = useState<any>(null);
+  const [htmlEditors, setHtmlEditors] = useState<any>(null);
   const [contentOptions, setContentOptions] = useState<OptionType[]>([]);
   const [keywordOptions, setKeywordOptions] = useState<OptionType[]>([]);
   const [industryOptions, setIndustryOptions] = useState<OptionType[]>([]);
@@ -142,12 +145,17 @@ const ContentDetail = ({ id }: Props) => {
   const handleOppoEditorInit = (evt: any, editor: any) => {
     setOppoEditor(editor);
   };
+  const handleEditorHtmlBody = (editor: any) => {
+    setHtmlEditors(editor);
+  };
 
   useEffect(() => {
     if (editor) {
       editor?.setContent(editorContent);
     }
-
+    if (htmlEditors) {
+      htmlEditors?.setContent(htmlContent);
+    }
     if (oppoEditor) {
       oppoEditor?.setContent(oppoEditorContent);
     }
@@ -157,9 +165,6 @@ const ContentDetail = ({ id }: Props) => {
         result[dimension_id] = { low, medium, high };
         return result;
       }, {});
-
-      // console.log("tr.....", transformedData);
-
       setCheckboxValues(transformedData);
     }
     if (content?.data) {
@@ -191,11 +196,37 @@ const ContentDetail = ({ id }: Props) => {
       };
       setSelelectedMentor(mentorData);
       if (initialSearchContent === false) {
-        const pathwayContentData = content?.data.content_pathways.map((pathway: any) => ({
-          name: pathway?.title,
-          pathway_id: pathway?.id,
-        }));
+        // const pathwayContentData = content?.data.content_pathways.map((pathway: any) => ({
+        //   name: pathway?.title,
+        //   pathway_id: pathway?.id,
+        // }));
+        const pathwayContentData = content?.data.content_pathways
+          .map((path: any) => {
+            if (path.type === "html") {
+              return {
+                html_body: path.html_body,
+                type: "html",
+              };
+            } else {
+              return {
+                name: path.title,
+                pathway_id: path.id,
+                type: "content",
+              };
+            }
+          })
+          .filter(Boolean);
         setPathwayContent(pathwayContentData);
+
+        pathwayContentData.map((data: any, index: number) => {
+          if (data.type === "html") {
+            const initialContent = data.html_body || "";
+            if (htmlEditors) {
+              htmlEditors.setContent(initialContent);
+            }
+            setHtmlContent((prevHtmlContent: any) => ({ ...prevHtmlContent, [index]: initialContent }));
+          }
+        });
       }
       const selectKeywords = content?.data.content_keywords.map((keyword: any) => ({
         label: keyword.keyword?.keyword,
@@ -261,6 +292,8 @@ const ContentDetail = ({ id }: Props) => {
     editor,
     oppoEditor,
     oppoEditorContent,
+    // htmlEditors,
+    // htmlContent,
     contents?.data,
     searchContent,
     content?.data,
@@ -504,7 +537,14 @@ const ContentDetail = ({ id }: Props) => {
       }
       content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
     } else if (selectedValue === "pathway") {
-      const pathways = pathwayContent.map((path: any) => ({ pathway_id: path.pathway_id }));
+      // const pathways = pathwayContent.map((path: any) => ({ pathway_id: path.pathway_id }));
+      const pathways = pathwayContent.map(item => {
+        if (item.name) {
+          const { name, ...rest } = item;
+          return rest;
+        }
+        return item;
+      });
       if (!pathways[0].pathway_id) {
         setEventError("Please add pathway!");
         return;
@@ -525,6 +565,7 @@ const ContentDetail = ({ id }: Props) => {
         image_url: imgurl,
         content_pathways: pathways,
       };
+      console.log(postdata);
       if (contentDimension?.data) {
         const data = {
           content_dimensions: updatedDimensionData(),
@@ -614,7 +655,11 @@ const ContentDetail = ({ id }: Props) => {
   const handleAddPathway = () => {
     setInitialSearchContent(true);
     setSearchContent("");
-    const updatedOptions = [...pathwayContent, { name: "", pathway_id: "" }];
+    const updatedOptions = [...pathwayContent, { type: "content", name: "", pathway_id: "" }];
+    setPathwayContent(updatedOptions);
+  };
+  const handleAddHtmlBody = () => {
+    const updatedOptions = [...pathwayContent, { type: "html", html_body: "" }];
     setPathwayContent(updatedOptions);
   };
 
@@ -649,8 +694,7 @@ const ContentDetail = ({ id }: Props) => {
   };
   const handleSelectPathwayChange = (event: any, newValue: any, index: number) => {
     const updatedPathways = [...pathwayContent];
-
-    updatedPathways[index] = { pathway_id: newValue ? newValue.id : "", name: newValue?.label };
+    updatedPathways[index] = { type: "content", pathway_id: newValue ? newValue.id : "", name: newValue?.label };
     setPathwayContent(updatedPathways);
   };
 
@@ -678,6 +722,12 @@ const ContentDetail = ({ id }: Props) => {
     });
 
     return dimensionArray;
+  };
+
+  const handleEditorChange = (index: number, content: any) => {
+    const updatedContent = [...pathwayContent];
+    updatedContent[index].html_body = content;
+    setPathwayContent(updatedContent);
   };
 
   if (isLoading) return <p>Loading...</p>;
@@ -990,29 +1040,70 @@ const ContentDetail = ({ id }: Props) => {
           )}
           {selectedValue === "pathway" && (
             <>
-              <MuiButton style={{ textTransform: "none" }} color="error" variant="contained" onClick={handleAddPathway}>
-                <AiOutlinePlus size={20} />
-                Add Pathway
-              </MuiButton>
+              <div>
+                <MuiButton
+                  style={{ textTransform: "none" }}
+                  color="error"
+                  variant="contained"
+                  onClick={handleAddPathway}
+                >
+                  <AiOutlinePlus size={20} />
+                  Add Pathway
+                </MuiButton>
+                <MuiButton
+                  style={{ textTransform: "none", marginLeft: "20px" }}
+                  color="error"
+                  variant="contained"
+                  onClick={handleAddHtmlBody}
+                >
+                  <AiOutlinePlus size={20} />
+                  Add Content
+                </MuiButton>
+              </div>
               {pathwayContent.map((pathway: any, index: number) => (
-                <div key={index} className="flex items-center gap-4 mt-10">
-                  <Autocomplete
-                    disablePortal
-                    id={`pathway-${index}`}
-                    options={contentOptions || []}
-                    sx={{ width: 300 }}
-                    value={pathway.name}
-                    onInputChange={(event, newInputValue) => handleInputChange(event, newInputValue, index)}
-                    onChange={(event, newValue) => handleSelectPathwayChange(event, newValue, index)}
-                    renderInput={params => <TextField {...params} label="Contents" />}
-                  />
-                  <AiFillDelete
-                    onClick={() => handleDeletePathway(index)}
-                    className="cursor-pointer"
-                    size={25}
-                    color="#d8291c"
-                  />
-                </div>
+                <>
+                  {pathway.type === "content" && (
+                    <>
+                      <div key={index} className="flex items-center gap-4 mt-10">
+                        <Autocomplete
+                          disablePortal
+                          id={`pathway-${index}`}
+                          options={contentOptions || []}
+                          sx={{ width: 300 }}
+                          value={pathway.name}
+                          onInputChange={(event, newInputValue) => handleInputChange(event, newInputValue, index)}
+                          onChange={(event, newValue) => handleSelectPathwayChange(event, newValue, index)}
+                          renderInput={params => <TextField {...params} label="Contents" />}
+                        />
+                        <AiFillDelete
+                          onClick={() => handleDeletePathway(index)}
+                          className="cursor-pointer"
+                          size={25}
+                          color="#d8291c"
+                        />
+                      </div>
+                    </>
+                  )}
+                  {pathway.type === "html" && (
+                    <div key={index} className="mt-5 w-[80%] flex items-center ">
+                      {/* <HtmlEditor handleEditorInit={(editor: any) => handleEditorHtmlBody(editor, index)} /> */}
+                      <Editor
+                        init={(editorInit: any) => handleEditorHtmlBody(editorInit)}
+                        value={htmlContent[index] || ""}
+                        onEditorChange={content => {
+                          setHtmlContent((prevHtmlContent: any) => ({ ...prevHtmlContent, [index]: content }));
+                          handleEditorChange(index, content);
+                        }}
+                      />
+                      <AiFillDelete
+                        onClick={() => handleDeletePathway(index)}
+                        className="cursor-pointer ml-5"
+                        size={25}
+                        color="#d8291c"
+                      />
+                    </div>
+                  )}
+                </>
               ))}
             </>
           )}
