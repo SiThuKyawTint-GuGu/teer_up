@@ -7,35 +7,40 @@ import { Button } from "@/components/ui/Button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form";
 import { Icons, Image } from "@/components/ui/Images";
 import { InputText } from "@/components/ui/Inputs";
+import { Autocomplete, Item } from "@/components/ui/Inputs/Autocomplete";
 import { Checkbox } from "@/components/ui/Inputs/Checkbox";
 import { Text } from "@/components/ui/Typo/Text";
+import { useGetCountries } from "@/services/country";
+import { CountriesResponse } from "@/types/Countries";
 import { setUserInfo } from "@/utils/auth";
 import { cn } from "@/utils/cn";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Flex, Grid, Heading } from "@radix-ui/themes";
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import { useUserRegister } from "../../../../services/user";
 interface SignUpFormType {
   email: string;
   name: string;
-  // country: string;
+  country: string;
 }
 
 const validationSchema = yup.object({
   email: yup.string().email().required("Email is required!"),
   name: yup.string().required("Name is required!"),
+  country: yup.string().required("Country is required!"),
 });
 
 const SignUp = () => {
   const router = useRouter();
-  const form = useForm({
+  const comboboxRef = useRef<any>(null);
+  const [isPending, startTransition] = useTransition();
+  const [checked, setChecked] = useState<boolean>(false);
+  const { trigger, error, isMutating } = useUserRegister();
+  const { data: countries } = useGetCountries<CountriesResponse>();
+  const form = useForm<SignUpFormType>({
     resolver: yupResolver(validationSchema),
   });
 
-  const [isPending, startTransition] = useTransition();
-  const [checked, setChecked] = useState<boolean>(false);
-
-  const { trigger, error, isMutating } = useUserRegister();
   const onSubmit = async (data: SignUpFormType) => {
     await trigger(data, {
       onSuccess: response => {
@@ -44,6 +49,7 @@ const SignUp = () => {
       },
     });
   };
+
   return (
     <Grid columns="1">
       <Box>
@@ -56,7 +62,7 @@ const SignUp = () => {
           </Button>
         </Flex>
       </Box>
-      <Box className="h-screen" px="4" mt="6">
+      <Box className="h-screen" px="4" mt="1">
         <Flex direction="column" position="relative">
           <Flex justify="center" align="center" mb="6">
             <Image src="/uploads/icons/auth/login.svg" width={180} height={180} alt="login" />
@@ -115,19 +121,28 @@ const SignUp = () => {
 
                 <FormField
                   control={form.control}
-                  name="name"
+                  name="country"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <InputText
+                        <Autocomplete
                           className={cn(
                             "bg-white shadow-md",
-                            form.formState.errors.name && "border-2 border-primary focus:outline-0"
+                            form.formState.errors.country && "border-2 border-primary focus:outline-0"
                           )}
-                          placeholder="Enter your name"
-                          type="text"
+                          placeholder="Select your country"
                           {...field}
-                        />
+                        >
+                          {countries?.data?.length ? (
+                            countries?.data?.map((each, key) => (
+                              <Item key={key} value={each?.name}>
+                                {each?.name}
+                              </Item>
+                            ))
+                          ) : (
+                            <Item value="">No country found!</Item>
+                          )}
+                        </Autocomplete>
                       </FormControl>
                     </FormItem>
                   )}

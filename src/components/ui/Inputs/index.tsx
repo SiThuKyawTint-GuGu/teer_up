@@ -35,7 +35,7 @@ const InputText = React.forwardRef<HTMLInputElement, Props>(
     ref
   ) => {
     return (
-      <InputStyled inputType={inputType}>
+      <InputStyled inputtype={inputType}>
         <label htmlFor="email" className="block text-sm font-medium text-gray-700">
           {label}
         </label>
@@ -52,8 +52,8 @@ const InputText = React.forwardRef<HTMLInputElement, Props>(
               {...props}
             />
           </TextField.Root>
+          {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
         </div>
-        {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
       </InputStyled>
     );
   }
@@ -99,7 +99,7 @@ const InputTextArea = React.forwardRef<HTMLInputElement, Props>(
     ref
   ) => {
     return (
-      <InputStyled inputType={inputType}>
+      <InputStyled inputtype={inputType}>
         <label htmlFor="email" className="block text-sm font-medium text-gray-700">
           {label}
         </label>
@@ -126,11 +126,11 @@ const InputOtp: React.FC = ({ ...props }) => {
 
 export { InputOtp, InputSearch, InputText, InputTextArea };
 
-const InputStyled = styled.div<{ inputType?: USER_ROLE }>`
+const InputStyled = styled.div<{ inputtype?: USER_ROLE }>`
   width: 100%;
   & input {
-    ${({ inputType }) =>
-      inputType !== USER_ROLE.ADMIN &&
+    ${({ inputtype }) =>
+      inputtype !== USER_ROLE.ADMIN &&
       css`
         /* box-shadow: 0px 26px 30px 0px rgba(0, 0, 0, 0.05); */
       `}

@@ -58,7 +58,7 @@ const Otp = () => {
               Skip for now
             </Button>
           </Flex>
-          <Flex direction="column" justify="start" align="center" wrap="wrap" mt="9">
+          <Flex direction="column" justify="start" align="center" wrap="wrap" mt="6">
             <div>{error && <div className="text-primary">{error.response.data.message}</div>}</div>
             <Flex justify="center" align="center" mb="6">
               <Image src="/uploads/icons/auth/otp.svg" width={180} height={180} alt="login" />
@@ -109,6 +109,7 @@ const Otp = () => {
                 <Button type="submit" disabled={isPending || verifiedLoading}>
                   Login
                 </Button>
+                <Button variant="link">Change email</Button>
               </form>
               {/* <Button onClick={getOtp} disabled={isMutating}>
             Resend Varification
@@ -117,18 +118,22 @@ const Otp = () => {
           </Flex>
           {modalOpen && (
             <Modal onClose={() => setModalOpen(false)}>
-              <div className="bg-white w-[398px]">
-                <div className="text-center w-full py-[16px] text-[20px] font-[600]">Verfiy Email</div>
-                <div className="bg-[#EEE] w-full px-[24px] py-[32px] flex flex-col flex-wrap gap-y-3">
-                  <Text className="text-center font-[400]">
-                    Are you sure to continue without verification? We will not be able to save your progress if you do
-                    not verify email.
-                  </Text>
+              <div className="p-4">
+                <div className="bg-white rounded-lg overflow-hidden">
+                  <div className="text-center w-full py-[16px] text-[20px] font-[600]">Verfiy Email</div>
+                  <div className="bg-[#EEE] w-full px-[24px] py-[32px] flex flex-col flex-wrap gap-y-3">
+                    <Text className="text-center font-[400]">
+                      Are you sure to continue without verification? We will not be able to save your progress if you do
+                      not verify email.
+                    </Text>
 
-                  <Button size="lg" className="w-full" onClick={() => setModalOpen(false)}>
-                    Verify now
-                  </Button>
-                  <button onClick={() => router.push("/industry")}>Verify Later</button>
+                    <Button className="w-full" onClick={() => setModalOpen(false)}>
+                      Verify now
+                    </Button>
+                    <Button variant="ghost" onClick={() => router.push("/industry")}>
+                      Verify Later
+                    </Button>
+                  </div>
                 </div>
               </div>
             </Modal>
