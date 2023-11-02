@@ -5,7 +5,8 @@ import { ContentData, Input_config, Input_options } from "@/types/Content";
 
 import { Flex } from "@radix-ui/themes";
 
-import React, { useMemo, useState } from "react";
+import React, { ChangeEvent, useMemo, useState } from "react";
+import DatePicker from "../form/DatePicker";
 import { Button } from "../ui/Button";
 import { DialogTrigger } from "../ui/Dialog";
 import { Icons } from "../ui/Images";
@@ -28,7 +29,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
   }, [data]);
   const [selectedOptions, setSelectedOptions] = useState<{ inputconfig_id: number | string; value: string }[] | []>([]);
   const [message, setMessage] = useState<string>("");
-
+  const [dateValue, setDateValue] = useState("");
   const saveContent = async () => {
     await contentSave(
       {
@@ -48,10 +49,23 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
     );
   };
 
-  const handleChange = (input: Input_options, InputConfigId: number | string) => {
+  const handleRadio = (input: Input_options, InputConfigId: number | string) => {
+    const sameId = selectedOptions.find(e => e.value === input.value);
+    if (sameId) {
+      setSelectedOptions(prev => prev.filter(e => e.value !== input.value));
+      return;
+    }
     const config = {
       inputconfig_id: InputConfigId,
       value: input.value,
+    };
+    setSelectedOptions(prev => [...prev, config]);
+  };
+
+  const handleDate = (InputConfigId: number | string) => {
+    const config = {
+      inputconfig_id: InputConfigId,
+      value: dateValue,
     };
     setSelectedOptions(prev => [...prev, config]);
   };
@@ -79,19 +93,28 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
     }
   };
 
-  console.log(formResponse);
+  console.log("se", selectedOptions);
 
   const formElements = (inputData: Input_config) => {
-    console.log("inputData", inputData.type);
     if (inputData.type === "radio") {
       return inputData.input_options.map((input: Input_options, index: number) => (
         <div key={index} className="flex w-full flex-wrap items-center gap-x-2">
-          <RadioButton changeHandler={() => handleChange(input, inputData.id)} />
+          <RadioButton changeHandler={() => handleRadio(input, inputData.id)} />
           <label>{input.label}</label>
         </div>
       ));
     }
     if (inputData.type === "text") return <InputText />;
+    if (inputData.type === "date")
+      return (
+        <DatePicker
+          value={dateValue}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => {
+            setDateValue(e.target.value);
+            handleDate(inputData.id);
+          }}
+        />
+      );
   };
 
   return (
