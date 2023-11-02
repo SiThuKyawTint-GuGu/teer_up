@@ -49,7 +49,7 @@ const Home: React.FC = () => {
             </div>
           </Box>
           <Box className="space-y-6">
-            <Link className="block" href="/auth/register">
+            <Link className="block" href="/auth/signup">
               <Button className="w-full">
                 Get Started
                 <Icons.rightArrow />
