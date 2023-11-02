@@ -120,7 +120,11 @@ const InputTextArea = React.forwardRef<HTMLInputElement, Props>(
 );
 InputTextArea.displayName = "InputTextArea";
 
-export { InputSearch, InputText, InputTextArea };
+const InputOtp: React.FC = ({ ...props }) => {
+  return <InputOtpStyled {...props} />;
+};
+
+export { InputOtp, InputSearch, InputText, InputTextArea };
 
 const InputStyled = styled.div<{ inputType?: USER_ROLE }>`
   width: 100%;
@@ -140,4 +144,11 @@ const InputStyled = styled.div<{ inputType?: USER_ROLE }>`
     background-color: transparent;
     outline: 0;
   }
+`;
+
+const InputOtpStyled = styled.input`
+  width: 53px;
+  height: 64px;
+  border-radius: 8px;
+  background-color: white;
 `;

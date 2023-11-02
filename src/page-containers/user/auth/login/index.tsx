@@ -5,6 +5,7 @@ import * as yup from "yup";
 
 import { Button } from "@/components/ui/Button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form";
+import { Image } from "@/components/ui/Images";
 import { InputText } from "@/components/ui/Inputs";
 import { Checkbox } from "@/components/ui/Inputs/Checkbox";
 import { Text } from "@/components/ui/Typo/Text";
@@ -49,9 +50,12 @@ const Login: React.FC = () => {
 
   return (
     <Grid columns="1" px="4" className="h-screen bg-layout">
-      <Flex direction="column" justify="center" align="center" width="100%" wrap="wrap" height="100%">
+      <Flex direction="column" justify="start" align="center" width="100%" wrap="wrap" height="100%" mt="9">
+        <Flex justify="center" align="center" mb="6">
+          <Image src="/uploads/icons/auth/login.svg" width={180} height={180} alt="login" />
+        </Flex>
         <Flex justify="center" width="100%" direction="column" wrap="wrap" mb="4">
-          <Heading as="h4" size="7" weight="bold">
+          <Heading as="h4" size="7" weight="bold" mb="3">
             Login
           </Heading>
           <Text weight="light">An OTP code will be send to your email</Text>
