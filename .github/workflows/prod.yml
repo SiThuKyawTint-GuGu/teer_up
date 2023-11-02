@@ -1,6 +1,6 @@
 on:
   push:
-    branches: ["cicd"]
+    branches: ["prod"]
   workflow_dispatch:
 
 jobs:
