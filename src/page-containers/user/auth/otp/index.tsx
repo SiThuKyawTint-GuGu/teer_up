@@ -83,10 +83,7 @@ const Otp = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        {/* <InputText type="text" className="bg-white shadow-md" {...field} placeholder="Enter a otp" /> */}
                         <OtpInput
-                          value={otp}
-                          onChange={setOtp}
                           numInputs={6}
                           inputType="number"
                           inputStyle={{
@@ -98,6 +95,7 @@ const Otp = () => {
                             marginRight: 5,
                             outline: 0,
                           }}
+                          {...field}
                           renderInput={props => <input {...props} />}
                         />
                         {/* <OtpInput /> */}
@@ -106,7 +104,7 @@ const Otp = () => {
                   )}
                 />
 
-                <Button type="submit" disabled={isPending || verifiedLoading}>
+                <Button type="submit" loading={isPending || isMutating} disabled={isPending || verifiedLoading}>
                   Login
                 </Button>
                 <Button variant="link">Change email</Button>
