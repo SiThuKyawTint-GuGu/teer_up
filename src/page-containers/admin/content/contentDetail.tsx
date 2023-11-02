@@ -613,6 +613,7 @@ const ContentDetail = ({ id }: Props) => {
 
   const handleAddPathway = () => {
     setInitialSearchContent(true);
+    setSearchContent("");
     const updatedOptions = [...pathwayContent, { name: "", pathway_id: "" }];
     setPathwayContent(updatedOptions);
   };
