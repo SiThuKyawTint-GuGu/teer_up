@@ -1,3 +1,3 @@
-export const copyUrl = () => {
-  navigator.clipboard.writeText(window.location.toString());
+export const copyUrl = (url: string) => {
+  navigator.clipboard.writeText(url);
 };

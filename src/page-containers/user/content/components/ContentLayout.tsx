@@ -148,12 +148,7 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
       )}
       {openShare && (
         <Modal onClose={() => setOpenShare(false)}>
-          <Share />
-        </Modal>
-      )}
-      {openShare && (
-        <Modal onClose={() => setOpenShare(false)}>
-          <Share />
+          <Share url={`/content/${data.slug}`} />
         </Modal>
       )}
     </Dialog>
