@@ -3,12 +3,14 @@
 import CardBox from "@/components/ui/Card";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons } from "@/components/ui/Images";
+import Modal from "@/components/ui/Modal";
 import { Text } from "@/components/ui/Typo/Text";
 import { useLikeContent, useSaveContent } from "@/services/content";
 import { ContentData } from "@/types/Content";
 
 import { useEffect, useRef, useState } from "react";
 import CommentSection from "../../../../components/contentLayout/CommentSection";
+import Share from "./Share";
 type VideoProps = {
   data: ContentData;
   setVideoRef: any;
@@ -24,6 +26,7 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   const [showDescription, setShowDescription] = useState<boolean>(false);
+  const [openShare, setOpenShare] = useState<boolean>(false);
 
   const likePost = async () => {
     await like(
@@ -175,7 +178,7 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
               {data.saves}
             </div>
           </button>
-          <button className="flex items-center flex-wrap gap-x-1">
+          <button className="flex items-center flex-wrap gap-x-1" onClick={() => setOpenShare(true)}>
             <Icons.share className="w-[20px] h-[20px]" />
             <div>
               {""}
@@ -188,6 +191,11 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
         <DialogContent className="bg-white top-[initial] bottom-0 max-w-[400px] px-4 pt-8 pb-2 translate-y-0 rounded-10px-tl-tr">
           <CommentSection data={data} mutateParentData={contentMutate} />
         </DialogContent>
+      )}
+      {openShare && (
+        <Modal onClose={() => setOpenShare(false)}>
+          <Share />
+        </Modal>
       )}
     </Dialog>
   );
