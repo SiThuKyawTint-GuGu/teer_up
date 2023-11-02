@@ -39,37 +39,39 @@ const DepartmentPage = () => {
   };
 
   return (
-    <QuestionPageCard
-      nextPage="/home"
-      title="Which career field are you in?"
-      layout
-      subTitle="select one or more industry"
-    >
-      <div className="grid grid-cols-2 gap-7  grid-flow-row">
-        {industry &&
-          industry.length > 0 &&
-          industry.map((each: IndustryData, index: number) => (
-            <div
-              key={index}
-              onClick={() => {
-                onChange(each.id);
-              }}
-              className={`flex justify-center items-center w-full h-full p-[24px] border-[1px]
+    <>
+      <QuestionPageCard
+        nextPage="/home"
+        title="Which career field are you in?"
+        layout
+        subTitle="select one or more industry"
+      >
+        <div className="grid grid-cols-2 gap-7  grid-flow-row">
+          {industry &&
+            industry.length > 0 &&
+            industry.map((each: IndustryData, index: number) => (
+              <div
+                key={index}
+                onClick={() => {
+                  onChange(each.id);
+                }}
+                className={`flex justify-center items-center w-full h-full p-[24px] border-[1px]
                  shadow-md bg-[#fefefe] rounded-md cursor-pointer
              ${selectData.find(data => data === each.id) && "border-[1px] border-primary bg-secondary"}
         
             `}
-            >
-              {each.name}
-            </div>
-          ))}
-      </div>
+              >
+                {each.name}
+              </div>
+            ))}
+        </div>
+      </QuestionPageCard>
       <div className="fixed bottom-0 w-full max-w-[400px] mx-auto py-2 bg-white">
         <Button className="w-full" disabled={selectData.length == 0 || isPending} onClick={submitHandler} size="sm">
           Next
         </Button>
       </div>
-    </QuestionPageCard>
+    </>
   );
 };
 

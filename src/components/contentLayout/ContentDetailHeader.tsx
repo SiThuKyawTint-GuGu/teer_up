@@ -1,7 +1,7 @@
 "use client";
 
 import Share from "@/page-containers/user/content/components/Share";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { Icons } from "../ui/Images";
 import Modal from "../ui/Modal";
@@ -12,7 +12,9 @@ type ContentDetailHeaderProps = {
 };
 const ContentDetailHeader: React.FC<ContentDetailHeaderProps> = ({ title }) => {
   const router = useRouter();
+  const pathname = usePathname();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+
   return (
     <div className="flex justify-between h-[48px] items-center   bg-white fixed top-0 w-full max-w-[400px] mx-auto">
       <div onClick={() => router.back()}>
@@ -26,7 +28,7 @@ const ContentDetailHeader: React.FC<ContentDetailHeaderProps> = ({ title }) => {
       </div>
       {modalOpen && (
         <Modal onClose={() => setModalOpen(false)}>
-          <Share />
+          <Share url={pathname} />
         </Modal>
       )}
     </div>

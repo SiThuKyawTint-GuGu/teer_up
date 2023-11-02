@@ -194,7 +194,7 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
       )}
       {openShare && (
         <Modal onClose={() => setOpenShare(false)}>
-          <Share />
+          <Share url={`/content/${data.slug}`} />
         </Modal>
       )}
     </Dialog>
