@@ -28,7 +28,7 @@ export const Text = React.forwardRef<HTMLDivElement, Props>(
     <RText
       ref={ref}
       as={as || "p"}
-      className={cn("text-black font-normal", className)}
+      className={cn("text-black", className)}
       dangerouslySetInnerHTML={dangerouslySetInnerHTML}
       {...(rest as any)}
     >
