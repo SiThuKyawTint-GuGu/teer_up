@@ -41,7 +41,7 @@ const DepartmentPage = () => {
   return (
     <QuestionPageCard
       nextPage="/home"
-      title="Which industry are you most interested in?"
+      title="Which career field are you in?"
       layout
       subTitle="select one or more industry"
     >

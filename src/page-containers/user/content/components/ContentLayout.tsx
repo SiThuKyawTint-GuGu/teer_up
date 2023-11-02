@@ -151,6 +151,11 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
           <Share />
         </Modal>
       )}
+      {openShare && (
+        <Modal onClose={() => setOpenShare(false)}>
+          <Share />
+        </Modal>
+      )}
     </Dialog>
   );
 };
