@@ -807,7 +807,6 @@ const ContentDetail = ({ id }: Props) => {
                     Upload Video
                     <VisuallyHiddenInput accept="video/*" onChange={handleFileChange} type="file" />
                   </MuiButton>
-                  <p className="mt-3">Please upload 4:3 ratio</p>
                 </div>
 
                 {videoUrl && (
@@ -1040,6 +1039,7 @@ const ContentDetail = ({ id }: Props) => {
                 Upload Image
                 <VisuallyHiddenInput accept="image/*" onChange={handleImageChange} type="file" />
               </MuiButton>
+              <p className="mt-3">Please upload 4:3 ratio</p>
             </div>
             {imgUrl && (
               <div className="mt-4">
