@@ -1,4 +1,5 @@
 "use client";
+import HtmlEditor from "@/components/ui/Editor";
 import {
   ParamsType,
   useGetContent,
@@ -40,7 +41,6 @@ import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { Box } from "@radix-ui/themes";
-import { Editor } from "@tinymce/tinymce-react";
 import dayjs from "dayjs";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -613,6 +613,7 @@ const ContentDetail = ({ id }: Props) => {
 
   const handleAddPathway = () => {
     setInitialSearchContent(true);
+    setSearchContent("");
     const updatedOptions = [...pathwayContent, { name: "", pathway_id: "" }];
     setPathwayContent(updatedOptions);
   };
@@ -741,7 +742,7 @@ const ContentDetail = ({ id }: Props) => {
               options={departmentOptions || []}
               value={selectedDepartment}
               onChange={handleDepartmentChange}
-              renderInput={params => <TextField {...params} label="Select Departments" placeholder="Departments" />}
+              renderInput={params => <TextField {...params} label="Career Interest" placeholder="Career Interest" />}
             />
           </div>
           {/* Keywords */}
@@ -807,7 +808,6 @@ const ContentDetail = ({ id }: Props) => {
                     Upload Video
                     <VisuallyHiddenInput accept="video/*" onChange={handleFileChange} type="file" />
                   </MuiButton>
-                  <p className="mt-3">Please upload 4:3 ratio</p>
                 </div>
 
                 {videoUrl && (
@@ -938,7 +938,8 @@ const ContentDetail = ({ id }: Props) => {
               </div>
               <div className="mb-10">
                 <p className="text-md font-semibold mb-3">Content</p>
-                <Editor onInit={handleEditorInit} />
+                {/* <Editor onInit={handleEditorInit} /> */}
+                <HtmlEditor handleEditorInit={handleEditorInit} />
               </div>
             </>
           )}
@@ -982,7 +983,8 @@ const ContentDetail = ({ id }: Props) => {
               </div>
               <div className="mb-10">
                 <p className="text-md font-semibold mb-3">Opportunity Content</p>
-                <Editor onInit={handleOppoEditorInit} />
+                {/* <Editor onInit={handleOppoEditorInit} /> */}
+                <HtmlEditor handleEditorInit={handleOppoEditorInit} />
               </div>
             </>
           )}
@@ -1040,6 +1042,7 @@ const ContentDetail = ({ id }: Props) => {
                 Upload Image
                 <VisuallyHiddenInput accept="image/*" onChange={handleImageChange} type="file" />
               </MuiButton>
+              <p className="mt-3">Please upload 4:3 ratio</p>
             </div>
             {imgUrl && (
               <div className="mt-4">

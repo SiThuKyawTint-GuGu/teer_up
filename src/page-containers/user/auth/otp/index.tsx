@@ -38,6 +38,7 @@ const Otp = () => {
       onSuccess: res => {
         setUserInfo(res.data.token, res.data.data);
         startTransition(() => {
+          router.refresh();
           router.push("/industry");
         });
       },
