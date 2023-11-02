@@ -17,7 +17,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ data }) => {
   return (
     <QuestionPageCard>
       <div className="w-full h-full">
-        <CardBox className="flex flex-col flex-wrap px-3  justify-between  w-full h-[80%] bg-white">
+        <CardBox className="flex flex-col flex-wrap px-3  justify-between overflow-y-auto no-scrollbar  w-full h-[80%] bg-white">
           <div className="text-gray-500 my-4 text-center">
             <Text className="text-[28px] font-[700]  text-center mb-5" as="div">
               {data.name}
@@ -31,7 +31,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ data }) => {
                 />
               </div>
             )} */}
-            <div className="w-full cursor-pointer  flex flex-col flex-wrap gap-y-10 justify-center h-full items-center">
+            <div className="w-full cursor-pointer  flex flex-col flex-wrap gap-y-5 justify-center h-full items-center">
               {data.options &&
                 data.options.length &&
                 data.options.map((q: OnBoardingOption, index: number) => (
