@@ -39,7 +39,7 @@ const Otp = () => {
         setUserInfo(res.data.token, res.data.data);
         startTransition(() => {
           router.refresh();
-          router.push("/home");
+          router.push("/industry");
         });
       },
     });
@@ -82,7 +82,7 @@ const Otp = () => {
               Verify
             </Button>
           </form>
-          <button className="text-primary">Change email</button>
+          {/* <button className="text-primary">Change email</button> */}
           <Button size="lg" onClick={getOtp} disabled={isMutating}>
             Resend Varification
           </Button>
@@ -101,7 +101,7 @@ const Otp = () => {
               <Button size="lg" className="w-full" onClick={() => setModalOpen(false)}>
                 Verify now
               </Button>
-              <button onClick={() => router.push("/home")}>Verify Later</button>
+              <button onClick={() => router.push("/industry")}>Verify Later</button>
             </div>
           </div>
         </Modal>
