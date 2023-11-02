@@ -11,7 +11,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, children }) => {
       <div className="fixed inset-0 transition-opacity" onClick={onClose}>
         <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
       </div>
-      <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
+      <span className="hidden sm:inline-block sm:align-middle z-[99999] sm:h-screen" aria-hidden="true">
         &#8203;
       </span>
       <div className="inline-block align-bottom text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-top">

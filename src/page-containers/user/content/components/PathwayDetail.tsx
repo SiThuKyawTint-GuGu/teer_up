@@ -72,18 +72,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
 
     return <div>This Page is not available right now</div>;
   };
-  const scrollToTarget = () => {
-    if (targetRef.current) {
-      // Check the 'snap' property
-      if (targetRef.current.getAttribute("snap") === "true") {
-        // Scroll with snap behavior
-        targetRef.current.scrollIntoView({ behavior: "smooth" });
-      } else {
-        // Scroll without snap behavior
-        targetRef.current.scrollIntoView();
-      }
-    }
-  };
+
   return (
     <Grid columns="1">
       <div className="snap-y flex-col snap-mandatory w-full h-[90vh]   bg-[#F8F9FB] no-scrollbar overflow-y-scroll">

@@ -24,39 +24,48 @@ export function middleware(req: NextRequest) {
   const getValue = req.cookies.get("userInfo")?.value;
 
   // decrypt user info
-  let userRole;
+  let user;
 
   if (getValue && typeof getValue === "string") {
     const bytes = CryptoJS.AES.decrypt(getValue, "userInfo");
     const decryptedUserInfo = JSON.parse(bytes.toString(CryptoJS.enc.Utf8)) as User;
-    userRole = decryptedUserInfo?.role;
+    user = decryptedUserInfo;
   }
 
   // If the user is not logged in, redirect to the login page
   //? admin
   if (!token) {
     if (pathname.includes("/admin")) {
-      return NextResponse.redirect(new URL(adminLoginPath, req.url));
+      return NextResponse.rewrite(new URL(adminLoginPath, req.url));
     }
     if (protectedUserRoutes.includes(pathname)) {
-      return NextResponse.redirect(new URL(loginPath, req.url));
+      return NextResponse.rewrite(new URL(loginPath, req.url));
     }
   }
 
   // If the user is already logged in and has a token, redirect to the home page
   //? user
   if (!token && protectedUserRoutes.includes(pathname)) {
-    return NextResponse.redirect(new URL("/auth/login", req.url));
+    return NextResponse.rewrite(new URL("/auth/login", req.url));
   }
 
-  if (userRole !== USER_ROLE.ADMIN) {
+  //? user does not verified
+  if (protectedUserRoutes.includes(pathname)) {
+    if (token && !user?.verified) {
+      return NextResponse.redirect(new URL(`${loginPath}?verified=false`, req.url));
+    }
+  }
+
+  if (user?.role !== USER_ROLE.ADMIN) {
     if (token && (pathname.includes("/admin") || pathname === "/login" || pathname === "/auth/login")) {
-      return NextResponse.redirect(new URL("/home", req.url));
+      if (user?.verified) {
+        return NextResponse.rewrite(new URL("/home", req.url));
+      }
     }
   } else {
     if (token) {
       if (!pathname.startsWith("/admin")) {
-        return NextResponse.redirect(new URL("/admin", req.url));
+        return NextResponse.rewrite(new URL("/admin", req.url));
       }
     }
   }
