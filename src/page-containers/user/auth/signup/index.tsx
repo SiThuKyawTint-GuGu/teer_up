@@ -10,6 +10,7 @@ import { InputText } from "@/components/ui/Inputs";
 import { Checkbox } from "@/components/ui/Inputs/Checkbox";
 import { Text } from "@/components/ui/Typo/Text";
 import { setUserInfo } from "@/utils/auth";
+import { cn } from "@/utils/cn";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Flex, Grid, Heading } from "@radix-ui/themes";
 import { useState, useTransition } from "react";
@@ -66,9 +67,12 @@ const SignUp = () => {
             </Heading>
           </Flex>
           {error && <div className="text-primary">{error.response.data.message}</div>}
-          <div className="flex flex-col h-full justify-center w-full">
+          <div className="space-y-[10px]">
             <Form {...form}>
-              <form className="" onSubmit={form.handleSubmit(onSubmit)}>
+              <form
+                className="w-full flex flex-col justify-center flex-wrap space-y-[25px]"
+                onSubmit={form.handleSubmit(onSubmit)}
+              >
                 <FormField
                   control={form.control}
                   name="email"
@@ -76,15 +80,19 @@ const SignUp = () => {
                     <FormItem>
                       <FormControl>
                         <InputText
-                          type="text"
-                          className="bg-white shadow-md"
-                          {...field}
+                          className={cn(
+                            "bg-white shadow-md",
+                            form.formState.errors.email && "border-2 border-primary focus:outline-0"
+                          )}
                           placeholder="Enter your email address"
+                          type="text"
+                          {...field}
                         />
                       </FormControl>
                     </FormItem>
                   )}
                 />
+
                 <FormField
                   control={form.control}
                   name="name"
@@ -92,30 +100,64 @@ const SignUp = () => {
                     <FormItem>
                       <FormControl>
                         <InputText
-                          type="text"
-                          className="bg-white shadow-md"
-                          {...field}
+                          className={cn(
+                            "bg-white shadow-md",
+                            form.formState.errors.name && "border-2 border-primary focus:outline-0"
+                          )}
                           placeholder="Enter your name"
+                          type="text"
+                          {...field}
                         />
                       </FormControl>
                     </FormItem>
                   )}
                 />
 
-                <Flex direction="row" gap="2" align="start">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <InputText
+                          className={cn(
+                            "bg-white shadow-md",
+                            form.formState.errors.name && "border-2 border-primary focus:outline-0"
+                          )}
+                          placeholder="Enter your name"
+                          type="text"
+                          {...field}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+
+                <Flex width="100%" gap="1" my="5">
                   <Checkbox onCheckedChange={(val: boolean) => setChecked(val)} />
-                  <Text as="div">
-                    I have read, understood and accept{" "}
-                    <Text as="span" className="text-primary">
+                  <Text className="space-x-[5px]" as="div" weight="light" size="2">
+                    <Text as="span">By clicking &#34;Next&#34;, I have read, understood, and given my</Text>
+                    <Button className="p-0 h-auto" variant="link">
+                      consent
+                    </Button>
+                    <Text as="span">and accepted the</Text>
+                    <Button className="p-0 h-auto" variant="link">
                       Terms of Use
-                    </Text>
+                    </Button>
                   </Text>
                 </Flex>
-                <Button type="submit" size="lg" className="mt-5" disabled={isPending || isMutating || !checked}>
-                  Sign Up
+
+                <Button type="submit" loading={isPending || isMutating} disabled={isPending || isMutating || !checked}>
+                  Sign up
                 </Button>
               </form>
             </Form>
+            <Flex justify="center" wrap="wrap" width="100%" gap="2">
+              <Text weight="light">Already have an account?</Text>
+              <button onClick={() => router.push("/auth/login")} className="text-primary">
+                Log in
+              </button>
+            </Flex>
           </div>
         </Flex>
       </Box>
