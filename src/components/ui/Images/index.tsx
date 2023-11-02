@@ -45,7 +45,6 @@ import {
   IoNotificationsOutline,
   IoPeopleOutline,
   IoPersonCircleOutline,
-  IoSearch,
   IoSettingsOutline,
   IoShareSocialOutline,
 } from "react-icons/io5";
@@ -164,7 +163,6 @@ export const Icons = {
   delete: MdDelete,
   mark: IoCheckmarkCircle,
   rightArrow: FaArrowRight,
-  searchLens: IoSearch,
   home: IoHome,
   globe: IoGlobeOutline,
   people: IoPeopleOutline,

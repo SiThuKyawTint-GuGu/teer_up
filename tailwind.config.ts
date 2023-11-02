@@ -28,6 +28,9 @@ const config: Config = {
       borderRadius: {
         "10px-tl-tr": "10px 10px 0 0",
       },
+      listStyleType: {
+        square: "square",
+      },
     },
   },
   plugins: [],
