@@ -3,7 +3,7 @@ import RadioButton from "@/page-containers/user/personalized/components/RadioBut
 import { useContentForm, useLikeContent, useSaveContent } from "@/services/content";
 import { ContentData, Input_config, Input_options } from "@/types/Content";
 
-import { Flex } from "@radix-ui/themes";
+import { Flex, TextFieldInput } from "@radix-ui/themes";
 
 import React, { ChangeEvent, useMemo, useState } from "react";
 import DatePicker from "../form/DatePicker";
@@ -29,7 +29,9 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
   }, [data]);
   const [selectedOptions, setSelectedOptions] = useState<{ inputconfig_id: number | string; value: string }[] | []>([]);
   const [message, setMessage] = useState<string>("");
-  const [dateValue, setDateValue] = useState("");
+  const [dateValue, setDateValue] = useState<string>("");
+  const [emailValue, setEmailValue] = useState<string>("");
+
   const saveContent = async () => {
     await contentSave(
       {
@@ -70,6 +72,14 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
     setSelectedOptions(prev => [...prev, config]);
   };
 
+  const handleEmail = (InputConfigId: number | string) => {
+    const config = {
+      inputconfig_id: InputConfigId,
+      value: emailValue,
+    };
+    setSelectedOptions(prev => [...prev, config]);
+  };
+
   const formSubmit = () => {
     if (data && data.content_event) {
       postForm(
@@ -80,7 +90,27 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
         },
         {
           onSuccess: () => {
-            if (formResponse?.status == 201) {
+            if (formResponse?.status == 201 || formResponse?.status == 200) {
+              setMessage("Form submit Successfully");
+              setTimeout(() => {
+                setOpenModal(false);
+                setMessage("");
+              }, 3000);
+            }
+          },
+        }
+      );
+    }
+    if (data && data.content_opportunity) {
+      postForm(
+        {
+          content_id: data.id,
+          formconfig_id: data.content_opportunity.formconfig_id,
+          inputs: selectedOptions,
+        },
+        {
+          onSuccess: () => {
+            if (formResponse?.status == 201 || formResponse?.status == 200) {
               setMessage("Form submit Successfully");
               setTimeout(() => {
                 setOpenModal(false);
@@ -109,9 +139,24 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
       return (
         <DatePicker
           value={dateValue}
+          type={inputData.type}
+          placeholder={inputData.placeholder}
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
             setDateValue(e.target.value);
             handleDate(inputData.id);
+          }}
+        />
+      );
+    if (inputData.type === "email")
+      return (
+        <TextFieldInput
+          placeholder={inputData.placeholder}
+          type={inputData.type}
+          className="bg-white p-2"
+          value={emailValue}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => {
+            setEmailValue(e.target.value);
+            handleEmail(inputData.id);
           }}
         />
       );
@@ -171,7 +216,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
                 {form &&
                   form.length > 0 &&
                   form.map((formData: any, formIndex) => (
-                    <div key={formIndex} className="mb-3">
+                    <div key={formIndex} className="my-1 px-2">
                       {formElements(formData.input_config)}
                     </div>
                   ))}

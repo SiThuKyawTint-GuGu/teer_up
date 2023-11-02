@@ -66,7 +66,7 @@ InputText.defaultProps = {
 
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   variant?: "contain";
-  onChange?: () => void;
+  onChange?: any;
 };
 
 const InputSearch = React.forwardRef<HTMLInputElement, InputProps>(
