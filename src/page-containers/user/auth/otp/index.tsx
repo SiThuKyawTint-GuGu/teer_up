@@ -96,6 +96,7 @@ const Otp = () => {
                             boxShadow: "0px 26px 30px 0px rgba(0, 0, 0, 0.05)",
                             borderRadius: 8,
                             marginRight: 5,
+                            outline: 0,
                           }}
                           renderInput={props => <input {...props} />}
                         />
