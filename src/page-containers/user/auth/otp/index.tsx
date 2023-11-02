@@ -38,6 +38,7 @@ const Otp = () => {
       onSuccess: res => {
         setUserInfo(res.data.token, res.data.data);
         startTransition(() => {
+          router.refresh();
           router.push("/home");
         });
       },
@@ -70,12 +71,7 @@ const Otp = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <InputText
-                      type="text"
-                      className="bg-white shadow-md"
-                      {...field}
-                      placeholder="Enter a otp"
-                    />
+                    <InputText type="text" className="bg-white shadow-md" {...field} placeholder="Enter a otp" />
                     {/* <OtpInput /> */}
                   </FormControl>
                 </FormItem>
@@ -98,8 +94,8 @@ const Otp = () => {
             <div className="text-center w-full py-[16px] text-[20px] font-[600]">Verfiy Email</div>
             <div className="bg-[#EEE] w-full px-[24px] py-[32px] flex flex-col flex-wrap gap-y-3">
               <Text className="text-center font-[400]">
-                Are you sure to continue without verification? We will not be able to save your
-                progress if you do not verify email.
+                Are you sure to continue without verification? We will not be able to save your progress if you do not
+                verify email.
               </Text>
 
               <Button size="lg" className="w-full" onClick={() => setModalOpen(false)}>
