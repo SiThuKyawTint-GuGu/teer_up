@@ -4,7 +4,9 @@ import { copyUrl } from "@/utils/helper";
 import { Flex } from "@radix-ui/themes";
 import React, { useState } from "react";
 
-const Share: React.FC = () => {
+const domain: string = process.env.NEXT_PUBLIC_DOMAIN as string;
+
+const Share: React.FC<{ url: string }> = ({ url }) => {
   const [copy, setCopy] = useState<boolean>(false);
   return (
     <div className="bg-white w-screen  max-w-[400px] px-4 pt-8 pb-2 translate-y-0 rounded-10px-tl-tr">
@@ -16,7 +18,7 @@ const Share: React.FC = () => {
             justify="center"
             className="bg-slateGray w-[40px] h-[40px] flex justify-center items-center rounded-full cursor-pointer"
             onClick={() => {
-              copyUrl();
+              copyUrl(domain + url);
               setCopy(true);
             }}
           >
