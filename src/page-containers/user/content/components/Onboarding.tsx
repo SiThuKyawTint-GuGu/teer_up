@@ -4,7 +4,6 @@ import { Text } from "@/components/ui/Typo/Text";
 import { usePostOnboarding } from "@/services/content";
 import { ContentData, OnBoardingOption } from "@/types/Content";
 import { cn } from "@/utils/cn";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import QuestionPageCard from "../../personalized/components/QuestionPageCard";
 type OnboardingProps = {
@@ -15,7 +14,6 @@ const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
   const [option, setOption] = useState<OnBoardingOption | null>(null);
   const [modalOpen, setOpenModal] = useState<boolean>(false);
   const { trigger } = usePostOnboarding();
-  const router = useRouter();
 
   return (
     <QuestionPageCard>
@@ -32,9 +30,10 @@ const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
                 data.options.map((q: OnBoardingOption, index: number) => (
                   <div
                     key={index}
-                    onClick={() => {
+                    onClick={e => {
+                      e.preventDefault();
                       setOption(q);
-                      router.push(`/home/#${parseInt(parentIndex) + 1}`);
+
                       trigger(
                         {
                           option_id: q.id,
@@ -44,6 +43,12 @@ const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
                           onSuccess: () => {
                             setOption(q);
                             setOpenModal(true);
+                            const targetElement = document.getElementById(`${parseInt(parentIndex) + 1}`);
+                            if (targetElement) {
+                              targetElement.scrollIntoView({
+                                behavior: "smooth", // Smooth scroll effect
+                              });
+                            }
                           },
                         }
                       );
