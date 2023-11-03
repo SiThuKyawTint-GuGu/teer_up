@@ -5,8 +5,7 @@ import { InputSearch } from "@/components/ui/Inputs";
 import { Text } from "@/components/ui/Typo/Text";
 import { SearchParamsType, useGetContentSearch } from "@/services/content";
 import { ContentType } from "@/types/Content";
-import { getLocalStorage, setLocalStorage } from "@/utils";
-import { Box, Container, Flex, Grid, Heading, Section } from "@radix-ui/themes";
+import { Box, Container, Flex, Grid } from "@radix-ui/themes";
 import { debounce } from "lodash";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -21,13 +20,13 @@ const Search: React.FC = () => {
     search: searchValue,
   });
 
-  const histories = getLocalStorage("history") || [];
+  // const histories = getLocalStorage("history") || [];
   const debouncedOnChange = debounce(() => {
     setSearchValue(inputRef?.current?.value);
-    if (histories) {
-      const newData = [...histories, inputRef?.current?.value];
-      inputRef?.current?.value && setLocalStorage("history", newData);
-    }
+    // if (histories) {
+    //   const newData = [...histories, inputRef?.current?.value];
+    //   inputRef?.current?.value && setLocalStorage("history", newData);
+    // }
   }, 500);
 
   return (
@@ -52,7 +51,7 @@ const Search: React.FC = () => {
             </Flex>
           </header>
         </Box>
-        <Section pb="4" py="5" px="3">
+        {/* <Section pb="4" py="5" px="3">
           {histories?.length > 0 && (
             <Box className="space-y-[10px] pb-[20px] mb-[30px] border-b border-b-[#BDC7D5]">
               <Heading as="h5" size="3" weight="medium">
@@ -83,7 +82,7 @@ const Search: React.FC = () => {
               <li className="w-1/2">Build and maintain support system</li>
             </ul>
           </Box>
-        </Section>
+        </Section> */}
         {searchValue && (
           <div className="fixed top-[65px] left-0 z-20 w-full h-full bg-[#efefef]">
             <Box p="3">
