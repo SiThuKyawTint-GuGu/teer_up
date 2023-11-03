@@ -74,6 +74,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
         <div className="w-full h-[90%] overflow-y-scroll rounded-lg px-2 bg-white shadow-lg">
           <div className="p-2">
             <div
+              className="text-start"
               dangerouslySetInnerHTML={{
                 __html: data?.html_body,
               }}
@@ -81,7 +82,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
           </div>
         </div>
       );
-    return <div>This Page is not available right now</div>;
+    // return <div>This Page is not available right now</div>;
   };
 
   return (
