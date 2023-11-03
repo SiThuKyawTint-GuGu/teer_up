@@ -2,15 +2,14 @@
 import RadioButton from "@/page-containers/user/personalized/components/RadioButton";
 import { useContentForm, useLikeContent, useSaveContent } from "@/services/content";
 import { ContentData, Input_config, Input_options } from "@/types/Content";
+import { Select } from "@radix-ui/react-select";
 
 import { Flex, TextFieldInput } from "@radix-ui/themes";
 
 import React, { ChangeEvent, useMemo, useState } from "react";
-import DatePicker from "../form/DatePicker";
 import { Button } from "../ui/Button";
 import { DialogTrigger } from "../ui/Dialog";
 import { Icons } from "../ui/Images";
-import { InputText } from "../ui/Inputs";
 import Modal from "../ui/Modal";
 import { Text } from "../ui/Typo/Text";
 type Props = {
@@ -21,7 +20,7 @@ type Props = {
 const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
   const { trigger: like } = useLikeContent();
   const { trigger: contentSave } = useSaveContent();
-  const { trigger: postForm, isMutating, data: formResponse } = useContentForm();
+  const { trigger: postForm, isMutating } = useContentForm();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const form = useMemo(() => {
     if (data?.type === "event") return data.content_event?.form_config?.formdetails_configs;
@@ -29,8 +28,6 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
   }, [data]);
   const [selectedOptions, setSelectedOptions] = useState<{ inputconfig_id: number | string; value: string }[] | []>([]);
   const [message, setMessage] = useState<string>("");
-  const [dateValue, setDateValue] = useState<string>("");
-  const [emailValue, setEmailValue] = useState<string>("");
 
   const saveContent = async () => {
     await contentSave(
@@ -64,20 +61,82 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
     setSelectedOptions(prev => [...prev, config]);
   };
 
-  const handleDate = (InputConfigId: number | string) => {
+  const handleDate = (InputConfigId: number | string, value: string) => {
+    const sameId = selectedOptions.find(e => e.inputconfig_id === InputConfigId);
     const config = {
       inputconfig_id: InputConfigId,
-      value: dateValue,
+      value: value,
     };
-    setSelectedOptions(prev => [...prev, config]);
-  };
+    if (sameId) {
+      const valueChangeArray = selectedOptions.map(e => {
+        if (e.inputconfig_id === InputConfigId) {
+          e.value = value;
+        }
+        return e;
+      });
+      setSelectedOptions(valueChangeArray);
+      return;
+    }
 
-  const handleEmail = (InputConfigId: number | string) => {
+    setSelectedOptions(prev => [...prev, config]);
+    return;
+  };
+  const handleEmail = (InputConfigId: number | string, value: string) => {
     const config = {
       inputconfig_id: InputConfigId,
-      value: emailValue,
+      value: value,
     };
+    const sameId = selectedOptions.find(e => e.inputconfig_id === InputConfigId);
+    if (sameId) {
+      const valueChangeArray = selectedOptions.map(e => {
+        if (e.inputconfig_id === InputConfigId) {
+          e.value = value;
+        }
+        return e;
+      });
+      setSelectedOptions(valueChangeArray);
+      return;
+    }
     setSelectedOptions(prev => [...prev, config]);
+    return;
+  };
+  const handleText = (InputConfigId: number | string, value: string) => {
+    const config = {
+      inputconfig_id: InputConfigId,
+      value: value,
+    };
+    const sameId = selectedOptions.find(e => e.inputconfig_id === InputConfigId);
+    if (sameId) {
+      const valueChangeArray = selectedOptions.map(e => {
+        if (e.inputconfig_id === InputConfigId) {
+          e.value = value;
+        }
+        return e;
+      });
+      setSelectedOptions(valueChangeArray);
+      return;
+    }
+    setSelectedOptions(prev => [...prev, config]);
+    return;
+  };
+  const handleInput = (InputConfigId: number | string, value: string) => {
+    const config = {
+      inputconfig_id: InputConfigId,
+      value: value,
+    };
+    const sameId = selectedOptions.find(e => e.inputconfig_id === InputConfigId);
+    if (sameId) {
+      const valueChangeArray = selectedOptions.map(e => {
+        if (e.inputconfig_id === InputConfigId) {
+          e.value = value;
+        }
+        return e;
+      });
+      setSelectedOptions(valueChangeArray);
+      return;
+    }
+    setSelectedOptions(prev => [...prev, config]);
+    return;
   };
 
   const formSubmit = () => {
@@ -90,13 +149,12 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
         },
         {
           onSuccess: () => {
-            if (formResponse?.status == 201 || formResponse?.status == 200) {
-              setMessage("Form submit Successfully");
-              setTimeout(() => {
-                setOpenModal(false);
-                setMessage("");
-              }, 3000);
-            }
+            setSelectedOptions([]);
+            setMessage("Form submit Successfully");
+            setTimeout(() => {
+              setOpenModal(false);
+              setMessage("");
+            }, 3000);
           },
         }
       );
@@ -110,13 +168,12 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
         },
         {
           onSuccess: () => {
-            if (formResponse?.status == 201 || formResponse?.status == 200) {
-              setMessage("Form submit Successfully");
-              setTimeout(() => {
-                setOpenModal(false);
-                setMessage("");
-              }, 3000);
-            }
+            setSelectedOptions([]);
+            setMessage("Form submit Successfully");
+            setTimeout(() => {
+              setOpenModal(false);
+              setMessage("");
+            }, 3000);
           },
         }
       );
@@ -134,32 +191,23 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
         </div>
       ));
     }
-    if (inputData.type === "text") return <InputText />;
-    if (inputData.type === "date")
-      return (
-        <DatePicker
-          value={dateValue}
-          type={inputData.type}
-          placeholder={inputData.placeholder}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            setDateValue(e.target.value);
-            handleDate(inputData.id);
-          }}
-        />
-      );
-    if (inputData.type === "email")
+    if (
+      inputData.type === "text" ||
+      inputData.type === "date" ||
+      inputData.type === "password" ||
+      inputData.type === "email"
+    )
       return (
         <TextFieldInput
-          placeholder={inputData.placeholder}
+          className={`${inputData.type !== "date" && "px-2"}`}
           type={inputData.type}
-          className="bg-white p-2"
-          value={emailValue}
+          placeholder={inputData.placeholder}
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            setEmailValue(e.target.value);
-            handleEmail(inputData.id);
+            handleInput(inputData.id, e.target.value);
           }}
         />
       );
+    if (inputData.type === "dropdown") return <Select />;
   };
 
   return (
@@ -202,7 +250,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
       </div>
       {openModal && (
         <Modal onClose={() => setOpenModal(false)}>
-          <div className="w-[400px] p-5">
+          <div className="w-[400px] p-5 h-full bg-white rounded-md overflow-y-scroll">
             <Text as="div" className="text-[28px] font-700">
               {data?.content_event?.form_config.name}
             </Text>
@@ -211,7 +259,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
                 {message}
               </Text>
             )}
-            <div className="mx-auto flex flex-col h-full bg-layout justify-center flex-wrap gap-y-[30px] w-full">
+            <div className="mx-auto flex flex-col  bg-layout justify-center flex-wrap gap-y-5 w-full">
               <Flex direction="column" justify="center">
                 {form &&
                   form.length > 0 &&
@@ -221,10 +269,10 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
                     </div>
                   ))}
               </Flex>
-              <Button disabled={isMutating} onClick={formSubmit}>
-                Submit
-              </Button>
             </div>
+            <Button disabled={isMutating} className="w-full" onClick={formSubmit}>
+              Submit
+            </Button>
           </div>
         </Modal>
       )}

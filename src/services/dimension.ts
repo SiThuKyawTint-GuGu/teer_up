@@ -4,7 +4,7 @@ import useSWR, { SWRResponse } from "swr";
 import useSWRMutation from "swr/mutation";
 
 type DimensionArgType = {
-  arg: { id?: number; name?: string; short_name?: string };
+  arg: { id?: string; name?: string; short_name?: string };
 };
 
 export type ParamsType = {
@@ -15,7 +15,7 @@ export const useGetDimension = <DimensionResponse>(): SWRResponse<DimensionRespo
   return useSWR<DimensionResponse>(`/admin/onboarding/dimensions`);
 };
 
-export const useGetDimensionById = <DimensionResponse>(id: number): SWRResponse<DimensionResponse, any> => {
+export const useGetDimensionById = <DimensionResponse>(id: string): SWRResponse<DimensionResponse, any> => {
   // const key = id != 0 ? `/admin/contentcategories/${id}` : null;
   return useSWR<DimensionResponse>(`/admin/onboarding/dimensions/${id}`);
 };
@@ -34,3 +34,16 @@ export const useDeleteDimension = () =>
   useSWRMutation(`/admin/onboarding/dimensions`, (url, { arg }: { arg: { id: string } }) => {
     return appAxios.delete<DimensionArgType>(`${url}/${arg.id}`);
   });
+
+// user dimension
+export const useGetUserDimensionResult = <UserDimensionResultResponse>(): SWRResponse<
+  UserDimensionResultResponse,
+  any
+> => {
+  return useSWR<UserDimensionResultResponse>(`/user/onboarding/dimension-results
+  `);
+};
+
+export const useGetUserDimension = <UserDimensionResponse>(): SWRResponse<UserDimensionResponse, any> => {
+  return useSWR<UserDimensionResponse>(`/user/onboarding/dimensions`);
+};

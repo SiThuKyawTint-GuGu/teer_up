@@ -20,7 +20,7 @@ export interface Input_config {
   input_options: Input_options[] | [];
   name: string;
   placeholder: string;
-  type: "text" | "radio" | "date" | "email" | "password";
+  type: "text" | "radio" | "date" | "email" | "password" | "dropdown";
 }
 
 export interface Input_options {
@@ -114,7 +114,8 @@ export interface ContentData {
   title: string;
   description: string;
   created_at: string;
-  type: "video" | "article" | "event" | "opportunity" | "pathway" | "onboarding" | "mentor";
+  type: "video" | "article" | "event" | "opportunity" | "pathway" | "onboarding" | "mentor" | "html";
+  html_body: TrustedHTML;
   updated_at: string;
   user_id: string;
   image_url: string;

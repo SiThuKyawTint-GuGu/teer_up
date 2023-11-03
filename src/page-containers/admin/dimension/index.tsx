@@ -1,5 +1,5 @@
 "use client";
-import { useCreateDimension, useDeleteDimension, useGetDimension, useUpdateDimension } from "@/services/dimension";
+import { useDeleteDimension, useGetDimension } from "@/services/dimension";
 import { IndustryResponse } from "@/types/Industry";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -8,17 +8,15 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";
-import { MaterialReactTable, useMaterialReactTable, type MRT_TableOptions } from "material-react-table";
+import { MaterialReactTable, useMaterialReactTable } from "material-react-table";
+import Link from "next/link";
 import { useMemo, useState } from "react";
 
 const Dimension: React.FC = () => {
-  const [validationErrors, setValidationErrors] = useState<Record<string, string | undefined>>({});
   const [open, setOpen] = useState<boolean>(false);
   const [id, setId] = useState<string>("");
-  const { data: industries, isLoading, mutate } = useGetDimension<IndustryResponse>();
+  const { data: dimensions, isLoading } = useGetDimension<IndustryResponse>();
 
-  const { trigger: createTrigger } = useCreateDimension();
-  const { trigger: updateTrigger } = useUpdateDimension();
   const { trigger: deleteTrigger } = useDeleteDimension();
 
   const columns = useMemo(
@@ -29,39 +27,15 @@ const Dimension: React.FC = () => {
         enableEditing: false,
         size: 3,
       },
-
       {
         accessorKey: "name",
         header: "Name",
-        muiEditTextFieldProps: {
-          type: "text",
-          multiline: true,
-          required: true,
-          error: !!validationErrors?.name,
-          helperText: validationErrors?.name,
-          //remove any previous validation errors when user focuses on the input
-          onFocus: () =>
-            setValidationErrors({
-              ...validationErrors,
-              name: undefined,
-            }),
-          //optionally add validation checking for onBlur or onChange
-        },
+        enableEditing: false,
       },
       {
         accessorKey: "short_name",
         header: "Short Name",
-        muiEditTextFieldProps: {
-          type: "text",
-          required: true,
-          error: !!validationErrors?.short_name,
-          helperText: validationErrors?.short_name,
-          onFocus: () =>
-            setValidationErrors({
-              ...validationErrors,
-              short_name: undefined,
-            }),
-        },
+        enableEditing: false,
       },
       {
         accessorKey: "created_at",
@@ -78,52 +52,8 @@ const Dimension: React.FC = () => {
         Cell: ({ row }: any) => dayjs(row.original.updated_at).format("MMM D, YYYY h:mm A"),
       },
     ],
-    [validationErrors]
+    []
   );
-
-  //CREATE action
-  const handleCreateIndustry: MRT_TableOptions<any>["onCreatingRowSave"] = async ({ values, table }) => {
-    const { id, name, short_name } = values;
-    const newValidationErrors = validatePreference(values);
-    if (Object.values(newValidationErrors).some(error => error)) {
-      setValidationErrors(newValidationErrors);
-      return;
-    }
-    setValidationErrors({});
-    const newValues = {
-      name,
-      short_name,
-      values,
-    };
-    createTrigger(newValues, {
-      onSuccess: () => {
-        mutate();
-      },
-    });
-    table.setCreatingRow(null); //exit creating mode
-  };
-
-  //UPDATE action
-  const handleUpdateIndustry: MRT_TableOptions<any>["onEditingRowSave"] = ({ values, table }) => {
-    const { id, name, short_name } = values;
-    const newValidationErrors = validatePreference(values);
-    if (Object.values(newValidationErrors).some(error => error)) {
-      setValidationErrors(newValidationErrors);
-      return;
-    }
-    setValidationErrors({});
-    const newValues = {
-      name,
-      short_name,
-      id,
-    };
-    updateTrigger(newValues, {
-      onSuccess: () => {
-        mutate();
-      },
-    });
-    table.setEditingRow(null);
-  };
 
   //DELETE action
   const handleDeleteIndustry = async () => {
@@ -133,11 +63,11 @@ const Dimension: React.FC = () => {
 
   const table = useMaterialReactTable({
     columns,
-    data: (industries?.data as any) || [],
+    data: (dimensions?.data as any) || [],
     createDisplayMode: "row",
     editDisplayMode: "row",
     enableEditing: true,
-    getRowId: row => row.id,
+    getRowId: (row: any) => row.id,
     muiToolbarAlertBannerProps: isLoading
       ? {
           color: "error",
@@ -152,20 +82,18 @@ const Dimension: React.FC = () => {
     },
     enableStickyFooter: true,
     enableStickyHeader: true,
-    onCreatingRowCancel: () => setValidationErrors({}),
-    onCreatingRowSave: handleCreateIndustry,
-    onEditingRowCancel: () => setValidationErrors({}),
     positionActionsColumn: "last",
     state: {
       showSkeletons: isLoading ?? false,
     },
-    onEditingRowSave: handleUpdateIndustry,
     renderRowActions: ({ row, table }) => (
       <Box sx={{ display: "flex", gap: "1rem" }}>
         <Tooltip title="Edit">
-          <IconButton onClick={() => table.setEditingRow(row)}>
-            <EditIcon />
-          </IconButton>
+          <Link href={`/admin/setting/dimension/${row.id}`}>
+            <IconButton>
+              <EditIcon />
+            </IconButton>
+          </Link>
         </Tooltip>
         <Tooltip title="Delete">
           <IconButton
@@ -181,15 +109,8 @@ const Dimension: React.FC = () => {
       </Box>
     ),
     renderTopToolbarCustomActions: ({ table }) => (
-      <Button
-        variant="contained"
-        color="error"
-        sx={{ background: "#DA291C", textTransform: "none" }}
-        onClick={() => {
-          table.setCreatingRow(true);
-        }}
-      >
-        Create New Dimension
+      <Button variant="contained" color="error" sx={{ background: "#DA291C", textTransform: "none" }}>
+        <Link href={"/admin/setting/dimension/0"}>Create New Dimension</Link>
       </Button>
     ),
   });
@@ -237,15 +158,6 @@ const Dimension: React.FC = () => {
 };
 
 export default Dimension;
-
-const validateRequired = (value: string) => !!value.length;
-
-function validatePreference(pre: any) {
-  return {
-    name: !validateRequired(pre.name) ? "Name is Required" : "",
-    short_name: !validateRequired(pre.short_name) ? "Short Name is Required" : "",
-  };
-}
 
 const style = {
   position: "absolute" as "absolute",

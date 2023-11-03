@@ -9,7 +9,6 @@ const RadarChart: React.FC = () => {
   const { data: userScores } = useGetUserScores();
 
   const scoreData = useMemo(() => userScores?.data, [userScores]);
-  console.log(scoreData);
 
   const label = useMemo(() => {
     if (scoreData && scoreData.length > 0) return scoreData.map((each: UserScores) => each.dimension.short_name);

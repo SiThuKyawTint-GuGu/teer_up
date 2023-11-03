@@ -65,6 +65,7 @@ const BlogPostDetail = ({ id }: Props) => {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(validationSchema),
@@ -126,7 +127,7 @@ const BlogPostDetail = ({ id }: Props) => {
         <form onSubmit={handleSubmit(submit)} className="space-y-8">
           <div>
             <TextField
-              InputLabelProps={{ shrink: !!blog?.data.name }}
+              InputLabelProps={{ shrink: !!watch("name") }}
               {...register("name")}
               id="name"
               label="Name"
@@ -137,7 +138,7 @@ const BlogPostDetail = ({ id }: Props) => {
           </div>
           <div>
             <FormControl disabled={blog?.data ? true : false} className="w-full" variant="outlined">
-              <InputLabel shrink={!!blogLink} htmlFor="link">
+              <InputLabel shrink={!!watch("link")} htmlFor="link">
                 Link
               </InputLabel>
               <OutlinedInput
