@@ -86,14 +86,10 @@ const Search: React.FC = () => {
         {searchValue && (
           <div className="fixed top-[65px] left-0 z-20 w-full h-full bg-[#efefef]">
             <Box p="3">
-              <Flex className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]" justify="start" align="center" gap="2">
-                <Icons.search />
-                <Text>{searchValue}</Text>
-              </Flex>
               {searchData?.data?.length ? (
                 searchData?.data?.map((each, key) => (
                   <>
-                    <Link key={key} href={`/content/${each?.slug}`}>
+                    <Link key={key} href={`/browse?search=${each?.title}`}>
                       <Text className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">{each?.title}</Text>
                     </Link>
                   </>
