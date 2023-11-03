@@ -2,15 +2,14 @@
 import RadioButton from "@/page-containers/user/personalized/components/RadioButton";
 import { useContentForm, useLikeContent, useSaveContent } from "@/services/content";
 import { ContentData, Input_config, Input_options } from "@/types/Content";
+import { Select } from "@radix-ui/react-select";
 
 import { Flex, TextFieldInput } from "@radix-ui/themes";
 
 import React, { ChangeEvent, useMemo, useState } from "react";
-import DatePicker from "../form/DatePicker";
 import { Button } from "../ui/Button";
 import { DialogTrigger } from "../ui/Dialog";
 import { Icons } from "../ui/Images";
-import { InputText } from "../ui/Inputs";
 import Modal from "../ui/Modal";
 import { Text } from "../ui/Typo/Text";
 type Props = {
@@ -30,7 +29,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
   const [selectedOptions, setSelectedOptions] = useState<{ inputconfig_id: number | string; value: string }[] | []>([]);
   const [message, setMessage] = useState<string>("");
   const [dateValue, setDateValue] = useState<string>("");
-  const [emailValue, setEmailValue] = useState<string>("");
+  const [emailValue, setEmailValue] = useState({});
 
   const saveContent = async () => {
     await contentSave(
@@ -72,14 +71,6 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
     setSelectedOptions(prev => [...prev, config]);
   };
 
-  const handleEmail = (InputConfigId: number | string) => {
-    const config = {
-      inputconfig_id: InputConfigId,
-      value: emailValue,
-    };
-    setSelectedOptions(prev => [...prev, config]);
-  };
-
   const formSubmit = () => {
     if (data && data.content_event) {
       postForm(
@@ -90,13 +81,15 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
         },
         {
           onSuccess: () => {
-            if (formResponse?.status == 201 || formResponse?.status == 200) {
-              setMessage("Form submit Successfully");
-              setTimeout(() => {
-                setOpenModal(false);
-                setMessage("");
-              }, 3000);
-            }
+            setSelectedOptions([]);
+
+            setDateValue("");
+            setEmailValue("");
+            setMessage("Form submit Successfully");
+            setTimeout(() => {
+              setOpenModal(false);
+              setMessage("");
+            }, 3000);
           },
         }
       );
@@ -110,13 +103,14 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
         },
         {
           onSuccess: () => {
-            if (formResponse?.status == 201 || formResponse?.status == 200) {
-              setMessage("Form submit Successfully");
-              setTimeout(() => {
-                setOpenModal(false);
-                setMessage("");
-              }, 3000);
-            }
+            setSelectedOptions([]);
+            setDateValue("");
+            setEmailValue("");
+            setMessage("Form submit Successfully");
+            setTimeout(() => {
+              setOpenModal(false);
+              setMessage("");
+            }, 3000);
           },
         }
       );
@@ -134,10 +128,10 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
         </div>
       ));
     }
-    if (inputData.type === "text") return <InputText />;
+    if (inputData.type === "text") return <TextFieldInput className="px-2" placeholder={inputData.placeholder} />;
     if (inputData.type === "date")
       return (
-        <DatePicker
+        <TextFieldInput
           value={dateValue}
           type={inputData.type}
           placeholder={inputData.placeholder}
@@ -152,14 +146,10 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
         <TextFieldInput
           placeholder={inputData.placeholder}
           type={inputData.type}
-          className="bg-white p-2"
-          value={emailValue}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            setEmailValue(e.target.value);
-            handleEmail(inputData.id);
-          }}
+          //
         />
       );
+    if (inputData.type === "dropdown") return <Select />;
   };
 
   return (
