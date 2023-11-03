@@ -5,7 +5,7 @@ import { InputSearch } from "@/components/ui/Inputs";
 import { Text } from "@/components/ui/Typo/Text";
 import { SearchParamsType, useGetContentSearch } from "@/services/content";
 import { ContentType } from "@/types/Content";
-import { Box, Container, Flex, Grid, Heading, Section } from "@radix-ui/themes";
+import { Box, Container, Flex, Grid } from "@radix-ui/themes";
 import { debounce } from "lodash";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -15,12 +15,18 @@ const Search: React.FC = () => {
   const [searchValue, setSearchValue] = useState<string>("");
   const router = useRouter();
   const inputRef = useRef<any>(null);
+
   const { data: searchData } = useGetContentSearch<SearchParamsType, ContentType>({
     search: searchValue,
   });
 
+  // const histories = getLocalStorage("history") || [];
   const debouncedOnChange = debounce(() => {
     setSearchValue(inputRef?.current?.value);
+    // if (histories) {
+    //   const newData = [...histories, inputRef?.current?.value];
+    //   inputRef?.current?.value && setLocalStorage("history", newData);
+    // }
   }, 500);
 
   return (
@@ -45,17 +51,24 @@ const Search: React.FC = () => {
             </Flex>
           </header>
         </Box>
-        <Section pb="4" py="5" px="3">
-          <Box className="space-y-[10px] pb-[20px] mb-[30px] border-b border-b-[#BDC7D5]">
-            <Heading as="h5" size="3" weight="medium">
-              History
-            </Heading>
-            <Flex justify="start" align="center" gap="2">
-              <Button variant="outline">Career</Button>
-              <Button variant="outline">Education</Button>
-              <Button variant="outline">UX Design</Button>
-            </Flex>
-          </Box>
+        {/* <Section pb="4" py="5" px="3">
+          {histories?.length > 0 && (
+            <Box className="space-y-[10px] pb-[20px] mb-[30px] border-b border-b-[#BDC7D5]">
+              <Heading as="h5" size="3" weight="medium">
+                History
+              </Heading>
+              <Flex justify="start" wrap="wrap" align="center" gap="2">
+                {(histories as string[])
+                  ?.filter(each => each.trim() !== "")
+                  .sort((a, b) => b.localeCompare(a))
+                  .map((each, key) => (
+                    <Button key={key} variant="outline">
+                      {each}
+                    </Button>
+                  ))}
+              </Flex>
+            </Box>
+          )}
           <Box className="space-y-[6px]">
             <Heading as="h5" size="3" weight="medium">
               Suggested for you
@@ -69,7 +82,7 @@ const Search: React.FC = () => {
               <li className="w-1/2">Build and maintain support system</li>
             </ul>
           </Box>
-        </Section>
+        </Section> */}
         {searchValue && (
           <div className="fixed top-[65px] left-0 z-20 w-full h-full bg-[#efefef]">
             <Box p="3">

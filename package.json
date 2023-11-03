@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start -p 6200",
+    "start-prod": "next start -p 6210",
     "lint": "next lint",
     "tsc": "tsc",
     "lt": "next lint && yarn tsc",

@@ -75,7 +75,7 @@ const NormalContentDetail: React.FC<NormalContentDetailProp> = ({ data, contentM
               </div>
             </div>
           </div>
-          <div className="w-full fixed bottom-0 max-w-[400px] px-2">
+          <div className="w-full fixed bottom-0 max-w-[400px]">
             <LikeCmtBar data={data} mutate={contentMutate} />
           </div>
         </div>

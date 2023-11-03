@@ -2,14 +2,14 @@
 import RadioButton from "@/page-containers/user/personalized/components/RadioButton";
 import { useContentForm, useLikeContent, useSaveContent } from "@/services/content";
 import { ContentData, Input_config, Input_options } from "@/types/Content";
+import { Select } from "@radix-ui/react-select";
 
-import { Flex } from "@radix-ui/themes";
+import { Flex, TextFieldInput } from "@radix-ui/themes";
 
-import React, { useMemo, useState } from "react";
+import React, { ChangeEvent, useMemo, useState } from "react";
 import { Button } from "../ui/Button";
 import { DialogTrigger } from "../ui/Dialog";
 import { Icons } from "../ui/Images";
-import { InputText } from "../ui/Inputs";
 import Modal from "../ui/Modal";
 import { Text } from "../ui/Typo/Text";
 type Props = {
@@ -28,6 +28,8 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
   }, [data]);
   const [selectedOptions, setSelectedOptions] = useState<{ inputconfig_id: number | string; value: string }[] | []>([]);
   const [message, setMessage] = useState<string>("");
+  const [dateValue, setDateValue] = useState<string>("");
+  const [emailValue, setEmailValue] = useState({});
 
   const saveContent = async () => {
     await contentSave(
@@ -48,10 +50,23 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
     );
   };
 
-  const handleChange = (input: Input_options, InputConfigId: number | string) => {
+  const handleRadio = (input: Input_options, InputConfigId: number | string) => {
+    const sameId = selectedOptions.find(e => e.value === input.value);
+    if (sameId) {
+      setSelectedOptions(prev => prev.filter(e => e.value !== input.value));
+      return;
+    }
     const config = {
       inputconfig_id: InputConfigId,
       value: input.value,
+    };
+    setSelectedOptions(prev => [...prev, config]);
+  };
+
+  const handleDate = (InputConfigId: number | string) => {
+    const config = {
+      inputconfig_id: InputConfigId,
+      value: dateValue,
     };
     setSelectedOptions(prev => [...prev, config]);
   };
@@ -66,32 +81,75 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
         },
         {
           onSuccess: () => {
-            if (formResponse?.status == 201) {
-              setMessage("Form submit Successfully");
-              setTimeout(() => {
-                setOpenModal(false);
-                setMessage("");
-              }, 3000);
-            }
+            setSelectedOptions([]);
+
+            setDateValue("");
+            setEmailValue("");
+            setMessage("Form submit Successfully");
+            setTimeout(() => {
+              setOpenModal(false);
+              setMessage("");
+            }, 3000);
+          },
+        }
+      );
+    }
+    if (data && data.content_opportunity) {
+      postForm(
+        {
+          content_id: data.id,
+          formconfig_id: data.content_opportunity.formconfig_id,
+          inputs: selectedOptions,
+        },
+        {
+          onSuccess: () => {
+            setSelectedOptions([]);
+            setDateValue("");
+            setEmailValue("");
+            setMessage("Form submit Successfully");
+            setTimeout(() => {
+              setOpenModal(false);
+              setMessage("");
+            }, 3000);
           },
         }
       );
     }
   };
 
-  console.log(formResponse);
+  console.log("se", selectedOptions);
 
   const formElements = (inputData: Input_config) => {
-    console.log("inputData", inputData.type);
     if (inputData.type === "radio") {
       return inputData.input_options.map((input: Input_options, index: number) => (
         <div key={index} className="flex w-full flex-wrap items-center gap-x-2">
-          <RadioButton changeHandler={() => handleChange(input, inputData.id)} />
+          <RadioButton changeHandler={() => handleRadio(input, inputData.id)} />
           <label>{input.label}</label>
         </div>
       ));
     }
-    if (inputData.type === "text") return <InputText />;
+    if (inputData.type === "text") return <TextFieldInput className="px-2" placeholder={inputData.placeholder} />;
+    if (inputData.type === "date")
+      return (
+        <TextFieldInput
+          value={dateValue}
+          type={inputData.type}
+          placeholder={inputData.placeholder}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => {
+            setDateValue(e.target.value);
+            handleDate(inputData.id);
+          }}
+        />
+      );
+    if (inputData.type === "email")
+      return (
+        <TextFieldInput
+          placeholder={inputData.placeholder}
+          type={inputData.type}
+          //
+        />
+      );
+    if (inputData.type === "dropdown") return <Select />;
   };
 
   return (
@@ -148,7 +206,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
                 {form &&
                   form.length > 0 &&
                   form.map((formData: any, formIndex) => (
-                    <div key={formIndex} className="mb-3">
+                    <div key={formIndex} className="my-1 px-2">
                       {formElements(formData.input_config)}
                     </div>
                   ))}

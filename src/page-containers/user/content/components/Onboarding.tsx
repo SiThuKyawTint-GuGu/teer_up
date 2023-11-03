@@ -8,8 +8,9 @@ import React, { useState } from "react";
 import QuestionPageCard from "../../personalized/components/QuestionPageCard";
 type OnboardingProps = {
   data: ContentData;
+  parentIndex: string;
 };
-const Onboarding: React.FC<OnboardingProps> = ({ data }) => {
+const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
   const [option, setOption] = useState<OnBoardingOption | null>(null);
   const [modalOpen, setOpenModal] = useState<boolean>(false);
   const { trigger } = usePostOnboarding();
@@ -22,23 +23,17 @@ const Onboarding: React.FC<OnboardingProps> = ({ data }) => {
             <Text className="text-[28px] font-[700]  text-center mb-5" as="div">
               {data.name}
             </Text>
-            {/* {option && (
-              <div className="text-center w-full">
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: option.feedback,
-                  }}
-                />
-              </div>
-            )} */}
+
             <div className="w-full cursor-pointer  flex flex-col flex-wrap gap-y-5 justify-center h-full items-center">
               {data.options &&
                 data.options.length &&
                 data.options.map((q: OnBoardingOption, index: number) => (
                   <div
                     key={index}
-                    onClick={() => {
+                    onClick={e => {
+                      e.preventDefault();
                       setOption(q);
+
                       trigger(
                         {
                           option_id: q.id,
@@ -48,6 +43,12 @@ const Onboarding: React.FC<OnboardingProps> = ({ data }) => {
                           onSuccess: () => {
                             setOption(q);
                             setOpenModal(true);
+                            const targetElement = document.getElementById(`${parseInt(parentIndex) + 1}`);
+                            if (targetElement) {
+                              targetElement.scrollIntoView({
+                                behavior: "smooth", // Smooth scroll effect
+                              });
+                            }
                           },
                         }
                       );
@@ -58,7 +59,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ data }) => {
                       }`
                     )}
                   >
-                    {q.name}
+                    <div>{q.name}</div>
                   </div>
                 ))}
             </div>
@@ -66,7 +67,11 @@ const Onboarding: React.FC<OnboardingProps> = ({ data }) => {
         </CardBox>
       </div>
       {modalOpen && (
-        <Modal onClose={() => setOpenModal(false)}>
+        <Modal
+          onClose={() => {
+            setOpenModal(false);
+          }}
+        >
           <div className="w-100 p-10">
             {option && (
               <div

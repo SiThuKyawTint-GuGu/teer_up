@@ -35,7 +35,7 @@ const InputText = React.forwardRef<HTMLInputElement, Props>(
     ref
   ) => {
     return (
-      <InputStyled inputType={inputType}>
+      <InputStyled inputtype={inputType}>
         <label htmlFor="email" className="block text-sm font-medium text-gray-700">
           {label}
         </label>
@@ -52,8 +52,8 @@ const InputText = React.forwardRef<HTMLInputElement, Props>(
               {...props}
             />
           </TextField.Root>
+          {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
         </div>
-        {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
       </InputStyled>
     );
   }
@@ -66,7 +66,7 @@ InputText.defaultProps = {
 
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   variant?: "contain";
-  onChange?: () => void;
+  onChange?: any;
 };
 
 const InputSearch = React.forwardRef<HTMLInputElement, InputProps>(
@@ -99,7 +99,7 @@ const InputTextArea = React.forwardRef<HTMLInputElement, Props>(
     ref
   ) => {
     return (
-      <InputStyled inputType={inputType}>
+      <InputStyled inputtype={inputType}>
         <label htmlFor="email" className="block text-sm font-medium text-gray-700">
           {label}
         </label>
@@ -120,13 +120,17 @@ const InputTextArea = React.forwardRef<HTMLInputElement, Props>(
 );
 InputTextArea.displayName = "InputTextArea";
 
-export { InputSearch, InputText, InputTextArea };
+const InputOtp: React.FC = ({ ...props }) => {
+  return <InputOtpStyled {...props} />;
+};
 
-const InputStyled = styled.div<{ inputType?: USER_ROLE }>`
+export { InputOtp, InputSearch, InputText, InputTextArea };
+
+const InputStyled = styled.div<{ inputtype?: USER_ROLE }>`
   width: 100%;
   & input {
-    ${({ inputType }) =>
-      inputType !== USER_ROLE.ADMIN &&
+    ${({ inputtype }) =>
+      inputtype !== USER_ROLE.ADMIN &&
       css`
         /* box-shadow: 0px 26px 30px 0px rgba(0, 0, 0, 0.05); */
       `}
@@ -140,4 +144,11 @@ const InputStyled = styled.div<{ inputType?: USER_ROLE }>`
     background-color: transparent;
     outline: 0;
   }
+`;
+
+const InputOtpStyled = styled.input`
+  width: 53px;
+  height: 64px;
+  border-radius: 8px;
+  background-color: white;
 `;
