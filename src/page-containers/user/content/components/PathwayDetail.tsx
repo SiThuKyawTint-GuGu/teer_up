@@ -69,7 +69,18 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
       return <ContentLayout data={data} contentMutate={contentMutate} redir={`/content/${data.slug}`} />;
     if (data.type === "opportunity" && data.content_opportunity)
       return <ContentLayout data={data} contentMutate={contentMutate} redir={`/content/${data.slug}`} />;
-
+    if (data.type === "html" && data.html_body)
+      return (
+        <div className="w-full h-[90%] overflow-y-scroll rounded-lg px-2 bg-white shadow-lg">
+          <div className="p-2">
+            <div
+              dangerouslySetInnerHTML={{
+                __html: data?.html_body,
+              }}
+            />
+          </div>
+        </div>
+      );
     return <div>This Page is not available right now</div>;
   };
 
