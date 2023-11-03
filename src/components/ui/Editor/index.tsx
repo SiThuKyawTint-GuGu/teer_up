@@ -9,7 +9,8 @@ const HtmlEditor = (props: Props) => {
   return (
     <>
       <Editor
-        apiKey="bsxh9v4j0on90mglp1mrf5dkvif8md64ftfegm3v1bz5pgws"
+        // apiKey="bsxh9v4j0on90mglp1mrf5dkvif8md64ftfegm3v1bz5pgws"
+        apiKey="jtn7ui8m0oeo96qzgled3rctiz00b4p5itohc5uf5pfdwyrf"
         onInit={props.init}
         value={props.value}
         onEditorChange={props.onEditorChange}
