@@ -1204,6 +1204,7 @@ const ContentDetail = ({ id }: Props) => {
                       <TextField
                         value={checkboxValues[dimension.id]?.scores || ""}
                         name="scores"
+                        type={"number"}
                         onChange={e => handleCheckboxChange(e, dimension.id)}
                         id={`scores-${index}`}
                         label="Scores"
