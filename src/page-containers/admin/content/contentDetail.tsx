@@ -1205,7 +1205,6 @@ const ContentDetail = ({ id }: Props) => {
                         value={checkboxValues[dimension.id]?.scores || ""}
                         name="scores"
                         type={"number"}
-
                         onChange={e => handleCheckboxChange(e, dimension.id)}
                         id={`scores-${index}`}
                         label="Scores"
