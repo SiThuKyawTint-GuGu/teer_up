@@ -5,17 +5,18 @@ import Modal from "@/components/ui/Modal";
 import { Text } from "@/components/ui/Typo/Text";
 import { useLikeContent, useSaveContent } from "@/services/content";
 import { ContentData } from "@/types/Content";
-
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { useInView } from "react-intersection-observer";
 import CommentSection from "../../../../components/contentLayout/CommentSection";
 import Share from "./Share";
 type ContentlayoutProps = {
   data: ContentData;
   contentMutate: any;
   redir: string;
+  contentRef?: any;
+  contentVisible?: boolean;
+  index?: number;
 };
 
 const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redir }) => {
@@ -24,11 +25,6 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
   const router = useRouter();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [openShare, setOpenShare] = useState<boolean>(false);
-  const {
-    ref: contentRef,
-    inView: contentVisible,
-    entry,
-  } = useInView({ root: null, rootMargin: "0px", threshold: 0.8 });
 
   const likePost = async () => {
     await like(
@@ -52,9 +48,9 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
 
   return (
     <Dialog open={openModal} onOpenChange={val => setOpenModal(val)}>
-      <div className="w-full bg-white shadow-lg rounded-lg h-[90%] justify-start flex-col" ref={contentRef}>
-        <div className="h-full w-full flex flex-col">
-          <div className="w-full h-[70%]  mx-auto relative">
+      <div className="w-full  rounded-lg h-[90%] justify-start flex-col">
+        <div className="h-full w-full flex flex-col bg-white shadow-lg">
+          <div className="w-full h-[60%]  mx-auto relative">
             <Link href={redir}>
               <div
                 className="relative w-full max-w-[400px] h-full  rounded-t-lg"
