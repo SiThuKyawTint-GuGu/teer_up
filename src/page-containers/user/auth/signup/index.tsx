@@ -5,35 +5,42 @@ import * as yup from "yup";
 
 import { Button } from "@/components/ui/Button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form";
+import { Icons, Image } from "@/components/ui/Images";
 import { InputText } from "@/components/ui/Inputs";
+import { Autocomplete, Item } from "@/components/ui/Inputs/Autocomplete";
 import { Checkbox } from "@/components/ui/Inputs/Checkbox";
 import { Text } from "@/components/ui/Typo/Text";
+import { useGetCountries } from "@/services/country";
+import { CountriesResponse } from "@/types/Countries";
 import { setUserInfo } from "@/utils/auth";
+import { cn } from "@/utils/cn";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Flex } from "@radix-ui/themes";
-import { useState, useTransition } from "react";
+import { Box, Flex, Grid, Heading } from "@radix-ui/themes";
+import { useRef, useState, useTransition } from "react";
 import { useUserRegister } from "../../../../services/user";
 interface SignUpFormType {
   email: string;
   name: string;
-  // country: string;
+  country: string;
 }
 
 const validationSchema = yup.object({
   email: yup.string().email().required("Email is required!"),
   name: yup.string().required("Name is required!"),
+  country: yup.string().required("Country is required!"),
 });
 
 const SignUp = () => {
   const router = useRouter();
-  const form = useForm({
+  const comboboxRef = useRef<any>(null);
+  const [isPending, startTransition] = useTransition();
+  const [checked, setChecked] = useState<boolean>(false);
+  const { trigger, error, isMutating } = useUserRegister();
+  const { data: countries } = useGetCountries<CountriesResponse>();
+  const form = useForm<SignUpFormType>({
     resolver: yupResolver(validationSchema),
   });
 
-  const [isPending, startTransition] = useTransition();
-  const [checked, setChecked] = useState<boolean>(false);
-
-  const { trigger, error, isMutating } = useUserRegister();
   const onSubmit = async (data: SignUpFormType) => {
     await trigger(data, {
       onSuccess: response => {
@@ -42,63 +49,134 @@ const SignUp = () => {
       },
     });
   };
-  return (
-    <div className="h-screen flex flex-col relative px-5 ">
-      {error && <div className="text-primary">{error.response.data.message}</div>}
-      <div className="flex flex-col  h-full justify-center   w-full flex-1">
-        <Form {...form}>
-          <form
-            className="mx-auto flex flex-col h-full justify-center flex-wrap gap-y-[30px] w-full"
-            onSubmit={form.handleSubmit(onSubmit)}
-          >
-            <Text as="div" className="mb-[3rem] text-[36px] font-[700]">
-              {" "}
-              Sign Up
-            </Text>
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <InputText
-                      type="text"
-                      className="bg-white shadow-md"
-                      {...field}
-                      placeholder="Enter your email address"
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <InputText type="text" className="bg-white shadow-md" {...field} placeholder="Enter your name" />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
 
-            <Flex direction="row" gap="2" align="start">
-              <Checkbox onCheckedChange={(val: boolean) => setChecked(val)} />
-              <Text as="div">
-                I have read, understood and accept{" "}
-                <Text as="span" className="text-primary">
-                  Terms of Use
-                </Text>
-              </Text>
-            </Flex>
-            <Button type="submit" size="lg" className="mt-5" disabled={isPending || isMutating || !checked}>
+  return (
+    <Grid columns="1">
+      <Box>
+        <Flex justify="between" align="center">
+          <Button onClick={() => router.back()} className="p-0" variant="ghost">
+            <Icons.back className="text-[#373A36] w-[23px] h-[23px]" />
+          </Button>
+          <Button className="text-primary p-0 opacity-0" variant="ghost">
+            Skip for now
+          </Button>
+        </Flex>
+      </Box>
+      <Box className="h-screen" px="4" mt="1">
+        <Flex direction="column" position="relative">
+          <Flex justify="center" align="center" mb="6">
+            <Image src="/uploads/icons/auth/login.svg" width={180} height={180} alt="login" />
+          </Flex>
+          <Flex justify="center" width="100%" direction="column" wrap="wrap" mb="4">
+            <Heading as="h4" size="7" weight="bold" mb="3">
               Sign Up
-            </Button>
-          </form>
-        </Form>
-      </div>
-    </div>
+            </Heading>
+          </Flex>
+          {error && <div className="text-primary">{error.response.data.message}</div>}
+          <div className="space-y-[10px]">
+            <Form {...form}>
+              <form
+                className="w-full flex flex-col justify-center flex-wrap space-y-[25px]"
+                onSubmit={form.handleSubmit(onSubmit)}
+              >
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <InputText
+                          className={cn(
+                            "bg-white shadow-md",
+                            form.formState.errors.email && "border-2 border-primary focus:outline-0"
+                          )}
+                          placeholder="Enter your email address"
+                          type="text"
+                          {...field}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <InputText
+                          className={cn(
+                            "bg-white shadow-md",
+                            form.formState.errors.name && "border-2 border-primary focus:outline-0"
+                          )}
+                          placeholder="Enter your name"
+                          type="text"
+                          {...field}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="country"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Autocomplete
+                          className={cn(
+                            "bg-white shadow-md",
+                            form.formState.errors.country && "border-2 border-primary focus:outline-0"
+                          )}
+                          placeholder="Select your country"
+                          {...field}
+                        >
+                          {countries?.data?.length ? (
+                            countries?.data?.map((each, key) => (
+                              <Item key={key} value={each?.name}>
+                                {each?.name}
+                              </Item>
+                            ))
+                          ) : (
+                            <Item value="">No country found!</Item>
+                          )}
+                        </Autocomplete>
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+
+                <Flex width="100%" gap="1" my="5">
+                  <Checkbox onCheckedChange={(val: boolean) => setChecked(val)} />
+                  <Text className="space-x-[5px]" as="div" weight="light" size="2">
+                    <Text as="span">By clicking &#34;Next&#34;, I have read, understood, and given my</Text>
+                    <Button className="p-0 h-auto" variant="link">
+                      consent
+                    </Button>
+                    <Text as="span">and accepted the</Text>
+                    <Button className="p-0 h-auto" variant="link">
+                      Terms of Use
+                    </Button>
+                  </Text>
+                </Flex>
+
+                <Button type="submit" loading={isPending || isMutating} disabled={isPending || isMutating || !checked}>
+                  Sign up
+                </Button>
+              </form>
+            </Form>
+            <Flex justify="center" wrap="wrap" width="100%" gap="2">
+              <Text weight="light">Already have an account?</Text>
+              <button onClick={() => router.push("/auth/login")} className="text-primary">
+                Log in
+              </button>
+            </Flex>
+          </div>
+        </Flex>
+      </Box>
+    </Grid>
   );
 };
 
