@@ -2,7 +2,7 @@
 import { Icons } from "@/components/ui/Images";
 import { ContentData } from "@/types/Content";
 import { Flex, Grid } from "@radix-ui/themes";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import ContentLayout from "./ContentLayout";
 import Video from "./Video";
 
@@ -14,7 +14,14 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
   const [videos, setVideos] = useState<any>([]);
   const [showPathTitle, setShowPathTitle] = useState<boolean>(false);
   const videoRefs = useRef<HTMLVideoElement[]>([]);
-  const targetRef = useRef<HTMLDivElement>(null);
+  const dataWithTitle = useMemo(() => {
+    if (data && data.content_pathways && data.content_pathways)
+      return data.content_pathways.filter((each: ContentData) => each.title);
+  }, [data]);
+
+  console.log(dataWithTitle);
+
+  console.log(dataWithTitle);
   useEffect(() => {
     setVideos(data);
   }, []);
@@ -61,17 +68,31 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
     console.log(data.type);
     if (data.type === "video" && data.content_video)
       return (
-        <Video data={data} setVideoRef={handleVideoRef(index)} autoplay={index === 0} contentMutate={contentMutate} />
+        <div className="w-full h-full" id={data.slug}>
+          <Video data={data} setVideoRef={handleVideoRef(index)} autoplay={index === 0} contentMutate={contentMutate} />
+        </div>
       );
     if (data.type === "event" && data.content_event)
-      return <ContentLayout data={data} contentMutate={contentMutate} redir={`/content/${data.slug}`} />;
+      return (
+        <div className="w-full h-full" id={data.slug}>
+          <ContentLayout data={data} contentMutate={contentMutate} redir={`/content/${data.slug}`} />
+        </div>
+      );
     if (data.type === "article" && data.content_article)
-      return <ContentLayout data={data} contentMutate={contentMutate} redir={`/content/${data.slug}`} />;
+      return (
+        <div className="w-full h-full" id={data.slug}>
+          <ContentLayout data={data} contentMutate={contentMutate} redir={`/content/${data.slug}`} />
+        </div>
+      );
     if (data.type === "opportunity" && data.content_opportunity)
-      return <ContentLayout data={data} contentMutate={contentMutate} redir={`/content/${data.slug}`} />;
+      return (
+        <div className="w-full h-full" id={data.slug}>
+          <ContentLayout data={data} contentMutate={contentMutate} redir={`/content/${data.slug}`} />
+        </div>
+      );
     if (data.type === "html" && data.html_body)
       return (
-        <div className="w-full h-[90%] overflow-y-scroll rounded-lg px-2 bg-white shadow-lg">
+        <div id={data.slug} className="w-full h-[90%] overflow-y-scroll rounded-lg px-2 bg-white shadow-lg">
           <div className="p-2">
             <div
               className="text-start"
@@ -96,21 +117,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
             </div>
           ))}
       </div>
-      {/* <div className="w-full h-screen flex flex-col">
-        {data?.content_pathways && (
-          <>
-            {data?.content_pathways.length > 0 && (
-              <div className="snap-y flex-col snap-mandatory w-full h-[calc(100vh-5vh)]  bg-[#F8F9FB] no-scrollbar overflow-y-scroll">
-                {data?.content_pathways.map((data: ContentData, index: number) => (
-                  <div className="h-full  w-full snap-start" id={data.slug} ref={targetRef} key={index}>
-                    {differentContent(data, index)}
-                  </div>
-                ))}
-              </div>
-            )}
-          </>
-        )}
-      </div> */}
+
       <div className="max-w-[400px] mx-auto py-3 w-full flex flex-column fixed bottom-0  p-3 flex-wrap  bg-white z-[99999]">
         <div className="w-full h-full relative">
           <Flex justify="between" className="w-full">
@@ -127,20 +134,33 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
               />
             )}
           </Flex>
-          {/* {showPathTitle && (
+          {showPathTitle && (
             <div className="py-5">
-              {contentData?.data?.content_pathways.length > 0 &&
-                data?.content_pathways.map((data: ContentData, index: number) => (
+              {dataWithTitle &&
+                dataWithTitle.length > 0 &&
+                dataWithTitle.map((data, index) => (
                   <div key={index} className="font-[600] flex flex-col w-full text-[16px] py-1">
                     <Flex justify="between" className="w-full py-2">
-                      <div onClick={scrollToTarget}>{data.title}</div>
+                      <div
+                        className="cursor-pointer"
+                        onClick={() => {
+                          const targetElement = document.getElementById(data.slug);
+                          if (targetElement) {
+                            targetElement.scrollIntoView({
+                              behavior: "smooth", // Smooth scroll effect
+                            });
+                          }
+                        }}
+                      >
+                        {data.title}
+                      </div>
                       <Icons.checkMark className="w-[20px] h-[20px]" />
                     </Flex>
                     <hr className="w-full h-[2px] bg-slateGray" />
                   </div>
                 ))}
             </div>
-          )} */}
+          )}
         </div>
       </div>
     </Grid>
