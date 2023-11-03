@@ -29,7 +29,8 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
   const [selectedOptions, setSelectedOptions] = useState<{ inputconfig_id: number | string; value: string }[] | []>([]);
   const [message, setMessage] = useState<string>("");
   const [dateValue, setDateValue] = useState<string>("");
-  const [emailValue, setEmailValue] = useState({});
+  const [emailValue, setEmailValue] = useState("");
+  const [text, setText] = useState<{ inputconfig_id: number | string; value: string }[] | []>([]);
 
   const saveContent = async () => {
     await contentSave(
@@ -64,11 +65,35 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
   };
 
   const handleDate = (InputConfigId: number | string) => {
+    // const sameId = selectedOptions.find(e => e.inputconfig_id === InputConfigId);
+    // if (sameId) {
+    //   const valueChangeArray = selectedOptions.map(e => {
+    //     if (e.inputconfig_id === InputConfigId) {
+    //       e.value = emailValue;
+    //       return selectedOptions;
+    //     }
+    //     return selectedOptions;
+    //   });
+    //   setSelectedOptions(valueChangeArray);
+    //   return;
+    // }
+    // const config = {
+    //   inputconfig_id: InputConfigId,
+    //   value: dateValue,
+    // };
+    // setSelectedOptions(prev => [...prev, config]);
+  };
+  const handleEmail = (InputConfigId: number | string) => {
+    const sameId = selectedOptions.find(e => e.inputconfig_id === InputConfigId);
+    if (sameId) {
+      return;
+    }
     const config = {
       inputconfig_id: InputConfigId,
-      value: dateValue,
+      value: emailValue,
     };
     setSelectedOptions(prev => [...prev, config]);
+    return config;
   };
 
   const formSubmit = () => {
@@ -82,9 +107,6 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
         {
           onSuccess: () => {
             setSelectedOptions([]);
-
-            setDateValue("");
-            setEmailValue("");
             setMessage("Form submit Successfully");
             setTimeout(() => {
               setOpenModal(false);
@@ -104,8 +126,6 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
         {
           onSuccess: () => {
             setSelectedOptions([]);
-            setDateValue("");
-            setEmailValue("");
             setMessage("Form submit Successfully");
             setTimeout(() => {
               setOpenModal(false);
@@ -146,7 +166,11 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
         <TextFieldInput
           placeholder={inputData.placeholder}
           type={inputData.type}
-          //
+          className="px-2"
+          onChange={(e: ChangeEvent<HTMLInputElement>) => {
+            setEmailValue(e.target.value);
+            handleEmail(inputData.id);
+          }}
         />
       );
     if (inputData.type === "dropdown") return <Select />;
