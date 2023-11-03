@@ -21,17 +21,19 @@ const Department: React.FC = () => {
   const { trigger: updateTrigger } = useUpdateDepartment();
   const { trigger: deleteTrigger } = useDeleteDepartment();
 
-  const columns = useMemo(
+  const columns = useMemo<any>(
     () => [
       {
         accessorKey: "id",
         header: "ID",
         enableEditing: false,
+        size: 1,
       },
 
       {
         accessorKey: "name",
         header: "Name",
+        size: 2,
         muiEditTextFieldProps: {
           type: "text",
           required: true,
@@ -143,7 +145,11 @@ const Department: React.FC = () => {
     renderRowActions: ({ row, table }) => (
       <Box sx={{ display: "flex", gap: "1rem" }}>
         <Tooltip title="Edit">
-          <IconButton onClick={() => table.setEditingRow(row)}>
+          <IconButton
+            onClick={() => {
+              table.setEditingRow(row);
+            }}
+          >
             <EditIcon />
           </IconButton>
         </Tooltip>

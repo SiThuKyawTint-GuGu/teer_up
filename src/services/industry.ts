@@ -4,7 +4,7 @@ import useSWR, { SWRResponse } from "swr";
 import useSWRMutation from "swr/mutation";
 
 type IndustryArgType = {
-  arg: { id?: number; name?: string };
+  arg: { id?: string; name?: string; departments?: number[]; industry_id?: number };
 };
 
 export type ParamsType = {
@@ -15,9 +15,9 @@ export const useGetIndustry = <IndustryResponse>(): SWRResponse<IndustryResponse
   return useSWR<IndustryResponse>(`/details/industries`);
 };
 
-export const useGetIndustryById = <IndustryResponse>(id: number): SWRResponse<IndustryResponse, any> => {
-  // const key = id != 0 ? `/admin/contentcategories/${id}` : null;
-  return useSWR<IndustryResponse>(`/details/industries/${id}`);
+export const useGetIndustryById = <IndustryResponse>(id: string): SWRResponse<IndustryResponse, any> => {
+  const key = id != "0" ? `/details/industries/${id}` : null;
+  return useSWR<IndustryResponse>(key);
 };
 
 export const useCreateIndustry = () =>
@@ -28,6 +28,11 @@ export const useCreateIndustry = () =>
 export const useUpdateIndustry = () =>
   useSWRMutation(`/details/industries`, (url, { arg }: IndustryArgType) => {
     return appAxios.put<IndustryArgType>(`${url}/${arg.id}`, arg);
+  });
+
+export const useUpdateJoinDepartment = () =>
+  useSWRMutation(`/details/join-departments`, (url, { arg }: IndustryArgType) => {
+    return appAxios.put<IndustryArgType>(`${url}`, arg);
   });
 
 export const useDeleteIndustry = () =>

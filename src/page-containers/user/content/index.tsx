@@ -61,7 +61,7 @@ const UserContent = () => {
   const differentContent = (data: ContentData, index: number) => {
     if (data.type === "video" && data.content_video)
       return <Video data={data} setVideoRef={handleVideoRef(index)} autoplay={index === 0} contentMutate={mutate} />;
-    if (data.type === "onboarding") return <Onboarding data={data} />;
+    if (data.type === "onboarding") return <Onboarding data={data} parentIndex={index.toString()} />;
     return <ContentLayout data={data} contentMutate={mutate} redir={`/content/${data.slug}`} />;
   };
 
@@ -90,7 +90,11 @@ const UserContent = () => {
                   >
                     <div className="snap-y flex-col snap-mandatory w-full h-[calc(100vh-100px)] bg-[#F8F9FB] no-scrollbar overflow-y-scroll">
                       {data.data.map((data: ContentData, index: number) => (
-                        <div className="h-full flex flex-col p-2 rounded-lg w-full snap-start" key={index}>
+                        <div
+                          className="h-full flex flex-col p-2 rounded-lg w-full snap-start"
+                          id={index.toString()}
+                          key={index}
+                        >
                           {differentContent(data, index)}
                           {index == 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
                         </div>

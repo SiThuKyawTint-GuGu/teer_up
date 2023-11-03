@@ -4,15 +4,18 @@ import { Text } from "@/components/ui/Typo/Text";
 import { usePostOnboarding } from "@/services/content";
 import { ContentData, OnBoardingOption } from "@/types/Content";
 import { cn } from "@/utils/cn";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import QuestionPageCard from "../../personalized/components/QuestionPageCard";
 type OnboardingProps = {
   data: ContentData;
+  parentIndex: string;
 };
-const Onboarding: React.FC<OnboardingProps> = ({ data }) => {
+const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
   const [option, setOption] = useState<OnBoardingOption | null>(null);
   const [modalOpen, setOpenModal] = useState<boolean>(false);
   const { trigger } = usePostOnboarding();
+  const router = useRouter();
 
   return (
     <QuestionPageCard>
@@ -22,15 +25,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ data }) => {
             <Text className="text-[28px] font-[700]  text-center mb-5" as="div">
               {data.name}
             </Text>
-            {/* {option && (
-              <div className="text-center w-full">
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: option.feedback,
-                  }}
-                />
-              </div>
-            )} */}
+
             <div className="w-full cursor-pointer  flex flex-col flex-wrap gap-y-5 justify-center h-full items-center">
               {data.options &&
                 data.options.length &&
@@ -39,6 +34,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ data }) => {
                     key={index}
                     onClick={() => {
                       setOption(q);
+                      router.push(`/home/#${parseInt(parentIndex) + 1}`);
                       trigger(
                         {
                           option_id: q.id,
@@ -58,7 +54,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ data }) => {
                       }`
                     )}
                   >
-                    {q.name}
+                    <div>{q.name}</div>
                   </div>
                 ))}
             </div>
@@ -66,7 +62,11 @@ const Onboarding: React.FC<OnboardingProps> = ({ data }) => {
         </CardBox>
       </div>
       {modalOpen && (
-        <Modal onClose={() => setOpenModal(false)}>
+        <Modal
+          onClose={() => {
+            setOpenModal(false);
+          }}
+        >
           <div className="w-100 p-10">
             {option && (
               <div

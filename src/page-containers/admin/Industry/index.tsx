@@ -1,5 +1,5 @@
 "use client";
-import { useCreateIndustry, useDeleteIndustry, useGetIndustry, useUpdateIndustry } from "@/services/industry";
+import { useDeleteIndustry, useGetIndustry } from "@/services/industry";
 import { IndustryResponse } from "@/types/Industry";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -8,17 +8,15 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";
-import { MaterialReactTable, useMaterialReactTable, type MRT_TableOptions } from "material-react-table";
+import { MaterialReactTable, useMaterialReactTable } from "material-react-table";
+import Link from "next/link";
 import { useMemo, useState } from "react";
 
 const Industry: React.FC = () => {
-  const [validationErrors, setValidationErrors] = useState<Record<string, string | undefined>>({});
   const [open, setOpen] = useState<boolean>(false);
   const [id, setId] = useState<string>("");
   const { data: industries, isLoading, mutate } = useGetIndustry<IndustryResponse>();
 
-  const { trigger: createTrigger } = useCreateIndustry();
-  const { trigger: updateTrigger } = useUpdateIndustry();
   const { trigger: deleteTrigger } = useDeleteIndustry();
 
   const columns = useMemo(
@@ -27,24 +25,13 @@ const Industry: React.FC = () => {
         accessorKey: "id",
         header: "ID",
         enableEditing: false,
+        size: 2,
       },
 
       {
         accessorKey: "name",
         header: "Name",
-        muiEditTextFieldProps: {
-          type: "text",
-          required: true,
-          error: !!validationErrors?.name,
-          helperText: validationErrors?.name,
-          //remove any previous validation errors when user focuses on the input
-          onFocus: () =>
-            setValidationErrors({
-              ...validationErrors,
-              name: undefined,
-            }),
-          //optionally add validation checking for onBlur or onChange
-        },
+        enableEditing: false,
       },
       {
         accessorKey: "created_at",
@@ -59,50 +46,8 @@ const Industry: React.FC = () => {
         Cell: ({ row }: any) => dayjs(row.original.updated_at).format("MMM D, YYYY h:mm A"),
       },
     ],
-    [validationErrors]
+    []
   );
-
-  //CREATE action
-  const handleCreateIndustry: MRT_TableOptions<any>["onCreatingRowSave"] = async ({ values, table }) => {
-    const { id, name } = values;
-    const newValidationErrors = validatePreference(values);
-    if (Object.values(newValidationErrors).some(error => error)) {
-      setValidationErrors(newValidationErrors);
-      return;
-    }
-    setValidationErrors({});
-    const newValues = {
-      name,
-      values,
-    };
-    createTrigger(newValues, {
-      onSuccess: () => {
-        mutate();
-      },
-    });
-    table.setCreatingRow(null); //exit creating mode
-  };
-
-  //UPDATE action
-  const handleUpdateIndustry: MRT_TableOptions<any>["onEditingRowSave"] = ({ values, table }) => {
-    const { id, name } = values;
-    const newValidationErrors = validatePreference(values);
-    if (Object.values(newValidationErrors).some(error => error)) {
-      setValidationErrors(newValidationErrors);
-      return;
-    }
-    setValidationErrors({});
-    const newValues = {
-      name,
-      id,
-    };
-    updateTrigger(newValues, {
-      onSuccess: () => {
-        mutate();
-      },
-    });
-    table.setEditingRow(null);
-  };
 
   //DELETE action
   const handleDeleteIndustry = async () => {
@@ -117,7 +62,7 @@ const Industry: React.FC = () => {
     editDisplayMode: "row",
     enableEditing: true,
     enableColumnFilters: false,
-    getRowId: row => row.id,
+    getRowId: (row: any) => row.id,
     muiToolbarAlertBannerProps: isLoading
       ? {
           color: "error",
@@ -132,20 +77,18 @@ const Industry: React.FC = () => {
     },
     enableStickyFooter: true,
     enableStickyHeader: true,
-    onCreatingRowCancel: () => setValidationErrors({}),
-    onCreatingRowSave: handleCreateIndustry,
-    onEditingRowCancel: () => setValidationErrors({}),
     positionActionsColumn: "last",
     state: {
       showSkeletons: isLoading ?? false,
     },
-    onEditingRowSave: handleUpdateIndustry,
     renderRowActions: ({ row, table }) => (
       <Box sx={{ display: "flex", gap: "1rem" }}>
         <Tooltip title="Edit">
-          <IconButton onClick={() => table.setEditingRow(row)}>
-            <EditIcon />
-          </IconButton>
+          <Link href={`/admin/configs/industry/${row.id}`}>
+            <IconButton>
+              <EditIcon />
+            </IconButton>
+          </Link>
         </Tooltip>
         <Tooltip title="Delete">
           <IconButton
@@ -161,15 +104,8 @@ const Industry: React.FC = () => {
       </Box>
     ),
     renderTopToolbarCustomActions: ({ table }) => (
-      <Button
-        variant="contained"
-        color="error"
-        sx={{ background: "#DA291C", textTransform: "none" }}
-        onClick={() => {
-          table.setCreatingRow(true);
-        }}
-      >
-        Create New Industry
+      <Button variant="contained" color="error" sx={{ background: "#DA291C", textTransform: "none" }}>
+        <Link href={"/admin/configs/industry/0"}>Create New Industry</Link>
       </Button>
     ),
   });
@@ -216,14 +152,6 @@ const Industry: React.FC = () => {
 };
 
 export default Industry;
-
-const validateRequired = (value: string) => !!value.length;
-
-function validatePreference(pre: any) {
-  return {
-    name: !validateRequired(pre.name) ? "Name is Required" : "",
-  };
-}
 
 const style = {
   position: "absolute" as "absolute",
