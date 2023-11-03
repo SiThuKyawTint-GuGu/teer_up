@@ -1,6 +1,6 @@
 "use client";
 import BGImage from "@/components/shared/BGImage";
-import { WIDTH_TYPES } from "@/components/shared/enums";
+import { HEIGHT_TYPES, WIDTH_TYPES, bgTypes } from "@/components/shared/enums";
 import { Button } from "@/components/ui/Button";
 import CardBox from "@/components/ui/Card";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
@@ -74,10 +74,15 @@ const Profile: React.FC = () => {
               <Section p="0">
                 <DialogTrigger onClick={() => setTriggerType(PROFILE_TRIGGER.COVER)} className="w-full">
                   {userProfile?.cover_url ? (
-                    <BGImage width={WIDTH_TYPES.FULL} height={130} url={userProfile?.cover_url} />
+                    <BGImage width={WIDTH_TYPES.FULL} height="130px" url={userProfile?.cover_url} />
                   ) : (
                     <Flex className="h-[130px] bg-[#D9D9D9]" justify="center" align="center">
-                      <Icons.profileCamera className="w-[24px] h-[24px]" />
+                      {/* <Icons.profileCamera className="w-[24px] h-[24px]" /> */}
+                      <BGImage
+                        width={bgTypes[WIDTH_TYPES.FULL]}
+                        height={bgTypes[HEIGHT_TYPES.FULL]}
+                        url="/uploads/icons/bg-profile.svg"
+                      />
                     </Flex>
                   )}
                 </DialogTrigger>
@@ -90,7 +95,7 @@ const Profile: React.FC = () => {
                         justify="center"
                         align="center"
                         position="relative"
-                        className="w-[120px] h-[120px] rounded-full bg-[#D9D9D9] ring-4 ring-white"
+                        className="w-[120px] h-[120px] rounded-full bg-primary bg-opacity-70 ring-4 ring-white"
                         style={{
                           background: `url(${userProfile?.profile_url}) center / cover`,
                         }}
@@ -108,7 +113,7 @@ const Profile: React.FC = () => {
                         justify="center"
                         align="center"
                         position="relative"
-                        className="w-[120px] h-[120px] rounded-full bg-[#D9D9D9] ring-4 ring-white"
+                        className="w-[120px] h-[120px] rounded-full bg-primary bg-opacity-70 ring-4 ring-white"
                       >
                         <Image
                           className="mt-[30px]"
@@ -120,9 +125,9 @@ const Profile: React.FC = () => {
                         <Flex
                           justify="center"
                           align="center"
-                          className="absolute bottom-0 right-0 w-[30px] h-[30px] rounded-full bg-[#D9D9D9] ring-2 ring-white"
+                          className="absolute bottom-0 right-0 w-[30px] h-[30px] rounded-full bg-white shadow-profile ring-2 ring-white"
                         >
-                          <Icons.profileCamera className="w-[15] h-[15]" />
+                          <Icons.profileCamera className="w-[15] h-[15] text-primary" />
                         </Flex>
                       </Flex>
                     )}
