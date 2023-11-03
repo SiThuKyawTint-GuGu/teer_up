@@ -294,11 +294,11 @@ const Profile: React.FC = () => {
             </CardBox>
             <CardBox>
               <Section className="bg-white" py="4" px="3">
+                <Heading>Here’s what we noticed about your competencies:</Heading>
                 {dimensionData?.data?.length && (
                   <>
-                    <Heading>Here’s what we noticed about your competencies:</Heading>
                     {dimensionData?.data?.map((each, key) => (
-                      <CardBox key={key}>
+                      <CardBox key={key} mb="3">
                         <Section className="bg-white" py="4" px="3">
                           <Flex justify="start" align="start" gap="2">
                             <div className="w-[12px] h-[12px] mt-[5px] rounded-sm bg-primary" />
@@ -313,11 +313,11 @@ const Profile: React.FC = () => {
             </CardBox>
             <CardBox>
               <Section className="bg-white" py="4" px="3">
+                <Heading>Here’s what we noticed about your competencies:</Heading>
                 {userDimensionData?.data?.length && (
                   <>
-                    <Heading>Here’s what we noticed about your competencies:</Heading>
                     {userDimensionData?.data?.map((each, key) => (
-                      <CardBox key={key}>
+                      <CardBox key={key} mb="3">
                         <Section className="bg-white space-y-[10px]" py="4" px="3">
                           <Flex justify="start" align="start" gap="2">
                             <div className="w-[12px] h-[12px] mt-[5px] rounded-sm bg-primary" />
