@@ -29,7 +29,9 @@ const DimensionDetailPage = ({ id }: Props) => {
   const router = useRouter();
   const [searchContent, setSearchContent] = useState<string>("");
   const [contentOptions, setContentOptions] = useState<OptionType[]>([]);
-  const [selectedContent, setSelectedContent] = useState<any>();
+  const [selectedHighContent, setSelectedHighContent] = useState<any>();
+  const [selectedMediumContent, setSelectedMediumContent] = useState<any>();
+  const [selectedLowContent, setSelectedLowContent] = useState<any>();
   const { data: dimension } = useGetDimensionById<any>(id);
   const { data: contents } = useGetContent<ParamsType, ContentType>({
     page: 1,
@@ -58,10 +60,22 @@ const DimensionDetailPage = ({ id }: Props) => {
       setHigh(dimension?.data?.high_body);
       setMedium(dimension?.data.medium_body);
       setLow(dimension?.data.low_body);
-      const content: any = contents?.data.find((content: any) => content.id === dimension?.data.content_id);
-      if (content) {
-        const data = { label: content.title, content_id: content.id };
-        setSelectedContent(data);
+      const highcontent: any = contents?.data.find((content: any) => content.id === dimension?.data.high_content_id);
+      if (highcontent) {
+        const data = { label: highcontent.title, content_id: highcontent.id };
+        setSelectedHighContent(data);
+      }
+      const mediumcontent: any = contents?.data.find(
+        (content: any) => content.id === dimension?.data.medium_content_id
+      );
+      if (mediumcontent) {
+        const data = { label: mediumcontent.title, content_id: mediumcontent.id };
+        setSelectedMediumContent(data);
+      }
+      const lowcontent: any = contents?.data.find((content: any) => content.id === dimension?.data.low_content_id);
+      if (lowcontent) {
+        const data = { label: lowcontent.title, content_id: lowcontent.id };
+        setSelectedLowContent(data);
       }
     }
   }, [dimension?.data, contents?.data]);
@@ -80,15 +94,23 @@ const DimensionDetailPage = ({ id }: Props) => {
     setSearchContent(event?.target.value);
   };
 
-  const handleSelectPathwayChange = (event: any, newValue: any) => {
-    setSelectedContent(newValue);
+  const handleSelectHighPathwayChange = (event: any, newValue: any) => {
+    setSelectedHighContent(newValue);
+  };
+  const handleSelectMediumPathwayChange = (event: any, newValue: any) => {
+    setSelectedMediumContent(newValue);
+  };
+  const handleSelectLowPathwayChange = (event: any, newValue: any) => {
+    setSelectedLowContent(newValue);
   };
 
   const Submit = async (data: any) => {
     const submitData: any = {
       name: data?.name,
       short_name: data?.short_name,
-      content_id: selectedContent?.content_id,
+      high_content_id: selectedHighContent?.content_id,
+      medium_content_id: selectedMediumContent?.content_id,
+      low_content_id: selectedLowContent?.content_id,
       high_body: high,
       low_body: low,
       medium_body: medium,
@@ -140,6 +162,18 @@ const DimensionDetailPage = ({ id }: Props) => {
           />
         </div>
         <div className="mb-10">
+          <Autocomplete
+            disablePortal
+            id="dimension"
+            options={contentOptions || []}
+            value={selectedHighContent ? selectedHighContent : null}
+            // onInputChange={(event, newInputValue) => handleInputChange(event, newInputValue)}
+            onInputChange={event => handleInputChange(event)}
+            onChange={(event, newValue) => handleSelectHighPathwayChange(event, newValue)}
+            renderInput={params => <TextField {...params} label="High body pathway" />}
+          />
+        </div>
+        <div className="mb-10">
           <TextField
             value={medium}
             multiline
@@ -148,6 +182,18 @@ const DimensionDetailPage = ({ id }: Props) => {
             className="w-full"
             name="medium_body"
             variant="outlined"
+          />
+        </div>
+        <div className="mb-10">
+          <Autocomplete
+            disablePortal
+            id="dimension"
+            options={contentOptions || []}
+            value={selectedMediumContent ? selectedMediumContent : null}
+            // onInputChange={(event, newInputValue) => handleInputChange(event, newInputValue)}
+            onInputChange={event => handleInputChange(event)}
+            onChange={(event, newValue) => handleSelectMediumPathwayChange(event, newValue)}
+            renderInput={params => <TextField {...params} label="Medium body pathway" />}
           />
         </div>
         <div className="mb-10">
@@ -166,11 +212,11 @@ const DimensionDetailPage = ({ id }: Props) => {
             disablePortal
             id="dimension"
             options={contentOptions || []}
-            value={selectedContent ? selectedContent : null}
+            value={selectedLowContent ? selectedLowContent : null}
             // onInputChange={(event, newInputValue) => handleInputChange(event, newInputValue)}
             onInputChange={event => handleInputChange(event)}
-            onChange={(event, newValue) => handleSelectPathwayChange(event, newValue)}
-            renderInput={params => <TextField {...params} label="Pathway" />}
+            onChange={(event, newValue) => handleSelectLowPathwayChange(event, newValue)}
+            renderInput={params => <TextField {...params} label="Low body pathway" />}
           />
         </div>
         <div className="flex justify-between">
