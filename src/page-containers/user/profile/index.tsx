@@ -6,8 +6,10 @@ import CardBox from "@/components/ui/Card";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
+import { useGetUserDimension, useGetUserDimensionResult } from "@/services/dimension";
 import { useGetUserById } from "@/services/user";
 import { PROFILE_TRIGGER } from "@/shared/enums";
+import { UserDimensionResponse, UserDimensionResultResponse } from "@/types/Dimension";
 import { UserProfileResponse } from "@/types/Profile";
 import { getUserInfo } from "@/utils/auth";
 import { cn } from "@/utils/cn";
@@ -36,7 +38,11 @@ const Profile: React.FC = () => {
   const user = getUserInfo();
   const router = useRouter();
   const { data: profileData } = useGetUserById<UserProfileResponse>(user?.id);
+  const { data: userDimensionData } = useGetUserDimensionResult<UserDimensionResultResponse>();
+  const { data: dimensionData } = useGetUserDimension<UserDimensionResponse>();
   const userProfile = profileData?.data;
+
+  console.log(user);
 
   return (
     <>
@@ -285,6 +291,49 @@ const Profile: React.FC = () => {
             </CardBox>
             <CardBox className="mb-[7px] rounded-none">
               <RadarChart />
+            </CardBox>
+            <CardBox>
+              <Section className="bg-white" py="4" px="3">
+                {dimensionData?.data?.length && (
+                  <>
+                    <Heading>Here’s what we noticed about your competencies:</Heading>
+                    {dimensionData?.data?.map((each, key) => (
+                      <CardBox key={key}>
+                        <Section className="bg-white" py="4" px="3">
+                          <Flex justify="start" align="start" gap="2">
+                            <div className="w-[12px] h-[12px] mt-[5px] rounded-sm bg-primary" />
+                            <Text className="w-[calc(100%-12px)]">{each.name}</Text>
+                          </Flex>
+                        </Section>
+                      </CardBox>
+                    ))}
+                  </>
+                )}
+              </Section>
+            </CardBox>
+            <CardBox>
+              <Section className="bg-white" py="4" px="3">
+                {userDimensionData?.data?.length && (
+                  <>
+                    <Heading>Here’s what we noticed about your competencies:</Heading>
+                    {userDimensionData?.data?.map((each, key) => (
+                      <CardBox key={key}>
+                        <Section className="bg-white space-y-[10px]" py="4" px="3">
+                          <Flex justify="start" align="start" gap="2">
+                            <div className="w-[12px] h-[12px] mt-[5px] rounded-sm bg-primary" />
+                            <Text className="w-[calc(100%-12px)]">{each.skill_body}</Text>
+                          </Flex>
+                          <Flex width="100%">
+                            <Link className="w-full" href={`/content/${each?.content?.slug}`}>
+                              <Button className="w-full">I’d like to work on it</Button>
+                            </Link>
+                          </Flex>
+                        </Section>
+                      </CardBox>
+                    ))}
+                  </>
+                )}
+              </Section>
             </CardBox>
           </Box>
         </Grid>

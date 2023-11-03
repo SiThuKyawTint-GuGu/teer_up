@@ -34,3 +34,16 @@ export const useDeleteDimension = () =>
   useSWRMutation(`/admin/onboarding/dimensions`, (url, { arg }: { arg: { id: string } }) => {
     return appAxios.delete<DimensionArgType>(`${url}/${arg.id}`);
   });
+
+// user dimension
+export const useGetUserDimensionResult = <UserDimensionResultResponse>(): SWRResponse<
+  UserDimensionResultResponse,
+  any
+> => {
+  return useSWR<UserDimensionResultResponse>(`/user/onboarding/dimension-results
+  `);
+};
+
+export const useGetUserDimension = <UserDimensionResponse>(): SWRResponse<UserDimensionResponse, any> => {
+  return useSWR<UserDimensionResponse>(`/user/onboarding/dimensions`);
+};
