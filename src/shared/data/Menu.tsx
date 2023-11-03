@@ -27,6 +27,11 @@ export const menuList: Menu[] = [
         title: "Category",
         icon: <Icons.category className="w-[20px] h-[20px]" />,
       },
+      {
+        key: "/admin/contents/keywords",
+        title: "Keywords",
+        icon: <Icons.keyword className="w-[20px] h-[20px]" />,
+      },
     ],
   },
   {
@@ -72,11 +77,6 @@ export const menuList: Menu[] = [
         key: "/admin/configs/preferences",
         title: "Preferences",
         icon: <Icons.preference className="w-[20px] h-[20px]" />,
-      },
-      {
-        key: "/admin/configs/keywords",
-        title: "Keywords",
-        icon: <Icons.keyword className="w-[20px] h-[20px]" />,
       },
     ],
   },
