@@ -41,7 +41,6 @@ import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { Box } from "@radix-ui/themes";
-import { Editor } from "@tinymce/tinymce-react";
 import dayjs from "dayjs";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -153,9 +152,9 @@ const ContentDetail = ({ id }: Props) => {
     if (editor) {
       editor?.setContent(editorContent);
     }
-    if (htmlEditors) {
-      htmlEditors?.setContent(htmlContent);
-    }
+    // if (htmlEditors) {
+    //   htmlEditors?.setContent(htmlContent);
+    // }
     if (oppoEditor) {
       oppoEditor?.setContent(oppoEditorContent);
     }
@@ -1007,8 +1006,7 @@ const ContentDetail = ({ id }: Props) => {
               </div>
               <div className="mb-10">
                 <p className="text-md font-semibold mb-3">Content</p>
-                {/* <Editor onInit={handleEditorInit} /> */}
-                <HtmlEditor handleEditorInit={handleEditorInit} />
+                <HtmlEditor init={handleEditorInit} />
               </div>
             </>
           )}
@@ -1052,8 +1050,7 @@ const ContentDetail = ({ id }: Props) => {
               </div>
               <div className="mb-10">
                 <p className="text-md font-semibold mb-3">Opportunity Content</p>
-                {/* <Editor onInit={handleOppoEditorInit} /> */}
-                <HtmlEditor handleEditorInit={handleOppoEditorInit} />
+                <HtmlEditor init={handleOppoEditorInit} />
               </div>
             </>
           )}
@@ -1105,11 +1102,10 @@ const ContentDetail = ({ id }: Props) => {
                   )}
                   {pathway.type === "html" && (
                     <div key={index} className="mt-5 w-[80%] flex items-center ">
-                      {/* <HtmlEditor handleEditorInit={(editor: any) => handleEditorHtmlBody(editor, index)} /> */}
-                      <Editor
+                      <HtmlEditor
                         init={(editorInit: any) => handleEditorHtmlBody(editorInit)}
                         value={htmlContent[index] || ""}
-                        onEditorChange={content => {
+                        onEditorChange={(content: any) => {
                           setHtmlContent((prevHtmlContent: any) => ({ ...prevHtmlContent, [index]: content }));
                           handleEditorChange(index, content);
                         }}

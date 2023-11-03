@@ -1,4 +1,5 @@
 "use client";
+import HtmlEditor from "@/components/ui/Editor";
 import { useGetDimension } from "@/services/dimension";
 import { useGetQuestionById, usePostQuestion, useUpdateQuestion } from "@/services/question";
 import { DimensionResponse } from "@/types/Dimension";
@@ -7,7 +8,6 @@ import SaveIcon from "@mui/icons-material/Save";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
 import { Box } from "@radix-ui/themes";
-import { Editor } from "@tinymce/tinymce-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -69,9 +69,9 @@ const QuestionDetail = ({ id }: Props) => {
 
   useEffect(() => {
     if (editorInitial === false) {
-      if (editor) {
-        editor?.setContent(editorContent);
-      }
+      // if (editor) {
+      //   editor?.setContent(editorContent);
+      // }
       if (question?.data) {
         question.data.options.forEach((option: any, index: number) => {
           const optionName = `options[${index}].feedback`;
@@ -80,9 +80,9 @@ const QuestionDetail = ({ id }: Props) => {
           }
           const initialContent = option.feedback || "";
 
-          if (editor) {
-            editor.setContent(initialContent);
-          }
+          // if (editor) {
+          //   editor?.setContent(initialContent);
+          // }
           setEditorContent({ ...editorContent, [optionName]: initialContent });
         });
       }
@@ -260,10 +260,10 @@ const QuestionDetail = ({ id }: Props) => {
                   name={`options[${index}].feedback` as any}
                   control={control}
                   render={({ field }) => (
-                    <Editor
+                    <HtmlEditor
                       value={editorContent[field.name] || ""}
                       init={(editorInit: any) => handleEditorInit(editorInit, field.name)}
-                      onEditorChange={content => {
+                      onEditorChange={(content: any) => {
                         setEditorContent({ ...editorContent, [field.name]: content });
                         field.onChange(content);
                       }}
