@@ -1163,59 +1163,54 @@ const ContentDetail = ({ id }: Props) => {
           </div>
 
           {/* Content Matrix */}
-          <div>
-            <Box className="flex items-center mt-10 my-3">
-              <p className="w-[60%] mr-20"></p>
-              <div className="flex">
-                <h1 className="font-semibold">High</h1>
-                <h1 className="font-semibold mx-2">Medium</h1>
-                <h1 className="font-semibold">Low</h1>
-                <h1 className="font-semibold ml-2 text-center">Increase skill after 30s</h1>
-              </div>
-            </Box>
-            {dimensions?.data &&
-              dimensions?.data.map((dimension: any, index: number) => (
-                <Box className="flex  items-center mt-10 my-3" key={index}>
-                  <p className="w-[60%] mr-20">{dimension.name}</p>
-                  <div className="flex">
-                    <Checkbox
-                      name="high"
-                      checked={checkboxValues[dimension.id]?.high || false}
-                      onChange={e => handleCheckboxChange(e, dimension.id)}
-                    />
-                    <Checkbox
-                      name="medium"
-                      checked={checkboxValues[dimension.id]?.medium || false}
-                      onChange={e => handleCheckboxChange(e, dimension.id)}
-                      sx={{ margin: "0px 10px" }}
-                    />
-                    <Checkbox
-                      name="low"
-                      checked={checkboxValues[dimension.id]?.low || false}
-                      onChange={e => handleCheckboxChange(e, dimension.id)}
-                    />
-                    {/* <Checkbox
-                      sx={{ marginLeft: "60px" }}
-                      name="scores"
-                      checked={checkboxValues[dimension.id]?.scores || false}
-                      onChange={e => handleCheckboxChange(e, dimension.id)}
-                    /> */}
-                    <div className="ml-2 flex justify-center">
-                      <TextField
-                        value={checkboxValues[dimension.id]?.scores || ""}
-                        name="scores"
-                        type={"number"}
-
+          {content?.data && (
+            <div>
+              <Box className="flex items-center mt-10 my-3">
+                <p className="w-[50%] mr-20"></p>
+                <div className="flex">
+                  <h1 className="font-semibold">High</h1>
+                  <h1 className="font-semibold mx-2">Medium</h1>
+                  <h1 className="font-semibold">Low</h1>
+                  <h1 className="font-semibold ml-2 text-center">Increase skill after 30s</h1>
+                </div>
+              </Box>
+              {dimensions?.data &&
+                dimensions?.data.map((dimension: any, index: number) => (
+                  <Box className="flex  items-center mt-10 my-3" key={index}>
+                    <p className="w-[50%] mr-20">{dimension.name}</p>
+                    <div className="flex justify-center">
+                      <Checkbox
+                        name="high"
+                        checked={checkboxValues[dimension.id]?.high || false}
                         onChange={e => handleCheckboxChange(e, dimension.id)}
-                        id={`scores-${index}`}
-                        label="Scores"
-                        variant="outlined"
                       />
+                      <Checkbox
+                        name="medium"
+                        checked={checkboxValues[dimension.id]?.medium || false}
+                        onChange={e => handleCheckboxChange(e, dimension.id)}
+                        sx={{ margin: "0px 10px" }}
+                      />
+                      <Checkbox
+                        name="low"
+                        checked={checkboxValues[dimension.id]?.low || false}
+                        onChange={e => handleCheckboxChange(e, dimension.id)}
+                      />
+                      <div className="ml-2  flex justify-center">
+                        <TextField
+                          value={checkboxValues[dimension.id]?.scores || ""}
+                          name="scores"
+                          type={"number"}
+                          onChange={e => handleCheckboxChange(e, dimension.id)}
+                          id={`scores-${index}`}
+                          label="Scores"
+                          variant="outlined"
+                        />
+                      </div>
                     </div>
-                  </div>
-                </Box>
-              ))}
-          </div>
+                  </Box>
+                ))}
+            </div>
+          )}
           {content?.data.submissions.length > 0 && (
             <div className="my-10">
               <h1 className=" text-lg mb-5 font-semibold">Submissions</h1>
