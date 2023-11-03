@@ -131,6 +131,7 @@ const DimensionDetailPage = ({ id }: Props) => {
         <div className="mb-10">
           <TextField
             value={high}
+            multiline
             onChange={e => setHigh(e.target.value)}
             label="High Body"
             name="high_body"
@@ -141,6 +142,7 @@ const DimensionDetailPage = ({ id }: Props) => {
         <div className="mb-10">
           <TextField
             value={medium}
+            multiline
             onChange={e => setMedium(e.target.value)}
             label="Medium Body"
             className="w-full"
@@ -151,6 +153,7 @@ const DimensionDetailPage = ({ id }: Props) => {
         <div className="mb-10">
           <TextField
             value={low}
+            multiline
             onChange={e => setLow(e.target.value)}
             label="Low Body"
             className="w-full"
