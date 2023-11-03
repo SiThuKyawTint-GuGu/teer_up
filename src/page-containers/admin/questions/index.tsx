@@ -1,5 +1,5 @@
 "use client";
-import { useDeleteQuestion, useGetQuestion } from "@/services/question";
+import { ParamsType, useDeleteQuestion, useGetQuestion } from "@/services/question";
 import { QuestionResponse } from "@/types/Question";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -8,14 +8,21 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";
-import { MaterialReactTable, useMaterialReactTable } from "material-react-table";
+import { MaterialReactTable, MRT_PaginationState, useMaterialReactTable } from "material-react-table";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
 const Questions: React.FC = () => {
+  const [pagination, setPagination] = useState<MRT_PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
   const [open, setOpen] = useState<boolean>(false);
   const [id, setId] = useState<string>("");
-  const { data: questions, isLoading } = useGetQuestion<QuestionResponse>();
+  const { data: questions, isLoading } = useGetQuestion<ParamsType, QuestionResponse>({
+    page: pagination.pageIndex + 1,
+    pagesize: pagination.pageSize,
+  });
   // console.log(questions);
   const { trigger: deleteTrigger } = useDeleteQuestion();
 
@@ -88,13 +95,23 @@ const Questions: React.FC = () => {
         minHeight: "480px",
       },
     },
+    manualPagination: true,
+    rowCount: questions?.total,
+    initialState: {
+      pagination: {
+        pageSize: 10,
+        pageIndex: 0,
+      },
+    },
     positionActionsColumn: "last",
     enableStickyFooter: true,
     enableStickyHeader: true,
     state: {
       showSkeletons: isLoading ?? false,
+      isLoading,
+      pagination,
     },
-
+    onPaginationChange: setPagination,
     renderRowActions: ({ row, table }) => (
       <Box sx={{ display: "flex", gap: "1rem", width: "100%" }}>
         <Tooltip title="Edit">

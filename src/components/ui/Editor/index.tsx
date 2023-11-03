@@ -1,19 +1,20 @@
 import { Editor } from "@tinymce/tinymce-react";
 
 interface Props {
-  handleEditorInit: any;
-  // value:string;
-  // onEditor
+  init?: any;
+  value?: string;
+  onEditorChange?: any;
 }
 const HtmlEditor = (props: Props) => {
   return (
     <>
-      {/* <Editor onInit={props.handleEditorInit} /> */}
       <Editor
         apiKey="bsxh9v4j0on90mglp1mrf5dkvif8md64ftfegm3v1bz5pgws"
-        onInit={props.handleEditorInit}
+        onInit={props.init}
+        value={props.value}
+        onEditorChange={props.onEditorChange}
         init={{
-          height: 500,
+          // height: 500,
           menubar: true,
           plugins: [
             "advlist",
