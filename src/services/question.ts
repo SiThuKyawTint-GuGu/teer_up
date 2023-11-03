@@ -1,11 +1,12 @@
 "use client";
 import appAxios from "@/lib/appAxios";
+import { routeFilter } from "@/utils";
 import useSWR, { SWRResponse } from "swr";
 import useSWRMutation from "swr/mutation";
 
 export type ParamsType = {
   page?: number;
-  pageSize?: number;
+  pagesize?: number;
   name?: string;
 };
 
@@ -21,8 +22,11 @@ export interface QuestionArgType {
   };
 }
 
-export const useGetQuestion = <QuestionType>(): SWRResponse<QuestionType, any> => {
-  return useSWR<QuestionType>(`/admin/onboarding/questions`);
+// export const useGetQuestion = <QuestionType>(): SWRResponse<QuestionType, any> => {
+//   return useSWR<QuestionType>(`/admin/onboarding/questions`);
+// };
+export const useGetQuestion = <ParamsType, QuestionType>(params?: ParamsType): SWRResponse<QuestionType, any> => {
+  return useSWR<QuestionType>(`/admin/onboarding/questions?${routeFilter(params)}`);
 };
 
 export const useGetQuestionById = <QuestionType>(id: string): SWRResponse<QuestionType, any> => {

@@ -1,4 +1,5 @@
 "use client";
+import HtmlEditor from "@/components/ui/Editor";
 import { useGetBlogCategory } from "@/services/blogCategory";
 import { useGetBlogById, usePostBlog, useUpdateBlog } from "@/services/blogPost";
 import { useGetFormConfig, useGetFormConfigById } from "@/services/formConfig";
@@ -20,7 +21,6 @@ import {
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import TextField from "@mui/material/TextField";
-import { Editor } from "@tinymce/tinymce-react";
 import copy from "copy-to-clipboard";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -210,7 +210,7 @@ const BlogPostDetail = ({ id }: Props) => {
 
           <div className="mb-10">
             <p className="font-weight-600 mb-3">Content</p>
-            <Editor onInit={handleEditorInit} />
+            <HtmlEditor init={handleEditorInit} />
             {contentError && <p className="mt-2 text-red-700">{contentError}</p>}
           </div>
           <div>
