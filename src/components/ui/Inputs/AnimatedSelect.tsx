@@ -4,7 +4,7 @@ import * as React from "react";
 import { cn } from "@/utils/cn";
 import * as Ariakit from "@ariakit/react";
 
-import "@/styles/Select.css";
+// import "@/styles/Select.css";
 
 const SelectItem = React.forwardRef<HTMLDivElement, { className?: string; value: string; children: React.ReactNode }>(
   ({ className, value, children, ...props }, ref) => (
