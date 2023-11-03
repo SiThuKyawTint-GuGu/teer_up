@@ -8,7 +8,7 @@ import useSWRMutation from "swr/mutation";
 export type ParamsType = {
   page: number;
   pagesize: number;
-  status?: string;
+  status?: any;
   search?: string;
 };
 
