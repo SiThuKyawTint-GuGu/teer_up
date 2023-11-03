@@ -16,6 +16,7 @@ type VideoProps = {
   setVideoRef: any;
   autoplay: boolean;
   contentMutate: any;
+  index?: number;
 };
 const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutate }) => {
   const { trigger: like } = useLikeContent();
