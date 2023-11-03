@@ -99,6 +99,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(validationSchema),
@@ -314,8 +315,8 @@ const FormDetailConfigPage = ({ id }: Props) => {
       <div className="bg-white p-7 rounded-md">
         <div className="mb-10">
           <TextField
-            InputLabelProps={{ shrink: !!formConfigs?.data.name }}
             {...register("name")}
+            InputLabelProps={{ shrink: !!watch("name") }}
             label="Name"
             className="w-full"
             variant="outlined"
