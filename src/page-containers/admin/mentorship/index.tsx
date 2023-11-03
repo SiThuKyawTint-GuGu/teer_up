@@ -1,7 +1,12 @@
 "use client";
 import { ParamsType, useGetMentorship } from "@/services/mentorship";
 import dayjs from "dayjs";
-import { MaterialReactTable, MRT_PaginationState, useMaterialReactTable } from "material-react-table";
+import {
+  MaterialReactTable,
+  MRT_ColumnFiltersState,
+  MRT_PaginationState,
+  useMaterialReactTable,
+} from "material-react-table";
 import { useMemo, useState } from "react";
 
 const MentorshipTable: React.FC = () => {
@@ -10,13 +15,15 @@ const MentorshipTable: React.FC = () => {
     pageSize: 10,
   });
   const [globalFilter, setGlobalFilter] = useState<string>("");
+  const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>([]);
   const { data: mentorships, isLoading } = useGetMentorship<ParamsType, any>({
-    // status:'pending',
     page: pagination.pageIndex + 1,
     pagesize: pagination.pageSize,
     search: globalFilter || "",
+    // status: columnFilters[0]?.value,
   });
   // console.log("mentorships...", mentorships);
+  // console.log(columnFilters);
 
   const columns = useMemo(
     () => [
@@ -62,13 +69,6 @@ const MentorshipTable: React.FC = () => {
         size: 3,
         Cell: ({ row }: any) => dayjs(row.original.created_at).format("MMM D, YYYY h:mm A"),
       },
-      {
-        accessorKey: "updated_at",
-        header: "Upated At",
-        enableEditing: false,
-        size: 3,
-        Cell: ({ row }: any) => dayjs(row.original.updated_at).format("MMM D, YYYY h:mm A"),
-      },
     ],
     []
   );
@@ -105,8 +105,11 @@ const MentorshipTable: React.FC = () => {
       showSkeletons: isLoading ?? false,
       pagination,
       isLoading,
+      columnFilters,
+      globalFilter,
     },
     onGlobalFilterChange: setGlobalFilter,
+    onColumnFiltersChange: setColumnFilters,
     onPaginationChange: setPagination,
   });
 

@@ -77,7 +77,7 @@ const DimensionDetailPage = ({ id }: Props) => {
   });
 
   const handleInputChange = (event: any) => {
-    setSearchContent(event.target.value);
+    setSearchContent(event?.target.value);
   };
 
   const handleSelectPathwayChange = (event: any, newValue: any) => {

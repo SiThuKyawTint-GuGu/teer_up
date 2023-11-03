@@ -2,7 +2,6 @@
 import RadioButton from "@/page-containers/user/personalized/components/RadioButton";
 import { useContentForm, useLikeContent, useSaveContent } from "@/services/content";
 import { ContentData, Input_config, Input_options } from "@/types/Content";
-import { Select } from "@radix-ui/react-select";
 
 import { Flex, TextFieldInput } from "@radix-ui/themes";
 
@@ -59,65 +58,6 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
       value: input.value,
     };
     setSelectedOptions(prev => [...prev, config]);
-  };
-
-  const handleDate = (InputConfigId: number | string, value: string) => {
-    const sameId = selectedOptions.find(e => e.inputconfig_id === InputConfigId);
-    const config = {
-      inputconfig_id: InputConfigId,
-      value: value,
-    };
-    if (sameId) {
-      const valueChangeArray = selectedOptions.map(e => {
-        if (e.inputconfig_id === InputConfigId) {
-          e.value = value;
-        }
-        return e;
-      });
-      setSelectedOptions(valueChangeArray);
-      return;
-    }
-
-    setSelectedOptions(prev => [...prev, config]);
-    return;
-  };
-  const handleEmail = (InputConfigId: number | string, value: string) => {
-    const config = {
-      inputconfig_id: InputConfigId,
-      value: value,
-    };
-    const sameId = selectedOptions.find(e => e.inputconfig_id === InputConfigId);
-    if (sameId) {
-      const valueChangeArray = selectedOptions.map(e => {
-        if (e.inputconfig_id === InputConfigId) {
-          e.value = value;
-        }
-        return e;
-      });
-      setSelectedOptions(valueChangeArray);
-      return;
-    }
-    setSelectedOptions(prev => [...prev, config]);
-    return;
-  };
-  const handleText = (InputConfigId: number | string, value: string) => {
-    const config = {
-      inputconfig_id: InputConfigId,
-      value: value,
-    };
-    const sameId = selectedOptions.find(e => e.inputconfig_id === InputConfigId);
-    if (sameId) {
-      const valueChangeArray = selectedOptions.map(e => {
-        if (e.inputconfig_id === InputConfigId) {
-          e.value = value;
-        }
-        return e;
-      });
-      setSelectedOptions(valueChangeArray);
-      return;
-    }
-    setSelectedOptions(prev => [...prev, config]);
-    return;
   };
   const handleInput = (InputConfigId: number | string, value: string) => {
     const config = {
@@ -207,7 +147,22 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
           }}
         />
       );
-    if (inputData.type === "dropdown") return <Select />;
+    if (inputData.type === "dropdown")
+      return (
+        <select
+          onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+            handleInput(inputData.id, e.target.value);
+          }}
+          defaultValue={inputData.input_options[0].value}
+          className="bg-white w-full p-2 ring-[slateGray]"
+        >
+          {inputData.input_options.map((input: Input_options, index: number) => (
+            <option key={index} value={input.value}>
+              {input.label}
+            </option>
+          ))}
+        </select>
+      );
   };
 
   return (
