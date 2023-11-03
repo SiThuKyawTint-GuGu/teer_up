@@ -149,15 +149,15 @@ const ContentDetail = ({ id }: Props) => {
   };
 
   useEffect(() => {
-    if (editor) {
-      editor?.setContent(editorContent);
-    }
+    // if (editor) {
+    //   editor?.setContent(editorContent);
+    // }
     // if (htmlEditors) {
     //   htmlEditors?.setContent(htmlContent);
     // }
-    if (oppoEditor) {
-      oppoEditor?.setContent(oppoEditorContent);
-    }
+    // if (oppoEditor) {
+    //   oppoEditor?.setContent(oppoEditorContent);
+    // }
     if (contentDimension?.data) {
       const transformedData = contentDimension?.data?.content_dimensions.reduce((result: any, item: any) => {
         const { dimension_id, low, medium, high, scores } = item;
@@ -221,9 +221,9 @@ const ContentDetail = ({ id }: Props) => {
         pathwayContentData.map((data: any, index: number) => {
           if (data.type === "html") {
             const initialContent = data.html_body || "";
-            if (htmlEditors) {
-              htmlEditors.setContent(initialContent);
-            }
+            // if (htmlEditors) {
+            //   htmlEditors.setContent(initialContent);
+            // }
             setHtmlContent((prevHtmlContent: any) => ({ ...prevHtmlContent, [index]: initialContent }));
           }
         });
@@ -288,10 +288,10 @@ const ContentDetail = ({ id }: Props) => {
       setIndustryOptions(updatedOptions);
     }
   }, [
-    editorContent,
-    editor,
-    oppoEditor,
-    oppoEditorContent,
+    // editorContent,
+    // editor,
+    // oppoEditor,
+    // oppoEditorContent,
     // htmlEditors,
     // htmlContent,
     contents?.data,
