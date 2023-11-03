@@ -1,7 +1,7 @@
 "use client";
 import { Icons } from "@/components/ui/Images";
 import { ContentData } from "@/types/Content";
-import { Flex, Grid } from "@radix-ui/themes";
+import { Flex } from "@radix-ui/themes";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import ContentLayout from "./ContentLayout";
@@ -15,7 +15,10 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
   const [videos, setVideos] = useState<any>([]);
   const [showPathTitle, setShowPathTitle] = useState<boolean>(false);
   const videoRefs = useRef<HTMLVideoElement[]>([]);
-  const { ref: contentRef, inView: contentVisible, entry } = useInView();
+  const { ref: contentRef, inView: contentVisible } = useInView();
+  const [entry, setEntry] = useState<HTMLDivElement | null>(null);
+  const [visibleItemIndex, setVisibleItemIndex] = useState<number>(0);
+  const containerRef = useRef<HTMLDivElement>(null);
   const dataWithTitle = useMemo(() => {
     if (data && data.content_pathways && data.content_pathways)
       return data.content_pathways.filter((each: ContentData) => each.title);
@@ -61,20 +64,81 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
     }
   };
 
+  console.log(entry?.id);
+
+  function calculatePercentage(array: any[], index: number) {
+    if (index < 0 || index >= array.length) {
+      return "out of range";
+    }
+
+    const percentage = (index / (array.length - 1)) * 100;
+    return Math.floor(percentage);
+  }
+
+  useEffect(() => {
+    if (containerRef.current) {
+      const container = containerRef.current;
+
+      const handleScroll = () => {
+        const scrollPosition = container.scrollTop;
+        const newIndex = Math.round(scrollPosition / (window.innerHeight - 96));
+        setVisibleItemIndex(newIndex);
+      };
+
+      container.addEventListener("scroll", handleScroll);
+      return () => {
+        container.removeEventListener("scroll", handleScroll);
+      };
+    }
+  }, []);
+
+  console.log("visible", visibleItemIndex);
+
   const differentContent = (data: ContentData, index: number) => {
     if (data.type === "video" && data.content_video)
       return (
-        <Video data={data} setVideoRef={handleVideoRef(index)} autoplay={index === 0} contentMutate={contentMutate} />
+        <Video
+          data={data}
+          index={index}
+          setVideoRef={handleVideoRef(index)}
+          autoplay={index === 0}
+          contentMutate={contentMutate}
+        />
       );
     if (data.type === "event" && data.content_event)
-      return <ContentLayout data={data} contentMutate={contentMutate} redir={`/content/${data.slug}`} />;
+      return (
+        <ContentLayout
+          data={data}
+          contentMutate={contentMutate}
+          contentRef={contentRef}
+          redir={`/content/${data.slug}`}
+        />
+      );
     if (data.type === "article" && data.content_article)
-      return <ContentLayout data={data} contentMutate={contentMutate} redir={`/content/${data.slug}`} />;
+      return (
+        <ContentLayout
+          data={data}
+          contentMutate={contentMutate}
+          contentRef={contentRef}
+          redir={`/content/${data.slug}`}
+        />
+      );
     if (data.type === "opportunity" && data.content_opportunity)
-      return <ContentLayout data={data} contentMutate={contentMutate} redir={`/content/${data.slug}`} />;
+      return (
+        <ContentLayout
+          data={data}
+          contentMutate={contentMutate}
+          contentRef={contentRef}
+          redir={`/content/${data.slug}`}
+        />
+      );
     if (data.type === "html" && data.html_body)
       return (
-        <div id={data.slug} className="w-full h-[80%] overflow-y-scroll rounded-lg px-2 bg-white shadow-lg">
+        <div
+          id={data.slug}
+          ref={contentRef}
+          className="w-full h-[90%] overflow-y-scroll rounded-lg px-2 bg-white shadow-lg"
+        >
           <div className="p-2">
             <div
               className="text-start"
@@ -89,21 +153,35 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
   };
 
   return (
-    <Grid columns="1">
-      <div className="snap-y flex-col snap-mandatory w-full h-[90vh]   bg-[#F8F9FB] no-scrollbar overflow-y-scroll">
+    <>
+      <div
+        ref={containerRef}
+        className={`snap-y flex-col snap-mandatory h-full px-2 pb-[46px] w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
+      >
         {data?.content_pathways &&
           data?.content_pathways.length > 0 &&
           data?.content_pathways.map((data, index) => (
-            <div className="h-full w-full snap-start" ref={contentRef} id={data.slug} key={index}>
+            <div className="w-full h-full snap-start" ref={contentRef} id={data.slug} key={index}>
               {differentContent(data, index)}
+              {index == 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
             </div>
           ))}
       </div>
 
-      <div className="max-w-[400px] mx-auto py-3 w-full flex flex-column fixed bottom-0  p-3 flex-wrap  bg-white z-[99999]">
+      <div
+        className={`max-w-[400px] mx-auto py-3 w-full flex flex-column fixed bottom-0  overflow-y-scroll rounded-lg ${
+          showPathTitle && "h-[60%]"
+        } p-3 flex-wrap  bg-white z-[99999]`}
+      >
         <div className="w-full h-full relative">
           <Flex justify="between" className="w-full">
-            <div className="font-[600] text-[16px]">{data?.title}</div>
+            <Flex direction="column">
+              <div className="font-[600] text-[16px]">{data?.title}</div>
+              <div className="text-[14px] font-[300]">
+                {data?.content_pathways && calculatePercentage(data.content_pathways, visibleItemIndex)}%
+              </div>
+            </Flex>
+
             {!showPathTitle ? (
               <Icons.upArrow
                 className="text-primary w-[20px] h-[20px] absolute top-0 right-0"
@@ -121,11 +199,12 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
               {dataWithTitle &&
                 dataWithTitle.length > 0 &&
                 dataWithTitle.map((data, index) => (
-                  <div key={index} className="font-[600] flex flex-col w-full text-[16px] py-1">
+                  <div key={index} className="font-[600]  flex flex-col w-full text-[16px] py-1">
                     <Flex justify="between" className="w-full py-2">
                       <div
-                        className="cursor-pointer"
+                        className={`cursor-pointer ${visibleItemIndex === index && "text-primary"}`}
                         onClick={() => {
+                          setShowPathTitle(false);
                           const targetElement = document.getElementById(data.slug);
                           if (targetElement) {
                             targetElement.scrollIntoView({
@@ -136,7 +215,11 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
                       >
                         {data.title}
                       </div>
-                      <Icons.checkMark className="w-[20px] h-[20px]" />
+                      {index === visibleItemIndex && (
+                        <Icons.checkMark
+                          className={`w-[20px] h-[20px] ${visibleItemIndex === index && "text-primary"}`}
+                        />
+                      )}
                     </Flex>
                     <hr className="w-full h-[2px] bg-slateGray" />
                   </div>
@@ -145,7 +228,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
           )}
         </div>
       </div>
-    </Grid>
+    </>
   );
 };
 

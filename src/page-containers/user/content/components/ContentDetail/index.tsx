@@ -14,11 +14,11 @@ const NormalContentDetail: React.FC<NormalContentDetailProp> = ({ data, contentM
   return (
     <>
       {data && (
-        <div className="w-full min-h-[90vh] bg-white pb-[70px]">
+        <div className="w-full min-h-[90vh] h-full bg-white pb-[70px]">
           {" "}
-          <div className="w-full mx-auto h-[200px] relative p-2">
+          <div className="w-full mx-auto h-[40%] relative p-2">
             <div
-              className="relative w-full max-w-[400px] rounded-lg h-full"
+              className="relative w-full max-w-[400px]  rounded-lg h-full"
               style={{
                 background: `url(${data?.image_url}) center / cover`,
               }}

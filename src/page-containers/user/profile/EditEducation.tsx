@@ -30,7 +30,7 @@ const EditEducation: React.FC = () => {
   const router = useRouter();
   const { data: educationData } = useGetEducationById<EducationById>(edu_id as string);
   const { trigger, isMutating } = useUpdateEducation();
-  const { trigger: deleteTrigger } = useDeleteEducation();
+  const { trigger: deleteTrigger, isMutating: deleteMutating } = useDeleteEducation();
 
   const form = useForm({
     resolver: yupResolver(validationSchema),
@@ -196,7 +196,13 @@ const EditEducation: React.FC = () => {
                 <Button type="submit" loading={isMutating} className="bg-primary w-full">
                   Save
                 </Button>
-                <Button type="button" onClick={handleDelete} variant="outline" className="border-primary w-full">
+                <Button
+                  type="button"
+                  loading={deleteMutating}
+                  onClick={handleDelete}
+                  variant="outline"
+                  className="border-primary w-full"
+                >
                   Delete
                 </Button>
               </Section>
