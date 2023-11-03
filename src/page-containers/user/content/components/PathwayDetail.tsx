@@ -82,7 +82,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
           </div>
         </div>
       );
-    // return <div>This Page is not available right now</div>;
+    return <div>This Page is not available right now</div>;
   };
 
   return (
