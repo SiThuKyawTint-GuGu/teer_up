@@ -20,7 +20,7 @@ export interface Input_config {
   input_options: Input_options[] | [];
   name: string;
   placeholder: string;
-  type: "text" | "radio" | "date" | "email" | "password";
+  type: "text" | "radio" | "date" | "email" | "password" | "dropdown";
 }
 
 export interface Input_options {
