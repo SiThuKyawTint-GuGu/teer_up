@@ -20,7 +20,7 @@ type Props = {
 const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
   const { trigger: like } = useLikeContent();
   const { trigger: contentSave } = useSaveContent();
-  const { trigger: postForm, isMutating, data: formResponse } = useContentForm();
+  const { trigger: postForm, isMutating } = useContentForm();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const form = useMemo(() => {
     if (data?.type === "event") return data.content_event?.form_config?.formdetails_configs;
@@ -28,9 +28,6 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
   }, [data]);
   const [selectedOptions, setSelectedOptions] = useState<{ inputconfig_id: number | string; value: string }[] | []>([]);
   const [message, setMessage] = useState<string>("");
-  const [dateValue, setDateValue] = useState<string>("");
-  const [emailValue, setEmailValue] = useState("");
-  const [text, setText] = useState<{ inputconfig_id: number | string; value: string }[] | []>([]);
 
   const saveContent = async () => {
     await contentSave(
@@ -64,36 +61,82 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
     setSelectedOptions(prev => [...prev, config]);
   };
 
-  const handleDate = (InputConfigId: number | string) => {
-    // const sameId = selectedOptions.find(e => e.inputconfig_id === InputConfigId);
-    // if (sameId) {
-    //   const valueChangeArray = selectedOptions.map(e => {
-    //     if (e.inputconfig_id === InputConfigId) {
-    //       e.value = emailValue;
-    //       return selectedOptions;
-    //     }
-    //     return selectedOptions;
-    //   });
-    //   setSelectedOptions(valueChangeArray);
-    //   return;
-    // }
-    // const config = {
-    //   inputconfig_id: InputConfigId,
-    //   value: dateValue,
-    // };
-    // setSelectedOptions(prev => [...prev, config]);
-  };
-  const handleEmail = (InputConfigId: number | string) => {
+  const handleDate = (InputConfigId: number | string, value: string) => {
     const sameId = selectedOptions.find(e => e.inputconfig_id === InputConfigId);
-    if (sameId) {
-      return;
-    }
     const config = {
       inputconfig_id: InputConfigId,
-      value: emailValue,
+      value: value,
     };
+    if (sameId) {
+      const valueChangeArray = selectedOptions.map(e => {
+        if (e.inputconfig_id === InputConfigId) {
+          e.value = value;
+        }
+        return e;
+      });
+      setSelectedOptions(valueChangeArray);
+      return;
+    }
+
     setSelectedOptions(prev => [...prev, config]);
-    return config;
+    return;
+  };
+  const handleEmail = (InputConfigId: number | string, value: string) => {
+    const config = {
+      inputconfig_id: InputConfigId,
+      value: value,
+    };
+    const sameId = selectedOptions.find(e => e.inputconfig_id === InputConfigId);
+    if (sameId) {
+      const valueChangeArray = selectedOptions.map(e => {
+        if (e.inputconfig_id === InputConfigId) {
+          e.value = value;
+        }
+        return e;
+      });
+      setSelectedOptions(valueChangeArray);
+      return;
+    }
+    setSelectedOptions(prev => [...prev, config]);
+    return;
+  };
+  const handleText = (InputConfigId: number | string, value: string) => {
+    const config = {
+      inputconfig_id: InputConfigId,
+      value: value,
+    };
+    const sameId = selectedOptions.find(e => e.inputconfig_id === InputConfigId);
+    if (sameId) {
+      const valueChangeArray = selectedOptions.map(e => {
+        if (e.inputconfig_id === InputConfigId) {
+          e.value = value;
+        }
+        return e;
+      });
+      setSelectedOptions(valueChangeArray);
+      return;
+    }
+    setSelectedOptions(prev => [...prev, config]);
+    return;
+  };
+  const handleInput = (InputConfigId: number | string, value: string) => {
+    const config = {
+      inputconfig_id: InputConfigId,
+      value: value,
+    };
+    const sameId = selectedOptions.find(e => e.inputconfig_id === InputConfigId);
+    if (sameId) {
+      const valueChangeArray = selectedOptions.map(e => {
+        if (e.inputconfig_id === InputConfigId) {
+          e.value = value;
+        }
+        return e;
+      });
+      setSelectedOptions(valueChangeArray);
+      return;
+    }
+    setSelectedOptions(prev => [...prev, config]);
+    return;
   };
 
   const formSubmit = () => {
@@ -148,28 +191,19 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
         </div>
       ));
     }
-    if (inputData.type === "text") return <TextFieldInput className="px-2" placeholder={inputData.placeholder} />;
-    if (inputData.type === "date")
+    if (
+      inputData.type === "text" ||
+      inputData.type === "date" ||
+      inputData.type === "password" ||
+      inputData.type === "email"
+    )
       return (
         <TextFieldInput
-          value={dateValue}
+          className={`${inputData.type !== "date" && "px-2"}`}
           type={inputData.type}
           placeholder={inputData.placeholder}
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            setDateValue(e.target.value);
-            handleDate(inputData.id);
-          }}
-        />
-      );
-    if (inputData.type === "email")
-      return (
-        <TextFieldInput
-          placeholder={inputData.placeholder}
-          type={inputData.type}
-          className="px-2"
-          onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            setEmailValue(e.target.value);
-            handleEmail(inputData.id);
+            handleInput(inputData.id, e.target.value);
           }}
         />
       );
@@ -216,7 +250,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
       </div>
       {openModal && (
         <Modal onClose={() => setOpenModal(false)}>
-          <div className="w-[400px] p-5">
+          <div className="w-[400px] p-5 h-full bg-white rounded-md overflow-y-scroll">
             <Text as="div" className="text-[28px] font-700">
               {data?.content_event?.form_config.name}
             </Text>
@@ -225,7 +259,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
                 {message}
               </Text>
             )}
-            <div className="mx-auto flex flex-col h-full bg-layout justify-center flex-wrap gap-y-[30px] w-full">
+            <div className="mx-auto flex flex-col  bg-layout justify-center flex-wrap gap-y-5 w-full">
               <Flex direction="column" justify="center">
                 {form &&
                   form.length > 0 &&
@@ -235,10 +269,10 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
                     </div>
                   ))}
               </Flex>
-              <Button disabled={isMutating} onClick={formSubmit}>
-                Submit
-              </Button>
             </div>
+            <Button disabled={isMutating} className="w-full" onClick={formSubmit}>
+              Submit
+            </Button>
           </div>
         </Modal>
       )}
