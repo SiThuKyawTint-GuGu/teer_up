@@ -3,6 +3,7 @@ import { Icons } from "@/components/ui/Images";
 import { ContentData } from "@/types/Content";
 import { Flex, Grid } from "@radix-ui/themes";
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useInView } from "react-intersection-observer";
 import ContentLayout from "./ContentLayout";
 import Video from "./Video";
 
@@ -14,14 +15,11 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
   const [videos, setVideos] = useState<any>([]);
   const [showPathTitle, setShowPathTitle] = useState<boolean>(false);
   const videoRefs = useRef<HTMLVideoElement[]>([]);
+  const { ref: contentRef, inView: contentVisible, entry } = useInView();
   const dataWithTitle = useMemo(() => {
     if (data && data.content_pathways && data.content_pathways)
       return data.content_pathways.filter((each: ContentData) => each.title);
   }, [data]);
-
-  console.log(dataWithTitle);
-
-  console.log(dataWithTitle);
   useEffect(() => {
     setVideos(data);
   }, []);
@@ -63,36 +61,20 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
     }
   };
 
-  console.log("patwayDetail", data);
   const differentContent = (data: ContentData, index: number) => {
-    console.log(data.type);
     if (data.type === "video" && data.content_video)
       return (
-        <div className="w-full h-full" id={data.slug}>
-          <Video data={data} setVideoRef={handleVideoRef(index)} autoplay={index === 0} contentMutate={contentMutate} />
-        </div>
+        <Video data={data} setVideoRef={handleVideoRef(index)} autoplay={index === 0} contentMutate={contentMutate} />
       );
     if (data.type === "event" && data.content_event)
-      return (
-        <div className="w-full h-full" id={data.slug}>
-          <ContentLayout data={data} contentMutate={contentMutate} redir={`/content/${data.slug}`} />
-        </div>
-      );
+      return <ContentLayout data={data} contentMutate={contentMutate} redir={`/content/${data.slug}`} />;
     if (data.type === "article" && data.content_article)
-      return (
-        <div className="w-full h-full" id={data.slug}>
-          <ContentLayout data={data} contentMutate={contentMutate} redir={`/content/${data.slug}`} />
-        </div>
-      );
+      return <ContentLayout data={data} contentMutate={contentMutate} redir={`/content/${data.slug}`} />;
     if (data.type === "opportunity" && data.content_opportunity)
-      return (
-        <div className="w-full h-full" id={data.slug}>
-          <ContentLayout data={data} contentMutate={contentMutate} redir={`/content/${data.slug}`} />
-        </div>
-      );
+      return <ContentLayout data={data} contentMutate={contentMutate} redir={`/content/${data.slug}`} />;
     if (data.type === "html" && data.html_body)
       return (
-        <div id={data.slug} className="w-full h-[90%] overflow-y-scroll rounded-lg px-2 bg-white shadow-lg">
+        <div id={data.slug} className="w-full h-[80%] overflow-y-scroll rounded-lg px-2 bg-white shadow-lg">
           <div className="p-2">
             <div
               className="text-start"
@@ -112,7 +94,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
         {data?.content_pathways &&
           data?.content_pathways.length > 0 &&
           data?.content_pathways.map((data, index) => (
-            <div className="h-full w-full snap-start" key={index}>
+            <div className="h-full w-full snap-start" ref={contentRef} id={data.slug} key={index}>
               {differentContent(data, index)}
             </div>
           ))}

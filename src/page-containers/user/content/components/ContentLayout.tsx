@@ -9,9 +9,9 @@ import { ContentData } from "@/types/Content";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { useInView } from "react-intersection-observer";
 import CommentSection from "../../../../components/contentLayout/CommentSection";
 import Share from "./Share";
-
 type ContentlayoutProps = {
   data: ContentData;
   contentMutate: any;
@@ -24,6 +24,11 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
   const router = useRouter();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [openShare, setOpenShare] = useState<boolean>(false);
+  const {
+    ref: contentRef,
+    inView: contentVisible,
+    entry,
+  } = useInView({ root: null, rootMargin: "0px", threshold: 0.8 });
 
   const likePost = async () => {
     await like(
@@ -47,7 +52,7 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
 
   return (
     <Dialog open={openModal} onOpenChange={val => setOpenModal(val)}>
-      <div className="w-full bg-white shadow-lg rounded-lg h-[90%] justify-start flex-col">
+      <div className="w-full bg-white shadow-lg rounded-lg h-[90%] justify-start flex-col" ref={contentRef}>
         <div className="h-full w-full flex flex-col">
           <div className="w-full h-[70%]  mx-auto relative">
             <Link href={redir}>
@@ -59,7 +64,8 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
               >
                 {data.type !== "video" && (
                   <div className="absolute top-0 right-0 bg-white text-[14px] font-[600] px-[16px] py-[4px] rounded-bl-lg shadow-lg uppercase">
-                    {data.type}
+                    {/* {data.type} */}
+                    {contentVisible ? " Yes" : "No"}
                   </div>
                 )}
               </div>
