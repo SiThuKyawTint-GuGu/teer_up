@@ -4,8 +4,8 @@ import { HEIGHT_TYPES, WIDTH_TYPES } from "./enums";
 
 interface Props {
   url: string;
-  width: string | WIDTH_TYPES;
-  height: string | HEIGHT_TYPES;
+  width: string | WIDTH_TYPES | number;
+  height: string | HEIGHT_TYPES | number;
   className?: string;
 }
 

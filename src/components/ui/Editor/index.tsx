@@ -1,3 +1,4 @@
+import { usePostFile } from "@/services/content";
 import { Editor } from "@tinymce/tinymce-react";
 
 interface Props {
@@ -6,6 +7,13 @@ interface Props {
   onEditorChange?: any;
 }
 const HtmlEditor = (props: Props) => {
+  const { trigger } = usePostFile();
+  const uploadHandler = (blobInfo: any): any => {
+    return trigger({ file: blobInfo.blob() }).then(res => {
+      return res?.data?.data?.file_path;
+    });
+  };
+
   return (
     <>
       <Editor
@@ -43,6 +51,7 @@ const HtmlEditor = (props: Props) => {
             "alignright alignjustify | bullist numlist outdent indent table | " +
             "code | removeformat | help",
           content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+          images_upload_handler: uploadHandler,
         }}
       />
     </>
