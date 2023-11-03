@@ -25,16 +25,16 @@ const Share: React.FC = () => {
           <Text as="div">Copy Link</Text>
         </Flex>
 
-        <Flex direction="column" align="center" className="cursor-pointer">
+        {/* <Flex direction="column" align="center" className="cursor-pointer">
           <Icons.facebook className="w-[40px] h-[40px] text-[#4167b2]" />
 
           <Text as="div">Facebook</Text>
-        </Flex>
+        </Flex> */}
 
-        <Flex direction="column" align="center" className="curosr-pointer">
+        {/* <Flex direction="column" align="center" className="curosr-pointer">
           <Icons.telegram className="w-[40px] h-[40px] text-[#26a4e2]" />
           <Text as="div">Telegram</Text>
-        </Flex>
+        </Flex> */}
       </Flex>
       {copy && (
         <Text as="div" className="text-green-700 w-full text-center">
