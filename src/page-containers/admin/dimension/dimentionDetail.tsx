@@ -76,9 +76,8 @@ const DimensionDetailPage = ({ id }: Props) => {
     resolver: yupResolver(validationSchema),
   });
 
-  const handleInputChange = (event: any, newInputValue: any) => {
-    // setSearchContent(newInputValue);
-    // setSelectedContent(newInputValue);
+  const handleInputChange = (event: any) => {
+    setSearchContent(event.target.value);
   };
 
   const handleSelectPathwayChange = (event: any, newValue: any) => {
@@ -86,7 +85,6 @@ const DimensionDetailPage = ({ id }: Props) => {
   };
 
   const Submit = async (data: any) => {
-    // console.log(data);
     const submitData: any = {
       name: data?.name,
       short_name: data?.short_name,
@@ -166,7 +164,8 @@ const DimensionDetailPage = ({ id }: Props) => {
             id="dimension"
             options={contentOptions || []}
             value={selectedContent ? selectedContent : null}
-            onInputChange={(event, newInputValue) => handleInputChange(event, newInputValue)}
+            // onInputChange={(event, newInputValue) => handleInputChange(event, newInputValue)}
+            onInputChange={event => handleInputChange(event)}
             onChange={(event, newValue) => handleSelectPathwayChange(event, newValue)}
             renderInput={params => <TextField {...params} label="Pathway" />}
           />
