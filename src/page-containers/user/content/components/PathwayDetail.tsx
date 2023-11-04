@@ -2,6 +2,7 @@
 import { Icons } from "@/components/ui/Images";
 import { useContentWatchCount } from "@/services/content";
 import { ContentData } from "@/types/Content";
+import { getUserInfo } from "@/utils/auth";
 import { Flex } from "@radix-ui/themes";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import ContentLayout from "./ContentLayout";
@@ -11,6 +12,7 @@ type PathwayDetailProp = {
   data: ContentData;
   contentMutate: any;
 };
+const user = getUserInfo();
 const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => {
   const [videos, setVideos] = useState<any>([]);
   const [showPathTitle, setShowPathTitle] = useState<boolean>(false);
@@ -87,10 +89,12 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
             const timeInMilliseconds = endTime - startTime;
             setTotalTimeInView((totalTimeInView + timeInMilliseconds) / 1000);
             if (data && data.content_pathways) {
-              calculateCount({
-                watched_time: totalTimeInView,
-                content_id: data.content_pathways[visibleItemIndex].id,
-              });
+              if (user) {
+                calculateCount({
+                  watched_time: totalTimeInView,
+                  content_id: data.content_pathways[visibleItemIndex].id,
+                });
+              }
             }
           }
           setStartTime(Date.now());
@@ -144,11 +148,17 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
       <div
         ref={containerRef}
         className={`snap-y flex-col snap-mandatory h-full px-2 pb-[46px] w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
+        style={{ scrollSnapStop: "always" }}
       >
         {data?.content_pathways &&
           data?.content_pathways.length > 0 &&
           data?.content_pathways.map((data, index) => (
-            <div className="w-full h-full snap-start" id={data.slug} key={index}>
+            <div
+              className="w-full h-full pt-2 snap-start"
+              style={{ scrollSnapStop: "always" }}
+              id={data.slug}
+              key={index}
+            >
               {differentContent(data, index)}
               {index == 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
             </div>

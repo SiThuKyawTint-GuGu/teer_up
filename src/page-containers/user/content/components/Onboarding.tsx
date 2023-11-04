@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/Button";
 import CardBox from "@/components/ui/Card";
 import Modal from "@/components/ui/Modal";
+import Spinner from "@/components/ui/Spinner";
 import { Text } from "@/components/ui/Typo/Text";
 import { usePostOnboarding } from "@/services/content";
 import { ContentData, OnBoardingOption } from "@/types/Content";
 import { cn } from "@/utils/cn";
 import React, { useState } from "react";
-import QuestionPageCard from "../../personalized/components/QuestionPageCard";
 type OnboardingProps = {
   data: ContentData;
   parentIndex: string;
@@ -16,15 +16,16 @@ const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
   const [modalOpen, setOpenModal] = useState<boolean>(false);
   const { trigger, isMutating } = usePostOnboarding();
 
+  const [imageLoading, setImageLoading] = useState(false);
+
   return (
-    <QuestionPageCard>
-      <div className="w-full h-[90%]">
-        <CardBox className="flex flex-col flex-wrap px-3  justify-between overflow-y-auto no-scrollbar  w-full h-[90%] bg-white">
+    <CardBox className="w-full h-[80%] bg-white">
+      <div className="w-full h-full">
+        <div className="flex flex-col flex-wrap px-3  justify-between overflow-y-auto no-scrollbar  w-full h-full">
           <div className="text-gray-500 my-4 text-center">
-            <Text className="text-[28px] font-[700]  text-center mb-5" as="div">
+            <Text className="text-[20px] font-[700]  text-center mb-5" as="div">
               {data.name}
             </Text>
-
             <div className="w-full cursor-pointer  flex flex-col flex-wrap gap-y-2 justify-center h-full items-center">
               {data.options &&
                 data.options.length &&
@@ -47,7 +48,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
                 ))}
             </div>
           </div>
-        </CardBox>
+        </div>
       </div>
       {modalOpen && (
         <Modal
@@ -55,46 +56,56 @@ const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
             setOpenModal(false);
           }}
         >
-          <div className="w-full p-10 z-[9999999] bg-white rounded-md">
-            {option && (
+          <div className="w-full max-w-[400px] min-w-[200px] p-5 z-[9999999] bg-white rounded-md">
+            {option?.feedback && (
               <>
-                <div
-                  className="text-center w-full"
-                  dangerouslySetInnerHTML={{
-                    __html: option.feedback,
-                  }}
-                />
-                <Button
-                  className="w-full mt-5"
-                  onClick={() => {
-                    trigger(
-                      {
-                        option_id: option.id,
-                        question_id: data.id,
-                      },
-                      {
-                        onSuccess: () => {
-                          setOpenModal(false);
-                          const targetElement = document.getElementById(`${parseInt(parentIndex) + 1}`);
-                          if (targetElement) {
-                            targetElement.scrollIntoView({
-                              behavior: "smooth", // Smooth scroll effect
-                            });
+                {imageLoading ? (
+                  <Spinner className="w-full" color="#DA291C" width={35} height={35} />
+                ) : (
+                  <div className="w-full">
+                    <div
+                      className="text-center w-full"
+                      dangerouslySetInnerHTML={{
+                        __html: option.feedback,
+                      }}
+                      onLoad={() => {
+                        setImageLoading(true); // Set imageLoading to false when the image has loaded
+                      }}
+                    />
+                    <Button
+                      className="w-full mt-5 p-2"
+                      size="sm"
+                      onClick={() => {
+                        trigger(
+                          {
+                            option_id: option.id,
+                            question_id: data.id,
+                          },
+                          {
+                            onSuccess: () => {
+                              setOpenModal(false);
+                              const targetElement = document.getElementById(`${parseInt(parentIndex) + 1}`);
+                              if (targetElement) {
+                                targetElement.scrollIntoView({
+                                  behavior: "smooth", // Smooth scroll effect
+                                });
+                              }
+                            },
                           }
-                        },
-                      }
-                    );
-                  }}
-                  disabled={isMutating}
-                >
-                  Next
-                </Button>
+                        );
+                      }}
+                      disabled={isMutating}
+                    >
+                      Next
+                    </Button>
+                  </div>
+                )}
               </>
             )}
           </div>
         </Modal>
       )}
-    </QuestionPageCard>
+    </CardBox>
   );
 };
 

@@ -39,10 +39,7 @@ const Profile: React.FC = () => {
   const router = useRouter();
   const { data: profileData } = useGetUserById<UserProfileResponse>(user?.id);
   const { data: userDimensionData } = useGetUserDimensionResult<UserDimensionResultResponse>();
-  // const { data: dimensionData } = useGetUserDimension<UserDimensionResponse>();
   const userProfile = profileData?.data;
-
-  console.log("userDimensionData => ", userDimensionData);
 
   return (
     <>
@@ -329,6 +326,11 @@ const Profile: React.FC = () => {
                   <Tabs.Content value="competency" className="space-y-[7px]">
                     <CardBox>
                       <Section className="bg-white" py="4" px="3">
+                        <RadarChart />
+                      </Section>
+                    </CardBox>
+                    <CardBox>
+                      <Section className="bg-white" py="4" px="3">
                         <Heading>Here’s what we noticed about your competencies:</Heading>
                         {userDimensionData?.data?.length && (
                           <>
@@ -366,11 +368,6 @@ const Profile: React.FC = () => {
                             ))}
                           </>
                         )}
-                      </Section>
-                    </CardBox>
-                    <CardBox>
-                      <Section className="bg-white" py="4" px="3">
-                        <RadarChart />
                       </Section>
                     </CardBox>
                   </Tabs.Content>

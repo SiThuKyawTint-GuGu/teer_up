@@ -3,21 +3,25 @@ import { ParamsType } from "@/services/user";
 import { ContentData } from "@/types/Content";
 
 import Video from "@/page-containers/user/content/components/Video";
-import { useContentWatchCount, useGetContentInfinite } from "@/services/content";
+import { useContentWatchCount, useGetContentInfinite, useSkipOnboarding } from "@/services/content";
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import { getUserInfo } from "@/utils/auth";
 import ContentLayout from "./components/ContentLayout";
 import Onboarding from "./components/Onboarding";
+const user = getUserInfo();
 const UserContent = () => {
   const [page, setPage] = useState<number>(1);
   const [videos, setVideos] = useState<any>([]);
   const videoRefs = useRef<HTMLVideoElement[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const [visibleItemIndex, setVisibleItemIndex] = useState<number>(0);
-  const { data, mutate, isLoading } = useGetContentInfinite<ParamsType>({
+  const { data, mutate } = useGetContentInfinite<ParamsType>({
     page: page,
     pageSize: 20,
   });
+
+  const { trigger: skipOnboarding } = useSkipOnboarding();
   const [startTime, setStartTime] = useState<number | null>(null);
   const [totalTimeInView, setTotalTimeInView] = useState<number>(0);
   const { trigger: calculateCount } = useContentWatchCount();
@@ -26,6 +30,7 @@ const UserContent = () => {
   useEffect(() => {
     if (containerRef.current) {
       const container = containerRef.current;
+
       const handleScroll = () => {
         const scrollPosition = container.scrollTop;
         const newIndex = Math.round(scrollPosition / (window.innerHeight - 96));
@@ -35,11 +40,13 @@ const UserContent = () => {
             const endTime = Date.now();
             const timeInMilliseconds = endTime - startTime;
             setTotalTimeInView((totalTimeInView + timeInMilliseconds) / 1000);
-            if (contentDataArray) {
-              calculateCount({
-                watched_time: totalTimeInView,
-                content_id: contentDataArray[visibleItemIndex].id,
-              });
+            if (contentDataArray && contentDataArray[visibleItemIndex].type !== "onboarding") {
+              if (user) {
+                calculateCount({
+                  watched_time: totalTimeInView,
+                  content_id: contentDataArray[visibleItemIndex].id,
+                });
+              }
             }
           }
           setStartTime(Date.now());
@@ -108,12 +115,37 @@ const UserContent = () => {
       <div className="w-full h-[calc(100vh-100px)]">
         <div
           ref={containerRef}
-          className={`snap-y flex-col snap-mandatory h-full px-2  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
+          className={`snap-y flex-col snap-mandatory h-full px-2   w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
+          style={{ scrollSnapStop: "always" }}
         >
           {contentDataArray?.map((data: ContentData, index) => (
-            <div className="w-full h-full snap-start" id={index.toString()} key={index}>
+            <div
+              className="w-full h-full pt-2 snap-start"
+              style={{ scrollSnapStop: "always" }}
+              id={index.toString()}
+              key={index}
+            >
               {differentContent(data, index)}
               {index == 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
+              {contentDataArray[visibleItemIndex].type === "onboarding" && (
+                <button
+                  className="text-center w-full py-4 text-primary"
+                  onClick={() => {
+                    skipOnboarding(
+                      {
+                        skip: true,
+                      },
+                      {
+                        onSuccess: () => {
+                          mutate();
+                        },
+                      }
+                    );
+                  }}
+                >
+                  Skip for now
+                </button>
+              )}
             </div>
           ))}
         </div>
