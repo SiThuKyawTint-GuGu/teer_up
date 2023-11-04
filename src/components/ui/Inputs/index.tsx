@@ -71,13 +71,14 @@ InputText.defaultProps = {
 
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   variant?: "contain";
-  onChange?: () => void;
   slotDir?: SLOT_DIRECTION;
+  clearSlot?: boolean;
+  onChange?: () => void;
   onClear?: () => void;
 };
 
 const InputSearch = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ type = "text", placeholder, className, variant, defaultValue, slotDir, onClear, onChange }, ref) => {
+  ({ type = "text", placeholder, className, variant, defaultValue, slotDir, clearSlot, onClear, onChange }, ref) => {
     return (
       <InputStyled className={cn("w-full shadow-input", variant && "rounded-full bg-[#e1e5e9]")}>
         <TextField.Root>
@@ -89,17 +90,6 @@ const InputSearch = React.forwardRef<HTMLInputElement, InputProps>(
             </TextField.Slot>
           )}
 
-          {/* /** cross button */}
-          {slotDir === SLOT_DIRECTION.RIGHT && (
-            <TextField.Slot>
-              <IconButton size="1" variant="ghost">
-                <Icons.cross
-                  onClick={onClear}
-                  className={cn("w-[20px] h-[20px] text-[#5B6770]", variant && "text-[#8d9499]")}
-                />
-              </IconButton>
-            </TextField.Slot>
-          )}
           <TextField.Input
             type={type}
             className={cn(className, variant && "placeholder-[#373A36]")}
@@ -115,6 +105,17 @@ const InputSearch = React.forwardRef<HTMLInputElement, InputProps>(
               </IconButton>
             </TextField.Slot>
           )}
+          {/* /** cross button */}
+          {clearSlot && (
+            <TextField.Slot>
+              <IconButton size="1" variant="ghost">
+                <Icons.cross
+                  onClick={onClear}
+                  className={cn("w-[20px] h-[20px] text-[#5B6770]", variant && "text-[#8d9499]")}
+                />
+              </IconButton>
+            </TextField.Slot>
+          )}
         </TextField.Root>
       </InputStyled>
     );
@@ -123,6 +124,7 @@ const InputSearch = React.forwardRef<HTMLInputElement, InputProps>(
 InputSearch.displayName = "InputSearch";
 InputSearch.defaultProps = {
   slotDir: SLOT_DIRECTION.LEFT,
+  clearSlot: false,
 };
 
 const InputTextArea = React.forwardRef<HTMLInputElement, Props>(

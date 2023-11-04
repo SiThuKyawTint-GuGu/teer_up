@@ -30,8 +30,9 @@ const Header: React.FC = () => {
             className="caret-primary"
             placeholder="Search"
             defaultValue={get("search") || ""}
-            slotDir={SLOT_DIRECTION.RIGHT}
+            slotDir={SLOT_DIRECTION.LEFT}
             onClear={handleClearSearch}
+            clearSlot
           />
         ) : (
           <Flex justify="center" align="center" className="absolute top-0 right-2 bottom-0">
