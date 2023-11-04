@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 import { USER_ROLE } from "./shared/enums";
 import { User } from "./types/User";
 
-const protectedUserRoutes = ["/profile", "/saved", "/mentorship"];
+const protectedUserRoutes = ["/profile", "/saved", "/mentorship", "/industry", "/department"];
 
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl as NextURL;

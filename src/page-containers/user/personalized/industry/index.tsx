@@ -1,5 +1,6 @@
 "use client";
 
+import Loading from "@/app/loading";
 import { Button } from "@/components/ui/Button";
 import { useGetIndustry, useUpdateUserIndustry } from "@/services/industry";
 import { IndustryData, IndustryResponse } from "@/types/Industry";
@@ -10,7 +11,7 @@ const IndustryPage = () => {
   const router = useRouter();
   const { trigger } = useUpdateUserIndustry();
   const [isPending, startTransition] = useTransition();
-  const { data } = useGetIndustry<IndustryResponse>();
+  const { data, isLoading } = useGetIndustry<IndustryResponse>();
   const [selectData, setSelectData] = useState<number[]>([]);
   const onChange = (data: number) => {
     const sameId = selectData.find(e => e === data);
@@ -38,39 +39,45 @@ const IndustryPage = () => {
   };
 
   return (
-    <>
-      <QuestionPageCard
-        nextPage="/department"
-        title="Which industry are you most interested in?"
-        layout
-        subTitle="select one or more industry"
-      >
-        <div className="grid grid-cols-2 gap-7  grid-flow-row">
-          {industry &&
-            industry.length > 0 &&
-            industry.map((each: IndustryData, index: number) => (
-              <div
-                key={index}
-                onClick={() => {
-                  onChange(each.id);
-                }}
-                className={`flex justify-center items-center w-full h-full p-[24px] border-[1px]
-                 shadow-md bg-[#fefefe] rounded-md cursor-pointer
+    <div className="w-full h-full">
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <div className="w-full h-full">
+          <QuestionPageCard
+            nextPage="/department"
+            title="Which industry are you most interested in?"
+            layout
+            subTitle="select one or more industry"
+          >
+            <div className="grid grid-cols-2 gap-3 overflow-y-scroll max-h-full pb-[36px] grid-flow-row">
+              {industry &&
+                industry.length > 0 &&
+                industry.map((each: IndustryData, index: number) => (
+                  <div
+                    key={index}
+                    onClick={() => {
+                      onChange(each.id);
+                    }}
+                    className={`flex justify-center items-center w-full h-full p-3 border-[1px]
+                 shadow-md bg-[#fefefe] rounded-md cursor-pointer text-center
              ${selectData.find(data => data === each.id) && "border-[1px] border-primary bg-secondary"}
         
             `}
-              >
-                {each.name}
-              </div>
-            ))}
+                  >
+                    {each.name}
+                  </div>
+                ))}
+            </div>
+          </QuestionPageCard>
+          <div className="fixed bottom-0 w-full max-w-[400px] mx-auto py-2 bg-white">
+            <Button className="w-full" disabled={selectData.length == 0 || isPending} onClick={submitHandler} size="sm">
+              Next
+            </Button>
+          </div>
         </div>
-      </QuestionPageCard>
-      <div className="fixed bottom-0 w-full max-w-[400px] mx-auto py-2 bg-white">
-        <Button className="w-full" disabled={selectData.length == 0 || isPending} onClick={submitHandler} size="sm">
-          Next
-        </Button>
-      </div>
-    </>
+      )}
+    </div>
   );
 };
 
