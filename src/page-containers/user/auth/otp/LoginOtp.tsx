@@ -37,8 +37,6 @@ const LoginOtp = () => {
     });
   };
 
-  console.log(error);
-
   return (
     <div className="h-screen flex flex-col relative px-5">
       <div className="flex flex-col justify-center flex-wrap gap-y-5  h-full items-center w-full flex-1">
