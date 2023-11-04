@@ -13,15 +13,11 @@ export interface ContentArgType {
   arg: {};
 }
 
-export const useGetContentDimension = <ParamsType, ContentType>(
-  params?: ParamsType
-): SWRResponse<ContentType, any> => {
+export const useGetContentDimension = <ParamsType, ContentType>(params?: ParamsType): SWRResponse<ContentType, any> => {
   return useSWR<ContentType>(`/admin/content-dimensions?${routeFilter(params)}`);
 };
 
-export const useGetContentDimensionById = <ContentType>(
-  id: string
-): SWRResponse<ContentType, any> => {
+export const useGetContentDimensionById = <ContentType>(id: string): SWRResponse<ContentType, any> => {
   const key = id != "0" ? `/admin/content-dimensions/${id}` : null;
   return useSWR<ContentType>(key);
 };

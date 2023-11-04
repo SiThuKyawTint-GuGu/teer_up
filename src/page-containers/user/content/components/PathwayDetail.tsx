@@ -1,9 +1,9 @@
 "use client";
 import { Icons } from "@/components/ui/Images";
+import { useContentWatchCount } from "@/services/content";
 import { ContentData } from "@/types/Content";
 import { Flex } from "@radix-ui/themes";
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { useInView } from "react-intersection-observer";
 import ContentLayout from "./ContentLayout";
 import Video from "./Video";
 
@@ -15,10 +15,11 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
   const [videos, setVideos] = useState<any>([]);
   const [showPathTitle, setShowPathTitle] = useState<boolean>(false);
   const videoRefs = useRef<HTMLVideoElement[]>([]);
-  const { ref: contentRef, inView: contentVisible } = useInView();
-  const [entry, setEntry] = useState<HTMLDivElement | null>(null);
   const [visibleItemIndex, setVisibleItemIndex] = useState<number>(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [startTime, setStartTime] = useState<number | null>(null);
+  const [totalTimeInView, setTotalTimeInView] = useState<number>(0);
+  const { trigger: calculateCount } = useContentWatchCount();
   const dataWithTitle = useMemo(() => {
     if (data && data.content_pathways && data.content_pathways)
       return data.content_pathways.filter((each: ContentData) => each.title);
@@ -64,8 +65,6 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
     }
   };
 
-  console.log(entry?.id);
-
   function calculatePercentage(array: any[], index: number) {
     if (index < 0 || index >= array.length) {
       return "out of range";
@@ -78,21 +77,34 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
   useEffect(() => {
     if (containerRef.current) {
       const container = containerRef.current;
-
       const handleScroll = () => {
         const scrollPosition = container.scrollTop;
         const newIndex = Math.round(scrollPosition / (window.innerHeight - 96));
-        setVisibleItemIndex(newIndex);
+        if (newIndex !== visibleItemIndex) {
+          // Calculate time in view when the item changes
+          if (startTime !== null) {
+            const endTime = Date.now();
+            const timeInMilliseconds = endTime - startTime;
+            setTotalTimeInView((totalTimeInView + timeInMilliseconds) / 1000);
+            if (data && data.content_pathways) {
+              calculateCount({
+                watched_time: totalTimeInView,
+                content_id: data.content_pathways[visibleItemIndex].id,
+              });
+            }
+          }
+          setStartTime(Date.now());
+          setVisibleItemIndex(newIndex);
+        }
       };
 
       container.addEventListener("scroll", handleScroll);
       return () => {
+        setTotalTimeInView(0);
         container.removeEventListener("scroll", handleScroll);
       };
     }
-  }, []);
-
-  console.log("visible", visibleItemIndex);
+  }, [visibleItemIndex]);
 
   const differentContent = (data: ContentData, index: number) => {
     if (data.type === "video" && data.content_video)
@@ -106,39 +118,14 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
         />
       );
     if (data.type === "event" && data.content_event)
-      return (
-        <ContentLayout
-          data={data}
-          contentMutate={contentMutate}
-          contentRef={contentRef}
-          redir={`/content/${data.slug}`}
-        />
-      );
+      return <ContentLayout data={data} contentMutate={contentMutate} redir={`/content/${data.slug}`} />;
     if (data.type === "article" && data.content_article)
-      return (
-        <ContentLayout
-          data={data}
-          contentMutate={contentMutate}
-          contentRef={contentRef}
-          redir={`/content/${data.slug}`}
-        />
-      );
+      return <ContentLayout data={data} contentMutate={contentMutate} redir={`/content/${data.slug}`} />;
     if (data.type === "opportunity" && data.content_opportunity)
-      return (
-        <ContentLayout
-          data={data}
-          contentMutate={contentMutate}
-          contentRef={contentRef}
-          redir={`/content/${data.slug}`}
-        />
-      );
+      return <ContentLayout data={data} contentMutate={contentMutate} redir={`/content/${data.slug}`} />;
     if (data.type === "html" && data.html_body)
       return (
-        <div
-          id={data.slug}
-          ref={contentRef}
-          className="w-full h-[90%] overflow-y-scroll rounded-lg px-2 bg-white shadow-lg"
-        >
+        <div id={data.slug} className="w-full h-[90%] overflow-y-scroll rounded-lg px-2 bg-white shadow-lg">
           <div className="p-2">
             <div
               className="text-start"
@@ -161,7 +148,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
         {data?.content_pathways &&
           data?.content_pathways.length > 0 &&
           data?.content_pathways.map((data, index) => (
-            <div className="w-full h-full snap-start" ref={contentRef} id={data.slug} key={index}>
+            <div className="w-full h-full snap-start" id={data.slug} key={index}>
               {differentContent(data, index)}
               {index == 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
             </div>
