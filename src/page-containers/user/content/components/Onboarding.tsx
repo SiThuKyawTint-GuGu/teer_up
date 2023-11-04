@@ -19,7 +19,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
   return (
     <QuestionPageCard>
       <div className="w-full h-full">
-        <CardBox className="flex flex-col flex-wrap px-3  justify-between overflow-y-auto no-scrollbar  w-full h-[80%] bg-white">
+        <CardBox className="flex flex-col flex-wrap px-3  justify-between overflow-y-auto no-scrollbar  w-full h-[90%] bg-white">
           <div className="text-gray-500 my-4 text-center">
             <Text className="text-[28px] font-[700]  text-center mb-5" as="div">
               {data.name}

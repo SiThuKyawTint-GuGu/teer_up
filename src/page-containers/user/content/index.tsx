@@ -2,12 +2,10 @@
 import { ParamsType } from "@/services/user";
 import { ContentData } from "@/types/Content";
 
-import Loading from "@/app/loading";
 import Video from "@/page-containers/user/content/components/Video";
 import { useContentWatchCount, useGetContentInfinite } from "@/services/content";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-import { Grid } from "@radix-ui/themes";
 import ContentLayout from "./components/ContentLayout";
 import Onboarding from "./components/Onboarding";
 const UserContent = () => {
@@ -55,7 +53,7 @@ const UserContent = () => {
         container.removeEventListener("scroll", handleScroll);
       };
     }
-  }, [visibleItemIndex]);
+  }, [visibleItemIndex, containerRef.current]);
   useEffect(() => {
     setVideos(contentDataArray);
   }, []);
@@ -109,27 +107,19 @@ const UserContent = () => {
 
   return (
     <>
-      {isLoading ? (
-        <div className="h-full">
-          <Loading />
-        </div>
-      ) : (
-        <Grid columns="1">
-          <div className="w-full h-screen">
-            <div
-              ref={containerRef}
-              className={`snap-y flex-col snap-mandatory h-full px-2 py-[46px] w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
-            >
-              {contentDataArray?.map((data: ContentData, index) => (
-                <div className="w-full h-full snap-start" id={index.toString()} key={index}>
-                  {differentContent(data, index)}
-                  {index == 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
-                </div>
-              ))}
+      <div className="w-full h-screen">
+        <div
+          ref={containerRef}
+          className={`snap-y flex-col snap-mandatory h-full px-2 py-[46px] w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
+        >
+          {contentDataArray?.map((data: ContentData, index) => (
+            <div className="w-full h-full snap-start" id={index.toString()} key={index}>
+              {differentContent(data, index)}
+              {index == 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
             </div>
-          </div>
-        </Grid>
-      )}
+          ))}
+        </div>
+      </div>
     </>
   );
 };

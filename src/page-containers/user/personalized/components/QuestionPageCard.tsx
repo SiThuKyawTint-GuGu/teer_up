@@ -25,7 +25,7 @@ const QuestionPageCard: React.FC<QuestionPageCardProp> = ({ children, title, lay
           </Link>
         </div>
       )}
-      <div className={`w-full  flex flex-col h-screen px-2 ${layout && "py-[46px]"}`}>
+      <div className={`w-full  flex flex-col h-full px-2 ${layout && "py-[46px]"}`}>
         {title && (
           <Text className="text-[28px] font-[700]  text-start mb-5" as="div">
             {title}
