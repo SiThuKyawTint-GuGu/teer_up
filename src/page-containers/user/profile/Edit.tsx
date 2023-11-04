@@ -159,6 +159,14 @@ const ProfileEdit: React.FC = () => {
                 <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
                   <Flex direction="column" gap="2">
                     <Text as="label" weight="bold" size="3">
+                      Name
+                    </Text>
+                    <Text className="capitalize">{userProfile?.name ? userProfile?.name : "-"}</Text>
+                  </Flex>
+                </div>
+                <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
+                  <Flex direction="column" gap="2">
+                    <Text as="label" weight="bold" size="3">
                       Gender
                     </Text>
                     <Text className="capitalize">
