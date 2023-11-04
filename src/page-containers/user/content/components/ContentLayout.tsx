@@ -5,17 +5,18 @@ import Modal from "@/components/ui/Modal";
 import { Text } from "@/components/ui/Typo/Text";
 import { useLikeContent, useSaveContent } from "@/services/content";
 import { ContentData } from "@/types/Content";
-
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import CommentSection from "../../../../components/contentLayout/CommentSection";
 import Share from "./Share";
-
 type ContentlayoutProps = {
   data: ContentData;
   contentMutate: any;
   redir: string;
+  contentRef?: any;
+  contentVisible?: boolean;
+  index?: number;
 };
 
 const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redir }) => {
@@ -47,8 +48,8 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
 
   return (
     <Dialog open={openModal} onOpenChange={val => setOpenModal(val)}>
-      <div className="w-full bg-white shadow-lg rounded-lg h-[90%] justify-start flex-col">
-        <div className="h-full w-full flex flex-col">
+      <div className="w-full  rounded-lg h-[90%] justify-start flex-col">
+        <div className="h-full w-full flex flex-col bg-white shadow-lg">
           <div className="w-full h-[70%]  mx-auto relative">
             <Link href={redir}>
               <div

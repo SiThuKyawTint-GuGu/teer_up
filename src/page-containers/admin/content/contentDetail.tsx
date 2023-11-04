@@ -9,7 +9,7 @@ import {
   useUpdateContent,
 } from "@/services/content";
 import { useGetContentCategory } from "@/services/contentCategory";
-import { useGetContentDimensionById, useUpdateContentDimension } from "@/services/contentDimension";
+import { useGetContentDimensionById } from "@/services/contentDimension";
 import { useGetDepartment } from "@/services/department";
 import { useGetDimension } from "@/services/dimension";
 import { useGetFormConfig } from "@/services/formConfig";
@@ -89,7 +89,7 @@ const ContentDetail = ({ id }: Props) => {
     name: searchMentor,
   });
   const { data: dimensions } = useGetDimension<DimensionResponse>();
-  const { trigger: updateContentDimensionTrigger } = useUpdateContentDimension(id);
+  // const { trigger: updateContentDimensionTrigger } = useUpdateContentDimension();
   const { data: contentDimension } = useGetContentDimensionById<any>(id);
   // console.log("content dimension data", contentDimension);
   // console.log("get contents...", contents);
@@ -319,20 +319,20 @@ const ContentDetail = ({ id }: Props) => {
     }
   };
 
-  const updatedDimensionData = () => {
-    const transformedData = transformedDimensionData();
+  // const updatedDimensionData = () => {
+  //   const transformedData = transformedDimensionData();
 
-    const replacementMapping = transformedData.reduce((map: any, item: any) => {
-      map[item.dimension_id] = item;
-      return map;
-    }, {});
+  //   const replacementMapping = transformedData.reduce((map: any, item: any) => {
+  //     map[item.dimension_id] = item;
+  //     return map;
+  //   }, {});
 
-    const updatedDimensions = contentDimension?.data.content_dimensions.map((item: any) => ({
-      ...item,
-      ...replacementMapping[item.dimension_id],
-    }));
-    return updatedDimensions;
-  };
+  //   const updatedDimensions = contentDimension?.data.content_dimensions.map((item: any) => ({
+  //     ...item,
+  //     ...replacementMapping[item.dimension_id],
+  //   }));
+  //   return updatedDimensions;
+  // };
 
   const submit = async (data: any) => {
     let postdata: any = {};
@@ -381,19 +381,12 @@ const ContentDetail = ({ id }: Props) => {
         keywords,
         departments,
         industries,
+        content_dimensions: transformedDimensionData(),
         content_video: {
           video_url: videourl,
           // thumbnail: thumbnailurl,
         },
       };
-      if (contentDimension?.data) {
-        const data = {
-          content_dimensions: updatedDimensionData(),
-        };
-        await updateContentDimensionTrigger(data);
-      } else {
-        postdata["content_dimensions"] = transformedDimensionData();
-      }
       content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
     } else if (selectedValue === "event") {
       if (!startDate) {
@@ -430,6 +423,7 @@ const ContentDetail = ({ id }: Props) => {
         keywords,
         departments,
         industries,
+        content_dimensions: transformedDimensionData(),
         content_event: {
           from_datetime: startDate,
           to_datetime: endDate,
@@ -438,14 +432,6 @@ const ContentDetail = ({ id }: Props) => {
           formconfig_id: selectForm,
         },
       };
-      if (contentDimension?.data) {
-        const data = {
-          content_dimensions: updatedDimensionData(),
-        };
-        await updateContentDimensionTrigger(data);
-      } else {
-        postdata["content_dimensions"] = transformedDimensionData();
-      }
       content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
     } else if (selectedValue === "article") {
       if (!author) {
@@ -474,20 +460,13 @@ const ContentDetail = ({ id }: Props) => {
         keywords,
         departments,
         industries,
+        content_dimensions: transformedDimensionData(),
         content_article: {
           body: editor.getContent(),
           published_by: author,
           formconfig_id: selectForm,
         },
       };
-      if (contentDimension?.data) {
-        const data = {
-          content_dimensions: updatedDimensionData(),
-        };
-        await updateContentDimensionTrigger(data);
-      } else {
-        postdata["content_dimensions"] = transformedDimensionData();
-      }
       content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
     } else if (selectedValue === "opportunity") {
       if (!link) {
@@ -520,6 +499,7 @@ const ContentDetail = ({ id }: Props) => {
         keywords,
         departments,
         industries,
+        content_dimensions: transformedDimensionData(),
         content_opportunity: {
           link: link,
           formconfig_id: selectForm,
@@ -527,14 +507,6 @@ const ContentDetail = ({ id }: Props) => {
           body: oppoEditor.getContent(),
         },
       };
-      if (contentDimension?.data) {
-        const data = {
-          content_dimensions: updatedDimensionData(),
-        };
-        await updateContentDimensionTrigger(data);
-      } else {
-        postdata["content_dimensions"] = transformedDimensionData();
-      }
       content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
     } else if (selectedValue === "pathway") {
       // const pathways = pathwayContent.map((path: any) => ({ pathway_id: path.pathway_id }));
@@ -563,17 +535,9 @@ const ContentDetail = ({ id }: Props) => {
         industries,
         category_id: Number(selectCategory),
         image_url: imgurl,
+        content_dimensions: transformedDimensionData(),
         content_pathways: pathways,
       };
-
-      if (contentDimension?.data) {
-        const data = {
-          content_dimensions: updatedDimensionData(),
-        };
-        await updateContentDimensionTrigger(data);
-      } else {
-        postdata["content_dimensions"] = transformedDimensionData();
-      }
       content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
     } else if (selectedValue === "mentor") {
       if (!selectedMentor) {
@@ -595,15 +559,16 @@ const ContentDetail = ({ id }: Props) => {
         category_id: Number(selectCategory),
         image_url: imgurl,
         mentor_id: selectedMentor.id,
+        content_dimensions: transformedDimensionData(),
       };
-      if (contentDimension?.data) {
-        const data = {
-          content_dimensions: updatedDimensionData(),
-        };
-        await updateContentDimensionTrigger(data);
-      } else {
-        postdata["content_dimensions"] = transformedDimensionData();
-      }
+      // if (contentDimension?.data) {
+      //   const data = {
+      //     content_dimensions: updatedDimensionData(),
+      //   };
+      //   await updateContentDimensionTrigger(data);
+      // } else {
+      //   postdata["content_dimensions"] = transformedDimensionData();
+      // }
       content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
     }
     router.push("/admin/contents/content");
@@ -1159,54 +1124,54 @@ const ContentDetail = ({ id }: Props) => {
           </div>
 
           {/* Content Matrix */}
-          {content?.data && (
-            <div>
-              <Box className="flex items-center mt-10 my-3">
-                <p className="w-[50%] mr-20"></p>
-                <div className="flex">
-                  <h1 className="font-semibold">High</h1>
-                  <h1 className="font-semibold mx-2">Medium</h1>
-                  <h1 className="font-semibold">Low</h1>
-                  <h1 className="font-semibold ml-2 text-center">Increase skill after 30s</h1>
-                </div>
-              </Box>
-              {dimensions?.data &&
-                dimensions?.data.map((dimension: any, index: number) => (
-                  <Box className="flex  items-center mt-10 my-3" key={index}>
-                    <p className="w-[50%] mr-20">{dimension.name}</p>
-                    <div className="flex justify-center">
-                      <Checkbox
-                        name="high"
-                        checked={checkboxValues[dimension.id]?.high || false}
+
+          <div>
+            <Box className="flex items-center mt-10 my-3">
+              <p className="w-[50%] mr-20"></p>
+              <div className="flex">
+                <h1 className="font-semibold">High</h1>
+                <h1 className="font-semibold mx-2">Medium</h1>
+                <h1 className="font-semibold">Low</h1>
+                <h1 className="font-semibold ml-2 text-center">Increase skill after 30s</h1>
+              </div>
+            </Box>
+            {dimensions?.data &&
+              dimensions?.data.map((dimension: any, index: number) => (
+                <Box className="flex  items-center mt-10 my-3" key={index}>
+                  <p className="w-[50%] mr-20">{dimension.name}</p>
+                  <div className="flex justify-center">
+                    <Checkbox
+                      name="high"
+                      checked={checkboxValues[dimension.id]?.high || false}
+                      onChange={e => handleCheckboxChange(e, dimension.id)}
+                    />
+                    <Checkbox
+                      name="medium"
+                      checked={checkboxValues[dimension.id]?.medium || false}
+                      onChange={e => handleCheckboxChange(e, dimension.id)}
+                      sx={{ margin: "0px 10px" }}
+                    />
+                    <Checkbox
+                      name="low"
+                      checked={checkboxValues[dimension.id]?.low || false}
+                      onChange={e => handleCheckboxChange(e, dimension.id)}
+                    />
+                    <div className="ml-2  flex justify-center">
+                      <TextField
+                        value={checkboxValues[dimension.id]?.scores || ""}
+                        name="scores"
+                        type={"number"}
                         onChange={e => handleCheckboxChange(e, dimension.id)}
+                        id={`scores-${index}`}
+                        label="Scores"
+                        variant="outlined"
                       />
-                      <Checkbox
-                        name="medium"
-                        checked={checkboxValues[dimension.id]?.medium || false}
-                        onChange={e => handleCheckboxChange(e, dimension.id)}
-                        sx={{ margin: "0px 10px" }}
-                      />
-                      <Checkbox
-                        name="low"
-                        checked={checkboxValues[dimension.id]?.low || false}
-                        onChange={e => handleCheckboxChange(e, dimension.id)}
-                      />
-                      <div className="ml-2  flex justify-center">
-                        <TextField
-                          value={checkboxValues[dimension.id]?.scores || ""}
-                          name="scores"
-                          type={"number"}
-                          onChange={e => handleCheckboxChange(e, dimension.id)}
-                          id={`scores-${index}`}
-                          label="Scores"
-                          variant="outlined"
-                        />
-                      </div>
                     </div>
-                  </Box>
-                ))}
-            </div>
-          )}
+                  </div>
+                </Box>
+              ))}
+          </div>
+
           {content?.data.submissions.length > 0 && (
             <div className="my-10">
               <h1 className=" text-lg mb-5 font-semibold">Submissions</h1>

@@ -4,8 +4,8 @@ import { HEIGHT_TYPES, WIDTH_TYPES } from "./enums";
 
 interface Props {
   url: string;
-  width: number | WIDTH_TYPES;
-  height: number | HEIGHT_TYPES;
+  width: string | WIDTH_TYPES | number;
+  height: string | HEIGHT_TYPES | number;
   className?: string;
 }
 
@@ -20,7 +20,7 @@ const BackgroundStyled = styled.div<Props>`
   align-items: center;
   justify-content: center;
   position: relative;
-  width: ${({ width }) => width}px;
-  height: ${({ height }) => height}px;
+  width: ${({ width }) => width};
+  height: ${({ height }) => height};
   background: url(${({ url }) => url}) center / cover;
 `;

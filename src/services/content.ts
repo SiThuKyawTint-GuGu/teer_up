@@ -63,7 +63,7 @@ export const usePostContent = () =>
 
 export const usePostFile = () =>
   useSWRMutation(`/content/fileupload`, (url, { arg }: FileArgType) => {
-    return appAxios.post<FileArgType>(url, arg, {
+    return appAxios.post<{ data: { file_path: string } }>(url, arg, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

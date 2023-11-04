@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/Button";
 import CardBox from "@/components/ui/Card";
 import Modal from "@/components/ui/Modal";
 import { Text } from "@/components/ui/Typo/Text";
@@ -13,7 +14,7 @@ type OnboardingProps = {
 const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
   const [option, setOption] = useState<OnBoardingOption | null>(null);
   const [modalOpen, setOpenModal] = useState<boolean>(false);
-  const { trigger } = usePostOnboarding();
+  const { trigger, isMutating } = usePostOnboarding();
 
   return (
     <QuestionPageCard>
@@ -33,25 +34,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
                     onClick={e => {
                       e.preventDefault();
                       setOption(q);
-
-                      trigger(
-                        {
-                          option_id: q.id,
-                          question_id: data.id,
-                        },
-                        {
-                          onSuccess: () => {
-                            setOption(q);
-                            setOpenModal(true);
-                            const targetElement = document.getElementById(`${parseInt(parentIndex) + 1}`);
-                            if (targetElement) {
-                              targetElement.scrollIntoView({
-                                behavior: "smooth", // Smooth scroll effect
-                              });
-                            }
-                          },
-                        }
-                      );
+                      setOpenModal(true);
                     }}
                     className={cn(
                       `w-full border-[1px] border-slateGray p-2 rounded-xl text-center ${
@@ -72,13 +55,41 @@ const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
             setOpenModal(false);
           }}
         >
-          <div className="w-100 p-10">
+          <div className="w-full p-10 z-[9999999] bg-white rounded-md">
             {option && (
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: option.feedback,
-                }}
-              />
+              <>
+                <div
+                  className="text-center w-full"
+                  dangerouslySetInnerHTML={{
+                    __html: option.feedback,
+                  }}
+                />
+                <Button
+                  className="w-full mt-5"
+                  onClick={() => {
+                    trigger(
+                      {
+                        option_id: option.id,
+                        question_id: data.id,
+                      },
+                      {
+                        onSuccess: () => {
+                          setOpenModal(false);
+                          const targetElement = document.getElementById(`${parseInt(parentIndex) + 1}`);
+                          if (targetElement) {
+                            targetElement.scrollIntoView({
+                              behavior: "smooth", // Smooth scroll effect
+                            });
+                          }
+                        },
+                      }
+                    );
+                  }}
+                  disabled={isMutating}
+                >
+                  Next
+                </Button>
+              </>
             )}
           </div>
         </Modal>
