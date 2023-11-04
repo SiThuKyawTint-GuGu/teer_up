@@ -1,11 +1,11 @@
 "use client";
 import BGImage from "@/components/shared/BGImage";
+import NotFound from "@/components/shared/NotFound";
 import { Button } from "@/components/ui/Button";
 import CardBox from "@/components/ui/Card";
 import { Dialog, DialogClose, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
-import { useWindowSize } from "@/hooks/useWindowSize";
 import { SAVED_CONTENT_TYPES, SavedContentParams, useGetSavedContents } from "@/services/content";
 import { SavedContentResponse } from "@/types/SavedContent";
 import { cn } from "@/utils/cn";
@@ -61,9 +61,6 @@ const SavedList: React.FC = () => {
   const { data: savedContents } = useGetSavedContents<SavedContentParams, SavedContentResponse>({
     type: filteredType.key === SAVED_CONTENT_TYPES.ALL ? "" : filteredType.key,
   });
-  const { windowHeight } = useWindowSize();
-  const offset = 164;
-  const contentHeight = windowHeight - offset;
 
   return (
     <Dialog open={open} onOpenChange={val => setOpen(val)}>
@@ -104,24 +101,22 @@ const SavedList: React.FC = () => {
                   </Link>
                 ))
               ) : (
-                <Box>
-                  <Flex
-                    style={{ height: contentHeight }}
-                    className="space-y-[10px]"
-                    direction="column"
-                    align="center"
-                    justify="center"
-                  >
-                    <Image src="/uploads/icons/saved-icon.svg" width={80} height={80} alt="saved" />
-                    <div className="text-center">
-                      <Text>There’s no items saved.</Text>
-                      <Text>Items saved will be added here.</Text>
-                    </div>
-                    <Link href="/browse">
-                      <Button>Browse now</Button>
-                    </Link>
-                  </Flex>
-                </Box>
+                <>
+                  <NotFound
+                    icon={<Image src="/uploads/icons/saved-icon.svg" width={80} height={80} alt="saved" />}
+                    content={
+                      <>
+                        <Text>There’s no items saved.</Text>
+                        <Text>Items saved will be added here.</Text>
+                      </>
+                    }
+                    link={
+                      <Link href="/browse">
+                        <Button>Browse now</Button>
+                      </Link>
+                    }
+                  />
+                </>
               )}
             </Section>
           </Box>
