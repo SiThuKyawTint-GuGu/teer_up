@@ -6,10 +6,10 @@ import CardBox from "@/components/ui/Card";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
-import { useGetUserDimension, useGetUserDimensionResult } from "@/services/dimension";
+import { useGetUserDimensionResult } from "@/services/dimension";
 import { useGetUserById } from "@/services/user";
 import { PROFILE_TRIGGER } from "@/shared/enums";
-import { UserDimensionResponse, UserDimensionResultResponse } from "@/types/Dimension";
+import { UserDimensionResultResponse } from "@/types/Dimension";
 import { UserProfileResponse } from "@/types/Profile";
 import { getUserInfo } from "@/utils/auth";
 import { cn } from "@/utils/cn";
@@ -34,15 +34,15 @@ const Profile: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [viewImage, setViewImage] = useState<boolean>(false);
   const [triggerType, setTriggerType] = useState<PROFILE_TRIGGER>();
-  const [isPending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
   const user = getUserInfo();
   const router = useRouter();
   const { data: profileData } = useGetUserById<UserProfileResponse>(user?.id);
   const { data: userDimensionData } = useGetUserDimensionResult<UserDimensionResultResponse>();
-  const { data: dimensionData } = useGetUserDimension<UserDimensionResponse>();
+  // const { data: dimensionData } = useGetUserDimension<UserDimensionResponse>();
   const userProfile = profileData?.data;
 
-  console.log(user);
+  console.log("userDimensionData => ", userDimensionData);
 
   return (
     <>
@@ -142,7 +142,7 @@ const Profile: React.FC = () => {
                     </Button>
                   </Link>
                 </div>
-                <Heading as="h4" size="5" mb="4">
+                <Heading as="h4" size="6" mb="4">
                   {userProfile?.name}
                 </Heading>
                 <Text>{userProfile?.bio}</Text>
@@ -324,26 +324,21 @@ const Profile: React.FC = () => {
                         </Flex>
                       </Section>
                     </CardBox>
-                    <CardBox className="mb-[7px] rounded-none">
-                      <RadarChart />
-                    </CardBox>
                   </Tabs.Content>
 
-                  <Tabs.Content value="competency">
+                  <Tabs.Content value="competency" className="space-y-[7px]">
                     <CardBox>
                       <Section className="bg-white" py="4" px="3">
                         <Heading>Here’s what we noticed about your competencies:</Heading>
-                        {dimensionData?.data?.length && (
+                        {userDimensionData?.data?.length && (
                           <>
-                            {dimensionData?.data?.map((each, key) => (
-                              <CardBox key={key} mb="3">
-                                <Section className="bg-white" py="4" px="3">
-                                  <Flex justify="start" align="start" gap="2">
-                                    <div className="w-[12px] h-[12px] mt-[5px] rounded-sm bg-primary" />
-                                    <Text className="w-[calc(100%-12px)]">{each.name}</Text>
-                                  </Flex>
-                                </Section>
-                              </CardBox>
+                            {userDimensionData?.data?.map((each, key) => (
+                              <Box key={key} className="bg-[#F8F9FB] rounded-[8px]" mb="4" p="3">
+                                <Flex justify="start" align="start" gap="2">
+                                  <div className="w-[12px] h-[12px] mt-[5px] rounded-sm bg-primary" />
+                                  <Text className="w-[calc(100%-12px)]">{each.name}</Text>
+                                </Flex>
+                              </Box>
                             ))}
                           </>
                         )}
@@ -355,22 +350,27 @@ const Profile: React.FC = () => {
                         {userDimensionData?.data?.length && (
                           <>
                             {userDimensionData?.data?.map((each, key) => (
-                              <CardBox key={key} mb="3">
-                                <Section className="bg-white space-y-[10px]" py="4" px="3">
-                                  <Flex justify="start" align="start" gap="2">
-                                    <div className="w-[12px] h-[12px] mt-[5px] rounded-sm bg-primary" />
-                                    <Text className="w-[calc(100%-12px)]">{each.skill_body}</Text>
-                                  </Flex>
+                              <Box key={key} className="bg-[#F8F9FB] rounded-[8px]" mb="4" p="3">
+                                <Flex justify="start" align="start" gap="2">
+                                  <div className="w-[12px] h-[12px] mt-[5px] rounded-sm bg-primary" />
+                                  <Text className="w-[calc(100%-12px)]">{each.skill_body}</Text>
+                                </Flex>
+                                {each?.content?.id && (
                                   <Flex width="100%">
                                     <Link className="w-full" href={`/content/${each?.content?.slug}`}>
                                       <Button className="w-full">I’d like to work on it</Button>
                                     </Link>
                                   </Flex>
-                                </Section>
-                              </CardBox>
+                                )}
+                              </Box>
                             ))}
                           </>
                         )}
+                      </Section>
+                    </CardBox>
+                    <CardBox>
+                      <Section className="bg-white" py="4" px="3">
+                        <RadarChart />
                       </Section>
                     </CardBox>
                   </Tabs.Content>

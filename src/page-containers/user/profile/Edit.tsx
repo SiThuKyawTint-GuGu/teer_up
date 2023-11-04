@@ -63,7 +63,7 @@ const ProfileEdit: React.FC = () => {
           <Box className="pb-[55px]">
             <Flex justify="between" align="center" className="bg-white" p="3">
               <Link href="/profile">
-                <Icons.caretLeft className="text-[#373A36] w-[23px] h-[23px]" />
+                <Icons.back className="text-[#373A36] w-[23px] h-[23px]" />
               </Link>
               <Text size="3" weight="medium">
                 Edit Profile
@@ -290,7 +290,10 @@ const ProfileEdit: React.FC = () => {
                 <Flex wrap="wrap" gap="2">
                   {userProfile?.industries?.length
                     ? userProfile?.industries?.map((each, key) => (
-                        <Button key={key} className="bg-[#d1d5d8] text-black hover:bg-[#d1d5d8]">
+                        <Button
+                          key={key}
+                          className="border border-[#EAA1A6] bg-[#F9E9EB] text-black hover:bg-[#F9E9EB]"
+                        >
                           {each.industry.name}
                         </Button>
                       ))
@@ -311,7 +314,10 @@ const ProfileEdit: React.FC = () => {
                 <Flex wrap="wrap" gap="2">
                   {userProfile?.preferences?.length
                     ? userProfile?.preferences?.map((each, key) => (
-                        <Button key={key} className="bg-[#d1d5d8] text-black hover:bg-[#d1d5d8]">
+                        <Button
+                          key={key}
+                          className="border border-[#EAA1A6] bg-[#F9E9EB] text-black hover:bg-[#F9E9EB]"
+                        >
                           {each.preference.name}
                         </Button>
                       ))

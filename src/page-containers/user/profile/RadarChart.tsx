@@ -4,7 +4,9 @@ import { UserScores } from "@/types/User";
 import { ArcElement, Chart, LineElement, PointElement, PolarAreaController, RadialLinearScale } from "chart.js";
 import React, { useMemo } from "react";
 import { Radar } from "react-chartjs-2";
+
 Chart.register(PolarAreaController, RadialLinearScale, PointElement, LineElement, ArcElement);
+
 const RadarChart: React.FC = () => {
   const { data: userScores } = useGetUserScores();
 
