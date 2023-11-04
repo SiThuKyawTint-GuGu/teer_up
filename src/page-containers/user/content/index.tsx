@@ -103,14 +103,12 @@ const UserContent = () => {
     return <ContentLayout data={data} contentMutate={mutate} redir={`/content/${data.slug}`} />;
   };
 
-  console.log(visibleItemIndex);
-
   return (
     <>
-      <div className="w-full h-screen">
+      <div className="w-full h-[calc(100vh-100px)]">
         <div
           ref={containerRef}
-          className={`snap-y flex-col snap-mandatory h-full px-2 py-[46px] w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
+          className={`snap-y flex-col snap-mandatory h-full px-2  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
         >
           {contentDataArray?.map((data: ContentData, index) => (
             <div className="w-full h-full snap-start" id={index.toString()} key={index}>
