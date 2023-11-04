@@ -142,7 +142,7 @@ const Profile: React.FC = () => {
                     </Button>
                   </Link>
                 </div>
-                <Heading as="h4" size="5" mb="4">
+                <Heading as="h4" size="6" mb="4">
                   {userProfile?.name}
                 </Heading>
                 <Text>{userProfile?.bio}</Text>
@@ -324,9 +324,6 @@ const Profile: React.FC = () => {
                         </Flex>
                       </Section>
                     </CardBox>
-                    <CardBox className="mb-[7px] rounded-none">
-                      <RadarChart />
-                    </CardBox>
                   </Tabs.Content>
 
                   <Tabs.Content value="competency">
@@ -361,17 +358,22 @@ const Profile: React.FC = () => {
                                     <div className="w-[12px] h-[12px] mt-[5px] rounded-sm bg-primary" />
                                     <Text className="w-[calc(100%-12px)]">{each.skill_body}</Text>
                                   </Flex>
-                                  <Flex width="100%">
-                                    <Link className="w-full" href={`/content/${each?.content?.slug}`}>
-                                      <Button className="w-full">I’d like to work on it</Button>
-                                    </Link>
-                                  </Flex>
+                                  {each?.content?.id && (
+                                    <Flex width="100%">
+                                      <Link className="w-full" href={`/content/${each?.content?.slug}`}>
+                                        <Button className="w-full">I’d like to work on it</Button>
+                                      </Link>
+                                    </Flex>
+                                  )}
                                 </Section>
                               </CardBox>
                             ))}
                           </>
                         )}
                       </Section>
+                    </CardBox>
+                    <CardBox className="mb-[7px] rounded-none">
+                      <RadarChart />
                     </CardBox>
                   </Tabs.Content>
                 </Tabs.Root>
