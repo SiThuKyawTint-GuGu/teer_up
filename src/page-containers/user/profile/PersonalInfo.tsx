@@ -24,6 +24,7 @@ import * as yup from "yup";
 const validationSchema = yup.object({
   gender: yup.string(),
   email: yup.string().email(),
+  name: yup.string().required("Name is required!"),
   day: yup.date().required("Day is required!").typeError("Invalid date"),
   month: yup.date().required("Month is required!").typeError("Invalid date"),
   year: yup.date().required("Year is required!").typeError("Invalid date"),
@@ -49,6 +50,7 @@ const PersonalInfo: React.FC = () => {
 
     const newData = {
       gender_id: Number(data.gender) || +defaultChecked,
+      name: data.name,
       birthday: `${year}-${month}-${day}`,
     };
 
@@ -61,187 +63,214 @@ const PersonalInfo: React.FC = () => {
 
   return (
     <>
-      <Form {...form}>
-        <form className="mx-auto flex flex-col justify-center gap-y-3 w-full" onSubmit={form.handleSubmit(submit)}>
-          <Grid columns="1">
-            <Box>
-              <Flex justify="between" align="center" className="bg-white" p="3">
-                <Link href={`/profile/${id}`}>
-                  <Icons.back className="text-[#373A36] w-[23px] h-[23px]" />
-                </Link>
-                <Text size="3" weight="medium">
-                  Personal Information
-                </Text>
-                <Link href="/" className="opacity-0">
-                  <Icons.plus className="text-primary w-[23px] h-[23px]" />
-                </Link>
-              </Flex>
-              <CardBox className="mb-[7px] rounded-none">
-                <Section className="bg-white" py="4" px="3">
-                  <Flex justify="between" align="center" mb="4">
-                    <Heading as="h6" size="4" align="left">
-                      Gender
-                    </Heading>
+      <Grid columns="1">
+        <Box className="pb-[55px]">
+          <Form {...form}>
+            <form className="mx-auto flex flex-col justify-center gap-y-3 w-full" onSubmit={form.handleSubmit(submit)}>
+              <Grid columns="1">
+                <Box>
+                  <Flex justify="between" align="center" className="bg-white" p="3">
+                    <Link href={`/profile/${id}`}>
+                      <Icons.back className="text-[#373A36] w-[23px] h-[23px]" />
+                    </Link>
+                    <Text size="3" weight="medium">
+                      Personal Information
+                    </Text>
+                    <Link href="/" className="opacity-0">
+                      <Icons.plus className="text-primary w-[23px] h-[23px]" />
+                    </Link>
                   </Flex>
-                  {defaultChecked && (
-                    <FormField
-                      control={form.control}
-                      name="gender"
-                      render={({ field }) => {
-                        return (
+                  <CardBox className="mb-[7px] rounded-none">
+                    <Section className="bg-white" py="4" px="3">
+                      <Flex justify="between" align="center" mb="4">
+                        <Heading as="h6" size="4" align="left">
+                          Gender
+                        </Heading>
+                      </Flex>
+                      {defaultChecked && (
+                        <FormField
+                          control={form.control}
+                          name="gender"
+                          render={({ field }) => {
+                            return (
+                              <FormItem>
+                                <FormControl>
+                                  <Radio
+                                    className="space-y-[10px]"
+                                    onValueChange={val => field.onChange(val)}
+                                    defaultValue={defaultChecked}
+                                  >
+                                    {genders?.map((each, key) => (
+                                      <Label
+                                        key={key}
+                                        className={cn(
+                                          "block pb-[10px]",
+                                          key !== (genders ? genders.length - 1 : -1) && "border-b border-b-[#BDC7D5]"
+                                        )}
+                                      >
+                                        <Flex className="capitalize" justify="between" align="center">
+                                          {each.type}
+                                          <RadioItem value={each.id.toString()} />
+                                        </Flex>
+                                      </Label>
+                                    ))}
+                                  </Radio>
+                                </FormControl>
+                              </FormItem>
+                            );
+                          }}
+                        />
+                      )}
+                    </Section>
+                  </CardBox>
+                  <CardBox className="mb-[7px] rounded-none">
+                    <Section className="bg-white" py="4" px="3">
+                      <Heading as="h6" size="4" align="left" mb="4">
+                        Birthday
+                      </Heading>
+                      <Flex justify="start" align="center" gap="4">
+                        <FormField
+                          control={form.control}
+                          name="day"
+                          defaultValue={
+                            userProfile?.personal_info?.birthday
+                              ? new Date(userProfile?.personal_info?.birthday)
+                              : new Date()
+                          }
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormControl>
+                                <CardBox className="px-[12px] py-[16px] flex justify-between items-center">
+                                  <ReactDatePicker
+                                    selected={dayjs(field.value).toDate()}
+                                    onChange={date => field.onChange(dayjs(date).format())}
+                                    dateFormat="dd"
+                                    className="w-[65px] bg-white"
+                                  />
+                                  <Icons.arrowDown />
+                                </CardBox>
+                              </FormControl>
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          name="month"
+                          control={form.control}
+                          defaultValue={
+                            userProfile?.personal_info?.birthday
+                              ? new Date(userProfile?.personal_info?.birthday)
+                              : new Date()
+                          }
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormControl>
+                                <CardBox className="px-[12px] py-[16px] flex justify-between items-center">
+                                  <ReactDatePicker
+                                    selected={dayjs(
+                                      field.value ? field.value : userProfile?.personal_info?.birthday
+                                    ).toDate()}
+                                    onChange={date => field.onChange(dayjs(date).format())}
+                                    dateFormat="MM"
+                                    showMonthYearPicker
+                                    showFullMonthYearPicker
+                                    className="w-[45px] bg-white"
+                                  />
+                                  <Icons.arrowDown />
+                                </CardBox>
+                              </FormControl>
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="year"
+                          defaultValue={
+                            userProfile?.personal_info?.birthday
+                              ? new Date(userProfile?.personal_info?.birthday)
+                              : new Date()
+                          }
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormControl>
+                                <CardBox className="px-[12px] py-[16px] flex justify-between items-center">
+                                  <ReactDatePicker
+                                    selected={dayjs(
+                                      field.value ? field.value : userProfile?.personal_info?.birthday
+                                    ).toDate()}
+                                    onChange={date => field.onChange(dayjs(date).format())}
+                                    dateFormat="yyyy"
+                                    showYearPicker
+                                    className="w-[65px] bg-white"
+                                  />
+                                  <Icons.arrowDown />
+                                </CardBox>
+                              </FormControl>
+                            </FormItem>
+                          )}
+                        />
+                      </Flex>
+                    </Section>
+                  </CardBox>
+                  <CardBox className="mb-[7px] rounded-none">
+                    <Section className="bg-white" py="4" px="3">
+                      <Heading as="h6" size="4" align="left" mb="4">
+                        Name
+                      </Heading>
+                      <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
                           <FormItem>
                             <FormControl>
-                              <Radio
-                                className="space-y-[10px]"
-                                onValueChange={val => field.onChange(val)}
-                                defaultValue={defaultChecked}
-                              >
-                                {genders?.map((each, key) => (
-                                  <Label
-                                    key={key}
-                                    className={cn(
-                                      "block pb-[10px]",
-                                      key !== (genders ? genders.length - 1 : -1) && "border-b border-b-[#BDC7D5]"
-                                    )}
-                                  >
-                                    <Flex className="capitalize" justify="between" align="center">
-                                      {each.type}
-                                      <RadioItem value={each.id.toString()} />
-                                    </Flex>
-                                  </Label>
-                                ))}
-                              </Radio>
+                              <InputText
+                                type="text"
+                                inputType={USER_ROLE.STUDENT}
+                                defaultValue={userProfile?.name}
+                                {...field}
+                              />
                             </FormControl>
                           </FormItem>
-                        );
-                      }}
-                    />
-                  )}
-                </Section>
-              </CardBox>
-              <CardBox className="mb-[7px] rounded-none">
-                <Section className="bg-white" py="4" px="3">
-                  <Heading as="h6" size="4" align="left" mb="4">
-                    Birthday
-                  </Heading>
-                  <Flex justify="start" align="center" gap="4">
-                    <FormField
-                      control={form.control}
-                      name="day"
-                      defaultValue={
-                        userProfile?.personal_info?.birthday
-                          ? new Date(userProfile?.personal_info?.birthday)
-                          : new Date()
-                      }
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormControl>
-                            <CardBox className="px-[12px] py-[16px] flex justify-between items-center">
-                              <ReactDatePicker
-                                selected={dayjs(field.value).toDate()}
-                                onChange={date => field.onChange(dayjs(date).format())}
-                                dateFormat="dd"
-                                className="w-[65px] bg-white"
+                        )}
+                      />
+                    </Section>
+                  </CardBox>
+                  <CardBox className="mb-[7px] rounded-none">
+                    <Section className="bg-white" py="4" px="3">
+                      <Heading as="h6" size="4" align="left" mb="4">
+                        Email
+                      </Heading>
+                      <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <InputText
+                                type="text"
+                                inputType={USER_ROLE.STUDENT}
+                                defaultValue={userProfile?.email}
+                                disabled
+                                {...field}
                               />
-                              <Icons.arrowDown />
-                            </CardBox>
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      name="month"
-                      control={form.control}
-                      defaultValue={
-                        userProfile?.personal_info?.birthday
-                          ? new Date(userProfile?.personal_info?.birthday)
-                          : new Date()
-                      }
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormControl>
-                            <CardBox className="px-[12px] py-[16px] flex justify-between items-center">
-                              <ReactDatePicker
-                                selected={dayjs(
-                                  field.value ? field.value : userProfile?.personal_info?.birthday
-                                ).toDate()}
-                                onChange={date => field.onChange(dayjs(date).format())}
-                                dateFormat="MM"
-                                showMonthYearPicker
-                                showFullMonthYearPicker
-                                className="w-[45px] bg-white"
-                              />
-                              <Icons.arrowDown />
-                            </CardBox>
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="year"
-                      defaultValue={
-                        userProfile?.personal_info?.birthday
-                          ? new Date(userProfile?.personal_info?.birthday)
-                          : new Date()
-                      }
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormControl>
-                            <CardBox className="px-[12px] py-[16px] flex justify-between items-center">
-                              <ReactDatePicker
-                                selected={dayjs(
-                                  field.value ? field.value : userProfile?.personal_info?.birthday
-                                ).toDate()}
-                                onChange={date => field.onChange(dayjs(date).format())}
-                                dateFormat="yyyy"
-                                showYearPicker
-                                className="w-[65px] bg-white"
-                              />
-                              <Icons.arrowDown />
-                            </CardBox>
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                  </Flex>
-                </Section>
-              </CardBox>
-              <CardBox className="mb-[7px] rounded-none">
-                <Section className="bg-white" py="4" px="3">
-                  <Heading as="h6" size="4" align="left" mb="4">
-                    Email
-                  </Heading>
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <InputText
-                            type="text"
-                            inputType={USER_ROLE.STUDENT}
-                            defaultValue={userProfile?.email}
-                            disabled
-                            {...field}
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                </Section>
-              </CardBox>
-              <CardBox className="mb-[7px] rounded-none">
-                <Section py="4" px="3">
-                  <Button type="submit" loading={isMutating} className="bg-primary w-full">
-                    Save
-                  </Button>
-                </Section>
-              </CardBox>
-            </Box>
-          </Grid>
-        </form>
-      </Form>
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+                    </Section>
+                  </CardBox>
+                  <CardBox className="mb-[7px] rounded-none">
+                    <Section py="4" px="3">
+                      <Button type="submit" loading={isMutating} className="bg-primary w-full">
+                        Save
+                      </Button>
+                    </Section>
+                  </CardBox>
+                </Box>
+              </Grid>
+            </form>
+          </Form>
+        </Box>
+      </Grid>
     </>
   );
 };
