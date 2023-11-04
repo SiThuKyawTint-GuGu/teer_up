@@ -18,7 +18,12 @@ const VerifyPop: React.FC = () => {
     <>
       {openVerifyModal && (
         <Modal onClose={() => verifyModalCloseHandler()}>
-          <Flex className="px-[16px] py-[40px] w-full  max-w-[400px]" position="relative" direction="column" gap="5">
+          <Flex
+            className="px-[16px] bg-white py-[40px] w-full  max-w-[400px]"
+            position="relative"
+            direction="column"
+            gap="5"
+          >
             <Text as="div" className="w-full text-center text-[36px] font-700">
               You&apos;re not logg in
             </Text>

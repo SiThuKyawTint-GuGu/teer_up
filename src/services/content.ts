@@ -210,13 +210,24 @@ export const useGetContentSearch = <SearchParamsType, ContentType>(
   return useSWR<ContentType>(`/content/search?${routeFilter(params)}`);
 };
 
-interface WatchCountProps {
+interface WatchCountArg {
   arg: {
     watched_time: number;
     content_id: number | string;
   };
 }
 export const useContentWatchCount = () =>
-  useSWRMutation(`/content/watch-count`, (url, { arg }: WatchCountProps) => {
+  useSWRMutation(`/content/watch-count`, (url, { arg }: WatchCountArg) => {
     return appAxios.post(url, arg);
+  });
+
+interface SkipOnboardingArg {
+  arg: {
+    skip: boolean;
+  };
+}
+
+export const useSkipOnboarding = () =>
+  useSWRMutation(`/user/onboarding/status`, (url, { arg }: SkipOnboardingArg) => {
+    return appAxios.put(url, arg);
   });

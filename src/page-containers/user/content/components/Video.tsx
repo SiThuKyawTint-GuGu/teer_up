@@ -99,10 +99,7 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
         >
           {data.content_video && (
             <video
-              poster={
-                data.content_video.thumbnail ||
-                "https://teeup-dev.s3.ap-southeast-1.amazonaws.com/1697257229853-125476757-demoimage1.jpeg"
-              }
+              poster={data.image_url}
               preload="none"
               data-video="0"
               loop
