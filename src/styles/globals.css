@@ -114,6 +114,19 @@ body {
       scrollbar-width: none; /* Firefox */
     }
   }
+  @layer utilities {
+    .tab-trigger {
+      @apply p-0 data-[state=active]:text-primary data-[state=active]:before:bg-primary;
+    }
+    .border-card {
+      @apply border border-primary rounded-md;
+    }
+  }
+}
+
+.rt-TabsTriggerInner,
+.rt-TabsTriggerInnerHidden {
+  padding: 0 !important;
 }
 
 html {

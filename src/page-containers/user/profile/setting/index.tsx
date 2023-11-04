@@ -2,17 +2,25 @@
 import { Button } from "@/components/ui/Button";
 import { Dialog, DialogClose, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons } from "@/components/ui/Images";
-import { Switch } from "@/components/ui/Switch";
 import { Text } from "@/components/ui/Typo/Text";
 import { logout } from "@/utils/auth";
 import { Box, Flex, Grid, Section } from "@radix-ui/themes";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useState, useTransition } from "react";
 
 const Setting: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+
+  const handleLogout = () => {
+    logout();
+    startTransition(() => {
+      router.push("/home");
+    });
+  };
+
   return (
     <Dialog
       open={open}
@@ -32,14 +40,14 @@ const Setting: React.FC = () => {
         </Flex>
         <Box className="bg-white" mt="5">
           <Section py="4" px="3">
-            <div className="pb-[15px] mb-[15px] border-b border-b-[#BDC7D5]">
+            {/* <div className="pb-[15px] mb-[15px] border-b border-b-[#BDC7D5]">
               <Flex justify="between" align="start">
                 <Text as="label" weight="bold" size="3">
                   Allow Notification
                 </Text>
                 <Switch />
               </Flex>
-            </div>
+            </div> */}
             <div className="pb-[15px] mb-[15px] border-b border-b-[#BDC7D5]">
               <Link href="/about">
                 <Flex justify="between" align="start">
@@ -60,14 +68,14 @@ const Setting: React.FC = () => {
                 </Flex>
               </Link>
             </div>
-            <div className="pb-[15px] mb-[15px] border-b border-b-[#BDC7D5]">
+            {/* <div className="pb-[15px] mb-[15px] border-b border-b-[#BDC7D5]">
               <Flex justify="between" align="start">
                 <Text as="label" weight="bold" size="3">
                   Feedback
                 </Text>
                 <Icons.caretRight />
               </Flex>
-            </div>
+            </div> */}
           </Section>
         </Box>
         <Box className="bg-white" mt="5" p="2">
@@ -85,13 +93,7 @@ const Setting: React.FC = () => {
             You won’t receive any messages from the app. But you could log in again with your email address.
           </Text>
           <Flex justify="center" className="gap-3">
-            <Button
-              className="w-1/2"
-              onClick={() => {
-                logout();
-                router.push("/home");
-              }}
-            >
+            <Button className="w-1/2" onClick={handleLogout} loading={isPending}>
               Log out
             </Button>
             <DialogClose className="w-1/2">

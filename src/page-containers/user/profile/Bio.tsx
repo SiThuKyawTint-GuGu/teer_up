@@ -21,7 +21,7 @@ const validationSchema = yup.object({
 const Bio: React.FC = () => {
   const { id } = useParams();
   const router = useRouter();
-  const { trigger } = useUpdateBio();
+  const { trigger, isMutating } = useUpdateBio();
   const { data: profileData } = useGetUserById<UserProfileResponse>(id as string);
 
   const form = useForm({
@@ -31,7 +31,7 @@ const Bio: React.FC = () => {
   const submit = async (data: { bio: string }) => {
     await trigger(data, {
       onSuccess: () => {
-        router.push(`/profile${id}`);
+        router.push(`/profile/${id}`);
       },
     });
   };
@@ -39,10 +39,7 @@ const Bio: React.FC = () => {
   return (
     <>
       <Form {...form}>
-        <form
-          className="mx-auto flex flex-col justify-center gap-y-3 w-full"
-          onSubmit={form.handleSubmit(submit)}
-        >
+        <form className="mx-auto flex flex-col justify-center gap-y-3 w-full" onSubmit={form.handleSubmit(submit)}>
           <Grid columns="1">
             <Flex justify="between" align="center" className="bg-white" p="3">
               <Link href={`/profile/${id}`}>
@@ -82,7 +79,7 @@ const Bio: React.FC = () => {
 
             <Box className="pb-[7px]">
               <Section py="4" px="3">
-                <Button type="submit" className="bg-primary w-full">
+                <Button type="submit" loading={isMutating} className="bg-primary w-full">
                   Save
                 </Button>
               </Section>

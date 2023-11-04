@@ -26,18 +26,13 @@ const validationSchema = yup.object({
 const CreateEducation: React.FC = () => {
   const { id } = useParams();
   const router = useRouter();
-  const { trigger } = useCreateEducation();
+  const { trigger, isMutating } = useCreateEducation();
 
   const form = useForm({
     resolver: yupResolver(validationSchema),
   });
 
-  const submit = async (data: {
-    school_name: string;
-    degree: string;
-    start_date: any;
-    end_date: any;
-  }) => {
+  const submit = async (data: { school_name: string; degree: string; start_date: any; end_date: any }) => {
     const newData = {
       ...data,
       start_date: dayjs(data.start_date).format("YYYY-MM-DD"),
@@ -53,10 +48,7 @@ const CreateEducation: React.FC = () => {
   return (
     <>
       <Form {...form}>
-        <form
-          className="mx-auto flex flex-col justify-center gap-y-3 w-full"
-          onSubmit={form.handleSubmit(submit)}
-        >
+        <form className="mx-auto flex flex-col justify-center gap-y-3 w-full" onSubmit={form.handleSubmit(submit)}>
           <Grid columns="1">
             <Flex justify="between" align="center" className="bg-white" p="3">
               <Link href="/profile">
@@ -175,7 +167,7 @@ const CreateEducation: React.FC = () => {
 
             <Box className="pb-[7px]">
               <Section py="4" px="3">
-                <Button type="submit" className="bg-primary w-full">
+                <Button type="submit" loading={isMutating} className="bg-primary w-full">
                   Save
                 </Button>
               </Section>
