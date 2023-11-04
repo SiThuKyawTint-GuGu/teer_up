@@ -82,13 +82,16 @@ const SavedList: React.FC = () => {
           </Flex>
           <Box className="pb-[7px]">
             <Section className="" py="4" px="3">
+              <Button variant="link" className="w-full">
+                Continue unfinished pathway
+              </Button>
               {savedContents?.data?.length ? (
                 savedContents?.data?.map((each, key) => (
                   <Link key={key} href={`/content/${each?.content?.slug}`}>
                     <Box pb="4">
                       <CardBox className="p-[8px]">
                         <Flex justify="start" align="start" gap="2">
-                          <BGImage width={128} height={100} url={each?.content?.image_url} />
+                          <BGImage width="128px" height="100px" url={each?.content?.image_url} />
                           <Flex className="text-[#373A36] space-y-1 w-3/4" direction="column" wrap="wrap">
                             <Text>{each?.content?.title}</Text>
                             <Text size="2" weight="light">

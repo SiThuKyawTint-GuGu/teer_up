@@ -3,6 +3,21 @@ import { deleteCookie, getCookie, setCookie } from "cookies-next";
 import CryptoJS from "crypto-js";
 import jwt_decode from "jwt-decode";
 
+export enum AUTH_TYPE {
+  SIGNIN = "SIGNIN",
+  SIGNUP = "SIGNUP",
+}
+
+export interface JWT_DECODE {
+  email: string;
+  exp: number;
+  iat: number;
+  id: number;
+  role: string;
+  verified: boolean;
+  type?: AUTH_TYPE;
+}
+
 export const setUserInfo = (token: string, userInfo: User) => {
   const { exp } = jwt_decode(token) as any;
   const expires = new Date();
