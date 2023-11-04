@@ -225,7 +225,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
                   ))}
               </Flex>
             </div>
-            <Button disabled={isMutating} className="w-full" onClick={formSubmit}>
+            <Button loading={isMutating} disabled={isMutating} className="w-full" onClick={formSubmit}>
               Submit
             </Button>
           </div>
