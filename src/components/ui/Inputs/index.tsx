@@ -7,6 +7,11 @@ import { USER_ROLE } from "@/shared/enums";
 import { cn } from "@/utils/cn";
 import { Icons } from "../Images";
 
+export enum SLOT_DIRECTION {
+  LEFT = "LEFT",
+  RIGHT = "RIGHT",
+}
+
 type Props = {
   type?: "text" | "email" | "password" | "number" | "submit" | "hidden";
   label?: string;
@@ -66,32 +71,61 @@ InputText.defaultProps = {
 
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   variant?: "contain";
-  onChange?: any;
+  slotDir?: SLOT_DIRECTION;
+  clearSlot?: boolean;
+  onChange?: () => void;
+  onClear?: () => void;
 };
 
 const InputSearch = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ type = "text", placeholder, className, variant, onChange }, ref) => {
+  ({ type = "text", placeholder, className, variant, defaultValue, slotDir, clearSlot, onClear, onChange }, ref) => {
     return (
       <InputStyled className={cn("w-full shadow-input", variant && "rounded-full bg-[#e1e5e9]")}>
         <TextField.Root>
-          <TextField.Slot pr="3">
-            <IconButton size="2" variant="ghost">
-              <Icons.search className={cn("w-[24px] h-[24px] text-[#5B6770]", variant && "text-[#8d9499]")} />
-            </IconButton>
-          </TextField.Slot>
+          {slotDir === SLOT_DIRECTION.LEFT && (
+            <TextField.Slot>
+              <IconButton size="2" variant="ghost">
+                <Icons.search className={cn("w-[24px] h-[24px] text-[#5B6770]", variant && "text-[#8d9499]")} />
+              </IconButton>
+            </TextField.Slot>
+          )}
+
           <TextField.Input
             type={type}
             className={cn(className, variant && "placeholder-[#373A36]")}
             placeholder={placeholder}
             ref={ref}
             onChange={onChange}
+            defaultValue={defaultValue}
           />
+          {slotDir === SLOT_DIRECTION.RIGHT && (
+            <TextField.Slot>
+              <IconButton size="2" variant="ghost">
+                <Icons.search className={cn("w-[24px] h-[24px] text-[#5B6770]", variant && "text-[#8d9499]")} />
+              </IconButton>
+            </TextField.Slot>
+          )}
+          {/* /** cross button */}
+          {clearSlot && (
+            <TextField.Slot>
+              <IconButton size="1" variant="ghost">
+                <Icons.cross
+                  onClick={onClear}
+                  className={cn("w-[20px] h-[20px] text-[#5B6770]", variant && "text-[#8d9499]")}
+                />
+              </IconButton>
+            </TextField.Slot>
+          )}
         </TextField.Root>
       </InputStyled>
     );
   }
 );
 InputSearch.displayName = "InputSearch";
+InputSearch.defaultProps = {
+  slotDir: SLOT_DIRECTION.LEFT,
+  clearSlot: false,
+};
 
 const InputTextArea = React.forwardRef<HTMLInputElement, Props>(
   (

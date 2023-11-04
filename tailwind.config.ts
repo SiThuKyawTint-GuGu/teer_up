@@ -33,6 +33,24 @@ const config: Config = {
       listStyleType: {
         square: "square",
       },
+      keyframes: {
+        fadeIn: {
+          "0%": { opacity: "0", visibility: "hidden" },
+          "100%": { opacity: "1", visibility: "visible" },
+        },
+        fadeOut: {
+          "0%": { opacity: "1", visibility: "visible" },
+          "100%": { opacity: "0", visibility: "hidden" },
+        },
+        fadeInWidth: {
+          "0%:": { width: "30px" },
+          "100%": { width: "200px" },
+        },
+        fadeOutWidth: {
+          "0%:": { width: "200px" },
+          "100%": { width: "30px" },
+        },
+      },
     },
   },
   plugins: [],
