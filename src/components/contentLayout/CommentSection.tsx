@@ -21,8 +21,6 @@ const CommentSection: React.FC<CommentSectionProp> = ({ data, mutateParentData }
 
   const pp: any = useMemo(() => cmtsArray?.flatMap(page => page?.data) || [], [cmtsArray]);
 
-  console.log("pp", pp);
-
   const { trigger: postComment, isMutating } = usePostComment();
 
   const postSubmitHandler = async () => {

@@ -1,24 +1,64 @@
 "use client";
 import { ParamsType } from "@/services/user";
-import { ContentData, ContentType } from "@/types/Content";
+import { ContentData } from "@/types/Content";
 
 import Loading from "@/app/loading";
 import Video from "@/page-containers/user/content/components/Video";
-import { useGetContentInfinite } from "@/services/content";
-import { useEffect, useRef, useState } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
+import { useContentWatchCount, useGetContentInfinite } from "@/services/content";
+import { useEffect, useMemo, useRef, useState } from "react";
 
+import { Grid } from "@radix-ui/themes";
 import ContentLayout from "./components/ContentLayout";
 import Onboarding from "./components/Onboarding";
 const UserContent = () => {
   const [page, setPage] = useState<number>(1);
+  const [videos, setVideos] = useState<any>([]);
   const videoRefs = useRef<HTMLVideoElement[]>([]);
-
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [visibleItemIndex, setVisibleItemIndex] = useState<number>(0);
   const { data, mutate, isLoading } = useGetContentInfinite<ParamsType>({
     page: page,
     pageSize: 20,
   });
+  const [startTime, setStartTime] = useState<number | null>(null);
+  const [totalTimeInView, setTotalTimeInView] = useState<number>(0);
+  const { trigger: calculateCount } = useContentWatchCount();
+  const contentDataArray: ContentData[] = useMemo(() => data?.flatMap(page => page?.data) || [], [data]);
 
+  useEffect(() => {
+    if (containerRef.current) {
+      const container = containerRef.current;
+      const handleScroll = () => {
+        const scrollPosition = container.scrollTop;
+        const newIndex = Math.round(scrollPosition / (window.innerHeight - 96));
+        if (newIndex !== visibleItemIndex) {
+          // Calculate time in view when the item changes
+          if (startTime !== null) {
+            const endTime = Date.now();
+            const timeInMilliseconds = endTime - startTime;
+            setTotalTimeInView((totalTimeInView + timeInMilliseconds) / 1000);
+            if (contentDataArray) {
+              calculateCount({
+                watched_time: totalTimeInView,
+                content_id: contentDataArray[visibleItemIndex].id,
+              });
+            }
+          }
+          setStartTime(Date.now());
+          setVisibleItemIndex(newIndex);
+        }
+      };
+
+      container.addEventListener("scroll", handleScroll);
+      return () => {
+        setTotalTimeInView(0);
+        container.removeEventListener("scroll", handleScroll);
+      };
+    }
+  }, [visibleItemIndex]);
+  useEffect(() => {
+    setVideos(contentDataArray);
+  }, []);
   useEffect(() => {
     const observerOptions = {
       root: null,
@@ -65,9 +105,7 @@ const UserContent = () => {
     return <ContentLayout data={data} contentMutate={mutate} redir={`/content/${data.slug}`} />;
   };
 
-  const hasMoreData = (contentData: ContentType) => {
-    return contentData.total > contentData.current_page * contentData.per_page;
-  };
+  console.log(visibleItemIndex);
 
   return (
     <>
@@ -76,35 +114,21 @@ const UserContent = () => {
           <Loading />
         </div>
       ) : (
-        <div>
-          {data &&
-            data.length > 0 &&
-            data.map((data: ContentType, index: number) => (
-              <div key={index}>
-                {data && data.data.length > 0 && (
-                  <InfiniteScroll
-                    dataLength={data.data.length}
-                    next={() => setPage(prev => prev + 1)}
-                    hasMore={hasMoreData(data)}
-                    loader={<p></p>}
-                  >
-                    <div className="snap-y flex-col snap-mandatory w-full h-[calc(100vh-100px)] bg-[#F8F9FB] no-scrollbar overflow-y-scroll">
-                      {data.data.map((data: ContentData, index: number) => (
-                        <div
-                          className="h-full flex flex-col p-2 rounded-lg w-full snap-start"
-                          id={index.toString()}
-                          key={index}
-                        >
-                          {differentContent(data, index)}
-                          {index == 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
-                        </div>
-                      ))}
-                    </div>
-                  </InfiniteScroll>
-                )}
-              </div>
-            ))}
-        </div>
+        <Grid columns="1">
+          <div className="w-full h-screen">
+            <div
+              ref={containerRef}
+              className={`snap-y flex-col snap-mandatory h-full px-2 py-[46px] w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
+            >
+              {contentDataArray?.map((data: ContentData, index) => (
+                <div className="w-full h-full snap-start" id={index.toString()} key={index}>
+                  {differentContent(data, index)}
+                  {index == 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
+                </div>
+              ))}
+            </div>
+          </div>
+        </Grid>
       )}
     </>
   );

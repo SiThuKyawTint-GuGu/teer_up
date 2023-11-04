@@ -209,3 +209,14 @@ export const useGetContentSearch = <SearchParamsType, ContentType>(
 ): SWRResponse<ContentType, any> => {
   return useSWR<ContentType>(`/content/search?${routeFilter(params)}`);
 };
+
+interface WatchCountProps {
+  arg: {
+    watched_time: number;
+    content_id: number | string;
+  };
+}
+export const useContentWatchCount = () =>
+  useSWRMutation(`/content/watch-count`, (url, { arg }: WatchCountProps) => {
+    return appAxios.post(url, arg);
+  });
