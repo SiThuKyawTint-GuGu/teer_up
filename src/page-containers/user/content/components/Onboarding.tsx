@@ -6,7 +6,6 @@ import { usePostOnboarding } from "@/services/content";
 import { ContentData, OnBoardingOption } from "@/types/Content";
 import { cn } from "@/utils/cn";
 import React, { useState } from "react";
-import QuestionPageCard from "../../personalized/components/QuestionPageCard";
 type OnboardingProps = {
   data: ContentData;
   parentIndex: string;
@@ -17,14 +16,13 @@ const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
   const { trigger, isMutating } = usePostOnboarding();
 
   return (
-    <QuestionPageCard>
-      <div className="w-full h-[90%]">
-        <CardBox className="flex flex-col flex-wrap px-3  justify-between overflow-y-auto no-scrollbar  w-full h-[90%] bg-white">
+    <CardBox className="w-full h-[80%] bg-white">
+      <div className="w-full h-full">
+        <div className="flex flex-col flex-wrap px-3  justify-between overflow-y-auto no-scrollbar  w-full h-full">
           <div className="text-gray-500 my-4 text-center">
             <Text className="text-[28px] font-[700]  text-center mb-5" as="div">
               {data.name}
             </Text>
-
             <div className="w-full cursor-pointer  flex flex-col flex-wrap gap-y-2 justify-center h-full items-center">
               {data.options &&
                 data.options.length &&
@@ -47,7 +45,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
                 ))}
             </div>
           </div>
-        </CardBox>
+        </div>
       </div>
       {modalOpen && (
         <Modal
@@ -94,7 +92,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
           </div>
         </Modal>
       )}
-    </QuestionPageCard>
+    </CardBox>
   );
 };
 

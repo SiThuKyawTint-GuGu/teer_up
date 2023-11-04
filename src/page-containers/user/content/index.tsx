@@ -3,7 +3,7 @@ import { ParamsType } from "@/services/user";
 import { ContentData } from "@/types/Content";
 
 import Video from "@/page-containers/user/content/components/Video";
-import { useContentWatchCount, useGetContentInfinite } from "@/services/content";
+import { useContentWatchCount, useGetContentInfinite, useSkipOnboarding } from "@/services/content";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { getUserInfo } from "@/utils/auth";
@@ -16,10 +16,12 @@ const UserContent = () => {
   const videoRefs = useRef<HTMLVideoElement[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const [visibleItemIndex, setVisibleItemIndex] = useState<number>(0);
-  const { data, mutate, isLoading } = useGetContentInfinite<ParamsType>({
+  const { data, mutate } = useGetContentInfinite<ParamsType>({
     page: page,
     pageSize: 20,
   });
+
+  const { trigger: skipOnboarding } = useSkipOnboarding();
   const [startTime, setStartTime] = useState<number | null>(null);
   const [totalTimeInView, setTotalTimeInView] = useState<number>(0);
   const { trigger: calculateCount } = useContentWatchCount();
@@ -118,6 +120,25 @@ const UserContent = () => {
             <div className="w-full h-full snap-start" id={index.toString()} key={index}>
               {differentContent(data, index)}
               {index == 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
+              {index == 0 && contentDataArray[visibleItemIndex].type === "onboarding" && (
+                <button
+                  className="text-center w-full text-primary"
+                  onClick={() => {
+                    skipOnboarding(
+                      {
+                        skip: true,
+                      },
+                      {
+                        onSuccess: () => {
+                          mutate();
+                        },
+                      }
+                    );
+                  }}
+                >
+                  Skip for now
+                </button>
+              )}
             </div>
           ))}
         </div>
