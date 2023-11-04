@@ -148,11 +148,17 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
       <div
         ref={containerRef}
         className={`snap-y flex-col snap-mandatory h-full px-2 pb-[46px] w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
+        style={{ scrollSnapStop: "always" }}
       >
         {data?.content_pathways &&
           data?.content_pathways.length > 0 &&
           data?.content_pathways.map((data, index) => (
-            <div className="w-full h-full snap-start" id={data.slug} key={index}>
+            <div
+              className="w-full h-full pt-2 snap-start"
+              style={{ scrollSnapStop: "always" }}
+              id={data.slug}
+              key={index}
+            >
               {differentContent(data, index)}
               {index == 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
             </div>

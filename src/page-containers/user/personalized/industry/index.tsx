@@ -70,7 +70,7 @@ const IndustryPage = () => {
                 ))}
             </div>
           </QuestionPageCard>
-          <div className="fixed bottom-0 w-full max-w-[400px] mx-auto py-2 bg-white">
+          <div className="fixed bottom-0 w-full max-w-[400px] py-2 px-4 mx-auto  bg-white">
             <Button className="w-full" disabled={selectData.length == 0 || isPending} onClick={submitHandler} size="sm">
               Next
             </Button>

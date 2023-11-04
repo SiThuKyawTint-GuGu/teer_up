@@ -115,21 +115,21 @@ const UserContent = () => {
       <div className="w-full h-[calc(100vh-100px)]">
         <div
           ref={containerRef}
-          className={`snap-y flex-col snap-mandatory h-full px-2  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
+          className={`snap-y flex-col snap-mandatory h-full px-2   w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
           style={{ scrollSnapStop: "always" }}
         >
           {contentDataArray?.map((data: ContentData, index) => (
             <div
-              className="w-full h-full snap-start"
+              className="w-full h-full pt-2 snap-start"
               style={{ scrollSnapStop: "always" }}
               id={index.toString()}
               key={index}
             >
               {differentContent(data, index)}
               {index == 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
-              {index == 0 && contentDataArray[visibleItemIndex].type === "onboarding" && (
+              {contentDataArray[visibleItemIndex].type === "onboarding" && (
                 <button
-                  className="text-center w-full text-primary"
+                  className="text-center w-full py-4 text-primary"
                   onClick={() => {
                     skipOnboarding(
                       {

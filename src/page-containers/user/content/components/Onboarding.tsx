@@ -1,7 +1,7 @@
-import Loading from "@/app/loading";
 import { Button } from "@/components/ui/Button";
 import CardBox from "@/components/ui/Card";
 import Modal from "@/components/ui/Modal";
+import Spinner from "@/components/ui/Spinner";
 import { Text } from "@/components/ui/Typo/Text";
 import { usePostOnboarding } from "@/services/content";
 import { ContentData, OnBoardingOption } from "@/types/Content";
@@ -15,6 +15,8 @@ const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
   const [option, setOption] = useState<OnBoardingOption | null>(null);
   const [modalOpen, setOpenModal] = useState<boolean>(false);
   const { trigger, isMutating } = usePostOnboarding();
+
+  const [imageLoading, setImageLoading] = useState(false);
 
   return (
     <CardBox className="w-full h-[80%] bg-white">
@@ -54,43 +56,51 @@ const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
             setOpenModal(false);
           }}
         >
-          <div className="w-full max-w-[400px] p-10 z-[9999999] bg-white rounded-md">
-            {option?.feedback ? (
+          <div className="w-full max-w-[400px] min-w-[200px] p-5 z-[9999999] bg-white rounded-md">
+            {option?.feedback && (
               <>
-                <div
-                  className="text-center w-full"
-                  dangerouslySetInnerHTML={{
-                    __html: option.feedback,
-                  }}
-                />
-                <Button
-                  className="w-full mt-5"
-                  onClick={() => {
-                    trigger(
-                      {
-                        option_id: option.id,
-                        question_id: data.id,
-                      },
-                      {
-                        onSuccess: () => {
-                          setOpenModal(false);
-                          const targetElement = document.getElementById(`${parseInt(parentIndex) + 1}`);
-                          if (targetElement) {
-                            targetElement.scrollIntoView({
-                              behavior: "smooth", // Smooth scroll effect
-                            });
+                {imageLoading ? (
+                  <Spinner className="w-full" color="#DA291C" width={35} height={35} />
+                ) : (
+                  <div className="w-full">
+                    <div
+                      className="text-center w-full"
+                      dangerouslySetInnerHTML={{
+                        __html: option.feedback,
+                      }}
+                      onLoad={() => {
+                        setImageLoading(true); // Set imageLoading to false when the image has loaded
+                      }}
+                    />
+                    <Button
+                      className="w-full mt-5 p-2"
+                      size="sm"
+                      onClick={() => {
+                        trigger(
+                          {
+                            option_id: option.id,
+                            question_id: data.id,
+                          },
+                          {
+                            onSuccess: () => {
+                              setOpenModal(false);
+                              const targetElement = document.getElementById(`${parseInt(parentIndex) + 1}`);
+                              if (targetElement) {
+                                targetElement.scrollIntoView({
+                                  behavior: "smooth", // Smooth scroll effect
+                                });
+                              }
+                            },
                           }
-                        },
-                      }
-                    );
-                  }}
-                  disabled={isMutating}
-                >
-                  Next
-                </Button>
+                        );
+                      }}
+                      disabled={isMutating}
+                    >
+                      Next
+                    </Button>
+                  </div>
+                )}
               </>
-            ) : (
-              <Loading />
             )}
           </div>
         </Modal>
