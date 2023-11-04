@@ -57,16 +57,20 @@ const Profile: React.FC = () => {
       >
         <Grid columns="1">
           <Box className="pb-[55px]">
-            <Flex justify="center" position="relative" className="bg-white" p="3">
-              <Text size="3" weight="medium">
-                Profile
-              </Text>
-              <Flex justify="center" align="center" className="absolute top-0 right-2 bottom-0">
-                <Link href={`/profile/setting`}>
-                  <Icons.profileSetting />
-                </Link>
-              </Flex>
-            </Flex>
+            <div className="mb-[45px]">
+              <div className="fixed top-0 left-0 z-10 w-full shadow-[0px_1px_9px_0px_rgba(0,_0,_0,_0.06)]">
+                <Flex justify="center" position="relative" className="bg-white" p="3">
+                  <Text size="3" weight="medium">
+                    Profile
+                  </Text>
+                  <Flex justify="center" align="center" className="absolute top-0 right-2 bottom-0">
+                    <Link href={`/profile/setting`}>
+                      <Icons.profileSetting />
+                    </Link>
+                  </Flex>
+                </Flex>
+              </div>
+            </div>
             <CardBox className="mb-[7px] rounded-none">
               <Section p="0">
                 <DialogTrigger onClick={() => setTriggerType(PROFILE_TRIGGER.COVER)} className="w-full">
@@ -326,12 +330,23 @@ const Profile: React.FC = () => {
                   <Tabs.Content value="competency" className="space-y-[7px]">
                     <CardBox>
                       <Section className="bg-white" py="4" px="3">
-                        <RadarChart />
+                        <Heading as="h6" size="4" align="left" mb="4">
+                          Assessment chart
+                        </Heading>
+                        <Box>
+                          <RadarChart />
+                          <Button className="w-full">Continue assessment</Button>
+                          <Button variant="link" className="w-full">
+                            Retake assessment
+                          </Button>
+                        </Box>
                       </Section>
                     </CardBox>
                     <CardBox>
                       <Section className="bg-white" py="4" px="3">
-                        <Heading>Here’s what we noticed about your competencies:</Heading>
+                        <Heading as="h6" size="4" align="left" mb="4">
+                          Here’s what we noticed about your competencies:
+                        </Heading>
                         {userDimensionData?.data?.length && (
                           <>
                             {userDimensionData?.data?.map((each, key) => (
@@ -348,11 +363,13 @@ const Profile: React.FC = () => {
                     </CardBox>
                     <CardBox>
                       <Section className="bg-white" py="4" px="3">
-                        <Heading>Here’s what we noticed about your competencies:</Heading>
+                        <Heading as="h6" size="4" align="left" mb="4">
+                          Here’s what we noticed about your competencies:
+                        </Heading>
                         {userDimensionData?.data?.length && (
                           <>
                             {userDimensionData?.data?.map((each, key) => (
-                              <Box key={key} className="bg-[#F8F9FB] rounded-[8px]" mb="4" p="3">
+                              <Box key={key} className="bg-[#F8F9FB] rounded-[8px] space-y-4" mb="4" p="3">
                                 <Flex justify="start" align="start" gap="2">
                                   <div className="w-[12px] h-[12px] mt-[5px] rounded-sm bg-primary" />
                                   <Text className="w-[calc(100%-12px)]">{each.skill_body}</Text>

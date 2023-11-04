@@ -9,31 +9,38 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form";
 import { Icons, Image } from "@/components/ui/Images";
 import Modal from "@/components/ui/Modal";
 import { Text } from "@/components/ui/Typo/Text";
-import { useGetOtp, useOtpVerified } from "@/services/user";
-import { setUserInfo } from "@/utils/auth";
+import { useOtpVerified } from "@/services/user";
+import { AUTH_TYPE, JWT_DECODE, getToken, setUserInfo } from "@/utils/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Flex, Grid, Heading } from "@radix-ui/themes";
+import jwt_decode from "jwt-decode";
 import OtpInput from "react-otp-input";
 
 const validationSchema = yup.object({
   verificationCode: yup.string().required("Enter verification code"),
 });
+
 interface OtpFormData {
   verificationCode: string;
 }
+
 const Otp = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [otp, setOtp] = useState<string>("");
-  const router = useRouter();
   const { isMutating: verifiedLoading, trigger: verified, error } = useOtpVerified();
-  const { isMutating, trigger: getOtpCode } = useGetOtp();
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const getOtp = async () => {
-    await getOtpCode();
-  };
+  const token = getToken();
+  const jwtDecode = jwt_decode(token) as JWT_DECODE;
+  // const { isMutating, trigger: getOtpCode } = useGetOtp();
+
+  // const getOtp = async () => {
+  //   await getOtpCode();
+  // };
+
   const form = useForm({
     resolver: yupResolver(validationSchema),
   });
+
   const onSubmit = async (data: OtpFormData) => {
     await verified(data, {
       onSuccess: res => {
@@ -54,9 +61,11 @@ const Otp = () => {
             <Button onClick={() => router.back()} className="p-0" variant="ghost">
               <Icons.back className="text-[#373A36] w-[23px] h-[23px]" />
             </Button>
-            <Button className="text-primary p-0" variant="ghost" onClick={() => setModalOpen(true)}>
-              Skip for now
-            </Button>
+            {jwtDecode?.type === AUTH_TYPE.SIGNUP && (
+              <Button className="text-primary p-0" variant="ghost" onClick={() => setModalOpen(true)}>
+                Skip for now
+              </Button>
+            )}
           </Flex>
           <Flex direction="column" justify="start" align="center" wrap="wrap" mt="6">
             <div>{error && <div className="text-primary">{error.response.data.message}</div>}</div>
@@ -65,7 +74,7 @@ const Otp = () => {
             </Flex>
             <div className="flex justify-start w-full flex-col mb-[32px] flex-wrap gap-y-3">
               <Heading as="h3" size="6">
-                Enter OTP
+                {jwtDecode?.type === AUTH_TYPE.SIGNUP ? "Verify email" : "Enter OTP"}
               </Heading>
               <Text size="3" weight="light">
                 Check your inbox and enter the received OTP
@@ -104,10 +113,10 @@ const Otp = () => {
                   )}
                 />
 
-                <Button type="submit" loading={isPending || isMutating} disabled={isPending || verifiedLoading}>
+                <Button type="submit" loading={isPending} disabled={isPending || verifiedLoading}>
                   Login
                 </Button>
-                <Button variant="link">Change email</Button>
+                {jwtDecode?.type === AUTH_TYPE.SIGNUP && <Button variant="link">Change email</Button>}
               </form>
               {/* <Button onClick={getOtp} disabled={isMutating}>
             Resend Varification

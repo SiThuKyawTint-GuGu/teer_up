@@ -61,17 +61,21 @@ const ProfileEdit: React.FC = () => {
       <Dialog open={open} onOpenChange={val => setOpen(val)}>
         <Grid columns="1">
           <Box className="pb-[55px]">
-            <Flex justify="between" align="center" className="bg-white" p="3">
-              <Link href="/profile">
-                <Icons.back className="text-[#373A36] w-[23px] h-[23px]" />
-              </Link>
-              <Text size="3" weight="medium">
-                Edit Profile
-              </Text>
-              <Link href="/" className="opacity-0">
-                <Icons.plus className="text-primary w-[23px] h-[23px]" />
-              </Link>
-            </Flex>
+            <div className="mb-[45px]">
+              <div className="fixed top-0 left-0 z-10 w-full shadow-[0px_1px_9px_0px_rgba(0,_0,_0,_0.06)]">
+                <Flex justify="between" align="center" className="bg-white" p="3">
+                  <Link href="/profile">
+                    <Icons.back className="text-[#373A36] w-[23px] h-[23px]" />
+                  </Link>
+                  <Text size="3" weight="medium">
+                    Edit Profile
+                  </Text>
+                  <Link href="/" className="opacity-0">
+                    <Icons.plus className="text-primary w-[23px] h-[23px]" />
+                  </Link>
+                </Flex>
+              </div>
+            </div>
             <CardBox className="mb-[7px] rounded-none">
               <Section className="bg-white" py="4" px="3">
                 <div>
@@ -156,6 +160,14 @@ const ProfileEdit: React.FC = () => {
                     <Text className="text-primary">Edit</Text>
                   </Link>
                 </Flex>
+                <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
+                  <Flex direction="column" gap="2">
+                    <Text as="label" weight="bold" size="3">
+                      Name
+                    </Text>
+                    <Text className="capitalize">{userProfile?.name ? userProfile?.name : "-"}</Text>
+                  </Flex>
+                </div>
                 <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
                   <Flex direction="column" gap="2">
                     <Text as="label" weight="bold" size="3">
