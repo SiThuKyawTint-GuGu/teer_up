@@ -223,14 +223,26 @@ const QuestionDetail = ({ id }: Props) => {
                   name={`options[${index}].name` as any}
                   control={control}
                   render={({ field }) => (
-                    <TextField
-                      {...field}
-                      label="Answer"
-                      InputLabelProps={{ shrink: !!option.name }}
-                      defaultValue={option.name}
-                      className="w-full"
-                      variant="outlined"
-                    />
+                    <>
+                      {option.name ? (
+                        <TextField
+                          {...field}
+                          label="Answer"
+                          InputLabelProps={{ shrink: !!option.name }}
+                          defaultValue={option.name}
+                          className="w-full"
+                          variant="outlined"
+                        />
+                      ) : (
+                        <TextField
+                          {...field}
+                          label="Answer"
+                          defaultValue={option.name}
+                          className="w-full"
+                          variant="outlined"
+                        />
+                      )}
+                    </>
                   )}
                 />
                 <p className="mt-2 text-red-700">{errors.options?.[index]?.name?.message}</p>
@@ -241,15 +253,30 @@ const QuestionDetail = ({ id }: Props) => {
                   name={`options[${index}].score` as any}
                   control={control}
                   render={({ field }) => (
-                    <TextField
-                      {...field}
-                      label="Score"
-                      type={"number"}
-                      InputLabelProps={{ shrink: !!option.score }}
-                      defaultValue={option.score}
-                      className="w-full"
-                      variant="outlined"
-                    />
+                    <>
+                      {option.score ? (
+                        <TextField
+                          {...field}
+                          label="Score"
+                          type={"number"}
+                          id="score"
+                          InputLabelProps={{ shrink: !!option.score }}
+                          defaultValue={option.score}
+                          className="w-full"
+                          variant="outlined"
+                        />
+                      ) : (
+                        <TextField
+                          {...field}
+                          label="Score"
+                          type={"number"}
+                          id="score"
+                          defaultValue={option.score}
+                          className="w-full"
+                          variant="outlined"
+                        />
+                      )}
+                    </>
                   )}
                 />
                 <p className="mt-2 text-red-700">{errors.options?.[index]?.score?.message}</p>

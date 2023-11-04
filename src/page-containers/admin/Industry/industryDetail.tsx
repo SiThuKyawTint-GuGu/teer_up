@@ -65,19 +65,19 @@ const IndustryDetail = ({ id }: Props) => {
 
   const Submit = async (data: any) => {
     const options = selectedDepartment.map(dep => dep.id);
+    if (options.length <= 0) {
+      setError("Department is required!");
+      return;
+    }
     const joinData = {
       departments: options,
       industry_id: industry?.data.id,
     };
     if (industry?.data) {
-      if (options.length <= 0) {
-        setError("Department is required!");
-        return;
-      }
-      await updateTrigger({ id, name: data?.name });
       await updateJoinDepartment(joinData);
+      await updateTrigger({ id, name: data?.name, departments: options });
     } else {
-      await createTrigger({ name: data?.name });
+      await createTrigger({ name: data?.name, departments: options });
     }
     router.push("/admin/configs/industry");
   };
@@ -87,8 +87,8 @@ const IndustryDetail = ({ id }: Props) => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit(Submit)} className="bg-white h-full p-5">
+    <>
+      <form onSubmit={handleSubmit(Submit)} className="h-full p-5">
         {createError && (
           <Alert sx={{ marginBottom: "20px", width: "60%", marginLeft: "12px" }} severity="error">
             {createError.response.data.error}
@@ -122,19 +122,18 @@ const IndustryDetail = ({ id }: Props) => {
           )}
           <p className="mt-2 text-red-700">{errors.name?.message}</p>
         </div>
-        {industry?.data && (
-          <div className="my-10">
-            <Autocomplete
-              multiple
-              id="tags-outlined"
-              options={departmentOptions || []}
-              value={selectedDepartment}
-              onChange={handleDepartmentChange}
-              renderInput={params => <TextField {...params} label="Departments" placeholder="Departments" />}
-            />
-            {error && <p className="mt-2 text-red-700">{error}</p>}
-          </div>
-        )}
+
+        <div className="my-10">
+          <Autocomplete
+            multiple
+            id="tags-outlined"
+            options={departmentOptions || []}
+            value={selectedDepartment}
+            onChange={handleDepartmentChange}
+            renderInput={params => <TextField {...params} label="Departments" placeholder="Departments" />}
+          />
+          {error && <p className="mt-2 text-red-700">{error}</p>}
+        </div>
 
         <div className="flex justify-between">
           <div></div>
@@ -165,7 +164,7 @@ const IndustryDetail = ({ id }: Props) => {
           </div>
         </div>
       </form>
-    </div>
+    </>
   );
 };
 
