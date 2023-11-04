@@ -6,6 +6,7 @@ import { CommentData, CommentResponse, ContentData } from "@/types/Content";
 import { showTime } from "@/utils/time";
 import { Flex } from "@radix-ui/themes";
 import React, { useMemo, useState } from "react";
+import { Button } from "../ui/Button";
 import { Text } from "../ui/Typo/Text";
 type CommentSectionProp = {
   data: ContentData;
@@ -92,13 +93,14 @@ const CommentSection: React.FC<CommentSectionProp> = ({ data, mutateParentData }
           <div className="w-full z-[9]">
             <div className="w-full flex font-[16px]">
               <CmtInput setValue={setCommentValue} value={commentValue} />
-              <button
+              <Button
                 onClick={postSubmitHandler}
                 className={`${isMutating ? "text-slateGray" : "text-primary"} p-1`}
                 disabled={isMutating}
+                loading={isMutating}
               >
                 Send
-              </button>
+              </Button>
             </div>
           </div>
         </Flex>
