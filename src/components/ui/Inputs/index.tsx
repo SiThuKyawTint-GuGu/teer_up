@@ -71,32 +71,45 @@ InputText.defaultProps = {
 
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   variant?: "contain";
-  onChange?: any;
+  onChange?: () => void;
   slotDir?: SLOT_DIRECTION;
+  onClear?: () => void;
 };
 
 const InputSearch = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ type = "text", placeholder, className, variant, defaultValue, slotDir, onChange }, ref) => {
+  ({ type = "text", placeholder, className, variant, defaultValue, slotDir, onClear, onChange }, ref) => {
     return (
       <InputStyled className={cn("w-full shadow-input", variant && "rounded-full bg-[#e1e5e9]")}>
         <TextField.Root>
           {slotDir === SLOT_DIRECTION.LEFT && (
-            <TextField.Slot pr="3">
+            <TextField.Slot>
               <IconButton size="2" variant="ghost">
                 <Icons.search className={cn("w-[24px] h-[24px] text-[#5B6770]", variant && "text-[#8d9499]")} />
               </IconButton>
             </TextField.Slot>
           )}
+
+          {/* /** cross button */}
+          {slotDir === SLOT_DIRECTION.RIGHT && (
+            <TextField.Slot>
+              <IconButton size="1" variant="ghost">
+                <Icons.cross
+                  onClick={onClear}
+                  className={cn("w-[20px] h-[20px] text-[#5B6770]", variant && "text-[#8d9499]")}
+                />
+              </IconButton>
+            </TextField.Slot>
+          )}
           <TextField.Input
             type={type}
-            className={cn(className, variant && "placeholder-[#373A36]", slotDir === SLOT_DIRECTION.RIGHT && "pl-3")}
+            className={cn(className, variant && "placeholder-[#373A36]")}
             placeholder={placeholder}
             ref={ref}
             onChange={onChange}
             defaultValue={defaultValue}
           />
           {slotDir === SLOT_DIRECTION.RIGHT && (
-            <TextField.Slot pr="3">
+            <TextField.Slot>
               <IconButton size="2" variant="ghost">
                 <Icons.search className={cn("w-[24px] h-[24px] text-[#5B6770]", variant && "text-[#8d9499]")} />
               </IconButton>
@@ -108,6 +121,9 @@ const InputSearch = React.forwardRef<HTMLInputElement, InputProps>(
   }
 );
 InputSearch.displayName = "InputSearch";
+InputSearch.defaultProps = {
+  slotDir: SLOT_DIRECTION.LEFT,
+};
 
 const InputTextArea = React.forwardRef<HTMLInputElement, Props>(
   (

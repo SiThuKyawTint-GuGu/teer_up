@@ -3,16 +3,20 @@ import { Icons, Image } from "@/components/ui/Images";
 import { InputSearch, SLOT_DIRECTION } from "@/components/ui/Inputs";
 import { Flex } from "@radix-ui/themes";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import React, { useEffect, useRef } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { useRef, useTransition } from "react";
 
 const Header: React.FC = () => {
+  const router = useRouter();
   const { get } = useSearchParams();
   const inputRef = useRef<any>(null);
+  const [, startTransition] = useTransition();
 
-  useEffect(() => {
-    // inputRef?.current?.value
-  }, []);
+  const handleClearSearch = () => {
+    startTransition(() => {
+      router.push("/browse");
+    });
+  };
 
   return (
     <header className="w-full max-w-[400px] h-[48px] mx-auto bg-white fixed top-0 z-10 shadow-[0px_1px_9px_0px_rgba(0,_0,_0,_0.06)]">
@@ -27,6 +31,7 @@ const Header: React.FC = () => {
             placeholder="Search"
             defaultValue={get("search") || ""}
             slotDir={SLOT_DIRECTION.RIGHT}
+            onClear={handleClearSearch}
           />
         ) : (
           <Flex justify="center" align="center" className="absolute top-0 right-2 bottom-0">
