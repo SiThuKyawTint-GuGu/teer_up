@@ -95,12 +95,15 @@ const DimensionDetailPage = ({ id }: Props) => {
   };
 
   const handleSelectHighPathwayChange = (event: any, newValue: any) => {
+    setSearchContent("");
     setSelectedHighContent(newValue);
   };
   const handleSelectMediumPathwayChange = (event: any, newValue: any) => {
+    setSearchContent("");
     setSelectedMediumContent(newValue);
   };
   const handleSelectLowPathwayChange = (event: any, newValue: any) => {
+    setSearchContent("");
     setSelectedLowContent(newValue);
   };
 
