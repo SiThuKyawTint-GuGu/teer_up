@@ -30,7 +30,7 @@ const Otp = () => {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const token = getToken();
-  const jwtDecode = jwt_decode(token) as JWT_DECODE;
+  const jwtDecode = token && (jwt_decode(token) as JWT_DECODE);
   // const { isMutating, trigger: getOtpCode } = useGetOtp();
 
   // const getOtp = async () => {
