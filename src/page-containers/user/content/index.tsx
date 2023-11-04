@@ -30,6 +30,7 @@ const UserContent = () => {
   useEffect(() => {
     if (containerRef.current) {
       const container = containerRef.current;
+
       const handleScroll = () => {
         const scrollPosition = container.scrollTop;
         const newIndex = Math.round(scrollPosition / (window.innerHeight - 96));
@@ -115,9 +116,15 @@ const UserContent = () => {
         <div
           ref={containerRef}
           className={`snap-y flex-col snap-mandatory h-full px-2  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
+          style={{ scrollSnapStop: "always" }}
         >
           {contentDataArray?.map((data: ContentData, index) => (
-            <div className="w-full h-full snap-start" id={index.toString()} key={index}>
+            <div
+              className="w-full h-full snap-start"
+              style={{ scrollSnapStop: "always" }}
+              id={index.toString()}
+              key={index}
+            >
               {differentContent(data, index)}
               {index == 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
               {index == 0 && contentDataArray[visibleItemIndex].type === "onboarding" && (

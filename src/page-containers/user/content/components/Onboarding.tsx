@@ -1,3 +1,4 @@
+import Loading from "@/app/loading";
 import { Button } from "@/components/ui/Button";
 import CardBox from "@/components/ui/Card";
 import Modal from "@/components/ui/Modal";
@@ -20,7 +21,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
       <div className="w-full h-full">
         <div className="flex flex-col flex-wrap px-3  justify-between overflow-y-auto no-scrollbar  w-full h-full">
           <div className="text-gray-500 my-4 text-center">
-            <Text className="text-[28px] font-[700]  text-center mb-5" as="div">
+            <Text className="text-[20px] font-[700]  text-center mb-5" as="div">
               {data.name}
             </Text>
             <div className="w-full cursor-pointer  flex flex-col flex-wrap gap-y-2 justify-center h-full items-center">
@@ -53,8 +54,8 @@ const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
             setOpenModal(false);
           }}
         >
-          <div className="w-full p-10 z-[9999999] bg-white rounded-md">
-            {option && (
+          <div className="w-full max-w-[400px] p-10 z-[9999999] bg-white rounded-md">
+            {option?.feedback ? (
               <>
                 <div
                   className="text-center w-full"
@@ -88,6 +89,8 @@ const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
                   Next
                 </Button>
               </>
+            ) : (
+              <Loading />
             )}
           </div>
         </Modal>
