@@ -6,8 +6,10 @@ import Video from "@/page-containers/user/content/components/Video";
 import { useContentWatchCount, useGetContentInfinite } from "@/services/content";
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import { getUserInfo } from "@/utils/auth";
 import ContentLayout from "./components/ContentLayout";
 import Onboarding from "./components/Onboarding";
+const user = getUserInfo();
 const UserContent = () => {
   const [page, setPage] = useState<number>(1);
   const [videos, setVideos] = useState<any>([]);
@@ -35,11 +37,13 @@ const UserContent = () => {
             const endTime = Date.now();
             const timeInMilliseconds = endTime - startTime;
             setTotalTimeInView((totalTimeInView + timeInMilliseconds) / 1000);
-            if (contentDataArray) {
-              calculateCount({
-                watched_time: totalTimeInView,
-                content_id: contentDataArray[visibleItemIndex].id,
-              });
+            if (contentDataArray && contentDataArray[visibleItemIndex].type !== "onboarding") {
+              if (user) {
+                calculateCount({
+                  watched_time: totalTimeInView,
+                  content_id: contentDataArray[visibleItemIndex].id,
+                });
+              }
             }
           }
           setStartTime(Date.now());

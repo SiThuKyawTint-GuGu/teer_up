@@ -2,6 +2,7 @@
 import { Icons } from "@/components/ui/Images";
 import { useContentWatchCount } from "@/services/content";
 import { ContentData } from "@/types/Content";
+import { getUserInfo } from "@/utils/auth";
 import { Flex } from "@radix-ui/themes";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import ContentLayout from "./ContentLayout";
@@ -11,6 +12,7 @@ type PathwayDetailProp = {
   data: ContentData;
   contentMutate: any;
 };
+const user = getUserInfo();
 const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => {
   const [videos, setVideos] = useState<any>([]);
   const [showPathTitle, setShowPathTitle] = useState<boolean>(false);
@@ -87,10 +89,12 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
             const timeInMilliseconds = endTime - startTime;
             setTotalTimeInView((totalTimeInView + timeInMilliseconds) / 1000);
             if (data && data.content_pathways) {
-              calculateCount({
-                watched_time: totalTimeInView,
-                content_id: data.content_pathways[visibleItemIndex].id,
-              });
+              if (user) {
+                calculateCount({
+                  watched_time: totalTimeInView,
+                  content_id: data.content_pathways[visibleItemIndex].id,
+                });
+              }
             }
           }
           setStartTime(Date.now());
