@@ -16,8 +16,6 @@ import Link from "next/link";
 import React, { useState } from "react";
 dayjs.extend(relativeTime);
 
-// "All content types", "Article", "Event", "Opportunity", "Pathway", "Video"
-
 const filterNames = [
   {
     key: SAVED_CONTENT_TYPES.ALL,
@@ -49,8 +47,14 @@ const filterNames = [
   },
 ];
 
+enum TRIGGER_TYPE {
+  FILTER = "FILTER",
+  UNFINISHED = "UNFINISHED",
+}
+
 const SavedList: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
+  const [triggerType, setTriggerType] = useState<TRIGGER_TYPE>();
   const [filteredType, setFilterTypes] = useState<{
     key: SAVED_CONTENT_TYPES;
     value: string;
@@ -70,7 +74,7 @@ const SavedList: React.FC = () => {
             <Heading as="h6" size="4" align="left">
               Saved items
             </Heading>
-            <DialogTrigger>
+            <DialogTrigger onClick={() => setTriggerType(TRIGGER_TYPE.FILTER)}>
               <Button variant="ghost" className="text-primary">
                 {filteredType.key === SAVED_CONTENT_TYPES.ALL ? "All" : filteredType.value}
                 <Icons.caretDown />
@@ -79,9 +83,15 @@ const SavedList: React.FC = () => {
           </Flex>
           <Box className="pb-[7px]">
             <Section className="" py="4" px="3">
-              <Button variant="link" className="w-full">
-                Continue unfinished pathway
-              </Button>
+              <DialogTrigger className="w-full" onClick={() => setTriggerType(TRIGGER_TYPE.UNFINISHED)}>
+                <Button
+                  onClick={() => setTriggerType(TRIGGER_TYPE.UNFINISHED)}
+                  variant="outline"
+                  className="w-full mb-4"
+                >
+                  Continue unfinished pathway
+                </Button>
+              </DialogTrigger>
               {savedContents?.data?.length ? (
                 savedContents?.data?.map((each, key) => (
                   <Link key={key} href={`/content/${each?.content?.slug}`}>
@@ -125,29 +135,43 @@ const SavedList: React.FC = () => {
           </Box>
         </Box>
       </Grid>
-      <DialogContent className="bg-white top-[initial] bottom-0 px-4 py-8 translate-y-0 rounded-10px-tl-tr">
-        <Text className="text-[20px] font-bold">Show only</Text>
-        <Box>
-          {filterNames.map((each, key) => (
-            <div
-              key={key}
-              className={cn(
-                "pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]",
-                each.key === filteredType.key && "text-primary"
-              )}
-              onClick={() => setFilterTypes(each)}
-            >
-              <DialogClose className="w-full">
-                <Flex justify="between" align="center" gap="2">
-                  <Text as="label" weight="bold" size="3">
-                    {each.value}
-                  </Text>
-                  <Icons.check />
-                </Flex>
-              </DialogClose>
-            </div>
-          ))}
-        </Box>
+      <DialogContent
+        className={cn(
+          "bg-white top-[initial] bottom-0 px-4 py-8 translate-y-0 rounded-10px-tl-tr",
+          triggerType === TRIGGER_TYPE.UNFINISHED && "top-0 rounded-none"
+        )}
+      >
+        {triggerType === TRIGGER_TYPE.FILTER ? (
+          <>
+            <Text className="text-[20px] font-bold">Show only</Text>
+            <Box>
+              {filterNames.map((each, key) => (
+                <div
+                  key={key}
+                  className={cn(
+                    "pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]",
+                    each.key === filteredType.key && "text-primary"
+                  )}
+                  onClick={() => setFilterTypes(each)}
+                >
+                  <DialogClose className="w-full">
+                    <Flex justify="between" align="center" gap="2">
+                      <Text as="label" weight="bold" size="3">
+                        {each.value}
+                      </Text>
+                      <Icons.check />
+                    </Flex>
+                  </DialogClose>
+                </div>
+              ))}
+            </Box>
+          </>
+        ) : (
+          <>
+            <Text className="text-[20px] font-bold">Continue unfinished pathway</Text>
+            <Box></Box>
+          </>
+        )}
       </DialogContent>
     </Dialog>
   );
