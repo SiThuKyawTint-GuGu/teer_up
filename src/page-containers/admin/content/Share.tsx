@@ -9,7 +9,7 @@ const domain: string = process.env.NEXT_PUBLIC_DOMAIN as string;
 const Share: React.FC<{ url: string }> = ({ url }) => {
   const [copy, setCopy] = useState<boolean>(false);
   return (
-    <div className="bg-white w-screen  max-w-[400px] px-4 pt-8 pb-2 translate-y-0 rounded-10px-tl-tr">
+    <div className="bg-white w-full px-4 pb-2 ">
       <div className="bg-primary rounded-[6px] w-[60px] h-[2px] mx-auto" />
       <div className="text-[24px] font-[700]">Share To</div>
       <Flex gap="5" className="py-[20px]">

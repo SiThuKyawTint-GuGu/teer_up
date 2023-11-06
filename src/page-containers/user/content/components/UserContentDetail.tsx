@@ -35,7 +35,7 @@ const UserContentDetail: React.FC<ContentlayoutProps> = () => {
         <div className="fixed max-w-[400px]  w-full  top-0  mx-auto flex flex-wrap">
           <ContentDetailHeader title={`${contentData?.type} detail`} />
         </div>
-        <div className="pt-[48px] w-full h-screen">{getContentDetail()}</div>
+        <div className="w-full h-screen py-[48px]">{getContentDetail()}</div>
 
         {openModal && (
           <DialogContent className="bg-white top-[initial] bottom-0 max-w-[400px] px-4 pt-8 pb-2 translate-y-0 rounded-10px-tl-tr">

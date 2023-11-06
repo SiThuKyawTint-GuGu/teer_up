@@ -14,7 +14,7 @@ const NormalContentDetail: React.FC<NormalContentDetailProp> = ({ data, contentM
   return (
     <>
       {data && (
-        <div className="w-full min-h-[90vh] h-full bg-white pb-[70px]">
+        <div className="w-full min-h-[90vh]  h-full bg-white no-scrollbar  overflow-auto">
           {" "}
           <div className="w-full mx-auto h-[40%] relative p-2">
             <div
@@ -30,10 +30,10 @@ const NormalContentDetail: React.FC<NormalContentDetailProp> = ({ data, contentM
               )}
             </div>
           </div>
-          <div className="w-full px-[16px] bg-white">
-            <div className="w-full">
+          <div className="w-full px-[16px] h-full bg-white">
+            <div className="w-full h-full">
               <h1 className="font-[700] text-[24px]">{data?.title}</h1>
-              <div className="w-full flex flex-col flex-wrap gap-y-3">
+              <div className="w-full h-full flex flex-col flex-wrap gap-y-3">
                 <div
                   dangerouslySetInnerHTML={{
                     __html: data?.description,

@@ -1,11 +1,11 @@
 "use client";
-import { ParamsType } from "@/services/user";
 import { ContentData } from "@/types/Content";
 
 import Video from "@/page-containers/user/content/components/Video";
-import { useContentWatchCount, useGetContentInfinite, useSkipOnboarding } from "@/services/content";
+import { ParamsType, useContentWatchCount, useGetContentInfinite, useSkipOnboarding } from "@/services/content";
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import { Button } from "@/components/ui/Button";
 import { getUserInfo } from "@/utils/auth";
 import ContentLayout from "./components/ContentLayout";
 import Onboarding from "./components/Onboarding";
@@ -18,7 +18,7 @@ const UserContent = () => {
   const [visibleItemIndex, setVisibleItemIndex] = useState<number>(0);
   const { data, mutate } = useGetContentInfinite<ParamsType>({
     page: page,
-    pageSize: 20,
+    pagesize: 20,
   });
 
   const { trigger: skipOnboarding } = useSkipOnboarding();
@@ -128,7 +128,8 @@ const UserContent = () => {
               {differentContent(data, index)}
               {index == 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
               {contentDataArray[visibleItemIndex].type === "onboarding" && (
-                <button
+                <Button
+                  variant="link"
                   className="text-center w-full py-4 text-primary"
                   onClick={() => {
                     skipOnboarding(
@@ -144,7 +145,7 @@ const UserContent = () => {
                   }}
                 >
                   Skip for now
-                </button>
+                </Button>
               )}
             </div>
           ))}
