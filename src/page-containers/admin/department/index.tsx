@@ -52,13 +52,25 @@ const Department: React.FC = () => {
         accessorKey: "created_at",
         header: "Created At",
         enableEditing: false,
-        Cell: ({ row }: any) => dayjs(row.original.created_at).format("MMM D, YYYY h:mm A"),
+        Cell: ({ row }: any) => {
+          const createdAt = row.original.created_at;
+          if (createdAt && dayjs(createdAt).isValid()) {
+            return dayjs(createdAt).format("MMM D, YYYY h:mm A");
+          }
+          return "";
+        },
       },
       {
         accessorKey: "updated_at",
         header: "Upated At",
         enableEditing: false,
-        Cell: ({ row }: any) => dayjs(row.original.updated_at).format("MMM D, YYYY h:mm A"),
+        Cell: ({ row }: any) => {
+          const updatedAt = row.original.updated_at;
+          if (updatedAt && dayjs(updatedAt).isValid()) {
+            return dayjs(updatedAt).format("MMM D, YYYY h:mm A");
+          }
+          return "";
+        },
       },
     ],
     [validationErrors]

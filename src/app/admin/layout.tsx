@@ -23,7 +23,7 @@ const AdminLayout = ({ children }: Props) => {
           </main>
         </PageLayout>
       ) : (
-        <main className="bg-white h-full w-full p-0 " style={{ height: "100vh" }}>
+        <main className="bg-white w-full p-0 " style={{ height: "100vh" }}>
           {children}
         </main>
       )}

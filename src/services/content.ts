@@ -31,6 +31,7 @@ interface FileArgType {
   arg: {
     file?: any;
     data?: any;
+    handleProgress?: any;
   };
 }
 export const useGetContentInfinite = <ParamsType>(params?: ParamsType): SWRInfiniteResponse<ContentType> => {
@@ -66,6 +67,12 @@ export const usePostFile = () =>
     return appAxios.post<{ data: { file_path: string } }>(url, arg, {
       headers: {
         "Content-Type": "multipart/form-data",
+      },
+      onUploadProgress: (progressEvent: any) => {
+        if (arg.handleProgress) {
+          const uploadPercentage = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          arg.handleProgress(uploadPercentage);
+        }
       },
     });
   });
