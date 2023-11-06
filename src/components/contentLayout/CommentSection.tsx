@@ -98,6 +98,7 @@ const CommentSection: React.FC<CommentSectionProp> = ({ data, mutateParentData }
                 className={`${isMutating ? "text-slateGray" : "text-primary"} p-1`}
                 disabled={isMutating}
                 loading={isMutating}
+                variant="destructive"
               >
                 Send
               </Button>

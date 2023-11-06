@@ -1,6 +1,6 @@
 import { Icons } from "@/components/ui/Images";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import { Text } from "../../../../components/ui/Typo/Text";
 
@@ -13,11 +13,17 @@ type QuestionPageCardProp = {
 };
 const QuestionPageCard: React.FC<QuestionPageCardProp> = ({ children, title, layout, subTitle, nextPage }) => {
   const router = useRouter();
+  const pathname = usePathname();
   return (
     <>
       {layout && (
         <div className="flex justify-between h-[48px] items-center px-2  bg-white fixed top-0 w-full max-w-[400px] mx-auto">
-          <div onClick={() => router.back()}>
+          <div
+            onClick={() => {
+              if (pathname === "/industry") return;
+              router.back();
+            }}
+          >
             <Icons.back className="w-[20px] h-[20px]" />
           </div>
           <Link href={nextPage || "/home"}>

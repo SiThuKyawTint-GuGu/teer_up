@@ -7,7 +7,7 @@ import { useLikeContent, useSaveContent } from "@/services/content";
 import { ContentData } from "@/types/Content";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useState, useTransition } from "react";
 import CommentSection from "../../../../components/contentLayout/CommentSection";
 import Share from "./Share";
 type ContentlayoutProps = {
@@ -25,6 +25,7 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
   const router = useRouter();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [openShare, setOpenShare] = useState<boolean>(false);
+  const [ispending, startTransition] = useTransition();
 
   const likePost = async () => {
     await like(
@@ -89,10 +90,18 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
                 </Link>
                 <div>
                   <div className="mt-2 cursor-pointer  w-full flex justify-between flex-col">
-                    {data.type === "event" && <Button onClick={() => router.push(redir)}>Join Now</Button>}
-                    {data.type === "opportunity" && <Button onClick={() => router.push(redir)}>Apply Now</Button>}
-                    {data.type === "pathway" && <Button onClick={() => router.push(redir)}>Join Now</Button>}
-                    {data.type === "mentor" && <Button onClick={() => router.push(redir)}>Request Mentorship</Button>}
+                    <Button
+                      disabled={ispending}
+                      onClick={() =>
+                        startTransition(() => {
+                          router.push(`/content/${data.slug}`);
+                        })
+                      }
+                    >
+                      {(data.type === "event" || data.type === "pathway") && "Join Now"}
+                      {data.type === "opportunity" && "Apply Now"}
+                      {data.type === "mentor" && "Request Mentorship"}
+                    </Button>
                   </div>
                   <div className="flex justify-between p-3 w-full">
                     <button className="flex items-center flex-wrap gap-x-[10px]" onClick={likePost}>

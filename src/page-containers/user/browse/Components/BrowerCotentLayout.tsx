@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/Button";
 import CardBox from "@/components/ui/Card";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons } from "@/components/ui/Images";
@@ -66,21 +67,23 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, conte
                   </video>
                 </div>
               ) : (
-                <div
-                  className="relative w-full h-[200px]"
-                  style={{
-                    background: `url(${data.image_url}) center / cover`,
-                  }}
-                >
-                  {data.type !== "video" && (
-                    <div className="absolute top-0 right-0 bg-white text-[14px] font-[600] px-[16px] py-[4px] rounded-bl-lg shadow-lg uppercase">
-                      {data.type}
-                    </div>
-                  )}
-                </div>
+                <Link href={`/content/${data.slug}`}>
+                  <div
+                    className="relative w-full h-[200px]"
+                    style={{
+                      background: `url(${data.image_url}) center / cover`,
+                    }}
+                  >
+                    {data.type !== "video" && (
+                      <div className="absolute top-0 right-0 bg-white text-[14px] font-[600] px-[16px] py-[4px] rounded-bl-lg shadow-lg uppercase">
+                        {data.type}
+                      </div>
+                    )}
+                  </div>
+                </Link>
               )}
             </div>
-            <Link href={redir} scroll>
+            <Link href={redir}>
               <div className="w-full px-[16px] bg-white cursor-pointer">
                 <h1 className="font-[700] text-[24px]">{data.title}</h1>
                 {data.description && (
@@ -101,7 +104,7 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, conte
               </div>
             </Link>
             <div className="flex justify-between p-3 w-full">
-              <button className="flex items-center flex-wrap gap-x-[10px]" onClick={likePost}>
+              <Button variant="link" className="flex items-center flex-wrap gap-x-[10px]" onClick={likePost}>
                 {data.is_liked ? (
                   <Icons.likefill className="w-[20px] h-[20px] text-primary" />
                 ) : (
@@ -111,7 +114,7 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, conte
                   {""}
                   {data.likes}
                 </div>
-              </button>
+              </Button>
               <DialogTrigger>
                 <div className="flex items-center flex-wrap gap-x-[10px]">
                   <Icons.comment className="w-[20px] h-[20px]" />
@@ -121,7 +124,7 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, conte
                   </div>
                 </div>
               </DialogTrigger>
-              <button className="flex items-center flex-wrap gap-x-[10px]" onClick={saveContent}>
+              <Button variant="link" className="flex items-center flex-wrap gap-x-[10px]" onClick={saveContent}>
                 {data.is_saved ? (
                   <Icons.savedFill className="w-[20px] h-[20px] text-primary" />
                 ) : (
@@ -132,7 +135,7 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, conte
                   {""}
                   {data.saves}
                 </div>
-              </button>
+              </Button>
 
               <button className="flex items-center flex-wrap gap-x-1" onClick={() => setOpenShare(true)}>
                 <Icons.share className="w-[20px] h-[20px]" />

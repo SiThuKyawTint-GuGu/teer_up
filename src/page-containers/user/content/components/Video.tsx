@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/Button";
 import CardBox from "@/components/ui/Card";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons } from "@/components/ui/Images";
@@ -7,6 +8,7 @@ import Modal from "@/components/ui/Modal";
 import { Text } from "@/components/ui/Typo/Text";
 import { useLikeContent, useSaveContent } from "@/services/content";
 import { ContentData } from "@/types/Content";
+import { Flex } from "@radix-ui/themes";
 
 import { useEffect, useRef, useState } from "react";
 import CommentSection from "../../../../components/contentLayout/CommentSection";
@@ -126,8 +128,9 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
             }`}
           >
             {!showDescription && (
-              <div>
-                {data.title.length > 50 ? (
+              <Flex direction="column">
+                <Text>{data.title}</Text>
+                {data.description.length > 50 ? (
                   <div onClick={() => setShowDescription(true)}>
                     {data.title.slice(0, 50)}
                     <div>...See More</div>
@@ -135,14 +138,14 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
                 ) : (
                   <Text>{data.title}</Text>
                 )}
-              </div>
+              </Flex>
             )}
 
             {showDescription && <div onClick={() => setShowDescription(false)}>{data.title}</div>}
           </div>
         </div>
         <CardBox className="flex justify-between p-3">
-          <button className="flex items-center flex-wrap gap-x-[10px]" onClick={likePost}>
+          <Button variant="destructive" className="flex items-center flex-wrap gap-x-[10px]" onClick={likePost}>
             {data.is_liked ? (
               <Icons.likefill className="w-[20px] h-[20px] text-primary" />
             ) : (
@@ -152,7 +155,7 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
               {""}
               {data.likes}
             </div>
-          </button>
+          </Button>
           {/* <DialogTrigger> */}
           <DialogTrigger>
             <div className="flex items-center flex-wrap gap-x-[10px]">
@@ -164,7 +167,7 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
             </div>
           </DialogTrigger>
           {/* </DialogTrigger> */}
-          <button className="flex items-center flex-wrap gap-x-[10px]" onClick={saveContent}>
+          <Button variant="destructive" className="flex items-center flex-wrap gap-x-[10px]" onClick={saveContent}>
             {data.is_saved ? (
               <Icons.savedFill className="w-[20px] h-[20px] text-primary" />
             ) : (
@@ -175,7 +178,7 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
               {""}
               {data.saves}
             </div>
-          </button>
+          </Button>
           <button className="flex items-center flex-wrap gap-x-1" onClick={() => setOpenShare(true)}>
             <Icons.share className="w-[20px] h-[20px]" />
             <div>
