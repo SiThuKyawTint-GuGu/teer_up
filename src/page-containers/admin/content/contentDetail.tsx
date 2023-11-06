@@ -107,9 +107,9 @@ const ContentDetail = ({ id }: Props) => {
   const [videoUrl, setVideoUrl] = useState<string>("");
   // const [fileUrl, setFileUrl] = useState<string>("");
   const [imgUrl, setImgUrl] = useState<string>("");
-  const [file, setFile] = useState<File | null>(null);
+  // const [file, setFile] = useState<File | null>(null);
   // const [thumbnail, setThumbnail] = useState<File | null>(null);
-  const [image, setImage] = useState<File | null>(null);
+  // const [image, setImage] = useState<File | null>(null);
   const [selectCategory, setSelectCategory] = useState<string>("");
   const [selectForm, setSelectForm] = useState<string>("");
   const [selectedMentor, setSelelectedMentor] = useState<any>(null);
@@ -324,7 +324,6 @@ const ContentDetail = ({ id }: Props) => {
 
     if (file) {
       const fileURL = URL.createObjectURL(file);
-      setFile(file);
       setVideoUrl(fileURL);
     }
   };
@@ -727,8 +726,8 @@ const ContentDetail = ({ id }: Props) => {
   if (isLoading) return <p>Loading...</p>;
 
   return (
-    <>
-      <form onSubmit={handleSubmit(submit)} className="h-full p-5">
+    <div className="bg-white p-10 rounded-md">
+      <form onSubmit={handleSubmit(submit)}>
         <div className="rounded-md">
           <div className="mb-10">
             <TextField {...register("title")} label="Title" className="w-full" variant="outlined" />
@@ -1229,7 +1228,7 @@ const ContentDetail = ({ id }: Props) => {
           </div>
         </div>
       </form>
-    </>
+    </div>
   );
 };
 
