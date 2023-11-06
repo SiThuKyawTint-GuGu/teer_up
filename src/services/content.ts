@@ -44,7 +44,7 @@ export const useGetContentInfinite = <ParamsType>(params?: ParamsType): SWRInfin
 };
 
 export const useGetContent = <ParamsType, ContentType>(params?: ParamsType): SWRResponse<ContentType, any> => {
-  return useSWR<ContentType>(`/content?${routeFilter(params)}`);
+  return useSWR<ContentType>(`/admin/contents?${routeFilter(params)}`);
 };
 
 export const useGetContentById = <ContentType>(id: string): SWRResponse<ContentType, any> => {
