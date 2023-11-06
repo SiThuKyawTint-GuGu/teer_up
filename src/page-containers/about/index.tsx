@@ -1,7 +1,8 @@
 "use client";
 import { Icons } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
-import { Box, Flex, Grid, Heading, Link, Section } from "@radix-ui/themes";
+import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
+import Link from "next/link";
 import React from "react";
 
 const About: React.FC = () => {
