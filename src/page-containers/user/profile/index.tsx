@@ -374,7 +374,7 @@ const Profile: React.FC = () => {
                         </Box>
                       </Section>
                     </CardBox>
-                    <CardBox>
+                    {/* <CardBox>
                       <Section className="bg-white" py="4" px="3">
                         <Heading as="h6" size="4" align="left" mb="4">
                           Here’s what we noticed about your competencies:
@@ -392,7 +392,7 @@ const Profile: React.FC = () => {
                           </>
                         )}
                       </Section>
-                    </CardBox>
+                    </CardBox> */}
                     <CardBox>
                       <Section className="bg-white" py="4" px="3">
                         <Heading as="h6" size="4" align="left" mb="4">
