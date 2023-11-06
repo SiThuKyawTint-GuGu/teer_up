@@ -1,3 +1,12 @@
+export interface Departments {
+  id: number;
+  department_id: number;
+  user_id: number;
+  created_at: string;
+  updated_at: string;
+  department: DepartmentData;
+}
+
 export interface DepartmentData {
   id: number;
   name: string;
