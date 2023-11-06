@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/Button";
+import CardBox from "@/components/ui/Card";
 import { Text } from "@/components/ui/Typo/Text";
 import ReactionBar from "@/page-containers/admin/content/ReactionBar";
 import { ContentData } from "@/types/Content";
@@ -20,7 +21,7 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
   const [ispending, startTransition] = useTransition();
 
   return (
-    <div className="w-full  rounded-lg h-[90%] justify-start flex-col">
+    <CardBox className="w-full  rounded-lg h-[90%] justify-start flex-col">
       <div className="h-full w-full flex flex-col bg-white shadow-lg">
         <div className="w-full h-[70%]  mx-auto relative">
           <Link href={redir}>
@@ -81,7 +82,7 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
           </div>
         </div>
       </div>
-    </div>
+    </CardBox>
   );
 };
 
