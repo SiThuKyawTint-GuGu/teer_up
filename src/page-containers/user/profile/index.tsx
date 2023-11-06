@@ -58,7 +58,7 @@ const Profile: React.FC = () => {
         <Grid columns="1">
           <Box className="pb-[55px]">
             <div className="mb-[45px]">
-              <div className="fixed top-0 left-0 z-10 w-full shadow-[0px_1px_9px_0px_rgba(0,_0,_0,_0.06)]">
+              <div className="max-w-[400px] fixed top-0 z-10 w-full shadow-[0px_1px_9px_0px_rgba(0,_0,_0,_0.06)]">
                 <Flex justify="center" position="relative" className="bg-white" p="3">
                   <Text size="3" weight="medium">
                     Profile
@@ -306,7 +306,7 @@ const Profile: React.FC = () => {
                         </Flex>
                       </Section>
                     </CardBox>
-                    <CardBox className="mb-[7px] rounded-none">
+                    {/* <CardBox className="mb-[7px] rounded-none">
                       <Section className="bg-white" py="4" px="3">
                         <Heading as="h6" size="4" align="left" mb="4">
                           Preferences
@@ -324,7 +324,7 @@ const Profile: React.FC = () => {
                             : "-"}
                         </Flex>
                       </Section>
-                    </CardBox>
+                    </CardBox> */}
                   </Tabs.Content>
 
                   <Tabs.Content value="competency" className="space-y-[7px]">

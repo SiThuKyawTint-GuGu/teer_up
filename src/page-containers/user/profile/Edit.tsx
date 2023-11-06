@@ -62,7 +62,7 @@ const ProfileEdit: React.FC = () => {
         <Grid columns="1">
           <Box className="pb-[55px]">
             <div className="mb-[45px]">
-              <div className="fixed top-0 left-0 z-10 w-full shadow-[0px_1px_9px_0px_rgba(0,_0,_0,_0.06)]">
+              <div className="max-w-[400px] fixed top-0 z-10 w-full shadow-[0px_1px_9px_0px_rgba(0,_0,_0,_0.06)]">
                 <Flex justify="between" align="center" className="bg-white" p="3">
                   <Link href="/profile">
                     <Icons.back className="text-[#373A36] w-[23px] h-[23px]" />
@@ -313,7 +313,7 @@ const ProfileEdit: React.FC = () => {
                 </Flex>
               </Section>
             </CardBox>
-            <CardBox className="pb-[7px]">
+            {/* <CardBox className="pb-[7px]">
               <Section className="bg-white" py="4" px="3">
                 <Flex justify="between" align="center" mb="4">
                   <Heading as="h6" size="4" align="left">
@@ -336,7 +336,7 @@ const ProfileEdit: React.FC = () => {
                     : "-"}
                 </Flex>
               </Section>
-            </CardBox>
+            </CardBox> */}
           </Box>
         </Grid>
         <DialogContent className="bg-white top-[initial] bottom-0 px-4 pt-8 pb-2 translate-y-0 rounded-10px-tl-tr">
