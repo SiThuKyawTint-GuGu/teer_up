@@ -87,7 +87,7 @@ const Login: React.FC = () => {
                 <Checkbox onCheckedChange={(val: boolean) => setChecked(val)} />
                 <Text weight="regular" size="2">
                   I have read, understood and accept
-                  <Link href="/" className="text-primary ml-2">
+                  <Link href="/support/privacy-policy" className="text-primary ml-2">
                     Terms of Use.
                   </Link>
                 </Text>
