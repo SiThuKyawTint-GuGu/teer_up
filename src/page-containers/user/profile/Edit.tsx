@@ -200,50 +200,7 @@ const ProfileEdit: React.FC = () => {
                 </div>
               </Section>
             </CardBox>
-            <CardBox className="mb-[7px] rounded-none">
-              <Section className="bg-white" py="4" px="3">
-                <Flex justify="between" align="center" mb="4">
-                  <Heading as="h6" size="4" align="left">
-                    Education
-                  </Heading>
-                  <Link href={`/profile/${id}/education`}>
-                    <Text className="text-primary">Edit</Text>
-                  </Link>
-                </Flex>
-                {userProfile?.educations?.length
-                  ? userProfile?.educations?.map((each, key) => (
-                      <Flex
-                        key={key}
-                        justify="between"
-                        align="start"
-                        className={cn(
-                          "pb-[10px] mb-[10px]",
-                          key !== (userProfile?.educations ? userProfile.educations.length - 1 : -1) &&
-                            "border-b border-b-[#BDC7D5]"
-                        )}
-                      >
-                        <Flex direction="column" gap="2">
-                          <Text as="label" weight="bold" size="3">
-                            {each.school_name}
-                          </Text>
-                          <Text size="1">{each.degree}</Text>
-                        </Flex>
-                        <Flex justify="end" align="center" gap="1">
-                          <Text size="2" weight="light">
-                            {dayjs(each?.start_date).format("YYYY")}
-                          </Text>
-                          <Text size="2" weight="light">
-                            -
-                          </Text>
-                          <Text size="2" weight="light">
-                            {each?.end_date ? dayjs(each?.end_date).format("YYYY") : "present"}
-                          </Text>
-                        </Flex>
-                      </Flex>
-                    ))
-                  : "-"}
-              </Section>
-            </CardBox>
+
             <CardBox className="mb-[7px] rounded-none">
               <Section className="bg-white" py="4" px="3">
                 <Flex justify="between" align="center" mb="4">
@@ -289,6 +246,86 @@ const ProfileEdit: React.FC = () => {
                   : "-"}
               </Section>
             </CardBox>
+
+            <CardBox className="mb-[7px] rounded-none">
+              <Section className="bg-white" py="4" px="3">
+                <Flex justify="between" align="center" mb="4">
+                  <Heading as="h6" size="4" align="left">
+                    Education
+                  </Heading>
+                  <Link href={`/profile/${id}/education`}>
+                    <Text className="text-primary">Edit</Text>
+                  </Link>
+                </Flex>
+                {userProfile?.educations?.length
+                  ? userProfile?.educations?.map((each, key) => (
+                      <Flex
+                        key={key}
+                        justify="between"
+                        align="start"
+                        className={cn(
+                          "pb-[10px] mb-[10px]",
+                          key !== (userProfile?.educations ? userProfile.educations.length - 1 : -1) &&
+                            "border-b border-b-[#BDC7D5]"
+                        )}
+                      >
+                        <Flex direction="column" gap="2">
+                          <Text as="label" weight="bold" size="3">
+                            {each.school_name}
+                          </Text>
+                          <Text size="1">{each.degree}</Text>
+                        </Flex>
+                        <Flex justify="end" align="center" gap="1">
+                          <Text size="2" weight="light">
+                            {dayjs(each?.start_date).format("YYYY")}
+                          </Text>
+                          <Text size="2" weight="light">
+                            -
+                          </Text>
+                          <Text size="2" weight="light">
+                            {each?.end_date ? dayjs(each?.end_date).format("YYYY") : "present"}
+                          </Text>
+                        </Flex>
+                      </Flex>
+                    ))
+                  : "-"}
+              </Section>
+            </CardBox>
+
+            <CardBox className="mb-[7px] rounded-none">
+              <Section className="bg-white" py="4" px="3">
+                <Flex justify="between" align="center" mb="4">
+                  <Heading as="h6" size="4" align="left">
+                    Department
+                  </Heading>
+                  <Text className="text-primary">Edit</Text>
+                </Flex>
+                {userProfile?.department?.length
+                  ? userProfile?.department?.map((each, key) => (
+                      <Flex
+                        key={key}
+                        justify="between"
+                        align="start"
+                        className={cn(
+                          "pb-[10px] mb-[10px]",
+                          key !== (userProfile?.department ? userProfile.department.length - 1 : -1) &&
+                            "border-b border-b-[#BDC7D5]"
+                        )}
+                      >
+                        <Flex justify="start" align="start" gap="2">
+                          <Image src="/uploads/icons/education.svg" width={32} height={32} alt="experience" />
+                          <Flex direction="column" gap="2">
+                            <Text as="label" weight="bold" size="3">
+                              {each.department.name}
+                            </Text>
+                          </Flex>
+                        </Flex>
+                      </Flex>
+                    ))
+                  : "-"}
+              </Section>
+            </CardBox>
+
             <CardBox className="mb-[7px] rounded-none">
               <Section className="bg-white" py="4" px="3">
                 <Flex justify="between" align="center" mb="4">

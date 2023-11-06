@@ -242,6 +242,7 @@ const Profile: React.FC = () => {
                           : "-"}
                       </Section>
                     </CardBox>
+
                     <CardBox className="mb-[7px] rounded-none">
                       <Section className="bg-white" py="4" px="3">
                         <Heading as="h6" size="4" align="left" mb="4">
@@ -280,6 +281,37 @@ const Profile: React.FC = () => {
                                   <Text size="2" weight="light">
                                     {each?.end_date ? dayjs(each?.end_date).format("YYYY") : "present"}
                                   </Text>
+                                </Flex>
+                              </Flex>
+                            ))
+                          : "-"}
+                      </Section>
+                    </CardBox>
+
+                    <CardBox className="mb-[7px] rounded-none">
+                      <Section className="bg-white" py="4" px="3">
+                        <Heading as="h6" size="4" align="left" mb="4">
+                          Department
+                        </Heading>
+                        {userProfile?.department?.length
+                          ? userProfile?.department?.map((each, key) => (
+                              <Flex
+                                key={key}
+                                justify="between"
+                                align="start"
+                                className={cn(
+                                  "pb-[10px] mb-[10px]",
+                                  key !== (userProfile?.department ? userProfile.department.length - 1 : -1) &&
+                                    "border-b border-b-[#BDC7D5]"
+                                )}
+                              >
+                                <Flex justify="start" align="start" gap="2">
+                                  <Image src="/uploads/icons/education.svg" width={32} height={32} alt="experience" />
+                                  <Flex direction="column" gap="2">
+                                    <Text as="label" weight="bold" size="3">
+                                      {each.department.name}
+                                    </Text>
+                                  </Flex>
                                 </Flex>
                               </Flex>
                             ))
