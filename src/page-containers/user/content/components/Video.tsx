@@ -12,7 +12,7 @@ import { Flex } from "@radix-ui/themes";
 
 import { useEffect, useRef, useState } from "react";
 import CommentSection from "../../../../components/contentLayout/CommentSection";
-import Share from "./Share";
+import Share from "../../../admin/content/Share";
 type VideoProps = {
   data: ContentData;
   setVideoRef: any;
