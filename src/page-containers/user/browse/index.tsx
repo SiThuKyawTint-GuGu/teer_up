@@ -5,7 +5,7 @@ import { ParamsType, useGetContentInfinite } from "@/services/content";
 import { ContentData, ContentType } from "@/types/Content";
 import { Flex } from "@radix-ui/themes";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import BrowserContentLayout from "./Components/BrowerCotentLayout";
 
 const BrowsePage = () => {
@@ -13,14 +13,15 @@ const BrowsePage = () => {
   const [type, setType] = useState<string>("all");
   const searchParams = useSearchParams();
 
-  const search = searchParams.get("search") as string;
-  console.log(search);
+  const search = useMemo(() => {
+    return searchParams.get("search");
+  }, [searchParams]);
 
   const { data, mutate } = useGetContentInfinite<ParamsType>({
     page: page,
     pagesize: 20,
     type: type,
-    search: search,
+    search: search ? search : undefined,
   });
 
   return (
