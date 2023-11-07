@@ -10,13 +10,10 @@ import React, { useTransition } from "react";
 type ContentlayoutProps = {
   data: ContentData;
   contentMutate: any;
-  redir: string;
-  contentRef?: any;
-  contentVisible?: boolean;
   index?: number;
 };
 
-const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redir }) => {
+const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate }) => {
   const router = useRouter();
   const [ispending, startTransition] = useTransition();
 
@@ -24,7 +21,7 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
     <CardBox className="w-full shadow-xl  rounded-lg h-[90%] justify-start flex-col">
       <div className="h-full w-full flex flex-col bg-white shadow-lg">
         <div className="w-full h-[70%]  mx-auto relative">
-          <Link href={redir}>
+          <Link href={`/content/${data.slug}`}>
             <div
               className="relative w-full max-w-[400px] h-full  rounded-t-lg"
               style={{
@@ -42,7 +39,7 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
         <div className="w-full h-full">
           <div className="w-full h-full px-3">
             <div className="flex flex-col justify-between w-full h-full">
-              <Link href={redir}>
+              <Link href={`/content/${data.slug}`}>
                 <h1 className="font-[700] text-[24px]">{data.title}</h1>
                 {data.description && (
                   <div className="w-full h-full">
@@ -60,22 +57,23 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
                   </div>
                 )}
               </Link>
-              <div>
-                <div className="mt-2 cursor-pointer  w-full flex justify-between flex-col">
-                  <Button
-                    disabled={ispending}
-                    onClick={() =>
-                      startTransition(() => {
-                        router.push(`/content/${data.slug}`);
-                      })
-                    }
-                  >
-                    {(data.type === "event" || data.type === "pathway") && "Join Now"}
-                    {data.type === "opportunity" && "Apply Now"}
-                    {data.type === "mentor" && "Request Mentorship"}
-                  </Button>
+              <div className="mt-2 w-full">
+                <Button
+                  className="w-full"
+                  disabled={ispending}
+                  onClick={() =>
+                    startTransition(() => {
+                      router.push(`/content/${data.slug}`);
+                    })
+                  }
+                >
+                  {(data.type === "event" || data.type === "pathway") && "Join Now"}
+                  {data.type === "opportunity" && "Apply Now"}
+                  {data.type === "mentor" && "Request Mentorship"}
+                </Button>
+                <div className="w-full pt-3">
+                  <hr className="w-full h-[1px] bg-slateGray" />
                 </div>
-
                 <ReactionBar data={data} contentMutate={contentMutate} />
               </div>
             </div>

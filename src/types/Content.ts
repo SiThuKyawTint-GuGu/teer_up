@@ -59,6 +59,20 @@ export interface ContentArticle {
   content_id: string;
 }
 
+export interface ContentKeywords {
+  id: number;
+  content_id: number;
+  keyword_id: number;
+  created_at: Date;
+  updated_at: Date;
+  keyword: {
+    id: number;
+    keyword: string;
+    created_at: Date;
+    updated_at: Date;
+  };
+}
+
 export interface OnBoardingOption {
   id: number | string;
   name: string;
@@ -133,6 +147,7 @@ export interface ContentData {
   content_article: ContentArticle | null;
   content_opportunity: ContentOpportunity | null;
   content_pathways: ContentData[] | null;
+  content_keywords: ContentKeywords[];
   category: string;
   user: User;
   name: string;

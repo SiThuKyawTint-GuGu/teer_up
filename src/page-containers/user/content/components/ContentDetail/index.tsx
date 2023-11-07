@@ -2,7 +2,9 @@
 
 import LikeCmtBar from "@/components/contentLayout/LikeCmtBar";
 import { Icons } from "@/components/ui/Images";
-import { ContentData } from "@/types/Content";
+import { Text } from "@/components/ui/Typo/Text";
+import { ContentData, ContentKeywords } from "@/types/Content";
+import { Flex } from "@radix-ui/themes";
 
 import dayjs from "dayjs";
 import React from "react";
@@ -14,9 +16,9 @@ const NormalContentDetail: React.FC<NormalContentDetailProp> = ({ data, contentM
   return (
     <>
       {data && (
-        <div className="w-full min-h-[90vh]  h-full bg-white no-scrollbar  overflow-auto">
+        <div className="w-full  h-full bg-white no-scrollbar  overflow-y-auto">
           {" "}
-          <div className="w-full mx-auto h-[40%] relative p-2">
+          <div className="w-full mx-auto h-[300px] relative p-2">
             <div
               className="relative w-full max-w-[400px]  rounded-lg h-full"
               style={{
@@ -30,15 +32,18 @@ const NormalContentDetail: React.FC<NormalContentDetailProp> = ({ data, contentM
               )}
             </div>
           </div>
-          <div className="w-full px-[16px] h-full bg-white">
+          <div className="w-full px-[16px]">
             <div className="w-full h-full">
               <h1 className="font-[700] text-[24px]">{data?.title}</h1>
               <div className="w-full h-full flex flex-col flex-wrap gap-y-3">
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: data?.description,
-                  }}
-                />
+                {data.type !== "opportunity" && data.type !== "article" && (
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: data?.description,
+                    }}
+                  />
+                )}
+
                 {data?.content_article && (
                   <div
                     dangerouslySetInnerHTML={{
@@ -54,6 +59,13 @@ const NormalContentDetail: React.FC<NormalContentDetailProp> = ({ data, contentM
                   />
                 )}
 
+                {data.content_keywords.length > 0 &&
+                  data.content_keywords.map((key: ContentKeywords, index: number) => (
+                    <Flex gap="3" key={index}>
+                      <Text className="text-primary font-[600] text-[16px]">#{key.keyword.keyword}</Text>
+                    </Flex>
+                  ))}
+
                 {data?.content_event && (
                   <div className="flex flex-wrap gap-x-2 items-center text-[16px] font-[700]">
                     <Icons.location className="w-[20px] h-[20px]" />
@@ -61,7 +73,7 @@ const NormalContentDetail: React.FC<NormalContentDetailProp> = ({ data, contentM
                   </div>
                 )}
                 {data?.content_event && (
-                  <div className="flex flex-wrap gap-x-2 items-center  text-[16px] font-[700]">
+                  <div className="flex flex-wrap gap-x-2 items-center justify-start  text-[16px] font-[700]">
                     <Icons.calender className="w-[20px] h-[20px]" />
                     {dayjs(data?.content_event.to_datetime).format("D MMMM")}
                   </div>
