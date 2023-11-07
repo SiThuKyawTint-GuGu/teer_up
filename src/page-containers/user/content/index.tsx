@@ -32,7 +32,7 @@ const UserContent = () => {
 
       const handleScroll = () => {
         const scrollPosition = container.scrollTop;
-        const newIndex = Math.round(scrollPosition / (window.innerHeight - 96));
+        const newIndex = Math.round(scrollPosition / (window.innerHeight - 92));
         setStartTime(Date.now());
         setVisibleItemIndex(newIndex);
         if (newIndex !== visibleItemIndex) {
@@ -128,26 +128,28 @@ const UserContent = () => {
                 {differentContent(data, index)}
 
                 {index == 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
-                {contentDataArray && contentDataArray[visibleItemIndex].type === "onboarding" && (
-                  <Button
-                    variant="link"
-                    className="text-center w-full py-4 text-primary"
-                    onClick={() => {
-                      skipOnboarding(
-                        {
-                          skip: true,
-                        },
-                        {
-                          onSuccess: () => {
-                            mutate();
+                {contentDataArray &&
+                  contentDataArray.length > 0 &&
+                  contentDataArray[visibleItemIndex].type === "onboarding" && (
+                    <Button
+                      variant="link"
+                      className="text-center w-full py-4 text-primary"
+                      onClick={() => {
+                        skipOnboarding(
+                          {
+                            skip: true,
                           },
-                        }
-                      );
-                    }}
-                  >
-                    Skip for now
-                  </Button>
-                )}
+                          {
+                            onSuccess: () => {
+                              mutate();
+                            },
+                          }
+                        );
+                      }}
+                    >
+                      Skip for now
+                    </Button>
+                  )}
               </div>
             ))}
         </div>

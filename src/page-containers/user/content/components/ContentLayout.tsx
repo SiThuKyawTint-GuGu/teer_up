@@ -60,22 +60,23 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
                   </div>
                 )}
               </Link>
-              <div>
-                <div className="mt-2 cursor-pointer  w-full flex justify-between flex-col">
-                  <Button
-                    disabled={ispending}
-                    onClick={() =>
-                      startTransition(() => {
-                        router.push(`/content/${data.slug}`);
-                      })
-                    }
-                  >
-                    {(data.type === "event" || data.type === "pathway") && "Join Now"}
-                    {data.type === "opportunity" && "Apply Now"}
-                    {data.type === "mentor" && "Request Mentorship"}
-                  </Button>
+              <div className="mt-2 w-full">
+                <Button
+                  className="w-full"
+                  disabled={ispending}
+                  onClick={() =>
+                    startTransition(() => {
+                      router.push(`/content/${data.slug}`);
+                    })
+                  }
+                >
+                  {(data.type === "event" || data.type === "pathway") && "Join Now"}
+                  {data.type === "opportunity" && "Apply Now"}
+                  {data.type === "mentor" && "Request Mentorship"}
+                </Button>
+                <div className="w-full pt-3">
+                  <hr className="w-full h-[1px] bg-slateGray" />
                 </div>
-
                 <ReactionBar data={data} contentMutate={contentMutate} />
               </div>
             </div>
