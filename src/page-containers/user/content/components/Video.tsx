@@ -61,7 +61,7 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
   };
 
   return (
-    <div className="w-full h-[80%] flex flex-col">
+    <div className="w-full h-[90%] flex flex-col">
       <div className="w-full h-full  md:aspect-video relative text-white" onClick={() => showCmt && setShowCmt(false)}>
         {data.content_video && (
           <video
