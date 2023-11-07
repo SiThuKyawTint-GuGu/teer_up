@@ -34,7 +34,7 @@ const ContentDetailHeader: React.FC<ContentDetailHeaderProps> = ({ title }) => {
           // <Modal onClose={() => setModalOpen(false)}>
           //   <Share url={pathname} />
           // </Modal>
-          <DialogContent className="bg-white top-[initial] h-auto bottom-0 max-w-[400px] px-4 pt-8 pb-2 translate-y-0 rounded-10px-tl-tr">
+          <DialogContent className="bg-white top-[initial] h-auto bottom-0 max-w-[400px] px-4 translate-y-0 rounded-10px-tl-tr">
             <Share url={pathname} />
           </DialogContent>
         )}

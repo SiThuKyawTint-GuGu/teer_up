@@ -9,7 +9,7 @@ import { getUserInfo } from "@/utils/auth";
 import ContentLayout from "./components/ContentLayout";
 import Onboarding from "./components/Onboarding";
 import Video from "./components/Video";
-const user = getUserInfo();
+
 const UserContent = () => {
   const [page, setPage] = useState<number>(1);
   const videoRefs = useRef<HTMLVideoElement[]>([]);
@@ -19,6 +19,7 @@ const UserContent = () => {
     page: page,
     pagesize: 25,
   });
+  const user = getUserInfo();
 
   const { trigger: skipOnboarding } = useSkipOnboarding();
   const [startTime, setStartTime] = useState<number | null>(null);
@@ -42,7 +43,7 @@ const UserContent = () => {
               if (startTime !== null) {
                 const endTime = Date.now();
                 const timeInMilliseconds = endTime - startTime;
-                setTotalTimeInView((totalTimeInView + timeInMilliseconds) / 1000);
+                setTotalTimeInView(Math.floor((totalTimeInView + timeInMilliseconds) / 1000));
                 calculateCount({
                   watched_time: totalTimeInView,
                   content_id: contentDataArray[visibleItemIndex].id,
@@ -110,7 +111,7 @@ const UserContent = () => {
 
   return (
     <>
-      <div className="w-full h-[calc(100vh-100px)]">
+      <div className="w-full h-[calc(100vh-92px)] pt-[32px]">
         <div
           ref={containerRef}
           className={`snap-y flex-col snap-mandatory h-full px-2   w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
