@@ -174,12 +174,12 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
 
             {!showPathTitle ? (
               <Icons.upArrow
-                className="text-primary w-[20px] h-[20px] absolute top-0 right-0"
+                className="text-primary w-[20px] cursor-pointer h-[20px] absolute top-0 right-0"
                 onClick={() => setShowPathTitle(true)}
               />
             ) : (
               <Icons.downArrow
-                className="text-primary w-[20px] h-[20px] absolute top-0 right-0"
+                className="text-primary w-[20px] cursor-pointer h-[20px] absolute top-0 right-0"
                 onClick={() => setShowPathTitle(false)}
               />
             )}
