@@ -1,10 +1,13 @@
 import UserScoreTable from "@/page-containers/admin/userScore";
-import React from "react";
 
-const UserScore: React.FC = () => {
+interface Props {
+  params: { id: string };
+}
+
+const UserScore = ({ params: { id } }: Props) => {
   return (
     <div className="px-2 pt-2" style={{ maxHeight: "calc(100vh - 200px)" }}>
-      <UserScoreTable />
+      <UserScoreTable id={id} />
     </div>
   );
 };
