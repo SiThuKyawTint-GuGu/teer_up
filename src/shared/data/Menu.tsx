@@ -108,11 +108,11 @@ export const menuList: Menu[] = [
     icon: <Icons.userManagement className="w-[20px] h-[20px]" />,
     title: "Users",
     child: [
-      {
-        key: "/admin/users/user-scores",
-        title: "User Scores",
-        icon: <Icons.userscore className="w-[20px] h-[20px]" />,
-      },
+      // {
+      //   key: "/admin/users/user-scores",
+      //   title: "User Scores",
+      //   icon: <Icons.userscore className="w-[20px] h-[20px]" />,
+      // },
       {
         key: "/admin/users/admin-list",
         title: "Admin",

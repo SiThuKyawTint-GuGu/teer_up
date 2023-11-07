@@ -87,7 +87,7 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
         )}
 
         <div
-          className={`absolute flex flex-col items-baseline w-full cursor-pointer bg-slate-700 opacity-[0.8]  bottom-0 px-3 py-3 z-[1000] text-[20px] font-[600] ${
+          className={`absolute flex flex-col items-baseline cursor-pointer bg-slate-700 opacity-[0.8]  bottom-0 px-3 py-3 z-[1000] text-[20px] font-[600] ${
             showDescription && "transition-all duration-1000 ease-in-out"
           }`}
         >

@@ -76,7 +76,7 @@ const MentorshipTable: React.FC = () => {
   const table = useMaterialReactTable({
     columns,
     data: (mentorships?.data as any) || [],
-    enableColumnFilters: false,
+    enableColumnFilters: true,
     muiToolbarAlertBannerProps: isLoading
       ? {
           color: "error",
@@ -91,7 +91,7 @@ const MentorshipTable: React.FC = () => {
     },
     enableStickyFooter: true,
     enableStickyHeader: true,
-    manualFiltering: true,
+    // manualFiltering: true,
     manualPagination: true,
     rowCount: mentorships?.total,
     initialState: {

@@ -365,7 +365,7 @@ const Profile: React.FC = () => {
                         <Heading as="h6" size="4" align="left" mb="4">
                           Assessment chart
                         </Heading>
-                        <Box>
+                        <Box className="w-full h-full flex-wrap">
                           <RadarChart />
                           <Button className="w-full">Continue assessment</Button>
                           <Button variant="link" className="w-full">
