@@ -591,11 +591,11 @@ const ContentDetail = ({ id }: Props) => {
   const handleImageChange = async (event: any) => {
     const file = event.target.files[0];
     const handleProgress = (percentage: number) => {
+      // console.log(`progress ${percentage}`);
       setImgProgress(percentage);
     };
     const res = await fileTrigger({ file, handleProgress });
     setImgRes(res);
-
     if (file) {
       const fileURL = URL.createObjectURL(file);
       setImgUrl(fileURL);
