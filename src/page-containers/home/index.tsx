@@ -11,16 +11,16 @@ const Home: React.FC = () => {
     <Grid rows="1" className="max-w-[400px] m-auto">
       <Container className="h-screen">
         <header className="border-b border-[#e5e7eb] w-[400px] fixed top-0 bg-white">
-          <Box px="3">
-            <div className="h-[72px] flex items-center justify-between">
+          <Box className="px-6">
+            <div className="h-[64px] flex items-center justify-between">
               <Link href="/">
                 <Icons.teeUp />
               </Link>
             </div>
           </Box>
         </header>
-        <Section className="bg-white space-y-6" py="4" px="3" mt="9">
-          <Box className="space-y-4">
+        <Section p="0" className="bg-white space-y-6 h-screen pt-[70px]">
+          <Box className="space-y-4 mt-6">
             <Flex justify="center" align="center">
               <Heading as="h3" size="6" align="center" weight="bold" className="text-primary max-w-[215px]">
                 Kickstart your adulting journey
@@ -30,7 +30,7 @@ const Home: React.FC = () => {
               <Icons.landing />
             </div>
           </Box>
-          <Box>
+          <Box className="px-6">
             <Heading as="h3" size="6" align="center" weight="bold" className="text-[#373a36]">
               For Gen Zs, by Gen Zs
             </Heading>
@@ -48,7 +48,7 @@ const Home: React.FC = () => {
               </Text>
             </div>
           </Box>
-          <Box className="space-y-6">
+          <Box className="space-y-6 px-6">
             <Link className="block" href="/auth/signup">
               <Button className="w-full">
                 Get Started
