@@ -79,9 +79,12 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
   useEffect(() => {
     if (containerRef.current) {
       const container = containerRef.current;
+
       const handleScroll = () => {
         const scrollPosition = container.scrollTop;
         const newIndex = Math.round(scrollPosition / (window.innerHeight - 96));
+        setStartTime(Date.now());
+        setVisibleItemIndex(newIndex);
         if (newIndex !== visibleItemIndex) {
           // Calculate time in view when the item changes
           if (startTime !== null) {
@@ -89,7 +92,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
             const timeInMilliseconds = endTime - startTime;
             setTotalTimeInView((totalTimeInView + timeInMilliseconds) / 1000);
             if (data && data.content_pathways) {
-              if (user) {
+              if (user && data.content_pathways[visibleItemIndex].type !== "html") {
                 calculateCount({
                   watched_time: totalTimeInView,
                   content_id: data.content_pathways[visibleItemIndex].id,
@@ -97,8 +100,6 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
               }
             }
           }
-          setStartTime(Date.now());
-          setVisibleItemIndex(newIndex);
         }
       };
 
@@ -121,12 +122,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
           contentMutate={contentMutate}
         />
       );
-    if (data.type === "event" && data.content_event)
-      return <ContentLayout data={data} contentMutate={contentMutate} redir={`/content/${data.slug}`} />;
-    if (data.type === "article" && data.content_article)
-      return <ContentLayout data={data} contentMutate={contentMutate} redir={`/content/${data.slug}`} />;
-    if (data.type === "opportunity" && data.content_opportunity)
-      return <ContentLayout data={data} contentMutate={contentMutate} redir={`/content/${data.slug}`} />;
+
     if (data.type === "html" && data.html_body)
       return (
         <div id={data.slug} className="w-full h-[90%] overflow-y-scroll rounded-lg px-2 bg-white shadow-lg">
@@ -140,7 +136,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
           </div>
         </div>
       );
-    return <div>This Page is not available right now</div>;
+    return <ContentLayout data={data} contentMutate={contentMutate} />;
   };
 
   return (
