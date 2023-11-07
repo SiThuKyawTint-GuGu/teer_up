@@ -1,7 +1,6 @@
 "use client";
 import { ContentData } from "@/types/Content";
 
-import Video from "@/page-containers/user/content/components/Video";
 import { ParamsType, useContentWatchCount, useGetContentInfinite, useSkipOnboarding } from "@/services/content";
 import { useEffect, useMemo, useRef, useState } from "react";
 
@@ -9,6 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { getUserInfo } from "@/utils/auth";
 import ContentLayout from "./components/ContentLayout";
 import Onboarding from "./components/Onboarding";
+import Video from "./components/Video";
 const user = getUserInfo();
 const UserContent = () => {
   const [page, setPage] = useState<number>(1);
@@ -18,7 +18,7 @@ const UserContent = () => {
   const [visibleItemIndex, setVisibleItemIndex] = useState<number>(0);
   const { data, mutate } = useGetContentInfinite<ParamsType>({
     page: page,
-    pagesize: 20,
+    pagesize: 25,
   });
 
   const { trigger: skipOnboarding } = useSkipOnboarding();
@@ -118,37 +118,40 @@ const UserContent = () => {
           className={`snap-y flex-col snap-mandatory h-full px-2   w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
           style={{ scrollSnapStop: "always" }}
         >
-          {contentDataArray?.map((data: ContentData, index) => (
-            <div
-              className="w-full h-full pt-2 snap-start"
-              style={{ scrollSnapStop: "always" }}
-              id={index.toString()}
-              key={index}
-            >
-              {differentContent(data, index)}
-              {index == 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
-              {contentDataArray[visibleItemIndex].type === "onboarding" && (
-                <Button
-                  variant="link"
-                  className="text-center w-full py-4 text-primary"
-                  onClick={() => {
-                    skipOnboarding(
-                      {
-                        skip: true,
-                      },
-                      {
-                        onSuccess: () => {
-                          mutate();
+          {contentDataArray &&
+            contentDataArray.length > 0 &&
+            contentDataArray.map((data: ContentData, index) => (
+              <div
+                className="w-full h-full pt-2 snap-start"
+                style={{ scrollSnapStop: "always" }}
+                id={index.toString()}
+                key={index}
+              >
+                {differentContent(data, index)}
+
+                {index == 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
+                {contentDataArray && contentDataArray[visibleItemIndex].type === "onboarding" && (
+                  <Button
+                    variant="link"
+                    className="text-center w-full py-4 text-primary"
+                    onClick={() => {
+                      skipOnboarding(
+                        {
+                          skip: true,
                         },
-                      }
-                    );
-                  }}
-                >
-                  Skip for now
-                </Button>
-              )}
-            </div>
-          ))}
+                        {
+                          onSuccess: () => {
+                            mutate();
+                          },
+                        }
+                      );
+                    }}
+                  >
+                    Skip for now
+                  </Button>
+                )}
+              </div>
+            ))}
         </div>
       </div>
     </>

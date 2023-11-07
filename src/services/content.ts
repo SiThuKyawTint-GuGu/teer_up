@@ -38,7 +38,7 @@ export const useGetContentInfinite = <ParamsType>(params?: ParamsType): SWRInfin
   const getKey = () => `/content?${routeFilter(params)}`;
   return useSWRInfinite<ContentType>(getKey, {
     revalidateFirstPage: false,
-    revalidateAll: true,
+    revalidateAll: false,
     parallel: true,
   });
 };

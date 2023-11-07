@@ -21,7 +21,7 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate, redi
   const [ispending, startTransition] = useTransition();
 
   return (
-    <CardBox className="w-full  rounded-lg h-[90%] justify-start flex-col">
+    <CardBox className="w-full shadow-xl  rounded-lg h-[90%] justify-start flex-col">
       <div className="h-full w-full flex flex-col bg-white shadow-lg">
         <div className="w-full h-[70%]  mx-auto relative">
           <Link href={redir}>

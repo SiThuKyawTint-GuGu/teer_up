@@ -19,9 +19,9 @@ const BrowsePage = () => {
 
   const { data, mutate } = useGetContentInfinite<ParamsType>({
     page: page,
-    pagesize: 20,
-    type: type,
-    search: search ? search : undefined,
+    pagesize: 25,
+    // type: type,
+    // search: search ? search : undefined,
   });
 
   return (

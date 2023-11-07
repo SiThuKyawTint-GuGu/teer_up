@@ -1,5 +1,4 @@
 import CommentSection from "@/components/contentLayout/CommentSection";
-import { Button } from "@/components/ui/Button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons } from "@/components/ui/Images";
 import { useLikeContent, useSaveContent } from "@/services/content";
@@ -35,7 +34,7 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate }) => {
     );
   };
   return (
-    <div className="flex justify-between p-3 w-full">
+    <div className="flex justify-between items-center p-3 w-full">
       <button className="flex items-center flex-wrap gap-x-[10px]" onClick={likePost}>
         {data.is_liked ? (
           <Icons.likefill className="w-[20px] h-[20px] text-primary" />
@@ -64,7 +63,7 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate }) => {
         )}
       </Dialog>
 
-      <Button variant="destructive" className="flex items-center flex-wrap gap-x-[10px]" onClick={saveContent}>
+      <button className="flex items-center flex-wrap gap-x-[10px]" onClick={saveContent}>
         {data.is_saved ? (
           <Icons.savedFill className="w-[20px] h-[20px] text-primary" />
         ) : (
@@ -75,20 +74,16 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate }) => {
           {""}
           {data.saves}
         </div>
-      </Button>
+      </button>
       <Dialog open={openShare} onOpenChange={val => setOpenShare(val)}>
         <DialogTrigger>
-          <Button
-            variant="destructive"
-            className="flex items-center flex-wrap gap-x-1"
-            onClick={() => setOpenShare(true)}
-          >
+          <button className="flex items-center flex-wrap gap-x-1" onClick={() => setOpenShare(true)}>
             <Icons.share className="w-[20px] h-[20px]" />
             <div>
               {""}
               Share
             </div>
-          </Button>
+          </button>
         </DialogTrigger>
         <DialogContent className="bg-white top-[initial] bottom-0 max-w-[400px] px-4 pt-8 pb-2 translate-y-0 rounded-10px-tl-tr">
           {openShare && <Share url={`/content/${data.slug}`} />}
