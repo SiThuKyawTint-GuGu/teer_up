@@ -90,12 +90,12 @@ const Search: React.FC = () => {
           </Box> */}
         </Section>
         {searchValue && (
-          <div className="fixed top-[65px] left-0 z-20 w-full h-full bg-[#efefef]">
+          <div className="max-w-[400px] fixed top-[65px] z-20 w-full h-full bg-[#efefef]">
             <Box p="3">
               {searchData?.data?.length ? (
                 searchData?.data?.map((each, key) => (
                   <>
-                    <Link key={key} href={`/browse?search=${searchValue}`}>
+                    <Link key={key} href={`/browse?search=${each?.title}`}>
                       <Text className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">{each?.title}</Text>
                     </Link>
                   </>
