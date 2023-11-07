@@ -57,7 +57,10 @@ export function middleware(req: NextRequest) {
   }
 
   if (user?.role !== USER_ROLE.ADMIN) {
-    if (token && (pathname.includes("/admin") || pathname === "/login" || pathname === "/auth/login")) {
+    if (
+      token &&
+      (pathname.includes("/admin") || pathname === "/login" || pathname === "/auth/login" || pathname === "/")
+    ) {
       if (user?.verified) {
         return NextResponse.rewrite(new URL("/home", req.url));
       }
@@ -82,11 +85,14 @@ export const config = {
     "/browse/:path*",
     "/content/:path*",
     "/home/:path*",
+    "/industry/:path*",
+    "/department/:path*",
     "/mentor/:path*",
     "/opportunity/:path*",
     "/blog/:path*",
     "/mentorship/:path*",
     "/pathway/:path*",
     "/events/:path*",
+    "/",
   ],
 };
