@@ -39,7 +39,7 @@ const Share: React.FC<{ url: string }> = ({ url }) => {
       </Flex>
       {copy && (
         <Text as="div" className="text-green-700 w-full text-center">
-          Copy
+          Copied
         </Text>
       )}
     </div>

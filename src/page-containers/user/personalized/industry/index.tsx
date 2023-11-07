@@ -50,7 +50,7 @@ const IndustryPage = () => {
             layout
             subTitle="select one or more industry"
           >
-            <div className="grid grid-cols-2 gap-3 overflow-y-scroll max-h-full pb-[36px] grid-flow-row">
+            <div className="grid grid-cols-2 gap-3 overflow-y-scroll h-full grid-flow-row">
               {industry &&
                 industry.length > 0 &&
                 industry.map((each: IndustryData, index: number) => (
@@ -59,7 +59,7 @@ const IndustryPage = () => {
                     onClick={() => {
                       onChange(each.id);
                     }}
-                    className={`flex justify-center items-center w-full h-full p-3 border-[1px]
+                    className={`flex justify-center items-center w-full h-[104px] overflow-hidden p-3 border-[1px]
                  shadow-md bg-[#fefefe] rounded-md cursor-pointer text-center
              ${selectData.find(data => data === each.id) && "border-[1px] border-primary bg-secondary"}
         
@@ -71,7 +71,13 @@ const IndustryPage = () => {
             </div>
           </QuestionPageCard>
           <div className="fixed bottom-0 w-full max-w-[400px] py-2 px-4 mx-auto  bg-white">
-            <Button className="w-full" disabled={selectData.length == 0 || isPending} onClick={submitHandler} size="sm">
+            <Button
+              className="w-full"
+              disabled={selectData.length == 0 || isPending}
+              loading={isPending}
+              onClick={submitHandler}
+              size="sm"
+            >
               Next
             </Button>
           </div>
