@@ -1,4 +1,5 @@
 import { USER_ROLE } from "@/shared/enums";
+import { Departments } from "./Department";
 import { Education } from "./Education";
 import { Experience } from "./Experience";
 
@@ -57,6 +58,7 @@ export interface UserProfile {
   created_at: string;
   educations: Education[];
   experiences: Experience[];
+  department: Departments[];
   email: string;
   id: number;
   name: string;

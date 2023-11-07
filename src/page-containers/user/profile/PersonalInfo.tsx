@@ -69,17 +69,22 @@ const PersonalInfo: React.FC = () => {
             <form className="mx-auto flex flex-col justify-center gap-y-3 w-full" onSubmit={form.handleSubmit(submit)}>
               <Grid columns="1">
                 <Box>
-                  <Flex justify="between" align="center" className="bg-white" p="3">
-                    <Link href={`/profile/${id}`}>
-                      <Icons.back className="text-[#373A36] w-[23px] h-[23px]" />
-                    </Link>
-                    <Text size="3" weight="medium">
-                      Personal Information
-                    </Text>
-                    <Link href="/" className="opacity-0">
-                      <Icons.plus className="text-primary w-[23px] h-[23px]" />
-                    </Link>
-                  </Flex>
+                  <div className="mb-[45px]">
+                    <div className="max-w-[400px] fixed top-0 z-10 w-full shadow-[0px_1px_9px_0px_rgba(0,_0,_0,_0.06)]">
+                      <Flex justify="between" align="center" className="bg-white" p="3">
+                        <Link href={`/profile/${id}`}>
+                          <Icons.back className="text-[#373A36] w-[23px] h-[23px]" />
+                        </Link>
+                        <Text size="3" weight="medium">
+                          Personal Information
+                        </Text>
+                        <Link href="/" className="opacity-0">
+                          <Icons.plus className="text-primary w-[23px] h-[23px]" />
+                        </Link>
+                      </Flex>
+                    </div>
+                  </div>
+
                   <CardBox className="mb-[7px] rounded-none">
                     <Section className="bg-white" py="4" px="3">
                       <Flex justify="between" align="center" mb="4">

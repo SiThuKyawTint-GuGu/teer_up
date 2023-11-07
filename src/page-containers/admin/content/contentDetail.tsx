@@ -1,5 +1,6 @@
 "use client";
 import HtmlEditor from "@/components/ui/Editor";
+import ProgressBar from "@/components/ui/Progress";
 import {
   ParamsType,
   useGetContent,
@@ -106,9 +107,9 @@ const ContentDetail = ({ id }: Props) => {
   const [videoUrl, setVideoUrl] = useState<string>("");
   // const [fileUrl, setFileUrl] = useState<string>("");
   const [imgUrl, setImgUrl] = useState<string>("");
-  const [file, setFile] = useState<File | null>(null);
+  // const [file, setFile] = useState<File | null>(null);
   // const [thumbnail, setThumbnail] = useState<File | null>(null);
-  const [image, setImage] = useState<File | null>(null);
+  // const [image, setImage] = useState<File | null>(null);
   const [selectCategory, setSelectCategory] = useState<string>("");
   const [selectForm, setSelectForm] = useState<string>("");
   const [selectedMentor, setSelelectedMentor] = useState<any>(null);
@@ -137,6 +138,10 @@ const ContentDetail = ({ id }: Props) => {
   const [selectedIndustry, setSelectedIndustry] = useState<OptionType[]>([]);
   const [selectedDepartment, setSelectedDepartment] = useState<OptionType[]>([]);
   const [checkboxValues, setCheckboxValues] = useState<any>({});
+  const [progress, setProgress] = useState<number>();
+  const [imgProgress, setImgProgress] = useState<number>();
+  const [videoRes, setVideoRes] = useState<any>();
+  const [imgRes, setImgRes] = useState<any>();
 
   const handleEditorInit = (evt: any, editor: any) => {
     setEditor(editor);
@@ -309,12 +314,16 @@ const ContentDetail = ({ id }: Props) => {
     resolver: yupResolver(validationSchema),
   });
 
-  const handleFileChange = (event: any) => {
+  const handleFileChange = async (event: any) => {
     const file = event.target.files[0];
+    const handleProgress = (percentage: number) => {
+      setProgress(percentage);
+    };
+    const res = await fileTrigger({ file, handleProgress });
+    setVideoRes(res);
 
     if (file) {
       const fileURL = URL.createObjectURL(file);
-      setFile(file);
       setVideoUrl(fileURL);
     }
   };
@@ -340,30 +349,26 @@ const ContentDetail = ({ id }: Props) => {
       setEventError("Image is required!");
       return;
     }
-    const imgRes: any = image && (await fileTrigger({ file: image }));
-    if (imgRes) {
-      setImgUrl(imgRes.data?.data?.file_path);
-    }
+    // const imgRes: any = image && (await fileTrigger({ file: image }));
+    // if (imgRes) {
+    //   setImgUrl(imgRes.data?.data?.file_path);
+    // }
 
     if (selectedValue === "video") {
       // const thumbnailRes: any = thumbnail && (await fileTrigger({ file: thumbnail }));
-      const videoRes: any = file && (await fileTrigger({ file }));
+      // const videoRes: any = file && (await fileTrigger({ file }));
 
       // if (thumbnailRes) {
       //   setFileUrl(thumbnailRes.data?.data?.file_path);
       // }
-      if (videoRes) {
-        setVideoUrl(videoRes.data?.data?.file_path);
-      }
+      // if (videoRes) {
+      //   setVideoUrl(videoRes.data?.data?.file_path);
+      // }
 
       if (!videoUrl) {
         setEventError("Video is required!");
         return;
       }
-      // if (!fileUrl) {
-      //   setEventError("Thumbnail is requried!");
-      //   return;
-      // }
       const keywords = selectedKeywords.map(item => item.id);
       const departments = selectedDepartment.map(item => item.id);
       const industries = selectedIndustry.map(item => item.id);
@@ -583,10 +588,15 @@ const ContentDetail = ({ id }: Props) => {
   //   }
   // };
 
-  const handleImageChange = (event: any) => {
+  const handleImageChange = async (event: any) => {
     const file = event.target.files[0];
+    const handleProgress = (percentage: number) => {
+      // console.log(`progress ${percentage}`);
+      setImgProgress(percentage);
+    };
+    const res = await fileTrigger({ file, handleProgress });
+    setImgRes(res);
     if (file) {
-      setImage(file);
       const fileURL = URL.createObjectURL(file);
       setImgUrl(fileURL);
     }
@@ -716,8 +726,8 @@ const ContentDetail = ({ id }: Props) => {
   if (isLoading) return <p>Loading...</p>;
 
   return (
-    <>
-      <form onSubmit={handleSubmit(submit)} className="bg-white h-full p-5">
+    <div className="bg-white p-10 rounded-md">
+      <form onSubmit={handleSubmit(submit)}>
         <div className="rounded-md">
           <div className="mb-10">
             <TextField {...register("title")} label="Title" className="w-full" variant="outlined" />
@@ -841,6 +851,7 @@ const ContentDetail = ({ id }: Props) => {
                     Upload Video
                     <VisuallyHiddenInput accept="video/*" onChange={handleFileChange} type="file" />
                   </MuiButton>
+                  {progress && <ProgressBar progress={progress} />}
                 </div>
 
                 {videoUrl && (
@@ -1114,6 +1125,7 @@ const ContentDetail = ({ id }: Props) => {
                 <VisuallyHiddenInput accept="image/*" onChange={handleImageChange} type="file" />
               </MuiButton>
               <p className="mt-3">Please upload 4:3 ratio</p>
+              {imgProgress && <ProgressBar progress={imgProgress} />}
             </div>
             {imgUrl && (
               <div className="mt-4">
@@ -1216,7 +1228,7 @@ const ContentDetail = ({ id }: Props) => {
           </div>
         </div>
       </form>
-    </>
+    </div>
   );
 };
 

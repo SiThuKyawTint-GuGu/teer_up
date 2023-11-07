@@ -5,15 +5,17 @@ import { InputSearch } from "@/components/ui/Inputs";
 import { Text } from "@/components/ui/Typo/Text";
 import { SearchParamsType, useGetContentSearch } from "@/services/content";
 import { ContentType } from "@/types/Content";
-import { Box, Container, Flex, Grid, Heading, Section } from "@radix-ui/themes";
+import { Box, Container, Flex, Grid, Section } from "@radix-ui/themes";
 import { debounce } from "lodash";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React, { useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { useEffect, useRef, useState, useTransition } from "react";
 
 const Search: React.FC = () => {
   const [searchValue, setSearchValue] = useState<string>("");
   const router = useRouter();
+  const { get } = useSearchParams();
+  const [, startTransition] = useTransition();
   const inputRef = useRef<any>(null);
 
   const { data: searchData } = useGetContentSearch<SearchParamsType, ContentType>({
@@ -29,6 +31,16 @@ const Search: React.FC = () => {
     // }
   }, 500);
 
+  const handleSloctClick = () => {
+    startTransition(() => {
+      router.push(`/browse?search=${inputRef?.current?.value}`);
+    });
+  };
+
+  useEffect(() => {
+    setSearchValue(get("keyword") || "");
+  }, [get]);
+
   return (
     <Grid>
       <Container className="space-y-[]">
@@ -40,12 +52,14 @@ const Search: React.FC = () => {
               </div>
               <InputSearch
                 onChange={debouncedOnChange}
+                onSlotClick={handleSloctClick}
                 ref={inputRef}
                 variant="contain"
                 className="caret-primary"
                 placeholder="Search"
+                defaultValue={get("keyword") || ""}
               />
-              <Button className="pr-0" variant="ghost">
+              <Button onClick={() => router.back()} className="pr-0" variant="ghost">
                 Cancel
               </Button>
             </Flex>
@@ -69,7 +83,7 @@ const Search: React.FC = () => {
               </Flex>
             </Box>
           )} */}
-          <Box className="space-y-[6px]">
+          {/* <Box className="space-y-[6px]">
             <Heading as="h5" size="3" weight="medium">
               Suggested for you
             </Heading>
@@ -81,10 +95,10 @@ const Search: React.FC = () => {
               <li className="w-1/2">Build and maintain support system</li>
               <li className="w-1/2">Build and maintain support system</li>
             </ul>
-          </Box>
+          </Box> */}
         </Section>
         {searchValue && (
-          <div className="fixed top-[65px] left-0 z-20 w-full h-full bg-[#efefef]">
+          <div className="max-w-[400px] fixed top-[65px] z-20 w-full h-full bg-[#efefef]">
             <Box p="3">
               {searchData?.data?.length ? (
                 searchData?.data?.map((each, key) => (
@@ -95,7 +109,7 @@ const Search: React.FC = () => {
                   </>
                 ))
               ) : (
-                <Flex justify="center">No save contents found!</Flex>
+                <Flex justify="center">No search found!</Flex>
               )}
             </Box>
           </div>
