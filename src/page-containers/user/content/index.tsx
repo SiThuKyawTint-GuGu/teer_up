@@ -12,7 +12,6 @@ import Video from "./components/Video";
 const user = getUserInfo();
 const UserContent = () => {
   const [page, setPage] = useState<number>(1);
-  const [videos, setVideos] = useState<any>([]);
   const videoRefs = useRef<HTMLVideoElement[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const [visibleItemIndex, setVisibleItemIndex] = useState<number>(0);
@@ -34,6 +33,8 @@ const UserContent = () => {
       const handleScroll = () => {
         const scrollPosition = container.scrollTop;
         const newIndex = Math.round(scrollPosition / (window.innerHeight - 96));
+        setStartTime(Date.now());
+        setVisibleItemIndex(newIndex);
         if (newIndex !== visibleItemIndex) {
           // Calculate time in view when the item changes
           if (contentDataArray && contentDataArray.length > 0) {
@@ -46,11 +47,10 @@ const UserContent = () => {
                   watched_time: totalTimeInView,
                   content_id: contentDataArray[visibleItemIndex].id,
                 });
+                return;
               }
             }
           }
-          setStartTime(Date.now());
-          setVisibleItemIndex(newIndex);
         }
       };
 
@@ -61,9 +61,7 @@ const UserContent = () => {
       };
     }
   }, [visibleItemIndex]);
-  useEffect(() => {
-    setVideos(contentDataArray);
-  }, []);
+
   useEffect(() => {
     const observerOptions = {
       root: null,
