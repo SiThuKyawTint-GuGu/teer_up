@@ -101,10 +101,9 @@ const Login: React.FC = () => {
                   <Checkbox onCheckedChange={(val: boolean) => setChecked(val)} />
                   <Text className="space-x-[5px]" as="div" weight="light" size="2">
                     <Text as="span">By clicking &#34;Next&#34;, I have read, understood, and given my</Text>
-                    <DialogTrigger>
-                      <Button className="p-0 h-auto" variant="link">
-                        consent
-                      </Button>
+                    <DialogTrigger className="p-0 h-auto text-primary font-medium">
+                      consent
+                      <Button type="button" className="p-0 h-auto" variant="link"></Button>
                     </DialogTrigger>
                     <Text as="span">and accepted the</Text>
                     <Link href="/support/terms-of-use">
