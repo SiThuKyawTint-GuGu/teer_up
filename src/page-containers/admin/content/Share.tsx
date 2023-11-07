@@ -4,10 +4,9 @@ import { copyUrl } from "@/utils/helper";
 import { Flex } from "@radix-ui/themes";
 import React, { useState } from "react";
 
-const domain: string = window.location.host;
-
 const Share: React.FC<{ url: string }> = ({ url }) => {
   const [copy, setCopy] = useState<boolean>(false);
+  const domain: string = window.location.host;
   return (
     <div className="bg-white w-full px-4 pb-2 ">
       <div className="bg-primary rounded-[6px] w-[60px] h-[2px] mx-auto" />

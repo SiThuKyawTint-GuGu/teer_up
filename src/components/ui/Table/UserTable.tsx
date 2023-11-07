@@ -55,13 +55,11 @@ const UserTable: React.FC = () => {
           required: true,
           error: !!validationErrors?.name,
           helperText: validationErrors?.name,
-          //remove any previous validation errors when user focuses on the input
           onFocus: () =>
             setValidationErrors({
               ...validationErrors,
               name: undefined,
             }),
-          //optionally add validation checking for onBlur or onChange
         },
       },
       {
@@ -73,7 +71,6 @@ const UserTable: React.FC = () => {
           required: true,
           error: !!validationErrors?.email,
           helperText: validationErrors?.email,
-          //remove any previous validation errors when user focuses on the input
           onFocus: () =>
             setValidationErrors({
               ...validationErrors,
@@ -82,28 +79,29 @@ const UserTable: React.FC = () => {
         },
       },
       {
-        accessorKey: "role",
+        accessorFn: (row: any) => {
+          if (row.role) {
+            return row.role === "mentor" ? "Mentor" : "Student";
+          }
+          return "";
+        },
+        id: "role",
         header: "Role",
         enableEditing: true,
         size: 1,
         editVariant: "select",
-        Cell: ({ row }: any) => <p>{row?.original?.role === "mentor" ? "Mentor" : "Student"}</p>,
-        // editSelectOptions: [
-        //   { label: "Student", value: "student" },
-        //   { label: "Mentor", value: "mentor" },
-        // ],
-        editSelectOptions: ["student", "mentor"],
+        editSelectOptions: ["Student", "Mentor"],
         muiEditTextFieldProps: {
           select: true,
-          // type: "role",
+          type: "role",
           required: true,
           error: !!validationErrors?.role,
           helperText: validationErrors?.role,
-          // onFocus: () =>
-          //   setValidationErrors({
-          //     ...validationErrors,
-          //     // role: "undefined",
-          //   }),
+          onFocus: () =>
+            setValidationErrors({
+              ...validationErrors,
+              // role: "undefined",
+            }),
         },
       },
       {
@@ -139,16 +137,17 @@ const UserTable: React.FC = () => {
   //CREATE action
   const handleCreateUser: MRT_TableOptions<User>["onCreatingRowSave"] = async ({ values, table }) => {
     const { name, email, role } = values;
+    const newRole = role === "Mentor" ? "mentor" : "student";
     const newValidationErrors = validateUser(values);
     if (Object.values(newValidationErrors).some(error => error)) {
       setValidationErrors(newValidationErrors);
       return;
     }
     setValidationErrors({});
-    const newValues = {
+    const newValues: any = {
       name,
       email,
-      role,
+      role: newRole,
     };
     createTrigger(newValues, {
       onSuccess: () => {
@@ -161,6 +160,7 @@ const UserTable: React.FC = () => {
   //UPDATE action
   const handleSaveUser: MRT_TableOptions<User>["onEditingRowSave"] = ({ values, table }) => {
     const { id, name, role } = values;
+    const newRole = role === "Mentor" ? "mentor" : "student";
     const newValidationErrors = validateUser(values);
     if (Object.values(newValidationErrors).some(error => error)) {
       setValidationErrors(newValidationErrors);
@@ -169,7 +169,7 @@ const UserTable: React.FC = () => {
     setValidationErrors({});
     const newValues = {
       name,
-      role,
+      role: newRole,
       id,
     };
     updateTrigger(newValues, {
@@ -337,6 +337,7 @@ function validateUser(user: User) {
   return {
     name: !validateRequired(user.name) ? "First Name is Required" : "",
     role: !validateRequired(user.role) ? "Role is Required" : "",
+    email: !validateEmail(user.email || "") ? "Email is required" : "",
   };
 }
 
