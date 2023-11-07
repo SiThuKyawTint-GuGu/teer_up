@@ -1,7 +1,7 @@
 "use client";
 
 import { Text } from "@/components/ui/Typo/Text";
-import { ParamsType, useGetContentInfinite } from "@/services/content";
+import { ParamsType, useGetBrowseInfinite } from "@/services/content";
 import { ContentData, ContentType } from "@/types/Content";
 import { Flex } from "@radix-ui/themes";
 import { useSearchParams } from "next/navigation";
@@ -17,11 +17,11 @@ const BrowsePage = () => {
     return searchParams.get("search");
   }, [searchParams]);
 
-  const { data, mutate } = useGetContentInfinite<ParamsType>({
+  const { data, mutate } = useGetBrowseInfinite<ParamsType>({
     page: page,
     pagesize: 25,
-    // type: type,
-    // search: search ? search : undefined,
+    type: type,
+    search: search ? search : undefined,
   });
 
   return (
