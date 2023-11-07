@@ -62,7 +62,10 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
 
   return (
     <div className="w-full h-[90%] flex flex-col">
-      <div className="w-full h-full  md:aspect-video relative text-white" onClick={() => showCmt && setShowCmt(false)}>
+      <div
+        className="w-full h-full overflow-y-auto  md:aspect-video relative text-white"
+        onClick={() => showCmt && setShowCmt(false)}
+      >
         {data.content_video && (
           <video
             poster={data.image_url}
@@ -87,18 +90,26 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
         )}
 
         <div
-          className={`absolute flex flex-col items-baseline cursor-pointer bg-slate-700 opacity-[0.8]  bottom-0 px-3 py-3 z-[1000] text-[20px] font-[600] ${
+          className={`absolute flex flex-col items-baseline cursor-pointer w-full bg-slate-700 opacity-[0.8]  bottom-0 px-3 py-3 z-[1] text-[20px] font-[600] ${
             showDescription && "transition-all duration-1000 ease-in-out"
           }`}
         >
-          {data.description.length > 50 && !showDescription && (
-            <div onClick={() => setShowDescription(!showDescription)}>
+          {!showDescription && (
+            <div
+              onClick={() => {
+                if (data.description.length > 50) {
+                  setShowDescription(true);
+                }
+              }}
+            >
               <div>{data.title}</div>
-              <div>{data.description.slice(0, 50)}...see more</div>
+              <div>
+                {data.description.length > 50 ? data.description.slice(0, 50) + "...see more" : data.description}
+              </div>
             </div>
           )}
-          {showDescription && (
-            <div onClick={() => setShowDescription(!showDescription)}>
+          {showDescription && data.description.length > 50 && (
+            <div onClick={() => setShowDescription(false)}>
               <div>{data.title}</div>
               <div>{data.description}</div>
             </div>
