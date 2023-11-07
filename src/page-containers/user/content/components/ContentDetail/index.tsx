@@ -2,7 +2,9 @@
 
 import LikeCmtBar from "@/components/contentLayout/LikeCmtBar";
 import { Icons } from "@/components/ui/Images";
-import { ContentData } from "@/types/Content";
+import { Text } from "@/components/ui/Typo/Text";
+import { ContentData, ContentKeywords } from "@/types/Content";
+import { Flex } from "@radix-ui/themes";
 
 import dayjs from "dayjs";
 import React from "react";
@@ -57,6 +59,13 @@ const NormalContentDetail: React.FC<NormalContentDetailProp> = ({ data, contentM
                   />
                 )}
 
+                {data.content_keywords.length > 0 &&
+                  data.content_keywords.map((key: ContentKeywords, index: number) => (
+                    <Flex gap="3" key={index}>
+                      <Text className="text-primary font-[600] text-[16px]">#{key.keyword.keyword}</Text>
+                    </Flex>
+                  ))}
+
                 {data?.content_event && (
                   <div className="flex flex-wrap gap-x-2 items-center text-[16px] font-[700]">
                     <Icons.location className="w-[20px] h-[20px]" />
@@ -64,7 +73,7 @@ const NormalContentDetail: React.FC<NormalContentDetailProp> = ({ data, contentM
                   </div>
                 )}
                 {data?.content_event && (
-                  <div className="flex flex-wrap gap-x-2 items-center  text-[16px] font-[700]">
+                  <div className="flex flex-wrap gap-x-2 items-center justify-start  text-[16px] font-[700]">
                     <Icons.calender className="w-[20px] h-[20px]" />
                     {dayjs(data?.content_event.to_datetime).format("D MMMM")}
                   </div>
