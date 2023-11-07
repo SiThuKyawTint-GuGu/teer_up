@@ -34,7 +34,7 @@ const TermsUse: React.FC = () => {
         <Section py="4" px="3">
           <Heading mb="6">Terms of Use</Heading>
           <Box className="space-y-10">
-            <Box className="space-y-[16px]">
+            <Box className="space-y-4">
               <Heading as="h5" size="4">
                 Welcome to TEE-Up!
               </Heading>
@@ -68,7 +68,7 @@ const TermsUse: React.FC = () => {
               </Text>
             </Box>
 
-            <Box className="space-y-[16px]">
+            <Box className="space-y-4">
               <Heading as="h5" size="4">
                 Disclaimer
               </Heading>
@@ -99,7 +99,7 @@ const TermsUse: React.FC = () => {
               </Text>
             </Box>
 
-            <Box className="space-y-[16px]">
+            <Box className="space-y-4">
               <Heading as="h5" size="4">
                 Exclusion of Liability
               </Heading>
@@ -133,7 +133,7 @@ const TermsUse: React.FC = () => {
               </Text>
             </Box>
 
-            <Box className="space-y-[16px]">
+            <Box className="space-y-4">
               <Heading as="h5" size="4">
                 Governing Law & Jurisdiction
               </Heading>
@@ -144,7 +144,7 @@ const TermsUse: React.FC = () => {
               </Text>
             </Box>
 
-            <Box className="space-y-[16px]">
+            <Box className="space-y-4">
               <Heading as="h5" size="4">
                 Cookies
               </Heading>
@@ -159,7 +159,7 @@ const TermsUse: React.FC = () => {
               </Text>
             </Box>
 
-            <Box className="space-y-[16px]">
+            <Box className="space-y-4">
               <Heading as="h5" size="4">
                 License
               </Heading>
@@ -189,7 +189,7 @@ const TermsUse: React.FC = () => {
               </Text>
             </Box>
 
-            <Box className="space-y-[16px]">
+            <Box className="space-y-4">
               <Heading as="h5" size="4">
                 Copyright and Trademarks
               </Heading>
