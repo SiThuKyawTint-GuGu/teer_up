@@ -31,6 +31,12 @@ const Header: React.FC = () => {
     }
   };
 
+  const handleSlotClick = () => {
+    startTransition(() => {
+      router.push(`/search?keyword=${search ? search : get("search")}`);
+    });
+  };
+
   return (
     <header className="w-full max-w-[400px] h-[48px] mx-auto bg-white fixed top-0 z-10 shadow-[0px_1px_9px_0px_rgba(0,_0,_0,_0.06)]">
       <Flex justify="between" align="center" height="100%" px="3" position="relative" gap="3">
@@ -46,6 +52,8 @@ const Header: React.FC = () => {
             onKeyPress={handleKeyPress}
             onClear={handleClearSearch}
             onChange={handleChange}
+            onSlotClick={handleSlotClick}
+            onFocus={handleSlotClick}
             clearSlot
           />
         ) : (
