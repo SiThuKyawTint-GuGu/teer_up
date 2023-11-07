@@ -16,6 +16,7 @@ import { setUserInfo } from "@/utils/auth";
 import { cn } from "@/utils/cn";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Flex, Grid, Heading } from "@radix-ui/themes";
+import Link from "next/link";
 import { useRef, useState, useTransition } from "react";
 import { useUserRegister } from "../../../../services/user";
 interface SignUpFormType {
@@ -169,9 +170,9 @@ const SignUp = () => {
             </Form>
             <Flex justify="center" wrap="wrap" width="100%" gap="2">
               <Text weight="light">Already have an account?</Text>
-              <button onClick={() => router.push("/auth/login")} className="text-primary">
-                Log in
-              </button>
+              <Link href="/auth/login">
+                <button className="text-primary">Log in</button>
+              </Link>
             </Flex>
           </div>
         </Flex>

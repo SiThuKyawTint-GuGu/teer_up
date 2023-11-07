@@ -83,12 +83,27 @@ const Login: React.FC = () => {
                   </FormItem>
                 )}
               />
-              <Flex width="100%" wrap="wrap" gap="1" my="5">
+              {/* <Flex width="100%" wrap="wrap" gap="1" my="5">
                 <Checkbox onCheckedChange={(val: boolean) => setChecked(val)} />
                 <Text weight="regular" size="2">
                   I have read, understood and accept
                   <Link href="/support/privacy-policy" className="text-primary ml-2">
                     Terms of Use.
+                  </Link>
+                </Text>
+              </Flex> */}
+              <Flex width="100%" gap="1" my="5">
+                <Checkbox onCheckedChange={(val: boolean) => setChecked(val)} />
+                <Text className="space-x-[5px]" as="div" weight="light" size="2">
+                  <Text as="span">By clicking &#34;Next&#34;, I have read, understood, and given my</Text>
+                  <Button className="p-0 h-auto" variant="link">
+                    consent
+                  </Button>
+                  <Text as="span">and accepted the</Text>
+                  <Link href="/support/terms-of-use">
+                    <Button className="p-0 h-auto" variant="link">
+                      Terms of Use
+                    </Button>
                   </Link>
                 </Text>
               </Flex>
@@ -100,9 +115,9 @@ const Login: React.FC = () => {
           </Form>
           <Flex justify="center" wrap="wrap" width="100%" gap="2">
             <Text weight="light">Don’t have an account? </Text>
-            <button onClick={() => router.push("/auth/signup")} className="text-primary">
-              Sign up now
-            </button>
+            <Link href="/auth/signup">
+              <button className="text-primary">Sign up now</button>
+            </Link>
           </Flex>
         </div>
       </Flex>
