@@ -1,10 +1,8 @@
 "use client";
 
 import CardBox from "@/components/ui/Card";
-import { Text } from "@/components/ui/Typo/Text";
 import ReactionBar from "@/page-containers/admin/content/ReactionBar";
 import { ContentData } from "@/types/Content";
-import { Flex } from "@radix-ui/themes";
 
 import { useEffect, useRef, useState } from "react";
 type VideoProps = {
@@ -89,25 +87,22 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
         )}
 
         <div
-          className={`absolute flex flex-col items-baseline w-full cursor-pointer bg-slate-700 opacity-[0.5]  bottom-0 px-3 py-3 z-[1000] text-[20px] font-[600] ${
+          className={`absolute flex flex-col items-baseline w-full cursor-pointer bg-slate-700 opacity-[0.8]  bottom-0 px-3 py-3 z-[1000] text-[20px] font-[600] ${
             showDescription && "transition-all duration-1000 ease-in-out"
           }`}
         >
-          {!showDescription && (
-            <Flex direction="column">
-              <Text>{data.title}</Text>
-              {data.description.length > 50 ? (
-                <div onClick={() => setShowDescription(true)}>
-                  {data.title.slice(0, 50)}
-                  <div>...See More</div>
-                </div>
-              ) : (
-                <Text>{data.title}</Text>
-              )}
-            </Flex>
+          {data.description.length > 50 && !showDescription && (
+            <div onClick={() => setShowDescription(!showDescription)}>
+              <div>{data.title}</div>
+              <div>{data.description.slice(0, 50)}...see more</div>
+            </div>
           )}
-
-          {showDescription && <div onClick={() => setShowDescription(false)}>{data.title}</div>}
+          {showDescription && (
+            <div onClick={() => setShowDescription(!showDescription)}>
+              <div>{data.title}</div>
+              <div>{data.description}</div>
+            </div>
+          )}
         </div>
       </div>
       <CardBox>
