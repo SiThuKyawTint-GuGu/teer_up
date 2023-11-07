@@ -9,12 +9,13 @@ import { Box, Container, Flex, Grid, Section } from "@radix-ui/themes";
 import { debounce } from "lodash";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useTransition } from "react";
 
 const Search: React.FC = () => {
   const [searchValue, setSearchValue] = useState<string>("");
   const router = useRouter();
   const { get } = useSearchParams();
+  const [, startTransition] = useTransition();
   const inputRef = useRef<any>(null);
 
   const { data: searchData } = useGetContentSearch<SearchParamsType, ContentType>({
@@ -29,6 +30,12 @@ const Search: React.FC = () => {
     //   inputRef?.current?.value && setLocalStorage("history", newData);
     // }
   }, 500);
+
+  const handleSloctClick = () => {
+    startTransition(() => {
+      router.push(`/browse?search=${inputRef?.current?.value}`);
+    });
+  };
 
   useEffect(() => {
     setSearchValue(get("keyword") || "");
@@ -45,6 +52,7 @@ const Search: React.FC = () => {
               </div>
               <InputSearch
                 onChange={debouncedOnChange}
+                onSlotClick={handleSloctClick}
                 ref={inputRef}
                 variant="contain"
                 className="caret-primary"

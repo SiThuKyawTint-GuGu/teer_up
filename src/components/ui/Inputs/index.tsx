@@ -73,14 +73,26 @@ export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   variant?: "contain";
   slotDir?: SLOT_DIRECTION;
   clearSlot?: boolean;
-  onChange?: () => void;
-  onKeyPress?: (arg?: any) => void;
+  onSlotClick?: (arg?: any) => void;
   onClear?: () => void;
 };
 
 const InputSearch = React.forwardRef<HTMLInputElement, InputProps>(
   (
-    { type = "text", placeholder, className, variant, defaultValue, slotDir, clearSlot, onClear, onChange, onKeyPress },
+    {
+      type = "text",
+      placeholder,
+      className,
+      variant,
+      defaultValue,
+      slotDir,
+      clearSlot,
+      onClear,
+      onSlotClick,
+      onChange,
+      onKeyPress,
+      onFocus,
+    },
     ref
   ) => {
     return (
@@ -88,7 +100,7 @@ const InputSearch = React.forwardRef<HTMLInputElement, InputProps>(
         <TextField.Root>
           {slotDir === SLOT_DIRECTION.LEFT && (
             <TextField.Slot>
-              <IconButton size="2" variant="ghost">
+              <IconButton size="2" variant="ghost" onClick={onSlotClick}>
                 <Icons.search className={cn("w-[24px] h-[24px] text-[#5B6770]", variant && "text-[#8d9499]")} />
               </IconButton>
             </TextField.Slot>
@@ -102,6 +114,7 @@ const InputSearch = React.forwardRef<HTMLInputElement, InputProps>(
             onChange={onChange}
             onKeyPress={onKeyPress}
             defaultValue={defaultValue}
+            onFocus={onFocus}
           />
           {slotDir === SLOT_DIRECTION.RIGHT && (
             <TextField.Slot>
