@@ -1,6 +1,6 @@
 "use client";
 
-import { NavbarItems, NavbarType } from "@/shared/data/UserTabbar";
+import { navbarItems, NavbarType } from "@/shared/data/UserTabbar";
 import { cn } from "@/utils/cn";
 import { Flex } from "@radix-ui/themes";
 import Link from "next/link";
@@ -11,13 +11,13 @@ const BottomNavbar = () => {
 
   return (
     <Flex
-      className="bg-white w-full max-w-[400px] mx-auto z-[9] shadow-[0px_-3px_9px_0px_rgba(0,_0,_0,_0.06)]"
+      className="bg-white w-full max-w-[400px] mx-auto z-[9] shadow-[0px_-3px_9px_0px_rgba(0,_0,_0,_0.06)] px-5"
       align="center"
       justify="between"
       position="fixed"
       bottom="0"
     >
-      {NavbarItems.map((item: NavbarType, index: number) => {
+      {navbarItems.map((item: NavbarType, index: number) => {
         return (
           <div key={index} className="p-2">
             <Link

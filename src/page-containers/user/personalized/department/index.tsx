@@ -60,7 +60,7 @@ const DepartmentPage = () => {
                     onClick={() => {
                       onChange(each.id);
                     }}
-                    className={`flex justify-center items-center w-full h-full p-3 text-center border-[1px]
+                    className={`flex justify-center items-center w-full h-[104px] p-3 text-center border-[1px]
                  shadow-md bg-[#fefefe] rounded-md cursor-pointer
              ${selectData.find(data => data === each.id) && "border-[1px] border-primary bg-secondary"}
         
@@ -72,7 +72,13 @@ const DepartmentPage = () => {
             </div>
           </QuestionPageCard>
           <div className="fixed bottom-0 w-full max-w-[400px] mx-auto py-2 px-4 bg-white">
-            <Button className="w-full" disabled={selectData.length == 0 || isPending} onClick={submitHandler} size="sm">
+            <Button
+              className="w-full"
+              disabled={selectData.length == 0 || isPending}
+              loading={isPending}
+              onClick={submitHandler}
+              size="sm"
+            >
               Next
             </Button>
           </div>

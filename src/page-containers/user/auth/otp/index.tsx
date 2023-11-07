@@ -83,7 +83,7 @@ const Otp = () => {
 
             <Form {...form}>
               <form
-                className="w-full flex flex-col justify-center flex-wrap gap-y-3"
+                className="w-full flex flex-col justify-center flex-wrap gap-y-3 hide-number-spin"
                 onSubmit={form.handleSubmit(onSubmit)}
               >
                 <FormField
