@@ -15,7 +15,7 @@ const QuestionPageCard: React.FC<QuestionPageCardProp> = ({ children, title, lay
   const router = useRouter();
   const pathname = usePathname();
   return (
-    <>
+    <div className="h-screen w-full">
       {layout && (
         <div className="flex justify-between h-[48px] items-center px-2  bg-white fixed top-0 w-full max-w-[400px] mx-auto">
           <div
@@ -31,9 +31,9 @@ const QuestionPageCard: React.FC<QuestionPageCardProp> = ({ children, title, lay
           </Link>
         </div>
       )}
-      <div className={`w-full  flex flex-col  h-full px-2 ${layout && "py-[46px]"}`}>
+      <div className={`w-full  flex flex-col  h-full px-2 ${layout && "py-[48px]"}`}>
         {title && (
-          <Text className="text-[28px] font-[700]  text-start mb-5" as="div">
+          <Text className="text-[28px] font-[700] leading-[36px]  text-start mb-5" as="div">
             {title}
           </Text>
         )}
@@ -42,9 +42,9 @@ const QuestionPageCard: React.FC<QuestionPageCardProp> = ({ children, title, lay
             {subTitle}
           </Text>
         )}
-        <div className="w-full h-full mt-3">{children}</div>
+        <div className="w-full mt-3 h-full pb-[48px]">{children}</div>
       </div>
-    </>
+    </div>
   );
 };
 
