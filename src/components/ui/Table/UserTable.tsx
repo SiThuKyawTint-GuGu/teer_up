@@ -37,6 +37,7 @@ const UserTable: React.FC = () => {
   const { trigger: createTrigger, error: createError } = useCreateUser();
   const { trigger: updateTrigger, error: updateError } = useUpdateUser();
   const { trigger: deleteTrigger } = useDeleteUser();
+
   const columns = useMemo<any>(
     () => [
       {
@@ -86,20 +87,23 @@ const UserTable: React.FC = () => {
         enableEditing: true,
         size: 1,
         editVariant: "select",
-        Cell: ({ row }: any) => <p>{row?.original?.role?.charAt(0).toUpperCase() + row?.original?.role?.slice(1)}</p>,
+        Cell: ({ row }: any) => <p>{row?.original?.role === "mentor" ? "Mentor" : "Student"}</p>,
+        // editSelectOptions: [
+        //   { label: "Student", value: "student" },
+        //   { label: "Mentor", value: "mentor" },
+        // ],
         editSelectOptions: ["student", "mentor"],
         muiEditTextFieldProps: {
           select: true,
-          type: "role",
+          // type: "role",
           required: true,
           error: !!validationErrors?.role,
           helperText: validationErrors?.role,
-          //remove any previous validation errors when user focuses on the input
-          onFocus: () =>
-            setValidationErrors({
-              ...validationErrors,
-              // role: "undefined",
-            }),
+          // onFocus: () =>
+          //   setValidationErrors({
+          //     ...validationErrors,
+          //     // role: "undefined",
+          //   }),
         },
       },
       {
