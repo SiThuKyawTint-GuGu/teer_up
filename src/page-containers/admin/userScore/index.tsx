@@ -10,7 +10,7 @@ interface Props {
 const UserScoreTable = ({ id }: Props) => {
   const [globalFilter, setGlobalFilter] = useState<string>("");
   const { data: userScores, isLoading } = useGetUserScores<any>(id);
-  console.log("user scores", userScores);
+  // console.log("user scores", userScores);
 
   const columns = useMemo(
     () => [
