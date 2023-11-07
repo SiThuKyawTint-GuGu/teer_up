@@ -1,24 +1,16 @@
 "use client";
-import { useGetUserScores } from "@/services/user";
+import { useGetUserScores } from "@/services/userScore";
 import dayjs from "dayjs";
 import { MaterialReactTable, useMaterialReactTable } from "material-react-table";
 import { useMemo, useState } from "react";
 
-const UserScoreTable: React.FC = () => {
-  // const [pagination, setPagination] = useState<MRT_PaginationState>({
-  //   pageIndex: 0,
-  //   pageSize: 10,
-  // });
+interface Props {
+  id: string;
+}
+const UserScoreTable = ({ id }: Props) => {
   const [globalFilter, setGlobalFilter] = useState<string>("");
-  // const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>([]);
-  // const { data: mentorships, isLoading } = useGetMentorship<ParamsType, any>({
-  //   page: pagination.pageIndex + 1,
-  //   pagesize: pagination.pageSize,
-  //   search: globalFilter || "",
-  //   // status: columnFilters[0]?.value,
-  // });
-  const { data: userScores, isLoading } = useGetUserScores();
-  // console.log("user scores", userScores);
+  const { data: userScores, isLoading } = useGetUserScores<any>(id);
+  console.log("user scores", userScores);
 
   const columns = useMemo(
     () => [
@@ -88,24 +80,12 @@ const UserScoreTable: React.FC = () => {
     },
     enableStickyFooter: true,
     enableStickyHeader: true,
-    // manualFiltering: true,
-    // initialState: {
-    //   pagination: {
-    //     pageSize: 10,
-    //     pageIndex: 0,
-    //   },
-    // },
-
     state: {
       showSkeletons: isLoading ?? false,
-      // pagination,
       isLoading,
-      // columnFilters,
       globalFilter,
     },
     onGlobalFilterChange: setGlobalFilter,
-    // onColumnFiltersChange: setColumnFilters,
-    // onPaginationChange: setPagination,
   });
 
   return (
