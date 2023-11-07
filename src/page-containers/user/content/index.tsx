@@ -110,8 +110,6 @@ const UserContent = () => {
     return <ContentLayout data={data} contentMutate={mutate} redir={`/content/${data.slug}`} />;
   };
 
-  console.log(contentDataArray);
-
   return (
     <>
       <div className="w-full h-[calc(100vh-100px)]">
@@ -130,6 +128,7 @@ const UserContent = () => {
                 key={index}
               >
                 {differentContent(data, index)}
+
                 {index == 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
                 {contentDataArray && contentDataArray[visibleItemIndex].type === "onboarding" && (
                   <Button

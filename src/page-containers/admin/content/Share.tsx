@@ -4,7 +4,7 @@ import { copyUrl } from "@/utils/helper";
 import { Flex } from "@radix-ui/themes";
 import React, { useState } from "react";
 
-const domain: string = process.env.NEXT_PUBLIC_DOMAIN as string;
+const domain: string = window.location.hostname;
 
 const Share: React.FC<{ url: string }> = ({ url }) => {
   const [copy, setCopy] = useState<boolean>(false);
