@@ -16,6 +16,7 @@ import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import RoomPreferencesIcon from "@mui/icons-material/RoomPreferences";
 import SettingsIcon from "@mui/icons-material/Settings";
+import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
 import TextSnippetIcon from "@mui/icons-material/TextSnippet";
 import NextImage from "next/image";
 import { CiSettings } from "react-icons/ci";
@@ -52,9 +53,9 @@ import { MdDelete, MdOutlineMailOutline } from "react-icons/md";
 import {
   PiAirplaneTiltLight,
   PiArrowDownRightThin,
-  PiArrowUpRightThin,
   PiArrowsLeftRightDuotone,
   PiArrowsLeftRightThin,
+  PiArrowUpRightThin,
   PiBagSimpleThin,
   PiCameraLight,
   PiCameraPlusFill,
@@ -107,6 +108,7 @@ export const Icons = {
   teeupFooter: TeeupFooterIcon,
   innovates: FaLightbulb,
   users: FiUsers,
+  userscore: SupervisedUserCircleIcon,
   content: ArticleIcon,
   category: BallotIcon,
   post: PostAddIcon,
