@@ -4,20 +4,24 @@ import { USER_ROLE } from "@/shared/enums";
 import { UserResponse } from "@/types/User";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import InfoIcon from "@mui/icons-material/Info";
 import { Alert, Box, Button, IconButton, Modal, Tooltip, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import {
   MaterialReactTable,
+  MRT_ColumnFiltersState,
   MRT_PaginationState,
   useMaterialReactTable,
   type MRT_TableOptions,
 } from "material-react-table";
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import { type User } from "./makeData";
 
 const UserTable: React.FC = () => {
   const [validationErrors, setValidationErrors] = useState<Record<string, string | undefined>>({});
   const [globalFilter, setGlobalFilter] = useState<string>("");
+  const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>([]);
   const [pagination, setPagination] = useState<MRT_PaginationState>({
     pageIndex: 0,
     pageSize: 10,
@@ -29,7 +33,10 @@ const UserTable: React.FC = () => {
     mutate,
     isLoading,
   } = useGetUsers<ParamsType, UserResponse>({
-    role: [USER_ROLE.STUDENT, USER_ROLE.MENTOR],
+    role: (columnFilters.find(filter => filter.id === "role")?.value as USER_ROLE | undefined) || [
+      USER_ROLE.STUDENT,
+      USER_ROLE.MENTOR,
+    ],
     page: pagination.pageIndex + 1,
     pageSize: pagination.pageSize,
     name: globalFilter || "",
@@ -44,12 +51,12 @@ const UserTable: React.FC = () => {
         accessorKey: "id",
         header: "ID",
         enableEditing: false,
-        size: 1,
+        size: 0.5,
       },
       {
         accessorKey: "name",
         header: "Name",
-        size: 2,
+        size: 0.5,
         muiEditTextFieldProps: {
           type: "text",
           required: true,
@@ -66,6 +73,7 @@ const UserTable: React.FC = () => {
         accessorKey: "email",
         header: "Email",
         enableEditing: true,
+        size: 1,
         muiEditTextFieldProps: {
           type: "email",
           required: true,
@@ -88,7 +96,7 @@ const UserTable: React.FC = () => {
         id: "role",
         header: "Role",
         enableEditing: true,
-        size: 1,
+        size: 0.5,
         editVariant: "select",
         editSelectOptions: ["Student", "Mentor"],
         muiEditTextFieldProps: {
@@ -200,6 +208,7 @@ const UserTable: React.FC = () => {
     createDisplayMode: "row",
     editDisplayMode: "row",
     enableEditing: true,
+    enableColumnFilters: true,
     getRowId: row => row.id,
     muiToolbarAlertBannerProps: isLoading
       ? {
@@ -231,17 +240,26 @@ const UserTable: React.FC = () => {
     state: {
       showSkeletons: isLoading ?? false,
       pagination,
+      columnFilters,
       isLoading,
     },
     onGlobalFilterChange: setGlobalFilter,
+    onColumnFiltersChange: setColumnFilters,
     onPaginationChange: setPagination,
     onEditingRowSave: handleSaveUser,
     renderRowActions: ({ row, table }) => (
-      <Box sx={{ display: "flex", gap: "1rem" }}>
+      <Box sx={{ display: "flex" }}>
         <Tooltip title="Edit">
           <IconButton onClick={() => table.setEditingRow(row)}>
             <EditIcon />
           </IconButton>
+        </Tooltip>
+        <Tooltip title="Detail">
+          <Link href={`/admin/users/user-scores/${row.id}`}>
+            <IconButton>
+              <InfoIcon />
+            </IconButton>
+          </Link>
         </Tooltip>
         <Tooltip title="Delete">
           <IconButton
