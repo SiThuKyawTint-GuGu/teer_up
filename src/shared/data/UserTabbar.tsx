@@ -5,7 +5,7 @@ export type NavbarType = {
   path: string;
   icon: React.ReactNode;
 };
-export const NavbarItems: NavbarType[] = [
+export const navbarItems: NavbarType[] = [
   {
     text: "Home",
     path: "/home",
@@ -16,11 +16,11 @@ export const NavbarItems: NavbarType[] = [
     path: "/browse",
     icon: <Icons.globe width={24} height={24} />,
   },
-  {
-    text: "Mentorship",
-    path: "/mentorship",
-    icon: <Icons.people width={24} height={24} />,
-  },
+  // {
+  //   text: "Mentorship",
+  //   path: "/mentorship",
+  //   icon: <Icons.people width={24} height={24} />,
+  // },
   {
     text: "Saved",
     path: "/saved",
