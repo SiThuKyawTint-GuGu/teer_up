@@ -18,9 +18,10 @@ const RadarChart: React.FC = () => {
   const skillScores = useMemo(() => {
     if (scoreData && scoreData.length > 0) return scoreData.map((each: UserScores) => each.skill);
   }, [scoreData]);
-  const centainityScores = useMemo(() => {
-    if (scoreData && scoreData.length > 0) return scoreData.map((each: UserScores) => each.certainty);
-  }, [scoreData]);
+  // const centainityScores = useMemo(() => {
+  //   if (scoreData && scoreData.length > 0) return scoreData.map((each: UserScores) => each.certainty);
+  // }, [scoreData]);
+
   const data = {
     labels: label,
     datasets: [
@@ -28,12 +29,14 @@ const RadarChart: React.FC = () => {
         label: "Skill",
         backgroundColor: "rgba(75,192,192,0.2)",
         borderColor: "rgba(255,0,0,1)",
+        borderWidth: 1,
         pointBackgroundColor: "rgba(255,0,0,1)",
         pointBorderColor: "#fff",
         pointHoverBackgroundColor: "#fff",
         pointHoverBorderColor: "rgba(255,0,0,1)",
         data: skillScores,
       },
+
       // {
       //   label: "Certainity",
       //   backgroundColor: "rgba(0,0,255,0.2)",
@@ -48,16 +51,24 @@ const RadarChart: React.FC = () => {
   };
 
   const options = {
+    legend: {
+      display: false,
+    },
     scales: {
       r: {
         beginAtZero: true,
+        suggestedMax: 100,
       },
+    },
+
+    tooltip: {
+      usePointStyle: true,
     },
   };
 
   return (
-    <div>
-      <Radar data={data} options={options} />
+    <div className="w-full h-full flex-wrap radar-chart-container">
+      <Radar data={data} options={options} className="w-full h-full font-[12px]" />
     </div>
   );
 };

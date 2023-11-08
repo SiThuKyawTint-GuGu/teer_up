@@ -1,29 +1,16 @@
 "use client";
-import { ParamsType, useGetMentorship } from "@/services/mentorship";
+import { useGetUserScores } from "@/services/userScore";
 import dayjs from "dayjs";
-import {
-  MaterialReactTable,
-  MRT_ColumnFiltersState,
-  MRT_PaginationState,
-  useMaterialReactTable,
-} from "material-react-table";
+import { MaterialReactTable, useMaterialReactTable } from "material-react-table";
 import { useMemo, useState } from "react";
 
-const UserScoreTable: React.FC = () => {
-  const [pagination, setPagination] = useState<MRT_PaginationState>({
-    pageIndex: 0,
-    pageSize: 10,
-  });
+interface Props {
+  id: string;
+}
+const UserScoreTable = ({ id }: Props) => {
   const [globalFilter, setGlobalFilter] = useState<string>("");
-  const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>([]);
-  const { data: mentorships, isLoading } = useGetMentorship<ParamsType, any>({
-    page: pagination.pageIndex + 1,
-    pagesize: pagination.pageSize,
-    search: globalFilter || "",
-    // status: columnFilters[0]?.value,
-  });
-  // console.log("mentorships...", mentorships);
-  // console.log(columnFilters);
+  const { data: userScores, isLoading } = useGetUserScores<any>(id);
+  // console.log("user scores", userScores);
 
   const columns = useMemo(
     () => [
@@ -31,43 +18,45 @@ const UserScoreTable: React.FC = () => {
         accessorKey: "id",
         header: "ID",
         enableEditing: false,
-        size: 2,
-      },
-      {
-        accessorKey: "mentor.name",
-        header: "Mentor Name",
-        enableEditing: false,
-      },
-      {
-        accessorKey: "student.name",
-        header: "Student Name",
-        enableEditing: false,
-      },
-      {
-        accessorKey: "status",
-        header: "Status",
-        enableEditing: false,
-        Cell: ({ row }: any) => (
-          <p>{row?.original?.status?.charAt(0).toUpperCase() + row?.original?.status?.slice(1)}</p>
-        ),
-        size: 2,
+        size: 1,
       },
       // {
-      //   accessorKey: "student_reply",
-      //   header: "Student Reply",
+      //   accessorKey: "user_id",
+      //   header: "User ID",
       //   enableEditing: false,
+      //   size: 1,
       // },
-      // {
-      //   accessorKey: "mentor_reply",
-      //   header: "Mentor Reply",
-      //   enableEditing: false,
-      // },
+      {
+        accessorKey: "skill",
+        header: "Skill",
+        enableEditing: false,
+        size: 1,
+      },
+      {
+        accessorKey: "certainty",
+        header: "Certainty",
+        enableEditing: false,
+        size: 1,
+      },
+      {
+        accessorKey: "dimension.name",
+        header: "Dimension",
+        enableEditing: false,
+        size: 1,
+      },
       {
         accessorKey: "created_at",
         header: "Created At",
         enableEditing: false,
-        size: 3,
+        size: 2,
         Cell: ({ row }: any) => dayjs(row.original.created_at).format("MMM D, YYYY h:mm A"),
+      },
+      {
+        accessorKey: "updated_at",
+        header: "Updated At",
+        enableEditing: false,
+        size: 2,
+        Cell: ({ row }: any) => dayjs(row.original.updated_at).format("MMM D, YYYY h:mm A"),
       },
     ],
     []
@@ -75,7 +64,7 @@ const UserScoreTable: React.FC = () => {
 
   const table = useMaterialReactTable({
     columns,
-    data: (mentorships?.data as any) || [],
+    data: (userScores?.data as any) || [],
     enableColumnFilters: false,
     muiToolbarAlertBannerProps: isLoading
       ? {
@@ -91,26 +80,12 @@ const UserScoreTable: React.FC = () => {
     },
     enableStickyFooter: true,
     enableStickyHeader: true,
-    manualFiltering: true,
-    manualPagination: true,
-    rowCount: mentorships?.total,
-    initialState: {
-      pagination: {
-        pageSize: 10,
-        pageIndex: 0,
-      },
-    },
-
     state: {
       showSkeletons: isLoading ?? false,
-      pagination,
       isLoading,
-      columnFilters,
       globalFilter,
     },
     onGlobalFilterChange: setGlobalFilter,
-    onColumnFiltersChange: setColumnFilters,
-    onPaginationChange: setPagination,
   });
 
   return (

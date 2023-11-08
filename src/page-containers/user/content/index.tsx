@@ -9,7 +9,7 @@ import { getUserInfo } from "@/utils/auth";
 import ContentLayout from "./components/ContentLayout";
 import Onboarding from "./components/Onboarding";
 import Video from "./components/Video";
-const user = getUserInfo();
+
 const UserContent = () => {
   const [page, setPage] = useState<number>(1);
   const videoRefs = useRef<HTMLVideoElement[]>([]);
@@ -19,6 +19,7 @@ const UserContent = () => {
     page: page,
     pagesize: 25,
   });
+  const user = getUserInfo();
 
   const { trigger: skipOnboarding } = useSkipOnboarding();
   const [startTime, setStartTime] = useState<number | null>(null);
@@ -32,7 +33,7 @@ const UserContent = () => {
 
       const handleScroll = () => {
         const scrollPosition = container.scrollTop;
-        const newIndex = Math.round(scrollPosition / (window.innerHeight - 96));
+        const newIndex = Math.round(scrollPosition / (window.innerHeight - 92));
         setStartTime(Date.now());
         setVisibleItemIndex(newIndex);
         if (newIndex !== visibleItemIndex) {
@@ -42,7 +43,7 @@ const UserContent = () => {
               if (startTime !== null) {
                 const endTime = Date.now();
                 const timeInMilliseconds = endTime - startTime;
-                setTotalTimeInView((totalTimeInView + timeInMilliseconds) / 1000);
+                setTotalTimeInView(Math.floor((totalTimeInView + timeInMilliseconds) / 1000));
                 calculateCount({
                   watched_time: totalTimeInView,
                   content_id: contentDataArray[visibleItemIndex].id,
@@ -105,12 +106,12 @@ const UserContent = () => {
     if (data.type === "video" && data.content_video)
       return <Video data={data} setVideoRef={handleVideoRef(index)} autoplay={index === 0} contentMutate={mutate} />;
     if (data.type === "onboarding") return <Onboarding data={data} parentIndex={index.toString()} />;
-    return <ContentLayout data={data} contentMutate={mutate} redir={`/content/${data.slug}`} />;
+    return <ContentLayout data={data} contentMutate={mutate} />;
   };
 
   return (
     <>
-      <div className="w-full h-[calc(100vh-100px)]">
+      <div className="w-full h-[calc(100vh-92px)] pt-[32px]">
         <div
           ref={containerRef}
           className={`snap-y flex-col snap-mandatory h-full px-2   w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
@@ -128,26 +129,28 @@ const UserContent = () => {
                 {differentContent(data, index)}
 
                 {index == 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
-                {contentDataArray && contentDataArray[visibleItemIndex].type === "onboarding" && (
-                  <Button
-                    variant="link"
-                    className="text-center w-full py-4 text-primary"
-                    onClick={() => {
-                      skipOnboarding(
-                        {
-                          skip: true,
-                        },
-                        {
-                          onSuccess: () => {
-                            mutate();
+                {contentDataArray &&
+                  contentDataArray.length > 0 &&
+                  contentDataArray[visibleItemIndex].type === "onboarding" && (
+                    <Button
+                      variant="link"
+                      className="text-center w-full py-4 text-primary"
+                      onClick={() => {
+                        skipOnboarding(
+                          {
+                            skip: true,
                           },
-                        }
-                      );
-                    }}
-                  >
-                    Skip for now
-                  </Button>
-                )}
+                          {
+                            onSuccess: () => {
+                              mutate();
+                            },
+                          }
+                        );
+                      }}
+                    >
+                      Skip for now
+                    </Button>
+                  )}
               </div>
             ))}
         </div>

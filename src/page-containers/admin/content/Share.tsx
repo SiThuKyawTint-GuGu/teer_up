@@ -8,10 +8,10 @@ const Share: React.FC<{ url: string }> = ({ url }) => {
   const [copy, setCopy] = useState<boolean>(false);
   const domain: string = window.location.host;
   return (
-    <div className="bg-white w-full px-4 pb-2 ">
+    <div className="bg-white w-full px-4  pb-2 ">
       <div className="bg-primary rounded-[6px] w-[60px] h-[2px] mx-auto" />
-      <div className="text-[24px] font-[700]">Share To</div>
-      <Flex gap="5" className="py-[20px]">
+      <Text className="text-[24px] font-[700]">Share To</Text>
+      <Flex gap="5" className="py-[15px]">
         <Flex direction="column" align="center">
           <Flex
             justify="center"
@@ -39,7 +39,7 @@ const Share: React.FC<{ url: string }> = ({ url }) => {
       </Flex>
       {copy && (
         <Text as="div" className="text-green-700 w-full text-center">
-          Copy
+          Copied
         </Text>
       )}
     </div>

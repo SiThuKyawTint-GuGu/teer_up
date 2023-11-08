@@ -17,7 +17,7 @@ const ContentDetailHeader: React.FC<ContentDetailHeaderProps> = ({ title }) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   return (
-    <div className="flex justify-between h-[48px] z-[9999] px-2 items-center bg-white fixed top-0 w-full max-w-[400px] mx-auto">
+    <div className="flex justify-between h-[48px] z-50 px-2 items-center bg-white fixed top-0 w-full max-w-[400px] mx-auto">
       <div onClick={() => router.back()}>
         <Icons.back className="w-[20px] h-[20px]" />
       </div>
@@ -34,7 +34,7 @@ const ContentDetailHeader: React.FC<ContentDetailHeaderProps> = ({ title }) => {
           // <Modal onClose={() => setModalOpen(false)}>
           //   <Share url={pathname} />
           // </Modal>
-          <DialogContent className="bg-white top-[initial] h-auto bottom-0 max-w-[400px] px-4 pt-8 pb-2 translate-y-0 rounded-10px-tl-tr">
+          <DialogContent className="bg-white top-[initial] h-auto bottom-0 max-w-[400px] px-4 translate-y-0 rounded-10px-tl-tr">
             <Share url={pathname} />
           </DialogContent>
         )}
