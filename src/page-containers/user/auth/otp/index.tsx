@@ -10,7 +10,7 @@ import { Icons, Image } from "@/components/ui/Images";
 import Modal from "@/components/ui/Modal";
 import { Text } from "@/components/ui/Typo/Text";
 import { useOtpVerified } from "@/services/user";
-import { AUTH_TYPE, JWT_DECODE, getToken, setUserInfo } from "@/utils/auth";
+import { AUTH_TYPE, getToken, JWT_DECODE, setUserInfo } from "@/utils/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Flex, Grid, Heading } from "@radix-ui/themes";
 import jwt_decode from "jwt-decode";
@@ -47,6 +47,10 @@ const Otp = () => {
         setUserInfo(res.data.token, res.data.data);
         startTransition(() => {
           router.refresh();
+          if (jwtDecode.verified) {
+            router.push("/home");
+            return;
+          }
           router.push("/industry");
         });
       },
