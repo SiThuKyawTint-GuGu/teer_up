@@ -276,13 +276,13 @@ const ProfileEdit: React.FC = () => {
                         </Flex>
                         <Flex justify="end" align="center" gap="1">
                           <Text size="2" weight="light">
-                            {dayjs(each?.start_date).format("YYYY")}
+                            {dayjs(each?.start_date).format("MMM, YYYY")}
                           </Text>
                           <Text size="2" weight="light">
                             -
                           </Text>
                           <Text size="2" weight="light">
-                            {each?.end_date ? dayjs(each?.end_date).format("YYYY") : "present"}
+                            {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "present"}
                           </Text>
                         </Flex>
                       </Flex>

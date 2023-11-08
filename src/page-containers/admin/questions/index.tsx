@@ -10,7 +10,7 @@ import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";
 import { MaterialReactTable, MRT_PaginationState, useMaterialReactTable } from "material-react-table";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const Questions: React.FC = () => {
   const [pagination, setPagination] = useState<MRT_PaginationState>({
@@ -23,8 +23,13 @@ const Questions: React.FC = () => {
     page: pagination.pageIndex + 1,
     pagesize: pagination.pageSize,
   });
+  const [questionData, setQuestionData] = useState<any>();
   // console.log(questions);
   const { trigger: deleteTrigger } = useDeleteQuestion();
+
+  useEffect(() => {
+    setQuestionData(questions?.data);
+  }, [questions?.data]);
 
   const columns = useMemo(
     () => [
@@ -73,12 +78,14 @@ const Questions: React.FC = () => {
   //DELETE action
   const handleDelete = async () => {
     setOpen(false);
+    const data = questionData.filter((question: any) => question.id !== id);
+    setQuestionData(data);
     await deleteTrigger({ id });
   };
 
   const table = useMaterialReactTable({
     columns,
-    data: (questions?.data as any) || [],
+    data: (questionData as any) || [],
     createDisplayMode: "row",
     editDisplayMode: "row",
     enableEditing: true,
@@ -96,7 +103,7 @@ const Questions: React.FC = () => {
       },
     },
     manualPagination: true,
-    rowCount: questions?.total,
+    rowCount: questionData?.total,
     initialState: {
       pagination: {
         pageSize: 10,

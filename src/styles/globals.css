@@ -101,6 +101,13 @@ body {
   color: white;
 }
 
+@font-face {
+  font-family: "Rubik";
+  src: url("../fonts/FSAlbertPro.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
 @layer utilities {
   @variants responsive {
     /* Hide scrollbar for Chrome, Safari and Opera */
