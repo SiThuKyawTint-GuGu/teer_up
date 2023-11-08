@@ -150,16 +150,20 @@ const Login: React.FC = () => {
           </Text>
           <Text className="text-sm">
             I understand that I can refer to Prudential Data Privacy, which is available at{" "}
-            <Text as="span" className="text-primary">
-              Privacy Notice
-            </Text>{" "}
+            <Link href="https://www.prudential.com.sg/Privacy-Notice">
+              <Text as="span" className="text-primary">
+                Privacy Notice
+              </Text>{" "}
+            </Link>
             for more information.
           </Text>
           <Text>
             I may contact{" "}
-            <Text as="span" className="text-primary">
-              innovation@prudential.com.sg
-            </Text>{" "}
+            <Link href="mailto:innovation@prudential.com.sg">
+              <Text as="span" className="text-primary">
+                innovation@prudential.com.sg
+              </Text>{" "}
+            </Link>
             on how I may access and correct my personal data or withdraw consent to the collection, use or disclosure of
             my personal data.
           </Text>
