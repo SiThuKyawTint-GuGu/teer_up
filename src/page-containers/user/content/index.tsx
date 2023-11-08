@@ -12,13 +12,14 @@ import {
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 
 import { Button } from "@/components/ui/Button";
-import { getUserInfo } from "@/utils/auth";
+import { getToken, getUserInfo } from "@/utils/auth";
 import { useRouter } from "next/navigation";
 import ContentLayout from "./components/ContentLayout";
 import Onboarding from "./components/Onboarding";
 import Video from "./components/Video";
 
 const UserContent = () => {
+  const token = getToken();
   const [page, setPage] = useState<number>(1);
   const [onBoardPage, setOnboardPage] = useState<number>(1);
   const videoRefs = useRef<HTMLVideoElement[]>([]);
@@ -40,10 +41,12 @@ const UserContent = () => {
   const [startTime, setStartTime] = useState<number | null>(null);
   const [totalTimeInView, setTotalTimeInView] = useState<number>(0);
   const { trigger: calculateCount } = useContentWatchCount();
-  const { data: status } = useGetOnboardingStatus();
+
   const contentDataArray: ContentData[] = useMemo(() => data?.flatMap(page => page?.data) || [], [data]);
   const onBoardArray: ContentData[] = onboarding?.data;
+  const { data: status } = useGetOnboardingStatus();
   const skip = status?.data.skip;
+
   const router = useRouter();
   const [ispending, startTransition] = useTransition();
 
@@ -64,7 +67,7 @@ const UserContent = () => {
                 const timeInMilliseconds = endTime - startTime;
                 const totalTime = Math.floor((totalTimeInView + timeInMilliseconds) / 1000);
                 console.log(totalTime);
-                if (totalTime > 30) {
+                if (totalTime > 5) {
                   contentDataArray.splice(visibleItemIndex + 2, 0, onBoardArray[onBoardingIndex]);
                   setOnBoardingIndex(prev => prev + 1);
                 }
