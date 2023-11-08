@@ -34,6 +34,7 @@ const UserContent = () => {
   const { data: status } = useGetOnboardingStatus();
   const contentDataArray: ContentData[] = useMemo(() => data?.flatMap(page => page?.data) || [], [data]);
   const skip = status?.data.skip;
+  console.log(skip);
 
   useEffect(() => {
     if (containerRef.current) {
@@ -138,7 +139,6 @@ const UserContent = () => {
 
                 {index == 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
                 {contentDataArray &&
-                  !skip &&
                   contentDataArray.length > 0 &&
                   contentDataArray[visibleItemIndex].type === "onboarding" && (
                     <Button
@@ -157,7 +157,7 @@ const UserContent = () => {
                         );
                       }}
                     >
-                      Skip for now
+                      {!skip && "Skip"}
                     </Button>
                   )}
               </div>

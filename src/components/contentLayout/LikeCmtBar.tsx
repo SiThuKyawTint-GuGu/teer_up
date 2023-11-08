@@ -11,6 +11,7 @@ import { DialogTrigger } from "../ui/Dialog";
 import { Icons } from "../ui/Images";
 import Modal from "../ui/Modal";
 import { Text } from "../ui/Typo/Text";
+import CmtInput from "./CmtInput";
 type Props = {
   data: ContentData;
   mutate: any;
@@ -166,7 +167,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
   };
 
   return (
-    <div className="bg-white flex py-2 items-center">
+    <div className="bg-white flex py-2 px-3 items-center">
       {data.type === "event" && (
         <Button size="sm" className="w-[166px]" onClick={() => setOpenModal(true)}>
           Join now
@@ -176,6 +177,13 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
         <Button size="sm" className="w-[166px]" onClick={() => setOpenModal(true)}>
           Apply now
         </Button>
+      )}
+      {data.type === "article" && (
+        <DialogTrigger>
+          <div>
+            <CmtInput setValue={() => {}} />
+          </div>
+        </DialogTrigger>
       )}
 
       <div className="flex justify-between px-3 w-full flex-1">
