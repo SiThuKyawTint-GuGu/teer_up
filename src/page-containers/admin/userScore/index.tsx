@@ -20,12 +20,12 @@ const UserScoreTable = ({ id }: Props) => {
         enableEditing: false,
         size: 1,
       },
-      {
-        accessorKey: "user_id",
-        header: "User ID",
-        enableEditing: false,
-        size: 1,
-      },
+      // {
+      //   accessorKey: "user_id",
+      //   header: "User ID",
+      //   enableEditing: false,
+      //   size: 1,
+      // },
       {
         accessorKey: "skill",
         header: "Skill",

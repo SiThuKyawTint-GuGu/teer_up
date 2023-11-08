@@ -16,14 +16,15 @@ const MentorshipTable: React.FC = () => {
   });
   const [globalFilter, setGlobalFilter] = useState<string>("");
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>([]);
-  const { data: mentorships, isLoading } = useGetMentorship<ParamsType, any>({
+  const params: ParamsType = {
     page: pagination.pageIndex + 1,
     pagesize: pagination.pageSize,
     search: globalFilter || "",
-    // status: columnFilters[0]?.value,
-  });
-  // console.log("mentorships...", mentorships);
-  // console.log(columnFilters);
+  };
+  if (columnFilters[0]) {
+    params.status = columnFilters.find(filter => filter.id === "status")?.value as string;
+  }
+  const { data: mentorships, isLoading } = useGetMentorship<ParamsType, any>(params);
 
   const columns = useMemo(
     () => [
@@ -50,18 +51,8 @@ const MentorshipTable: React.FC = () => {
         Cell: ({ row }: any) => (
           <p>{row?.original?.status?.charAt(0).toUpperCase() + row?.original?.status?.slice(1)}</p>
         ),
-        size: 2,
+        size: 1,
       },
-      // {
-      //   accessorKey: "student_reply",
-      //   header: "Student Reply",
-      //   enableEditing: false,
-      // },
-      // {
-      //   accessorKey: "mentor_reply",
-      //   header: "Mentor Reply",
-      //   enableEditing: false,
-      // },
       {
         accessorKey: "created_at",
         header: "Created At",
@@ -91,7 +82,7 @@ const MentorshipTable: React.FC = () => {
     },
     enableStickyFooter: true,
     enableStickyHeader: true,
-    // manualFiltering: true,
+    manualFiltering: true,
     manualPagination: true,
     rowCount: mentorships?.total,
     initialState: {
