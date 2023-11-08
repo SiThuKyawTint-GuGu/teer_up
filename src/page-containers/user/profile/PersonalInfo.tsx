@@ -8,7 +8,6 @@ import { Radio, RadioItem } from "@/components/ui/Inputs/Radio";
 import { Label } from "@/components/ui/Label";
 import { Text } from "@/components/ui/Typo/Text";
 import { useGetGenders, useGetUserById, useUpdatePersonalInfo } from "@/services/user";
-import { USER_ROLE } from "@/shared/enums";
 import { UserProfileResponse } from "@/types/Profile";
 import { Gender } from "@/types/User";
 import { cn } from "@/utils/cn";
@@ -229,7 +228,7 @@ const PersonalInfo: React.FC = () => {
                             <FormControl>
                               <InputText
                                 type="text"
-                                inputType={USER_ROLE.STUDENT}
+                                className="bg-white shadow-md"
                                 defaultValue={userProfile?.name}
                                 {...field}
                               />
@@ -252,7 +251,7 @@ const PersonalInfo: React.FC = () => {
                             <FormControl>
                               <InputText
                                 type="text"
-                                inputType={USER_ROLE.STUDENT}
+                                className="bg-white shadow-md"
                                 defaultValue={userProfile?.email}
                                 disabled
                                 {...field}

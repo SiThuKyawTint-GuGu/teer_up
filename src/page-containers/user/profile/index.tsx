@@ -63,7 +63,7 @@ const Profile: React.FC = () => {
                   <Text size="3" weight="medium">
                     Profile
                   </Text>
-                  <Flex justify="center" align="center" className="absolute top-0 right-2 bottom-0">
+                  <Flex justify="center" align="center" className="absolute top-0 right-4 bottom-0">
                     <Link href={`/profile/setting`}>
                       <Icons.profileSetting />
                     </Link>
@@ -151,214 +151,15 @@ const Profile: React.FC = () => {
             </CardBox>
             <CardBox className="mb-[7px] rounded-none">
               <Section className="bg-white" py="4" px="3">
-                <Tabs.Root defaultValue="personalDetails">
+                <Tabs.Root defaultValue="competency">
                   <Tabs.List className="space-x-[20px]">
-                    <Tabs.Trigger className="tab-trigger" value="personalDetails">
-                      Personal details
-                    </Tabs.Trigger>
                     <Tabs.Trigger className="tab-trigger" value="competency">
                       Competency
                     </Tabs.Trigger>
+                    <Tabs.Trigger className="tab-trigger" value="personalDetails">
+                      Personal details
+                    </Tabs.Trigger>
                   </Tabs.List>
-
-                  <Tabs.Content value="personalDetails">
-                    <CardBox className="mb-[7px] rounded-none">
-                      <Section className="bg-white" py="4" px="3">
-                        <Heading as="h6" size="4" align="left" mb="4">
-                          Personal information
-                        </Heading>
-                        <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
-                          <Flex justify="start" align="center" gap="2">
-                            <Image
-                              src="/uploads/icons/personal-profile.svg"
-                              width={16}
-                              height={16}
-                              alt="personal profile"
-                            />
-                            <Text className="capitalize text-[#373A36]">
-                              {userProfile?.personal_info?.gender ? userProfile?.personal_info?.gender?.type : "-"}
-                            </Text>
-                          </Flex>
-                        </div>
-                        <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
-                          <Flex justify="start" align="center" gap="2">
-                            <Image src="/uploads/icons/birthday.svg" width={16} height={16} alt="birthday" />
-                            <Text className="text-[#373A36]">
-                              {userProfile?.personal_info?.birthday
-                                ? dayjs(userProfile?.personal_info?.birthday).format("MMMM D, YYYY")
-                                : "-"}
-                            </Text>
-                          </Flex>
-                        </div>
-                        <div className="pb-[10px] mb-[10px]">
-                          <Flex justify="start" align="center" gap="2">
-                            <Image src="/uploads/icons/mail-outline.svg" width={16} height={16} alt="mail" />
-                            <Text className="text-[#373A36]">{userProfile?.email ? userProfile?.email : "-"}</Text>
-                          </Flex>
-                        </div>
-                      </Section>
-                    </CardBox>
-                    <CardBox className="mb-[7px] rounded-none">
-                      <Section className="bg-white" py="4" px="3">
-                        <Heading as="h6" size="4" align="left" mb="4">
-                          Experience
-                        </Heading>
-                        {userProfile?.experiences?.length
-                          ? userProfile?.experiences?.map((each, key) => (
-                              <Flex
-                                key={key}
-                                justify="between"
-                                align="start"
-                                className={cn(
-                                  "pb-[10px] mb-[10px]",
-                                  key !== (userProfile?.experiences ? userProfile.experiences.length - 1 : -1) &&
-                                    "border-b border-b-[#BDC7D5]"
-                                )}
-                              >
-                                <Flex justify="start" align="start" gap="2">
-                                  <Image src="/uploads/icons/experience.svg" width={32} height={32} alt="experience" />
-                                  <Flex direction="column" gap="2">
-                                    <Text as="label" weight="bold" size="3">
-                                      {each?.position}
-                                    </Text>
-                                    <Text size="2" weight="light">
-                                      {each?.company}
-                                    </Text>
-                                  </Flex>
-                                </Flex>
-                                <Flex justify="end" align="center" gap="1">
-                                  <Text size="2" weight="light">
-                                    {dayjs(each?.start_date).format("YYYY")}
-                                  </Text>
-                                  <Text size="2" weight="light">
-                                    -
-                                  </Text>
-                                  <Text size="2" weight="light">
-                                    {each?.end_date ? dayjs(each?.end_date).format("YYYY") : "present"}
-                                  </Text>
-                                </Flex>
-                              </Flex>
-                            ))
-                          : "-"}
-                      </Section>
-                    </CardBox>
-
-                    <CardBox className="mb-[7px] rounded-none">
-                      <Section className="bg-white" py="4" px="3">
-                        <Heading as="h6" size="4" align="left" mb="4">
-                          Education
-                        </Heading>
-                        {userProfile?.educations?.length
-                          ? userProfile?.educations?.map((each, key) => (
-                              <Flex
-                                key={key}
-                                justify="between"
-                                align="start"
-                                className={cn(
-                                  "pb-[10px] mb-[10px]",
-                                  key !== (userProfile?.educations ? userProfile.educations.length - 1 : -1) &&
-                                    "border-b border-b-[#BDC7D5]"
-                                )}
-                              >
-                                <Flex justify="start" align="start" gap="2">
-                                  <Image src="/uploads/icons/education.svg" width={32} height={32} alt="experience" />
-                                  <Flex direction="column" gap="2">
-                                    <Text as="label" weight="bold" size="3">
-                                      {each.school_name}
-                                    </Text>
-                                    <Text size="2" weight="light">
-                                      {each.degree}
-                                    </Text>
-                                  </Flex>
-                                </Flex>
-                                <Flex justify="end" align="center" gap="1">
-                                  <Text size="2" weight="light">
-                                    {dayjs(each?.start_date).format("YYYY")}
-                                  </Text>
-                                  <Text size="2" weight="light">
-                                    -
-                                  </Text>
-                                  <Text size="2" weight="light">
-                                    {each?.end_date ? dayjs(each?.end_date).format("YYYY") : "present"}
-                                  </Text>
-                                </Flex>
-                              </Flex>
-                            ))
-                          : "-"}
-                      </Section>
-                    </CardBox>
-
-                    <CardBox className="mb-[7px] rounded-none">
-                      <Section className="bg-white" py="4" px="3">
-                        <Heading as="h6" size="4" align="left" mb="4">
-                          Department
-                        </Heading>
-                        {userProfile?.department?.length
-                          ? userProfile?.department?.map((each, key) => (
-                              <Flex
-                                key={key}
-                                justify="between"
-                                align="start"
-                                className={cn(
-                                  "pb-[10px] mb-[10px]",
-                                  key !== (userProfile?.department ? userProfile.department.length - 1 : -1) &&
-                                    "border-b border-b-[#BDC7D5]"
-                                )}
-                              >
-                                <Flex justify="start" align="start" gap="2">
-                                  <Image src="/uploads/icons/education.svg" width={32} height={32} alt="experience" />
-                                  <Flex direction="column" gap="2">
-                                    <Text as="label" weight="bold" size="3">
-                                      {each.department.name}
-                                    </Text>
-                                  </Flex>
-                                </Flex>
-                              </Flex>
-                            ))
-                          : "-"}
-                      </Section>
-                    </CardBox>
-
-                    <CardBox className="mb-[7px] rounded-none">
-                      <Section className="bg-white" py="4" px="3">
-                        <Heading as="h6" size="4" align="left" mb="4">
-                          Career interests
-                        </Heading>
-                        <Flex wrap="wrap" gap="2">
-                          {userProfile?.industries?.length
-                            ? userProfile?.industries?.map((each, key) => (
-                                <Button
-                                  key={key}
-                                  className="border border-[#EAA1A6] bg-[#F9E9EB] text-black hover:bg-[#F9E9EB]"
-                                >
-                                  {each.industry.name}
-                                </Button>
-                              ))
-                            : "-"}
-                        </Flex>
-                      </Section>
-                    </CardBox>
-                    {/* <CardBox className="mb-[7px] rounded-none">
-                      <Section className="bg-white" py="4" px="3">
-                        <Heading as="h6" size="4" align="left" mb="4">
-                          Preferences
-                        </Heading>
-                        <Flex wrap="wrap" gap="2">
-                          {userProfile?.preferences?.length
-                            ? userProfile?.preferences?.map((each, key) => (
-                                <Button
-                                  key={key}
-                                  className="border border-[#EAA1A6] bg-[#F9E9EB] text-black hover:bg-[#F9E9EB]"
-                                >
-                                  {each.preference.name}
-                                </Button>
-                              ))
-                            : "-"}
-                        </Flex>
-                      </Section>
-                    </CardBox> */}
-                  </Tabs.Content>
-
                   <Tabs.Content value="competency" className="space-y-[7px]">
                     <CardBox>
                       <Section className="bg-white" py="4" px="3">
@@ -419,6 +220,223 @@ const Profile: React.FC = () => {
                         )}
                       </Section>
                     </CardBox>
+                  </Tabs.Content>
+
+                  <Tabs.Content value="personalDetails">
+                    <CardBox className="mb-[7px] rounded-none">
+                      <Section className="bg-white" py="4" px="3">
+                        <Heading as="h6" size="4" align="left" mb="4">
+                          Personal information
+                        </Heading>
+                        <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
+                          <Flex justify="start" align="center" gap="2">
+                            <Image
+                              src="/uploads/icons/personal-profile.svg"
+                              width={16}
+                              height={16}
+                              alt="personal profile"
+                            />
+                            <Text className="capitalize text-[#373A36]">
+                              {userProfile?.personal_info?.gender ? userProfile?.personal_info?.gender?.type : "-"}
+                            </Text>
+                          </Flex>
+                        </div>
+                        <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
+                          <Flex justify="start" align="center" gap="2">
+                            <Image src="/uploads/icons/birthday.svg" width={16} height={16} alt="birthday" />
+                            <Text className="text-[#373A36]">
+                              {userProfile?.personal_info?.birthday
+                                ? dayjs(userProfile?.personal_info?.birthday).format("MMMM D, YYYY")
+                                : "-"}
+                            </Text>
+                          </Flex>
+                        </div>
+                        <div className="pb-[10px] mb-[10px]">
+                          <Flex justify="start" align="center" gap="2">
+                            <Image src="/uploads/icons/mail-outline.svg" width={16} height={16} alt="mail" />
+                            <Text className="text-[#373A36]">{userProfile?.email ? userProfile?.email : "-"}</Text>
+                          </Flex>
+                        </div>
+                      </Section>
+                    </CardBox>
+                    <CardBox className="mb-[7px] rounded-none">
+                      <Section className="bg-white" py="4" px="3">
+                        <Heading as="h6" size="4" align="left" mb="4">
+                          Job Experience
+                        </Heading>
+                        {userProfile?.experiences?.length
+                          ? userProfile?.experiences?.map((each, key) => (
+                              <Flex
+                                key={key}
+                                justify="between"
+                                align="start"
+                                className={cn(
+                                  "pb-[10px] mb-[10px]",
+                                  key !== (userProfile?.experiences ? userProfile.experiences.length - 1 : -1) &&
+                                    "border-b border-b-[#BDC7D5]"
+                                )}
+                              >
+                                <Flex justify="start" align="start" gap="2">
+                                  <Image src="/uploads/icons/experience.svg" width={32} height={32} alt="experience" />
+                                  <Flex direction="column" gap="2">
+                                    <Text as="label" weight="bold" size="3">
+                                      {each?.company}
+                                    </Text>
+                                    <Text size="2" weight="light">
+                                      {each?.position}
+                                    </Text>
+                                  </Flex>
+                                </Flex>
+                                <Flex justify="end" align="center" gap="1">
+                                  <Text size="2" weight="light">
+                                    {dayjs(each?.start_date).format("YYYY")}
+                                  </Text>
+                                  <Text size="2" weight="light">
+                                    -
+                                  </Text>
+                                  <Text size="2" weight="light">
+                                    {each?.end_date ? dayjs(each?.end_date).format("YYYY") : "present"}
+                                  </Text>
+                                </Flex>
+                              </Flex>
+                            ))
+                          : "-"}
+                      </Section>
+                    </CardBox>
+
+                    <CardBox className="mb-[7px] rounded-none">
+                      <Section className="bg-white" py="4" px="3">
+                        <Heading as="h6" size="4" align="left" mb="4">
+                          Education
+                        </Heading>
+                        {userProfile?.educations?.length
+                          ? userProfile?.educations?.map((each, key) => (
+                              <Flex
+                                key={key}
+                                justify="between"
+                                align="start"
+                                className={cn(
+                                  "pb-[10px] mb-[10px]",
+                                  key !== (userProfile?.educations ? userProfile.educations.length - 1 : -1) &&
+                                    "border-b border-b-[#BDC7D5]"
+                                )}
+                              >
+                                <Flex justify="start" align="start" gap="2">
+                                  <Image src="/uploads/icons/education.svg" width={32} height={32} alt="experience" />
+                                  <Flex direction="column" gap="2">
+                                    <Text as="label" weight="bold" size="3">
+                                      {each.degree}
+                                    </Text>
+                                    <Text size="2" weight="light">
+                                      {each.school_name}
+                                    </Text>
+                                  </Flex>
+                                </Flex>
+                                <Flex justify="end" align="center" gap="1">
+                                  <Text size="2" weight="light">
+                                    {dayjs(each?.start_date).format("MMM, YYYY")}
+                                  </Text>
+                                  <Text size="2" weight="light">
+                                    -
+                                  </Text>
+                                  <Text size="2" weight="light">
+                                    {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "present"}
+                                  </Text>
+                                </Flex>
+                              </Flex>
+                            ))
+                          : "-"}
+                      </Section>
+                    </CardBox>
+
+                    {/* <CardBox className="mb-[7px] rounded-none">
+                      <Section className="bg-white" py="4" px="3">
+                        <Heading as="h6" size="4" align="left" mb="4">
+                          Department
+                        </Heading>
+                        {userProfile?.departments?.length
+                          ? userProfile?.departments?.map((each, key) => (
+                              <Flex
+                                key={key}
+                                justify="between"
+                                align="start"
+                                className={cn(
+                                  "pb-[10px] mb-[10px]",
+                                  key !== (userProfile?.departments ? userProfile.departments.length - 1 : -1) &&
+                                    "border-b border-b-[#BDC7D5]"
+                                )}
+                              >
+                                <Flex justify="start" align="start" gap="2">
+                                  <Image src="/uploads/icons/education.svg" width={32} height={32} alt="experience" />
+                                  <Flex direction="column" gap="2">
+                                    <Text as="label" weight="bold" size="3">
+                                      {each.department.name}
+                                    </Text>
+                                  </Flex>
+                                </Flex>
+                              </Flex>
+                            ))
+                          : "-"}
+                      </Section>
+                    </CardBox> */}
+                    <CardBox className="mb-[7px] rounded-none">
+                      <Section className="bg-white" py="4" px="3">
+                        <Heading as="h6" size="4" align="left" mb="4">
+                          Career interests
+                        </Heading>
+                        <Flex wrap="wrap" gap="2">
+                          {userProfile?.departments?.length
+                            ? userProfile?.departments?.map((each, key) => (
+                                <Button
+                                  key={key}
+                                  className="border border-[#EAA1A6] bg-[#F9E9EB] text-black hover:bg-[#F9E9EB]"
+                                >
+                                  {each.department.name}
+                                </Button>
+                              ))
+                            : "-"}
+                        </Flex>
+                      </Section>
+                    </CardBox>
+
+                    <CardBox className="mb-[7px] rounded-none">
+                      <Section className="bg-white" py="4" px="3">
+                        <Heading as="h6" size="4" align="left" mb="4">
+                          Industry interests
+                        </Heading>
+                        <Flex wrap="wrap" gap="2">
+                          {userProfile?.industries?.length
+                            ? userProfile?.industries?.map((each, key) => (
+                                <Button
+                                  key={key}
+                                  className="border border-[#EAA1A6] bg-[#F9E9EB] text-black hover:bg-[#F9E9EB]"
+                                >
+                                  {each.industry.name}
+                                </Button>
+                              ))
+                            : "-"}
+                        </Flex>
+                      </Section>
+                    </CardBox>
+                    {/* <CardBox className="mb-[7px] rounded-none">
+                      <Section className="bg-white" py="4" px="3">
+                        <Heading as="h6" size="4" align="left" mb="4">
+                          Preferences
+                        </Heading>
+                        <Flex wrap="wrap" gap="2">
+                          {userProfile?.preferences?.length
+                            ? userProfile?.preferences?.map((each, key) => (
+                                <Button
+                                  key={key}
+                                  className="border border-[#EAA1A6] bg-[#F9E9EB] text-black hover:bg-[#F9E9EB]"
+                                >
+                                  {each.preference.name}
+                                </Button>
+                              ))
+                            : "-"}
+                        </Flex>
+                      </Section>
+                    </CardBox> */}
                   </Tabs.Content>
                 </Tabs.Root>
               </Section>

@@ -54,17 +54,27 @@ const Setting: React.FC = () => {
                   <Text as="label" weight="bold" size="3">
                     About TEE-UP
                   </Text>
-                  <Icons.caretRight />
+                  <Icons.caretRight className="w-[25px!important] h-[25px!important]" />
                 </Flex>
               </Link>
             </div>
             <div className="pb-[15px] mb-[15px] border-b border-b-[#BDC7D5]">
-              <Link href="/support/privacy-policy">
+              <Link href="/support/consent">
+                <Flex justify="between" align="start">
+                  <Text as="label" weight="bold" size="3">
+                    Consent
+                  </Text>
+                  <Icons.caretRight className="w-[25px] h-[25px]" />
+                </Flex>
+              </Link>
+            </div>
+            <div className="pb-[15px] mb-[15px] border-b border-b-[#BDC7D5]">
+              <Link href="https://www.prudential.com.sg/Privacy-Notice" target="_blank">
                 <Flex justify="between" align="start">
                   <Text as="label" weight="bold" size="3">
                     Privacy Policy
                   </Text>
-                  <Icons.caretRight />
+                  <Icons.link className="w-[25px] h-[25px]" />
                 </Flex>
               </Link>
             </div>

@@ -57,7 +57,7 @@ const Home: React.FC = () => {
             </Link>
             <Link className="block" href="/auth/login">
               <Button variant="outline" className="w-full text-primary">
-                Login
+                Log in
               </Button>
             </Link>
           </Box>
