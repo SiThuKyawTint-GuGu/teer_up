@@ -25,7 +25,7 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, conte
                   className="w-full h-[200px] my-video"
                   id="myVideo"
                   poster={
-                    data.content_video.thumbnail ||
+                    data.image_url ||
                     "https://teeup-dev.s3.ap-southeast-1.amazonaws.com/1697257229853-125476757-demoimage1.jpeg"
                   }
                   preload="none"
@@ -73,8 +73,9 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, conte
               )}
             </div>
           </Link>
-
-          <ReactionBar data={data} contentMutate={contentMutate} />
+          <div className="w-full h-full px-[16px]">
+            <ReactionBar data={data} contentMutate={contentMutate} />
+          </div>
         </div>
       </CardBox>
     </div>

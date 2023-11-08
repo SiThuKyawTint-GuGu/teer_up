@@ -51,7 +51,7 @@ const DepartmentPage = () => {
             layout
             subTitle="select one or more industry"
           >
-            <div className="grid grid-cols-2 gap-3 max-h-full overflow-y-scroll grid-flow-row">
+            <div className="grid grid-cols-2 gap-3 max-h-full overflow-y-scroll no-scrollbar grid-flow-row">
               {industry &&
                 industry.length > 0 &&
                 industry.map((each: IndustryData, index: number) => (

@@ -253,3 +253,7 @@ export const useSkipOnboarding = () =>
   useSWRMutation(`/user/onboarding/status`, (url, { arg }: SkipOnboardingArg) => {
     return appAxios.put(url, arg);
   });
+
+export const useGetOnboardingStatus = () => {
+  return useSWR(`/user/onboarding/status`);
+};

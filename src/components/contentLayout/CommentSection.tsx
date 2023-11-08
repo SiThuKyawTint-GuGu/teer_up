@@ -1,4 +1,4 @@
-import CmtInput from "@/components/ui/Inputs/CmtInput";
+import CmtInput from "@/components/contentLayout/CmtInput";
 
 import { useGetComment, usePostComment } from "@/services/content";
 import { ParamsType } from "@/services/user";
