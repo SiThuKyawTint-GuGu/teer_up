@@ -325,22 +325,22 @@ const Profile: React.FC = () => {
                                   <Image src="/uploads/icons/education.svg" width={32} height={32} alt="experience" />
                                   <Flex direction="column" gap="2">
                                     <Text as="label" weight="bold" size="3">
-                                      {each.school_name}
+                                      {each.degree}
                                     </Text>
                                     <Text size="2" weight="light">
-                                      {each.degree}
+                                      {each.school_name}
                                     </Text>
                                   </Flex>
                                 </Flex>
                                 <Flex justify="end" align="center" gap="1">
                                   <Text size="2" weight="light">
-                                    {dayjs(each?.start_date).format("YYYY")}
+                                    {dayjs(each?.start_date).format("MMM, YYYY")}
                                   </Text>
                                   <Text size="2" weight="light">
                                     -
                                   </Text>
                                   <Text size="2" weight="light">
-                                    {each?.end_date ? dayjs(each?.end_date).format("YYYY") : "present"}
+                                    {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "present"}
                                   </Text>
                                 </Flex>
                               </Flex>
