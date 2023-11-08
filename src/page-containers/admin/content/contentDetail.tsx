@@ -28,9 +28,10 @@ import { IndustryResponse } from "@/types/Industry";
 import { KeywordResponse } from "@/types/Keyword";
 import { UserResponse } from "@/types/User";
 import { yupResolver } from "@hookform/resolvers/yup";
+import DeleteIcon from "@mui/icons-material/Delete";
 import SaveIcon from "@mui/icons-material/Save";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { Alert, Button as MuiButton, Checkbox, styled } from "@mui/material";
+import { Alert, Button as MuiButton, Checkbox, IconButton, styled } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
@@ -47,7 +48,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { AiFillDelete, AiOutlinePlus } from "react-icons/ai";
+import { AiOutlinePlus } from "react-icons/ai";
 import { BiSolidCloudUpload } from "react-icons/bi";
 import * as yup from "yup";
 import SubmissionTable from "./submissionTable";
@@ -1067,12 +1068,9 @@ const ContentDetail = ({ id }: Props) => {
                           onChange={(event, newValue) => handleSelectPathwayChange(event, newValue, index)}
                           renderInput={params => <TextField {...params} label="Contents" />}
                         />
-                        <AiFillDelete
-                          onClick={() => handleDeletePathway(index)}
-                          className="cursor-pointer"
-                          size={25}
-                          color="#d8291c"
-                        />
+                        <IconButton color="error" onClick={() => handleDeletePathway(index)}>
+                          <DeleteIcon fontSize="inherit" />
+                        </IconButton>
                       </div>
                     </>
                   )}
@@ -1086,12 +1084,11 @@ const ContentDetail = ({ id }: Props) => {
                           handleEditorChange(index, content);
                         }}
                       />
-                      <AiFillDelete
-                        onClick={() => handleDeletePathway(index)}
-                        className="cursor-pointer ml-5"
-                        size={25}
-                        color="#d8291c"
-                      />
+                      <div className="ml-3">
+                        <IconButton color="error" onClick={() => handleDeletePathway(index)}>
+                          <DeleteIcon fontSize="inherit" />
+                        </IconButton>
+                      </div>
                     </div>
                   )}
                 </>

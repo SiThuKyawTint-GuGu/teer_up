@@ -11,7 +11,7 @@ const BottomNavbar = () => {
 
   return (
     <Flex
-      className="bg-white w-full max-w-[400px] mx-auto z-[9] shadow-[0px_-3px_9px_0px_rgba(0,_0,_0,_0.06)]"
+      className="bg-white w-full max-w-[400px] mx-auto z-[9] shadow-[0px_-3px_9px_0px_rgba(0,_0,_0,_0.06)] px-5"
       align="center"
       justify="between"
       position="fixed"
