@@ -5,6 +5,7 @@ import {
   ParamsType,
   useContentWatchCount,
   useGetContentInfinite,
+  useGetOnboardingQuestions,
   useGetOnboardingStatus,
   useSkipOnboarding,
 } from "@/services/content";
@@ -30,10 +31,10 @@ const UserContent = () => {
   });
   const user = getUserInfo();
 
-  // const { data: onboarding } = useGetOnboardingQuestions({
-  //   page: onBoardPage,
-  //   pagesize: 20,
-  // });
+  const { data: onboarding } = useGetOnboardingQuestions({
+    page: onBoardPage,
+    pagesize: 20,
+  });
 
   const { trigger: skipOnboarding } = useSkipOnboarding();
   const [startTime, setStartTime] = useState<number | null>(null);
@@ -41,7 +42,7 @@ const UserContent = () => {
   const { trigger: calculateCount } = useContentWatchCount();
   const { data: status } = useGetOnboardingStatus();
   const contentDataArray: ContentData[] = useMemo(() => data?.flatMap(page => page?.data) || [], [data]);
-  // const onBoardArray: ContentData[] = onboarding?.data;
+  const onBoardArray: ContentData[] = onboarding?.data;
   const skip = status?.data.skip;
   const router = useRouter();
   const [ispending, startTransition] = useTransition();
@@ -49,7 +50,6 @@ const UserContent = () => {
   useEffect(() => {
     if (containerRef.current) {
       const container = containerRef.current;
-
       const handleScroll = () => {
         const scrollPosition = container.scrollTop;
         const newIndex = Math.round(scrollPosition / (window.innerHeight - 92));
@@ -62,14 +62,15 @@ const UserContent = () => {
               if (startTime !== null) {
                 const endTime = Date.now();
                 const timeInMilliseconds = endTime - startTime;
+                const totalTime = Math.floor((totalTimeInView + timeInMilliseconds) / 1000);
+                console.log(totalTime);
+                if (totalTime > 30) {
+                  contentDataArray.splice(visibleItemIndex + 2, 0, onBoardArray[onBoardingIndex]);
+                  setOnBoardingIndex(prev => prev + 1);
+                }
 
-                // if (totalTime > 30) {
-                //   contentDataArray.splice(visibleItemIndex + 1, 0, onBoardArray[onBoardingIndex]);
-                //   setOnBoardingIndex(prev => prev + 1);
-                // }
-                setTotalTimeInView(Math.floor((totalTimeInView + timeInMilliseconds) / 1000));
                 calculateCount({
-                  watched_time: totalTimeInView,
+                  watched_time: totalTime,
                   content_id: contentDataArray[visibleItemIndex].id,
                 });
                 return;
@@ -127,12 +128,12 @@ const UserContent = () => {
   };
 
   const differentContent = (data: ContentData, index: number) => {
-    if (data.type === "video" && data.content_video)
+    if (data?.type === "video" && data.content_video)
       return <Video data={data} setVideoRef={handleVideoRef(index)} autoplay={index === 0} contentMutate={mutate} />;
-    if (data.type === "onboarding") return <Onboarding data={data} parentIndex={index.toString()} />;
+    if (data?.type === "onboarding") return <Onboarding data={data} parentIndex={index.toString()} />;
     return <ContentLayout data={data} contentMutate={mutate} />;
   };
-
+  console.log(skip);
   return (
     <>
       <div className="w-full h-[calc(100vh-92px)] pt-[32px]">
@@ -150,26 +151,27 @@ const UserContent = () => {
                 id={index.toString()}
                 key={index}
               >
-                {differentContent(data, index)}
+                {data && differentContent(data, index)}
 
                 {index == 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
                 {contentDataArray &&
                   contentDataArray.length > 0 &&
+                  contentDataArray[visibleItemIndex] &&
                   contentDataArray[visibleItemIndex].type === "onboarding" && (
                     <Button
                       variant="link"
                       disabled={ispending}
                       className="text-center w-full py-4 text-primary"
                       onClick={() => {
-                        startTransition(() => {
-                          router.push("/profile");
-                        });
                         skipOnboarding(
                           {
                             skip: true,
                           },
                           {
                             onSuccess: () => {
+                              startTransition(() => {
+                                router.push("/profile");
+                              });
                               mutate();
                             },
                           }
