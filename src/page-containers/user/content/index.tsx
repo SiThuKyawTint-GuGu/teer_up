@@ -5,7 +5,6 @@ import {
   ParamsType,
   useContentWatchCount,
   useGetContentInfinite,
-  useGetOnboardingQuestions,
   useGetOnboardingStatus,
   useSkipOnboarding,
 } from "@/services/content";
@@ -31,10 +30,10 @@ const UserContent = () => {
   });
   const user = getUserInfo();
 
-  const { data: onboarding } = useGetOnboardingQuestions({
-    page: onBoardPage,
-    pagesize: 20,
-  });
+  // const { data: onboarding } = useGetOnboardingQuestions({
+  //   page: onBoardPage,
+  //   pagesize: 20,
+  // });
 
   const { trigger: skipOnboarding } = useSkipOnboarding();
   const [startTime, setStartTime] = useState<number | null>(null);
@@ -42,7 +41,7 @@ const UserContent = () => {
   const { trigger: calculateCount } = useContentWatchCount();
   const { data: status } = useGetOnboardingStatus();
   const contentDataArray: ContentData[] = useMemo(() => data?.flatMap(page => page?.data) || [], [data]);
-  const onBoardArray: ContentData[] = onboarding?.data;
+  // const onBoardArray: ContentData[] = onboarding?.data;
   const skip = status?.data.skip;
   const router = useRouter();
   const [ispending, startTransition] = useTransition();
@@ -63,13 +62,12 @@ const UserContent = () => {
               if (startTime !== null) {
                 const endTime = Date.now();
                 const timeInMilliseconds = endTime - startTime;
-                let totalTime = Math.floor((totalTimeInView + timeInMilliseconds) / 1000);
-                console.log(totalTime);
+
                 // if (totalTime > 30) {
                 //   contentDataArray.splice(visibleItemIndex + 1, 0, onBoardArray[onBoardingIndex]);
                 //   setOnBoardingIndex(prev => prev + 1);
                 // }
-                setTotalTimeInView(totalTime);
+                setTotalTimeInView(Math.floor((totalTimeInView + timeInMilliseconds) / 1000));
                 calculateCount({
                   watched_time: totalTimeInView,
                   content_id: contentDataArray[visibleItemIndex].id,
