@@ -261,6 +261,6 @@ export const useGetOnboardingStatus = () => {
 };
 
 export const useGetOnboardingQuestions = (params?: ParamsType): SWRResponse => {
-  c;
+  const token = getToken();
   return useSWR(token ? `user/onboarding?${routeFilter(params)}` : null);
 };
