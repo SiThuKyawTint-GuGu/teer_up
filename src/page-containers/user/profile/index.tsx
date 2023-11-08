@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import { useGetUserDimensionResult } from "@/services/dimension";
-import { useGetUserById } from "@/services/user";
+import { ON_BOARDING_SKIP, useGetUserById, useResetScores, useUpdateUserOnboardingStatus } from "@/services/user";
 import { PROFILE_TRIGGER } from "@/shared/enums";
 import { UserDimensionResultResponse } from "@/types/Dimension";
 import { UserProfileResponse } from "@/types/Profile";
@@ -35,11 +35,29 @@ const Profile: React.FC = () => {
   const [viewImage, setViewImage] = useState<boolean>(false);
   const [triggerType, setTriggerType] = useState<PROFILE_TRIGGER>();
   const [, startTransition] = useTransition();
-  const user = getUserInfo();
   const router = useRouter();
+  const user = getUserInfo();
   const { data: profileData } = useGetUserById<UserProfileResponse>(user?.id);
   const { data: userDimensionData } = useGetUserDimensionResult<UserDimensionResultResponse>();
+  const { trigger: onBoardingStatus } = useUpdateUserOnboardingStatus();
+  const { trigger: resetScores } = useResetScores();
   const userProfile = profileData?.data;
+
+  const handleContinueAssessment = async () => {
+    await onBoardingStatus(
+      { skip: ON_BOARDING_SKIP.SKIP },
+      {
+        onSuccess: () => {
+          router.push(`/home`);
+        },
+      }
+    );
+  };
+
+  const handleRetakeAssessment = async () => {
+    await resetScores();
+    await startTransition(() => router.push("/"));
+  };
 
   return (
     <>
@@ -168,8 +186,10 @@ const Profile: React.FC = () => {
                         </Heading>
                         <Box className="w-full h-full flex-wrap">
                           <RadarChart />
-                          <Button className="w-full">Continue assessment</Button>
-                          <Button variant="link" className="w-full">
+                          <Button onClick={handleContinueAssessment} className="w-full">
+                            Continue assessment
+                          </Button>
+                          <Button onClick={handleRetakeAssessment} variant="link" className="w-full">
                             Retake assessment
                           </Button>
                         </Box>
@@ -205,7 +225,12 @@ const Profile: React.FC = () => {
                               <Box key={key} className="bg-[#F8F9FB] rounded-[8px] space-y-4" mb="4" p="3">
                                 <Flex justify="start" align="start" gap="2">
                                   <div className="w-[12px] h-[12px] mt-[5px] rounded-sm bg-primary" />
-                                  <Text className="w-[calc(100%-12px)]">{each.skill_body}</Text>
+                                  <Flex className="w-[calc(100%-12px)]" direction="column" align="start">
+                                    <Text size="4" weight="medium">
+                                      {each.short_name}
+                                    </Text>
+                                    <Text>{each.skill_body}</Text>
+                                  </Flex>
                                 </Flex>
                                 {each?.content?.id && (
                                   <Flex width="100%">

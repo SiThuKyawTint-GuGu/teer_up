@@ -44,7 +44,7 @@ const UserContent = () => {
 
   const contentDataArray: ContentData[] = useMemo(() => data?.flatMap(page => page?.data) || [], [data]);
   const onBoardArray: ContentData[] = onboarding?.data;
-  const { data: status } = useGetOnboardingStatus(to);
+  const { data: status } = useGetOnboardingStatus();
   const skip = status?.data.skip;
 
   const router = useRouter();
