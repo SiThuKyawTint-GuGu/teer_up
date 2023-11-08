@@ -155,8 +155,8 @@ const QuestionDetail = ({ id }: Props) => {
   };
 
   return (
-    <>
-      <form onSubmit={handleSubmit(Submit)} className="bg-white h-full p-5">
+    <div className="bg-white p-5">
+      <form onSubmit={handleSubmit(Submit)}>
         <div className="mb-10">
           <TextField
             InputLabelProps={{ shrink: !!name }}
@@ -343,7 +343,7 @@ const QuestionDetail = ({ id }: Props) => {
           </div>
         </div>
       </form>
-    </>
+    </div>
   );
 };
 
