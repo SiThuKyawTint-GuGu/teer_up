@@ -5,27 +5,36 @@ import {
   ParamsType,
   useContentWatchCount,
   useGetContentInfinite,
+  useGetOnboardingQuestions,
   useGetOnboardingStatus,
   useSkipOnboarding,
 } from "@/services/content";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 
 import { Button } from "@/components/ui/Button";
 import { getUserInfo } from "@/utils/auth";
+import { useRouter } from "next/navigation";
 import ContentLayout from "./components/ContentLayout";
 import Onboarding from "./components/Onboarding";
 import Video from "./components/Video";
 
 const UserContent = () => {
   const [page, setPage] = useState<number>(1);
+  const [onBoardPage, setOnboardPage] = useState<number>(1);
   const videoRefs = useRef<HTMLVideoElement[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const [visibleItemIndex, setVisibleItemIndex] = useState<number>(0);
+  const [onBoardingIndex, setOnBoardingIndex] = useState(0);
   const { data, mutate } = useGetContentInfinite<ParamsType>({
     page: page,
     pagesize: 25,
   });
   const user = getUserInfo();
+
+  const { data: onboarding } = useGetOnboardingQuestions({
+    page: onBoardPage,
+    pagesize: 20,
+  });
 
   const { trigger: skipOnboarding } = useSkipOnboarding();
   const [startTime, setStartTime] = useState<number | null>(null);
@@ -33,8 +42,10 @@ const UserContent = () => {
   const { trigger: calculateCount } = useContentWatchCount();
   const { data: status } = useGetOnboardingStatus();
   const contentDataArray: ContentData[] = useMemo(() => data?.flatMap(page => page?.data) || [], [data]);
+  const onBoardArray: ContentData[] = onboarding?.data;
   const skip = status?.data.skip;
-  console.log(skip);
+  const router = useRouter();
+  const [ispending, startTransition] = useTransition();
 
   useEffect(() => {
     if (containerRef.current) {
@@ -52,7 +63,13 @@ const UserContent = () => {
               if (startTime !== null) {
                 const endTime = Date.now();
                 const timeInMilliseconds = endTime - startTime;
-                setTotalTimeInView(Math.floor((totalTimeInView + timeInMilliseconds) / 1000));
+                let totalTime = Math.floor((totalTimeInView + timeInMilliseconds) / 1000);
+                console.log(totalTime);
+                // if (totalTime > 30) {
+                //   contentDataArray.splice(visibleItemIndex + 1, 0, onBoardArray[onBoardingIndex]);
+                //   setOnBoardingIndex(prev => prev + 1);
+                // }
+                setTotalTimeInView(totalTime);
                 calculateCount({
                   watched_time: totalTimeInView,
                   content_id: contentDataArray[visibleItemIndex].id,
@@ -143,8 +160,12 @@ const UserContent = () => {
                   contentDataArray[visibleItemIndex].type === "onboarding" && (
                     <Button
                       variant="link"
+                      disabled={ispending}
                       className="text-center w-full py-4 text-primary"
                       onClick={() => {
+                        startTransition(() => {
+                          router.push("/profile");
+                        });
                         skipOnboarding(
                           {
                             skip: true,

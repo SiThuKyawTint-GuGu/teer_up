@@ -62,10 +62,7 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
 
   return (
     <div className="w-full h-[90%] flex flex-col">
-      <div
-        className="w-full h-full overflow-y-auto  md:aspect-video relative text-white"
-        onClick={() => showCmt && setShowCmt(false)}
-      >
+      <div className="w-full h-full overflow-y-auto  relative text-white" onClick={() => showCmt && setShowCmt(false)}>
         {data.content_video && (
           <video
             poster={data.image_url}
