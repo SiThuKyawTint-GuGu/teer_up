@@ -51,18 +51,15 @@ const RadarChart: React.FC = () => {
   };
 
   const options = {
-    legend: {
-      display: false,
-    },
     scales: {
       r: {
-        beginAtZero: true,
-        suggestedMax: 100,
+        pointLabels: {
+          display: true, // Hides the labels around the radar chart
+        },
+        ticks: {
+          display: false, // Hides the labels in the middel (numbers)
+        },
       },
-    },
-
-    tooltip: {
-      usePointStyle: true,
     },
   };
 
