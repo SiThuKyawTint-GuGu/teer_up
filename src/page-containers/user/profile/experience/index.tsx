@@ -1,15 +1,17 @@
 "use client";
 import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
-import { EducationParamsType, useGetUserEducations } from "@/services/education";
-import { EducationResponse } from "@/types/Education";
+import { ExperienceParamsType, useGetUserExperiences } from "@/services/experience";
+import { ExperienceResponse } from "@/types/Experience";
 import { Box, Flex, Grid, Section } from "@radix-ui/themes";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
 const Experience: React.FC = () => {
   const { id } = useParams();
-  const { data: educationList } = useGetUserEducations<EducationParamsType, EducationResponse>();
+  const { data: experiences } = useGetUserExperiences<ExperienceParamsType, ExperienceResponse>();
+
+  console.log(experiences);
 
   return (
     <>
@@ -23,7 +25,7 @@ const Experience: React.FC = () => {
               <Text size="3" weight="medium">
                 Experience
               </Text>
-              <Link href={`/profile/${id}/education/create`}>
+              <Link href={`/profile/${id}/experience/create`}>
                 <Icons.plus className="text-primary w-[23px] h-[23px]" />
               </Link>
             </Flex>
@@ -32,16 +34,16 @@ const Experience: React.FC = () => {
 
         <Box className="pb-[7px]">
           <Section className="bg-white" py="4" px="3">
-            {educationList?.data?.map((each, key) => (
+            {experiences?.data?.map((each, key) => (
               <div key={key} className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
                 <Flex justify="between" align="start">
                   <Flex direction="column" gap="2">
                     <Text as="label" weight="bold" size="3">
-                      {each.school_name}
+                      {each.company}
                     </Text>
-                    <Text>{each.degree}</Text>
+                    <Text>{each.position}</Text>
                   </Flex>
-                  <Link href={`/profile/${id}/education/${each.id}`}>
+                  <Link href={`/profile/${id}/experience/${each.id}`}>
                     <Image src="/uploads/icons/pencil.svg" width={20} height={20} alt="pencil" />
                   </Link>
                 </Flex>

@@ -219,10 +219,10 @@ const Profile: React.FC = () => {
                                   <Image src="/uploads/icons/experience.svg" width={32} height={32} alt="experience" />
                                   <Flex direction="column" gap="2">
                                     <Text as="label" weight="bold" size="3">
-                                      {each?.position}
+                                      {each?.company}
                                     </Text>
                                     <Text size="2" weight="light">
-                                      {each?.company}
+                                      {each?.position}
                                     </Text>
                                   </Flex>
                                 </Flex>

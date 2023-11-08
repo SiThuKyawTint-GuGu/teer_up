@@ -1,4 +1,3 @@
-// user
 "use client";
 import appAxios from "@/lib/appAxios";
 import { USER_ROLE } from "@/shared/enums";
@@ -6,7 +5,7 @@ import { routeFilter } from "@/utils";
 import useSWR, { SWRResponse } from "swr";
 import useSWRMutation from "swr/mutation";
 
-export type EducationParamsType = {
+export type ExperienceParamsType = {
   page?: number;
   pageSize?: number;
   name?: string;
@@ -14,27 +13,27 @@ export type EducationParamsType = {
   cursor?: number;
 };
 
-export const useGetUserEducations = <EducationParamsType, EducationResponse>(
-  params?: EducationParamsType
-): SWRResponse<EducationResponse, any> => {
-  return useSWR<EducationResponse>(`/user/profile/educations?${routeFilter(params)}`);
+export const useGetUserExperiences = <ExperienceParamsType, ExperienceResponse>(
+  params?: ExperienceParamsType
+): SWRResponse<ExperienceResponse, any> => {
+  return useSWR<ExperienceResponse>(`/user/profile/experiences?${routeFilter(params)}`);
 };
 
 export const useGetEducationById = <EducationResponse>(id: string): SWRResponse<EducationResponse, any> => {
   return useSWR<EducationResponse>(`/user/profile/educations/${id}`);
 };
 
-interface CreateUserResType {
+interface CreateUserReqType {
   arg: {
-    school_name: string;
-    degree: string;
+    company: string;
+    position: string;
     start_date: string;
     end_date: string;
   };
 }
-export const useCreateEducation = () =>
-  useSWRMutation(`/user/profile/educations`, (url, { arg }: CreateUserResType) => {
-    return appAxios.post<CreateUserResType>(url, arg);
+export const useCreateExperiences = () =>
+  useSWRMutation(`/user/profile/experiences`, (url, { arg }: CreateUserReqType) => {
+    return appAxios.post<CreateUserReqType>(url, arg);
   });
 
 interface UpdateUserResType {

@@ -207,10 +207,9 @@ const ProfileEdit: React.FC = () => {
                   <Heading as="h6" size="4" align="left">
                     Experience
                   </Heading>
-                  <Text className="text-primary">Edit</Text>
-                  {/* <Link href={`/profile/${id}/experience`}>
+                  <Link href={`/profile/${id}/experience`}>
                     <Text className="text-primary">Edit</Text>
-                  </Link> */}
+                  </Link>
                 </Flex>
                 {userProfile?.experiences?.length
                   ? userProfile?.experiences?.map((each, key) => (
@@ -226,9 +225,9 @@ const ProfileEdit: React.FC = () => {
                       >
                         <Flex direction="column" gap="2">
                           <Text as="label" weight="bold" size="3">
-                            {each?.position}
+                            {each?.company}
                           </Text>
-                          <Text size="1">{each?.company}</Text>
+                          <Text size="1">{each?.position}</Text>
                         </Flex>
                         <Flex justify="end" align="center" gap="1">
                           <Text size="2" weight="light">
