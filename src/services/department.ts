@@ -34,7 +34,13 @@ export const useDeleteDepartment = () =>
   useSWRMutation(`/details/departments`, (url, { arg }: { arg: { id: string } }) => {
     return appAxios.delete<DepartmentArgType>(`${url}/${arg.id}`);
   });
+
 export const useUpdateUserDepartment = () =>
   useSWRMutation(`/user/onboarding/departments`, (url, { arg }: { arg: { departments: number[] } }) => {
     return appAxios.put(url, arg);
+  });
+
+export const useUpdateUserDepartmentById = () =>
+  useSWRMutation(`/user/profile/departments`, (url, { arg }: { arg: { department_id: number } }) => {
+    return appAxios.put<{ arg: { department_id: number } }>(url, arg);
   });

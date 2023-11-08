@@ -5,7 +5,7 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form";
 import { Icons } from "@/components/ui/Images";
 import { InputText } from "@/components/ui/Inputs";
 import { Text } from "@/components/ui/Typo/Text";
-import { useCreateEducation } from "@/services/education";
+import { useCreateExperiences } from "@/services/experience";
 import { USER_ROLE } from "@/shared/enums";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
@@ -17,22 +17,22 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 const validationSchema = yup.object({
-  school_name: yup.string().required("School is required!"),
-  degree: yup.string().required("Degree is required!"),
+  company: yup.string().required("School is required!"),
+  position: yup.string().required("Degree is required!"),
   start_date: yup.date().required("Start date is required!").typeError("Invalid date"),
   end_date: yup.date().required("End date is required!").typeError("Invalid date"),
 });
 
-const CreateEducation: React.FC = () => {
+const CreateExperience: React.FC = () => {
   const { id } = useParams();
   const router = useRouter();
-  const { trigger, isMutating } = useCreateEducation();
+  const { trigger, isMutating } = useCreateExperiences();
 
   const form = useForm({
     resolver: yupResolver(validationSchema),
   });
 
-  const submit = async (data: { school_name: string; degree: string; start_date: any; end_date: any }) => {
+  const submit = async (data: { company: string; position: string; start_date: any; end_date: any }) => {
     const newData = {
       ...data,
       start_date: dayjs(data.start_date).format("YYYY-MM-DD"),
@@ -40,7 +40,7 @@ const CreateEducation: React.FC = () => {
     };
     await trigger(newData, {
       onSuccess: () => {
-        router.push(`/profile/${id}/education`);
+        router.push(`/profile/${id}/experience`);
       },
     });
   };
@@ -51,11 +51,11 @@ const CreateEducation: React.FC = () => {
         <form className="mx-auto flex flex-col justify-center gap-y-3 w-full" onSubmit={form.handleSubmit(submit)}>
           <Grid columns="1">
             <Flex justify="between" align="center" className="bg-white" p="3">
-              <Link href={`/profile/${id}/education`}>
+              <Link href={`/profile/${id}/experience`}>
                 <Icons.back className="text-[#373A36] w-[23px] h-[23px]" />
               </Link>
               <Text size="3" weight="medium">
-                Add Education
+                Add Experience
               </Text>
               <Link href={`/profile/${id}/education/create`} className="opacity-0">
                 <Icons.plus className="text-primary w-[23px] h-[23px]" />
@@ -64,20 +64,15 @@ const CreateEducation: React.FC = () => {
             <Box className="pb-[7px]">
               <Section className="bg-white" py="4" px="3">
                 <Heading as="h6" size="2" weight="medium" align="left" mb="2">
-                  School
+                  Company
                 </Heading>
                 <FormField
                   control={form.control}
-                  name="school_name"
+                  name="company"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <InputText
-                          type="text"
-                          inputType={USER_ROLE.STUDENT}
-                          placeholder="Ex: Boston University"
-                          {...field}
-                        />
+                        <InputText type="text" inputType={USER_ROLE.STUDENT} placeholder="Company Name" {...field} />
                       </FormControl>
                     </FormItem>
                   )}
@@ -88,20 +83,15 @@ const CreateEducation: React.FC = () => {
             <Box className="pb-[7px]">
               <Section className="bg-white" py="4" px="3">
                 <Heading as="h6" size="2" weight="medium" align="left" mb="2">
-                  Degree
+                  Position
                 </Heading>
                 <FormField
                   control={form.control}
-                  name="degree"
+                  name="position"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <InputText
-                          type="text"
-                          inputType={USER_ROLE.STUDENT}
-                          placeholder="Ex: Bachelor, Diploma"
-                          {...field}
-                        />
+                        <InputText type="text" inputType={USER_ROLE.STUDENT} placeholder="Position" {...field} />
                       </FormControl>
                     </FormItem>
                   )}
@@ -179,4 +169,4 @@ const CreateEducation: React.FC = () => {
   );
 };
 
-export default CreateEducation;
+export default CreateExperience;

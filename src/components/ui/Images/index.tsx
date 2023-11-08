@@ -41,6 +41,7 @@ import {
   IoHome,
   IoInformationCircleOutline,
   IoLink,
+  IoLinkOutline,
   IoLocationOutline,
   IoLogoApple,
   IoNotificationsOutline,
@@ -53,9 +54,9 @@ import { MdDelete, MdOutlineMailOutline } from "react-icons/md";
 import {
   PiAirplaneTiltLight,
   PiArrowDownRightThin,
+  PiArrowUpRightThin,
   PiArrowsLeftRightDuotone,
   PiArrowsLeftRightThin,
-  PiArrowUpRightThin,
   PiBagSimpleThin,
   PiCameraLight,
   PiCameraPlusFill,
@@ -190,6 +191,7 @@ export const Icons = {
   facebook: FaFacebook,
   telegram: FaTelegram,
   profileSetting: IoSettingsOutline,
+  link: IoLinkOutline,
 };
 
 interface Image {
