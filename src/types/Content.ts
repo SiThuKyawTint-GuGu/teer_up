@@ -183,3 +183,13 @@ export interface CommentResponse {
   data: CommentData[];
   hasNextPage: boolean;
 }
+
+export interface SkipStatusResponse {
+  completed: boolean;
+  created_at: Date;
+  id: number;
+  in_progress: boolean;
+  skip: boolean;
+  updated_at: Date;
+  user_id: boolean;
+}

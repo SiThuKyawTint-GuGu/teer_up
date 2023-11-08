@@ -63,7 +63,7 @@ const Profile: React.FC = () => {
                   <Text size="3" weight="medium">
                     Profile
                   </Text>
-                  <Flex justify="center" align="center" className="absolute top-0 right-2 bottom-0">
+                  <Flex justify="center" align="center" className="absolute top-0 right-4 bottom-0">
                     <Link href={`/profile/setting`}>
                       <Icons.profileSetting />
                     </Link>
@@ -151,15 +151,76 @@ const Profile: React.FC = () => {
             </CardBox>
             <CardBox className="mb-[7px] rounded-none">
               <Section className="bg-white" py="4" px="3">
-                <Tabs.Root defaultValue="personalDetails">
+                <Tabs.Root defaultValue="competency">
                   <Tabs.List className="space-x-[20px]">
-                    <Tabs.Trigger className="tab-trigger" value="personalDetails">
-                      Personal details
-                    </Tabs.Trigger>
                     <Tabs.Trigger className="tab-trigger" value="competency">
                       Competency
                     </Tabs.Trigger>
+                    <Tabs.Trigger className="tab-trigger" value="personalDetails">
+                      Personal details
+                    </Tabs.Trigger>
                   </Tabs.List>
+                  <Tabs.Content value="competency" className="space-y-[7px]">
+                    <CardBox>
+                      <Section className="bg-white" py="4" px="3">
+                        <Heading as="h6" size="4" align="left" mb="4">
+                          Assessment chart
+                        </Heading>
+                        <Box className="w-full h-full flex-wrap">
+                          <RadarChart />
+                          <Button className="w-full">Continue assessment</Button>
+                          <Button variant="link" className="w-full">
+                            Retake assessment
+                          </Button>
+                        </Box>
+                      </Section>
+                    </CardBox>
+                    {/* <CardBox>
+                      <Section className="bg-white" py="4" px="3">
+                        <Heading as="h6" size="4" align="left" mb="4">
+                          Here’s what we noticed about your competencies:
+                        </Heading>
+                        {userDimensionData?.data?.length && (
+                          <>
+                            {userDimensionData?.data?.map((each, key) => (
+                              <Box key={key} className="bg-[#F8F9FB] rounded-[8px]" mb="4" p="3">
+                                <Flex justify="start" align="start" gap="2">
+                                  <div className="w-[12px] h-[12px] mt-[5px] rounded-sm bg-primary" />
+                                  <Text className="w-[calc(100%-12px)]">{each.name}</Text>
+                                </Flex>
+                              </Box>
+                            ))}
+                          </>
+                        )}
+                      </Section>
+                    </CardBox> */}
+                    <CardBox>
+                      <Section className="bg-white" py="4" px="3">
+                        <Heading as="h6" size="4" align="left" mb="4">
+                          Here’s what we noticed about your competencies:
+                        </Heading>
+                        {userDimensionData?.data?.length && (
+                          <>
+                            {userDimensionData?.data?.map((each, key) => (
+                              <Box key={key} className="bg-[#F8F9FB] rounded-[8px] space-y-4" mb="4" p="3">
+                                <Flex justify="start" align="start" gap="2">
+                                  <div className="w-[12px] h-[12px] mt-[5px] rounded-sm bg-primary" />
+                                  <Text className="w-[calc(100%-12px)]">{each.skill_body}</Text>
+                                </Flex>
+                                {each?.content?.id && (
+                                  <Flex width="100%">
+                                    <Link className="w-full" href={`/content/${each?.content?.slug}`}>
+                                      <Button className="w-full">I’d like to work on it</Button>
+                                    </Link>
+                                  </Flex>
+                                )}
+                              </Box>
+                            ))}
+                          </>
+                        )}
+                      </Section>
+                    </CardBox>
+                  </Tabs.Content>
 
                   <Tabs.Content value="personalDetails">
                     <CardBox className="mb-[7px] rounded-none">
@@ -201,7 +262,7 @@ const Profile: React.FC = () => {
                     <CardBox className="mb-[7px] rounded-none">
                       <Section className="bg-white" py="4" px="3">
                         <Heading as="h6" size="4" align="left" mb="4">
-                          Experience
+                          Job Experience
                         </Heading>
                         {userProfile?.experiences?.length
                           ? userProfile?.experiences?.map((each, key) => (
@@ -219,10 +280,10 @@ const Profile: React.FC = () => {
                                   <Image src="/uploads/icons/experience.svg" width={32} height={32} alt="experience" />
                                   <Flex direction="column" gap="2">
                                     <Text as="label" weight="bold" size="3">
-                                      {each?.position}
+                                      {each?.company}
                                     </Text>
                                     <Text size="2" weight="light">
-                                      {each?.company}
+                                      {each?.position}
                                     </Text>
                                   </Flex>
                                 </Flex>
@@ -288,20 +349,20 @@ const Profile: React.FC = () => {
                       </Section>
                     </CardBox>
 
-                    <CardBox className="mb-[7px] rounded-none">
+                    {/* <CardBox className="mb-[7px] rounded-none">
                       <Section className="bg-white" py="4" px="3">
                         <Heading as="h6" size="4" align="left" mb="4">
                           Department
                         </Heading>
-                        {userProfile?.department?.length
-                          ? userProfile?.department?.map((each, key) => (
+                        {userProfile?.departments?.length
+                          ? userProfile?.departments?.map((each, key) => (
                               <Flex
                                 key={key}
                                 justify="between"
                                 align="start"
                                 className={cn(
                                   "pb-[10px] mb-[10px]",
-                                  key !== (userProfile?.department ? userProfile.department.length - 1 : -1) &&
+                                  key !== (userProfile?.departments ? userProfile.departments.length - 1 : -1) &&
                                     "border-b border-b-[#BDC7D5]"
                                 )}
                               >
@@ -317,12 +378,31 @@ const Profile: React.FC = () => {
                             ))
                           : "-"}
                       </Section>
+                    </CardBox> */}
+                    <CardBox className="mb-[7px] rounded-none">
+                      <Section className="bg-white" py="4" px="3">
+                        <Heading as="h6" size="4" align="left" mb="4">
+                          Career interests
+                        </Heading>
+                        <Flex wrap="wrap" gap="2">
+                          {userProfile?.departments?.length
+                            ? userProfile?.departments?.map((each, key) => (
+                                <Button
+                                  key={key}
+                                  className="border border-[#EAA1A6] bg-[#F9E9EB] text-black hover:bg-[#F9E9EB]"
+                                >
+                                  {each.department.name}
+                                </Button>
+                              ))
+                            : "-"}
+                        </Flex>
+                      </Section>
                     </CardBox>
 
                     <CardBox className="mb-[7px] rounded-none">
                       <Section className="bg-white" py="4" px="3">
                         <Heading as="h6" size="4" align="left" mb="4">
-                          Career interests
+                          Industry interests
                         </Heading>
                         <Flex wrap="wrap" gap="2">
                           {userProfile?.industries?.length
@@ -357,68 +437,6 @@ const Profile: React.FC = () => {
                         </Flex>
                       </Section>
                     </CardBox> */}
-                  </Tabs.Content>
-
-                  <Tabs.Content value="competency" className="space-y-[7px]">
-                    <CardBox>
-                      <Section className="bg-white" py="4" px="3">
-                        <Heading as="h6" size="4" align="left" mb="4">
-                          Assessment chart
-                        </Heading>
-                        <Box className="w-full h-full flex-wrap">
-                          <RadarChart />
-                          <Button className="w-full">Continue assessment</Button>
-                          <Button variant="link" className="w-full">
-                            Retake assessment
-                          </Button>
-                        </Box>
-                      </Section>
-                    </CardBox>
-                    {/* <CardBox>
-                      <Section className="bg-white" py="4" px="3">
-                        <Heading as="h6" size="4" align="left" mb="4">
-                          Here’s what we noticed about your competencies:
-                        </Heading>
-                        {userDimensionData?.data?.length && (
-                          <>
-                            {userDimensionData?.data?.map((each, key) => (
-                              <Box key={key} className="bg-[#F8F9FB] rounded-[8px]" mb="4" p="3">
-                                <Flex justify="start" align="start" gap="2">
-                                  <div className="w-[12px] h-[12px] mt-[5px] rounded-sm bg-primary" />
-                                  <Text className="w-[calc(100%-12px)]">{each.name}</Text>
-                                </Flex>
-                              </Box>
-                            ))}
-                          </>
-                        )}
-                      </Section>
-                    </CardBox> */}
-                    <CardBox>
-                      <Section className="bg-white" py="4" px="3">
-                        <Heading as="h6" size="4" align="left" mb="4">
-                          Here’s what we noticed about your competencies:
-                        </Heading>
-                        {userDimensionData?.data?.length && (
-                          <>
-                            {userDimensionData?.data?.map((each, key) => (
-                              <Box key={key} className="bg-[#F8F9FB] rounded-[8px] space-y-4" mb="4" p="3">
-                                <Flex justify="start" align="start" gap="2">
-                                  <div className="w-[12px] h-[12px] mt-[5px] rounded-sm bg-primary" />
-                                  <Text className="w-[calc(100%-12px)]">{each.skill_body}</Text>
-                                </Flex>
-                                {each?.content?.id && (
-                                  <Flex width="100%">
-                                    <Link className="w-full" href={`/content/${each?.content?.slug}`}>
-                                      <Button className="w-full">I’d like to work on it</Button>
-                                    </Link>
-                                  </Flex>
-                                )}
-                              </Box>
-                            ))}
-                          </>
-                        )}
-                      </Section>
-                    </CardBox>
                   </Tabs.Content>
                 </Tabs.Root>
               </Section>

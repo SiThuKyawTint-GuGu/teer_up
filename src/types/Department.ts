@@ -1,4 +1,4 @@
-export interface Departments {
+export interface UserDepartments {
   id: number;
   department_id: number;
   user_id: number;
@@ -16,4 +16,8 @@ export interface DepartmentData {
 
 export interface DepartmentResponse {
   data: DepartmentData[];
+}
+
+export interface UserDepartmentResponse {
+  data: UserDepartments;
 }
