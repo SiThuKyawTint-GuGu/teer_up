@@ -47,7 +47,7 @@ const Otp = () => {
         setUserInfo(res.data.token, res.data.data);
         startTransition(() => {
           router.refresh();
-          if (jwtDecode.verified) {
+          if (jwtDecode.action === AUTH_TYPE.SIGNIN) {
             router.push("/home");
             return;
           }
@@ -65,7 +65,7 @@ const Otp = () => {
             <Button onClick={() => router.back()} className="p-0" variant="ghost">
               <Icons.back className="text-[#373A36] w-[23px] h-[23px]" />
             </Button>
-            {jwtDecode?.type === AUTH_TYPE.SIGNUP && (
+            {jwtDecode?.action === AUTH_TYPE.SIGNUP && (
               <Button className="text-primary p-0" variant="ghost" onClick={() => setModalOpen(true)}>
                 Skip for now
               </Button>
@@ -78,7 +78,7 @@ const Otp = () => {
             </Flex>
             <div className="flex justify-start w-full flex-col mb-[32px] flex-wrap gap-y-3">
               <Heading as="h3" size="6">
-                {jwtDecode?.type === AUTH_TYPE.SIGNUP ? "Verify email" : "Enter OTP"}
+                {jwtDecode?.action === AUTH_TYPE.SIGNUP ? "Verify email" : "Enter OTP"}
               </Heading>
               <Text size="3" weight="light">
                 Check your inbox and enter the received OTP
@@ -120,7 +120,7 @@ const Otp = () => {
                 <Button type="submit" loading={isPending} disabled={isPending || verifiedLoading}>
                   Login
                 </Button>
-                {jwtDecode?.type === AUTH_TYPE.SIGNUP && <Button variant="link">Change email</Button>}
+                {jwtDecode?.action === AUTH_TYPE.SIGNUP && <Button variant="link">Change email</Button>}
               </form>
               {/* <Button onClick={getOtp} disabled={isMutating}>
             Resend Varification
