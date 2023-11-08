@@ -31,10 +31,12 @@ const Search: React.FC = () => {
     // }
   }, 500);
 
-  const handleSloctClick = () => {
-    startTransition(() => {
-      router.push(`/browse?search=${inputRef?.current?.value}`);
-    });
+  const handleSlotClick = () => {
+    if (inputRef?.current?.value) {
+      startTransition(() => {
+        router.push(`/browse?search=${inputRef?.current?.value}`);
+      });
+    }
   };
 
   useEffect(() => {
@@ -52,15 +54,15 @@ const Search: React.FC = () => {
               </div>
               <InputSearch
                 onChange={debouncedOnChange}
-                onSlotClick={handleSloctClick}
+                onSlotClick={handleSlotClick}
                 ref={inputRef}
                 variant="contain"
                 className="caret-primary"
                 placeholder="Search"
                 defaultValue={get("keyword") || ""}
               />
-              <Button onClick={() => router.back()} className="pr-0" variant="ghost">
-                Cancel
+              <Button onClick={handleSlotClick} className="pr-0" variant="ghost">
+                Search
               </Button>
             </Flex>
           </header>
