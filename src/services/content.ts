@@ -2,6 +2,7 @@
 import appAxios from "@/lib/appAxios";
 import { CommentResponse, ContentType } from "@/types/Content";
 import { routeFilter } from "@/utils";
+import { getToken } from "@/utils/auth";
 import useSWR, { SWRResponse } from "swr";
 import useSWRInfinite, { SWRInfiniteResponse } from "swr/infinite";
 import useSWRMutation from "swr/mutation";
@@ -255,9 +256,11 @@ export const useSkipOnboarding = () =>
   });
 
 export const useGetOnboardingStatus = () => {
-  return useSWR(`/user/onboarding/status`);
+  const token = getToken();
+  return useSWR(token ? `/user/onboarding/status` : null);
 };
 
 export const useGetOnboardingQuestions = (params?: ParamsType): SWRResponse => {
-  return useSWR(`user/onboarding?${routeFilter(params)}`);
+  const token = getToken();
+  return useSWR(token ? `user/onboarding?${routeFilter(params)}` : null);
 };
