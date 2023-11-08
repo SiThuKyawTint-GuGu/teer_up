@@ -1,7 +1,13 @@
 "use client";
 import { ContentData } from "@/types/Content";
 
-import { ParamsType, useContentWatchCount, useGetContentInfinite, useSkipOnboarding } from "@/services/content";
+import {
+  ParamsType,
+  useContentWatchCount,
+  useGetContentInfinite,
+  useGetOnboardingStatus,
+  useSkipOnboarding,
+} from "@/services/content";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/Button";
@@ -25,7 +31,9 @@ const UserContent = () => {
   const [startTime, setStartTime] = useState<number | null>(null);
   const [totalTimeInView, setTotalTimeInView] = useState<number>(0);
   const { trigger: calculateCount } = useContentWatchCount();
+  const { data: status } = useGetOnboardingStatus();
   const contentDataArray: ContentData[] = useMemo(() => data?.flatMap(page => page?.data) || [], [data]);
+  const skip = status?.data.skip;
 
   useEffect(() => {
     if (containerRef.current) {
@@ -130,6 +138,7 @@ const UserContent = () => {
 
                 {index == 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
                 {contentDataArray &&
+                  !skip &&
                   contentDataArray.length > 0 &&
                   contentDataArray[visibleItemIndex].type === "onboarding" && (
                     <Button
