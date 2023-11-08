@@ -62,10 +62,10 @@ const UserContent = () => {
                 const timeInMilliseconds = endTime - startTime;
                 let totalTime = Math.floor((totalTimeInView + timeInMilliseconds) / 1000);
                 console.log(totalTime);
-                if (totalTime > 3) {
-                  contentDataArray.splice(visibleItemIndex + 1, 0, onBoardArray[onBoardingIndex]);
-                  setOnBoardingIndex(prev => prev + 1);
-                }
+                // if (totalTime > 30) {
+                //   contentDataArray.splice(visibleItemIndex + 1, 0, onBoardArray[onBoardingIndex]);
+                //   setOnBoardingIndex(prev => prev + 1);
+                // }
                 setTotalTimeInView(totalTime);
                 calculateCount({
                   watched_time: totalTimeInView,
