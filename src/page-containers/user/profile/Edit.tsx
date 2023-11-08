@@ -298,31 +298,22 @@ const ProfileEdit: React.FC = () => {
                   <Heading as="h6" size="4" align="left">
                     Department
                   </Heading>
-                  <Text className="text-primary">Edit</Text>
+                  <Link href={`/profile/${id}/department`}>
+                    <Text className="text-primary">Edit</Text>
+                  </Link>
                 </Flex>
-                {userProfile?.department?.length
-                  ? userProfile?.department?.map((each, key) => (
-                      <Flex
-                        key={key}
-                        justify="between"
-                        align="start"
-                        className={cn(
-                          "pb-[10px] mb-[10px]",
-                          key !== (userProfile?.department ? userProfile.department.length - 1 : -1) &&
-                            "border-b border-b-[#BDC7D5]"
-                        )}
-                      >
-                        <Flex justify="start" align="start" gap="2">
-                          <Image src="/uploads/icons/education.svg" width={32} height={32} alt="experience" />
-                          <Flex direction="column" gap="2">
-                            <Text as="label" weight="bold" size="3">
-                              {each.department.name}
-                            </Text>
-                          </Flex>
-                        </Flex>
-                      </Flex>
-                    ))
-                  : "-"}
+                <Flex wrap="wrap" gap="2">
+                  {userProfile?.departments?.length
+                    ? userProfile?.departments?.map((each, key) => (
+                        <Button
+                          key={key}
+                          className="border border-[#EAA1A6] bg-[#F9E9EB] text-black hover:bg-[#F9E9EB]"
+                        >
+                          {each.department.name}
+                        </Button>
+                      ))
+                    : "-"}
+                </Flex>
               </Section>
             </CardBox>
 

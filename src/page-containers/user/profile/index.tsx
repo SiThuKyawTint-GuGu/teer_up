@@ -288,20 +288,20 @@ const Profile: React.FC = () => {
                       </Section>
                     </CardBox>
 
-                    <CardBox className="mb-[7px] rounded-none">
+                    {/* <CardBox className="mb-[7px] rounded-none">
                       <Section className="bg-white" py="4" px="3">
                         <Heading as="h6" size="4" align="left" mb="4">
                           Department
                         </Heading>
-                        {userProfile?.department?.length
-                          ? userProfile?.department?.map((each, key) => (
+                        {userProfile?.departments?.length
+                          ? userProfile?.departments?.map((each, key) => (
                               <Flex
                                 key={key}
                                 justify="between"
                                 align="start"
                                 className={cn(
                                   "pb-[10px] mb-[10px]",
-                                  key !== (userProfile?.department ? userProfile.department.length - 1 : -1) &&
+                                  key !== (userProfile?.departments ? userProfile.departments.length - 1 : -1) &&
                                     "border-b border-b-[#BDC7D5]"
                                 )}
                               >
@@ -316,6 +316,25 @@ const Profile: React.FC = () => {
                               </Flex>
                             ))
                           : "-"}
+                      </Section>
+                    </CardBox> */}
+                    <CardBox className="mb-[7px] rounded-none">
+                      <Section className="bg-white" py="4" px="3">
+                        <Heading as="h6" size="4" align="left" mb="4">
+                          Department
+                        </Heading>
+                        <Flex wrap="wrap" gap="2">
+                          {userProfile?.departments?.length
+                            ? userProfile?.departments?.map((each, key) => (
+                                <Button
+                                  key={key}
+                                  className="border border-[#EAA1A6] bg-[#F9E9EB] text-black hover:bg-[#F9E9EB]"
+                                >
+                                  {each.department.name}
+                                </Button>
+                              ))
+                            : "-"}
+                        </Flex>
                       </Section>
                     </CardBox>
 
