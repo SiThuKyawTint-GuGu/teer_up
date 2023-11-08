@@ -205,7 +205,7 @@ const ProfileEdit: React.FC = () => {
               <Section className="bg-white" py="4" px="3">
                 <Flex justify="between" align="center" mb="4">
                   <Heading as="h6" size="4" align="left">
-                    Experience
+                    Job Experience
                   </Heading>
                   <Link href={`/profile/${id}/experience`}>
                     <Text className="text-primary">Edit</Text>

@@ -40,7 +40,7 @@ const InputText = React.forwardRef<HTMLInputElement, Props>(
     ref
   ) => {
     return (
-      <InputStyled inputtype={inputType}>
+      <InputStyled inputtype={inputType} disabled={disabled}>
         <label htmlFor="email" className="block text-sm font-medium text-gray-700">
           {label}
         </label>
@@ -178,13 +178,18 @@ const InputOtp: React.FC = ({ ...props }) => {
 
 export { InputOtp, InputSearch, InputText, InputTextArea };
 
-const InputStyled = styled.div<{ inputtype?: USER_ROLE }>`
+const InputStyled = styled.div<{ inputtype?: USER_ROLE; disabled?: boolean }>`
   width: 100%;
   & input {
     ${({ inputtype }) =>
       inputtype !== USER_ROLE.ADMIN &&
       css`
         /* box-shadow: 0px 26px 30px 0px rgba(0, 0, 0, 0.05); */
+      `}
+    ${({ disabled }) =>
+      disabled &&
+      css`
+        background-color: #e9e9e9;
       `}
   }
   & textarea {
