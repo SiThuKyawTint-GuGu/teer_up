@@ -59,8 +59,7 @@ const EditEducation: React.FC = () => {
       { edu_id: edu_id as string },
       {
         onSuccess: () => {
-          console.log("deleted!");
-          router.push(`/profile/${id}/educations`);
+          router.push(`/profile/${id}/education`);
         },
       }
     );

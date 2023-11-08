@@ -150,7 +150,7 @@ const Login: React.FC = () => {
           </Text>
           <Text className="text-sm">
             I understand that I can refer to Prudential Data Privacy, which is available at{" "}
-            <Link href="https://www.prudential.com.sg/Privacy-Notice">
+            <Link href="https://www.prudential.com.sg/Privacy-Notice" target="_blank">
               <Text as="span" className="text-primary">
                 Privacy Notice
               </Text>{" "}
