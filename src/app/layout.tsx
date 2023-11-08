@@ -16,7 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <ServerThemeProvider>
       <html lang="en" className={fontSans.className}>
         <head>
-          <link rel="icon" href="/teeup.svg" />
+          <link rel="icon" href="/teeUpLogo.svg" />
         </head>
         <body className="bg-layout">
           <Providers>{children}</Providers>
