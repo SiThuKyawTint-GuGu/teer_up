@@ -257,3 +257,7 @@ export const useSkipOnboarding = () =>
 export const useGetOnboardingStatus = () => {
   return useSWR(`/user/onboarding/status`);
 };
+
+export const useGetOnboardingQuestions = (params?: ParamsType): SWRResponse => {
+  return useSWR(`user/onboarding?${routeFilter(params)}`);
+};
