@@ -55,7 +55,7 @@ const Layout = ({ children }: Props) => {
   return (
     <>
       <Head>
-        <link rel="icon" href="/teeup.svg" />
+        <link rel="icon" href="/teeUpLogo.svg" />
       </Head>
       <Grid columns="1">
         {openVerifyModal && <VerifyPop />}
