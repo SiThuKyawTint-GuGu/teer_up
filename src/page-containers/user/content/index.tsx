@@ -9,10 +9,11 @@ import {
   useGetOnboardingStatus,
   useSkipOnboarding,
 } from "@/services/content";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 
 import { Button } from "@/components/ui/Button";
 import { getUserInfo } from "@/utils/auth";
+import { useRouter } from "next/navigation";
 import ContentLayout from "./components/ContentLayout";
 import Onboarding from "./components/Onboarding";
 import Video from "./components/Video";
@@ -43,6 +44,8 @@ const UserContent = () => {
   const contentDataArray: ContentData[] = useMemo(() => data?.flatMap(page => page?.data) || [], [data]);
   const onBoardArray: ContentData[] = onboarding?.data;
   const skip = status?.data.skip;
+  const router = useRouter();
+  const [ispending, startTransition] = useTransition();
 
   useEffect(() => {
     if (containerRef.current) {
@@ -157,8 +160,12 @@ const UserContent = () => {
                   contentDataArray[visibleItemIndex].type === "onboarding" && (
                     <Button
                       variant="link"
+                      disabled={ispending}
                       className="text-center w-full py-4 text-primary"
                       onClick={() => {
+                        startTransition(() => {
+                          router.push("/profile");
+                        });
                         skipOnboarding(
                           {
                             skip: true,
