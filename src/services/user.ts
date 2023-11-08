@@ -6,6 +6,12 @@ import { routeFilter } from "@/utils";
 import useSWR, { SWRResponse } from "swr";
 import useSWRMutation from "swr/mutation";
 
+export enum ON_BOARDING_SKIP {
+  SKIP = "skip",
+  COMPLETED = "completed",
+  IN_PROGRESS = "in_progress",
+}
+
 export type ParamsType = {
   page?: number;
   pageSize?: number;
@@ -153,3 +159,13 @@ export const useUpdateProfilePreference = () =>
 export const useGetUserScores = (): SWRResponse => {
   return useSWR<UserScoresResponse>(`/user/scores`);
 };
+
+export const useUpdateUserOnboardingStatus = () =>
+  useSWRMutation(`/user/onboarding/status`, (url, { arg }: { arg: { skip: ON_BOARDING_SKIP } }) => {
+    return appAxios.put<{ arg: { skip: ON_BOARDING_SKIP } }>(url, arg);
+  });
+
+export const useResetScores = () =>
+  useSWRMutation(`/user/onboarding/reset-scores`, url => {
+    return appAxios.post(url);
+  });
