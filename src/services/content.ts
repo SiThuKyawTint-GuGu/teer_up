@@ -50,11 +50,11 @@ export const useGetContentInfinite = <ParamsType>(params?: ParamsType): SWRInfin
 export const useGetBrowseInfinite = <ParamsType>(params?: ParamsType): SWRInfiniteResponse<ContentType> => {
   const getKey = () => `/content/browse?${routeFilter(params)}`;
   return useSWRInfinite<ContentType>(getKey, {
-    revalidateFirstPage: false,
-    revalidateAll: false,
-    revalidateIfStale: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
+    // revalidateFirstPage: false,
+    // revalidateAll: false,
+    // revalidateIfStale: false,
+    // revalidateOnFocus: false,
+    // revalidateOnReconnect: false,
     parallel: true,
   });
 };
