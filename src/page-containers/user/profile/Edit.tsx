@@ -231,13 +231,13 @@ const ProfileEdit: React.FC = () => {
                         </Flex>
                         <Flex justify="end" align="center" gap="1">
                           <Text size="2" weight="light">
-                            {dayjs(each?.start_date).format("YYYY")}
+                            {dayjs(each?.start_date).format("MMM, YYYY")}
                           </Text>
                           <Text size="2" weight="light">
                             -
                           </Text>
                           <Text size="2" weight="light">
-                            {each?.end_date ? dayjs(each?.end_date).format("YYYY") : "present"}
+                            {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "present"}
                           </Text>
                         </Flex>
                       </Flex>
@@ -295,7 +295,7 @@ const ProfileEdit: React.FC = () => {
               <Section className="bg-white" py="4" px="3">
                 <Flex justify="between" align="center" mb="4">
                   <Heading as="h6" size="4" align="left">
-                    Department
+                    Career interests
                   </Heading>
                   <Link href={`/profile/${id}/department`}>
                     <Text className="text-primary">Edit</Text>
@@ -320,7 +320,7 @@ const ProfileEdit: React.FC = () => {
               <Section className="bg-white" py="4" px="3">
                 <Flex justify="between" align="center" mb="4">
                   <Heading as="h6" size="4" align="left">
-                    Career interests
+                    Industry interests
                   </Heading>
                   <Link href={`/profile/${id}/career-interests`}>
                     <Text className="text-primary">Edit</Text>

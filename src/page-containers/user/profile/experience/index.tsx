@@ -11,8 +11,6 @@ const Experience: React.FC = () => {
   const { id } = useParams();
   const { data: experiences } = useGetUserExperiences<ExperienceParamsType, ExperienceResponse>();
 
-  console.log(experiences);
-
   return (
     <>
       <Grid columns="1">
@@ -23,7 +21,7 @@ const Experience: React.FC = () => {
                 <Icons.back className="text-[#373A36] w-[23px] h-[23px]" />
               </Link>
               <Text size="3" weight="medium">
-                Experience
+                Job Experience
               </Text>
               <Link href={`/profile/${id}/experience/create`}>
                 <Icons.plus className="text-primary w-[23px] h-[23px]" />
