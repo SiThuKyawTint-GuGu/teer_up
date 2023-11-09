@@ -12,12 +12,13 @@ const RadarChart: React.FC = () => {
 
   const scoreData = useMemo(() => userScores?.data, [userScores]);
 
-  const label = useMemo(() => {
-    if (scoreData && scoreData.length > 0) return scoreData.map((each: UserScores) => each.dimension.short_name);
-  }, [scoreData]);
+  const label = scoreData && scoreData.length > 0 && scoreData.map((each: UserScores) => each.dimension.short_name);
+
   const skillScores = useMemo(() => {
     if (scoreData && scoreData.length > 0) return scoreData.map((each: UserScores) => each.skill);
   }, [scoreData]);
+
+  console.log(skillScores);
   // const centainityScores = useMemo(() => {
   //   if (scoreData && scoreData.length > 0) return scoreData.map((each: UserScores) => each.certainty);
   // }, [scoreData]);
