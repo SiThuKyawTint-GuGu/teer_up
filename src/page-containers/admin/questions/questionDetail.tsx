@@ -198,8 +198,8 @@ const QuestionDetail = ({ id }: Props) => {
               label="Type"
               onChange={handleChangeType}
             >
-              <MenuItem value="certainty">Onboarding</MenuItem>
-              <MenuItem value="skill">Feedback</MenuItem>
+              <MenuItem value="skill">Onboarding</MenuItem>
+              <MenuItem value="certainty">Feedback</MenuItem>
             </Select>
           </FormControl>
           <p className="mt-2 text-red-700">{errors.type?.message}</p>
