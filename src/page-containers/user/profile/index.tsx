@@ -34,7 +34,7 @@ const Profile: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [viewImage, setViewImage] = useState<boolean>(false);
   const [triggerType, setTriggerType] = useState<PROFILE_TRIGGER>();
-  const [, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const user = getUserInfo();
   const { data: profileData } = useGetUserById<UserProfileResponse>(user?.id);
@@ -186,7 +186,7 @@ const Profile: React.FC = () => {
                         </Heading>
                         <Box className="w-full h-full flex-wrap">
                           <RadarChart />
-                          <Button onClick={handleContinueAssessment} className="w-full">
+                          <Button onClick={handleContinueAssessment} loading={isPending} className="w-full">
                             Continue assessment
                           </Button>
                           <Button onClick={handleRetakeAssessment} variant="link" className="w-full">

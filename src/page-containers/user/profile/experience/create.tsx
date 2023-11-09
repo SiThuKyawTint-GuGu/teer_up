@@ -55,7 +55,7 @@ const CreateExperience: React.FC = () => {
                 <Icons.back className="text-[#373A36] w-[23px] h-[23px]" />
               </Link>
               <Text size="3" weight="medium">
-                Add Experience
+                Add Job Experience
               </Text>
               <Link href={`/profile/${id}/education/create`} className="opacity-0">
                 <Icons.plus className="text-primary w-[23px] h-[23px]" />
