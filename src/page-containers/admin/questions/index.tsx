@@ -55,7 +55,7 @@ const Questions: React.FC = () => {
         header: "Type",
         enableEditing: false,
         size: 2,
-        Cell: ({ row }: any) => <p>{row.original.type === "skill" ? "Feedback" : "Onboarding"}</p>,
+        Cell: ({ row }: any) => <p>{row.original.type === "skill" ? "Onboarding" : "Feedback"}</p>,
       },
       {
         accessorKey: "created_at",
