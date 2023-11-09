@@ -49,6 +49,7 @@ const CareerInterests: React.FC = () => {
             <Flex justify="center" align="center" className="mb-[25px]">
               <InputSearch placeholder="Search Interests" />
             </Flex>
+            {/* @ts-ignore TODO - 1 */}
             {industryData?.data?.map((each, key) => {
               const isChecked = industries?.find(industry => industry.industry_id === each?.id);
 
