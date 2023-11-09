@@ -4,7 +4,16 @@ import { useCreateIndustry, useGetIndustryById, useUpdateIndustry, useUpdateJoin
 import { yupResolver } from "@hookform/resolvers/yup";
 import SaveIcon from "@mui/icons-material/Save";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { Alert, Autocomplete, TextField } from "@mui/material";
+import {
+  Alert,
+  Autocomplete,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  TextField,
+} from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -21,6 +30,7 @@ interface OptionType {
 
 const validationSchema = yup.object({
   name: yup.string().required("Question is required!"),
+  status: yup.string().required("Status is required!"),
 });
 
 const IndustryDetail = ({ id }: Props) => {
@@ -34,6 +44,7 @@ const IndustryDetail = ({ id }: Props) => {
   const { data: industry } = useGetIndustryById<any>(id);
   const [selectedDepartment, setSelectedDepartment] = useState<OptionType[]>([]);
   const [departmentOptions, setDepartmentOptions] = useState<OptionType[]>([]);
+  const [selectedStatus, setSelectedStatus] = useState<string>("");
 
   const {
     register,
@@ -54,7 +65,10 @@ const IndustryDetail = ({ id }: Props) => {
     }
     if (industry?.data) {
       setName(industry?.data.name);
+      const status = industry?.data.is_published === true ? "published" : "unpublished";
+      setSelectedStatus(status);
       setValue("name", industry?.data.name);
+      setValue("status", industry?.data.is_published);
       const updatedOptions = industry?.data.departments.map((option: any) => ({
         label: option.name,
         id: option.id,
@@ -73,17 +87,22 @@ const IndustryDetail = ({ id }: Props) => {
       departments: options,
       industry_id: industry?.data.id,
     };
+    const status = selectedStatus === "published" ? true : false;
     if (industry?.data) {
       await updateJoinDepartment(joinData);
-      await updateTrigger({ id, name: data?.name, departments: options });
+      await updateTrigger({ id, name: data?.name, departments: options, is_published: status });
     } else {
-      await createTrigger({ name: data?.name, departments: options });
+      await createTrigger({ name: data?.name, departments: options, is_published: status });
     }
     router.push("/admin/configs/industry");
   };
 
   const handleDepartmentChange = (event: any, newValue: any) => {
     setSelectedDepartment(newValue);
+  };
+
+  const handleSelectStatus = (event: SelectChangeEvent) => {
+    setSelectedStatus(event.target.value);
   };
 
   return (
@@ -121,6 +140,23 @@ const IndustryDetail = ({ id }: Props) => {
             />
           )}
           <p className="mt-2 text-red-700">{errors.name?.message}</p>
+        </div>
+        <div className="mb-10">
+          <FormControl fullWidth>
+            <InputLabel id="selectStatus">Status</InputLabel>
+            <Select
+              {...register("status")}
+              labelId="selectStatus"
+              id="selectStatus"
+              value={selectedStatus}
+              label="Status"
+              onChange={handleSelectStatus}
+            >
+              <MenuItem value="published">Published</MenuItem>
+              <MenuItem value="unpublished">Unpublished</MenuItem>
+            </Select>
+          </FormControl>
+          <p className="mt-2 text-red-700">{errors.status?.message}</p>
         </div>
 
         <div className="my-10">

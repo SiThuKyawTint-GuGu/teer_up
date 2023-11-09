@@ -4,7 +4,7 @@ import useSWR, { SWRResponse } from "swr";
 import useSWRMutation from "swr/mutation";
 
 type IndustryArgType = {
-  arg: { id?: string; name?: string; departments?: number[]; industry_id?: number };
+  arg: { id?: string; name?: string; departments?: number[]; industry_id?: number; is_published?: boolean };
 };
 
 export type ParamsType = {
