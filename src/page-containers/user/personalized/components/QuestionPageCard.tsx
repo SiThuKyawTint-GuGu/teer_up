@@ -15,7 +15,7 @@ const QuestionPageCard: React.FC<QuestionPageCardProp> = ({ children, title, lay
   const router = useRouter();
   const pathname = usePathname();
   return (
-    <div className="h-screen w-full">
+    <div className="h-[calc(100vh-96px)] w-full">
       {layout && (
         <div className="flex justify-between h-[48px] items-center px-2  bg-white fixed top-0 w-full max-w-[400px] mx-auto">
           <div

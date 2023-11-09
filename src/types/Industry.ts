@@ -6,5 +6,8 @@ export interface IndustryData {
 }
 
 export interface IndustryResponse {
-  data: IndustryData[];
+  data: {
+    published: IndustryData[];
+    unpublished: IndustryData[];
+  };
 }

@@ -30,7 +30,7 @@ const Setting: React.FC = () => {
     >
       <Grid columns="1">
         <Flex justify="between" align="center" className="bg-white" p="3">
-          <Link href="/profile">
+          <Link className="block" href="/profile">
             <Icons.back className="text-[#373A36] w-[23px] h-[23px]" />
           </Link>
           <Text size="3" weight="medium">
@@ -49,7 +49,7 @@ const Setting: React.FC = () => {
               </Flex>
             </div> */}
             <div className="pb-[15px] mb-[15px] border-b border-b-[#BDC7D5]">
-              <Link href="/about">
+              <Link className="block" href="/about">
                 <Flex justify="between" align="start">
                   <Text as="label" weight="bold" size="3">
                     About TEE-UP
@@ -59,7 +59,7 @@ const Setting: React.FC = () => {
               </Link>
             </div>
             <div className="pb-[15px] mb-[15px] border-b border-b-[#BDC7D5]">
-              <Link href="/support/consent">
+              <Link className="block" href="/support/consent">
                 <Flex justify="between" align="start">
                   <Text as="label" weight="bold" size="3">
                     Consent
@@ -69,7 +69,17 @@ const Setting: React.FC = () => {
               </Link>
             </div>
             <div className="pb-[15px] mb-[15px] border-b border-b-[#BDC7D5]">
-              <Link href="https://www.prudential.com.sg/Privacy-Notice" target="_blank">
+              <Link className="block" href="/support/hope-action-theory">
+                <Flex justify="between" align="start">
+                  <Text as="label" weight="bold" size="3">
+                    Hope Action Theory
+                  </Text>
+                  <Icons.caretRight className="w-[25px] h-[25px]" />
+                </Flex>
+              </Link>
+            </div>
+            <div className="pb-[15px] mb-[15px] border-b border-b-[#BDC7D5]">
+              <Link className="block" href="https://www.prudential.com.sg/Privacy-Notice" target="_blank">
                 <Flex justify="between" align="start">
                   <Text as="label" weight="bold" size="3">
                     Privacy Policy

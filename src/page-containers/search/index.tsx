@@ -5,6 +5,7 @@ import { InputSearch } from "@/components/ui/Inputs";
 import { Text } from "@/components/ui/Typo/Text";
 import { SearchParamsType, useGetContentSearch } from "@/services/content";
 import { ContentType } from "@/types/Content";
+import { cn } from "@/utils/cn";
 import { Box, Container, Flex, Grid, Section } from "@radix-ui/themes";
 import { debounce } from "lodash";
 import Link from "next/link";
@@ -15,7 +16,7 @@ const Search: React.FC = () => {
   const [searchValue, setSearchValue] = useState<string>("");
   const router = useRouter();
   const { get } = useSearchParams();
-  const [, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition();
   const inputRef = useRef<any>(null);
 
   const { data: searchData } = useGetContentSearch<SearchParamsType, ContentType>({
@@ -103,13 +104,28 @@ const Search: React.FC = () => {
           <div className="max-w-[400px] fixed top-[65px] z-20 w-full h-full bg-[#efefef]">
             <Box p="3">
               {searchData?.data?.length ? (
-                searchData?.data?.map((each, key) => (
-                  <>
-                    <Link key={key} href={`/browse?search=${each?.title}`}>
-                      <Text className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">{each?.title}</Text>
-                    </Link>
-                  </>
-                ))
+                <>
+                  {searchData?.data?.map((each, key) => (
+                    <>
+                      <Link key={key} href={`/browse?search=${each?.title}`}>
+                        <Text
+                          className={cn(
+                            "pb-[10px] mb-[10px]",
+                            key !== (searchData?.data ? searchData?.data.length - 1 : -1) &&
+                              "border-b border-b-[#BDC7D5]"
+                          )}
+                        >
+                          {each?.title}
+                        </Text>
+                      </Link>
+                    </>
+                  ))}
+                  <Flex justify="center">
+                    <Button onClick={handleSlotClick} variant="link">
+                      See More
+                    </Button>
+                  </Flex>
+                </>
               ) : (
                 <Flex justify="center">No search found!</Flex>
               )}
