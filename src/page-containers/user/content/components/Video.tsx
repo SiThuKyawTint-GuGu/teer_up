@@ -1,7 +1,7 @@
 "use client";
 
+import ReactionBar from "@/components/contentLayout/ReactionBar";
 import CardBox from "@/components/ui/Card";
-import ReactionBar from "@/page-containers/admin/content/ReactionBar";
 import { ContentData } from "@/types/Content";
 
 import { useEffect, useRef, useState } from "react";
@@ -87,8 +87,8 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
         )}
 
         <div
-          className={`absolute flex flex-col items-baseline cursor-pointer w-full bg-slate-700 opacity-[0.8]  bottom-0 px-3 py-3 z-[1] text-[20px] font-[600] ${
-            showDescription && "transition-all duration-1000 ease-in-out"
+          className={`absolute flex flex-col items-baseline cursor-pointer w-full   bottom-0 px-3 py-3 z-[1] text-[20px] font-[600] ${
+            showDescription && "h-full bg-[rgba(0, 0, 0, 0.30)] overflow-scroll no-scrollbar"
           }`}
         >
           {!showDescription && (
