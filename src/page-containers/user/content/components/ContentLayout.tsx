@@ -23,7 +23,7 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate }) =>
         <div className="w-full h-[70%]  mx-auto relative">
           <Link href={`/content/${data.slug}`}>
             <div
-              className="relative w-full max-w-[400px] h-full  rounded-t-lg"
+              className="relative w-full max-w-[400px] h-full  rounded-t-[8px]"
               style={{
                 background: `url(${data.image_url}) center / cover`,
               }}
@@ -36,8 +36,8 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate }) =>
             </div>
           </Link>
         </div>
-        <div className="w-full h-full">
-          <div className="w-full h-full px-3">
+        <div className="w-full h-full pt-[16px] px-[12px]">
+          <div className="w-full h-full">
             <div className="flex flex-col justify-between w-full h-full">
               <Link href={`/content/${data.slug}`}>
                 <h1 className="font-[700] text-[24px]">{data.title}</h1>
