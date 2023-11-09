@@ -13,7 +13,7 @@ import { UserDimensionResultResponse } from "@/types/Dimension";
 import { UserProfileResponse } from "@/types/Profile";
 import { getUserInfo } from "@/utils/auth";
 import { cn } from "@/utils/cn";
-import { Box, Flex, Grid, Heading, Section, Tabs } from "@radix-ui/themes";
+import { Box, Flex, Grid, Heading, Section, Tabs, Tooltip } from "@radix-ui/themes";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -226,9 +226,11 @@ const Profile: React.FC = () => {
                                 <Flex justify="start" align="start" gap="2">
                                   <div className="w-[12px] h-[12px] mt-[5px] rounded-sm bg-primary" />
                                   <Flex className="w-[calc(100%-12px)]" direction="column" align="start">
-                                    <Text size="3" weight="bold">
-                                      {each.short_name}
-                                    </Text>
+                                    <Tooltip content={each.name}>
+                                      <Text size="3" weight="bold">
+                                        {each.short_name}
+                                      </Text>
+                                    </Tooltip>
                                     <Text>{each.skill_body}</Text>
                                   </Flex>
                                 </Flex>
@@ -289,7 +291,7 @@ const Profile: React.FC = () => {
                         <Heading as="h6" size="4" align="left" mb="4">
                           Job Experience
                         </Heading>
-                        {!userProfile?.experiences?.length ? (
+                        {userProfile?.experiences?.length ? (
                           userProfile?.experiences?.map((each, key) => (
                             <Flex
                               key={key}
@@ -345,7 +347,7 @@ const Profile: React.FC = () => {
                         <Heading as="h6" size="4" align="left" mb="4">
                           Education
                         </Heading>
-                        {!userProfile?.educations?.length ? (
+                        {userProfile?.educations?.length ? (
                           userProfile?.educations?.map((each, key) => (
                             <Flex
                               key={key}
