@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/Button";
 import { getToken, getUserInfo } from "@/utils/auth";
 import { useRouter } from "next/navigation";
 import ContentLayout from "./components/ContentLayout";
+import ContentStart from "./components/ContentStart";
 import Onboarding from "./components/Onboarding";
 import Video from "./components/Video";
 
@@ -50,6 +51,7 @@ const UserContent = () => {
 
   const router = useRouter();
   const [ispending, startTransition] = useTransition();
+  const showStart = localStorage.getItem("content");
 
   useEffect(() => {
     if (containerRef.current) {
@@ -131,8 +133,6 @@ const UserContent = () => {
     }
   };
 
-  console.log(contentDataArray);
-
   const differentContent = (data: ContentData, index: number) => {
     if (data?.type === "video" && data.content_video)
       return <Video data={data} setVideoRef={handleVideoRef(index)} autoplay={index === 0} contentMutate={mutate} />;
@@ -150,16 +150,17 @@ const UserContent = () => {
         >
           {contentDataArray &&
             contentDataArray.length > 0 &&
-            contentDataArray.map((data: ContentData, index) => (
+            contentDataArray.map((data: ContentData, index: number) => (
               <div
                 className="w-full h-full pt-2 snap-start"
                 style={{ scrollSnapStop: "always" }}
                 id={index.toString()}
                 key={index}
               >
-                {data && differentContent(data, index)}
+                {showStart !== "1" && <ContentStart index={visibleItemIndex} />}
+                {data && differentContent(data, visibleItemIndex)}
 
-                {index == 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
+                {index === 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
                 {contentDataArray &&
                   contentDataArray.length > 0 &&
                   contentDataArray[visibleItemIndex] &&
