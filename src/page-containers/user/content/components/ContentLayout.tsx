@@ -1,7 +1,7 @@
+import ReactionBar from "@/components/contentLayout/ReactionBar";
 import { Button } from "@/components/ui/Button";
 import CardBox from "@/components/ui/Card";
 import { Text } from "@/components/ui/Typo/Text";
-import ReactionBar from "@/page-containers/admin/content/ReactionBar";
 import { ContentData } from "@/types/Content";
 
 import Link from "next/link";

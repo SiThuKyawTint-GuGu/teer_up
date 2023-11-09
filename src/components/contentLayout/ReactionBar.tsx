@@ -4,7 +4,7 @@ import { Icons } from "@/components/ui/Images";
 import { useLikeContent, useSaveContent } from "@/services/content";
 import { ContentData } from "@/types/Content";
 import React, { useEffect, useState } from "react";
-import Share from "./Share";
+import Share from "../../page-containers/admin/content/Share";
 type ReactionBarProp = {
   data: ContentData;
   contentMutate: any;
@@ -39,12 +39,7 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate }) => {
       setReacion(prev => ({ ...prev, ["likes"]: prev.likes + 1, ["is_like"]: true }));
     }
 
-    await like(
-      { id: data.id }
-      // {
-      //   onSuccess: () => contentMutate(),
-      // }
-    );
+    await like({ id: data.id });
   };
 
   const saveContent = async () => {
@@ -54,14 +49,9 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate }) => {
     if (!reaction.is_save) {
       setReacion(prev => ({ ...prev, ["saves"]: prev.saves + 1, ["is_save"]: true }));
     }
-    await contentSave(
-      {
-        id: data.id,
-      }
-      // {
-      //   onSuccess: () => contentMutate(),
-      // }
-    );
+    await contentSave({
+      id: data.id,
+    });
   };
   return (
     <div className="w-full py-2 px-1">

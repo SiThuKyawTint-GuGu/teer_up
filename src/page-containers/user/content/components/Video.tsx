@@ -1,7 +1,7 @@
 "use client";
 
+import ReactionBar from "@/components/contentLayout/ReactionBar";
 import CardBox from "@/components/ui/Card";
-import ReactionBar from "@/page-containers/admin/content/ReactionBar";
 import { ContentData } from "@/types/Content";
 
 import { useEffect, useRef, useState } from "react";
