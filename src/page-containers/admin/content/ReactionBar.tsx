@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons } from "@/components/ui/Images";
 import { useLikeContent, useSaveContent } from "@/services/content";
 import { ContentData } from "@/types/Content";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Share from "./Share";
 type ReactionBarProp = {
   data: ContentData;
@@ -14,6 +14,18 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate }) => {
   const [openShare, setOpenShare] = useState<boolean>(false);
   const { trigger: like } = useLikeContent();
   const { trigger: contentSave } = useSaveContent();
+  const [likes, setLikes] = useState({
+    like: 0,
+    is_like: false,
+  });
+  const [saveds, setSaveds] = useState({
+    saves: 0,
+    is_save: false,
+  });
+
+  useEffect(() => {
+    setLikes(prev => ({ ...prev, ["saves"]: data.saves, ["is_save"]: data.is_saved }));
+  }, [data.likes, data.saves]);
   const likePost = async () => {
     await like(
       { id: data.id },
