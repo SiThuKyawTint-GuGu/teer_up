@@ -29,7 +29,7 @@ const IndustryPage = () => {
   };
 
   console.log(selectData);
-  const industry = useMemo(() => data?.data, [data]);
+
   const publicIndustry = useMemo(() => data?.data.published, [data]);
   const unpublicIndustry = useMemo(() => data?.data.unpublished, [data]);
   console.log(publicIndustry);
@@ -57,7 +57,7 @@ const IndustryPage = () => {
             nextPage="/department"
             title="Which industry are you most interested in?"
             layout
-            subTitle="select one or more industry"
+            subTitle="Pick 1 or more industry"
           >
             <Flex direction="column" className=" w-full h-full overflow-y-auto gap-y-3">
               <div className="grid grid-cols-2 gap-3  no-scrollbar  grid-flow-row">
@@ -82,9 +82,9 @@ const IndustryPage = () => {
 
               <Text className="font-bold text-[18px]">Coming Soon</Text>
               <div className="grid grid-cols-2 gap-3   no-scrollbar  grid-flow-row">
-                {publicIndustry &&
-                  publicIndustry.length > 0 &&
-                  publicIndustry.map((each: IndustryData, index: number) => (
+                {unpublicIndustry &&
+                  unpublicIndustry.length > 0 &&
+                  unpublicIndustry.map((each: IndustryData, index: number) => (
                     <div
                       key={index}
                       className={`flex justify-center items-center w-full h-[104px]  overflow-hidden p-3 border-[1px]

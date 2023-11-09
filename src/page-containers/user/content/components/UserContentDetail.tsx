@@ -24,11 +24,18 @@ const UserContentDetail: React.FC<ContentlayoutProps> = () => {
   const contentData: ContentData = useMemo(() => data?.data, [data]);
 
   const getContentDetail = () => {
-    if (contentData?.type === "article" || contentData?.type === "event" || contentData?.type === "opportunity")
+    if (
+      (contentData && contentData?.type === "article") ||
+      contentData?.type === "event" ||
+      contentData?.type === "opportunity"
+    )
       return <NormalContentDetail data={contentData} contentMutate={contentMutate} />;
-    if (contentData?.type === "video") return <VideoDetail data={contentData} contentMutate={contentMutate} />;
-    if (contentData?.type === "pathway") return <PathwayDetail data={contentData} contentMutate={contentMutate} />;
-    if (contentData?.type === "mentor") return <MentorDetail data={contentData} contentMutate={contentMutate} />;
+    if (contentData && contentData?.type === "video")
+      return <VideoDetail data={contentData} contentMutate={contentMutate} />;
+    if (contentData && contentData?.type === "pathway")
+      return <PathwayDetail data={contentData} contentMutate={contentMutate} />;
+    if (contentData && contentData?.type === "mentor")
+      return <MentorDetail data={contentData} contentMutate={contentMutate} />;
   };
   return (
     <Grid columns="1">
