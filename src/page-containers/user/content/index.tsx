@@ -66,7 +66,7 @@ const UserContent = () => {
                 const endTime = Date.now();
                 const timeInMilliseconds = endTime - startTime;
                 const totalTime = Math.floor((totalTimeInView + timeInMilliseconds) / 1000);
-                console.log(totalTime);
+
                 if (totalTime > 5) {
                   contentDataArray.splice(visibleItemIndex + 2, 0, onBoardArray[onBoardingIndex]);
                   setOnBoardingIndex(prev => prev + 1);
@@ -136,7 +136,7 @@ const UserContent = () => {
     if (data?.type === "onboarding") return <Onboarding data={data} parentIndex={index.toString()} />;
     return <ContentLayout data={data} contentMutate={mutate} />;
   };
-  console.log(skip);
+
   return (
     <>
       <div className="w-full h-[calc(100vh-92px)] pt-[32px]">
