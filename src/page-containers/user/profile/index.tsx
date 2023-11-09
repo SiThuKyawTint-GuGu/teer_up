@@ -56,7 +56,7 @@ const Profile: React.FC = () => {
 
   const handleRetakeAssessment = async () => {
     await resetScores();
-    await startTransition(() => router.push("/"));
+    await startTransition(() => router.push("/home"));
   };
 
   return (

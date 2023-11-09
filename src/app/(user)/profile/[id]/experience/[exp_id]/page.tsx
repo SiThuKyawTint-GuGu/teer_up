@@ -1,8 +1,8 @@
-import EditEducation from "@/page-containers/user/profile/EditEducation";
+import EditExperience from "@/page-containers/user/profile/experience/edit";
 import { NextPage } from "next";
 
 const EducationEditPage: NextPage = () => {
-  return <EditEducation />;
+  return <EditExperience />;
 };
 
 export default EducationEditPage;
