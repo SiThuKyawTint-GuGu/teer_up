@@ -54,7 +54,7 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate }) => {
     });
   };
   return (
-    <div className="w-full py-2 px-1">
+    <div className="w-full py-2">
       <div className="flex justify-between items-center">
         <button className="flex items-center flex-wrap gap-x-[10px]" onClick={likePost}>
           {reaction.is_like ? (
