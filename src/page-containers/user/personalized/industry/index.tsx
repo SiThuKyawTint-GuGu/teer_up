@@ -23,6 +23,8 @@ const IndustryPage = () => {
       return [...prev, data];
     });
   };
+
+  console.log(selectData);
   const industry = useMemo(() => data?.data, [data]);
 
   const submitHandler = () => {
@@ -50,7 +52,7 @@ const IndustryPage = () => {
             layout
             subTitle="select one or more industry"
           >
-            <div className="grid grid-cols-2 gap-3 overflow-y-scroll no-scrollbar h-full grid-flow-row">
+            <div className="grid grid-cols-2 gap-3 overflow-y-auto bg-primary no-scrollbar h-full grid-flow-row">
               {industry &&
                 industry.length > 0 &&
                 industry.map((each: IndustryData, index: number) => (
