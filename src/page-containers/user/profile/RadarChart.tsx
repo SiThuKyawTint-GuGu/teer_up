@@ -19,9 +19,9 @@ const RadarChart: React.FC = () => {
   }, [scoreData]);
 
   console.log(skillScores);
-  // const centainityScores = useMemo(() => {
-  //   if (scoreData && scoreData.length > 0) return scoreData.map((each: UserScores) => each.certainty);
-  // }, [scoreData]);
+  const centainityScores = useMemo(() => {
+    if (scoreData && scoreData.length > 0) return scoreData.map((each: UserScores) => each.certainty);
+  }, [scoreData]);
 
   const data = {
     labels: label,
@@ -35,7 +35,7 @@ const RadarChart: React.FC = () => {
         pointBorderColor: "#fff",
         pointHoverBackgroundColor: "#fff",
         pointHoverBorderColor: "rgba(255,0,0,1)",
-        data: skillScores,
+        data: userScores,
       },
 
       // {
@@ -52,14 +52,22 @@ const RadarChart: React.FC = () => {
   };
 
   const options = {
+    maintainAspectRatio: true,
     scales: {
       r: {
         pointLabels: {
           display: true, // Hides the labels around the radar chart
         },
         ticks: {
-          display: false, // Hides the labels in the middel (numbers)
+          display: true, // Hides the labels in the middel (numbers)
         },
+      },
+    },
+    scale: {
+      ticks: {
+        min: 0, // Minimum value for the scale
+        max: 100, // Maximum value for the scale
+        stepSize: 100, // Interval between ticks
       },
     },
   };
