@@ -32,7 +32,7 @@ const Consent: React.FC = () => {
       </Box>
       <Box>
         <Section py="4" px="3">
-          <Box className="bg-white space-y-4 max-h-[600px] rounded-md overflow-y-scroll">
+          <Box className="space-y-4">
             <Heading as="h5" className="text-black text-2xl font-semibold">
               Consent
             </Heading>
