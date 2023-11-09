@@ -31,7 +31,6 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate }) => {
     }));
   }, [data]);
 
-  console.log(reaction);
   const likePost = async () => {
     if (reaction.is_like) {
       setReacion(prev => ({ ...prev, ["likes"]: prev.likes - 1, ["is_like"]: false }));
@@ -73,7 +72,7 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate }) => {
           ) : (
             <Icons.like className="w-[20px] h-[20px]" />
           )}
-          <div>
+          <div className={reaction.is_like ? "text-primary" : ""}>
             {""}
             {reaction.likes}
           </div>
@@ -102,7 +101,7 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate }) => {
             <Icons.saved className="w-[20px] h-[20px]" />
           )}
 
-          <div>
+          <div className={reaction.is_save ? "text-primary" : ""}>
             {""}
             {reaction.saves}
           </div>
