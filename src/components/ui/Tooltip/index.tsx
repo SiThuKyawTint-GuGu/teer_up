@@ -15,7 +15,7 @@ export const Tooltip: React.FC<Props> = ({ children, content, render, open }: Pr
     <Ariakit.TooltipProvider open={open}>
       <Ariakit.TooltipAnchor render={render}>{children}</Ariakit.TooltipAnchor>
       <Ariakit.Tooltip className={cn("max-w-[320px] mr-4 text-white bg-[#656565] p-1 rounded-md")}>
-        <div>{content}</div>
+        {content}
       </Ariakit.Tooltip>
     </Ariakit.TooltipProvider>
   );

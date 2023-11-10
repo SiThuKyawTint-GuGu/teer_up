@@ -52,32 +52,50 @@ const CareerInterests: React.FC = () => {
           </div>
         </div>
 
-        <Box className="pb-[7px]">
+        <Box className="mb-[56px]">
           <Section className="bg-white" py="4" px="3">
             <Flex justify="center" align="center" className="mb-[25px]">
               {/* <InputSearch placeholder="Search Interests" /> */}
               <InputSearch onChange={debouncedOnChange} ref={inputRef} placeholder="Search Interests" />
             </Flex>
-            {/* @ts-ignore TODO - 1 */}
-            {industryData?.data?.published?.map((each, key) => {
-              const isChecked = industries?.find(industry => industry.industry_id === each?.id);
+            <div className="space-y-4">
+              {industryData?.data?.published?.map((each, key) => {
+                const isChecked = industries?.find(industry => industry.industry_id === each?.id);
 
-              return (
-                <Label key={key} className="block mb-[25px]">
-                  <Flex justify="between" align="start">
-                    <Flex direction="column" gap="2">
-                      <Text as="label" weight="regular" size="3">
-                        {each.name}
-                      </Text>
+                return (
+                  <Label key={key} className="block mb-[15px] asd">
+                    <Flex justify="between" align="start">
+                      <Flex direction="column" gap="2">
+                        <Text as="label" weight="regular" size="3">
+                          {each.name}
+                        </Text>
+                      </Flex>
+                      <Checkbox
+                        defaultChecked={isChecked && true}
+                        onCheckedChange={(checked: boolean) => handleCheckedChange(checked, each?.id)}
+                      />
                     </Flex>
-                    <Checkbox
-                      defaultChecked={isChecked && true}
-                      onCheckedChange={(checked: boolean) => handleCheckedChange(checked, each?.id)}
-                    />
-                  </Flex>
-                </Label>
-              );
-            })}
+                  </Label>
+                );
+              })}
+              <Text size="3" weight="bold">
+                Coming Soon
+              </Text>
+              {industryData?.data?.unpublished?.map((each, key) => {
+                return (
+                  <Label key={key} className="block mb-[15px] asd">
+                    <Flex justify="between" align="start">
+                      <Flex direction="column" gap="2">
+                        <Text as="label" weight="regular" size="3" className="text-[#909090]">
+                          {each.name}
+                        </Text>
+                      </Flex>
+                      <Checkbox disabled />
+                    </Flex>
+                  </Label>
+                );
+              })}
+            </div>
           </Section>
         </Box>
       </Grid>
