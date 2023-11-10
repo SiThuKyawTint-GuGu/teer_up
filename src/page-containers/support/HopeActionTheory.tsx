@@ -37,7 +37,7 @@ const HopeActionTheory: React.FC = () => {
       </Box>
       <Box>
         <Section py="4" px="3">
-          <Heading mb="6">Hope Action Theory</Heading>
+          <Heading mb="3">Hope Action Theory</Heading>
           <Box className="space-y-10">
             <Box className="space-y-4">
               <Text className="text-sm">
@@ -73,7 +73,7 @@ const HopeActionTheory: React.FC = () => {
       </Box>
       <Box>
         <Section py="4" px="3">
-          <Heading mb="6">Career Construction Theory</Heading>
+          <Heading mb="3">Career Construction Theory</Heading>
           <Box className="space-y-10">
             <Box className="space-y-4">
               <Text className="text-sm">
