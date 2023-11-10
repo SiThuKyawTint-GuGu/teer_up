@@ -51,11 +51,11 @@ const Questions: React.FC = () => {
         enableEditing: false,
       },
       {
-        accessorKey: "type",
+        accessorKey: "question_type",
         header: "Type",
         enableEditing: false,
         size: 2,
-        Cell: ({ row }: any) => <p>{row.original.type === "skill" ? "Onboarding" : "Feedback"}</p>,
+        Cell: ({ row }: any) => <p>{row.original.question_type === "skill" ? "Onboarding" : "Feedback"}</p>,
       },
       {
         accessorKey: "created_at",
