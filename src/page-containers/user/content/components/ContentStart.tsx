@@ -11,7 +11,7 @@ import React from "react";
 type ContentStartProp = {};
 const ContentStart: React.FC<ContentStartProp> = () => {
   return (
-    <div className="w-full h-full px-[16px] snap-start">
+    <div className="w-full h-[90%] px-[16px] snap-start">
       <Flex justify="center" direction="column" align="center" className="w-full h-full">
         <Heading className="text-[36px] font-[700] leading-[48px]">
           Empower your path with personalized resources

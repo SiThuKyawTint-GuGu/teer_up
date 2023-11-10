@@ -35,9 +35,16 @@ interface FileArgType {
     handleProgress?: any;
   };
 }
-export const useGetContentInfinite = <ParamsType>(params?: ParamsType): SWRInfiniteResponse<ContentType> => {
-  const getKey = () => `/content?${routeFilter(params)}`;
-  return useSWRInfinite<ContentType>(getKey, {
+
+export const useGetContentInfinite = <ParamsType>(params?: ParamsType): SWRInfiniteResponse<any> => {
+  const getKey = (pageIndex: number, previousPageData: any) => {
+    // Use the previous page data to determine if this is the first request
+    if (previousPageData) return null;
+
+    // Return the API endpoint with the page index
+    return `/content?${routeFilter(params)}`;
+  };
+  return useSWRInfinite<any>(getKey, {
     revalidateFirstPage: true,
     revalidateAll: true,
     revalidateIfStale: true,
