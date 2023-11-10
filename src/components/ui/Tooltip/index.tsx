@@ -1,17 +1,21 @@
 "use client";
-
 import "@/styles/tooltip.css";
+import { cn } from "@/utils/cn";
 import * as Ariakit from "@ariakit/react";
-import * as React from "react";
+import { PropsWithChildren } from "react";
 
-const Tooltip = React.forwardRef(({ ...props }, ref) => (
-  <Ariakit.TooltipProvider>
-    <Ariakit.TooltipAnchor className="link" render={<a href="https://ariakit.org/components/tooltip" />}>
-      Tooltip
-    </Ariakit.TooltipAnchor>
-    <Ariakit.Tooltip className="">https://ariakit.org/components/tooltip</Ariakit.Tooltip>
-  </Ariakit.TooltipProvider>
-));
-Tooltip.displayName = "Tooltip";
+interface Props extends PropsWithChildren {
+  content: string;
+  render?: JSX.Element;
+}
 
-export { Tooltip };
+export const Tooltip: React.FC<Props> = ({ children, content, render }: Props) => {
+  return (
+    <Ariakit.TooltipProvider>
+      <Ariakit.TooltipAnchor render={render}>{children}</Ariakit.TooltipAnchor>
+      <Ariakit.Tooltip className={cn("max-w-[320px] mr-4 text-white bg-[#656565] p-1 rounded-md")}>
+        {content}
+      </Ariakit.Tooltip>
+    </Ariakit.TooltipProvider>
+  );
+};
