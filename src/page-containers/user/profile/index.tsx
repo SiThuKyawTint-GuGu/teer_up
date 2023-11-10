@@ -11,6 +11,7 @@ import { ON_BOARDING_SKIP, useGetUserById, useResetScores, useUpdateUserOnboardi
 import { PROFILE_TRIGGER } from "@/shared/enums";
 import { UserDimensionResultResponse } from "@/types/Dimension";
 import { UserProfileResponse } from "@/types/Profile";
+import { setLocalStorage } from "@/utils";
 import { getUserInfo } from "@/utils/auth";
 import { cn } from "@/utils/cn";
 import { Box, Flex, Grid, Heading, Section, Tabs, Tooltip } from "@radix-ui/themes";
@@ -55,8 +56,9 @@ const Profile: React.FC = () => {
   };
 
   const handleRetakeAssessment = async () => {
+    setLocalStorage("content", 0);
     await resetScores();
-    await startTransition(() => router.push("/home"));
+    startTransition(() => router.push("/home"));
   };
 
   return (
