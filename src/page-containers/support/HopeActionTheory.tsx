@@ -26,7 +26,7 @@ const HopeActionTheory: React.FC = () => {
               </Button>
 
               <Text size="3" weight="medium">
-                Underlying Theory
+                Underlying Theories
               </Text>
               <Link href="/" className="opacity-0">
                 <Icons.plus className="text-primary w-[23px] h-[23px]" />
