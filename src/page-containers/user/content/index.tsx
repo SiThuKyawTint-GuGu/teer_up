@@ -44,7 +44,7 @@ const UserContent = () => {
     mutate,
     size,
     setSize,
-  } = useSWRInfinite(index => `/content?page=${page}&pagesize=${4}`, fetcher, {
+  } = useSWRInfinite(index => `/content?page=${index + 1}&pagesize=${4}`, fetcher, {
     revalidateFirstPage: true,
     revalidateAll: true,
     revalidateIfStale: true,
@@ -59,7 +59,7 @@ const UserContent = () => {
   const isEmpty = mmlData?.[0]?.length === 0;
   const isReachingEnd = isEmpty || (mmlData && mmlData[mmlData.length - 1]?.length < 4);
   console.log(isReachingEnd);
-  console.log("size", size);
+
   useEffect(() => {
     if (containerRef.current) {
       const container = containerRef.current;
@@ -72,7 +72,7 @@ const UserContent = () => {
         if (container.scrollHeight - scrollPosition - container.clientHeight === 0) {
           console.log(visibleItemIndex);
           setPage(page + 1);
-          // setSize(size + 1);
+          setSize(s => s + 1);
         }
 
         if (newIndex !== visibleItemIndex) {
