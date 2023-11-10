@@ -3,8 +3,8 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons } from "@/components/ui/Images";
 import { useLikeContent, useSaveContent } from "@/services/content";
 import { ContentData } from "@/types/Content";
-import React, { useState } from "react";
-import Share from "./Share";
+import React, { useEffect, useState } from "react";
+import Share from "../../page-containers/admin/content/Share";
 type ReactionBarProp = {
   data: ContentData;
   contentMutate: any;
@@ -14,37 +14,57 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate }) => {
   const [openShare, setOpenShare] = useState<boolean>(false);
   const { trigger: like } = useLikeContent();
   const { trigger: contentSave } = useSaveContent();
+  const [reaction, setReacion] = useState({
+    likes: 0,
+    is_like: false,
+    saves: 0,
+    is_save: false,
+  });
+
+  useEffect(() => {
+    setReacion(prev => ({
+      ...prev,
+      ["saves"]: data.saves,
+      ["is_save"]: data.is_saved,
+      ["likes"]: data.likes,
+      ["is_like"]: data.is_liked,
+    }));
+  }, [data]);
+
   const likePost = async () => {
-    await like(
-      { id: data.id },
-      {
-        onSuccess: () => contentMutate(),
-      }
-    );
+    if (reaction.is_like) {
+      setReacion(prev => ({ ...prev, ["likes"]: prev.likes - 1, ["is_like"]: false }));
+    }
+    if (!reaction.is_like) {
+      setReacion(prev => ({ ...prev, ["likes"]: prev.likes + 1, ["is_like"]: true }));
+    }
+
+    await like({ id: data.id });
   };
 
   const saveContent = async () => {
-    await contentSave(
-      {
-        id: data.id,
-      },
-      {
-        onSuccess: () => contentMutate(),
-      }
-    );
+    if (reaction.is_save) {
+      setReacion(prev => ({ ...prev, ["saves"]: prev.saves - 1, ["is_save"]: false }));
+    }
+    if (!reaction.is_save) {
+      setReacion(prev => ({ ...prev, ["saves"]: prev.saves + 1, ["is_save"]: true }));
+    }
+    await contentSave({
+      id: data.id,
+    });
   };
   return (
-    <div className="w-full py-2 px-1">
+    <div className="w-full py-2">
       <div className="flex justify-between items-center">
         <button className="flex items-center flex-wrap gap-x-[10px]" onClick={likePost}>
-          {data.is_liked ? (
+          {reaction.is_like ? (
             <Icons.likefill className="w-[20px] h-[20px] text-primary" />
           ) : (
             <Icons.like className="w-[20px] h-[20px]" />
           )}
-          <div>
+          <div className={reaction.is_like ? "text-primary" : ""}>
             {""}
-            {data.likes}
+            {reaction.likes}
           </div>
         </button>
         <Dialog open={openComment} onOpenChange={val => setOpenComment(val)}>
@@ -65,15 +85,15 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate }) => {
         </Dialog>
 
         <button className="flex items-center flex-wrap gap-x-[10px]" onClick={saveContent}>
-          {data.is_saved ? (
+          {reaction.is_save ? (
             <Icons.savedFill className="w-[20px] h-[20px] text-primary" />
           ) : (
             <Icons.saved className="w-[20px] h-[20px]" />
           )}
 
-          <div>
+          <div className={reaction.is_save ? "text-primary" : ""}>
             {""}
-            {data.saves}
+            {reaction.saves}
           </div>
         </button>
         <Dialog open={openShare} onOpenChange={val => setOpenShare(val)}>

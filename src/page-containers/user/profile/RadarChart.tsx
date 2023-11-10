@@ -12,12 +12,12 @@ const RadarChart: React.FC = () => {
 
   const scoreData = useMemo(() => userScores?.data, [userScores]);
 
-  const label = useMemo(() => {
-    if (scoreData && scoreData.length > 0) return scoreData.map((each: UserScores) => each.dimension.short_name);
-  }, [scoreData]);
+  const label = scoreData && scoreData.length > 0 && scoreData.map((each: UserScores) => each.dimension.short_name);
+
   const skillScores = useMemo(() => {
     if (scoreData && scoreData.length > 0) return scoreData.map((each: UserScores) => each.skill);
   }, [scoreData]);
+
   // const centainityScores = useMemo(() => {
   //   if (scoreData && scoreData.length > 0) return scoreData.map((each: UserScores) => each.certainty);
   // }, [scoreData]);
@@ -51,6 +51,7 @@ const RadarChart: React.FC = () => {
   };
 
   const options = {
+    maintainAspectRatio: true,
     scales: {
       r: {
         pointLabels: {
@@ -59,6 +60,13 @@ const RadarChart: React.FC = () => {
         ticks: {
           display: false, // Hides the labels in the middel (numbers)
         },
+      },
+    },
+    scale: {
+      ticks: {
+        min: 0, // Minimum value for the scale
+        max: 100, // Maximum value for the scale
+        stepSize: 100, // Interval between ticks
       },
     },
   };

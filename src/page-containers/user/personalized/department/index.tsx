@@ -47,9 +47,9 @@ const DepartmentPage = () => {
         <div className="w-full h-full">
           <QuestionPageCard
             nextPage="/home"
-            title="Which career field are you in?"
+            title="Which career field are you most interested in??"
             layout
-            subTitle="select one or more industry"
+            subTitle="Pick 1 or more fields"
           >
             <div className="grid grid-cols-2 gap-3 max-h-full overflow-y-scroll no-scrollbar grid-flow-row">
               {industry &&

@@ -9,7 +9,7 @@ const Login: React.FC = () => {
   return (
     <div className="grid grid-cols-2 h-[100vh]">
       <div className="bg-[#FFF] h-full flex flex-col justify-center items-center">
-        <Image src="/teeUpLogo.svg" width={381} height={166} alt="main logo" />
+        <Image src="/auth/teeUpLogo.svg" width={381} height={166} alt="main logo" />
         {/* <Image src="/loginVector.png" style={{ width: "100%" }} width={650} height={298} alt="login vector" /> */}
       </div>
       <Flex justify="center" height="100%" className="bg-gray-200">

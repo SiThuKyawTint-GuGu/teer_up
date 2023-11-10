@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/Button";
 import { getToken, getUserInfo } from "@/utils/auth";
 import { useRouter } from "next/navigation";
 import ContentLayout from "./components/ContentLayout";
+import ContentStart from "./components/ContentStart";
 import Onboarding from "./components/Onboarding";
 import Video from "./components/Video";
 
@@ -34,7 +35,7 @@ const UserContent = () => {
 
   const { data: onboarding } = useGetOnboardingQuestions({
     page: onBoardPage,
-    pagesize: 20,
+    pagesize: 1,
   });
 
   const { trigger: skipOnboarding } = useSkipOnboarding();
@@ -46,9 +47,11 @@ const UserContent = () => {
   const onBoardArray: ContentData[] = onboarding?.data;
   const { data: status } = useGetOnboardingStatus();
   const skip = status?.data.skip;
+  const complete = status?.data.completed;
 
   const router = useRouter();
   const [ispending, startTransition] = useTransition();
+  const showStart = localStorage.getItem("content");
 
   useEffect(() => {
     if (containerRef.current) {
@@ -66,10 +69,10 @@ const UserContent = () => {
                 const endTime = Date.now();
                 const timeInMilliseconds = endTime - startTime;
                 const totalTime = Math.floor((totalTimeInView + timeInMilliseconds) / 1000);
-                console.log(totalTime);
-                if (totalTime > 5) {
-                  contentDataArray.splice(visibleItemIndex + 2, 0, onBoardArray[onBoardingIndex]);
-                  setOnBoardingIndex(prev => prev + 1);
+
+                if (totalTime > 30 && onBoardArray.length > 0) {
+                  contentDataArray.splice(visibleItemIndex + 2, 1, onBoardArray[0]);
+                  setOnboardPage(prev => prev + 1);
                 }
 
                 calculateCount({
@@ -136,27 +139,28 @@ const UserContent = () => {
     if (data?.type === "onboarding") return <Onboarding data={data} parentIndex={index.toString()} />;
     return <ContentLayout data={data} contentMutate={mutate} />;
   };
-  console.log(skip);
+
   return (
     <>
       <div className="w-full h-[calc(100vh-92px)] pt-[32px]">
         <div
           ref={containerRef}
-          className={`snap-y flex-col snap-mandatory h-full px-2   w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
+          className={`snap-y flex-col snap-mandatory h-full px-[16px]   w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
           style={{ scrollSnapStop: "always" }}
         >
           {contentDataArray &&
             contentDataArray.length > 0 &&
-            contentDataArray.map((data: ContentData, index) => (
+            contentDataArray.map((data: ContentData, index: number) => (
               <div
                 className="w-full h-full pt-2 snap-start"
                 style={{ scrollSnapStop: "always" }}
                 id={index.toString()}
                 key={index}
               >
-                {data && differentContent(data, index)}
+                {showStart !== "1" && <ContentStart index={visibleItemIndex} />}
+                {data && differentContent(data, visibleItemIndex)}
 
-                {index == 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
+                {index === 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
                 {contentDataArray &&
                   contentDataArray.length > 0 &&
                   contentDataArray[visibleItemIndex] &&

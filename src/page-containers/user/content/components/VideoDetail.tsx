@@ -22,7 +22,7 @@ const VideoDetail: React.FC<VideoDetailProp> = ({ data, contentMutate }) => {
                     className="w-full h-full object-cover"
                     id="myVideo"
                     poster={
-                      data.content_video.thumbnail ||
+                      data.image_url ||
                       "https://teeup-dev.s3.ap-southeast-1.amazonaws.com/1697257229853-125476757-demoimage1.jpeg"
                     }
                     preload="none"
