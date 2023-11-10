@@ -72,7 +72,7 @@ const UserContent = () => {
         if (container.scrollHeight - scrollPosition - container.clientHeight === 0) {
           console.log(visibleItemIndex);
           setPage(page + 1);
-          setSize(size + 1);
+          // setSize(size + 1);
         }
 
         if (newIndex !== visibleItemIndex) {
