@@ -103,7 +103,7 @@ const Questions: React.FC = () => {
       },
     },
     manualPagination: true,
-    rowCount: questionData?.total,
+    rowCount: questions?.total,
     initialState: {
       pagination: {
         pageSize: 10,
