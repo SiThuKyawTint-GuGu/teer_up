@@ -142,7 +142,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
     if ((data && data.content_article) || data.content_event || data.content_opportunity) {
       return <ContentLayout data={data} contentMutate={contentMutate} />;
     }
-    return <div>Data must be null</div>;
+    return <div className="w-full h-full justify-center items-center">Data must be null</div>;
   };
 
   return (
