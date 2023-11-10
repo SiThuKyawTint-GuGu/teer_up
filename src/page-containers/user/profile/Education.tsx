@@ -37,9 +37,9 @@ const Education: React.FC = () => {
                 <Flex justify="between" align="start">
                   <Flex direction="column" gap="2">
                     <Text as="label" weight="bold" size="3">
-                      {each.school_name}
+                      {each.degree}
                     </Text>
-                    <Text>{each.degree}</Text>
+                    <Text>{each.school_name}</Text>
                   </Flex>
                   <Link href={`/profile/${id}/education/${each.id}`}>
                     <Image src="/uploads/icons/pencil.svg" width={20} height={20} alt="pencil" />

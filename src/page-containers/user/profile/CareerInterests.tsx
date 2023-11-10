@@ -43,7 +43,7 @@ const CareerInterests: React.FC = () => {
                 <Icons.back className="text-[#373A36] w-[23px] h-[23px]" />
               </Link>
               <Text size="3" weight="medium">
-                Career Interests
+                Industry interests
               </Text>
               <Link href="/" className="opacity-0">
                 <Icons.plus className="text-primary w-[23px] h-[23px]" />

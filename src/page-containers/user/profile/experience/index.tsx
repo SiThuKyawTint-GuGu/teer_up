@@ -39,7 +39,7 @@ const Experience: React.FC = () => {
                     <Text as="label" weight="bold" size="3">
                       {each.position}
                     </Text>
-                    <Text>{each.company}</Text>
+                    <Text size="2">{each.company}</Text>
                   </Flex>
                   <Link href={`/profile/${id}/experience/${each.id}`}>
                     <Image src="/uploads/icons/pencil.svg" width={20} height={20} alt="pencil" />
