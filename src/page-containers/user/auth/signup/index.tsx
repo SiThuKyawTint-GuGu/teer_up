@@ -127,7 +127,7 @@ const SignUp = () => {
                     name="country"
                     render={({ field }) => {
                       const result = field.value
-                        ? countries?.data?.filter(item => item.name.includes(field.value))
+                        ? countries?.data?.filter(item => item.name.toLowerCase().includes(field.value.toLowerCase()))
                         : countries?.data;
 
                       return (

@@ -37,8 +37,6 @@ const Department: React.FC = () => {
     each.name.toLowerCase().includes(searchValue.toLowerCase())
   );
 
-  console.log(filteredDepartments);
-
   return (
     <>
       <Grid columns="1">
