@@ -125,30 +125,36 @@ const SignUp = () => {
                   <FormField
                     control={form.control}
                     name="country"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Autocomplete
-                            className={cn(
-                              "bg-white shadow-md",
-                              form.formState.errors.country && "border-2 border-primary focus:outline-0"
-                            )}
-                            placeholder="Select your country"
-                            {...field}
-                          >
-                            {countries?.data?.length ? (
-                              countries?.data?.map((each, key) => (
-                                <Item key={key} value={each?.name}>
-                                  {each?.name}
-                                </Item>
-                              ))
-                            ) : (
-                              <Item value="">No country found!</Item>
-                            )}
-                          </Autocomplete>
-                        </FormControl>
-                      </FormItem>
-                    )}
+                    render={({ field }) => {
+                      const result = field.value
+                        ? countries?.data?.filter(item => item.name.includes(field.value))
+                        : countries?.data;
+
+                      return (
+                        <FormItem>
+                          <FormControl>
+                            <Autocomplete
+                              className={cn(
+                                "bg-white shadow-md",
+                                form.formState.errors.country && "border-2 border-primary focus:outline-0"
+                              )}
+                              placeholder="Select your country"
+                              {...field}
+                            >
+                              {result?.length ? (
+                                result?.map((each, key) => (
+                                  <Item key={key} value={each?.name}>
+                                    {each?.name}
+                                  </Item>
+                                ))
+                              ) : (
+                                <Item value="">No country found!</Item>
+                              )}
+                            </Autocomplete>
+                          </FormControl>
+                        </FormItem>
+                      );
+                    }}
                   />
 
                   <Flex width="100%" gap="1" my="5">
