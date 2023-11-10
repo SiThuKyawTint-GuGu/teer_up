@@ -35,6 +35,10 @@ const Profile: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [viewImage, setViewImage] = useState<boolean>(false);
   const [triggerType, setTriggerType] = useState<PROFILE_TRIGGER>();
+  const [touched, setTouched] = useState<{
+    key: number;
+    open: boolean;
+  }>();
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const user = getUserInfo();
@@ -58,6 +62,13 @@ const Profile: React.FC = () => {
   const handleRetakeAssessment = async () => {
     await resetScores();
     await startTransition(() => router.push("/home"));
+  };
+
+  const handleTouchedTooltip = (key: number) => {
+    setTouched({
+      key,
+      open: !touched,
+    });
   };
 
   return (
@@ -222,37 +233,33 @@ const Profile: React.FC = () => {
                         </Heading>
                         {userDimensionData?.data?.length && (
                           <>
-                            {userDimensionData?.data?.map((each, key) => (
-                              <Box key={key} className="bg-[#F8F9FB] rounded-[8px] space-y-4" mb="4" p="3">
-                                <Flex justify="start" align="start" gap="2">
-                                  <div className="w-[12px] h-[12px] mt-[5px] rounded-sm bg-primary" />
-                                  <Flex className="w-[calc(100%-12px)]" direction="column" align="start">
-                                    <Flex justify="start" align="center" gap="2">
-                                      <Text size="3" weight="bold">
-                                        {each.short_name}
-                                      </Text>
-                                      <Tooltip content={each.name}>
-                                        <Icons.info />
-                                      </Tooltip>
-                                      {/* <Tooltip>
-                                        <TooltipTrigger>
-                                          <Icons.info />
-                                        </TooltipTrigger>
-                                        <TooltipContent className="w-max-[400px]">{each.name}</TooltipContent>
-                                      </Tooltip> */}
+                            {userDimensionData?.data?.map((each, key) => {
+                              return (
+                                <Box key={key} className="bg-[#F8F9FB] rounded-[8px] space-y-4" mb="4" p="3">
+                                  <Flex justify="start" align="start" gap="2">
+                                    <div className="w-[12px] h-[12px] mt-[5px] rounded-sm bg-primary" />
+                                    <Flex className="w-[calc(100%-12px)]" direction="column" align="start">
+                                      <Flex justify="start" align="center" gap="2">
+                                        <Text size="3" weight="bold">
+                                          {each.short_name}
+                                        </Text>
+                                        <Tooltip content={each.name} open={key === touched?.key}>
+                                          <Icons.info onClick={() => handleTouchedTooltip(key)} />
+                                        </Tooltip>
+                                      </Flex>
+                                      <Text>{each.skill_body}</Text>
                                     </Flex>
-                                    <Text>{each.skill_body}</Text>
                                   </Flex>
-                                </Flex>
-                                {each?.content?.id && (
-                                  <Flex width="100%">
-                                    <Link className="w-full" href={`/content/${each?.content?.slug}`}>
-                                      <Button className="w-full">I&#39;m ready to drive in the explore</Button>
-                                    </Link>
-                                  </Flex>
-                                )}
-                              </Box>
-                            ))}
+                                  {each?.content?.id && (
+                                    <Flex width="100%">
+                                      <Link className="w-full" href={`/content/${each?.content?.slug}`}>
+                                        <Button className="w-full">I&#39;m ready to dive in the explore</Button>
+                                      </Link>
+                                    </Flex>
+                                  )}
+                                </Box>
+                              );
+                            })}
                           </>
                         )}
                       </Section>
