@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 import { Button } from "@/components/ui/Button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
+import { Dialog, DialogClose, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form";
 import { Icons, Image } from "@/components/ui/Images";
 import { InputText } from "@/components/ui/Inputs";
@@ -125,30 +125,36 @@ const SignUp = () => {
                   <FormField
                     control={form.control}
                     name="country"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Autocomplete
-                            className={cn(
-                              "bg-white shadow-md",
-                              form.formState.errors.country && "border-2 border-primary focus:outline-0"
-                            )}
-                            placeholder="Select your country"
-                            {...field}
-                          >
-                            {countries?.data?.length ? (
-                              countries?.data?.map((each, key) => (
-                                <Item key={key} value={each?.name}>
-                                  {each?.name}
-                                </Item>
-                              ))
-                            ) : (
-                              <Item value="">No country found!</Item>
-                            )}
-                          </Autocomplete>
-                        </FormControl>
-                      </FormItem>
-                    )}
+                    render={({ field }) => {
+                      const result = field.value
+                        ? countries?.data?.filter(item => item.name.toLowerCase().includes(field.value.toLowerCase()))
+                        : countries?.data;
+
+                      return (
+                        <FormItem>
+                          <FormControl>
+                            <Autocomplete
+                              className={cn(
+                                "bg-white shadow-md",
+                                form.formState.errors.country && "border-2 border-primary focus:outline-0"
+                              )}
+                              placeholder="Select your country"
+                              {...field}
+                            >
+                              {result?.length ? (
+                                result?.map((each, key) => (
+                                  <Item key={key} value={each?.name}>
+                                    {each?.name}
+                                  </Item>
+                                ))
+                              ) : (
+                                <Item value="">No country found!</Item>
+                              )}
+                            </Autocomplete>
+                          </FormControl>
+                        </FormItem>
+                      );
+                    }}
                   />
 
                   <Flex width="100%" gap="1" my="5">
@@ -184,7 +190,7 @@ const SignUp = () => {
           </Flex>
         </Box>
       </Grid>
-      <DialogContent closeStyles="top-8 right-8" className="shadow-none">
+      <DialogContent isClose={false} closeStyles="top-8 right-8" className="shadow-none">
         <Box className="bg-white p-6 space-y-4 max-h-[600px] rounded-md overflow-y-scroll">
           <Heading as="h5" className="text-black text-2xl font-semibold">
             Consent
@@ -223,6 +229,11 @@ const SignUp = () => {
             on how I may access and correct my personal data or withdraw consent to the collection, use or disclosure of
             my personal data.
           </Text>
+          <Flex justify="center">
+            <DialogClose>
+              <Button className="w-[120px]">Close</Button>
+            </DialogClose>
+          </Flex>
         </Box>
       </DialogContent>
     </Dialog>

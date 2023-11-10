@@ -24,7 +24,6 @@ import { ContentCategoryResponse } from "@/types/ContentCategory";
 import { DepartmentResponse } from "@/types/Department";
 import { DimensionResponse } from "@/types/Dimension";
 import { FormConfigResponse } from "@/types/Formconfig";
-import { IndustryResponse } from "@/types/Industry";
 import { KeywordResponse } from "@/types/Keyword";
 import { UserResponse } from "@/types/User";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -83,7 +82,7 @@ const ContentDetail = ({ id }: Props) => {
   });
   const { data: keywords } = useGetKeywords<KeywordResponse>();
   const { data: departments } = useGetDepartment<DepartmentResponse>();
-  const { data: industries } = useGetIndustry<IndustryResponse>();
+  const { data: industries } = useGetIndustry<any>();
   const { data: userData } = useGetUsers<UserParamsType, UserResponse>({
     page: 1,
     pageSize: 10,

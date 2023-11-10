@@ -9,21 +9,29 @@ import { useGetUserById, useUpdateProfileIndustry } from "@/services/user";
 import { IndustryResponse } from "@/types/Industry";
 import { UserProfileResponse } from "@/types/Profile";
 import { Box, Flex, Grid, Section } from "@radix-ui/themes";
+import { debounce } from "lodash";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { useRef, useState } from "react";
 
 const CareerInterests: React.FC = () => {
+  const [searchValue, setSearchValue] = useState<string>("");
   const { id } = useParams();
   const { data: profileData } = useGetUserById<UserProfileResponse>(id as string);
-  const { data: industryData } = useGetIndustry<IndustryResponse>();
+  const { data: industryData } = useGetIndustry<IndustryResponse>(searchValue);
   const { trigger: updateTrigger } = useUpdateProfileIndustry();
   const industries = profileData?.data?.industries;
+  const inputRef = useRef<any>(null);
 
   const handleCheckedChange = (checked: boolean, industry_id: number) => {
     updateTrigger({
       industry_id,
     });
   };
+
+  const debouncedOnChange = debounce(() => {
+    setSearchValue(inputRef?.current?.value);
+  }, 500);
 
   return (
     <>
@@ -47,9 +55,11 @@ const CareerInterests: React.FC = () => {
         <Box className="pb-[7px]">
           <Section className="bg-white" py="4" px="3">
             <Flex justify="center" align="center" className="mb-[25px]">
-              <InputSearch placeholder="Search Interests" />
+              {/* <InputSearch placeholder="Search Interests" /> */}
+              <InputSearch onChange={debouncedOnChange} ref={inputRef} placeholder="Search Interests" />
             </Flex>
-            {industryData?.data?.map((each, key) => {
+            {/* @ts-ignore TODO - 1 */}
+            {industryData?.data?.published?.map((each, key) => {
               const isChecked = industries?.find(industry => industry.industry_id === each?.id);
 
               return (

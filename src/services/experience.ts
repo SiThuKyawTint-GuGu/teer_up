@@ -19,8 +19,8 @@ export const useGetUserExperiences = <ExperienceParamsType, ExperienceResponse>(
   return useSWR<ExperienceResponse>(`/user/profile/experiences?${routeFilter(params)}`);
 };
 
-export const useGetEducationById = <EducationResponse>(id: string): SWRResponse<EducationResponse, any> => {
-  return useSWR<EducationResponse>(`/user/profile/educations/${id}`);
+export const useGetExperienceById = <ExperienceResponse>(id: string): SWRResponse<ExperienceResponse, any> => {
+  return useSWR<ExperienceResponse>(`/user/profile/experiences/${id}`);
 };
 
 interface CreateUserReqType {
@@ -38,21 +38,16 @@ export const useCreateExperiences = () =>
 
 interface UpdateUserResType {
   arg: {
-    educationId: string;
-    school_name: string;
-    degree: string;
+    exp_id: string;
+    company: string;
+    position: string;
     start_date: string;
     end_date: string;
   };
 }
-export const useUpdateEducation = () =>
-  useSWRMutation(`/user/profile/educations`, (url, { arg }: UpdateUserResType) => {
-    return appAxios.put<UpdateUserResType>(`${url}/${arg.educationId}`, {
-      school_name: arg?.school_name,
-      degree: arg?.degree,
-      start_date: arg?.start_date,
-      end_date: arg?.end_date,
-    });
+export const useUpdateExperience = () =>
+  useSWRMutation(`/user/profile/experiences`, (url, { arg }: UpdateUserResType) => {
+    return appAxios.put<UpdateUserResType>(`${url}/${arg.exp_id}`, arg);
   });
 
 export const useDeleteEducation = () =>
