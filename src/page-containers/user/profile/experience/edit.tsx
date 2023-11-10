@@ -5,9 +5,10 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form";
 import { Icons } from "@/components/ui/Images";
 import { InputText } from "@/components/ui/Inputs";
 import { Text } from "@/components/ui/Typo/Text";
-import { useDeleteEducation, useGetEducationById, useUpdateEducation } from "@/services/education";
+import { useDeleteEducation } from "@/services/education";
+import { useGetExperienceById, useUpdateExperience } from "@/services/experience";
 import { USER_ROLE } from "@/shared/enums";
-import { EducationById } from "@/types/Education";
+import { ExperienceById } from "@/types/Experience";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
@@ -19,56 +20,58 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 const validationSchema = yup.object({
-  school_name: yup.string().required("School is required!"),
-  degree: yup.string().required("Degree is required!"),
+  company: yup.string().required("School is required!"),
+  position: yup.string().required("Degree is required!"),
   start_date: yup.date().required("Start date is required!").typeError("Invalid date"),
   end_date: yup.date().required("End date is required!").typeError("Invalid date"),
 });
 
-const EditEducation: React.FC = () => {
-  const { id, edu_id } = useParams();
+const EditExperience: React.FC = () => {
+  const { id, exp_id } = useParams();
   const router = useRouter();
-  const { data: educationData } = useGetEducationById<EducationById>(edu_id as string);
-  const { trigger, isMutating } = useUpdateEducation();
+  const { data: experience } = useGetExperienceById<ExperienceById>(exp_id as string);
+  const { trigger, isMutating } = useUpdateExperience();
   const { trigger: deleteTrigger, isMutating: deleteMutating } = useDeleteEducation();
 
   const form = useForm({
     resolver: yupResolver(validationSchema),
     defaultValues: {
-      school_name: educationData?.data?.school_name,
-      degree: educationData?.data?.degree,
+      company: experience?.data?.company,
+      position: experience?.data?.position,
     },
   });
 
-  const submit = async (data: { school_name: string; degree: string; start_date: any; end_date: any }) => {
+  const submit = async (data: { company: string; position: string; start_date: any; end_date: any }) => {
     const newData = {
       ...data,
-      educationId: edu_id as string,
+      exp_id,
       start_date: dayjs(data.start_date).format("YYYY-MM-DD"),
       end_date: dayjs(data.end_date).format("YYYY-MM-DD"),
     };
-    await trigger(newData, {
-      onSuccess: () => {
-        router.push(`/profile/${id}/education`);
-      },
-    });
+    // await trigger(newData, {
+    //   onSuccess: () => {
+    //     router.push(`/profile/${id}/experience`);
+    //   },
+    // });
   };
 
-  const handleDelete = async () => {
-    await deleteTrigger(
-      { edu_id: edu_id as string },
-      {
-        onSuccess: () => {
-          router.push(`/profile/${id}/education`);
-        },
-      }
-    );
-  };
+  // const handleDelete = async () => {
+  //   await deleteTrigger(
+  //     { edu_id: edu_id as string },
+  //     {
+  //       onSuccess: () => {
+  //         router.push(`/profile/${id}/education`);
+  //       },
+  //     }
+  //   );
+  // };
 
   useEffect(() => {
-    form.setValue("school_name", educationData?.data?.school_name || "");
-    form.setValue("degree", educationData?.data?.degree || "");
-  }, [form, educationData?.data]);
+    form.setValue("company", experience?.data?.company || "");
+    form.setValue("position", experience?.data?.position || "");
+  }, [form, experience?.data]);
+
+  console.log("exp => ", experience);
 
   return (
     <>
@@ -80,7 +83,7 @@ const EditEducation: React.FC = () => {
                 <Icons.back className="text-[#373A36] w-[23px] h-[23px]" />
               </Link>
               <Text size="3" weight="medium">
-                Edit Education
+                Add Education
               </Text>
               <Link href={`/profile/${id}/education/create`} className="opacity-0">
                 <Icons.plus className="text-primary w-[23px] h-[23px]" />
@@ -89,20 +92,15 @@ const EditEducation: React.FC = () => {
             <Box className="pb-[7px]">
               <Section className="bg-white" py="4" px="3">
                 <Heading as="h6" size="2" weight="medium" align="left" mb="2">
-                  School
+                  Company
                 </Heading>
                 <FormField
                   control={form.control}
-                  name="school_name"
+                  name="company"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <InputText
-                          type="text"
-                          inputType={USER_ROLE.STUDENT}
-                          placeholder="Ex: Boston University"
-                          {...field}
-                        />
+                        <InputText type="text" inputType={USER_ROLE.STUDENT} placeholder="Company Name" {...field} />
                       </FormControl>
                     </FormItem>
                   )}
@@ -113,20 +111,15 @@ const EditEducation: React.FC = () => {
             <Box className="pb-[7px]">
               <Section className="bg-white" py="4" px="3">
                 <Heading as="h6" size="2" weight="medium" align="left" mb="2">
-                  Degree
+                  Position
                 </Heading>
                 <FormField
                   control={form.control}
-                  name="degree"
+                  name="position"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <InputText
-                          type="text"
-                          inputType={USER_ROLE.STUDENT}
-                          placeholder="Ex: Bachelor, Diploma"
-                          {...field}
-                        />
+                        <InputText type="text" inputType={USER_ROLE.STUDENT} placeholder="Position" {...field} />
                       </FormControl>
                     </FormItem>
                   )}
@@ -198,7 +191,7 @@ const EditEducation: React.FC = () => {
                 <Button
                   type="button"
                   loading={deleteMutating}
-                  onClick={handleDelete}
+                  // onClick={handleDelete}
                   variant="outline"
                   className="border-primary w-full"
                 >
@@ -213,4 +206,4 @@ const EditEducation: React.FC = () => {
   );
 };
 
-export default EditEducation;
+export default EditExperience;

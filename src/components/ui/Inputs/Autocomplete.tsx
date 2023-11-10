@@ -44,6 +44,7 @@ const Autocomplete = React.forwardRef<
           ref={ref}
           placeholder={placeholder}
           className={cn("w-full h-10 rounded-md px-4 font-light outline-0", className)}
+          // setValueOnChange={e => console.log(e.value)}
         />
         <Button variant="ghost" className="absolute top-1 right-1 h-8 w-8">
           <Icons.downArrow />
