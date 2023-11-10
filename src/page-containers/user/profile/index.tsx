@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/Button";
 import CardBox from "@/components/ui/Card";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons, Image } from "@/components/ui/Images";
+import { Tooltip } from "@/components/ui/Tooltip";
 import { Text } from "@/components/ui/Typo/Text";
 import { useGetUserDimensionResult } from "@/services/dimension";
 import { ON_BOARDING_SKIP, useGetUserById, useResetScores, useUpdateUserOnboardingStatus } from "@/services/user";
@@ -14,7 +15,7 @@ import { UserProfileResponse } from "@/types/Profile";
 import { setLocalStorage } from "@/utils";
 import { getUserInfo } from "@/utils/auth";
 import { cn } from "@/utils/cn";
-import { Box, Flex, Grid, Heading, Section, Tabs, Tooltip } from "@radix-ui/themes";
+import { Box, Flex, Grid, Heading, Section, Tabs } from "@radix-ui/themes";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -230,7 +231,7 @@ const Profile: React.FC = () => {
                     <CardBox>
                       <Section className="bg-white" py="4" px="3">
                         <Heading as="h6" size="4" align="left" mb="4">
-                          Here’s what we noticed about you
+                          Here&#39;s what we noticed about you
                         </Heading>
                         {userDimensionData?.data?.length && (
                           <>
@@ -239,11 +240,20 @@ const Profile: React.FC = () => {
                                 <Flex justify="start" align="start" gap="2">
                                   <div className="w-[12px] h-[12px] mt-[5px] rounded-sm bg-primary" />
                                   <Flex className="w-[calc(100%-12px)]" direction="column" align="start">
-                                    <Tooltip content={each.name}>
+                                    <Flex justify="start" align="center" gap="2">
                                       <Text size="3" weight="bold">
                                         {each.short_name}
                                       </Text>
-                                    </Tooltip>
+                                      <Tooltip content={each.name}>
+                                        <Icons.info />
+                                      </Tooltip>
+                                      {/* <Tooltip>
+                                        <TooltipTrigger>
+                                          <Icons.info />
+                                        </TooltipTrigger>
+                                        <TooltipContent className="w-max-[400px]">{each.name}</TooltipContent>
+                                      </Tooltip> */}
+                                    </Flex>
                                     <Text>{each.skill_body}</Text>
                                   </Flex>
                                 </Flex>
