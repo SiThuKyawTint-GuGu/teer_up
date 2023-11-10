@@ -10,6 +10,7 @@ import { Icons, Image } from "@/components/ui/Images";
 import Modal from "@/components/ui/Modal";
 import { Text } from "@/components/ui/Typo/Text";
 import { useOtpVerified } from "@/services/user";
+import { setLocalStorage } from "@/utils";
 import { AUTH_TYPE, getToken, JWT_DECODE, setUserInfo } from "@/utils/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Flex, Grid, Heading } from "@radix-ui/themes";
@@ -51,6 +52,9 @@ const Otp = () => {
             router.push("/home");
             return;
           }
+
+          setLocalStorage("content", 0);
+
           router.push("/industry");
         });
       },
