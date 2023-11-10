@@ -127,7 +127,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
       return (
         <div
           id={data.slug}
-          className="w-full h-[90%] overflow-y-scroll no-scrollbar rounded-lg px-2 bg-white shadow-lg"
+          className="w-full h-[90%] z-[10] overflow-y-scroll no-scrollbar rounded-lg px-2 bg-white shadow-lg"
         >
           <div className="p-2">
             <div
