@@ -227,7 +227,7 @@ const ProfileEdit: React.FC = () => {
                           <Text as="label" weight="bold" size="3">
                             {each?.position}
                           </Text>
-                          <Text size="1">{each?.company}</Text>
+                          <Text size="2">{each?.company}</Text>
                         </Flex>
                         <Flex justify="end" align="center" gap="1">
                           <Text size="2" weight="light">
@@ -270,9 +270,9 @@ const ProfileEdit: React.FC = () => {
                       >
                         <Flex direction="column" gap="2">
                           <Text as="label" weight="bold" size="3">
-                            {each.school_name}
+                            {each.degree}
                           </Text>
-                          <Text size="1">{each.degree}</Text>
+                          <Text size="1">{each.school_name}</Text>
                         </Flex>
                         <Flex justify="end" align="center" gap="1">
                           <Text size="2" weight="light">
