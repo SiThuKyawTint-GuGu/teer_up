@@ -8,7 +8,7 @@ import { Icons, Image } from "@/components/ui/Images";
 import { Tooltip } from "@/components/ui/Tooltip";
 import { Text } from "@/components/ui/Typo/Text";
 import { useGetUserDimensionResult } from "@/services/dimension";
-import { ON_BOARDING_SKIP, useGetUserById, useResetScores, useUpdateUserOnboardingStatus } from "@/services/user";
+import { useGetUserById, useResetScores, useUpdateUserOnboardingStatus } from "@/services/user";
 import { PROFILE_TRIGGER } from "@/shared/enums";
 import { UserDimensionResultResponse } from "@/types/Dimension";
 import { UserProfileResponse } from "@/types/Profile";
@@ -48,7 +48,7 @@ const Profile: React.FC = () => {
 
   const handleContinueAssessment = async () => {
     await onBoardingStatus(
-      { skip: ON_BOARDING_SKIP.SKIP },
+      { in_progress: true },
       {
         onSuccess: () => {
           mutate(
