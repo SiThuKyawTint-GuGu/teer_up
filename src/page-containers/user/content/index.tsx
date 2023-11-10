@@ -144,7 +144,6 @@ const UserContent = () => {
           className={`snap-y flex-col snap-mandatory h-full px-[16px]  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
           style={{ scrollSnapStop: "always" }}
         >
-          {/* <InfiniteScroll datadataLength={contentDataArray.length} next={setPage(prev => prev + 1)} hasMore={true}> */}
           {showStart === 0 && token && <ContentStart />}
           {contentDataArray &&
             contentDataArray.length > 0 &&
@@ -187,7 +186,6 @@ const UserContent = () => {
                   )}
               </div>
             ))}
-          {/* </InfiniteScroll> */}
         </div>
       </div>
     </>

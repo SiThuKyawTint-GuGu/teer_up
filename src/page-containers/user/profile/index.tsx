@@ -19,6 +19,7 @@ import dayjs from "dayjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
+import { mutate } from "swr";
 import RadarChart from "./RadarChart";
 
 const profileTrigger = {
@@ -49,6 +50,11 @@ const Profile: React.FC = () => {
       { skip: ON_BOARDING_SKIP.SKIP },
       {
         onSuccess: () => {
+          mutate(
+            () => true, // which cache keys are updated
+            undefined, // update cache data to `undefined`
+            { revalidate: true } // do not revalidate
+          );
           router.push(`/home`);
         },
       }
@@ -57,6 +63,11 @@ const Profile: React.FC = () => {
 
   const handleRetakeAssessment = async () => {
     setLocalStorage("content", 0);
+    mutate(
+      () => true, // which cache keys are updated
+      undefined, // update cache data to `undefined`
+      { revalidate: true } // do not revalidate
+    );
     await resetScores();
     startTransition(() => router.push("/home"));
   };

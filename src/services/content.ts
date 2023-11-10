@@ -38,11 +38,11 @@ interface FileArgType {
 export const useGetContentInfinite = <ParamsType>(params?: ParamsType): SWRInfiniteResponse<ContentType> => {
   const getKey = () => `/content?${routeFilter(params)}`;
   return useSWRInfinite<ContentType>(getKey, {
-    revalidateFirstPage: false,
-    revalidateAll: false,
-    revalidateIfStale: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
+    revalidateFirstPage: true,
+    revalidateAll: true,
+    revalidateIfStale: true,
+    revalidateOnFocus: true,
+    revalidateOnReconnect: true,
     parallel: true,
   });
 };
