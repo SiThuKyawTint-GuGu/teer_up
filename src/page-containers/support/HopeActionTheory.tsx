@@ -13,7 +13,6 @@ const HopeActionTheory: React.FC = () => {
   const router = useRouter();
   const [, startTransition] = useTransition();
   const { data: userDimensionData } = useGetUserDimensionResult<UserDimensionResultResponse>();
-
   console.log(userDimensionData);
 
   return (
@@ -27,7 +26,7 @@ const HopeActionTheory: React.FC = () => {
               </Button>
 
               <Text size="3" weight="medium">
-                Hope Action Theory
+                Underlying Theories
               </Text>
               <Link href="/" className="opacity-0">
                 <Icons.plus className="text-primary w-[23px] h-[23px]" />
@@ -38,7 +37,7 @@ const HopeActionTheory: React.FC = () => {
       </Box>
       <Box>
         <Section py="4" px="3">
-          <Heading mb="6">Hope Action Theory</Heading>
+          <Heading mb="3">Hope Action Theory</Heading>
           <Box className="space-y-10">
             <Box className="space-y-4">
               <Text className="text-sm">
@@ -55,10 +54,42 @@ const HopeActionTheory: React.FC = () => {
             <Box>
               {userDimensionData?.data?.map((each, key) => (
                 <Flex key={key} direction="column" justify="start" className="mb-4">
-                  <Text weight="bold">{each.short_name}: </Text>
-                  <Text>{each.name}</Text>
+                  {/* <Text weight="bold">{each.short_name}: </Text> */}
+                  <Text>
+                    {each.name.includes(":") ? (
+                      <span>
+                        <strong>{each.name.split(":")[0]}:</strong>
+                        {each.name.split(":").slice(1).join(":")}
+                      </span>
+                    ) : (
+                      each.name
+                    )}
+                  </Text>
                 </Flex>
               ))}
+            </Box>
+          </Box>
+        </Section>
+      </Box>
+      <Box>
+        <Section py="4" px="3">
+          <Heading mb="3">Career Construction Theory</Heading>
+          <Box className="space-y-10">
+            <Box className="space-y-4">
+              <Text className="text-sm">
+                Career Construction Theory (CCT) is a comprehensive theory of vocational choice and adjustment that
+                addresses the What, How, and Why of a career decision. It provides a means of integrating three
+                viewpoints of vocational behavior:
+              </Text>
+              <Text className="text-sm">
+                <strong>What:</strong> The psychology of individual differences
+              </Text>
+              <Text className="text-sm">
+                <strong>How:</strong> The psychology of development
+              </Text>
+              <Text className="text-sm">
+                <strong>Why:</strong> Narrative psychology
+              </Text>
             </Box>
           </Box>
         </Section>

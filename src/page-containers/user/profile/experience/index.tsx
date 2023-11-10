@@ -37,9 +37,9 @@ const Experience: React.FC = () => {
                 <Flex justify="between" align="start">
                   <Flex direction="column" gap="2">
                     <Text as="label" weight="bold" size="3">
-                      {each.company}
+                      {each.position}
                     </Text>
-                    <Text>{each.position}</Text>
+                    <Text size="2">{each.company}</Text>
                   </Flex>
                   <Link href={`/profile/${id}/experience/${each.id}`}>
                     <Image src="/uploads/icons/pencil.svg" width={20} height={20} alt="pencil" />

@@ -11,6 +11,7 @@ import { ON_BOARDING_SKIP, useGetUserById, useResetScores, useUpdateUserOnboardi
 import { PROFILE_TRIGGER } from "@/shared/enums";
 import { UserDimensionResultResponse } from "@/types/Dimension";
 import { UserProfileResponse } from "@/types/Profile";
+import { setLocalStorage } from "@/utils";
 import { getUserInfo } from "@/utils/auth";
 import { cn } from "@/utils/cn";
 import { Box, Flex, Grid, Heading, Section, Tabs, Tooltip } from "@radix-ui/themes";
@@ -18,6 +19,7 @@ import dayjs from "dayjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
+import { mutate } from "swr";
 import RadarChart from "./RadarChart";
 
 const profileTrigger = {
@@ -48,6 +50,11 @@ const Profile: React.FC = () => {
       { skip: ON_BOARDING_SKIP.SKIP },
       {
         onSuccess: () => {
+          mutate(
+            () => true, // which cache keys are updated
+            undefined, // update cache data to `undefined`
+            { revalidate: true } // do not revalidate
+          );
           router.push(`/home`);
         },
       }
@@ -55,8 +62,14 @@ const Profile: React.FC = () => {
   };
 
   const handleRetakeAssessment = async () => {
+    setLocalStorage("content", 0);
+    mutate(
+      () => true, // which cache keys are updated
+      undefined, // update cache data to `undefined`
+      { revalidate: true } // do not revalidate
+    );
     await resetScores();
-    await startTransition(() => router.push("/"));
+    startTransition(() => router.push("/home"));
   };
 
   return (
@@ -307,10 +320,10 @@ const Profile: React.FC = () => {
                                 <Image src="/uploads/icons/experience.svg" width={32} height={32} alt="experience" />
                                 <Flex direction="column" gap="2">
                                   <Text as="label" weight="bold" size="3">
-                                    {each?.company}
+                                    {each?.position}
                                   </Text>
                                   <Text size="2" weight="light">
-                                    {each?.position}
+                                    {each?.company}
                                   </Text>
                                 </Flex>
                               </Flex>
