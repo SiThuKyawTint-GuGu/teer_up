@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   // fetch data
   const product = await fetch(`
-  https://teeup-dev-api.viabells.com/api/v1/content/slug/${slug}`).then(res => res.json());
+  ${process.env.NEXT_PUBLIC_API_URL}/api/v1/content/slug/${slug}`).then(res => res.json());
   // optionally access and extend (rather than replace) parent metadata
   const contentData: ContentData = product.data;
   return {
