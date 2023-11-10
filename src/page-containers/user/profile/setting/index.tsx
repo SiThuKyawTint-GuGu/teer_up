@@ -72,7 +72,7 @@ const Setting: React.FC = () => {
               <Link className="block" href="/support/hope-action-theory">
                 <Flex justify="between" align="start">
                   <Text as="label" weight="bold" size="3">
-                    Hope Action Theory
+                    Underlying Theory
                   </Text>
                   <Icons.caretRight className="w-[25px] h-[25px]" />
                 </Flex>

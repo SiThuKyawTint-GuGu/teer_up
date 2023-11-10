@@ -5,7 +5,7 @@ import { NextPage } from "next";
 const HopeActionTheoryPage: NextPage = () => {
   return (
     <MainPageLayout hideHeader hideFooter>
-      <HopeActionTheory />;
+      <HopeActionTheory />
     </MainPageLayout>
   );
 };
