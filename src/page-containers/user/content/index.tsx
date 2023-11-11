@@ -80,7 +80,7 @@ const UserContent = () => {
                 const timeInMilliseconds = endTime - startTime;
                 const totalTime = Math.floor((totalTimeInView + timeInMilliseconds) / 1000);
 
-                if (totalTime > 30 && onBoardArray.length > 0) {
+                if (totalTime > 30 && onBoardArray && onBoardArray.length > 0) {
                   contentDataArray.splice(visibleItemIndex + 2, 1, onBoardArray[0]);
                   setOnboardPage(prev => prev + 1);
                 }
