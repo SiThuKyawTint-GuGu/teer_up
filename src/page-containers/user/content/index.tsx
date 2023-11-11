@@ -18,7 +18,6 @@ import Video from "./components/Video";
 const UserContent = () => {
   const token = getToken();
 
-  const [page, setPage] = useState<number>(1);
   const [onBoardPage, setOnboardPage] = useState<number>(1);
   const videoRefs = useRef<HTMLVideoElement[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -42,7 +41,7 @@ const UserContent = () => {
   const {
     data: mmlData,
     mutate,
-    size,
+
     setSize,
   } = useSWRInfinite(index => `/content?page=${index + 1}&pagesize=${4}`, fetcher, {
     revalidateFirstPage: true,
@@ -56,9 +55,6 @@ const UserContent = () => {
 
   const contentDataArray: any = useMemo(() => issues?.flatMap((page: any) => page?.data) || [], [issues]);
   console.log(contentDataArray);
-  const isEmpty = mmlData?.[0]?.length === 0;
-  const isReachingEnd = isEmpty || (mmlData && mmlData[mmlData.length - 1]?.length < 4);
-  console.log(isReachingEnd);
 
   useEffect(() => {
     if (containerRef.current) {
@@ -68,10 +64,10 @@ const UserContent = () => {
         const newIndex = Math.round(scrollPosition / (window.innerHeight - 92));
         setStartTime(Date.now());
         setVisibleItemIndex(newIndex);
-        console.log(container.scrollHeight - scrollPosition - container.clientHeight);
+
         if (container.scrollHeight - scrollPosition - container.clientHeight === 0) {
           console.log(visibleItemIndex);
-          setPage(page + 1);
+
           setSize(s => s + 1);
         }
 
