@@ -1,6 +1,6 @@
 "use client";
 import appAxios from "@/lib/appAxios";
-import { CommentResponse, ContentType } from "@/types/Content";
+import { CommentResponse } from "@/types/Content";
 import { routeFilter } from "@/utils";
 import { getToken } from "@/utils/auth";
 import useSWR, { SWRResponse } from "swr";
@@ -54,16 +54,24 @@ export const useGetContentInfinite = <ParamsType>(params?: ParamsType): SWRInfin
   });
 };
 
-export const useGetBrowseInfinite = <ParamsType>(params?: ParamsType): SWRInfiniteResponse<ContentType> => {
-  const getKey = () => `/content/browse?${routeFilter(params)}`;
-  return useSWRInfinite<ContentType>(getKey, {
-    // revalidateFirstPage: false,
-    // revalidateAll: false,
-    // revalidateIfStale: false,
-    // revalidateOnFocus: false,
-    // revalidateOnReconnect: false,
-    parallel: true,
-  });
+export const useGetBrowseInfinite = ({
+  search,
+  type,
+}: {
+  search: string | null;
+  type: string;
+}): SWRInfiniteResponse => {
+  return useSWRInfinite(
+    (index: number) => `/content/browse?page=${index + 1}&type=${type}&pagesize=10&search=${search}`,
+    {
+      revalidateFirstPage: true,
+      revalidateAll: true,
+      revalidateIfStale: true,
+      revalidateOnFocus: true,
+      revalidateOnReconnect: true,
+      parallel: false,
+    }
+  );
 };
 
 export const useGetContent = <ParamsType, ContentType>(params?: ParamsType): SWRResponse<ContentType, any> => {
@@ -151,12 +159,15 @@ export const useSaveContent = () =>
 //   [data]
 // );
 
-export const useGetComment = <ParamsType>(id: number | string, params?: ParamsType): SWRInfiniteResponse => {
-  const getKey = () => `/content/${id}/comments?${routeFilter(params)}`;
+export const useGetComment = (id: number | string): SWRInfiniteResponse => {
+  const getKey = (index: number) => `/content/${id}/comments?cursor=${index}&pagesize=30`;
   return useSWRInfinite<CommentResponse>(getKey, {
-    revalidateFirstPage: false,
+    revalidateFirstPage: true,
     revalidateAll: true,
-    parallel: true,
+    revalidateIfStale: true,
+    revalidateOnFocus: true,
+    revalidateOnReconnect: true,
+    parallel: false,
   });
 };
 

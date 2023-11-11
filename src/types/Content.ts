@@ -1,3 +1,5 @@
+import { User } from "./User";
+
 export interface Pagination {
   current_page: number;
   last_page: number;
@@ -11,10 +13,7 @@ export interface ContentVideo {
   thumbnail: string;
   content_id: string;
 }
-export interface User {
-  name: string;
-  email: string;
-}
+
 export interface Input_config {
   id: number;
   input_options: Input_options[] | [];
@@ -172,11 +171,7 @@ export interface CommentData {
   parent_id: null;
   created_at: string;
   updated_at: string;
-  user: {
-    name: string;
-    id: string | number;
-    email: string;
-  };
+  user: User;
   replies: [];
 }
 export interface CommentResponse {
