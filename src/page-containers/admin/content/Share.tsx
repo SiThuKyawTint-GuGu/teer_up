@@ -9,7 +9,7 @@ const Share: React.FC<{ url: string }> = ({ url }) => {
   const domain: string = window.location.host;
   return (
     <div className="bg-white w-full px-4  pb-2 ">
-      <div className="bg-primary rounded-[6px] w-[60px] h-[2px] mx-auto" />
+      <div className="bg-primary  rounded-[6px]  w-[60px] h-[2px] mx-auto" />
       <Text className="text-[24px] font-[700]">Share To</Text>
       <Flex gap="5" className="py-[15px]">
         <Flex direction="column" align="center">
