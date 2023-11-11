@@ -21,6 +21,7 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, conte
           <div className="w-full mx-auto relative">
             {data.content_video ? (
               <div className="w-full h-[200px]">
+                {/* need to change cover to full screen fix-1 */}
                 <video
                   className="w-full h-full my-video"
                   poster={
@@ -44,7 +45,7 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, conte
                   }}
                 >
                   {data.type !== "video" && (
-                    <div className="absolute top-0 right-0 bg-white text-[14px] font-[600] px-[16px] py-[4px] tracking-[0.42px] rounded-bl-lg shadow-lg uppercase">
+                    <div className="absolute top-0 right-0 bg-white text-[14px] font-[600] px-[16px] py-[4px] tracking-[0.42px] rounded-bl-rounded-bl-[8px] shadow-lg uppercase">
                       {data.type}
                     </div>
                   )}
