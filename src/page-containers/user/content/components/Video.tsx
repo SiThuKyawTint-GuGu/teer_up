@@ -90,8 +90,9 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
         )}
 
         <div
-          className={`absolute flex flex-col items-baseline cursor-pointer w-full   bottom-0 px-3 py-3 z-[1] text-[20px] font-[600] ${
-            showDescription && "h-full bg-[rgba(0, 0, 0, 0.30)] overflow-scroll no-scrollbar"
+          className={`absolute flex flex-col items-baseline cursor-pointer w-full bottom-0 px-3 py-3 z-[1] text-[14px] font-[600] ${
+            showDescription &&
+            "h-full bg-[rgba(0,0,0,.5)] overflow-scroll no-scrollbar text-start items-end justify-end"
           }`}
         >
           {!showDescription && (

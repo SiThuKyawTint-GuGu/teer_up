@@ -2,11 +2,13 @@ import { Icons } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import { copyUrl } from "@/utils/helper";
 import { Flex } from "@radix-ui/themes";
-import React, { useState } from "react";
+import Link from "next/link";
+import React, { useMemo, useState } from "react";
 
 const Share: React.FC<{ url: string }> = ({ url }) => {
   const [copy, setCopy] = useState<boolean>(false);
   const domain: string = window.location.host;
+  const shareLink = useMemo(() => domain + url, [domain, url]);
   return (
     <div className="bg-white w-full px-4  pb-2 ">
       <div className="bg-primary  rounded-[6px]  w-[60px] h-[2px] mx-auto" />
@@ -15,9 +17,9 @@ const Share: React.FC<{ url: string }> = ({ url }) => {
         <Flex direction="column" align="center">
           <Flex
             justify="center"
-            className="bg-slateGray w-[40px] h-[40px] flex justify-center items-center rounded-full cursor-pointer"
+            className="bg-slateGray w-[40px] h-[40px] gap-3 flex justify-center items-center rounded-full cursor-pointer"
             onClick={() => {
-              copyUrl(domain + url);
+              copyUrl(shareLink);
               setCopy(true);
             }}
           >
@@ -32,10 +34,12 @@ const Share: React.FC<{ url: string }> = ({ url }) => {
           <Text as="div">Facebook</Text>
         </Flex> */}
 
-        {/* <Flex direction="column" align="center" className="curosr-pointer">
-          <Icons.telegram className="w-[40px] h-[40px] text-[#26a4e2]" />
-          <Text as="div">Telegram</Text>
-        </Flex> */}
+        <Flex direction="column" align="center" className="curosr-pointer">
+          <Link href={`https://t.me/share/url?url=${shareLink}`} target="_blank">
+            <Icons.telegram className="w-[40px] h-[40px] text-[#26a4e2]" />
+            <Text as="div">Telegram</Text>
+          </Link>
+        </Flex>
       </Flex>
       {copy && (
         <Text as="div" className="text-green-700 w-full text-center">
