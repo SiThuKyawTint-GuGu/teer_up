@@ -17,7 +17,7 @@ import { cn } from "@/utils/cn";
 import { Box, Flex, Grid, Heading, Section, Tabs } from "@radix-ui/themes";
 import dayjs from "dayjs";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState, useTransition } from "react";
 import { mutate } from "swr";
 import RadarChart from "./RadarChart";
@@ -44,7 +44,9 @@ const Profile: React.FC = () => {
   });
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+  const pathname = usePathname();
   const user = getUserInfo();
+  const { get } = useSearchParams();
   const { data: profileData } = useGetUserById<UserProfileResponse>(user?.id);
   const { data: userDimensionData } = useGetUserDimensionResult<UserDimensionResultResponse>();
   const { trigger: onBoardingStatus } = useUpdateUserOnboardingStatus();
@@ -78,14 +80,9 @@ const Profile: React.FC = () => {
     startTransition(() => router.push("/home"));
   };
 
-  const handleTouchedTooltip = (key: number) => {
-    setTouched({
-      key,
-      open: !touched,
-    });
+  const handleTabTrigger = (key: string) => {
+    router.push(`${pathname}?tab=${key}`);
   };
-
-  console.log(touched);
 
   return (
     <>
@@ -197,12 +194,20 @@ const Profile: React.FC = () => {
             </Box>
             <CardBox className="mb-[7px] rounded-none">
               <Section className="bg-white" pt="4" pb="0">
-                <Tabs.Root defaultValue="competency">
+                <Tabs.Root defaultValue={(get("tab") ? get("tab") : "competency") ?? ""}>
                   <Tabs.List className="space-x-[20px] px-3">
-                    <Tabs.Trigger className="tab-trigger" value="competency">
+                    <Tabs.Trigger
+                      onClick={() => handleTabTrigger("competency")}
+                      className="tab-trigger"
+                      value="competency"
+                    >
                       Hope Action Assessment
                     </Tabs.Trigger>
-                    <Tabs.Trigger className="tab-trigger" value="personalDetails">
+                    <Tabs.Trigger
+                      onClick={() => handleTabTrigger("personalDetails")}
+                      className="tab-trigger"
+                      value="personalDetails"
+                    >
                       Personal details
                     </Tabs.Trigger>
                   </Tabs.List>
