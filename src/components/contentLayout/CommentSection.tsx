@@ -11,9 +11,8 @@ import { Text } from "../ui/Typo/Text";
 type CommentSectionProp = {
   data: ContentData;
   mutateParentData: () => any;
-  total: number;
 };
-const CommentSection: React.FC<CommentSectionProp> = ({ data, mutateParentData, total }) => {
+const CommentSection: React.FC<CommentSectionProp> = ({ data, mutateParentData }) => {
   const { data: cmtsArray, mutate: mutateCmt, setSize } = useGetComment(data.id);
 
   const commentDataArray: any = useMemo(() => cmtsArray?.flatMap(page => page?.data) || [], [cmtsArray]);
