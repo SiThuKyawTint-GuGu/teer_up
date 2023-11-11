@@ -44,8 +44,8 @@ const BrowsePage = () => {
   console.log(visibleItemIndex);
 
   return (
-    <div className="relative w-full h-full pb-[60px]">
-      <Flex className="p-3 w-full sticky top-0 overflow-auto gap-[24px] no-scrollbar">
+    <div className="relative w-full h-full pb-[70px]">
+      <Flex className="p-3 w-full sticky top-0 overflow-auto gap-[24px] no-scrollbar bg-white">
         {BrowsePageHeader.map((data: HeaderType, index: number) => (
           <div
             key={index}
@@ -66,7 +66,7 @@ const BrowsePage = () => {
           </div>
         ))}
       </Flex>
-      <Flex direction="column" className="w-full h-full">
+      <Flex direction="column" className="w-full h-full pt-[10px]">
         <div className="w-full h-full overflow-y-scroll no-scrollbar" ref={containerRef}>
           {browseDataArray &&
             browseDataArray.length !== 0 &&
