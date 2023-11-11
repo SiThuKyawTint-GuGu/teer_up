@@ -14,7 +14,7 @@ const Share: React.FC<{ url: string }> = ({ url }) => {
       <div className="bg-primary  rounded-[6px]  w-[60px] h-[2px] mx-auto" />
       <Text className="text-[24px] font-[700]">Share To</Text>
       <Flex gap="5" className="py-[15px]">
-        <Flex direction="column" align="center">
+        <Flex direction="column" align="center" className=" cursor-pointer pe-[32px]">
           <Flex
             justify="center"
             className="bg-slateGray w-[40px] h-[40px] gap-3 flex justify-center items-center rounded-full cursor-pointer"
@@ -28,13 +28,15 @@ const Share: React.FC<{ url: string }> = ({ url }) => {
           <Text as="div">Copy Link</Text>
         </Flex>
 
-        {/* <Flex direction="column" align="center" className="cursor-pointer">
-          <Icons.facebook className="w-[40px] h-[40px] text-[#4167b2]" />
+        <Flex direction="column" align="center" className="cursor-pointer pe-[32px]">
+          <Link href={`https://www.facebook.com/sharer/sharer.php?u=${shareLink}`} target="_blank">
+            <Icons.facebook className="w-[40px] h-[40px] text-[#4167b2]" />
 
-          <Text as="div">Facebook</Text>
-        </Flex> */}
+            <Text as="div">Facebook</Text>
+          </Link>
+        </Flex>
 
-        <Flex direction="column" align="center" className="curosr-pointer">
+        <Flex direction="column" align="center" className="curosr-pointer pe-[32px]">
           <Link href={`https://t.me/share/url?url=${shareLink}`} target="_blank">
             <Icons.telegram className="w-[40px] h-[40px] text-[#26a4e2]" />
             <Text as="div">Telegram</Text>
