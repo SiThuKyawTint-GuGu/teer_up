@@ -11,7 +11,7 @@ import { cn } from "@/utils/cn";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 
 const profileTrigger = {
@@ -32,6 +32,7 @@ const ProfileEdit: React.FC = () => {
   const { trigger: uploadProfileTrigger } = useUploadProfile();
   const { trigger: uploadCoverTrigger } = useUploadCover();
   const userProfile = profileData?.data;
+  const router = useRouter();
 
   const handleUploadImage = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = await getFileFromEvent(event);
@@ -64,9 +65,9 @@ const ProfileEdit: React.FC = () => {
             <div className="mb-[45px]">
               <div className="max-w-[400px] fixed top-0 z-10 w-full shadow-[0px_1px_9px_0px_rgba(0,_0,_0,_0.06)]">
                 <Flex justify="between" align="center" className="bg-white" p="3">
-                  <Link href="/profile">
+                  <div onClick={() => router.back()}>
                     <Icons.back className="text-[#373A36] w-[23px] h-[23px]" />
-                  </Link>
+                  </div>
                   <Text size="3" weight="medium">
                     Edit Profile
                   </Text>
@@ -137,7 +138,7 @@ const ProfileEdit: React.FC = () => {
                 </div>
               </Section>
             </CardBox>
-            <CardBox className="pb-[7px]">
+            <CardBox className="pb-[7px] rounded-none">
               <Section className="bg-white" py="4" px="3">
                 <Flex justify="between" align="center" mb="4">
                   <Heading as="h6" size="4" align="left">
@@ -272,7 +273,7 @@ const ProfileEdit: React.FC = () => {
                           <Text as="label" weight="bold" size="3">
                             {each.degree}
                           </Text>
-                          <Text size="1">{each.school_name}</Text>
+                          <Text size="2">{each.school_name}</Text>
                         </Flex>
                         <Flex justify="end" align="center" gap="1">
                           <Text size="2" weight="light">

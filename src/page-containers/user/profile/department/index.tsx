@@ -39,7 +39,7 @@ const Department: React.FC = () => {
 
   return (
     <>
-      <Grid columns="1">
+      <Grid columns="1" className="">
         <div className="mb-[45px]">
           <div className="max-w-[400px] fixed top-0 z-10 w-full shadow-[0px_1px_9px_0px_rgba(0,_0,_0,_0.06)]">
             <Flex justify="between" align="center" className="bg-white" p="3">
@@ -56,7 +56,7 @@ const Department: React.FC = () => {
           </div>
         </div>
 
-        <Box className="pb-[7px]">
+        <Box className="pb-[7px] h-[100vh-56px] bg-white">
           <Section className="bg-white" py="4" px="3">
             <Flex justify="center" align="center" className="mb-[25px]">
               <InputSearch onChange={debouncedOnChange} ref={inputRef} placeholder="Search Interests" />
