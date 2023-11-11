@@ -16,6 +16,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger } from "../ui/Inputs/S
 import Modal from "../ui/Modal";
 import { Text } from "../ui/Typo/Text";
 import CmtInput from "./CmtInput";
+import SuccessFormPage from "./SuccessFormPage";
 
 type Props = {
   data: ContentData;
@@ -33,6 +34,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
   }, [data]);
   const [selectedOptions, setSelectedOptions] = useState<{ inputconfig_id: number | string; value: string }[] | []>([]);
   const [message, setMessage] = useState<string>("");
+  const [showSuccessPage, setShowSuccessPage] = useState<boolean>(false);
 
   const saveContent = async () => {
     await contentSave(
@@ -97,6 +99,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
           onSuccess: () => {
             setSelectedOptions([]);
             setMessage("Form submit Successfully");
+            setShowSuccessPage(true);
             setTimeout(() => {
               setOpenModal(false);
               setMessage("");
@@ -150,7 +153,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
       return (
         <Box className="pb-[7px]">
           <Section className="bg-white" py="1" px="3">
-            <CardBox className="px-[12px] py-[16px] shadow-theme flex justify-between items-center">
+            <CardBox className="px-[12px] py-[8px] flex justify-between items-center">
               <ReactDatePicker
                 selected={new Date()}
                 onChange={date => console.log(date)}
@@ -251,81 +254,87 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
   };
 
   return (
-    <div className="bg-white flex py-2 px-3 items-center">
-      {data.type === "event" && (
-        <Button size="sm" className="w-[166px]" onClick={() => setOpenModal(true)}>
-          Join now
-        </Button>
-      )}
-      {data.type === "opportunity" && (
-        <Button size="sm" className="w-[166px]" onClick={() => setOpenModal(true)}>
-          Apply now
-        </Button>
-      )}
-      {data.type === "article" && (
-        <DialogTrigger>
-          <div>
-            <CmtInput setValue={() => {}} />
-          </div>
-        </DialogTrigger>
-      )}
-
-      <div className="flex justify-between px-3 w-full flex-1">
-        <button className="flex items-center flex-wrap gap-x-[5px]" onClick={likePost}>
-          {data.is_liked ? (
-            <Icons.likefill className="w-[20px] h-[20px] text-primary" />
-          ) : (
-            <Icons.like className="w-[20px] h-[20px]" />
+    <>
+      {showSuccessPage === false ? (
+        <div className="bg-white flex py-2 px-3 items-center">
+          {data.type === "event" && (
+            <Button size="sm" className="w-[166px]" onClick={() => setOpenModal(true)}>
+              Join now
+            </Button>
           )}
-          <div className="text-[14px]">{data.likes}</div>
-        </button>
-        <DialogTrigger>
-          <div className="flex items-center flex-wrap  gap-x-[5px]">
-            <Icons.comment className="w-[20px] h-[20px]" />
-            <div>{data.comments}</div>
-          </div>
-        </DialogTrigger>
-
-        <button className="flex items-center flex-wrap  gap-x-[5px]" onClick={saveContent}>
-          {data.is_saved ? (
-            <Icons.savedFill className="w-[20px] h-[20px] text-primary" />
-          ) : (
-            <Icons.saved className="w-[20px] h-[20px]" />
+          {data.type === "opportunity" && (
+            <Button size="sm" className="w-[166px]" onClick={() => setOpenModal(true)}>
+              Apply now
+            </Button>
           )}
-          <div>{data.saves}</div>
-        </button>
-      </div>
-      {openModal && (
-        <Modal onClose={() => setOpenModal(false)}>
-          <div className="w-[400px] p-5 h-full bg-white rounded-md overflow-y-scroll">
-            <Text as="div" className="text-[28px] font-700">
-              {data?.content_event?.form_config.name}
-            </Text>
-            {message && (
-              <Text as="div" className="text-center w-full text-green-600 font-[600] text-sm">
-                {message}
-              </Text>
-            )}
-            <div className="mx-auto flex flex-col  bg-white justify-center flex-wrap gap-y-5 w-full">
-              <Flex direction="column" justify="center">
-                {form &&
-                  form.length > 0 &&
-                  form.map((formData: any, formIndex) => (
-                    <div key={formIndex} className="my-1 px-2">
-                      {formElements(formData.input_config)}
-                    </div>
-                  ))}
-              </Flex>
-            </div>
-            <Section py="1" px="3">
-              <Button loading={isMutating} disabled={isMutating} className="w-full" onClick={formSubmit}>
-                Submit
-              </Button>
-            </Section>
+          {data.type === "article" && (
+            <DialogTrigger>
+              <div>
+                <CmtInput setValue={() => {}} />
+              </div>
+            </DialogTrigger>
+          )}
+
+          <div className="flex justify-between px-3 w-full flex-1">
+            <button className="flex items-center flex-wrap gap-x-[5px]" onClick={likePost}>
+              {data.is_liked ? (
+                <Icons.likefill className="w-[20px] h-[20px] text-primary" />
+              ) : (
+                <Icons.like className="w-[20px] h-[20px]" />
+              )}
+              <div className="text-[14px]">{data.likes}</div>
+            </button>
+            <DialogTrigger>
+              <div className="flex items-center flex-wrap  gap-x-[5px]">
+                <Icons.comment className="w-[20px] h-[20px]" />
+                <div>{data.comments}</div>
+              </div>
+            </DialogTrigger>
+
+            <button className="flex items-center flex-wrap  gap-x-[5px]" onClick={saveContent}>
+              {data.is_saved ? (
+                <Icons.savedFill className="w-[20px] h-[20px] text-primary" />
+              ) : (
+                <Icons.saved className="w-[20px] h-[20px]" />
+              )}
+              <div>{data.saves}</div>
+            </button>
           </div>
-        </Modal>
+          {openModal && (
+            <Modal onClose={() => setOpenModal(false)}>
+              <div className="w-[400px] p-5 h-full bg-white rounded-md overflow-y-scroll">
+                <Text as="div" className="text-[28px] font-700">
+                  {data?.content_event?.form_config.name}
+                </Text>
+                {message && (
+                  <Text as="div" className="text-center w-full text-green-600 font-[600] text-sm">
+                    {message}
+                  </Text>
+                )}
+                <div className="mx-auto flex flex-col  bg-white justify-center flex-wrap gap-y-5 w-full">
+                  <Flex direction="column" justify="center">
+                    {form &&
+                      form.length > 0 &&
+                      form.map((formData: any, formIndex) => (
+                        <div key={formIndex} className="my-1 px-2">
+                          {formElements(formData.input_config)}
+                        </div>
+                      ))}
+                  </Flex>
+                </div>
+                <Section py="1" px="3">
+                  <Button loading={isMutating} disabled={isMutating} className="w-full" onClick={formSubmit}>
+                    Submit
+                  </Button>
+                </Section>
+              </div>
+            </Modal>
+          )}
+        </div>
+      ) : (
+        <SuccessFormPage />
       )}
-    </div>
+    </>
   );
 };
 
