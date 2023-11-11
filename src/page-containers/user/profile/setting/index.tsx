@@ -30,9 +30,9 @@ const Setting: React.FC = () => {
     >
       <Grid columns="1">
         <Flex justify="between" align="center" className="bg-white" p="3">
-          <Link className="block" href="/profile">
+          <div className="cursor-pointer" onClick={() => router.back()}>
             <Icons.back className="text-[#373A36] w-[23px] h-[23px]" />
-          </Link>
+          </div>
           <Text size="3" weight="medium">
             Settings
           </Text>
