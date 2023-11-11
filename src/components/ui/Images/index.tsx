@@ -80,6 +80,7 @@ import {
 } from "react-icons/pi";
 import { RxCross2, RxMagnifyingGlass } from "react-icons/rx";
 import { SiAmazon, SiNetflix, SiTesla, SiVivawallet } from "react-icons/si";
+import { TiDelete } from "react-icons/ti";
 import { LandingIcon, TeeupFooterIcon, TeeupIcon } from "./Icons";
 
 export const Icons = {
@@ -194,6 +195,7 @@ export const Icons = {
   profileSetting: IoSettingsOutline,
   link: IoLinkOutline,
   info: BsInfoCircle,
+  deleteCross: TiDelete,
 };
 
 interface Image {
