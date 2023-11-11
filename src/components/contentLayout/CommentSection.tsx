@@ -11,7 +11,6 @@ import { Text } from "../ui/Typo/Text";
 type CommentSectionProp = {
   data: ContentData;
   mutateParentData: () => any;
-  total: number;
 };
 const CommentSection: React.FC<CommentSectionProp> = ({ data, mutateParentData }) => {
   const { data: cmtsArray, mutate: mutateCmt, setSize } = useGetComment(data.id);
