@@ -121,8 +121,6 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
     }
   };
 
-  console.log("se", selectedOptions);
-
   const formElements = (inputData: Input_config) => {
     if (inputData.type === "radio") {
       return inputData.input_options.map((input: Input_options, index: number) => (

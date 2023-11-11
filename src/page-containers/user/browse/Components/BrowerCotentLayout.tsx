@@ -18,12 +18,11 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, conte
     <div className="w-full h-full p-2">
       <CardBox>
         <div className="w-full h-full bg-white">
-          <div className="w-full mx-auto relative p-2">
+          <div className="w-full mx-auto relative">
             {data.content_video ? (
-              <div className="video-container">
+              <div className="w-full h-[200px]">
                 <video
-                  className="w-full h-[200px] my-video"
-                  id="myVideo"
+                  className="w-full h-full my-video"
                   poster={
                     data.image_url ||
                     "https://teeup-dev.s3.ap-southeast-1.amazonaws.com/1697257229853-125476757-demoimage1.jpeg"
@@ -33,7 +32,7 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, conte
                   muted={false}
                   controls
                 >
-                  <source src={data.content_video.video_url} className="object-fill" type="video/mp4"></source>
+                  <source src={data.content_video.video_url} className="object-fit" type="video/mp4"></source>
                 </video>
               </div>
             ) : (
@@ -45,7 +44,7 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, conte
                   }}
                 >
                   {data.type !== "video" && (
-                    <div className="absolute top-0 right-0 bg-white text-[14px] font-[600] px-[16px] py-[4px] rounded-bl-lg shadow-lg uppercase">
+                    <div className="absolute top-0 right-0 bg-white text-[14px] font-[600] px-[16px] py-[4px] tracking-[0.42px] rounded-bl-lg shadow-lg uppercase">
                       {data.type}
                     </div>
                   )}
@@ -54,7 +53,7 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, conte
             )}
           </div>
           <Link href={redir}>
-            <div className="w-full px-[16px] bg-white cursor-pointer">
+            <div className="w-full px-[12px] bg-white cursor-pointer">
               <h1 className="font-[700] text-[24px]">{data.title}</h1>
               {data.description && (
                 <div className="w-full h-full">
@@ -73,7 +72,10 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, conte
               )}
             </div>
           </Link>
-          <div className="w-full h-full px-[16px]">
+          <div className="w-full h-full px-[12px]">
+            <div className="w-full pt-3">
+              <hr className="w-full h-[1px] bg-slateGray" />
+            </div>
             <ReactionBar data={data} contentMutate={contentMutate} />
           </div>
         </div>
