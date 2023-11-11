@@ -1,16 +1,17 @@
 import CmtInput from "@/components/contentLayout/CmtInput";
-
 import { useGetComment, useLikeComment, usePostComment } from "@/services/content";
 import { CommentData, ContentData } from "@/types/Content";
 import { showTime } from "@/utils/time";
 import { Flex } from "@radix-ui/themes";
 import React, { FormEvent, useEffect, useMemo, useState } from "react";
+
 import { Button } from "../ui/Button";
 import { Icons } from "../ui/Images";
 import { Text } from "../ui/Typo/Text";
 type CommentSectionProp = {
   data: ContentData;
   mutateParentData: () => any;
+  total: number;
 };
 const CommentSection: React.FC<CommentSectionProp> = ({ data, mutateParentData }) => {
   const { data: cmtsArray, mutate: mutateCmt, setSize } = useGetComment(data.id);
