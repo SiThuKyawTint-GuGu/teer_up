@@ -328,43 +328,13 @@ const ContentDetail = ({ id }: Props) => {
     }
   };
 
-  // const updatedDimensionData = () => {
-  //   const transformedData = transformedDimensionData();
-
-  //   const replacementMapping = transformedData.reduce((map: any, item: any) => {
-  //     map[item.dimension_id] = item;
-  //     return map;
-  //   }, {});
-
-  //   const updatedDimensions = contentDimension?.data.content_dimensions.map((item: any) => ({
-  //     ...item,
-  //     ...replacementMapping[item.dimension_id],
-  //   }));
-  //   return updatedDimensions;
-  // };
-
   const submit = async (data: any) => {
     let postdata: any = {};
     if (!imgUrl) {
       setEventError("Image is required!");
       return;
     }
-    // const imgRes: any = image && (await fileTrigger({ file: image }));
-    // if (imgRes) {
-    //   setImgUrl(imgRes.data?.data?.file_path);
-    // }
-
     if (selectedValue === "video") {
-      // const thumbnailRes: any = thumbnail && (await fileTrigger({ file: thumbnail }));
-      // const videoRes: any = file && (await fileTrigger({ file }));
-
-      // if (thumbnailRes) {
-      //   setFileUrl(thumbnailRes.data?.data?.file_path);
-      // }
-      // if (videoRes) {
-      //   setVideoUrl(videoRes.data?.data?.file_path);
-      // }
-
       if (!videoUrl) {
         setEventError("Video is required!");
         return;
@@ -374,7 +344,6 @@ const ContentDetail = ({ id }: Props) => {
       const industries = selectedIndustry.map(item => item.id);
       const imgurl = imgRes ? imgRes?.data?.data?.file_path : imgUrl;
       const videourl = videoRes ? videoRes?.data?.data?.file_path : videoUrl;
-      // const thumbnailurl = thumbnailRes ? thumbnailRes?.data?.data?.file_path : fileUrl;
 
       postdata = {
         title: data?.title,
@@ -389,7 +358,6 @@ const ContentDetail = ({ id }: Props) => {
         content_dimensions: transformedDimensionData(),
         content_video: {
           video_url: videourl,
-          // thumbnail: thumbnailurl,
         },
       };
       content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
@@ -408,10 +376,6 @@ const ContentDetail = ({ id }: Props) => {
       }
       if (!eventLink) {
         setEventError("Link is required!");
-        return;
-      }
-      if (!selectForm) {
-        setEventError("Please select form!");
         return;
       }
       const keywords = selectedKeywords.map(item => item.id);
@@ -434,17 +398,13 @@ const ContentDetail = ({ id }: Props) => {
           to_datetime: endDate,
           location: location,
           link: eventLink,
-          formconfig_id: selectForm,
+          formconfig_id: selectForm ? selectForm : undefined,
         },
       };
       content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
     } else if (selectedValue === "article") {
       if (!author) {
         setEventError("Author name is required!");
-        return;
-      }
-      if (!selectForm) {
-        setEventError("Please select form!");
         return;
       }
       if (!editor.getContent()) {
@@ -469,7 +429,7 @@ const ContentDetail = ({ id }: Props) => {
         content_article: {
           body: editor.getContent(),
           published_by: author,
-          formconfig_id: selectForm,
+          formconfig_id: selectForm ? selectForm : undefined,
         },
       };
       content?.data ? await updateTrigger(postdata) : await postTrigger(postdata);
@@ -480,10 +440,6 @@ const ContentDetail = ({ id }: Props) => {
       }
       if (!oppoLocation) {
         setEventError("Location is required!");
-        return;
-      }
-      if (!selectForm) {
-        setEventError("Please Select Form!");
         return;
       }
       if (!oppoEditor.getContent()) {
@@ -507,7 +463,7 @@ const ContentDetail = ({ id }: Props) => {
         content_dimensions: transformedDimensionData(),
         content_opportunity: {
           link: link,
-          formconfig_id: selectForm,
+          formconfig_id: selectForm ? selectForm : undefined,
           location: oppoLocation,
           body: oppoEditor.getContent(),
         },
@@ -578,15 +534,6 @@ const ContentDetail = ({ id }: Props) => {
     }
     router.push("/admin/contents/content");
   };
-
-  // const handlePhotoChange = (event: any) => {
-  //   const file = event.target.files[0];
-  //   if (file) {
-  //     setThumbnail(file);
-  //     const fileURL = URL.createObjectURL(file);
-  //     setFileUrl(fileURL);
-  //   }
-  // };
 
   const handleImageChange = async (event: any) => {
     const file = event.target.files[0];
@@ -675,13 +622,6 @@ const ContentDetail = ({ id }: Props) => {
 
   const handleCheckboxChange = (event: any, dimension: any) => {
     const { name, checked, value } = event.target;
-    // setCheckboxValues((prevValues: any) => ({
-    //   ...prevValues,
-    //   [Number(dimension)]: {
-    //     ...prevValues[dimension],
-    //     [name]: checked,
-    //   },
-    // }));
     if (name === "scores") {
       setCheckboxValues((prevValues: any) => ({
         ...prevValues,
