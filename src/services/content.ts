@@ -120,13 +120,13 @@ type LikContentResType = {
 };
 export const useLikeContent = () =>
   useSWRMutation(`/content/like`, (url, { arg }: LikContentResType) => {
-    return appAxios.post<LikContentResType>(`${url}/${arg.id}`, arg);
+    return appAxios.post(`${url}/${arg.id}`, arg);
   });
 
 type CommentArgType = {
   arg: {
     id: number | string;
-    comment: string;
+    comment?: string;
     parent_id?: number | string;
   };
 };
@@ -142,6 +142,11 @@ type saveContentArg = {
 export const useSaveContent = () =>
   useSWRMutation(`/content/save`, (url, { arg }: saveContentArg) => {
     return appAxios.post(`${url}/${arg.id}`, arg);
+  });
+
+export const useLikeComment = () =>
+  useSWRMutation(`/content`, (url, { arg }: CommentArgType) => {
+    return appAxios.post(`${url}/${arg.parent_id}/comments/${arg.id}/likes`, arg);
   });
 
 // const getKey = (pageIndex: number) => {

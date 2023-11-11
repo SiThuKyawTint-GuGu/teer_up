@@ -1,22 +1,22 @@
 import CmtInput from "@/components/contentLayout/CmtInput";
-
-import { useGetComment, usePostComment } from "@/services/content";
+import { useGetComment, useLikeComment, usePostComment } from "@/services/content";
 import { CommentData, ContentData } from "@/types/Content";
 import { showTime } from "@/utils/time";
 import { Flex } from "@radix-ui/themes";
-import React, { FormEvent, useMemo, useState } from "react";
+import React, { FormEvent, useEffect, useMemo, useState } from "react";
+
 import { Button } from "../ui/Button";
+import { Icons } from "../ui/Images";
 import { Text } from "../ui/Typo/Text";
 type CommentSectionProp = {
   data: ContentData;
   mutateParentData: () => any;
   total: number;
 };
-const CommentSection: React.FC<CommentSectionProp> = ({ data, mutateParentData, total }) => {
+const CommentSection: React.FC<CommentSectionProp> = ({ data, mutateParentData }) => {
   const { data: cmtsArray, mutate: mutateCmt, setSize } = useGetComment(data.id);
 
   const commentDataArray: any = useMemo(() => cmtsArray?.flatMap(page => page?.data) || [], [cmtsArray]);
-
   const { trigger: postComment, isMutating } = usePostComment();
 
   const postSubmitHandler = async (e: FormEvent<HTMLFormElement>) => {
@@ -57,26 +57,9 @@ const CommentSection: React.FC<CommentSectionProp> = ({ data, mutateParentData, 
               <div>
                 {commentDataArray && commentDataArray.length > 0 && (
                   <>
-                    {commentDataArray.map((data: CommentData, index: number) => (
+                    {commentDataArray.map((comment: CommentData, index: number) => (
                       <div className="flex items-start  w-full h-full mb-2  " key={index}>
-                        <div
-                          className="rounded-full w-[32px] h-[32px]"
-                          style={{
-                            background: `url(${data.user.profile_url ?? "/mainLogo.png"}) center / cover `,
-                          }}
-                        />
-
-                        <div className="flex flex-col w-full ms-2">
-                          <div className="flex items-center flex-wrap gap-x-2">
-                            <Text as="div" className="text-[16px] font-[600]">
-                              {data.user.name}
-                            </Text>
-                            <Text as="span" className="text-[14px] font-[300]">
-                              {showTime(data.created_at)}
-                            </Text>
-                          </div>
-                          <div className="text-start">{data.comment}</div>
-                        </div>
+                        <SingleComment data={comment} parentData={data} mutateCmt={mutateCmt} />
                       </div>
                     ))}
                     {cmtsArray && cmtsArray.length > 0 && cmtsArray[cmtsArray.length - 1].hasNextPage && (
@@ -117,3 +100,84 @@ const CommentSection: React.FC<CommentSectionProp> = ({ data, mutateParentData, 
 };
 
 export default CommentSection;
+type SingleCommentProp = {
+  data: CommentData;
+  parentData: ContentData;
+  mutateCmt: any;
+};
+const SingleComment: React.FC<SingleCommentProp> = ({ data, parentData, mutateCmt }) => {
+  const [reaction, setReacion] = useState({
+    likes: 0,
+    is_liked: false,
+  });
+
+  useEffect(() => {
+    setReacion(prev => ({
+      ...prev,
+      ["likes"]: data.comment_likes,
+      ["is_liked"]: data.is_liked,
+    }));
+  }, [data]);
+
+  console.log("re", reaction);
+  const { trigger: likeComment } = useLikeComment();
+  const LikeCommentHandler = async () => {
+    if (reaction.is_liked) {
+      setReacion(prev => ({
+        ...prev,
+        ["likes"]: prev.likes - 1,
+        ["is_liked"]: false,
+      }));
+    }
+    if (!reaction.is_liked) {
+      setReacion(prev => ({
+        ...prev,
+        ["likes"]: prev.likes + 1,
+        ["is_liked"]: true,
+      }));
+    }
+
+    await likeComment(
+      {
+        parent_id: parentData.id,
+        id: data.id,
+      },
+      {
+        onSuccess: () => {
+          mutateCmt();
+        },
+      }
+    );
+  };
+  return (
+    <>
+      <div
+        className="rounded-full w-[32px] h-[32px]"
+        style={{
+          background: `url(${data.user.profile_url ?? "/mainLogo.png"}) center / cover `,
+        }}
+      />
+
+      <div className="flex flex-col w-full ms-2">
+        <div className="flex w-full items-center flex-wrap gap-x-2">
+          <Text as="div" className="text-[16px] font-[600]">
+            {data.user.name}
+          </Text>
+          <Text as="span" className="text-[14px] font-[300]">
+            {showTime(data.created_at)}
+          </Text>
+          <Flex justify="end" align="center" className="flex-1 gap-x-1 w-full">
+            {!reaction.is_liked ? (
+              <Icons.like className="w-[16px] h-[16px]" onClick={LikeCommentHandler} />
+            ) : (
+              <Icons.likefill className="w-[16px] h-[16px] text-primary" onClick={LikeCommentHandler} />
+            )}
+            {reaction.likes}
+          </Flex>
+        </div>
+
+        <div className="text-start">{data.comment}</div>
+      </div>
+    </>
+  );
+};
