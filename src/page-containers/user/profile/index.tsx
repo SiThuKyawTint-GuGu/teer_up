@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/Button";
 import CardBox from "@/components/ui/Card";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons, Image } from "@/components/ui/Images";
-import { Tooltip } from "@/components/ui/Tooltip";
 import { Text } from "@/components/ui/Typo/Text";
 import { useGetUserDimensionResult } from "@/services/dimension";
 import { useGetUserById, useResetScores, useUpdateUserOnboardingStatus } from "@/services/user";
@@ -38,9 +37,11 @@ const Profile: React.FC = () => {
   const [viewImage, setViewImage] = useState<boolean>(false);
   const [triggerType, setTriggerType] = useState<PROFILE_TRIGGER>();
   const [touched, setTouched] = useState<{
-    key: number;
+    key?: number;
     open: boolean;
-  }>();
+  }>({
+    open: false,
+  });
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const user = getUserInfo();
@@ -83,6 +84,8 @@ const Profile: React.FC = () => {
       open: !touched,
     });
   };
+
+  console.log(touched);
 
   return (
     <>
@@ -251,14 +254,20 @@ const Profile: React.FC = () => {
                                 <Box key={key} className="bg-[#F8F9FB] rounded-[8px] space-y-4" mb="4" p="3">
                                   <Flex justify="start" align="start" gap="2">
                                     <div className="w-[12px] h-[12px] mt-[5px] rounded-sm bg-primary" />
-                                    <Flex className="w-[calc(100%-12px)]" direction="column" align="start">
+                                    <Flex className="w-[calc(100%-12px)] relative" direction="column" align="start">
                                       <Flex justify="start" align="center" gap="2">
                                         <Text size="3" weight="bold">
                                           {each.short_name}
                                         </Text>
-                                        <Tooltip content={each.name} open={key === touched?.key}>
+                                        {/* <Tooltip content={each.name} open={key === touched?.key || touched?.open}>
                                           <Icons.info onClick={() => handleTouchedTooltip(key)} />
-                                        </Tooltip>
+                                        </Tooltip> */}
+                                        <div className="group inline-block duration-300">
+                                          <Icons.info />
+                                          <span className="absolute hidden group-hover:flex -left-5 -top-2 -translate-y-full w-48 px-2 py-1 bg-gray-700 rounded-lg text-white text-sm after:content-[''] after:absolute after:left-1/2 after:top-[100%] after:-translate-x-1/2 after:border-8 after:border-x-transparent after:border-b-transparent">
+                                            {each.name}
+                                          </span>
+                                        </div>
                                       </Flex>
                                       <Text>{each.skill_body}</Text>
                                     </Flex>
