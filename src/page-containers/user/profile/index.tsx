@@ -101,7 +101,7 @@ const Profile: React.FC = () => {
                 </Flex>
               </div>
             </div>
-            <CardBox className="mb-[7px] rounded-none">
+            <Box className="mb-[7px] rounded-none">
               <Section p="0">
                 <DialogTrigger onClick={() => setTriggerType(PROFILE_TRIGGER.COVER)} className="w-full">
                   {userProfile?.cover_url ? (
@@ -178,9 +178,9 @@ const Profile: React.FC = () => {
                 </Heading>
                 <Text>{userProfile?.bio}</Text>
               </Section>
-            </CardBox>
+            </Box>
             <CardBox className="mb-[7px] rounded-none">
-              <Section className="bg-white" py="4" px="3">
+              <Section className="bg-white" py="4">
                 <Tabs.Root defaultValue="competency">
                   <Tabs.List className="space-x-[20px]">
                     <Tabs.Trigger className="tab-trigger" value="competency">

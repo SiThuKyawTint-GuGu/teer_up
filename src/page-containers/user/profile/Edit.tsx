@@ -137,7 +137,7 @@ const ProfileEdit: React.FC = () => {
                 </div>
               </Section>
             </CardBox>
-            <CardBox className="pb-[7px]">
+            <CardBox className="pb-[7px] rounded-none">
               <Section className="bg-white" py="4" px="3">
                 <Flex justify="between" align="center" mb="4">
                   <Heading as="h6" size="4" align="left">
