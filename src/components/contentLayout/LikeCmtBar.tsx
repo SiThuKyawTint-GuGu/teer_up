@@ -3,15 +3,20 @@ import RadioButton from "@/page-containers/user/personalized/components/RadioBut
 import { useContentForm, useLikeContent, useSaveContent } from "@/services/content";
 import { ContentData, Input_config, Input_options } from "@/types/Content";
 
-import { Flex, TextFieldInput } from "@radix-ui/themes";
-
+import { Box, Flex, Section } from "@radix-ui/themes";
 import React, { ChangeEvent, useMemo, useState } from "react";
+import ReactDatePicker from "react-datepicker";
 import { Button } from "../ui/Button";
+import CardBox from "../ui/Card";
 import { DialogTrigger } from "../ui/Dialog";
 import { Icons } from "../ui/Images";
+import { InputText } from "../ui/Inputs";
+import { Checkbox } from "../ui/Inputs/Checkbox";
+import { Select, SelectContent, SelectItem, SelectTrigger } from "../ui/Inputs/Select";
 import Modal from "../ui/Modal";
 import { Text } from "../ui/Typo/Text";
 import CmtInput from "./CmtInput";
+
 type Props = {
   data: ContentData;
   mutate: any;
@@ -123,45 +128,126 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
 
   const formElements = (inputData: Input_config) => {
     if (inputData.type === "radio") {
-      return inputData.input_options.map((input: Input_options, index: number) => (
-        <div key={index} className="flex w-full flex-wrap items-center gap-x-2">
-          <RadioButton changeHandler={() => handleRadio(input, inputData.id)} />
-          <label>{input.label}</label>
-        </div>
-      ));
+      return (
+        <>
+          <Box className="pb-[7px]">
+            <Section py="1" px="3">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                {inputData.placeholder}
+              </label>
+              {inputData.input_options.map((input: Input_options, index: number) => (
+                <div key={index} className="flex w-full flex-wrap items-center gap-x-2">
+                  <RadioButton changeHandler={() => handleRadio(input, inputData.id)} />
+                  <label>{input.label}</label>
+                </div>
+              ))}
+            </Section>
+          </Box>
+        </>
+      );
+    }
+    if (inputData.type === "date") {
+      return (
+        <Box className="pb-[7px]">
+          <Section className="bg-white" py="1" px="3">
+            <CardBox className="px-[12px] py-[16px] shadow-theme flex justify-between items-center">
+              <ReactDatePicker
+                selected={new Date()}
+                onChange={date => console.log(date)}
+                dateFormat="dd/MM/yyyy"
+                className="w-full bg-white"
+              />
+              <Icons.calender />
+            </CardBox>
+          </Section>
+        </Box>
+      );
     }
     if (
       inputData.type === "text" ||
-      inputData.type === "date" ||
+      // inputData.type === "phone" ||
       inputData.type === "password" ||
       inputData.type === "email"
     )
       return (
-        <TextFieldInput
-          className={`${inputData.type !== "date" && "px-2"}`}
-          type={inputData.type}
-          placeholder={inputData.placeholder}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            handleInput(inputData.id, e.target.value);
-          }}
-        />
+        // <TextFieldInput
+        //   className={`${inputData.type !== "date" && "px-2"}`}
+        //   type={inputData.type}
+        //   placeholder={inputData.placeholder}
+        //   onChange={(e: ChangeEvent<HTMLInputElement>) => {
+        //     handleInput(inputData.id, e.target.value);
+        //   }}
+        // />
+        <Box className="pb-[7px]">
+          <Section className="bg-white" py="1" px="3">
+            <InputText
+              type="text"
+              inputType={inputData.type}
+              placeholder={inputData.placeholder}
+              handleChange={(e: ChangeEvent<HTMLInputElement>) => {
+                handleInput(inputData.id, e.target.value);
+              }}
+            />
+          </Section>
+        </Box>
       );
     if (inputData.type === "dropdown")
       return (
-        <select
-          onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-            handleInput(inputData.id, e.target.value);
-          }}
-          defaultValue={inputData.input_options[0].value}
-          className="bg-white w-full p-2 ring-[slateGray]"
-        >
-          {inputData.input_options.map((input: Input_options, index: number) => (
-            <option key={index} value={input.value}>
-              {input.label}
-            </option>
-          ))}
-        </select>
+        // <select
+        // onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+        //   handleInput(inputData.id, e.target.value);
+        // }}
+        //   defaultValue={inputData.input_options[0].value}
+        //   className="bg-white w-full p-2 ring-[slateGray]"
+        // >
+        //   {inputData.input_options.map((input: Input_options, index: number) => (
+        //     <option key={index} value={input.value}>
+        //       {input.label}
+        //     </option>
+        //   ))}
+        // </select>
+        <Box className="pb-[7px]">
+          <Section className="bg-white w-full" py="1" px="3">
+            <Select
+              onValueChange={(value: string) => {
+                handleInput(inputData.id, value);
+              }}
+              defaultValue={inputData.input_options[0].value}
+            >
+              <SelectTrigger className="border-none outline-none bg-white border-gray-700 shadow-theme">
+                {inputData.placeholder}
+              </SelectTrigger>
+              <SelectContent className="bg-white">
+                {inputData.input_options.map((dropdown: any, index: number) => (
+                  <SelectItem key={index} value={dropdown.value}>
+                    {dropdown.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </Section>
+        </Box>
       );
+    if (inputData.type === "checkbox") {
+      return (
+        <Box className="pb-[7px]">
+          <Section py="1" px="3">
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              {inputData.placeholder}
+            </label>
+            {inputData.input_options.map((input: Input_options, index: number) => (
+              <div key={index} className="flex w-full flex-wrap my-2 items-center gap-x-2">
+                <Checkbox
+                  defaultChecked={false}
+                  // onCheckedChange={(checked: boolean) => handleCheckedChange(checked, each?.id)}
+                />
+                <label>{input.label}</label>
+              </div>
+            ))}
+          </Section>
+        </Box>
+      );
+    }
   };
 
   return (
@@ -220,7 +306,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
                 {message}
               </Text>
             )}
-            <div className="mx-auto flex flex-col  bg-layout justify-center flex-wrap gap-y-5 w-full">
+            <div className="mx-auto flex flex-col  bg-white justify-center flex-wrap gap-y-5 w-full">
               <Flex direction="column" justify="center">
                 {form &&
                   form.length > 0 &&
@@ -231,9 +317,11 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
                   ))}
               </Flex>
             </div>
-            <Button loading={isMutating} disabled={isMutating} className="w-full" onClick={formSubmit}>
-              Submit
-            </Button>
+            <Section py="1" px="3">
+              <Button loading={isMutating} disabled={isMutating} className="w-full" onClick={formSubmit}>
+                Submit
+              </Button>
+            </Section>
           </div>
         </Modal>
       )}
