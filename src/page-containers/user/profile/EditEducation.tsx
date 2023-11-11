@@ -76,9 +76,9 @@ const EditEducation: React.FC = () => {
         <form className="mx-auto flex flex-col justify-center gap-y-3 w-full" onSubmit={form.handleSubmit(submit)}>
           <Grid columns="1">
             <Flex justify="between" align="center" className="bg-white" p="3">
-              <Link href={`/profile/${id}/education`}>
+              <div className="cursor-pointer" onClick={() => router.back()}>
                 <Icons.back className="text-[#373A36] w-[23px] h-[23px]" />
-              </Link>
+              </div>
               <Text size="3" weight="medium">
                 Edit Education
               </Text>

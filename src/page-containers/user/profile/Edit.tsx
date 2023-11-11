@@ -65,7 +65,7 @@ const ProfileEdit: React.FC = () => {
             <div className="mb-[45px]">
               <div className="max-w-[400px] fixed top-0 z-10 w-full shadow-[0px_1px_9px_0px_rgba(0,_0,_0,_0.06)]">
                 <Flex justify="between" align="center" className="bg-white" p="3">
-                  <div onClick={() => router.back()}>
+                  <div className="cursor-pointer" onClick={() => router.back()}>
                     <Icons.back className="text-[#373A36] w-[23px] h-[23px]" />
                   </div>
                   <Text size="3" weight="medium">
@@ -138,7 +138,7 @@ const ProfileEdit: React.FC = () => {
                 </div>
               </Section>
             </CardBox>
-            <CardBox className="pb-[7px] rounded-none">
+            <CardBox className="mb-[7px] rounded-none">
               <Section className="bg-white" py="4" px="3">
                 <Flex justify="between" align="center" mb="4">
                   <Heading as="h6" size="4" align="left">
@@ -208,42 +208,55 @@ const ProfileEdit: React.FC = () => {
                   <Heading as="h6" size="4" align="left">
                     Job Experience
                   </Heading>
-                  <Link href={`/profile/${id}/experience`}>
-                    <Text className="text-primary">Edit</Text>
-                  </Link>
+                  {userProfile?.experiences?.length && (
+                    <Link href={`/profile/${id}/experience`}>
+                      <Text className="text-primary">Edit</Text>
+                    </Link>
+                  )}
                 </Flex>
-                {userProfile?.experiences?.length
-                  ? userProfile?.experiences?.map((each, key) => (
-                      <Flex
-                        key={key}
-                        justify="between"
-                        align="start"
-                        className={cn(
-                          "pb-[10px] mb-[10px]",
-                          key !== (userProfile?.experiences ? userProfile.experiences.length - 1 : -1) &&
-                            "border-b border-b-[#BDC7D5]"
-                        )}
-                      >
-                        <Flex direction="column" gap="2">
-                          <Text as="label" weight="bold" size="3">
-                            {each?.position}
-                          </Text>
-                          <Text size="2">{each?.company}</Text>
-                        </Flex>
-                        <Flex justify="end" align="center" gap="1">
-                          <Text size="2" weight="light">
-                            {dayjs(each?.start_date).format("MMM, YYYY")}
-                          </Text>
-                          <Text size="2" weight="light">
-                            -
-                          </Text>
-                          <Text size="2" weight="light">
-                            {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "present"}
-                          </Text>
-                        </Flex>
+                {userProfile?.experiences?.length ? (
+                  userProfile?.experiences?.map((each, key) => (
+                    <Flex
+                      key={key}
+                      justify="between"
+                      align="start"
+                      className={cn(
+                        "pb-[10px] mb-[10px]",
+                        key !== (userProfile?.experiences ? userProfile.experiences.length - 1 : -1) &&
+                          "border-b border-b-[#BDC7D5]"
+                      )}
+                    >
+                      <Flex direction="column" gap="2">
+                        <Text as="label" weight="bold" size="3">
+                          {each?.position}
+                        </Text>
+                        <Text size="2">{each?.company}</Text>
                       </Flex>
-                    ))
-                  : "-"}
+                      <Flex justify="end" align="center" gap="1">
+                        <Text size="2" weight="light">
+                          {dayjs(each?.start_date).format("MMM, YYYY")}
+                        </Text>
+                        <Text size="2" weight="light">
+                          -
+                        </Text>
+                        <Text size="2" weight="light">
+                          {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "present"}
+                        </Text>
+                      </Flex>
+                    </Flex>
+                  ))
+                ) : (
+                  <Flex direction="column" justify="center" align="center">
+                    <Text size="2" weight="light">
+                      You haven’t added any experience yet.
+                    </Text>
+                    <Link href={`/profile/${id}/experience/create`}>
+                      <Button variant="link" className="text-base">
+                        + Add experience
+                      </Button>
+                    </Link>
+                  </Flex>
+                )}
               </Section>
             </CardBox>
 
@@ -257,38 +270,49 @@ const ProfileEdit: React.FC = () => {
                     <Text className="text-primary">Edit</Text>
                   </Link>
                 </Flex>
-                {userProfile?.educations?.length
-                  ? userProfile?.educations?.map((each, key) => (
-                      <Flex
-                        key={key}
-                        justify="between"
-                        align="start"
-                        className={cn(
-                          "pb-[10px] mb-[10px]",
-                          key !== (userProfile?.educations ? userProfile.educations.length - 1 : -1) &&
-                            "border-b border-b-[#BDC7D5]"
-                        )}
-                      >
-                        <Flex direction="column" gap="2">
-                          <Text as="label" weight="bold" size="3">
-                            {each.degree}
-                          </Text>
-                          <Text size="2">{each.school_name}</Text>
-                        </Flex>
-                        <Flex justify="end" align="center" gap="1">
-                          <Text size="2" weight="light">
-                            {dayjs(each?.start_date).format("MMM, YYYY")}
-                          </Text>
-                          <Text size="2" weight="light">
-                            -
-                          </Text>
-                          <Text size="2" weight="light">
-                            {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "present"}
-                          </Text>
-                        </Flex>
+                {userProfile?.educations?.length ? (
+                  userProfile?.educations?.map((each, key) => (
+                    <Flex
+                      key={key}
+                      justify="between"
+                      align="start"
+                      className={cn(
+                        "pb-[10px] mb-[10px]",
+                        key !== (userProfile?.educations ? userProfile.educations.length - 1 : -1) &&
+                          "border-b border-b-[#BDC7D5]"
+                      )}
+                    >
+                      <Flex direction="column" gap="2">
+                        <Text as="label" weight="bold" size="3">
+                          {each.degree}
+                        </Text>
+                        <Text size="2">{each.school_name}</Text>
                       </Flex>
-                    ))
-                  : "-"}
+                      <Flex justify="end" align="center" gap="1">
+                        <Text size="2" weight="light">
+                          {dayjs(each?.start_date).format("MMM, YYYY")}
+                        </Text>
+                        <Text size="2" weight="light">
+                          -
+                        </Text>
+                        <Text size="2" weight="light">
+                          {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "present"}
+                        </Text>
+                      </Flex>
+                    </Flex>
+                  ))
+                ) : (
+                  <Flex direction="column" justify="center" align="center">
+                    <Text size="2" weight="light">
+                      You haven’t added any education yet.
+                    </Text>
+                    <Link href={`/profile/${id}/education/create`}>
+                      <Button variant="link" className="text-base">
+                        + Add education
+                      </Button>
+                    </Link>
+                  </Flex>
+                )}
               </Section>
             </CardBox>
 
