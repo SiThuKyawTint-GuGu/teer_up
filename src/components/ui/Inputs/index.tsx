@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import styled, { css } from "styled-components";
 
 import { IconButton, TextArea, TextField } from "@radix-ui/themes";
@@ -20,8 +20,9 @@ type Props = {
   placeholder?: string;
   value?: string;
   defaultValue?: string;
-  inputType?: USER_ROLE;
+  inputType?: USER_ROLE | string;
   disabled?: boolean;
+  handleChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
 const InputText = React.forwardRef<HTMLInputElement, Props>(
@@ -33,6 +34,7 @@ const InputText = React.forwardRef<HTMLInputElement, Props>(
       className,
       placeholder,
       defaultValue,
+      handleChange,
       inputType = USER_ROLE.ADMIN,
       disabled = false,
       ...props
@@ -54,6 +56,7 @@ const InputText = React.forwardRef<HTMLInputElement, Props>(
               size="3"
               ref={ref}
               disabled={disabled}
+              onChange={handleChange}
               {...props}
             />
           </TextField.Root>
@@ -176,9 +179,7 @@ const InputOtp: React.FC = ({ ...props }) => {
   return <InputOtpStyled {...props} />;
 };
 
-export { InputOtp, InputSearch, InputText, InputTextArea };
-
-const InputStyled = styled.div<{ inputtype?: USER_ROLE; disabled?: boolean }>`
+const InputStyled = styled.div<{ inputtype?: USER_ROLE | string; disabled?: boolean }>`
   width: 100%;
   & input {
     ${({ inputtype }) =>
@@ -202,6 +203,7 @@ const InputStyled = styled.div<{ inputtype?: USER_ROLE; disabled?: boolean }>`
     outline: 0;
   }
 `;
+export { InputOtp, InputSearch, InputText, InputTextArea, InputStyled };
 
 const InputOtpStyled = styled.input`
   width: 53px;

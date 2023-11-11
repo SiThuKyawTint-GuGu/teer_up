@@ -1,7 +1,7 @@
 const RadioButton = ({ changeHandler }: { changeHandler: any }) => {
   return (
     <div className="inline-flex items-center">
-      <label className="relative flex cursor-pointer items-center rounded-full p-3" data-ripple-dark="true">
+      <label className="relative flex cursor-pointer items-center rounded-full py-2" data-ripple-dark="true">
         <input
           name="type"
           onChange={changeHandler}
