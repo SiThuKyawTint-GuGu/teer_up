@@ -159,12 +159,15 @@ export const useSaveContent = () =>
 //   [data]
 // );
 
-export const useGetComment = <ParamsType>(id: number | string, params?: ParamsType): SWRInfiniteResponse => {
-  const getKey = () => `/content/${id}/comments?${routeFilter(params)}`;
+export const useGetComment = (id: number | string): SWRInfiniteResponse => {
+  const getKey = (index: number) => `/content/${id}/comments?cursor=${index}&pagesize=30`;
   return useSWRInfinite<CommentResponse>(getKey, {
-    revalidateFirstPage: false,
+    revalidateFirstPage: true,
     revalidateAll: true,
-    parallel: true,
+    revalidateIfStale: true,
+    revalidateOnFocus: true,
+    revalidateOnReconnect: true,
+    parallel: false,
   });
 };
 
