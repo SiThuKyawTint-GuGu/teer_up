@@ -21,7 +21,7 @@ import TextSnippetIcon from "@mui/icons-material/TextSnippet";
 import NextImage from "next/image";
 import { BsInfoCircle } from "react-icons/bs";
 import { CiSettings } from "react-icons/ci";
-import { FaArrowRight, FaFacebook, FaLightbulb, FaTelegram, FaUserCircle } from "react-icons/fa";
+import { FaArrowRight, FaFacebook, FaLightbulb, FaTelegram, FaUserCircle, FaWhatsapp } from "react-icons/fa";
 import { FcBusinesswoman } from "react-icons/fc";
 import { FiUsers } from "react-icons/fi";
 import { GoCommentDiscussion } from "react-icons/go";
@@ -55,9 +55,9 @@ import { MdDelete, MdOutlineMailOutline } from "react-icons/md";
 import {
   PiAirplaneTiltLight,
   PiArrowDownRightThin,
-  PiArrowUpRightThin,
   PiArrowsLeftRightDuotone,
   PiArrowsLeftRightThin,
+  PiArrowUpRightThin,
   PiBagSimpleThin,
   PiCameraLight,
   PiCameraPlusFill,
@@ -191,6 +191,7 @@ export const Icons = {
   shareLink: IoLink,
   facebook: FaFacebook,
   telegram: FaTelegram,
+  whatapp: FaWhatsapp,
   profileSetting: IoSettingsOutline,
   link: IoLinkOutline,
   info: BsInfoCircle,
