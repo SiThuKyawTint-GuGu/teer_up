@@ -17,8 +17,11 @@ const ContentDetailHeader: React.FC<ContentDetailHeaderProps> = ({ title }) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   return (
-    <div className="flex justify-between h-[48px] z-50 px-2 items-center bg-white fixed top-0 w-full max-w-[400px] mx-auto">
-      <div onClick={() => router.back()}>
+    <div className="flex justify-between h-[48px] z-50  items-center bg-white fixed top-0 w-full max-w-[400px] mx-auto">
+      <div
+        className="w-[40px] h-full flex items-center px-2 justify-starta cursor-pointer"
+        onClick={() => router.back()}
+      >
         <Icons.back className="w-[20px] h-[20px]" />
       </div>
       <Text as="div" className="capitalize">
@@ -26,7 +29,7 @@ const ContentDetailHeader: React.FC<ContentDetailHeaderProps> = ({ title }) => {
       </Text>
       <Dialog open={modalOpen} onOpenChange={val => setModalOpen(val)}>
         <DialogTrigger>
-          <div onClick={() => setModalOpen(true)}>
+          <div onClick={() => setModalOpen(true)} className="w-[40px] h-[48px] justify-end flex items-center  px-2">
             <Icons.share className="w-[20px] h-[20px]" />
           </div>
         </DialogTrigger>
