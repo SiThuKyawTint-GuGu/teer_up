@@ -180,9 +180,9 @@ const Profile: React.FC = () => {
               </Section>
             </Box>
             <CardBox className="mb-[7px] rounded-none">
-              <Section className="bg-white" py="4">
+              <Section className="bg-white" pt="4" pb="0">
                 <Tabs.Root defaultValue="competency">
-                  <Tabs.List className="space-x-[20px]">
+                  <Tabs.List className="space-x-[20px] px-3">
                     <Tabs.Trigger className="tab-trigger" value="competency">
                       Hope Action Assessment
                     </Tabs.Trigger>
@@ -191,7 +191,7 @@ const Profile: React.FC = () => {
                     </Tabs.Trigger>
                   </Tabs.List>
                   <Tabs.Content value="competency" className="space-y-[7px]">
-                    <CardBox>
+                    <CardBox className="rounded-none">
                       <Section className="bg-white" py="4" px="3">
                         <Heading as="h6" size="4" align="left" mb="4">
                           Assessment Chart
@@ -226,7 +226,7 @@ const Profile: React.FC = () => {
                         )}
                       </Section>
                     </CardBox> */}
-                    <CardBox>
+                    <CardBox className="rounded-none">
                       <Section className="bg-white" py="4" px="3">
                         <Heading as="h6" size="4" align="left" mb="4">
                           Here&#39;s what we noticed about you
