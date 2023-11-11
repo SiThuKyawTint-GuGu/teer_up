@@ -24,7 +24,7 @@ const ContentDetailHeader: React.FC<ContentDetailHeaderProps> = ({ title }) => {
       >
         <Icons.back className="w-[20px] h-[20px]" />
       </div>
-      <Text as="div" className="capitalize">
+      <Text as="div" className="capitalize font-[600] text-[16px]">
         {title}
       </Text>
       <Dialog open={modalOpen} onOpenChange={val => setModalOpen(val)}>
