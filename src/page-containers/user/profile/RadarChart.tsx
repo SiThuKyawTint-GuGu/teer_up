@@ -37,16 +37,16 @@ const RadarChart: React.FC = () => {
         data: skillScores,
       },
 
-      // {
-      //   label: "Certainity",
-      //   backgroundColor: "rgba(0,0,255,0.2)",
-      //   borderColor: "rgba(0,0,255,1)",
-      //   pointBackgroundColor: "rgba(0,0,255,1)",
-      //   pointBorderColor: "#fff",
-      //   pointHoverBackgroundColor: "#fff",
-      //   pointHoverBorderColor: "rgba(0,0,255,1)",
-      //   data: centainityScores,
-      // },
+      {
+        label: "Certainity",
+        backgroundColor: "transparent",
+        borderColor: "transparent",
+        pointBackgroundColor: "transparent",
+        pointBorderColor: "#fff",
+        pointHoverBackgroundColor: "transparent",
+        pointHoverBorderColor: "transparent",
+        data: [0, 100],
+      },
     ],
   };
 

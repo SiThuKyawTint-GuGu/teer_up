@@ -106,7 +106,7 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate }) => {
               </div>
             </button>
           </DialogTrigger>
-          <DialogContent className="bg-white top-[initial] bottom-0 max-w-[400px] px-4  translate-y-0 rounded-10px-tl-tr">
+          <DialogContent className="bg-white top-[initial]  bottom-0 max-w-[400px] px-4  translate-y-0 rounded-10px-tl-tr">
             {openShare && <Share url={`/content/${data.slug}`} />}
           </DialogContent>
         </Dialog>

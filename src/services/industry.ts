@@ -12,7 +12,7 @@ export type ParamsType = {
 };
 
 export const useGetIndustry = <IndustryResponse>(params?: string): SWRResponse<IndustryResponse, any> => {
-  return useSWR<IndustryResponse>(`/details/industries?search=${params}`);
+  return useSWR<IndustryResponse>(`/details/industries${params ? `?search=${params}` : ""}`);
 };
 
 export const useGetIndustryById = <IndustryResponse>(id: string): SWRResponse<IndustryResponse, any> => {

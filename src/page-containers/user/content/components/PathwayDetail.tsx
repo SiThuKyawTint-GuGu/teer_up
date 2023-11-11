@@ -125,7 +125,10 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
 
     if (data.type === "html" && data.html_body)
       return (
-        <div id={data.slug} className="w-full h-[90%] overflow-y-scroll rounded-lg px-2 bg-white shadow-lg">
+        <div
+          id={data.slug}
+          className="w-full h-[90%] z-[10] overflow-y-scroll no-scrollbar rounded-lg px-2 bg-white shadow-lg"
+        >
           <div className="p-2">
             <div
               className="text-start"
@@ -136,7 +139,10 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
           </div>
         </div>
       );
-    return <ContentLayout data={data} contentMutate={contentMutate} />;
+    if ((data && data.content_article) || data.content_event || data.content_opportunity) {
+      return <ContentLayout data={data} contentMutate={contentMutate} />;
+    }
+    return <div className="w-full h-full justify-center items-center">Data must be null</div>;
   };
 
   return (

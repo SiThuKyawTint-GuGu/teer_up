@@ -8,10 +8,11 @@ import { Icons, Image } from "@/components/ui/Images";
 import { Tooltip } from "@/components/ui/Tooltip";
 import { Text } from "@/components/ui/Typo/Text";
 import { useGetUserDimensionResult } from "@/services/dimension";
-import { ON_BOARDING_SKIP, useGetUserById, useResetScores, useUpdateUserOnboardingStatus } from "@/services/user";
+import { useGetUserById, useResetScores, useUpdateUserOnboardingStatus } from "@/services/user";
 import { PROFILE_TRIGGER } from "@/shared/enums";
 import { UserDimensionResultResponse } from "@/types/Dimension";
 import { UserProfileResponse } from "@/types/Profile";
+import { setLocalStorage } from "@/utils";
 import { getUserInfo } from "@/utils/auth";
 import { cn } from "@/utils/cn";
 import { Box, Flex, Grid, Heading, Section, Tabs } from "@radix-ui/themes";
@@ -19,6 +20,7 @@ import dayjs from "dayjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
+import { mutate } from "swr";
 import RadarChart from "./RadarChart";
 
 const profileTrigger = {
@@ -50,9 +52,14 @@ const Profile: React.FC = () => {
 
   const handleContinueAssessment = async () => {
     await onBoardingStatus(
-      { skip: ON_BOARDING_SKIP.SKIP },
+      { in_progress: true },
       {
         onSuccess: () => {
+          mutate(
+            () => true, // which cache keys are updated
+            undefined, // update cache data to `undefined`
+            { revalidate: true } // do not revalidate
+          );
           router.push(`/home`);
         },
       }
@@ -60,8 +67,14 @@ const Profile: React.FC = () => {
   };
 
   const handleRetakeAssessment = async () => {
+    setLocalStorage("content", 0);
+    mutate(
+      () => true, // which cache keys are updated
+      undefined, // update cache data to `undefined`
+      { revalidate: true } // do not revalidate
+    );
     await resetScores();
-    await startTransition(() => router.push("/home"));
+    startTransition(() => router.push("/home"));
   };
 
   const handleTouchedTooltip = (key: number) => {

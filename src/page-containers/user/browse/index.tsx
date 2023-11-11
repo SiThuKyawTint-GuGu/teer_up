@@ -26,7 +26,7 @@ const BrowsePage = () => {
 
   return (
     <div className="relative w-full h-full pb-[60px]">
-      <Flex className="p-3 w-full sticky top-0 overflow-auto no-scrollbar">
+      <Flex className="p-3 w-full sticky top-0 overflow-auto gap-[24px] no-scrollbar">
         {BrowsePageHeader.map((data: HeaderType, index: number) => (
           <div
             key={index}
@@ -35,7 +35,13 @@ const BrowsePage = () => {
             }}
             className="cursor-pointer"
           >
-            <Text as="div" className={`w-auto px-3 ${type === data.value && "border-b-[2px] border-primary"}`}>
+            {" "}
+            <Text
+              as="div"
+              className={`w-auto   ${
+                type === data.value && "border-b-[2px] border-primary text-primary text-[16px] font-[600]"
+              }`}
+            >
               {data.text}
             </Text>
           </div>

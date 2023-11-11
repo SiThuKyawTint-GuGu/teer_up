@@ -1,17 +1,13 @@
 "use client";
 import { ContentData } from "@/types/Content";
 
-import {
-  ParamsType,
-  useContentWatchCount,
-  useGetContentInfinite,
-  useGetOnboardingQuestions,
-  useGetOnboardingStatus,
-  useSkipOnboarding,
-} from "@/services/content";
+import { useContentWatchCount, useGetOnboardingQuestions, useSkipOnboarding } from "@/services/content";
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
+import useSWRInfinite from "swr/infinite";
 
 import { Button } from "@/components/ui/Button";
+import fetcher from "@/lib/fetcher";
+import { getLocalStorage } from "@/utils";
 import { getToken, getUserInfo } from "@/utils/auth";
 import { useRouter } from "next/navigation";
 import ContentLayout from "./components/ContentLayout";
@@ -21,16 +17,13 @@ import Video from "./components/Video";
 
 const UserContent = () => {
   const token = getToken();
+
   const [page, setPage] = useState<number>(1);
   const [onBoardPage, setOnboardPage] = useState<number>(1);
   const videoRefs = useRef<HTMLVideoElement[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const [visibleItemIndex, setVisibleItemIndex] = useState<number>(0);
-  const [onBoardingIndex, setOnBoardingIndex] = useState(0);
-  const { data, mutate } = useGetContentInfinite<ParamsType>({
-    page: page,
-    pagesize: 25,
-  });
+
   const user = getUserInfo();
 
   const { data: onboarding } = useGetOnboardingQuestions({
@@ -42,16 +35,30 @@ const UserContent = () => {
   const [startTime, setStartTime] = useState<number | null>(null);
   const [totalTimeInView, setTotalTimeInView] = useState<number>(0);
   const { trigger: calculateCount } = useContentWatchCount();
-
-  const contentDataArray: ContentData[] = useMemo(() => data?.flatMap(page => page?.data) || [], [data]);
   const onBoardArray: ContentData[] = onboarding?.data;
-  const { data: status } = useGetOnboardingStatus();
-  const skip = status?.data.skip;
-  const complete = status?.data.completed;
-
   const router = useRouter();
   const [ispending, startTransition] = useTransition();
-  const showStart = localStorage.getItem("content");
+  const showStart = getLocalStorage("content");
+  const {
+    data: mmlData,
+    mutate,
+    size,
+    setSize,
+  } = useSWRInfinite(index => `/content?page=${index + 1}&pagesize=${4}`, fetcher, {
+    revalidateFirstPage: true,
+    revalidateAll: true,
+    revalidateIfStale: true,
+    revalidateOnFocus: true,
+    revalidateOnReconnect: true,
+    parallel: false,
+  });
+  const issues: any = mmlData ? [].concat(...mmlData) : [];
+
+  const contentDataArray: any = useMemo(() => issues?.flatMap((page: any) => page?.data) || [], [issues]);
+  console.log(contentDataArray);
+  const isEmpty = mmlData?.[0]?.length === 0;
+  const isReachingEnd = isEmpty || (mmlData && mmlData[mmlData.length - 1]?.length < 4);
+  console.log(isReachingEnd);
 
   useEffect(() => {
     if (containerRef.current) {
@@ -61,6 +68,13 @@ const UserContent = () => {
         const newIndex = Math.round(scrollPosition / (window.innerHeight - 92));
         setStartTime(Date.now());
         setVisibleItemIndex(newIndex);
+        console.log(container.scrollHeight - scrollPosition - container.clientHeight);
+        if (container.scrollHeight - scrollPosition - container.clientHeight === 0) {
+          console.log(visibleItemIndex);
+          setPage(page + 1);
+          setSize(s => s + 1);
+        }
+
         if (newIndex !== visibleItemIndex) {
           // Calculate time in view when the item changes
           if (contentDataArray && contentDataArray.length > 0) {
@@ -74,7 +88,6 @@ const UserContent = () => {
                   contentDataArray.splice(visibleItemIndex + 2, 1, onBoardArray[0]);
                   setOnboardPage(prev => prev + 1);
                 }
-
                 calculateCount({
                   watched_time: totalTime,
                   content_id: contentDataArray[visibleItemIndex].id,
@@ -145,9 +158,10 @@ const UserContent = () => {
       <div className="w-full h-[calc(100vh-92px)] pt-[32px]">
         <div
           ref={containerRef}
-          className={`snap-y flex-col snap-mandatory h-full px-[16px]   w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
+          className={`snap-y flex-col snap-mandatory h-full px-[16px]  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
           style={{ scrollSnapStop: "always" }}
         >
+          {showStart === 0 && token && <ContentStart />}
           {contentDataArray &&
             contentDataArray.length > 0 &&
             contentDataArray.map((data: ContentData, index: number) => (
@@ -157,7 +171,6 @@ const UserContent = () => {
                 id={index.toString()}
                 key={index}
               >
-                {showStart !== "1" && <ContentStart index={visibleItemIndex} />}
                 {data && differentContent(data, visibleItemIndex)}
 
                 {index === 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
@@ -185,7 +198,7 @@ const UserContent = () => {
                         );
                       }}
                     >
-                      {!skip && "Skip"}
+                      skip
                     </Button>
                   )}
               </div>

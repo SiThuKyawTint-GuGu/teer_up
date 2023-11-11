@@ -29,7 +29,7 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate }) =>
               }}
             >
               {data.type !== "video" && (
-                <div className="absolute top-0 right-0 bg-white text-[14px] font-[600] px-[16px] py-[4px] rounded-bl-lg shadow-lg uppercase">
+                <div className="absolute top-0 right-0 bg-white text-[14px] font-[600] px-[16px] py-[4px] tracking-[0.42px] rounded-bl-[8px] shadow-lg uppercase">
                   {data.type}
                 </div>
               )}
@@ -58,19 +58,21 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate }) =>
                 )}
               </Link>
               <div className="mt-2 w-full">
-                <Button
-                  className="w-full"
-                  disabled={ispending}
-                  onClick={() =>
-                    startTransition(() => {
-                      router.push(`/content/${data.slug}`);
-                    })
-                  }
-                >
-                  {(data.type === "event" || data.type === "pathway") && "Join Now"}
-                  {data.type === "opportunity" && "Apply Now"}
-                  {data.type === "mentor" && "Request Mentorship"}
-                </Button>
+                {data.type !== "article" && (
+                  <Button
+                    className="w-full"
+                    disabled={ispending}
+                    onClick={() =>
+                      startTransition(() => {
+                        router.push(`/content/${data.slug}`);
+                      })
+                    }
+                  >
+                    {(data.type === "event" || data.type === "pathway") && "Join Now"}
+                    {data.type === "opportunity" && "Apply Now"}
+                    {data.type === "mentor" && "Request Mentorship"}
+                  </Button>
+                )}
                 <div className="w-full pt-3">
                   <hr className="w-full h-[1px] bg-slateGray" />
                 </div>
