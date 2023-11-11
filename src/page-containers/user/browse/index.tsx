@@ -1,28 +1,47 @@
 "use client";
 
 import { Text } from "@/components/ui/Typo/Text";
-import { ParamsType, useGetBrowseInfinite } from "@/services/content";
-import { ContentData, ContentType } from "@/types/Content";
+import { useGetBrowseInfinite } from "@/services/content";
+import { ContentData } from "@/types/Content";
 import { Flex } from "@radix-ui/themes";
 import { useSearchParams } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import BrowserContentLayout from "./Components/BrowerCotentLayout";
 
 const BrowsePage = () => {
-  const [page, setPage] = useState<number>(1);
   const [type, setType] = useState<string>("all");
   const searchParams = useSearchParams();
-
+  const [visibleItemIndex, setVisibleItemIndex] = useState<number>(0);
+  const containerRef = useRef<HTMLDivElement>(null);
   const search = useMemo(() => {
     return searchParams.get("search");
   }, [searchParams]);
 
-  const { data, mutate } = useGetBrowseInfinite<ParamsType>({
-    page: page,
-    pagesize: 20,
-    type: type,
-    search: search ? search : "",
-  });
+  const { data, mutate, setSize } = useGetBrowseInfinite({ search: search, type: type });
+  const browseDataArray = useMemo(() => data?.flatMap((page: any) => page?.data) || [], [data]);
+
+  useEffect(() => {
+    if (containerRef.current) {
+      const container = containerRef.current;
+      const handleScroll = () => {
+        const scrollPosition = container.scrollTop;
+        const newIndex = Math.round(scrollPosition / 400);
+
+        setVisibleItemIndex(newIndex);
+
+        if (container.scrollHeight - container.scrollTop - container.clientHeight < 1) {
+          setSize(s => s + 1);
+        }
+      };
+
+      container.addEventListener("scroll", handleScroll);
+      return () => {
+        container.removeEventListener("scroll", handleScroll);
+      };
+    }
+  }, [visibleItemIndex]);
+
+  console.log(visibleItemIndex);
 
   return (
     <div className="relative w-full h-full pb-[60px]">
@@ -48,25 +67,19 @@ const BrowsePage = () => {
         ))}
       </Flex>
       <Flex direction="column" className="w-full h-full">
-        {data &&
-          data.length > 0 &&
-          data.map(
-            (contentArray: ContentType, index: number) =>
-              contentArray.data &&
-              contentArray.data.length > 0 && (
-                <div className="w-full h-full overflow-y-scroll no-scrollbar" key={index}>
-                  {contentArray.data.map((contentData: ContentData, index: number) => (
-                    <div key={index} className="w-full">
-                      <BrowserContentLayout
-                        data={contentData}
-                        contentMutate={mutate}
-                        redir={`/content/${contentData.slug}`}
-                      />
-                    </div>
-                  ))}
-                </div>
-              )
-          )}
+        <div className="w-full h-full overflow-y-scroll no-scrollbar" ref={containerRef}>
+          {browseDataArray &&
+            browseDataArray.length !== 0 &&
+            browseDataArray.map((contentData: ContentData, index: number) => (
+              <div key={index} className="w-full h-[400px]">
+                <BrowserContentLayout
+                  data={contentData}
+                  contentMutate={mutate}
+                  redir={`/content/${contentData.slug}`}
+                />
+              </div>
+            ))}
+        </div>
       </Flex>
     </div>
   );
