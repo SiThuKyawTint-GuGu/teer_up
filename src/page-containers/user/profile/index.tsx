@@ -106,7 +106,7 @@ const Profile: React.FC = () => {
                   <Text size="3" weight="medium">
                     Profile
                   </Text>
-                  <Flex justify="center" align="center" className="absolute top-0 right-4 bottom-0">
+                  <Flex justify="center" align="center" className="absolute top-0 right-6 bottom-0">
                     <Link href={`/profile/setting`}>
                       <Icons.profileSetting />
                     </Link>
