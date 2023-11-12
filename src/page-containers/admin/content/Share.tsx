@@ -59,7 +59,7 @@ const Share: React.FC<{ url: string }> = ({ url }) => {
         >
           <Icons.whatapp className="w-[40px] h-[40px] text-green-600 mb-1" />
           <Text as="div" className="text-center w-full">
-            What&apos;s up
+            WhatsApp
           </Text>
         </Link>
       </Flex>
