@@ -51,7 +51,7 @@ import {
   IoSettingsOutline,
   IoShareSocialOutline,
 } from "react-icons/io5";
-import { MdDelete, MdOutlineMailOutline } from "react-icons/md";
+import { MdDelete, MdOutlineDeleteSweep, MdOutlineMailOutline } from "react-icons/md";
 import {
   PiAirplaneTiltLight,
   PiArrowDownRightThin,
@@ -195,6 +195,7 @@ export const Icons = {
   profileSetting: IoSettingsOutline,
   link: IoLinkOutline,
   info: BsInfoCircle,
+  deleteCross: MdOutlineDeleteSweep,
 };
 
 interface Image {
