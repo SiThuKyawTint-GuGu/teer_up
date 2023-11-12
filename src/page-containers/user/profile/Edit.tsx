@@ -207,7 +207,7 @@ const ProfileEdit: React.FC = () => {
                   <Heading as="h6" size="4" align="left">
                     Job Experience
                   </Heading>
-                  {userProfile?.experiences?.length && (
+                  {userProfile?.experiences !== undefined && userProfile?.experiences.length > 0 && (
                     <Link href={`/profile/${id}/experience`}>
                       <Text className="text-primary">Edit</Text>
                     </Link>
@@ -265,9 +265,11 @@ const ProfileEdit: React.FC = () => {
                   <Heading as="h6" size="4" align="left">
                     Education
                   </Heading>
-                  <Link href={`/profile/${id}/education`}>
-                    <Text className="text-primary">Edit</Text>
-                  </Link>
+                  {userProfile?.educations !== undefined && userProfile?.educations.length > 0 && (
+                    <Link href={`/profile/${id}/education`}>
+                      <Text className="text-primary">Edit</Text>
+                    </Link>
+                  )}
                 </Flex>
                 {userProfile?.educations?.length ? (
                   userProfile?.educations?.map((each, key) => (
