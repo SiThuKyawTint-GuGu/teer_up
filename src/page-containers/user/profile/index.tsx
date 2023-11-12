@@ -7,7 +7,13 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import { useGetUserDimensionResult } from "@/services/dimension";
-import { useGetUserById, useResetScores, useUpdateUserOnboardingStatus } from "@/services/user";
+import {
+  useDeleteCoverPhoto,
+  useDeleteProfilePhoto,
+  useGetUserById,
+  useResetScores,
+  useUpdateUserOnboardingStatus,
+} from "@/services/user";
 import { PROFILE_TRIGGER } from "@/shared/enums";
 import { UserDimensionResultResponse } from "@/types/Dimension";
 import { UserProfileResponse } from "@/types/Profile";
@@ -27,6 +33,11 @@ const profileTrigger = {
   [PROFILE_TRIGGER.PROFILE]: "See profile picture",
 };
 
+const profileDeleteTrigger = {
+  [PROFILE_TRIGGER.COVER]: "Delete cover picture",
+  [PROFILE_TRIGGER.PROFILE]: "Delete profile picture",
+};
+
 const profileTriggerIcon = {
   [PROFILE_TRIGGER.COVER]: "/uploads/icons/select-profile.svg",
   [PROFILE_TRIGGER.PROFILE]: "/uploads/icons/see-profile.svg",
@@ -36,21 +47,17 @@ const Profile: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [viewImage, setViewImage] = useState<boolean>(false);
   const [triggerType, setTriggerType] = useState<PROFILE_TRIGGER>();
-  const [touched, setTouched] = useState<{
-    key?: number;
-    open: boolean;
-  }>({
-    open: false,
-  });
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const pathname = usePathname();
   const user = getUserInfo();
   const { get } = useSearchParams();
-  const { data: profileData } = useGetUserById<UserProfileResponse>(user?.id);
+  const { data: profileData, mutate: mutateUser } = useGetUserById<UserProfileResponse>(user?.id);
   const { data: userDimensionData } = useGetUserDimensionResult<UserDimensionResultResponse>();
   const { trigger: onBoardingStatus } = useUpdateUserOnboardingStatus();
   const { trigger: resetScores } = useResetScores();
+  const { trigger: deleteProfileTrigger } = useDeleteCoverPhoto();
+  const { trigger: deleteCoverTrigger } = useDeleteProfilePhoto();
   const userProfile = profileData?.data;
 
   const handleContinueAssessment = async () => {
@@ -80,6 +87,18 @@ const Profile: React.FC = () => {
     startTransition(() => router.push("/home"));
   };
 
+  const handleDeletePhoto = async () => {
+    const triggerFunction = triggerType === PROFILE_TRIGGER.PROFILE ? deleteProfileTrigger() : deleteCoverTrigger();
+
+    try {
+      await triggerFunction;
+      await mutateUser();
+      setOpen(!open);
+    } catch (error) {
+      console.error("Upload failed =>", error);
+    }
+  };
+
   const handleTabTrigger = (key: string) => {
     router.push(`${pathname}?tab=${key}`);
   };
@@ -89,13 +108,7 @@ const Profile: React.FC = () => {
       <Dialog
         open={open}
         onOpenChange={val => {
-          if (userProfile?.cover_url) {
-            setOpen(val);
-          } else {
-            startTransition(() => {
-              router.push(`/profile/${user?.id}`);
-            });
-          }
+          setOpen(val);
         }}
       >
         <Grid columns="1">
@@ -544,7 +557,7 @@ const Profile: React.FC = () => {
           handleOnClose={setViewImage}
         >
           {!viewImage ? (
-            <Box className="space-y-[40px]">
+            <Box className="space-y-[20px]">
               <Flex
                 justify="start"
                 align="center"
@@ -557,11 +570,21 @@ const Profile: React.FC = () => {
                   height={20}
                   alt={profileTrigger[triggerType as PROFILE_TRIGGER]}
                 />
-                <Text className="text-black">{profileTrigger[triggerType as PROFILE_TRIGGER]}</Text>
+                <Text className="text-black ml-2">{profileTrigger[triggerType as PROFILE_TRIGGER]}</Text>
+              </Flex>
+
+              <Flex
+                justify="start"
+                align="center"
+                className="pb-[20px] mb-[20px] border-b border-b-[#BDC7D5] gap-[10px]"
+                onClick={handleDeletePhoto}
+              >
+                <Icons.deleteCross className="w-7 h-7 text-[#373A36]" />
+                <Text className="text-black">{profileDeleteTrigger[triggerType as PROFILE_TRIGGER]}</Text>
               </Flex>
             </Box>
           ) : (
-            <Flex justify="center" align="center">
+            <Flex className="relative" justify="center" align="center">
               {triggerType === PROFILE_TRIGGER.COVER ? (
                 <img src={userProfile?.cover_url} alt="" />
               ) : (

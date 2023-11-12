@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { Icons } from "../ui/Images";
 import { HEIGHT_TYPES, WIDTH_TYPES } from "./enums";
 
 interface Props {
@@ -11,11 +10,7 @@ interface Props {
 }
 
 const BGImage: React.FC<Props> = ({ url, width, height, className }: Props) => {
-  return (
-    <BackgroundStyled className={className} url={url} width={width} height={height}>
-      <Icons.deleteCross className="text-white absolute top-3 right-3" />
-    </BackgroundStyled>
-  );
+  return <BackgroundStyled className={className} url={url} width={width} height={height} />;
 };
 
 export default BGImage;

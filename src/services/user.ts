@@ -146,6 +146,16 @@ export const useUploadProfile = () =>
     });
   });
 
+export const useDeleteCoverPhoto = () =>
+  useSWRMutation(`/user/profile/cover-img`, url => {
+    return appAxios.delete(url);
+  });
+
+export const useDeleteProfilePhoto = () =>
+  useSWRMutation(`/user/profile/cover-img`, url => {
+    return appAxios.delete(url);
+  });
+
 export const useUpdateProfileIndustry = () =>
   useSWRMutation(`/user/profile/industries`, (url, { arg }: { arg: { industry_id: number } }) => {
     return appAxios.put<{ arg: { industry_id: number } }>(url, arg);

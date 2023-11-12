@@ -51,7 +51,7 @@ import {
   IoSettingsOutline,
   IoShareSocialOutline,
 } from "react-icons/io5";
-import { MdDelete, MdOutlineMailOutline } from "react-icons/md";
+import { MdDelete, MdOutlineDeleteSweep, MdOutlineMailOutline } from "react-icons/md";
 import {
   PiAirplaneTiltLight,
   PiArrowDownRightThin,
@@ -80,7 +80,6 @@ import {
 } from "react-icons/pi";
 import { RxCross2, RxMagnifyingGlass } from "react-icons/rx";
 import { SiAmazon, SiNetflix, SiTesla, SiVivawallet } from "react-icons/si";
-import { TiDelete } from "react-icons/ti";
 import { LandingIcon, TeeupFooterIcon, TeeupIcon } from "./Icons";
 
 export const Icons = {
@@ -195,7 +194,7 @@ export const Icons = {
   profileSetting: IoSettingsOutline,
   link: IoLinkOutline,
   info: BsInfoCircle,
-  deleteCross: TiDelete,
+  deleteCross: MdOutlineDeleteSweep,
 };
 
 interface Image {
