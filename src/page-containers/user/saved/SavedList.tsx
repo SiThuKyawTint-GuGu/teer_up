@@ -6,8 +6,13 @@ import CardBox from "@/components/ui/Card";
 import { Dialog, DialogClose, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
-import { SAVED_CONTENT_TYPES, SavedContentParams, useGetSavedContents } from "@/services/content";
-import { SavedContentResponse } from "@/types/SavedContent";
+import {
+  SAVED_CONTENT_TYPES,
+  SavedContentParams,
+  useGetSavedContents,
+  useGetUnfinishedPathway,
+} from "@/services/content";
+import { SavedContentResponse, UnfinishedPathwayResponse } from "@/types/SavedContent";
 import { cn } from "@/utils/cn";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
@@ -65,6 +70,7 @@ const SavedList: React.FC = () => {
   const { data: savedContents } = useGetSavedContents<SavedContentParams, SavedContentResponse>({
     type: filteredType.key === SAVED_CONTENT_TYPES.ALL ? "" : filteredType.key,
   });
+  const { data: unFinishedPathways } = useGetUnfinishedPathway<UnfinishedPathwayResponse>();
 
   return (
     <Dialog open={open} onOpenChange={val => setOpen(val)}>
@@ -74,7 +80,7 @@ const SavedList: React.FC = () => {
             <Heading as="h6" size="4" align="left">
               Saved items
             </Heading>
-            <DialogTrigger onClick={() => setTriggerType(TRIGGER_TYPE.FILTER)}>
+            <DialogTrigger asChild onClick={() => setTriggerType(TRIGGER_TYPE.FILTER)}>
               <Button variant="ghost" className="text-primary">
                 {filteredType.key === SAVED_CONTENT_TYPES.ALL ? "All" : filteredType.value}
                 <Icons.caretDown />
@@ -83,14 +89,12 @@ const SavedList: React.FC = () => {
           </Flex>
           <Box className="pb-[7px]">
             <Section className="" py="4" px="3">
-              <DialogTrigger className="w-full" onClick={() => setTriggerType(TRIGGER_TYPE.UNFINISHED)}>
-                <Button
-                  onClick={() => setTriggerType(TRIGGER_TYPE.UNFINISHED)}
-                  variant="outline"
-                  className="w-full mb-4"
-                >
-                  Continue unfinished pathway
-                </Button>
+              <DialogTrigger asChild className="w-full" onClick={() => setTriggerType(TRIGGER_TYPE.UNFINISHED)}>
+                <Link href="/saved/unfinished-pathway">
+                  <Button variant="outline" className="w-full mb-4">
+                    Continue unfinished pathway
+                  </Button>
+                </Link>
               </DialogTrigger>
               {savedContents?.data?.length ? (
                 savedContents?.data?.map((each, key) => (
@@ -141,37 +145,28 @@ const SavedList: React.FC = () => {
           triggerType === TRIGGER_TYPE.UNFINISHED && "top-0 rounded-none"
         )}
       >
-        {triggerType === TRIGGER_TYPE.FILTER ? (
-          <>
-            <Text className="text-[20px] font-bold">Show only</Text>
-            <Box>
-              {filterNames.map((each, key) => (
-                <div
-                  key={key}
-                  className={cn(
-                    "pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]",
-                    each.key === filteredType.key && "text-primary"
-                  )}
-                  onClick={() => setFilterTypes(each)}
-                >
-                  <DialogClose className="w-full">
-                    <Flex justify="between" align="center" gap="2">
-                      <Text as="label" weight="bold" size="3">
-                        {each.value}
-                      </Text>
-                      <Icons.check />
-                    </Flex>
-                  </DialogClose>
-                </div>
-              ))}
-            </Box>
-          </>
-        ) : (
-          <>
-            <Text className="text-[20px] font-bold">Continue unfinished pathway</Text>
-            <Box></Box>
-          </>
-        )}
+        <Text className="text-[20px] font-bold">Show only</Text>
+        <Box>
+          {filterNames.map((each, key) => (
+            <div
+              key={key}
+              className={cn(
+                "pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]",
+                each.key === filteredType.key && "text-primary"
+              )}
+              onClick={() => setFilterTypes(each)}
+            >
+              <DialogClose className="w-full">
+                <Flex justify="between" align="center" gap="2">
+                  <Text as="label" weight="bold" size="3">
+                    {each.value}
+                  </Text>
+                  <Icons.check />
+                </Flex>
+              </DialogClose>
+            </div>
+          ))}
+        </Box>
       </DialogContent>
     </Dialog>
   );

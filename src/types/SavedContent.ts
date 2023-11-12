@@ -34,6 +34,15 @@ export interface SavedContent {
   content: Content;
 }
 
+export interface UnfinishedPathway extends Omit<SavedContent, "content"> {
+  progress: number;
+  current_content_id: number;
+}
+
 export interface SavedContentResponse {
   data: SavedContent[];
+}
+
+export interface UnfinishedPathwayResponse {
+  data: UnfinishedPathway[];
 }
