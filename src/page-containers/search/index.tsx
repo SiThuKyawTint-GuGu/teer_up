@@ -18,7 +18,7 @@ const Search: React.FC = () => {
   const { get } = useSearchParams();
   const [isPending, startTransition] = useTransition();
   const inputRef = useRef<any>(null);
-
+  const [category, setCategory] = useState<string>();
   const { data: searchData } = useGetContentSearch<SearchParamsType, ContentType>({
     search: searchValue,
   });
@@ -26,6 +26,7 @@ const Search: React.FC = () => {
   // const histories = getLocalStorage("history") || [];
   const debouncedOnChange = debounce(() => {
     setSearchValue(inputRef?.current?.value);
+
     // if (histories) {
     //   const newData = [...histories, inputRef?.current?.value];
     //   inputRef?.current?.value && setLocalStorage("history", newData);
@@ -42,6 +43,7 @@ const Search: React.FC = () => {
 
   useEffect(() => {
     setSearchValue(get("keyword") || "");
+    setCategory(get("category") || "");
   }, [get]);
 
   return (
@@ -107,7 +109,9 @@ const Search: React.FC = () => {
                 <>
                   {searchData?.data?.map((each, key) => (
                     <>
+
                       <Link key={key} href={`/home?search=${each?.title}`}>
+
                         <Text
                           className={cn(
                             "pb-[10px] mb-[10px]",
