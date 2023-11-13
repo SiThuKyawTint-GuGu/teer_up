@@ -122,6 +122,49 @@ export interface ContentMentor {
   profile_url: string;
   cover_url: string;
 }
+export interface ContentHome {
+  data: ContentHomeData[];
+}
+export interface ContentHomeData {
+  id: number;
+  name: string;
+  slug: string;
+  category_contents: ContentData[] | [];
+}
+export interface ContentData {
+  content: {
+    id: string;
+    title: string;
+    description: string;
+    created_at: string;
+    type: "video" | "article" | "event" | "opportunity" | "pathway" | "onboarding" | "mentor" | "html";
+    html_body: TrustedHTML;
+    updated_at: string;
+    user_id: string;
+    image_url: string;
+    slug: string;
+    status: string;
+    likes: number;
+    saves: number;
+    mentor: ContentMentor;
+    is_liked: boolean;
+    is_saved: boolean;
+    comments: number;
+    category_id: number;
+    content_video: ContentVideo | null;
+    content_event: ContentEvent | null;
+    content_article: ContentArticle | null;
+    content_opportunity: ContentOpportunity | null;
+    content_pathways: ContentData[] | null;
+    content_keywords: ContentKeywords[];
+    category: string;
+    user: User;
+    name: string;
+    dimension_id: 1;
+    options: OnBoardingOption[];
+    question_type: string;
+  };
+}
 export interface ContentData {
   id: string;
   title: string;

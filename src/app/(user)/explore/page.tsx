@@ -1,18 +1,18 @@
 import MainPageLayout from "@/components/userLayout/MainPageLayout";
-import BrowsePage from "@/page-containers/user/browse";
+import UserContent from "@/page-containers/user/content";
 import { NextPage } from "next";
 export const metadata = {
-  title: "Home",
+  title: "Explore",
   openGraph: {
-    title: "Home",
+    title: "Explore",
   },
 };
-const Home: NextPage = () => {
+const Explore: NextPage = () => {
   return (
     <MainPageLayout>
-      <BrowsePage />
+      <UserContent />
     </MainPageLayout>
   );
 };
 
-export default Home;
+export default Explore;
