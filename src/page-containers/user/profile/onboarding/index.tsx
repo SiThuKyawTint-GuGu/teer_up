@@ -24,7 +24,7 @@ const OnboardingQuestionPage = () => {
   const router = useRouter();
 
   return (
-    <div className="w-full h-[calc(100dvh-96px)] pt-[6px]">
+    <div className="w-full h-[calc(100dvh-112px)] pt-[90px] pb-[10px]">
       <div
         className={`snap-y flex-col snap-mandatory h-full px-[16px]  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
         style={{ scrollSnapStop: "always" }}
@@ -32,7 +32,7 @@ const OnboardingQuestionPage = () => {
         {showStart === 0 && token && <ContentStart />}
         {onboardingArray?.data.map((data: ContentData, index: number) => (
           <div
-            className="w-full h-full pt-2 snap-start"
+            className="w-full h-full snap-start"
             style={{ scrollSnapStop: "always" }}
             id={index.toString()}
             key={index}
