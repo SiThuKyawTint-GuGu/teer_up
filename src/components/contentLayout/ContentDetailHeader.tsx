@@ -3,7 +3,7 @@
 import Share from "@/page-containers/admin/content/Share";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { usePathname, useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Marquee from "react-fast-marquee";
 import styled from "styled-components";
 import { Dialog, DialogContent } from "../ui/Dialog";
@@ -19,12 +19,30 @@ const ContentDetailHeader: React.FC<ContentDetailHeaderProps> = ({ title }) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const textRef = useRef<any>();
   const divRef = useRef<any>();
+  const [shouldMarquee, setShouldMarquee] = useState(false);
 
-  // useEffect(() => {
-  //   const textElement = textRef.current;
-  // }, [title])
+  useEffect(() => {
+    const handleResize = () => {
+      if (textRef.current && divRef.current) {
+        console.log("text width => ", textRef.current.offsetWidth);
+        console.log("div width => ", divRef.current.offsetWidth);
+        const shouldShowMarquee = textRef.current.offsetWidth > divRef.current.offsetWidth;
+        console.log("shouldShowMarquee => ", shouldShowMarquee);
+        setShouldMarquee(shouldShowMarquee);
+      }
+    };
+    handleResize();
 
-  console.log(textRef?.current?.offsetWidth);
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [title]);
+
+  console.log(shouldMarquee);
+
+  // console.log(textRef.current.offsetWidth);
 
   return (
     <div className="flex justify-between h-[48px] z-50  items-center bg-white fixed top-0 w-full max-w-[400px] mx-auto">
@@ -34,17 +52,17 @@ const ContentDetailHeader: React.FC<ContentDetailHeaderProps> = ({ title }) => {
       >
         <Icons.back className="w-[20px] h-[20px]" />
       </div>
-      <div className="flex justify-center" style={{ width: 300 }} ref={divRef}>
-        {textRef?.current?.offsetWidth > divRef?.current?.offsetWidth ? (
+      <div className="flex justify-center" style={{ width: 300, padding: "0 20px" }} ref={divRef}>
+        {shouldMarquee ? (
           <Marquee>
-            <Text as="div" className="capitalize font-[600] text-[16px]" ref={textRef}>
+            <MarqueeText className="capitalize font-[600] text-[16px]" ref={textRef}>
               {title}
-            </Text>
+            </MarqueeText>
           </Marquee>
         ) : (
-          <Text as="div" className="capitalize font-[600] text-[16px]" ref={textRef}>
+          <MarqueeText className="capitalize font-[600] text-[16px]" ref={textRef}>
             {title}
-          </Text>
+          </MarqueeText>
         )}
       </div>
       <Dialog open={modalOpen} onOpenChange={val => setModalOpen(val)}>
@@ -68,9 +86,7 @@ const ContentDetailHeader: React.FC<ContentDetailHeaderProps> = ({ title }) => {
 
 export default ContentDetailHeader;
 
-const MarqueeStyled = styled.div`
-  width: 200px;
+const MarqueeText = styled(Text)`
+  /* text-wrap: nowrap; */
   white-space: nowrap;
-  overflow: hidden;
-  border: 1px solid #ccc;
 `;
