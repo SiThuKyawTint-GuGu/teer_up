@@ -1,6 +1,6 @@
 "use client";
 import appAxios from "@/lib/appAxios";
-import { CommentResponse } from "@/types/Content";
+import { CommentResponse, ContentHomeData } from "@/types/Content";
 import { routeFilter } from "@/utils";
 import { getToken } from "@/utils/auth";
 import useSWR, { SWRResponse } from "swr";
@@ -75,9 +75,7 @@ export const useGetBrowseInfinite = ({
   );
 };
 
-export const useGetHomeContent = <ContentType>(params?: ParamsType): SWRResponse<ContentType, any> => {
-  return useSWR<ContentType>(`content/browse/all`);
-};
+export const useGetHomeContent = () => useSWR<{ data: ContentHomeData[] }>(`content/browse/all`);
 
 export const useGetContent = <ParamsType, ContentType>(params?: ParamsType): SWRResponse<ContentType, any> => {
   return useSWR<ContentType>(`/admin/contents?${routeFilter(params)}`);
