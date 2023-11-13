@@ -34,11 +34,10 @@ const VerifyPop: React.FC = () => {
               size="lg"
               disabled={isPending}
               className="mb-5"
-              onClick={() =>
-                startTransition(() => {
-                  router.push("/auth/login");
-                })
-              }
+              onClick={() => {
+                verifyModalCloseHandler();
+                router.push("/auth/login");
+              }}
             >
               Login
             </Button>
