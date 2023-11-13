@@ -12,12 +12,11 @@ type VideoDetailProp = {
   contentMutate: any;
 };
 const VideoDetail: React.FC<VideoDetailProp> = ({ data, contentMutate }) => {
-  const [isPlayed, setIsPlayed] = useState(true);
+  const [isPlayed, setIsPlayed] = useState(false);
   const [readMore, setReadMore] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const detailDescription = useRef<HTMLParagraphElement>(null);
   const isTruncated = useIsTruncated(detailDescription);
-  console.log(isTruncated);
 
   const handlePlayVideo = () => {
     if (videoRef.current) {
@@ -26,9 +25,11 @@ const VideoDetail: React.FC<VideoDetailProp> = ({ data, contentMutate }) => {
           videoRef.current.play();
         }
       } else {
-        videoRef.current.pause();
+        if (!videoRef.current.paused) {
+          videoRef.current.pause();
+        }
       }
-      setIsPlayed(!isPlayed);
+      setIsPlayed(isPlayed => !isPlayed);
     }
   };
 
@@ -41,7 +42,7 @@ const VideoDetail: React.FC<VideoDetailProp> = ({ data, contentMutate }) => {
               <Flex className="w-full h-full">
                 <div className="w-full h-[88vh] relative">
                   <video
-                    className={`w-full  h-full object-cover rounded-md ${isPlayed ? "" : "brightness-50"}`}
+                    className={`w-full  h-full object-cover rounded-md`}
                     id="myVideo"
                     poster={
                       data.image_url ||
@@ -50,24 +51,27 @@ const VideoDetail: React.FC<VideoDetailProp> = ({ data, contentMutate }) => {
                     preload="none"
                     data-video="0"
                     muted={false}
-                    autoPlay
                     onClick={() => handlePlayVideo()}
                     ref={videoRef}
+                    loop
                   >
                     <source src={data.content_video.video_url} className="object-fill" type="video/mp4"></source>
                   </video>
                   {!isPlayed && (
                     <div className="absolute top-1/2 right-[45%]">
-                      <PlayArrowRoundedIcon sx={{ color: "white", fontSize: 60 }} />
+                      <PlayArrowRoundedIcon
+                        onClick={handlePlayVideo}
+                        sx={{ color: "white", fontSize: 60, opacity: 0.5 }}
+                      />
                     </div>
                   )}
-                  <div className="absolute bottom-5 text-white  font-semibold">
+                  <div className="absolute bottom-0 text-white font-semibold bg-black bg-opacity-30 rounded-b-md">
                     <div className="overflow-hidden p-3">
                       <p className={`${readMore ? "" : "line-clamp-3"} transition-all`} ref={detailDescription}>
                         {data.description}
                       </p>
                       {isTruncated && (
-                        <button className="font-semibold" onClick={() => setReadMore(!readMore)}>
+                        <button className="font-semibold text-primary" onClick={() => setReadMore(!readMore)}>
                           {!readMore ? "See more" : "Less"}
                         </button>
                       )}

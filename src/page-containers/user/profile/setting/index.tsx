@@ -80,7 +80,7 @@ const Setting: React.FC = () => {
                 </Flex>
               </Link>
             </div>
-            <div className="pb-[15px] mb-[15px]">
+            <div>
               <Link className="block" href="https://www.prudential.com.sg/Privacy-Notice" target="_blank">
                 <Flex justify="between" align="start">
                   <Text as="label" weight="bold" size="3">

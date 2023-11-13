@@ -56,6 +56,8 @@ export interface ContentArticle {
   body: TrustedHTML;
   published_by: string;
   content_id: string;
+  formconfig_id: number | string;
+  form_config: FormConfig;
 }
 
 export interface ContentKeywords {

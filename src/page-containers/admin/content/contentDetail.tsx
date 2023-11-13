@@ -58,8 +58,9 @@ interface Props {
 
 const validationSchema = yup.object({
   title: yup.string().required("Title is required!"),
+  buttonLabel: yup.string().required("Button Label is required!"),
   description: yup.string().required("Description is required!"),
-  category: yup.string().required("Please select category!"),
+  // category: yup.string().required("Please select category!"),
   type: yup.string().required("Please select type!"),
   status: yup.string().required("Please select status!"),
 });
@@ -110,7 +111,7 @@ const ContentDetail = ({ id }: Props) => {
   // const [file, setFile] = useState<File | null>(null);
   // const [thumbnail, setThumbnail] = useState<File | null>(null);
   // const [image, setImage] = useState<File | null>(null);
-  const [selectCategory, setSelectCategory] = useState<string>("");
+  const [selectCategory, setSelectCategory] = useState<OptionType[]>([]);
   const [selectForm, setSelectForm] = useState<string>("");
   const [selectedMentor, setSelelectedMentor] = useState<any>(null);
 
@@ -132,6 +133,7 @@ const ContentDetail = ({ id }: Props) => {
   const [contentOptions, setContentOptions] = useState<OptionType[]>([]);
   const [keywordOptions, setKeywordOptions] = useState<OptionType[]>([]);
   const [industryOptions, setIndustryOptions] = useState<OptionType[]>([]);
+  const [categoryOptions, setCategoryOptions] = useState<OptionType[]>([]);
   const [mentorOptions, setMentorOptions] = useState<OptionType[]>([]);
   const [departmentOptions, setDepartmentOptions] = useState<OptionType[]>([]);
   const [selectedKeywords, setSelectedKeywords] = useState<OptionType[]>([]);
@@ -175,7 +177,7 @@ const ContentDetail = ({ id }: Props) => {
     if (content?.data) {
       setSelectedValue(content?.data.type);
       setSelectedStatus(content?.data?.status);
-      setSelectCategory(content?.data?.category?.id);
+      // setSelectCategory(content?.data?.category?.id);
       setEditorContent(content?.data?.content_article?.body);
       setOppoEditorContent(content?.data?.content_opportunity?.body);
       setLink(content?.data?.content_opportunity?.link);
@@ -248,9 +250,15 @@ const ContentDetail = ({ id }: Props) => {
         id: industry?.industry?.id,
       }));
       setSelectedIndustry(selectIndustry);
+      const selectCategories = content?.data.categories.map((category: any) => ({
+        label: category?.name,
+        id: category.id,
+      }));
+      setSelectCategory(selectCategories);
       setValue("title", content?.data.title);
+      setValue("buttonLabel", content?.data.buttonLabel);
       setValue("description", content?.data.description);
-      setValue("category", content?.data?.category?.id);
+      // setValue("category", content?.data?.category?.id);
       setValue("type", content?.data.type);
       setValue("status", content?.data.status);
     }
@@ -291,6 +299,13 @@ const ContentDetail = ({ id }: Props) => {
         id: option.id,
       }));
       setIndustryOptions(updatedOptions);
+    }
+    if (category?.data) {
+      const updatedOptions = category?.data.map((option: any) => ({
+        label: option.name,
+        id: option.id,
+      }));
+      setCategoryOptions(updatedOptions);
     }
   }, [
     editorContent,
@@ -342,15 +357,17 @@ const ContentDetail = ({ id }: Props) => {
       const keywords = selectedKeywords.map(item => item.id);
       const departments = selectedDepartment.map(item => item.id);
       const industries = selectedIndustry.map(item => item.id);
+      const categories = selectCategory.map(item => item.id);
       const imgurl = imgRes ? imgRes?.data?.data?.file_path : imgUrl;
       const videourl = videoRes ? videoRes?.data?.data?.file_path : videoUrl;
 
       postdata = {
         title: data?.title,
+        submit_label: data?.buttonLabel,
         description: data.description,
         type: selectedValue,
         status: selectedStatus,
-        category_id: Number(selectCategory),
+        categories,
         image_url: imgurl,
         keywords,
         departments,
@@ -381,13 +398,15 @@ const ContentDetail = ({ id }: Props) => {
       const keywords = selectedKeywords.map(item => item.id);
       const departments = selectedDepartment.map(item => item.id);
       const industries = selectedIndustry.map(item => item.id);
+      const categories = selectCategory.map(item => item.id);
       const imgurl = imgRes ? imgRes?.data?.data?.file_path : imgUrl;
       postdata = {
         title: data?.title,
+        submit_label: data?.buttonLabel,
         description: data?.description,
         type: selectedValue,
         status: selectedStatus,
-        category_id: Number(selectCategory),
+        categories,
         image_url: imgurl,
         keywords,
         departments,
@@ -414,13 +433,15 @@ const ContentDetail = ({ id }: Props) => {
       const keywords = selectedKeywords.map(item => item.id);
       const departments = selectedDepartment.map(item => item.id);
       const industries = selectedIndustry.map(item => item.id);
+      const categories = selectCategory.map(item => item.id);
       const imgurl = imgRes ? imgRes?.data?.data?.file_path : imgUrl;
       postdata = {
         title: data?.title,
+        submit_label: data?.buttonLabel,
         description: data?.description,
         type: selectedValue,
         status: selectedStatus,
-        category_id: Number(selectCategory),
+        categories,
         image_url: imgurl,
         keywords,
         departments,
@@ -449,13 +470,15 @@ const ContentDetail = ({ id }: Props) => {
       const keywords = selectedKeywords.map(item => item.id);
       const departments = selectedDepartment.map(item => item.id);
       const industries = selectedIndustry.map(item => item.id);
+      const categories = selectCategory.map(item => item.id);
       const imgurl = imgRes ? imgRes?.data?.data?.file_path : imgUrl;
       postdata = {
         title: data?.title,
+        submit_label: data?.buttonLabel,
         description: data?.description,
         type: selectedValue,
         status: selectedStatus,
-        category_id: Number(selectCategory),
+        categories,
         image_url: imgurl,
         keywords,
         departments,
@@ -485,16 +508,18 @@ const ContentDetail = ({ id }: Props) => {
       const keywords = selectedKeywords.map(item => item.id);
       const departments = selectedDepartment.map(item => item.id);
       const industries = selectedIndustry.map(item => item.id);
+      const categories = selectCategory.map(item => item.id);
       const imgurl = imgRes ? imgRes?.data?.data?.file_path : imgUrl;
       postdata = {
         title: data?.title,
+        submit_label: data?.buttonLabel,
         description: data?.description,
         type: selectedValue,
         status: selectedStatus,
         keywords,
         departments,
         industries,
-        category_id: Number(selectCategory),
+        categories,
         image_url: imgurl,
         content_dimensions: transformedDimensionData(),
         content_pathways: pathways,
@@ -508,16 +533,18 @@ const ContentDetail = ({ id }: Props) => {
       const keywords = selectedKeywords.map(item => item.id);
       const departments = selectedDepartment.map(item => item.id);
       const industries = selectedIndustry.map(item => item.id);
+      const categories = selectCategory.map(item => item.id);
       const imgurl = imgRes ? imgRes?.data?.data?.file_path : imgUrl;
       postdata = {
         title: data?.title,
+        submit_label: data?.buttonLabel,
         description: data?.description,
         type: selectedValue,
         status: selectedStatus,
         keywords,
         departments,
         industries,
-        category_id: Number(selectCategory),
+        categories,
         image_url: imgurl,
         mentor_id: selectedMentor.id,
         content_dimensions: transformedDimensionData(),
@@ -566,8 +593,11 @@ const ContentDetail = ({ id }: Props) => {
     // setEndDate(new Date(date).toISOString());
     setEndDate(date);
   };
-  const handleCategorySelectChange = (event: SelectChangeEvent) => {
-    setSelectCategory(event.target.value);
+  // const handleCategorySelectChange = (event: SelectChangeEvent) => {
+  //   setSelectCategory(event.target.value);
+  // };
+  const handleCategoryChange = (event: any, newValue: any) => {
+    setSelectCategory(newValue);
   };
 
   const handleFormSelectChange = (event: SelectChangeEvent) => {
@@ -674,6 +704,10 @@ const ContentDetail = ({ id }: Props) => {
             <p className="mt-2 text-red-700">{errors.title?.message}</p>
           </div>
           <div className="mb-10">
+            <TextField {...register("buttonLabel")} label="Button label" className="w-full" variant="outlined" />
+            <p className="mt-2 text-red-700">{errors.buttonLabel?.message}</p>
+          </div>
+          <div className="mb-10">
             <div className="mb-10">
               <TextField
                 {...register("description")}
@@ -687,7 +721,7 @@ const ContentDetail = ({ id }: Props) => {
             </div>
           </div>
           <div className="mb-10">
-            <FormControl fullWidth>
+            {/* <FormControl fullWidth>
               <InputLabel id="category">Category</InputLabel>
               <Select
                 {...register("category")}
@@ -704,7 +738,15 @@ const ContentDetail = ({ id }: Props) => {
                 ))}
               </Select>
             </FormControl>
-            <p className="mt-2 text-red-700">{errors.category?.message}</p>
+            <p className="mt-2 text-red-700">{errors.category?.message}</p> */}
+            <Autocomplete
+              multiple
+              id="tags-outlined"
+              options={categoryOptions || []}
+              value={selectCategory}
+              onChange={handleCategoryChange}
+              renderInput={params => <TextField {...params} label="Select Category" placeholder="Category" />}
+            />
           </div>
           {/* Industry */}
           <div className="my-10">

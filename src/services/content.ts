@@ -1,6 +1,6 @@
 "use client";
 import appAxios from "@/lib/appAxios";
-import { CommentResponse } from "@/types/Content";
+import { CommentResponse, ContentHomeData } from "@/types/Content";
 import { routeFilter } from "@/utils";
 import { getToken } from "@/utils/auth";
 import useSWR, { SWRResponse } from "swr";
@@ -14,6 +14,7 @@ export type ParamsType = {
   cursor?: number;
   type?: string;
   search?: string;
+  category?: string;
 };
 
 export interface ContentArgType {
@@ -77,12 +78,18 @@ export const useGetBrowseInfinite = ({
   );
 };
 
+
 export const useGetHomeContent = <ContentType>(params?: ParamsType): SWRResponse<ContentType, any> => {
   return useSWR<ContentType>(`content/browse/all?${routeFilter(params)}`);
 };
 
+
 export const useGetContent = <ParamsType, ContentType>(params?: ParamsType): SWRResponse<ContentType, any> => {
   return useSWR<ContentType>(`/admin/contents?${routeFilter(params)}`);
+};
+
+export const useGetBrowseContent = <ParamsType, ContentType>(params?: ParamsType): SWRResponse<ContentType, any> => {
+  return useSWR<ContentType>(`/content/browse?${routeFilter(params)}`);
 };
 
 export const useGetContentById = <ContentType>(id: string): SWRResponse<ContentType, any> => {
@@ -244,7 +251,7 @@ interface ContentFormArg {
     formconfig_id: number | string;
     inputs: {
       inputconfig_id: number | string;
-      value: string;
+      value: string | Date;
     }[];
   };
 }

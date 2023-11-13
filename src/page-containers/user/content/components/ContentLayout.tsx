@@ -1,12 +1,12 @@
 import ReactionBar from "@/components/contentLayout/ReactionBar";
-import { Button } from "@/components/ui/Button";
 import CardBox from "@/components/ui/Card";
 import { Text } from "@/components/ui/Typo/Text";
 import { ContentData } from "@/types/Content";
+import { Box } from "@radix-ui/themes";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React, { useTransition } from "react";
+
+import React from "react";
 type ContentlayoutProps = {
   data: ContentData;
   contentMutate: any;
@@ -14,13 +14,10 @@ type ContentlayoutProps = {
 };
 
 const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate }) => {
-  const router = useRouter();
-  const [ispending, startTransition] = useTransition();
-
   return (
     <CardBox className="w-full shadow-xl  rounded-lg h-[100%] justify-start flex-col mt-[15px] mb-[15px]">
       <div className="h-full w-full flex flex-col bg-white shadow-lg">
-        <div className="w-full h-[70%]  mx-auto relative">
+        <div className="w-full h-[250px]  mx-auto relative">
           <Link href={`/content/${data.slug}`}>
             <div
               className="relative w-full max-w-[400px] h-full  rounded-t-[8px]"
@@ -39,7 +36,7 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate }) =>
         <div className="w-full h-full pt-[16px] px-[12px]">
           <div className="w-full h-full">
             <div className="flex flex-col justify-between w-full h-full">
-              <Link href={`/content/${data.slug}`}>
+              <Box>
                 <h1 className="font-[700] text-[24px]">{data.title}</h1>
                 {data.description && (
                   <div className="w-full h-full">
@@ -56,22 +53,8 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate }) =>
                     </div>
                   </div>
                 )}
-              </Link>
+              </Box>
               <div className="mt-2 w-full">
-                <Button
-                  className="w-full"
-                  disabled={ispending}
-                  onClick={() =>
-                    startTransition(() => {
-                      router.push(`/content/${data.slug}`);
-                    })
-                  }
-                >
-                  {(data.type === "event" || data.type === "pathway") && "Join Now"}
-                  {data.type === "opportunity" && "Apply Now"}
-                  {data.type === "article" && "Suggests"}
-                  {data.type === "mentor" && "Request Mentorship"}
-                </Button>
                 <div className="w-full pt-3">
                   <hr className="w-full h-[1px] bg-slateGray" />
                 </div>

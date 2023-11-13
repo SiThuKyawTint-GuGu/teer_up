@@ -15,7 +15,7 @@ const Header: React.FC = () => {
 
   const handleClearSearch = () => {
     startTransition(() => {
-      router.push("/");
+      router.push("/home");
     });
   };
 

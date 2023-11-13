@@ -2,6 +2,7 @@
 import { Icons } from "@/components/ui/Images";
 import { useContentWatchCount } from "@/services/content";
 import { ContentData } from "@/types/Content";
+import { getLocalStorage, setLocalStorage } from "@/utils";
 import { getUserInfo } from "@/utils/auth";
 import { Flex } from "@radix-ui/themes";
 import React, { useEffect, useMemo, useRef, useState } from "react";
@@ -145,6 +146,18 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
     return <div className="w-full h-full justify-center items-center">Data must be null</div>;
   };
 
+  const storeIndex = (index: number) => {
+    setLocalStorage("pathwayPosition", index);
+  };
+
+  useEffect(() => {
+    const storeContentIndex = getLocalStorage("contentPosition");
+    const targetElement = document.getElementById(`${storeContentIndex}`);
+    if (targetElement) {
+      targetElement.scrollIntoView({});
+    }
+  }, []);
+
   return (
     <div
       ref={containerRef}
@@ -159,6 +172,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
             style={{ scrollSnapStop: "always" }}
             id={data.slug}
             key={index}
+            onClick={() => storeIndex(index)}
           >
             {differentContent(data, index)}
             {index == 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}

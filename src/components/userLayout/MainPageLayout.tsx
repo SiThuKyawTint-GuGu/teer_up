@@ -13,7 +13,7 @@ const MainPageLayout: React.FC<MainPageLayoutProp> = ({ children, hideHeader, hi
   return (
     <>
       {!hideHeader && <Header />}
-      <div className={cn("h-full", !hideHeader ? "py-[48px]" : "pb-[48px]")}>{children}</div>
+      <div className={cn("h-full", !hideHeader ? "pt-[48px] pb-[64px]" : "pb-[64px]")}>{children}</div>
       {!hideFooter && <BottomNavbar />}
     </>
   );

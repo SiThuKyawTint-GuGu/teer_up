@@ -3,6 +3,7 @@ import Loading from "@/app/loading";
 import { useGetBrowseInfinite, useGetHomeContent } from "@/services/content";
 import { useGetContentCategory } from "@/services/contentCategory";
 import { ContentData, ContentHomeData } from "@/types/Content";
+
 import { ContentCategoryResponse } from "@/types/ContentCategory";
 import { Flex } from "@radix-ui/themes";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -24,9 +25,11 @@ const BrowsePage = () => {
     mutate: contentDataMutate,
   } = useGetContentCategory<ContentCategoryResponse>();
 
+
   const { data: homeContent, isLoading: homeContentLoading } = useGetHomeContent<any>({
     search: search ?? "",
   });
+
   const { data, mutate, setSize } = useGetBrowseInfinite({ search: search ?? "", type: type });
   const browseDataArray = useMemo(() => data?.flatMap((page: any) => page?.data) || [], [data]);
   const searchDataArray = useMemo(
@@ -117,9 +120,11 @@ const BrowsePage = () => {
         ))}
       </Flex>
       {type === "all" ? (
+
         <div className="overflow-y-scroll no-scrollbar h-full bg-[#F8F9FB] ">
           {homeContent?.data && homeContent?.data?.length !== 0 && (!search || search === "") ? (
             homeContent?.data?.map((contentData: ContentHomeData, index: number) => {
+
               return (
                 <Flex direction="column" className="w-full  py-[10px]" key={index}>
                   <Flex direction={"row"} className="w-full  px-[12px] justify-between items-center">
@@ -189,7 +194,7 @@ const BrowsePage = () => {
 
             {browseDataArray && browseDataArray.length !== 0 ? (
               browseDataArray.map((contentData: ContentData, index: number) => (
-                <div key={index} className="w-full h-[400px]">
+                <div key={index} className="w-full h-auto">
                   <BrowserCategoryContentLayout
                     data={contentData}
                     contentMutate={mutate}

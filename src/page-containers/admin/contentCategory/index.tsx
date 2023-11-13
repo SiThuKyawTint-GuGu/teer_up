@@ -1,5 +1,5 @@
 "use client";
-import { useDeleteContentCategory, useGetContentCategory } from "@/services/contentCategory";
+import { useDeleteContentCategory, useGetContentCategory, useUpdateContentCategory } from "@/services/contentCategory";
 import { ContentCategoryResponse } from "@/types/ContentCategory";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -9,7 +9,9 @@ import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";
 import { MaterialReactTable, useMaterialReactTable } from "material-react-table";
-import Image from "next/image";
+// import Image from "next/image";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
@@ -18,6 +20,7 @@ const CategoryTable: React.FC = () => {
   const [id, setId] = useState<string>("");
   const { data: contentCategories, isLoading, mutate } = useGetContentCategory<ContentCategoryResponse>();
   const { trigger: deleteTrigger } = useDeleteContentCategory();
+  const { trigger: updateTrigger } = useUpdateContentCategory();
 
   const columns = useMemo(
     () => [
@@ -33,18 +36,18 @@ const CategoryTable: React.FC = () => {
         enableEditing: false,
         size: 1,
       },
-      {
-        accessorKey: "icon_url",
-        header: "Icon",
-        enableEditing: false,
-        Cell: ({ row }: any) => {
-          const imgurl = row?.original.icon_url;
-          if (imgurl) {
-            return <Image src={row?.original?.icon_url} alt="icon" width={40} height={40} />;
-          }
-          return "";
-        },
-      },
+      // {
+      //   accessorKey: "icon_url",
+      //   header: "Icon",
+      //   enableEditing: false,
+      //   Cell: ({ row }: any) => {
+      //     const imgurl = row?.original.icon_url;
+      //     if (imgurl) {
+      //       return <Image src={row?.original?.icon_url} alt="icon" width={40} height={40} />;
+      //     }
+      //     return "-";
+      //   },
+      // },
       {
         accessorKey: "created_at",
         header: "Created At",
@@ -78,6 +81,29 @@ const CategoryTable: React.FC = () => {
   const handleDelete = async () => {
     setOpen(false);
     await deleteTrigger({ id });
+  };
+
+  //UPDATE action
+  const handleUpdateOrder = (row: any, order: string) => {
+    const contentIds: number[] = [];
+    row?.original.category_contents.map((content: any) => contentIds.push(content.content_id));
+    const data: any = {
+      id: row?.original?.id,
+      name: row?.original?.name,
+      content_ids: contentIds,
+      icon_url: row?.original?.icon_url,
+      banner_icon_url: row?.original?.banner_icon_url,
+    };
+    if (order === "up") {
+      data.order = Number(row?.original?.order) - 1;
+    } else {
+      data.order = Number(row?.original?.order) + 1;
+    }
+    updateTrigger(data, {
+      onSuccess: () => {
+        mutate();
+      },
+    });
   };
 
   const table = useMaterialReactTable({
@@ -124,6 +150,21 @@ const CategoryTable: React.FC = () => {
           >
             <DeleteIcon />
           </IconButton>
+        </Tooltip>
+        <Tooltip title="">
+          <div>
+            <IconButton disabled={row.index === 0} onClick={() => handleUpdateOrder(row, "up")}>
+              <KeyboardArrowUpIcon />
+            </IconButton>
+            <IconButton
+              disabled={
+                !contentCategories?.data || row?.index === undefined || row?.index === contentCategories.data.length - 1
+              }
+              onClick={() => handleUpdateOrder(row, "down")}
+            >
+              <KeyboardArrowDownIcon />
+            </IconButton>
+          </div>
         </Tooltip>
       </Box>
     ),
