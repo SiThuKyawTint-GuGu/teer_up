@@ -4,25 +4,22 @@ import useSWR, { SWRResponse } from "swr";
 import useSWRMutation from "swr/mutation";
 
 type ContentCategoryArgType = {
-  arg: { id?: number; name?: string };
+  arg: { id?: string; name?: string };
 };
 
 export type ParamsType = {
   name?: string;
 };
 
-export const useGetContentCategory = <ContentCategoryResponse>(): SWRResponse<
-  ContentCategoryResponse,
-  any
-> => {
+export const useGetContentCategory = <ContentCategoryResponse>(): SWRResponse<ContentCategoryResponse, any> => {
   return useSWR<ContentCategoryResponse>(`/admin/contentcategories`);
 };
 
 export const useGetContentCategoryById = <ContentCategoryResponse>(
-  id: number
+  id: string
 ): SWRResponse<ContentCategoryResponse, any> => {
-  // const key = id != 0 ? `/admin/contentcategories/${id}` : null;
-  return useSWR<ContentCategoryResponse>(`/admin/contentcategories/${id}`);
+  const key = id != "0" ? `/admin/contentcategories/${id}` : null;
+  return useSWR<ContentCategoryResponse>(key);
 };
 
 export const useCreateContentCategory = () =>

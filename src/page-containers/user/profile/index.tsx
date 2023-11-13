@@ -70,7 +70,7 @@ const Profile: React.FC = () => {
             undefined, // update cache data to `undefined`
             { revalidate: true } // do not revalidate
           );
-          router.push(`/home`);
+          router.push(`/profile/onboarding`);
         },
       }
     );
@@ -84,7 +84,7 @@ const Profile: React.FC = () => {
       { revalidate: true } // do not revalidate
     );
     await resetScores();
-    startTransition(() => router.push("/home"));
+    startTransition(() => router.push("/profile/onboarding"));
   };
 
   const handleDeletePhoto = async () => {
