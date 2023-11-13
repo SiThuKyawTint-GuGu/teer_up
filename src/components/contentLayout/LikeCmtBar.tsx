@@ -32,6 +32,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
   const form = useMemo(() => {
     if (data?.type === "event") return data.content_event?.form_config?.formdetails_configs;
     if (data?.type === "opportunity") return data.content_opportunity?.form_config?.formdetails_configs;
+    if (data?.type === "video") return data.content_opportunity?.form_config?.formdetails_configs;
   }, [data]);
   const [selectedOptions, setSelectedOptions] = useState<{ inputconfig_id: number | string; value: string }[] | []>([]);
   const [message, setMessage] = useState<string>("");
@@ -326,7 +327,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
             <Modal onClose={() => setOpenModal(false)}>
               <div className="w-[400px] p-5 h-full bg-white rounded-md overflow-y-scroll">
                 <Text as="div" className="text-[28px] font-700">
-                  {data?.content_event?.form_config.name}
+                  {data.content_event?.form_config.name}
                 </Text>
                 {message && (
                   <Text as="div" className="text-center w-full text-green-600 font-[600] text-sm">
