@@ -89,13 +89,13 @@ const SavedList: React.FC = () => {
           </Flex>
           <Box className="pb-[7px]">
             <Section className="" py="4" px="3">
-              <DialogTrigger asChild className="w-full" onClick={() => setTriggerType(TRIGGER_TYPE.UNFINISHED)}>
+              {unFinishedPathways?.data && unFinishedPathways?.data?.length > 0 && (
                 <Link href="/saved/unfinished-pathway">
                   <Button variant="outline" className="w-full mb-4">
                     Continue unfinished pathway
                   </Button>
                 </Link>
-              </DialogTrigger>
+              )}
               {savedContents?.data?.length ? (
                 savedContents?.data?.map((each, key) => (
                   <Link key={key} href={`/content/${each?.content?.slug}`}>

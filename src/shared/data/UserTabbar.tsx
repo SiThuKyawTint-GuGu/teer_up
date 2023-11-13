@@ -4,17 +4,20 @@ export type NavbarType = {
   text: string;
   path: string;
   icon: React.ReactNode;
+  activeIcon?: React.ReactNode;
 };
 export const navbarItems: NavbarType[] = [
   {
     text: "Home",
     path: "/home",
-    icon: <Icons.home width={24} height={24} />,
+    icon: <Icons.homeIcon width={24} height={24} fill="#373A36" />,
+    activeIcon: <Icons.homeIcon width={24} height={24} activeFill="#DA291C" active />,
   },
   {
     text: "Browse",
     path: "/browse",
-    icon: <Icons.globe width={24} height={24} />,
+    icon: <Icons.globeIcon width={24} height={24} fill="#373A36" />,
+    activeIcon: <Icons.globeIcon width={24} height={24} activeFill="#DA291C" active />,
   },
   // {
   //   text: "Mentorship",
@@ -24,11 +27,13 @@ export const navbarItems: NavbarType[] = [
   {
     text: "Saved",
     path: "/saved",
-    icon: <Icons.saved width={24} height={24} />,
+    icon: <Icons.savedIcon width={24} height={24} fill="#373A36" />,
+    activeIcon: <Icons.savedIcon width={24} height={24} activeFill="#DA291C" active />,
   },
   {
     text: "Profile",
     path: "/profile",
-    icon: <Icons.person width={24} height={24} />,
+    icon: <Icons.profileIcon width={24} height={24} fill="#373A36" />,
+    activeIcon: <Icons.profileIcon width={24} height={24} activeFill="#DA291C" active />,
   },
 ];
