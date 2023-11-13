@@ -3,7 +3,7 @@
 import Loading from "@/app/loading";
 import { useGetBrowseInfinite, useGetHomeContent } from "@/services/content";
 import { useGetContentCategory } from "@/services/contentCategory";
-import { ContentData, ContentHome, ContentHomeData } from "@/types/Content";
+import { ContentData } from "@/types/Content";
 import { ContentCategoryResponse } from "@/types/ContentCategory";
 import { Flex } from "@radix-ui/themes";
 import { useSearchParams } from "next/navigation";
@@ -24,11 +24,7 @@ const BrowsePage = () => {
     isLoading,
     mutate: contentDataMutate,
   } = useGetContentCategory<ContentCategoryResponse>();
-  const {
-    data: homeContent,
-    isLoading: homeContentLoading,
-    mutate: homeContentMutate,
-  } = useGetHomeContent<ContentHome>();
+  const { data: homeContent, isLoading: homeContentLoading, mutate: homeContentMutate } = useGetHomeContent();
   const { data, mutate, setSize } = useGetBrowseInfinite({ search: search ?? "", type: type });
   const browseDataArray = useMemo(() => data?.flatMap((page: any) => page?.data) || [], [data]);
 
@@ -112,7 +108,7 @@ const BrowsePage = () => {
         <div className="overflow-y-scroll h-full bg-[#F8F9FB] ">
           {homeContent?.data &&
             homeContent?.data?.length !== 0 &&
-            homeContent?.data?.map((contentData: ContentHomeData, index: number) => {
+            homeContent?.data?.map((contentData, index: number) => {
               return (
                 <Flex direction="column" className="w-full  py-[10px]" key={index}>
                   <Flex direction={"row"} className="w-full  px-[12px] justify-between items-center">
