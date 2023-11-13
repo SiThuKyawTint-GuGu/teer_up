@@ -56,7 +56,7 @@ const UnfinishedPathway: React.FC = () => {
                     </>
                   }
                   link={
-                    <Link href="/browse">
+                    <Link href="/home">
                       <Button>Browse now</Button>
                     </Link>
                   }
