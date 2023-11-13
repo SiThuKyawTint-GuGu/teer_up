@@ -32,7 +32,7 @@ const DimensionDetailPage = ({ id }: Props) => {
   const [selectedHighContent, setSelectedHighContent] = useState<any>();
   const [selectedMediumContent, setSelectedMediumContent] = useState<any>();
   const [selectedLowContent, setSelectedLowContent] = useState<any>();
-  const { data: dimension } = useGetDimensionById<any>(id);
+  const { data: dimension, mutate } = useGetDimensionById<any>(id);
   const { data: contents } = useGetContent<ParamsType, ContentType>({
     page: 1,
     pagesize: 10,
@@ -133,7 +133,9 @@ const DimensionDetailPage = ({ id }: Props) => {
     };
     if (dimension?.data) {
       submitData.id = id;
-      await updateTrigger(submitData);
+      await updateTrigger(submitData, {
+        onSuccess: () => mutate(),
+      });
     } else {
       await createTrigger(submitData);
     }
