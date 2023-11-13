@@ -13,7 +13,7 @@ import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useTransition } from "react";
 import ReactDatePicker from "react-datepicker";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -28,6 +28,7 @@ const validationSchema = yup.object({
 const EditEducation: React.FC = () => {
   const { id, edu_id } = useParams();
   const router = useRouter();
+  const [, startTransition] = useTransition();
   const { data: educationData } = useGetEducationById<EducationById>(edu_id as string);
   const { trigger, isMutating } = useUpdateEducation();
   const { trigger: deleteTrigger, isMutating: deleteMutating } = useDeleteEducation();
@@ -55,15 +56,10 @@ const EditEducation: React.FC = () => {
   };
 
   const handleDelete = async () => {
-    await deleteTrigger(
-      { edu_id: edu_id as string },
-      {
-        onSuccess: () => {
-          console.log("deleted");
-          router.push(`/profile/${id}/education`);
-        },
-      }
-    );
+    await deleteTrigger({ edu_id: edu_id as string });
+    setTimeout(() => {
+      startTransition(() => router.push(`/profile/${id}/education`));
+    }, 1000);
   };
 
   useEffect(() => {
