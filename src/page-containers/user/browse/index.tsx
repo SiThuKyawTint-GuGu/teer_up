@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/Button";
 import { Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import { useGetBrowseInfinite } from "@/services/content";
+import { ContentData } from "@/types/Content";
 import { Flex } from "@radix-ui/themes";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
