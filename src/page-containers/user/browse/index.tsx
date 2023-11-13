@@ -6,7 +6,7 @@ import { Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import { useGetBrowseInfinite } from "@/services/content";
 import { ContentData } from "@/types/Content";
-import { Flex } from "@radix-ui/themes";
+import { Box, Flex } from "@radix-ui/themes";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -74,13 +74,13 @@ const BrowsePage = () => {
         <div className="w-full h-full overflow-y-scroll no-scrollbar" ref={containerRef}>
           {browseDataArray && browseDataArray.length !== 0 ? (
             browseDataArray.map((contentData: ContentData, index: number) => (
-              <div key={index} className="w-full h-[400px]">
+              <Box key={index} className="w-full h-auto">
                 <BrowserContentLayout
                   data={contentData}
                   contentMutate={mutate}
                   redir={`/content/${contentData.slug}`}
                 />
-              </div>
+              </Box>
             ))
           ) : (
             <div className="pt-[100px]">
