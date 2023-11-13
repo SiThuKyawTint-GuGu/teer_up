@@ -144,7 +144,8 @@ const UserContent = () => {
 
   const differentContent = (data: ContentData, index: number) => {
     if (data?.type === "video" && data.content_video)
-      return <Video data={data} setVideoRef={handleVideoRef(index)} autoplay={index === 0} contentMutate={mutate} />;
+      return <Video data={data} setVideoRef={handleVideoRef(index)} autoplay={true} contentMutate={mutate} />;
+
     if (data?.type === "onboarding") return <Onboarding data={data} parentIndex={index.toString()} />;
     return <ContentLayout data={data} contentMutate={mutate} />;
   };
