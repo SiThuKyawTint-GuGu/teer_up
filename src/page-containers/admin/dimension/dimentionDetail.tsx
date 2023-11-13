@@ -45,40 +45,52 @@ const DimensionDetailPage = ({ id }: Props) => {
   const [high, setHigh] = useState<string>("");
   const [low, setLow] = useState<string>("");
   const [medium, setMedium] = useState<string>("");
+  const [initializeSearch, setInitializeSearch] = useState<boolean>(false);
 
   useEffect(() => {
-    if (contents?.data && contents?.data.length > 0) {
-      const updatedOptions = contents?.data.map((option: any) => ({
-        label: option.title ? option.title : "",
-        content_id: option.id,
-      }));
-      setContentOptions(updatedOptions);
+    if (initializeSearch === true) {
+      if (contents?.data && contents?.data.length > 0) {
+        const updatedOptions = contents?.data.map((option: any) => ({
+          label: option.title ? option.title : "",
+          content_id: option.id,
+        }));
+        setContentOptions(updatedOptions);
+      }
+    } else {
+      if (contents?.data && contents?.data.length > 0) {
+        const updatedOptions = contents?.data.map((option: any) => ({
+          label: option.title ? option.title : "",
+          content_id: option.id,
+        }));
+        setContentOptions(updatedOptions);
+      }
+      if (dimension?.data) {
+        setValue("name", dimension?.data.name ?? "");
+        setValue("short_name", dimension?.data.short_name);
+        setHigh(dimension?.data?.high_body);
+        setMedium(dimension?.data.medium_body);
+        setLow(dimension?.data.low_body);
+        if (dimension?.data.high_content_id) {
+          setSelectedHighContent({
+            label: dimension?.data.high_content?.title,
+            content_id: dimension?.data.high_content_id,
+          });
+        }
+        if (dimension?.data.medium_content_id) {
+          setSelectedMediumContent({
+            label: dimension?.data.medium_content?.title,
+            content_id: dimension?.data.medium_content_id,
+          });
+        }
+        if (dimension?.data.low_content_id) {
+          setSelectedLowContent({
+            label: dimension?.data.low_content?.title,
+            content_id: dimension?.data.low_content_id,
+          });
+        }
+      }
     }
-    if (dimension?.data) {
-      setValue("name", dimension?.data.name ?? "");
-      setValue("short_name", dimension?.data.short_name);
-      setHigh(dimension?.data?.high_body);
-      setMedium(dimension?.data.medium_body);
-      setLow(dimension?.data.low_body);
-      const highcontent: any = contents?.data.find((content: any) => content.id === dimension?.data.high_content_id);
-      if (highcontent) {
-        const data = { label: highcontent.title, content_id: highcontent.id };
-        setSelectedHighContent(data);
-      }
-      const mediumcontent: any = contents?.data.find(
-        (content: any) => content.id === dimension?.data.medium_content_id
-      );
-      if (mediumcontent) {
-        const data = { label: mediumcontent.title, content_id: mediumcontent.id };
-        setSelectedMediumContent(data);
-      }
-      const lowcontent: any = contents?.data.find((content: any) => content.id === dimension?.data.low_content_id);
-      if (lowcontent) {
-        const data = { label: lowcontent.title, content_id: lowcontent.id };
-        setSelectedLowContent(data);
-      }
-    }
-  }, [dimension?.data, contents?.data]);
+  }, [dimension, contents?.data, searchContent]);
 
   const {
     register,
@@ -91,20 +103,21 @@ const DimensionDetailPage = ({ id }: Props) => {
   });
 
   const handleInputChange = (event: any) => {
+    setInitializeSearch(true);
     setSearchContent(event?.target.value);
   };
 
   const handleSelectHighPathwayChange = (event: any, newValue: any) => {
-    setSearchContent("");
     setSelectedHighContent(newValue);
+    setSearchContent("");
   };
   const handleSelectMediumPathwayChange = (event: any, newValue: any) => {
-    setSearchContent("");
     setSelectedMediumContent(newValue);
+    setSearchContent("");
   };
   const handleSelectLowPathwayChange = (event: any, newValue: any) => {
-    setSearchContent("");
     setSelectedLowContent(newValue);
+    setSearchContent("");
   };
 
   const Submit = async (data: any) => {
@@ -170,7 +183,6 @@ const DimensionDetailPage = ({ id }: Props) => {
             id="dimension"
             options={contentOptions || []}
             value={selectedHighContent ? selectedHighContent : null}
-            // onInputChange={(event, newInputValue) => handleInputChange(event, newInputValue)}
             onInputChange={event => handleInputChange(event)}
             onChange={(event, newValue) => handleSelectHighPathwayChange(event, newValue)}
             renderInput={params => <TextField {...params} label="High body pathway" />}
@@ -193,7 +205,6 @@ const DimensionDetailPage = ({ id }: Props) => {
             id="dimension"
             options={contentOptions || []}
             value={selectedMediumContent ? selectedMediumContent : null}
-            // onInputChange={(event, newInputValue) => handleInputChange(event, newInputValue)}
             onInputChange={event => handleInputChange(event)}
             onChange={(event, newValue) => handleSelectMediumPathwayChange(event, newValue)}
             renderInput={params => <TextField {...params} label="Medium body pathway" />}
@@ -216,7 +227,6 @@ const DimensionDetailPage = ({ id }: Props) => {
             id="dimension"
             options={contentOptions || []}
             value={selectedLowContent ? selectedLowContent : null}
-            // onInputChange={(event, newInputValue) => handleInputChange(event, newInputValue)}
             onInputChange={event => handleInputChange(event)}
             onChange={(event, newValue) => handleSelectLowPathwayChange(event, newValue)}
             renderInput={params => <TextField {...params} label="Low body pathway" />}
