@@ -23,7 +23,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
   const router = useRouter();
   console.log("q", complete);
   return (
-    <CardBox className="w-full h-[80%] bg-white">
+    <CardBox className="w-full h-[92%] bg-white">
       <div className="w-full h-full">
         <div className="flex flex-col flex-wrap px-3  justify-between overflow-y-auto no-scrollbar  w-full h-full">
           <div className="text-gray-500 my-4 text-center">
