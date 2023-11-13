@@ -75,7 +75,7 @@ const BrowsePage = () => {
     );
   }
   return (
-    <div className="relative w-full h-full pb-[70px]  bg-[#F8F9FB]">
+    <div className="relative w-full h-full pb-[52px]  bg-[#F8F9FB]">
       <Flex className="p-3 w-full sticky top-0 overflow-auto gap-[15px] no-scrollbar bg-white">
         <div
           onClick={() => {
