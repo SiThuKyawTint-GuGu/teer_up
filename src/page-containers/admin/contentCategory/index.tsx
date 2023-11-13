@@ -1,10 +1,5 @@
 "use client";
-import {
-  useCreateContentCategory,
-  useDeleteContentCategory,
-  useGetContentCategory,
-  useUpdateContentCategory,
-} from "@/services/contentCategory";
+import { useDeleteContentCategory, useGetContentCategory } from "@/services/contentCategory";
 import { ContentCategoryResponse } from "@/types/ContentCategory";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -13,16 +8,15 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";
-import { MaterialReactTable, useMaterialReactTable, type MRT_TableOptions } from "material-react-table";
+import { MaterialReactTable, useMaterialReactTable } from "material-react-table";
+import Image from "next/image";
+import Link from "next/link";
 import { useMemo, useState } from "react";
 
 const CategoryTable: React.FC = () => {
-  const [validationErrors, setValidationErrors] = useState<Record<string, string | undefined>>({});
   const [open, setOpen] = useState<boolean>(false);
   const [id, setId] = useState<string>("");
   const { data: contentCategories, isLoading, mutate } = useGetContentCategory<ContentCategoryResponse>();
-  const { trigger: createTrigger } = useCreateContentCategory();
-  const { trigger: updateTrigger } = useUpdateContentCategory();
   const { trigger: deleteTrigger } = useDeleteContentCategory();
 
   const columns = useMemo(
@@ -31,22 +25,24 @@ const CategoryTable: React.FC = () => {
         accessorKey: "id",
         header: "ID",
         enableEditing: false,
+        size: 1,
       },
       {
         accessorKey: "name",
         header: "Name",
-        muiEditTextFieldProps: {
-          type: "text",
-          required: true,
-          error: !!validationErrors?.name,
-          helperText: validationErrors?.name,
-          //remove any previous validation errors when user focuses on the input
-          onFocus: () =>
-            setValidationErrors({
-              ...validationErrors,
-              name: undefined,
-            }),
-          //optionally add validation checking for onBlur or onChange
+        enableEditing: false,
+        size: 1,
+      },
+      {
+        accessorKey: "icon_url",
+        header: "Icon",
+        enableEditing: false,
+        Cell: ({ row }: any) => {
+          const imgurl = row?.original.icon_url;
+          if (imgurl) {
+            return <Image src={row?.original?.icon_url} alt="icon" width={40} height={40} />;
+          }
+          return "";
         },
       },
       {
@@ -76,51 +72,8 @@ const CategoryTable: React.FC = () => {
         },
       },
     ],
-    [validationErrors]
+    []
   );
-
-  //CREATE action
-  const handleCreateCategory: MRT_TableOptions<any>["onCreatingRowSave"] = async ({ values, table }) => {
-    const { id, name } = values;
-    const newValidationErrors = validateUser(values);
-    if (Object.values(newValidationErrors).some(error => error)) {
-      setValidationErrors(newValidationErrors);
-      return;
-    }
-    setValidationErrors({});
-    const newValues = {
-      name,
-      values,
-    };
-    createTrigger(newValues, {
-      onSuccess: () => {
-        mutate();
-      },
-    });
-    table.setCreatingRow(null); //exit creating mode
-  };
-
-  //UPDATE action
-  const handleSaveCategory: MRT_TableOptions<any>["onEditingRowSave"] = ({ values, table }) => {
-    const { id, name } = values;
-    const newValidationErrors = validateUser(values);
-    if (Object.values(newValidationErrors).some(error => error)) {
-      setValidationErrors(newValidationErrors);
-      return;
-    }
-    setValidationErrors({});
-    const newValues = {
-      name,
-      id,
-    };
-    updateTrigger(newValues, {
-      onSuccess: () => {
-        mutate();
-      },
-    });
-    table.setEditingRow(null);
-  };
-
   //DELETE action
   const handleDelete = async () => {
     setOpen(false);
@@ -133,7 +86,7 @@ const CategoryTable: React.FC = () => {
     createDisplayMode: "row",
     editDisplayMode: "row",
     enableEditing: true,
-    getRowId: row => row.id,
+    getRowId: (row: any) => row.id,
     muiToolbarAlertBannerProps: isLoading
       ? {
           color: "error",
@@ -148,20 +101,18 @@ const CategoryTable: React.FC = () => {
     },
     enableStickyHeader: true,
     enableStickyFooter: true,
-    onCreatingRowCancel: () => setValidationErrors({}),
-    onCreatingRowSave: handleCreateCategory,
-    onEditingRowCancel: () => setValidationErrors({}),
     positionActionsColumn: "last",
     state: {
       showSkeletons: isLoading ?? false,
     },
-    onEditingRowSave: handleSaveCategory,
     renderRowActions: ({ row, table }) => (
-      <Box sx={{ display: "flex", gap: "1rem" }}>
+      <Box sx={{ display: "flex", gap: "0.5rem" }}>
         <Tooltip title="Edit">
-          <IconButton onClick={() => table.setEditingRow(row)}>
-            <EditIcon />
-          </IconButton>
+          <Link href={`/admin/contents/category/${row.id}`}>
+            <IconButton>
+              <EditIcon />
+            </IconButton>
+          </Link>
         </Tooltip>
         <Tooltip title="Delete">
           <IconButton
@@ -177,15 +128,8 @@ const CategoryTable: React.FC = () => {
       </Box>
     ),
     renderTopToolbarCustomActions: ({ table }) => (
-      <Button
-        variant="contained"
-        color="error"
-        sx={{ background: "#DA291C", textTransform: "none" }}
-        onClick={() => {
-          table.setCreatingRow(true);
-        }}
-      >
-        Create New Category
+      <Button variant="contained" color="error" sx={{ background: "#DA291C", textTransform: "none" }}>
+        <Link href={"/admin/contents/category/0"}>Create New Category</Link>
       </Button>
     ),
   });
@@ -234,13 +178,6 @@ const CategoryTable: React.FC = () => {
 
 export default CategoryTable;
 
-const validateRequired = (value: string) => !!value.length;
-
-function validateUser(user: any) {
-  return {
-    name: !validateRequired(user.name) ? "Name is Required" : "",
-  };
-}
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
