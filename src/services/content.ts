@@ -14,6 +14,7 @@ export type ParamsType = {
   cursor?: number;
   type?: string;
   search?: string;
+  category?: string;
 };
 
 export interface ContentArgType {
@@ -76,6 +77,10 @@ export const useGetBrowseInfinite = ({
 
 export const useGetContent = <ParamsType, ContentType>(params?: ParamsType): SWRResponse<ContentType, any> => {
   return useSWR<ContentType>(`/admin/contents?${routeFilter(params)}`);
+};
+
+export const useGetBrowseContent = <ParamsType, ContentType>(params?: ParamsType): SWRResponse<ContentType, any> => {
+  return useSWR<ContentType>(`/content/browse?${routeFilter(params)}`);
 };
 
 export const useGetContentById = <ContentType>(id: string): SWRResponse<ContentType, any> => {
