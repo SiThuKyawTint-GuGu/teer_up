@@ -7,17 +7,17 @@ import { usePostOnboarding } from "@/services/content";
 import { ContentData, OnBoardingOption } from "@/types/Content";
 import { cn } from "@/utils/cn";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { startTransition, useState } from "react";
 type OnboardingProps = {
   data: ContentData;
   parentIndex: string;
   mutate: any;
+  total?: number;
 };
-const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
+const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex, total }) => {
   const [option, setOption] = useState<OnBoardingOption | null>(null);
   const [modalOpen, setOpenModal] = useState<boolean>(false);
-  const { trigger, isMutating, data: returnData } = usePostOnboarding();
-  const complete = returnData?.data.status.completed;
+  const { trigger, isMutating } = usePostOnboarding();
 
   const [imageLoading, setImageLoading] = useState(false);
   const router = useRouter();
@@ -88,7 +88,12 @@ const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
                           {
                             onSuccess: () => {
                               setOpenModal(false);
-                              if (parentIndex) router.push("/profile");
+
+                              if (total && parseInt(parentIndex) === total) {
+                                startTransition(() => {
+                                  router.push("/profile");
+                                });
+                              }
 
                               const targetElement = document.getElementById(`${parseInt(parentIndex) + 1}`);
                               if (targetElement) {
