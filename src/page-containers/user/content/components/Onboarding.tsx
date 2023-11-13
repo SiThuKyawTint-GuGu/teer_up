@@ -89,7 +89,6 @@ const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
                             onSuccess: () => {
                               setOpenModal(false);
                               if (complete) {
-                                console.log("re");
                                 router.push("/profile");
                               }
                               const targetElement = document.getElementById(`${parseInt(parentIndex) + 1}`);
