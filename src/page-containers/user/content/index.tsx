@@ -166,7 +166,7 @@ const UserContent = () => {
   return (
     <Box
       ref={containerRef}
-      className={`snap-y flex-col snap-mandatory h-[calc(100dvh-96px)] pt-[6px] px-[16px]  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
+      className={`snap-y flex-col snap-mandatory h-[calc(100dvh-112px)] pt-[6px] pb-[6px] px-[12px]  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
       style={{ scrollSnapStop: "always" }}
     >
       {showStart === 0 && token && <ContentStart />}
@@ -174,7 +174,7 @@ const UserContent = () => {
         contentDataArray.length > 0 &&
         contentDataArray.map((data: ContentData, index: number) => (
           <Box
-            className="w-full h-full pt-2 snap-start"
+            className="w-full h-full snap-start mt-[12px] mb-[12px]"
             style={{ scrollSnapStop: "always" }}
             id={index.toString()}
             key={index}
