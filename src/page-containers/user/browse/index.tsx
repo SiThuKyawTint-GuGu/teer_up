@@ -180,10 +180,10 @@ const BrowsePage = () => {
         </div>
       ) : (
         <Flex direction="column" className="w-full h-full pt-[10px]">
-          <div className="w-full h-full overflow-y-scroll no-scrollbar" ref={containerRef}>
+          <div className="w-full h-full overflow-y-scroll no-scrollbar mb-3" ref={containerRef}>
             {bannerIconUrl && (
-              <div className="mx-2 rounded-md overflow-hidden">
-                <img alt="banner" src={bannerIconUrl} className="w-full h-auto inline-block  " />
+              <div className="mx-2  overflow-hidden">
+                <img alt="banner" src={bannerIconUrl} className="w-full h-auto rounded-md inline-block object-cover " />
               </div>
             )}
 
