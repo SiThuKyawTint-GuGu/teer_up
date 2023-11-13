@@ -7,7 +7,7 @@ import { usePostOnboarding } from "@/services/content";
 import { ContentData, OnBoardingOption } from "@/types/Content";
 import { cn } from "@/utils/cn";
 import { useRouter } from "next/navigation";
-import React, { useState, useTransition } from "react";
+import React, { useState } from "react";
 type OnboardingProps = {
   data: ContentData;
   parentIndex: string;
@@ -18,11 +18,10 @@ const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
   const [modalOpen, setOpenModal] = useState<boolean>(false);
   const { trigger, isMutating, data: returnData } = usePostOnboarding();
   const complete = returnData?.data.status.completed;
-  const [ispending, startTransition] = useTransition();
 
   const [imageLoading, setImageLoading] = useState(false);
   const router = useRouter();
-
+  console.log("q", complete);
   return (
     <CardBox className="w-full h-[80%] bg-white">
       <div className="w-full h-full">
@@ -78,8 +77,6 @@ const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
                       }}
                     />
                     <Button
-                      disabled={ispending}
-                      loading={ispending}
                       className="w-full mt-5 p-2"
                       size="sm"
                       onClick={() => {
@@ -92,7 +89,8 @@ const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
                             onSuccess: () => {
                               setOpenModal(false);
                               if (complete) {
-                                startTransition(() => router.push("/profile"));
+                                console.log("re");
+                                router.push("/profile");
                               }
                               const targetElement = document.getElementById(`${parseInt(parentIndex) + 1}`);
                               if (targetElement) {
