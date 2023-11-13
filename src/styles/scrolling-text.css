@@ -1,0 +1,20 @@
+.scrolling-container {
+  width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  border: 1px solid #ccc;
+}
+
+.scrolling-text {
+  animation: scrollText 10s linear infinite;
+}
+
+@keyframes scrollText {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(-100%);
+  }
+}
