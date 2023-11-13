@@ -30,9 +30,9 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
   const { trigger: postForm, isMutating } = useContentForm();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const form = useMemo(() => {
-    if (data?.type === "event") return data.content_event?.form_config?.formdetails_configs;
-    if (data?.type === "opportunity") return data.content_opportunity?.form_config?.formdetails_configs;
-    if (data?.type === "video") return data.content_opportunity?.form_config?.formdetails_configs;
+    if (data?.type === "event") return data.content_event?.form_config;
+    if (data?.type === "opportunity") return data.content_opportunity?.form_config;
+    if (data?.type === "article") return data.content_article?.form_config;
   }, [data]);
   const [selectedOptions, setSelectedOptions] = useState<{ inputconfig_id: number | string; value: string }[] | []>([]);
   const [message, setMessage] = useState<string>("");
@@ -327,7 +327,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
             <Modal onClose={() => setOpenModal(false)}>
               <div className="w-[400px] p-5 h-full bg-white rounded-md overflow-y-scroll">
                 <Text as="div" className="text-[28px] font-700">
-                  {data.content_event?.form_config.name}
+                  {form?.name}
                 </Text>
                 {message && (
                   <Text as="div" className="text-center w-full text-green-600 font-[600] text-sm">
@@ -337,8 +337,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
                 <div className="mx-auto flex flex-col  bg-white justify-center flex-wrap gap-y-5 w-full">
                   <Flex direction="column" justify="center">
                     {form &&
-                      form.length > 0 &&
-                      form.map((formData: any, formIndex) => (
+                      form.formdetails_configs.map((formData: any, formIndex) => (
                         <div key={formIndex} className="my-1 px-2">
                           {formElements(formData.input_config)}
                         </div>
