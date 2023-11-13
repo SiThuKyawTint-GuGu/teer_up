@@ -28,7 +28,7 @@ const BottomNavbar = () => {
                 (pathName === item.path || pathName.includes(item.path)) && "text-primary"
               )}
             >
-              {item.icon}
+              {pathName === item.path || pathName.includes(item.path) ? item.activeIcon : item.icon}
               <p>{item.text}</p>
             </Link>
           </div>
