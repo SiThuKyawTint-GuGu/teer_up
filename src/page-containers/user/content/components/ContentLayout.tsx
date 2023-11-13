@@ -18,7 +18,7 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate }) =>
   const [ispending, startTransition] = useTransition();
 
   return (
-    <CardBox className="w-full shadow-xl  rounded-lg h-[90%] justify-start flex-col">
+    <CardBox className="w-full shadow-xl  rounded-lg h-[100%] justify-start flex-col mt-[15px] mb-[15px]">
       <div className="h-full w-full flex flex-col bg-white shadow-lg">
         <div className="w-full h-[70%]  mx-auto relative">
           <Link href={`/content/${data.slug}`}>

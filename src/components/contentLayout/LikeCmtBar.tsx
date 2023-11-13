@@ -9,13 +9,14 @@ import React, { ChangeEvent, useMemo, useState } from "react";
 import ReactDatePicker from "react-datepicker";
 import { Button } from "../ui/Button";
 import CardBox from "../ui/Card";
-import { DialogTrigger } from "../ui/Dialog";
+import { Dialog, DialogContent, DialogTrigger } from "../ui/Dialog";
 import { Icons } from "../ui/Images";
 import { InputText } from "../ui/Inputs";
 import { Checkbox } from "../ui/Inputs/Checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "../ui/Inputs/Select";
 import Modal from "../ui/Modal";
 import { Text } from "../ui/Typo/Text";
+import CommentSection from "./CommentSection";
 import SuccessFormPage from "./SuccessFormPage";
 
 type Props = {
@@ -36,6 +37,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
   const [message, setMessage] = useState<string>("");
   const [showSuccessPage, setShowSuccessPage] = useState<boolean>(false);
   const [dateValue, setDateValue] = useState<string>(dayjs(new Date()).toString());
+  const [openComment, setOpenComment] = useState<boolean>(false);
 
   const saveContent = async () => {
     await contentSave(
@@ -293,12 +295,23 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
               )}
               <div className="text-[14px]">{data.likes}</div>
             </button>
-            <DialogTrigger>
-              <div className="flex items-center flex-wrap  gap-x-[5px]">
-                <Icons.comment className="w-[20px] h-[20px]" />
-                <div>{data.comments}</div>
-              </div>
-            </DialogTrigger>
+
+            <Dialog open={openComment} onOpenChange={val => setOpenComment(val)}>
+              <DialogTrigger>
+                <div className="flex items-center flex-wrap gap-x-[10px]">
+                  <Icons.comment className="w-[20px] h-[20px]" />
+                  <div>
+                    {""}
+                    {data.comments}
+                  </div>
+                </div>
+              </DialogTrigger>
+              {openComment && (
+                <DialogContent className="bg-white top-[initial] bottom-0 max-w-[400px] px-4 pt-8 pb-2 translate-y-0 rounded-10px-tl-tr">
+                  <CommentSection data={data} mutateParentData={mutate} />
+                </DialogContent>
+              )}
+            </Dialog>
 
             <button className="flex items-center flex-wrap  gap-x-[5px]" onClick={saveContent}>
               {data.is_saved ? (

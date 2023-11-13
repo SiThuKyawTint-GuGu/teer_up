@@ -1,9 +1,13 @@
 "use client";
 
-import { useGetOnboardingQuestions } from "@/services/content";
+import { Button } from "@/components/ui/Button";
+import { useGetOnboardingQuestions, useSkipOnboarding } from "@/services/content";
 import { ContentData } from "@/types/Content";
 import { getLocalStorage } from "@/utils";
 import { getToken } from "@/utils/auth";
+import { useRouter } from "next/navigation";
+
+import { useTransition } from "react";
 import ContentStart from "../../content/components/ContentStart";
 import Onboarding from "../../content/components/Onboarding";
 
@@ -15,6 +19,9 @@ const OnboardingQuestionPage = () => {
   });
 
   const showStart = getLocalStorage("content");
+  const { trigger: skipOnboarding } = useSkipOnboarding();
+  const [ispending, startTransition] = useTransition();
+  const router = useRouter();
 
   return (
     <div className="w-full h-[calc(100dvh-96px)] pt-[6px]">
@@ -31,6 +38,28 @@ const OnboardingQuestionPage = () => {
             key={index}
           >
             <Onboarding data={data} parentIndex={index.toString()} />
+
+            <Button
+              variant="link"
+              disabled={ispending}
+              className="text-center w-full py-4 text-primary"
+              onClick={() => {
+                skipOnboarding(
+                  {
+                    skip: true,
+                  },
+                  {
+                    onSuccess: () => {
+                      startTransition(() => {
+                        router.push("/profile");
+                      });
+                    },
+                  }
+                );
+              }}
+            >
+              skip
+            </Button>
 
             {index === 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
           </div>
