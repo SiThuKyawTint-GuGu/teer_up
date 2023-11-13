@@ -33,7 +33,7 @@ const DepartmentPage = () => {
       },
       {
         onSuccess: () => {
-          startTransition(() => router.push("/home"));
+          startTransition(() => router.push("/profile/onboarding"));
         },
       }
     );
