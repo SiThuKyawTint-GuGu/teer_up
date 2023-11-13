@@ -1,16 +1,11 @@
 "use client";
 
 import Loading from "@/app/loading";
-import NotFound from "@/components/shared/NotFound";
-import { Button } from "@/components/ui/Button";
-import { Image } from "@/components/ui/Images";
-import { Text } from "@/components/ui/Typo/Text";
 import { useGetBrowseInfinite, useGetHomeContent } from "@/services/content";
 import { useGetContentCategory } from "@/services/contentCategory";
 import { ContentData, ContentHome, ContentHomeData } from "@/types/Content";
 import { ContentCategoryResponse } from "@/types/ContentCategory";
 import { Flex } from "@radix-ui/themes";
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import BrowserCategoryContentLayout from "./Components/BroswerCategoryContentLayout";
@@ -129,39 +124,8 @@ const BrowsePage = () => {
                   </Flex>
                   <div className="w-full h-full  flex  overflow-x-scroll no-scrollbar">
                     {contentData?.category_contents && contentData?.category_contents.length === 0 ? (
-                      <div className="pt-[100px]">
-                        {search == null ? (
-                          <NotFound
-                            icon={<Image src="/uploads/icons/connection.svg" width={80} height={80} alt="saved" />}
-                            content={
-                              <>
-                                <Text>There’s no contents.</Text>
-                                <Text>Please check your internet connection.</Text>
-                              </>
-                            }
-                            link={
-                              <Link href="/browse">
-                                <Button>Browse now</Button>
-                              </Link>
-                            }
-                          />
-                        ) : (
-                          <NotFound
-                            icon={<Image src="/uploads/icons/connection.svg" width={80} height={80} alt="saved" />}
-                            content={
-                              <>
-                                {type == "all" ? (
-                                  <Text>There’s no contents.</Text>
-                                ) : (
-                                  <Text>
-                                    No {type}s for &quot;{search}&quot;.
-                                  </Text>
-                                )}
-                                <Text>Please try a different keyword.</Text>
-                              </>
-                            }
-                          />
-                        )}
+                      <div className="w-full  flex justify-center h-[200px] items-center">
+                        <p className="text-[16px] font-[600] text-center">No Content</p>
                       </div>
                     ) : (
                       contentData?.category_contents.map((contentData: any, index: number) => {
