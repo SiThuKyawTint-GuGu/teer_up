@@ -21,7 +21,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
 
   const [imageLoading, setImageLoading] = useState(false);
   const router = useRouter();
-  console.log("q", complete);
+
   return (
     <CardBox className="w-full h-[92%] bg-white">
       <div className="w-full h-full">
@@ -88,9 +88,8 @@ const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
                           {
                             onSuccess: () => {
                               setOpenModal(false);
-                              if (complete) {
-                                router.push("/profile");
-                              }
+                              if (parentIndex) router.push("/profile");
+
                               const targetElement = document.getElementById(`${parseInt(parentIndex) + 1}`);
                               if (targetElement) {
                                 targetElement.scrollIntoView({

@@ -58,7 +58,7 @@ const OnboardingQuestionPage = () => {
                 );
               }}
             >
-              skip
+              Skip
             </Button>
 
             {index === 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}

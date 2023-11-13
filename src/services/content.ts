@@ -245,7 +245,7 @@ interface ContentFormArg {
     formconfig_id: number | string;
     inputs: {
       inputconfig_id: number | string;
-      value: string;
+      value: string | Date;
     }[];
   };
 }
