@@ -3,7 +3,7 @@ import NotFound from "@/components/shared/NotFound";
 import { Button } from "@/components/ui/Button";
 import { Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
-import { SAVED_CONTENT_TYPES, useGetUnfinishedPathway } from "@/services/content";
+import { useGetUnfinishedPathway } from "@/services/content";
 import { UnfinishedPathwayResponse } from "@/types/SavedContent";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
@@ -11,42 +11,6 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import Link from "next/link";
 import React from "react";
 dayjs.extend(relativeTime);
-
-const filterNames = [
-  {
-    key: SAVED_CONTENT_TYPES.ALL,
-    value: "All content types",
-  },
-  {
-    key: SAVED_CONTENT_TYPES.ARTICLE,
-    value: "Article",
-  },
-  {
-    key: SAVED_CONTENT_TYPES.EVENT,
-    value: "Event",
-  },
-  {
-    key: SAVED_CONTENT_TYPES.MENTOR,
-    value: "Mentor",
-  },
-  {
-    key: SAVED_CONTENT_TYPES.OPPORTUNITY,
-    value: "Opportunity",
-  },
-  {
-    key: SAVED_CONTENT_TYPES.PATHWAY,
-    value: "Pathway",
-  },
-  {
-    key: SAVED_CONTENT_TYPES.VIDEO,
-    value: "Video",
-  },
-];
-
-enum TRIGGER_TYPE {
-  FILTER = "FILTER",
-  UNFINISHED = "UNFINISHED",
-}
 
 const UnfinishedPathway: React.FC = () => {
   const { data: unFinishedPathways } = useGetUnfinishedPathway<UnfinishedPathwayResponse>();
