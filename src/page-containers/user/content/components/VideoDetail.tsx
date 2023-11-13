@@ -12,7 +12,7 @@ type VideoDetailProp = {
   contentMutate: any;
 };
 const VideoDetail: React.FC<VideoDetailProp> = ({ data, contentMutate }) => {
-  const [isPlayed, setIsPlayed] = useState(true);
+  const [isPlayed, setIsPlayed] = useState(false);
   const [readMore, setReadMore] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const detailDescription = useRef<HTMLParagraphElement>(null);
@@ -23,14 +23,13 @@ const VideoDetail: React.FC<VideoDetailProp> = ({ data, contentMutate }) => {
       if (!isPlayed) {
         if (videoRef.current.paused) {
           videoRef.current.play();
-          setIsPlayed(isPlayed => !isPlayed);
         }
       } else {
         if (!videoRef.current.paused) {
           videoRef.current.pause();
-          setIsPlayed(isPlayed => !isPlayed);
         }
       }
+      setIsPlayed(isPlayed => !isPlayed);
     }
   };
 
@@ -52,7 +51,6 @@ const VideoDetail: React.FC<VideoDetailProp> = ({ data, contentMutate }) => {
                     preload="none"
                     data-video="0"
                     muted={false}
-                    autoPlay
                     onClick={() => handlePlayVideo()}
                     ref={videoRef}
                     loop
