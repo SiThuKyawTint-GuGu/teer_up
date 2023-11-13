@@ -36,9 +36,7 @@ const VerifyPop: React.FC = () => {
               className="mb-5"
               onClick={() => {
                 verifyModalCloseHandler();
-                startTransition(() => {
-                  router.push("/auth/login");
-                });
+                router.push("/auth/login");
               }}
             >
               Login
