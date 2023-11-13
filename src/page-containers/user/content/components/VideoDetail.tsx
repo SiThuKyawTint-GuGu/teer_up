@@ -67,7 +67,7 @@ const VideoDetail: React.FC<VideoDetailProp> = ({ data, contentMutate }) => {
                         {data.description}
                       </p>
                       {isTruncated && (
-                        <button className="font-semibold" onClick={() => setReadMore(!readMore)}>
+                        <button className="font-semibold text-primary" onClick={() => setReadMore(!readMore)}>
                           {!readMore ? "See more" : "Less"}
                         </button>
                       )}

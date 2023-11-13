@@ -89,14 +89,18 @@ const BrowsePage = () => {
             }     `}
           >
             {" "}
-            <p
-              className="w-auto font-[600] text-[16px] text-center"
+            <div
+              className="w-auto font-[600] text-[16px] flex space-between items-center "
               // className={`w-auto   ${
               //   type === data.value && "border-b-[2px]  text-[16px] font-[600]"
               // }`}
             >
-              {data.name}
-            </p>
+              <p> {data.name}</p>
+
+              {data?.icon_url && (
+                <img src={data?.icon_url} className="w-[20px] ml-[10px] h-[20px] ml-[5px] inline-block" />
+              )}
+            </div>
           </div>
         ))}
       </Flex>
