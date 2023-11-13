@@ -1,8 +1,7 @@
 "use client";
 import appAxios from "@/lib/appAxios";
-import { CommentResponse } from "@/types/Content";
+import { CommentResponse, PathwayProgress } from "@/types/Content";
 import { routeFilter } from "@/utils";
-import { getToken } from "@/utils/auth";
 import useSWR, { SWRResponse } from "swr";
 import useSWRInfinite, { SWRInfiniteResponse } from "swr/infinite";
 import useSWRMutation from "swr/mutation";
@@ -295,14 +294,12 @@ export const useSkipOnboarding = () =>
   });
 
 export const useGetOnboardingStatus = () => {
-  const token = getToken();
-  return useSWR(token ? `/user/onboarding/status` : null);
+  return useSWR(`/user/onboarding/status`);
 };
 
-export const useGetOnboardingQuestions = (params?: ParamsType): SWRResponse => {
-  const token = getToken();
-  return useSWR(token ? `user/onboarding?${routeFilter(params)}` : null);
-};
+export const useGetOnboardingQuestions = (params?: ParamsType): SWRResponse =>
+  useSWR(`user/onboarding?${routeFilter(params)}`);
+
 interface PathwayProgressArg {
   arg: {
     id: string | number;
@@ -314,3 +311,5 @@ export const usePostPathwayProgress = () =>
   useSWRMutation("/content", (url, { arg }: PathwayProgressArg) => {
     return appAxios.put(`${url}/${arg.id}/pathway-progress`, arg);
   });
+
+export const useUnfinishPathway = (id: number | string) => useSWR<PathwayProgress>(`/content/${id}/pathway-progress`);
