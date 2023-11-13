@@ -62,7 +62,7 @@ export const useGetBrowseInfinite = ({
   type: string;
 }): SWRInfiniteResponse => {
   return useSWRInfinite(
-    (index: number) => `/content/browse?page=${index + 1}&type=${type}&pagesize=10&search=${search}`,
+    (index: number) => `/content/browse?page=${index + 1}&category=${type}&pagesize=10&search=${search}`,
     {
       revalidateFirstPage: true,
       revalidateAll: true,
@@ -72,6 +72,10 @@ export const useGetBrowseInfinite = ({
       parallel: false,
     }
   );
+};
+
+export const useGetHomeContent = <ContentType>(params?: ParamsType): SWRResponse<ContentType, any> => {
+  return useSWR<ContentType>(`content/browse/all`);
 };
 
 export const useGetContent = <ParamsType, ContentType>(params?: ParamsType): SWRResponse<ContentType, any> => {
