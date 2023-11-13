@@ -1,6 +1,7 @@
 "use client";
 
 import { navbarItems, NavbarType } from "@/shared/data/UserTabbar";
+import { getUserInfo } from "@/utils/auth";
 import { cn } from "@/utils/cn";
 import { Flex } from "@radix-ui/themes";
 import Link from "next/link";
@@ -8,6 +9,9 @@ import { usePathname } from "next/navigation";
 
 const BottomNavbar = () => {
   const pathName = usePathname();
+  const user = getUserInfo();
+
+  console.log(user);
 
   return (
     <Flex
@@ -28,7 +32,7 @@ const BottomNavbar = () => {
                 (pathName === item.path || pathName.includes(item.path)) && "text-primary"
               )}
             >
-              {item.icon}
+              {pathName === item.path || pathName.includes(item.path) ? item.activeIcon : item.icon}
               <p>{item.text}</p>
             </Link>
           </div>
