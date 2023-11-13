@@ -856,7 +856,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
                         </p>
                         <div className="flex mb-5">
                           <TextField
-                            label="Name"
+                            label={field.input_config.name}
                             type={field.input_config.type === "number" ? "number" : "text"}
                             className="w-full"
                             placeholder={field.input_config.placeholder}
