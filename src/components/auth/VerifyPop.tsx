@@ -24,7 +24,7 @@ const VerifyPop: React.FC = () => {
             direction="column"
             gap="5"
           >
-            <Text as="div" className="w-full text-center text-[36px] font-700">
+            <Text as="div" className="w-full text-center text-[36px] font-[700]">
               You&apos;re not logg in
             </Text>
             <Text as="div" className="w-full text-center">
