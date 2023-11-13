@@ -6,17 +6,22 @@ import { Text } from "@/components/ui/Typo/Text";
 import { usePostOnboarding } from "@/services/content";
 import { ContentData, OnBoardingOption } from "@/types/Content";
 import { cn } from "@/utils/cn";
-import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import React, { useState, useTransition } from "react";
 type OnboardingProps = {
   data: ContentData;
   parentIndex: string;
+  mutate: any;
 };
 const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
   const [option, setOption] = useState<OnBoardingOption | null>(null);
   const [modalOpen, setOpenModal] = useState<boolean>(false);
-  const { trigger, isMutating } = usePostOnboarding();
+  const { trigger, isMutating, data: returnData } = usePostOnboarding();
+  const complete = returnData?.data.status.completed;
+  const [ispending, startTransition] = useTransition();
 
   const [imageLoading, setImageLoading] = useState(false);
+  const router = useRouter();
 
   return (
     <CardBox className="w-full h-[80%] bg-white">
@@ -73,6 +78,8 @@ const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
                       }}
                     />
                     <Button
+                      disabled={ispending}
+                      loading={ispending}
                       className="w-full mt-5 p-2"
                       size="sm"
                       onClick={() => {
@@ -84,6 +91,9 @@ const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
                           {
                             onSuccess: () => {
                               setOpenModal(false);
+                              if (complete) {
+                                startTransition(() => router.push("/profile"));
+                              }
                               const targetElement = document.getElementById(`${parseInt(parentIndex) + 1}`);
                               if (targetElement) {
                                 targetElement.scrollIntoView({
