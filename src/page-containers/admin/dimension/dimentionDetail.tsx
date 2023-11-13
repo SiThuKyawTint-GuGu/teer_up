@@ -70,18 +70,24 @@ const DimensionDetailPage = ({ id }: Props) => {
         setHigh(dimension?.data?.high_body);
         setMedium(dimension?.data.medium_body);
         setLow(dimension?.data.low_body);
-        setSelectedHighContent({
-          label: dimension?.data.high_content?.title,
-          content_id: dimension?.data.high_content_id,
-        });
-        setSelectedMediumContent({
-          label: dimension?.data.medium_content?.title,
-          content_id: dimension?.data.medium_content_id,
-        });
-        setSelectedLowContent({
-          label: dimension?.data.low_content?.title,
-          content_id: dimension?.data.low_content_id,
-        });
+        if (dimension?.data.high_content_id) {
+          setSelectedHighContent({
+            label: dimension?.data.high_content?.title,
+            content_id: dimension?.data.high_content_id,
+          });
+        }
+        if (dimension?.data.medium_content_id) {
+          setSelectedMediumContent({
+            label: dimension?.data.medium_content?.title,
+            content_id: dimension?.data.medium_content_id,
+          });
+        }
+        if (dimension?.data.low_content_id) {
+          setSelectedLowContent({
+            label: dimension?.data.low_content?.title,
+            content_id: dimension?.data.low_content_id,
+          });
+        }
       }
     }
   }, [dimension, contents?.data, searchContent]);
