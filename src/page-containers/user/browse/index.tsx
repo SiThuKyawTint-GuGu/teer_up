@@ -108,7 +108,7 @@ const BrowsePage = () => {
                         <Text>There’s no contents.</Text>
                       ) : (
                         <Text>
-                          No {type}s for "{search}".
+                          No {type}s for &quot;{search}&quot;.
                         </Text>
                       )}
                       <Text>Please try a different keyword.</Text>
