@@ -151,7 +151,7 @@ const BrowsePage = () => {
           <div className="w-full h-full overflow-y-scroll no-scrollbar" ref={containerRef}>
             {browseDataArray && browseDataArray.length !== 0 ? (
               browseDataArray.map((contentData: ContentData, index: number) => (
-                <div key={index} className="w-full h-[400px]">
+                <div key={index} className="w-full h-auto">
                   <BrowserCategoryContentLayout
                     data={contentData}
                     contentMutate={mutate}
