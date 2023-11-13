@@ -30,7 +30,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SaveIcon from "@mui/icons-material/Save";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { Alert, Checkbox, IconButton, Button as MuiButton, styled } from "@mui/material";
+import { Alert, Button as MuiButton, Checkbox, IconButton, styled } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
@@ -39,8 +39,8 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { Box } from "@radix-ui/themes";
 import dayjs from "dayjs";
 import Image from "next/image";
@@ -154,15 +154,15 @@ const ContentDetail = ({ id }: Props) => {
   };
 
   useEffect(() => {
-    // if (editor) {
-    //   editor?.setContent(editorContent);
-    // }
+    if (editor) {
+      editor?.setContent(editorContent);
+    }
     // if (htmlEditors) {
     //   htmlEditors?.setContent(htmlContent);
     // }
-    // if (oppoEditor) {
-    //   oppoEditor?.setContent(oppoEditorContent);
-    // }
+    if (oppoEditor) {
+      oppoEditor?.setContent(oppoEditorContent);
+    }
     if (contentDimension?.data) {
       const transformedData = contentDimension?.data?.content_dimensions.reduce((result: any, item: any) => {
         const { dimension_id, low, medium, high, scores } = item;
@@ -293,10 +293,10 @@ const ContentDetail = ({ id }: Props) => {
       setIndustryOptions(updatedOptions);
     }
   }, [
-    // editorContent,
-    // editor,
-    // oppoEditor,
-    // oppoEditorContent,
+    editorContent,
+    editor,
+    oppoEditor,
+    oppoEditorContent,
     // htmlEditors,
     // htmlContent,
     contents?.data,
