@@ -53,12 +53,12 @@ const Login: React.FC = () => {
     <Dialog>
       <Grid columns="1" px="4" className="h-screen bg-layout">
         <Flex direction="column" justify="start" align="center" width="100%" wrap="wrap" height="100%" mt="9">
-          <Flex justify="center" align="center" mb="6">
+          <Flex className="mb-[48px]" justify="center" align="center">
             <Image src="/uploads/icons/auth/login.svg" width={180} height={180} alt="login" />
           </Flex>
-          <Flex justify="center" width="100%" direction="column" wrap="wrap" mb="4">
-            <Heading as="h4" size="7" weight="bold" mb="3">
-              Login
+          <Flex justify="center" width="100%" direction="column" wrap="wrap" className="mb-[32px]">
+            <Heading className="text-[36px]" as="h4" weight="bold" mb="3">
+              Log in
             </Heading>
             <Text weight="light">An OTP code will be send to your email</Text>
           </Flex>
