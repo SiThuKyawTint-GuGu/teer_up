@@ -10,6 +10,7 @@ const CmtInput: React.FC<CmtInputProp> = ({ setValue, value }) => {
          focus:border-[#00678D] outline-none placeholder:text-[16px] placeholder:font-[300]
         "
         placeholder="Write your comment"
+        autoFocus={false}
         value={value}
         onChange={(e: any) => setValue(e.target.value)}
       ></input>

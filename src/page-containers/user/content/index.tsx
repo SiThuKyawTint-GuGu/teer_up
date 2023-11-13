@@ -36,9 +36,9 @@ const UserContent = () => {
   const {
     data: mmlData,
     mutate,
-
+    size,
     setSize,
-  } = useSWRInfinite(index => `/content?page=${index + 1}&pagesize=${4}`, {
+  } = useSWRInfinite(index => `/content?page=${index + 1}&pagesize=${20}`, {
     revalidateFirstPage: false,
     revalidateAll: false,
     revalidateIfStale: false,
@@ -51,6 +51,16 @@ const UserContent = () => {
   const contentDataArray: any = useMemo(() => issues?.flatMap((page: any) => page?.data) || [], [issues]);
 
   useEffect(() => {
+    if (visibleItemIndex >= 1) {
+      setSize(s => {
+        if (visibleItemIndex === s * 20 - 5) {
+          return s + 1;
+        }
+        return s;
+      });
+    }
+  }, [visibleItemIndex, setSize]);
+  useEffect(() => {
     if (containerRef.current) {
       const container = containerRef.current;
       const handleScroll = () => {
@@ -58,11 +68,17 @@ const UserContent = () => {
         const newIndex = Math.round(scrollPosition / (window.innerHeight - 92));
         setStartTime(Date.now());
         setVisibleItemIndex(newIndex);
-        if (container.scrollHeight - scrollPosition - container.clientHeight === 0) {
-          console.log(visibleItemIndex);
+        // if (container.scrollHeight - scrollPosition - container.clientHeight === 0) {
+        //   setSize(s => s + 1);
+        // }
 
-          setSize(s => s + 1);
-        }
+        // setSize(s => {
+        //   if (newIndex === s * 20 - 5) {
+        //     return s + 1;
+        //   }
+        //   return s;
+        // });
+
         if (newIndex !== visibleItemIndex) {
           if (user && contentDataArray && contentDataArray.length > 0) {
             if (startTime !== null) {
@@ -88,7 +104,7 @@ const UserContent = () => {
         container.removeEventListener("scroll", handleScroll);
       };
     }
-  }, [visibleItemIndex]);
+  }, [visibleItemIndex, startTime]);
 
   useEffect(() => {
     const observerOptions = {
@@ -166,7 +182,6 @@ const UserContent = () => {
             <Link href={`/content/${data.slug}`} onClick={() => storeIndex(index)} className="w-full h-full">
               {data && differentContent(data, visibleItemIndex)}
             </Link>
-
             {index === 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
           </Box>
         ))}
