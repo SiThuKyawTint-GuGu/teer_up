@@ -39,7 +39,7 @@ const UserContentDetail: React.FC<ContentlayoutProps> = () => {
     <Grid columns="1">
       {!isLoading ? (
         <>
-          <div className="fixed max-w-[400px]  w-full  top-0  mx-auto flex flex-wrap">
+          <div className="fixed max-w-[400px]  w-full  top-0  mx-auto flex flex-wrap z-10">
             <ContentDetailHeader title={`${contentData?.title}`} />
           </div>
           <div className="w-full h-[100dvh] py-[46px]">
