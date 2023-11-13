@@ -3,7 +3,9 @@
 import Share from "@/page-containers/admin/content/Share";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import Marquee from "react-fast-marquee";
+import styled from "styled-components";
 import { Dialog, DialogContent } from "../ui/Dialog";
 import { Icons } from "../ui/Images";
 import { Text } from "../ui/Typo/Text";
@@ -15,6 +17,14 @@ const ContentDetailHeader: React.FC<ContentDetailHeaderProps> = ({ title }) => {
   const router = useRouter();
   const pathname = usePathname();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const textRef = useRef<any>();
+  const divRef = useRef<any>();
+
+  // useEffect(() => {
+  //   const textElement = textRef.current;
+  // }, [title])
+
+  console.log(textRef?.current?.offsetWidth);
 
   return (
     <div className="flex justify-between h-[48px] z-50  items-center bg-white fixed top-0 w-full max-w-[400px] mx-auto">
@@ -24,9 +34,19 @@ const ContentDetailHeader: React.FC<ContentDetailHeaderProps> = ({ title }) => {
       >
         <Icons.back className="w-[20px] h-[20px]" />
       </div>
-      <Text as="div" className="capitalize font-[600] text-[16px]">
-        {title}
-      </Text>
+      <div className="flex justify-center" style={{ width: 300 }} ref={divRef}>
+        {textRef?.current?.offsetWidth > divRef?.current?.offsetWidth ? (
+          <Marquee>
+            <Text as="div" className="capitalize font-[600] text-[16px]" ref={textRef}>
+              {title}
+            </Text>
+          </Marquee>
+        ) : (
+          <Text as="div" className="capitalize font-[600] text-[16px]" ref={textRef}>
+            {title}
+          </Text>
+        )}
+      </div>
       <Dialog open={modalOpen} onOpenChange={val => setModalOpen(val)}>
         <DialogTrigger>
           <div onClick={() => setModalOpen(true)} className="w-[40px] h-[48px] justify-end flex items-center  px-2">
@@ -47,3 +67,10 @@ const ContentDetailHeader: React.FC<ContentDetailHeaderProps> = ({ title }) => {
 };
 
 export default ContentDetailHeader;
+
+const MarqueeStyled = styled.div`
+  width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  border: 1px solid #ccc;
+`;
