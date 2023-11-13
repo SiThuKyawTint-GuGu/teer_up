@@ -17,7 +17,7 @@ const BrowsePage = () => {
     return searchParams.get("search");
   }, [searchParams]);
 
-  const { data, mutate, setSize } = useGetBrowseInfinite({ search: search, type: type });
+  const { data, mutate, setSize } = useGetBrowseInfinite({ search: search ?? "", type: type });
   const browseDataArray = useMemo(() => data?.flatMap((page: any) => page?.data) || [], [data]);
 
   useEffect(() => {

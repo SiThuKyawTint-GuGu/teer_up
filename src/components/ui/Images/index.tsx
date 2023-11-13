@@ -36,10 +36,8 @@ import {
   IoChevronDownOutline,
   IoChevronUpSharp,
   IoCloseCircleSharp,
-  IoGlobeOutline,
   IoHeart,
   IoHeartOutline,
-  IoHome,
   IoInformationCircleOutline,
   IoLink,
   IoLinkOutline,
@@ -47,7 +45,6 @@ import {
   IoLogoApple,
   IoNotificationsOutline,
   IoPeopleOutline,
-  IoPersonCircleOutline,
   IoSettingsOutline,
   IoShareSocialOutline,
 } from "react-icons/io5";
@@ -55,9 +52,9 @@ import { MdDelete, MdOutlineDeleteSweep, MdOutlineMailOutline } from "react-icon
 import {
   PiAirplaneTiltLight,
   PiArrowDownRightThin,
+  PiArrowUpRightThin,
   PiArrowsLeftRightDuotone,
   PiArrowsLeftRightThin,
-  PiArrowUpRightThin,
   PiBagSimpleThin,
   PiCameraLight,
   PiCameraPlusFill,
@@ -80,7 +77,16 @@ import {
 } from "react-icons/pi";
 import { RxCross2, RxMagnifyingGlass } from "react-icons/rx";
 import { SiAmazon, SiNetflix, SiTesla, SiVivawallet } from "react-icons/si";
-import { LandingIcon, TeeupFooterIcon, TeeupIcon } from "./Icons";
+import {
+  GlobalIcon,
+  HomeIcon,
+  IconProps,
+  LandingIcon,
+  ProfileIcon,
+  SavedIcon,
+  TeeupFooterIcon,
+  TeeupIcon,
+} from "./Icons";
 
 export const Icons = {
   loading: ({ ...props }) => {
@@ -167,12 +173,9 @@ export const Icons = {
   delete: MdDelete,
   mark: IoCheckmarkCircle,
   rightArrow: FaArrowRight,
-  home: IoHome,
-  globe: IoGlobeOutline,
   people: IoPeopleOutline,
   saved: IoBookmarkOutline,
   savedFill: IoBookmark,
-  person: IoPersonCircleOutline,
   like: IoHeartOutline,
   likefill: IoHeart,
   comment: IoChatbubbleOutline,
@@ -196,6 +199,12 @@ export const Icons = {
   link: IoLinkOutline,
   info: BsInfoCircle,
   deleteCross: MdOutlineDeleteSweep,
+
+  // Nav menu icons
+  homeIcon: ({ ...props }: IconProps) => <HomeIcon {...props} />,
+  globeIcon: ({ ...props }: IconProps) => <GlobalIcon {...props} />,
+  savedIcon: ({ ...props }: IconProps) => <SavedIcon {...props} />,
+  profileIcon: ({ ...props }: IconProps) => <ProfileIcon {...props} />,
 };
 
 interface Image {
