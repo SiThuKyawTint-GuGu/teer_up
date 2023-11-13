@@ -7,7 +7,7 @@ import { getLocalStorage } from "@/utils";
 import { getToken } from "@/utils/auth";
 import { useRouter } from "next/navigation";
 
-import { useTransition } from "react";
+import { useEffect, useTransition } from "react";
 import ContentStart from "../../content/components/ContentStart";
 import Onboarding from "../../content/components/Onboarding";
 
@@ -23,6 +23,14 @@ const OnboardingQuestionPage = () => {
   const [ispending, startTransition] = useTransition();
   const router = useRouter();
 
+  useEffect(() => {
+    router.prefetch("/profile");
+  }, []);
+  useEffect(() => {
+    if (onboardingArray?.total === 0) {
+      startTransition(() => router.push("/profile"));
+    }
+  }, [onboardingArray, router]);
   return (
     <div className="w-full h-[calc(100dvh-112px)] pt-[90px] pb-[10px]">
       <div
@@ -37,7 +45,7 @@ const OnboardingQuestionPage = () => {
             id={index.toString()}
             key={index}
           >
-            <Onboarding data={data} parentIndex={index.toString()} mutate />
+            <Onboarding data={data} parentIndex={index.toString()} mutate total={onboardingArray.total} />
 
             <Button
               variant="link"
@@ -60,8 +68,6 @@ const OnboardingQuestionPage = () => {
             >
               Skip
             </Button>
-
-            {index === 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
           </div>
         ))}
       </div>
