@@ -151,7 +151,7 @@ const UserContent = () => {
 
   return (
     <>
-      <div className="w-full h-[calc(100vh-92px)] pt-[32px]">
+      <div className="w-full h-[calc(100dvh-92px)] pt-[32px]">
         <div
           ref={containerRef}
           className={`snap-y flex-col snap-mandatory h-full px-[16px]  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
