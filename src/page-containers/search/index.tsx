@@ -35,7 +35,7 @@ const Search: React.FC = () => {
   const handleSlotClick = () => {
     if (inputRef?.current?.value) {
       startTransition(() => {
-        router.push(`/browse?search=${inputRef?.current?.value}`);
+        router.push(`/home?search=${inputRef?.current?.value}`);
       });
     }
   };
@@ -107,7 +107,7 @@ const Search: React.FC = () => {
                 <>
                   {searchData?.data?.map((each, key) => (
                     <>
-                      <Link key={key} href={`/browse?search=${each?.title}`}>
+                      <Link key={key} href={`/home?search=${each?.title}`}>
                         <Text
                           className={cn(
                             "pb-[10px] mb-[10px]",

@@ -82,7 +82,7 @@ export const config = {
     "/saved/:path*",
     "/articles/:path*",
     "/behaviour/:path*",
-    "/browse/:path*",
+    "/home/:path*",
     "/content/:path*",
     "/home/:path*",
     "/industry/:path*",
