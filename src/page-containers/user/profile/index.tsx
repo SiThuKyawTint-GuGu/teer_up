@@ -55,6 +55,7 @@ const Profile: React.FC = () => {
   const { data: profileData, mutate: mutateUser } = useGetUserById<UserProfileResponse>(user?.id);
   const { data: userDimensionData } = useGetUserDimensionResult<UserDimensionResultResponse>();
   const { trigger: onBoardingStatus } = useUpdateUserOnboardingStatus();
+
   const { trigger: resetScores } = useResetScores();
   const { trigger: deleteProfileTrigger } = useDeleteCoverPhoto();
   const { trigger: deleteCoverTrigger } = useDeleteProfilePhoto();
