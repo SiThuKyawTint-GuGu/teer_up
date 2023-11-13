@@ -24,30 +24,22 @@ const ContentDetailHeader: React.FC<ContentDetailHeaderProps> = ({ title }) => {
   useEffect(() => {
     const handleResize = () => {
       if (textRef.current && divRef.current) {
-        console.log("text width => ", textRef.current.offsetWidth);
-        console.log("div width => ", divRef.current.offsetWidth);
         const shouldShowMarquee = textRef.current.offsetWidth > divRef.current.offsetWidth;
-        console.log("shouldShowMarquee => ", shouldShowMarquee);
         setShouldMarquee(shouldShowMarquee);
       }
     };
     handleResize();
 
     window.addEventListener("resize", handleResize);
-
     return () => {
       window.removeEventListener("resize", handleResize);
     };
   }, [title]);
 
-  console.log(shouldMarquee);
-
-  // console.log(textRef.current.offsetWidth);
-
   return (
     <div className="flex justify-between h-[48px] z-50  items-center bg-white fixed top-0 w-full max-w-[400px] mx-auto">
       <div
-        className="w-[40px] h-full flex items-center px-2 justify-starta cursor-pointer"
+        className="w-[40px] h-full flex items-center px-2 justify-start cursor-pointer"
         onClick={() => router.back()}
       >
         <Icons.back className="w-[20px] h-[20px]" />
@@ -55,8 +47,12 @@ const ContentDetailHeader: React.FC<ContentDetailHeaderProps> = ({ title }) => {
       <div className="flex justify-center" style={{ width: 300, padding: "0 20px" }} ref={divRef}>
         {shouldMarquee ? (
           <Marquee>
-            <MarqueeText className="capitalize font-[600] text-[16px]" ref={textRef}>
-              {title}
+            <MarqueeText
+              className="capitalize font-[600] text-[16px] flex justify-start items-center gap-5"
+              ref={textRef}
+            >
+              <span>{title}</span>
+              <span />
             </MarqueeText>
           </Marquee>
         ) : (

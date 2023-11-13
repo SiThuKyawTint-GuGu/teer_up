@@ -68,8 +68,8 @@ const BrowsePage = () => {
           onClick={() => {
             setType("all");
           }}
-          className={`cursor-pointer px-5 flex-0 flex-shrink-0  py-1 rounded-lg border ${
-            type == "all" ? "border-primary bg-[#FCE8EA] " : "border-[#E4E4E4] hover:border-primary"
+          className={`cursor-pointer border-primary  px-10 flex-0 flex-shrink-0  py-1 rounded-lg border ${
+            type == "all" ? "bg-[#FCE8EA] " : "border-[#E4E4E4] hover:border-primary"
           }     `}
         >
           {" "}
@@ -88,19 +88,23 @@ const BrowsePage = () => {
             onClick={() => {
               setType(data?.slug);
             }}
-            className={`cursor-pointer px-5 flex-0 flex-shrink-0  py-1 rounded-lg border ${
-              type == data.slug ? "border-primary bg-[#FCE8EA] " : "border-[#E4E4E4] hover:border-primary"
+            className={`cursor-pointer px-10 flex-0 flex-shrink-0  py-1 rounded-lg border border-primary ${
+              type == data.slug ? " bg-[#FCE8EA] " : "border-[#E4E4E4] hover:border-primary"
             }     `}
           >
             {" "}
-            <p
-              className="w-auto font-[600] text-[16px] text-center"
+            <div
+              className="w-auto font-[600] text-[16px] flex space-between items-center "
               // className={`w-auto   ${
               //   type === data.value && "border-b-[2px]  text-[16px] font-[600]"
               // }`}
             >
-              {data.name}
-            </p>
+              <p> {data.name}</p>
+
+              {data?.icon_url && (
+                <img src={data?.icon_url} className="w-[20px] ml-[10px] h-[20px] ml-[5px] inline-block" />
+              )}
+            </div>
           </div>
         ))}
       </Flex>
@@ -151,7 +155,7 @@ const BrowsePage = () => {
           <div className="w-full h-full overflow-y-scroll no-scrollbar" ref={containerRef}>
             {browseDataArray && browseDataArray.length !== 0 ? (
               browseDataArray.map((contentData: ContentData, index: number) => (
-                <div key={index} className="w-full h-[400px]">
+                <div key={index} className="w-full h-auto">
                   <BrowserCategoryContentLayout
                     data={contentData}
                     contentMutate={mutate}

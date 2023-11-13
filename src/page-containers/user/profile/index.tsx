@@ -270,7 +270,13 @@ const Profile: React.FC = () => {
                           <>
                             {userDimensionData?.data?.map((each, key) => {
                               return (
-                                <Box key={key} className="bg-[#F8F9FB] rounded-[8px] space-y-4" mb="4" p="3">
+                                <Box
+                                  key={key}
+                                  position="relative"
+                                  className="bg-[#F8F9FB] rounded-[8px] space-y-4"
+                                  mb="4"
+                                  p="3"
+                                >
                                   <Flex justify="start" align="start" gap="2">
                                     <div className="w-[12px] h-[12px] mt-[5px] rounded-sm bg-primary" />
                                     <Flex className="w-[calc(100%-12px)] relative" direction="column" align="start">
@@ -283,9 +289,9 @@ const Profile: React.FC = () => {
                                         </Tooltip> */}
                                         <div className="group inline-block duration-300">
                                           <Icons.info />
-                                          <span className="absolute hidden group-hover:flex -left-5 -top-2 -translate-y-full w-48 px-2 py-1 bg-gray-700 rounded-lg text-white text-sm after:content-[''] after:absolute after:left-1/2 after:top-[100%] after:-translate-x-1/2 after:border-8 after:border-x-transparent after:border-b-transparent">
+                                          <div className="absolute -left-4 top-6 hidden group-hover:flex px-2 py-1 bg-gray-700 rounded-lg text-white text-sm">
                                             {each.name}
-                                          </span>
+                                          </div>
                                         </div>
                                       </Flex>
                                       <Text>{each.skill_body}</Text>
