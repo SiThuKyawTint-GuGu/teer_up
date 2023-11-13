@@ -205,6 +205,10 @@ export const useGetSavedContents = <SavedContentParams, SavedContentResponse>(
   return useSWR<SavedContentResponse>(`/content/save?${routeFilter(params)}`);
 };
 
+export const useGetUnfinishedPathway = <UnfinishedPathwayResponse>(): SWRResponse<UnfinishedPathwayResponse, any> => {
+  return useSWR<UnfinishedPathwayResponse>(`content/unfinished-pathways`);
+};
+
 type PostOnBoardingArg = {
   arg: {
     question_id: string | number;

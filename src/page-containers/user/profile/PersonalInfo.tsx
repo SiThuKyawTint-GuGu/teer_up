@@ -16,6 +16,7 @@ import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
+import { useEffect } from "react";
 import ReactDatePicker from "react-datepicker";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -40,6 +41,9 @@ const PersonalInfo: React.FC = () => {
 
   const form = useForm({
     resolver: yupResolver(validationSchema),
+    defaultValues: {
+      name: userProfile?.name,
+    },
   });
 
   const submit = async (data: any) => {
@@ -59,6 +63,10 @@ const PersonalInfo: React.FC = () => {
       },
     });
   };
+
+  useEffect(() => {
+    form.setValue("name", userProfile?.name || "");
+  }, [form, userProfile?.name]);
 
   return (
     <>
@@ -223,18 +231,21 @@ const PersonalInfo: React.FC = () => {
                       <FormField
                         control={form.control}
                         name="name"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormControl>
-                              <InputText
-                                type="text"
-                                className="bg-white shadow-md"
-                                defaultValue={userProfile?.name}
-                                {...field}
-                              />
-                            </FormControl>
-                          </FormItem>
-                        )}
+                        render={({ field }) => {
+                          console.log("field => ", field);
+                          return (
+                            <FormItem>
+                              <FormControl>
+                                <InputText
+                                  type="text"
+                                  className="bg-white shadow-md"
+                                  defaultValue={userProfile?.name}
+                                  {...field}
+                                />
+                              </FormControl>
+                            </FormItem>
+                          );
+                        }}
                       />
                     </Section>
                   </CardBox>
