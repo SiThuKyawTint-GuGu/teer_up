@@ -1,6 +1,8 @@
 "use client";
+import BGImage from "@/components/shared/BGImage";
 import NotFound from "@/components/shared/NotFound";
 import { Button } from "@/components/ui/Button";
+import CardBox from "@/components/ui/Card";
 import { Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import { useGetUnfinishedPathway } from "@/services/content";
@@ -28,11 +30,11 @@ const UnfinishedPathway: React.FC = () => {
             {unFinishedPathways?.data?.length ? (
               unFinishedPathways?.data?.map((each, key) => (
                 <Box key={key} pb="4">
-                  {/* <CardBox className="p-[8px]">
+                  <CardBox className="p-[8px]">
                     <Flex justify="start" align="start" gap="2">
                       <BGImage width="128px" height="100px" url={each?.content?.image_url} />
                       <Flex className="text-[#373A36] space-y-1 w-3/4" direction="column" wrap="wrap">
-                        <Text>{each?.}</Text>
+                        <Text>{each?.content?.title}</Text>
                         <Text size="2" weight="light">
                           <Text as="span" className="capitalize">
                             {each?.content?.type}
@@ -41,7 +43,7 @@ const UnfinishedPathway: React.FC = () => {
                         </Text>
                       </Flex>
                     </Flex>
-                  </CardBox> */}
+                  </CardBox>
                 </Box>
               ))
             ) : (
