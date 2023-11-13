@@ -1,6 +1,6 @@
 "use client";
 import appAxios from "@/lib/appAxios";
-import { CommentResponse, ContentHomeData } from "@/types/Content";
+import { CommentResponse } from "@/types/Content";
 import { routeFilter } from "@/utils";
 import { getToken } from "@/utils/auth";
 import useSWR, { SWRResponse } from "swr";
@@ -78,11 +78,9 @@ export const useGetBrowseInfinite = ({
   );
 };
 
-
 export const useGetHomeContent = <ContentType>(params?: ParamsType): SWRResponse<ContentType, any> => {
   return useSWR<ContentType>(`content/browse/all?${routeFilter(params)}`);
 };
-
 
 export const useGetContent = <ParamsType, ContentType>(params?: ParamsType): SWRResponse<ContentType, any> => {
   return useSWR<ContentType>(`/admin/contents?${routeFilter(params)}`);
@@ -305,3 +303,14 @@ export const useGetOnboardingQuestions = (params?: ParamsType): SWRResponse => {
   const token = getToken();
   return useSWR(token ? `user/onboarding?${routeFilter(params)}` : null);
 };
+interface PathwayProgressArg {
+  arg: {
+    id: string | number;
+    current_content_id: number | string;
+    progress: number;
+  };
+}
+export const usePostPathwayProgress = () =>
+  useSWRMutation("/content", (url, { arg }: PathwayProgressArg) => {
+    return appAxios.put(`${url}/${arg.id}/pathway-progress`, arg);
+  });
