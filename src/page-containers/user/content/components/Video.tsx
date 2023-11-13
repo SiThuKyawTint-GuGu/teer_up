@@ -81,7 +81,7 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
   };
 
   return (
-    <div className="w-full h-[90%] flex flex-col">
+    <div className="w-full h-[100%] flex flex-col">
       <div
         className="w-full h-full overflow-y-auto rounded-t-[8px] relative text-white"
         onClick={() => showCmt && setShowCmt(false)}
