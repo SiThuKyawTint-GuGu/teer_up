@@ -42,7 +42,7 @@ const CategoryTable: React.FC = () => {
           if (imgurl) {
             return <Image src={row?.original?.icon_url} alt="icon" width={40} height={40} />;
           }
-          return "";
+          return "-";
         },
       },
       {

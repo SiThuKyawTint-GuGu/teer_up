@@ -1,6 +1,6 @@
 "use client";
 import ProgressBar from "@/components/ui/Progress";
-import { ParamsType, useGetContent, usePostFile } from "@/services/content";
+import { ParamsType, useGetBrowseContent, usePostFile } from "@/services/content";
 import {
   useCreateContentCategory,
   useGetContentCategoryById,
@@ -39,12 +39,14 @@ const ContentCategoryDetail = ({ id }: Props) => {
   const { trigger: createTrigger, isMutating: postMutating } = useCreateContentCategory();
   const [searchContent, setSearchContent] = useState<string>("");
   const [contentOptions, setContentOptions] = useState<OptionType[]>([]);
-  const { data: contents } = useGetContent<ParamsType, ContentType>({
+  const [categorySlug, setCategorySlug] = useState<string>("");
+  const { data: contents } = useGetBrowseContent<ParamsType, ContentType>({
     page: 1,
     pagesize: 10,
     search: searchContent,
-    // type: "pathway",
+    category: categorySlug,
   });
+  console.log("contents...", contents);
   const [contentOne, setContentOne] = useState<OptionType>();
   const [contentTwo, setContentTwo] = useState<OptionType>();
   const [contentThree, setContentThree] = useState<OptionType>();
@@ -65,6 +67,11 @@ const ContentCategoryDetail = ({ id }: Props) => {
       setContentOptions(updatedOptions);
     }
     if (initializeSearch === false) {
+      if (category?.data) {
+        const name = category?.data.name;
+        const slug = name.toLowerCase().replace(/ /g, "-");
+        setCategorySlug(slug);
+      }
       if (category?.data.category_contents[0]) {
         setContentOne({
           label: category?.data.category_contents[0]?.content.title,
