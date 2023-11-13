@@ -68,8 +68,8 @@ const BrowsePage = () => {
           onClick={() => {
             setType("all");
           }}
-          className={`cursor-pointer px-5 flex-0 flex-shrink-0  py-1 rounded-lg border ${
-            type == "all" ? "border-primary bg-[#FCE8EA] " : "border-[#E4E4E4] hover:border-primary"
+          className={`cursor-pointer border-primary  px-10 flex-0 flex-shrink-0  py-1 rounded-lg border ${
+            type == "all" ? "bg-[#FCE8EA] " : "border-[#E4E4E4] hover:border-primary"
           }     `}
         >
           {" "}
@@ -88,8 +88,8 @@ const BrowsePage = () => {
             onClick={() => {
               setType(data?.slug);
             }}
-            className={`cursor-pointer px-5 flex-0 flex-shrink-0  py-1 rounded-lg border ${
-              type == data.slug ? "border-primary bg-[#FCE8EA] " : "border-[#E4E4E4] hover:border-primary"
+            className={`cursor-pointer px-10 flex-0 flex-shrink-0  py-1 rounded-lg border border-primary ${
+              type == data.slug ? " bg-[#FCE8EA] " : "border-[#E4E4E4] hover:border-primary"
             }     `}
           >
             {" "}
