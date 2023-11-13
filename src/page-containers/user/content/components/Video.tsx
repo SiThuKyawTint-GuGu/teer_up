@@ -12,6 +12,7 @@ type VideoProps = {
   contentMutate: any;
   index?: number;
 };
+
 const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutate }) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [showCmt, setShowCmt] = useState<boolean>(false);
@@ -19,16 +20,32 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
 
   useEffect(() => {
     if (autoplay && videoRef.current) {
-      videoRef.current.play();
+      // Autoplay is triggered when the component mounts
+      videoRef.current.play().catch(error => {
+        // Handle the play() promise rejection
+        console.error("Error playing the video:", error);
+      });
     }
   }, [autoplay]);
+
+  const onPlayButtonClick = () => {
+    if (videoRef.current) {
+      videoRef.current.play().catch(error => {
+        // Handle the play() promise rejection
+        console.error("Error playing the video:", error);
+      });
+    }
+  };
 
   // Intersection Observer setup
   useEffect(() => {
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
       if (entries[0].isIntersecting) {
         // Video is in view, play it
-        videoRef.current?.play();
+        videoRef.current?.play().catch(error => {
+          // Handle the play() promise rejection
+          console.error("Error playing the video:", error);
+        });
       } else {
         // Video is not in view, pause it
         videoRef.current?.pause();
@@ -53,7 +70,10 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
   const onVideoPress = () => {
     if (videoRef.current) {
       if (videoRef.current.paused) {
-        videoRef.current.play();
+        videoRef.current.play().catch(error => {
+          // Handle the play() promise rejection
+          console.error("Error playing the video:", error);
+        });
       } else {
         videoRef.current.pause();
       }
@@ -72,7 +92,6 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
             preload="none"
             data-video="0"
             loop
-            muted={false}
             onClick={onVideoPress}
             ref={ref => {
               videoRef.current = ref;
@@ -117,6 +136,7 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
           )}
         </div>
       </div>
+
       <CardBox className="px-[12px]">
         <ReactionBar data={data} contentMutate={contentMutate} />
       </CardBox>
