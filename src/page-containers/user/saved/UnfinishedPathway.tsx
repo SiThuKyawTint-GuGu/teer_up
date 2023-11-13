@@ -30,7 +30,7 @@ const UnfinishedPathway: React.FC = () => {
             {unFinishedPathways?.data?.length ? (
               unFinishedPathways?.data?.map((each, key) => (
                 <Link key={key} href={`/content/${each?.content?.slug}`}>
-                  <Box key={key} pb="4">
+                  <Box pb="4">
                     <CardBox className="p-[8px]">
                       <Flex justify="start" align="start" gap="2">
                         <BGImage width="128px" height="100px" url={each?.content?.image_url} />
