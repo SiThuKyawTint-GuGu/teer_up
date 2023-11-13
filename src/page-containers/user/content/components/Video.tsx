@@ -4,7 +4,7 @@ import ReactionBar from "@/components/contentLayout/ReactionBar";
 import CardBox from "@/components/ui/Card";
 import { ContentData } from "@/types/Content";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 type VideoProps = {
   data: ContentData;
   setVideoRef: any;
@@ -79,6 +79,16 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
       }
     }
   };
+  const isSafari = useMemo(() => {
+    return (
+      // @ts-ignore
+      /constructor/i.test(window.HTMLElement) ||
+      (function (p) {
+        return p.toString() === "[object SafariRemoteNotification]";
+        // @ts-ignore
+      })(!window["safari"] || (typeof safari !== "undefined" && safari.pushNotification))
+    );
+  }, []);
 
   return (
     <div className="w-full h-[100%] flex flex-col">
@@ -97,6 +107,7 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
               videoRef.current = ref;
               setVideoRef(ref);
             }}
+            muted={isSafari}
             playsInline={true}
             className={`w-full h-full object-scale-down absolute bg-black`}
           >
