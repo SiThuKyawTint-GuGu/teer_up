@@ -155,7 +155,7 @@ const UserContent = () => {
 
   return (
     <>
-      <div className="w-full h-[calc(100dvh-96px)] pt-[6px]">
+      <div className="w-full h-[calc(100dvh-115px)] pt-[10px] pb-[10px] overflow-hidden">
         <div
           ref={containerRef}
           className={`snap-y flex-col snap-mandatory h-full px-[16px]  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
@@ -166,14 +166,14 @@ const UserContent = () => {
             contentDataArray.length > 0 &&
             contentDataArray.map((data: ContentData, index: number) => (
               <div
-                className="w-full h-full pt-2 snap-start"
+                className="w-full h-full snap-start"
                 style={{ scrollSnapStop: "always" }}
                 id={index.toString()}
                 key={index}
               >
                 {data && differentContent(data, visibleItemIndex)}
 
-                {index === 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
+                {/* {index === 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>} */}
                 {contentDataArray &&
                   contentDataArray.length > 0 &&
                   contentDataArray[visibleItemIndex] &&
