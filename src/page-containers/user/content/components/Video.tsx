@@ -92,10 +92,7 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
 
   return (
     <div className="w-full h-[100%] flex flex-col">
-      <div
-        className="w-full h-full overflow-y-auto rounded-t-[8px] relative text-white"
-        onClick={() => showCmt && setShowCmt(false)}
-      >
+      <div className="w-full h-full  rounded-t-[8px] relative text-white" onClick={() => showCmt && setShowCmt(false)}>
         {data.content_video && (
           <video
             poster={data.image_url}
@@ -122,11 +119,12 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
         <div
           className={`absolute flex flex-col items-baseline cursor-pointer w-full bottom-0 px-3 py-3 z-[1] text-[14px] font-[600] ${
             showDescription &&
-            "h-[50%] bg-[rgba(0,0,0,.5)] overflow-scroll no-scrollbar text-start items-end justify-end"
+            "max-h-[50%] h-auto bg-[rgba(0,0,0,.5)] overflow-y-scroll no-scrollbar text-start items-end justify-start"
           }`}
         >
           {!showDescription && (
             <div
+              className="h-full w-full"
               onClick={() => {
                 if (data.description.length > 50) {
                   setShowDescription(true);

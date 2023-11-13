@@ -1,10 +1,11 @@
 "use client";
 import { Icons } from "@/components/ui/Images";
-import { useContentWatchCount } from "@/services/content";
+import { useContentWatchCount, usePostPathwayProgress } from "@/services/content";
 import { ContentData } from "@/types/Content";
 import { getLocalStorage, setLocalStorage } from "@/utils";
 import { getUserInfo } from "@/utils/auth";
-import { Flex } from "@radix-ui/themes";
+import { Box, Flex } from "@radix-ui/themes";
+import Link from "next/link";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import ContentLayout from "./ContentLayout";
 import Video from "./Video";
@@ -23,6 +24,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
   const [startTime, setStartTime] = useState<number | null>(null);
   const [totalTimeInView, setTotalTimeInView] = useState<number>(0);
   const { trigger: calculateCount } = useContentWatchCount();
+  const { trigger: postPathwayProgress } = usePostPathwayProgress();
   const dataWithTitle = useMemo(() => {
     if (data && data.content_pathways && data.content_pathways)
       return data.content_pathways.filter((each: ContentData) => each.title);
@@ -69,10 +71,6 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
   };
 
   function calculatePercentage(array: any[], index: number) {
-    if (index < 0 || index >= array.length) {
-      return "out of range";
-    }
-
     const percentage = (index / (array.length - 1)) * 100;
     return Math.floor(percentage);
   }
@@ -85,7 +83,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
         const scrollPosition = container.scrollTop;
         const newIndex = Math.round(scrollPosition / (window.innerHeight - 96));
         setStartTime(Date.now());
-        setVisibleItemIndex(newIndex);
+        setVisibleItemIndex(() => newIndex);
         if (newIndex !== visibleItemIndex) {
           // Calculate time in view when the item changes
           if (startTime !== null) {
@@ -93,6 +91,13 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
             const timeInMilliseconds = endTime - startTime;
             setTotalTimeInView((totalTimeInView + timeInMilliseconds) / 1000);
             if (data && data.content_pathways) {
+              if (user) {
+                postPathwayProgress({
+                  id: data.id,
+                  current_content_id: data.content_pathways[newIndex].id,
+                  progress: calculatePercentage(data.content_pathways, newIndex),
+                });
+              }
               if (user && data.content_pathways[visibleItemIndex].type !== "html") {
                 calculateCount({
                   watched_time: totalTimeInView,
@@ -110,7 +115,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
         container.removeEventListener("scroll", handleScroll);
       };
     }
-  }, [visibleItemIndex]);
+  }, [visibleItemIndex, calculateCount, postPathwayProgress, totalTimeInView, data, startTime]);
 
   const differentContent = (data: ContentData, index: number) => {
     if (data.type === "video" && data.content_video)
@@ -174,7 +179,14 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
             key={index}
             onClick={() => storeIndex(index)}
           >
-            {differentContent(data, index)}
+            {data.type === "video" || data.type === "html" ? (
+              <Box className="w-full h-full">{data && differentContent(data, index)}</Box>
+            ) : (
+              <Link href={`/content/${data.slug}`} onClick={() => storeIndex(index)} className="w-full h-full">
+                {data && differentContent(data, index)}
+              </Link>
+            )}
+
             {index == 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
           </div>
         ))}
