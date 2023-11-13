@@ -139,6 +139,7 @@ const ContentCategoryDetail = ({ id }: Props) => {
       content_ids: [id1, id2, id3, id4, id5],
       icon_url: imgurl,
       banner_icon_url: bannerurl,
+      order: 1,
     };
     if (category?.data) {
       submitData.id = id;
