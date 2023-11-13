@@ -179,9 +179,14 @@ const UserContent = () => {
             id={index.toString()}
             key={index}
           >
-            <Link href={`/content/${data.slug}`} onClick={() => storeIndex(index)} className="w-full h-full">
-              {data && differentContent(data, visibleItemIndex)}
-            </Link>
+            {data.type === "video" ? (
+              <Box className="w-full h-full">{data && differentContent(data, visibleItemIndex)}</Box>
+            ) : (
+              <Link href={`/content/${data.slug}`} onClick={() => storeIndex(index)} className="w-full h-full">
+                {data && differentContent(data, visibleItemIndex)}
+              </Link>
+            )}
+
             {index === 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
           </Box>
         ))}
