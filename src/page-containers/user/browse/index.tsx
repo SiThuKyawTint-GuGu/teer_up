@@ -25,7 +25,6 @@ const BrowsePage = () => {
     mutate: contentDataMutate,
   } = useGetContentCategory<ContentCategoryResponse>();
 
-
   const { data: homeContent, isLoading: homeContentLoading } = useGetHomeContent<any>({
     search: search ?? "",
   });
@@ -76,7 +75,7 @@ const BrowsePage = () => {
     );
   }
   return (
-    <div className="relative w-full h-full pb-[70px]  bg-[#F8F9FB]">
+    <div className="relative w-full h-full pb-[52px]  bg-[#F8F9FB]">
       <Flex className="p-3 w-full sticky top-0 overflow-auto gap-[15px] no-scrollbar bg-white">
         <div
           onClick={() => {
@@ -120,11 +119,9 @@ const BrowsePage = () => {
         ))}
       </Flex>
       {type === "all" ? (
-
         <div className="overflow-y-scroll no-scrollbar h-full bg-[#F8F9FB] ">
           {homeContent?.data && homeContent?.data?.length !== 0 && (!search || search === "") ? (
             homeContent?.data?.map((contentData: ContentHomeData, index: number) => {
-
               return (
                 <Flex direction="column" className="w-full  py-[10px]" key={index}>
                   <Flex direction={"row"} className="w-full  px-[12px] justify-between items-center">
@@ -132,7 +129,7 @@ const BrowsePage = () => {
                     <p
                       className="text-primary font-[600] ml-[5px] cursor-pointer"
                       onClick={() => {
-                        setType(contentData.slug);
+                        handleCategoryChange(contentData?.slug);
                       }}
                     >
                       Show More
@@ -185,7 +182,7 @@ const BrowsePage = () => {
         </div>
       ) : (
         <Flex direction="column" className="w-full h-full pt-[10px]">
-          <div className="w-full h-full overflow-y-scroll no-scrollbar mb-3" ref={containerRef}>
+          <div className="w-full h-full overflow-y-scroll no-scrollbar " ref={containerRef}>
             {bannerIconUrl && (
               <div className="mx-2  overflow-hidden">
                 <img alt="banner" src={bannerIconUrl} className="w-full h-auto rounded-md inline-block object-cover " />

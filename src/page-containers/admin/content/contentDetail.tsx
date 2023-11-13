@@ -58,7 +58,6 @@ interface Props {
 
 const validationSchema = yup.object({
   title: yup.string().required("Title is required!"),
-  buttonLabel: yup.string().required("Button Label is required!"),
   description: yup.string().required("Description is required!"),
   // category: yup.string().required("Please select category!"),
   type: yup.string().required("Please select type!"),
@@ -132,10 +131,10 @@ const ContentDetail = ({ id }: Props) => {
   const [htmlEditors, setHtmlEditors] = useState<any>(null);
   const [contentOptions, setContentOptions] = useState<OptionType[]>([]);
   const [keywordOptions, setKeywordOptions] = useState<OptionType[]>([]);
-  const [industryOptions, setIndustryOptions] = useState<OptionType[]>([]);
+  const [industryOptions, setIndustryOptions] = useState<OptionType[]>([{ label: "Select All", id: 0 }]);
   const [categoryOptions, setCategoryOptions] = useState<OptionType[]>([]);
   const [mentorOptions, setMentorOptions] = useState<OptionType[]>([]);
-  const [departmentOptions, setDepartmentOptions] = useState<OptionType[]>([]);
+  const [departmentOptions, setDepartmentOptions] = useState<OptionType[]>([{ label: "Select All", id: 0 }]);
   const [selectedKeywords, setSelectedKeywords] = useState<OptionType[]>([]);
   const [selectedIndustry, setSelectedIndustry] = useState<OptionType[]>([]);
   const [selectedDepartment, setSelectedDepartment] = useState<OptionType[]>([]);
@@ -144,6 +143,7 @@ const ContentDetail = ({ id }: Props) => {
   const [imgProgress, setImgProgress] = useState<number>();
   const [videoRes, setVideoRes] = useState<any>();
   const [imgRes, setImgRes] = useState<any>();
+  const [buttonLabel, setButtonLabel] = useState<string>("");
 
   const handleEditorInit = (evt: any, editor: any) => {
     setEditor(editor);
@@ -256,7 +256,6 @@ const ContentDetail = ({ id }: Props) => {
       }));
       setSelectCategory(selectCategories);
       setValue("title", content?.data.title);
-      setValue("buttonLabel", content?.data.buttonLabel);
       setValue("description", content?.data.description);
       // setValue("category", content?.data?.category?.id);
       setValue("type", content?.data.type);
@@ -291,14 +290,14 @@ const ContentDetail = ({ id }: Props) => {
         label: option.name,
         id: option.id,
       }));
-      setDepartmentOptions(updatedOptions);
+      setDepartmentOptions([...departmentOptions, ...updatedOptions]);
     }
     if (industries?.data) {
       const updatedOptions = industries?.data.map((option: any) => ({
         label: option.name,
         id: option.id,
       }));
-      setIndustryOptions(updatedOptions);
+      setIndustryOptions([...industryOptions, ...updatedOptions]);
     }
     if (category?.data) {
       const updatedOptions = category?.data.map((option: any) => ({
@@ -363,7 +362,7 @@ const ContentDetail = ({ id }: Props) => {
 
       postdata = {
         title: data?.title,
-        submit_label: data?.buttonLabel,
+        submit_label: buttonLabel,
         description: data.description,
         type: selectedValue,
         status: selectedStatus,
@@ -402,7 +401,7 @@ const ContentDetail = ({ id }: Props) => {
       const imgurl = imgRes ? imgRes?.data?.data?.file_path : imgUrl;
       postdata = {
         title: data?.title,
-        submit_label: data?.buttonLabel,
+        submit_label: buttonLabel,
         description: data?.description,
         type: selectedValue,
         status: selectedStatus,
@@ -437,7 +436,7 @@ const ContentDetail = ({ id }: Props) => {
       const imgurl = imgRes ? imgRes?.data?.data?.file_path : imgUrl;
       postdata = {
         title: data?.title,
-        submit_label: data?.buttonLabel,
+        submit_label: buttonLabel,
         description: data?.description,
         type: selectedValue,
         status: selectedStatus,
@@ -474,7 +473,7 @@ const ContentDetail = ({ id }: Props) => {
       const imgurl = imgRes ? imgRes?.data?.data?.file_path : imgUrl;
       postdata = {
         title: data?.title,
-        submit_label: data?.buttonLabel,
+        submit_label: buttonLabel,
         description: data?.description,
         type: selectedValue,
         status: selectedStatus,
@@ -512,7 +511,7 @@ const ContentDetail = ({ id }: Props) => {
       const imgurl = imgRes ? imgRes?.data?.data?.file_path : imgUrl;
       postdata = {
         title: data?.title,
-        submit_label: data?.buttonLabel,
+        submit_label: buttonLabel,
         description: data?.description,
         type: selectedValue,
         status: selectedStatus,
@@ -537,7 +536,7 @@ const ContentDetail = ({ id }: Props) => {
       const imgurl = imgRes ? imgRes?.data?.data?.file_path : imgUrl;
       postdata = {
         title: data?.title,
-        submit_label: data?.buttonLabel,
+        submit_label: buttonLabel,
         description: data?.description,
         type: selectedValue,
         status: selectedStatus,
@@ -593,9 +592,7 @@ const ContentDetail = ({ id }: Props) => {
     // setEndDate(new Date(date).toISOString());
     setEndDate(date);
   };
-  // const handleCategorySelectChange = (event: SelectChangeEvent) => {
-  //   setSelectCategory(event.target.value);
-  // };
+
   const handleCategoryChange = (event: any, newValue: any) => {
     setSelectCategory(newValue);
   };
@@ -623,10 +620,24 @@ const ContentDetail = ({ id }: Props) => {
   };
 
   const handleDepartmentChange = (event: any, newValue: any) => {
-    setSelectedDepartment(newValue);
+    newValue.map((value: any) => {
+      if (value.id === 0) {
+        const updatedOptions = departmentOptions.filter(option => option.id !== 0);
+        setSelectedDepartment(updatedOptions);
+      } else {
+        setSelectedDepartment(newValue);
+      }
+    });
   };
   const handleIndustryChange = (event: any, newValue: any) => {
-    setSelectedIndustry(newValue);
+    newValue.map((value: any) => {
+      if (value.id === 0) {
+        const updatedOptions = industryOptions.filter(option => option.id !== 0);
+        setSelectedIndustry(updatedOptions);
+      } else {
+        setSelectedIndustry(newValue);
+      }
+    });
   };
 
   const handleDeletePathway = (indexValue: number) => {
@@ -702,10 +713,6 @@ const ContentDetail = ({ id }: Props) => {
           <div className="mb-10">
             <TextField {...register("title")} label="Title" className="w-full" variant="outlined" />
             <p className="mt-2 text-red-700">{errors.title?.message}</p>
-          </div>
-          <div className="mb-10">
-            <TextField {...register("buttonLabel")} label="Button label" className="w-full" variant="outlined" />
-            <p className="mt-2 text-red-700">{errors.buttonLabel?.message}</p>
           </div>
           <div className="mb-10">
             <div className="mb-10">
@@ -1090,6 +1097,15 @@ const ContentDetail = ({ id }: Props) => {
               </div>
             </>
           )}
+          <div className="mb-10">
+            <TextField
+              value={buttonLabel}
+              onChange={e => setButtonLabel(e.target.value)}
+              label="Button label"
+              className="w-full"
+              variant="outlined"
+            />
+          </div>
           <div className="mt-10">
             <div className="border border-dashed w-[30%] flex flex-col items-center justify-center p-10 border-gray-400 rounded-lg">
               <MuiButton
