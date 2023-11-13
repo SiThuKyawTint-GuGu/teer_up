@@ -13,9 +13,9 @@ import NormalContentDetail from "./ContentDetail";
 import MentorDetail from "./MentorDetail";
 import PathwayDetail from "./PathwayDetail";
 import VideoDetail from "./VideoDetail";
-type ContentlayoutProps = {};
+type ContentLayoutProps = {};
 
-const UserContentDetail: React.FC<ContentlayoutProps> = () => {
+const UserContentDetail: React.FC<ContentLayoutProps> = () => {
   const { slug }: { slug: string } = useParams();
   const { data, mutate: contentMutate, isLoading } = useGetContentBySlug<ContentData>(slug);
 
@@ -35,6 +35,7 @@ const UserContentDetail: React.FC<ContentlayoutProps> = () => {
     if (contentData && contentData?.type === "mentor")
       return <MentorDetail data={contentData} contentMutate={contentMutate} />;
   };
+
   return (
     <Grid columns="1">
       {!isLoading ? (
