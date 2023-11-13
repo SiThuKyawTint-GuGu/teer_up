@@ -58,21 +58,20 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate }) =>
                 )}
               </Link>
               <div className="mt-2 w-full">
-                {data.type !== "article" && (
-                  <Button
-                    className="w-full"
-                    disabled={ispending}
-                    onClick={() =>
-                      startTransition(() => {
-                        router.push(`/content/${data.slug}`);
-                      })
-                    }
-                  >
-                    {(data.type === "event" || data.type === "pathway") && "Join Now"}
-                    {data.type === "opportunity" && "Apply Now"}
-                    {data.type === "mentor" && "Request Mentorship"}
-                  </Button>
-                )}
+                <Button
+                  className="w-full"
+                  disabled={ispending}
+                  onClick={() =>
+                    startTransition(() => {
+                      router.push(`/content/${data.slug}`);
+                    })
+                  }
+                >
+                  {(data.type === "event" || data.type === "pathway") && "Join Now"}
+                  {data.type === "opportunity" && "Apply Now"}
+                  {data.type === "article" && "Suggests"}
+                  {data.type === "mentor" && "Request Mentorship"}
+                </Button>
                 <div className="w-full pt-3">
                   <hr className="w-full h-[1px] bg-slateGray" />
                 </div>

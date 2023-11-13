@@ -62,7 +62,7 @@ export const useGetBrowseInfinite = ({
   type: string;
 }): SWRInfiniteResponse => {
   return useSWRInfinite(
-    (index: number) => `/content/browse?page=${index + 1}&type=${type}&pagesize=10&search=${search}`,
+    (index: number) => `/content/browse?page=${index + 1}&type=${type}&pagesize=10${search ? `&search=${search}` : ""}`,
     {
       revalidateFirstPage: true,
       revalidateAll: true,
