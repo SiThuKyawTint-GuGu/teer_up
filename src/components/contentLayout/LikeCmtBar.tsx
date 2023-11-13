@@ -4,6 +4,7 @@ import { useContentForm, useLikeContent, useSaveContent } from "@/services/conte
 import { ContentData, Input_config, Input_options } from "@/types/Content";
 
 import { Box, Flex, Section } from "@radix-ui/themes";
+import dayjs from "dayjs";
 import React, { ChangeEvent, useMemo, useState } from "react";
 import ReactDatePicker from "react-datepicker";
 import { Button } from "../ui/Button";
@@ -34,6 +35,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
   const [selectedOptions, setSelectedOptions] = useState<{ inputconfig_id: number | string; value: string }[] | []>([]);
   const [message, setMessage] = useState<string>("");
   const [showSuccessPage, setShowSuccessPage] = useState<boolean>(false);
+  const [dateValue, setDateValue] = useState<string>(dayjs(new Date()).toString());
 
   const saveContent = async () => {
     await contentSave(
@@ -154,8 +156,18 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
           <Section className="bg-white" py="1" px="3">
             <CardBox className="px-[12px] py-[8px] flex justify-between items-center">
               <ReactDatePicker
-                selected={new Date()}
-                onChange={date => console.log(date)}
+                onChange={(date: Date | null) => {
+                  if (date) {
+                    handleInput(inputData.id, dayjs(date).format());
+                    const dateParentObject = selectedOptions.find((e: any) => e.id === inputData.id);
+                    if (dateParentObject) {
+                      setDateValue(dateParentObject.value);
+                    }
+
+                    // Adjust the date format as needed
+                  }
+                }}
+                value={dateValue}
                 dateFormat="dd/MM/yyyy"
                 className="w-full bg-white"
               />
