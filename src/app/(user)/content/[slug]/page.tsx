@@ -16,11 +16,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   ${process.env.NEXT_PUBLIC_API_URL}/api/v1/content/slug/${slug}`).then(res => res.json());
   // optionally access and extend (rather than replace) parent metadata
   const contentData: ContentData = product.data;
+
   return {
-    title: contentData.title,
-    description: contentData.description,
+    title: contentData?.title,
+    description: contentData?.description,
     openGraph: {
-      images: [contentData.image_url],
+      images: [contentData?.image_url],
     },
   };
 }

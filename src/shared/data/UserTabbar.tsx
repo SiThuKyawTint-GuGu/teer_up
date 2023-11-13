@@ -14,11 +14,12 @@ export const navbarItems: NavbarType[] = [
     activeIcon: <Icons.homeIcon width={24} height={24} activeFill="#DA291C" active />,
   },
   {
-    text: "Browse",
-    path: "/browse",
+    text: "Explore",
+    path: "/explore",
     icon: <Icons.globeIcon width={24} height={24} fill="#373A36" />,
     activeIcon: <Icons.globeIcon width={24} height={24} activeFill="#DA291C" active />,
   },
+
   // {
   //   text: "Mentorship",
   //   path: "/mentorship",

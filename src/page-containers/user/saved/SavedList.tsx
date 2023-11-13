@@ -7,8 +7,8 @@ import { Dialog, DialogClose, DialogContent, DialogTrigger } from "@/components/
 import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import {
-  SAVED_CONTENT_TYPES,
   SavedContentParams,
+  SAVED_CONTENT_TYPES,
   useGetSavedContents,
   useGetUnfinishedPathway,
 } from "@/services/content";
@@ -128,7 +128,7 @@ const SavedList: React.FC = () => {
                       </>
                     }
                     link={
-                      <Link href="/browse">
+                      <Link href="/home">
                         <Button>Browse now</Button>
                       </Link>
                     }

@@ -24,7 +24,7 @@ const VerifyPop: React.FC = () => {
             direction="column"
             gap="5"
           >
-            <Text as="div" className="w-full text-center text-[36px] font-700">
+            <Text as="div" className="w-full text-center text-[36px] font-[700]">
               You&apos;re not logg in
             </Text>
             <Text as="div" className="w-full text-center">
@@ -34,11 +34,10 @@ const VerifyPop: React.FC = () => {
               size="lg"
               disabled={isPending}
               className="mb-5"
-              onClick={() =>
-                startTransition(() => {
-                  router.push("/auth/login");
-                })
-              }
+              onClick={() => {
+                verifyModalCloseHandler();
+                router.push("/auth/login");
+              }}
             >
               Login
             </Button>
