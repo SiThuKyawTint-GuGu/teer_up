@@ -46,7 +46,6 @@ const ContentCategoryDetail = ({ id }: Props) => {
     search: searchContent,
     category: categorySlug,
   });
-  console.log("contents...", contents);
   const [contentOne, setContentOne] = useState<OptionType>();
   const [contentTwo, setContentTwo] = useState<OptionType>();
   const [contentThree, setContentThree] = useState<OptionType>();
@@ -59,7 +58,6 @@ const ContentCategoryDetail = ({ id }: Props) => {
   const [imgRes, setImgRes] = useState<any>();
   const [bannerUrl, setBannerUrl] = useState<string>("");
   const [bannerRes, setBannerRes] = useState<any>();
-  const [iconMessge, setIconMessage] = useState<string>("");
 
   useEffect(() => {
     if (contents?.data && contents?.data.length > 0) {
@@ -130,10 +128,6 @@ const ContentCategoryDetail = ({ id }: Props) => {
     const id5 = contentFive?.content_id;
     const imgurl = imgRes ? imgRes?.data?.data?.file_path : imgUrl;
     const bannerurl = bannerRes ? bannerRes?.data?.data?.file_path : bannerUrl;
-    if (!imgUrl) {
-      setIconMessage("Icon image is required!");
-      return;
-    }
     const submitData: any = {
       name: data?.name,
       content_ids: [id1, id2, id3, id4, id5],
@@ -244,7 +238,6 @@ const ContentCategoryDetail = ({ id }: Props) => {
                 <Image width={300} height={300} src={imgUrl} alt="File Preview" className="max-w-full h-auto" />
               </div>
             )}
-            {iconMessge && <p className="mt-2 text-red-700">{iconMessge}</p>}
           </div>
           <div className="mb-10">
             <div className="border border-dashed w-[30%] flex flex-col items-center justify-center p-10 border-gray-400 rounded-lg">
