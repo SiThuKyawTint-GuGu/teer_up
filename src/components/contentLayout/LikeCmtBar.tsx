@@ -15,7 +15,6 @@ import { Checkbox } from "../ui/Inputs/Checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "../ui/Inputs/Select";
 import Modal from "../ui/Modal";
 import { Text } from "../ui/Typo/Text";
-import CmtInput from "./CmtInput";
 import SuccessFormPage from "./SuccessFormPage";
 
 type Props = {
@@ -268,11 +267,9 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
             </Button>
           )}
           {data.type === "article" && (
-            <DialogTrigger>
-              <div>
-                <CmtInput setValue={() => {}} />
-              </div>
-            </DialogTrigger>
+            <Button size="sm" className="w-[166px]" onClick={() => setOpenModal(true)}>
+              Suggest Now
+            </Button>
           )}
 
           <div className="flex justify-between px-3 w-full flex-1">
