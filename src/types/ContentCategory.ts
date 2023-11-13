@@ -1,6 +1,7 @@
 export interface ContentCategory {
-  id?: number;
+  id: number;
   name: string;
+  slug: string;
 }
 
 export interface ContentCategoryResponse {

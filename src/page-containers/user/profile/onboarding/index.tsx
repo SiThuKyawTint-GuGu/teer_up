@@ -37,7 +37,7 @@ const OnboardingQuestionPage = () => {
             id={index.toString()}
             key={index}
           >
-            <Onboarding data={data} parentIndex={index.toString()} />
+            <Onboarding data={data} parentIndex={index.toString()} mutate />
 
             <Button
               variant="link"
