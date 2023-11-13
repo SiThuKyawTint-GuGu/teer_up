@@ -54,7 +54,6 @@ const UserContent = () => {
   const issues: any = mmlData ? [].concat(...mmlData) : [];
 
   const contentDataArray: any = useMemo(() => issues?.flatMap((page: any) => page?.data) || [], [issues]);
-  console.log(contentDataArray);
 
   useEffect(() => {
     if (containerRef.current) {
@@ -73,23 +72,27 @@ const UserContent = () => {
 
         if (newIndex !== visibleItemIndex) {
           // Calculate time in view when the item changes
-          if (contentDataArray && contentDataArray.length > 0) {
-            if (user && contentDataArray[visibleItemIndex].type !== "onboarding") {
-              if (startTime !== null) {
-                const endTime = Date.now();
-                const timeInMilliseconds = endTime - startTime;
-                const totalTime = Math.floor((totalTimeInView + timeInMilliseconds) / 1000);
 
-                if (totalTime > 30 && onBoardArray && onBoardArray.length > 0) {
-                  contentDataArray.splice(visibleItemIndex + 2, 1, onBoardArray[0]);
-                  setOnboardPage(prev => prev + 1);
-                }
-                calculateCount({
-                  watched_time: totalTime,
-                  content_id: contentDataArray[visibleItemIndex].id,
-                });
-                return;
+          if (
+            user &&
+            contentDataArray &&
+            contentDataArray.length > 0 &&
+            contentDataArray[visibleItemIndex].type !== "onboarding"
+          ) {
+            if (startTime !== null) {
+              const endTime = Date.now();
+              const timeInMilliseconds = endTime - startTime;
+              const totalTime = Math.floor((totalTimeInView + timeInMilliseconds) / 1000);
+
+              if (totalTime > 30 && onBoardArray && onBoardArray.length > 0) {
+                contentDataArray.splice(visibleItemIndex + 2, 1, onBoardArray[0]);
+                setOnboardPage(prev => prev + 1);
               }
+              calculateCount({
+                watched_time: totalTime,
+                content_id: contentDataArray[visibleItemIndex].id,
+              });
+              return;
             }
           }
         }
@@ -144,14 +147,15 @@ const UserContent = () => {
 
   const differentContent = (data: ContentData, index: number) => {
     if (data?.type === "video" && data.content_video)
-      return <Video data={data} setVideoRef={handleVideoRef(index)} autoplay={index === 0} contentMutate={mutate} />;
+      return <Video data={data} setVideoRef={handleVideoRef(index)} autoplay={true} contentMutate={mutate} />;
+
     if (data?.type === "onboarding") return <Onboarding data={data} parentIndex={index.toString()} />;
     return <ContentLayout data={data} contentMutate={mutate} />;
   };
 
   return (
     <>
-      <div className="w-full h-[calc(100dvh-92px)] pt-[32px]">
+      <div className="w-full h-[calc(100dvh-66px)] pt-[6px]">
         <div
           ref={containerRef}
           className={`snap-y flex-col snap-mandatory h-full px-[16px]  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
