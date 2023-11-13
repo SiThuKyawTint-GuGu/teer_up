@@ -1,42 +1,28 @@
 "use client";
 import { ContentData } from "@/types/Content";
 
-import { useContentWatchCount, useGetOnboardingQuestions, useSkipOnboarding } from "@/services/content";
-import { useEffect, useMemo, useRef, useState, useTransition } from "react";
+import { useContentWatchCount } from "@/services/content";
+import { useEffect, useMemo, useRef, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 
-import { Button } from "@/components/ui/Button";
 import fetcher from "@/lib/fetcher";
 import { getLocalStorage } from "@/utils";
 import { getToken, getUserInfo } from "@/utils/auth";
-import { useRouter } from "next/navigation";
 import ContentLayout from "./components/ContentLayout";
 import ContentStart from "./components/ContentStart";
 import Onboarding from "./components/Onboarding";
 import Video from "./components/Video";
 
 const UserContent = () => {
-  const token = getToken();
-
-  const [onBoardPage, setOnboardPage] = useState<number>(1);
   const videoRefs = useRef<HTMLVideoElement[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const [visibleItemIndex, setVisibleItemIndex] = useState<number>(0);
-
   const user = getUserInfo();
-
-  const { data: onboarding } = useGetOnboardingQuestions({
-    page: onBoardPage,
-    pagesize: 1,
-  });
-
-  const { trigger: skipOnboarding } = useSkipOnboarding();
+  const token = getToken();
   const [startTime, setStartTime] = useState<number | null>(null);
   const [totalTimeInView, setTotalTimeInView] = useState<number>(0);
   const { trigger: calculateCount } = useContentWatchCount();
-  const onBoardArray: ContentData[] = onboarding?.data;
-  const router = useRouter();
-  const [ispending, startTransition] = useTransition();
+
   const showStart = getLocalStorage("content");
   const {
     data: mmlData,
@@ -63,31 +49,18 @@ const UserContent = () => {
         const newIndex = Math.round(scrollPosition / (window.innerHeight - 92));
         setStartTime(Date.now());
         setVisibleItemIndex(newIndex);
-
         if (container.scrollHeight - scrollPosition - container.clientHeight === 0) {
           console.log(visibleItemIndex);
 
           setSize(s => s + 1);
         }
-
         if (newIndex !== visibleItemIndex) {
-          // Calculate time in view when the item changes
-
-          if (
-            user &&
-            contentDataArray &&
-            contentDataArray.length > 0 &&
-            contentDataArray[visibleItemIndex].type !== "onboarding"
-          ) {
+          if (user && contentDataArray && contentDataArray.length > 0) {
             if (startTime !== null) {
               const endTime = Date.now();
               const timeInMilliseconds = endTime - startTime;
               const totalTime = Math.floor((totalTimeInView + timeInMilliseconds) / 1000);
 
-              if (totalTime > 30 && onBoardArray && onBoardArray.length > 0) {
-                contentDataArray.splice(visibleItemIndex + 2, 1, onBoardArray[0]);
-                setOnboardPage(prev => prev + 1);
-              }
               calculateCount({
                 watched_time: totalTime,
                 content_id: contentDataArray[visibleItemIndex].id,
@@ -154,58 +127,29 @@ const UserContent = () => {
   };
 
   return (
-    <>
-      <div className="w-full h-[calc(100dvh-115px)] pt-[10px] pb-[10px] overflow-hidden">
-        <div
-          ref={containerRef}
-          className={`snap-y flex-col snap-mandatory h-full px-[16px]  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
-          style={{ scrollSnapStop: "always" }}
-        >
-          {showStart === 0 && token && <ContentStart />}
-          {contentDataArray &&
-            contentDataArray.length > 0 &&
-            contentDataArray.map((data: ContentData, index: number) => (
-              <div
-                className="w-full h-full snap-start"
-                style={{ scrollSnapStop: "always" }}
-                id={index.toString()}
-                key={index}
-              >
-                {data && differentContent(data, visibleItemIndex)}
+    <div className="w-full h-[calc(100dvh-96px)] pt-[6px]">
+      <div
+        ref={containerRef}
+        className={`snap-y flex-col snap-mandatory h-full px-[16px]  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
+        style={{ scrollSnapStop: "always" }}
+      >
+        {showStart === 0 && token && <ContentStart />}
+        {contentDataArray &&
+          contentDataArray.length > 0 &&
+          contentDataArray.map((data: ContentData, index: number) => (
+            <div
+              className="w-full h-full pt-2 snap-start"
+              style={{ scrollSnapStop: "always" }}
+              id={index.toString()}
+              key={index}
+            >
+              {data && differentContent(data, visibleItemIndex)}
 
-                {/* {index === 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>} */}
-                {contentDataArray &&
-                  contentDataArray.length > 0 &&
-                  contentDataArray[visibleItemIndex] &&
-                  contentDataArray[visibleItemIndex].type === "onboarding" && (
-                    <Button
-                      variant="link"
-                      disabled={ispending}
-                      className="text-center w-full py-4 text-primary"
-                      onClick={() => {
-                        skipOnboarding(
-                          {
-                            skip: true,
-                          },
-                          {
-                            onSuccess: () => {
-                              startTransition(() => {
-                                router.push("/profile");
-                              });
-                              mutate();
-                            },
-                          }
-                        );
-                      }}
-                    >
-                      skip
-                    </Button>
-                  )}
-              </div>
-            ))}
-        </div>
+              {index === 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
+            </div>
+          ))}
       </div>
-    </>
+    </div>
   );
 };
 
