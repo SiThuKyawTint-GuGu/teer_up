@@ -42,6 +42,12 @@ const Search: React.FC = () => {
     }
   };
 
+  const handleHistoryClick = (data: string) => {
+    if (data) {
+      startTransition(() => {
+        router.push(`/home?search=${data}`);
+      });
+      
   const handleKeyPress = (event: any) => {
     if (event.key === "Enter") {
       handleSlotClick();
@@ -88,14 +94,14 @@ const Search: React.FC = () => {
                   ?.filter(each => each.trim() !== "")
                   .sort((a, b) => b.localeCompare(a))
                   .map((each, key) => (
-                    <Button key={key} variant="outline">
+                    <Button key={key} variant="outline" onClick={() => handleHistoryClick(each)}>
                       {each}
                     </Button>
                   ))}
               </Flex>
             </Box>
           )}
-          <Box className="space-y-[6px]">
+          {/* <Box className="space-y-[6px]">
             <Heading as="h5" size="3" weight="medium">
               Suggested for you
             </Heading>
@@ -107,7 +113,7 @@ const Search: React.FC = () => {
               <li className="w-full">Build and maintain support system</li>
               <li className="w-full">Build and maintain support system</li>
             </ul>
-          </Box>
+          </Box> */}
         </Section>
         {searchValue && (
           <div className="max-w-[400px] fixed top-[65px] z-20 w-full h-full bg-[#efefef]">
