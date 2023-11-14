@@ -68,9 +68,6 @@ const ContentCategoryDetail = ({ id }: Props) => {
       const name = category?.data.name;
       const slug = name.toLowerCase().replace(/ /g, "-");
       setCategorySlug(slug);
-    }
-
-    if (categorySlug) {
       if (contents?.data && contents?.data.length > 0) {
         const updatedOptions = contents?.data.map((option: any) => ({
           label: option.title ? option.title : "",
@@ -79,13 +76,7 @@ const ContentCategoryDetail = ({ id }: Props) => {
         setContentOptions(updatedOptions);
       }
     }
-
     if (initializeSearch === false) {
-      // if (category?.data) {
-      //   const name = category?.data.name;
-      //   const slug = name.toLowerCase().replace(/ /g, "-");
-      //   setCategorySlug(slug);
-      // }
       if (category?.data.category_contents[0]) {
         setContentOne({
           label: category?.data.category_contents[0]?.content.title,
