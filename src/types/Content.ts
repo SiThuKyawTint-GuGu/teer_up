@@ -235,3 +235,13 @@ export interface SkipStatusResponse {
   updated_at: Date;
   user_id: boolean;
 }
+
+export interface PathwayProgress {
+  content_id: number | string;
+  created_at: Date;
+  current_content_id: number;
+  id: number | string;
+  progress: number;
+  updated_at: Date;
+  user_id: number;
+}
