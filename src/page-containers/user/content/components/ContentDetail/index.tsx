@@ -13,6 +13,7 @@ type NormalContentDetailProp = {
   contentMutate: any;
 };
 const NormalContentDetail: React.FC<NormalContentDetailProp> = ({ data, contentMutate }) => {
+  console.log(data?.content_article?.body);
   return (
     <>
       {data && (

@@ -111,7 +111,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
               if (user) {
                 postPathwayProgress({
                   id: data.id,
-                  current_content_id: data.content_pathways[newIndex].id,
+                  current_content_id: data.type !== "html" ? data.content_pathways[newIndex].id : null,
                   progress: calculatePercentage(data.content_pathways, newIndex),
                 });
               }
