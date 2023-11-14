@@ -118,9 +118,9 @@ const BrowsePage = () => {
           </div>
         ))}
       </Flex>
-      {type === "all" ? (
+      {type === "all" && (!search || search === "") ? (
         <div className="overflow-y-scroll no-scrollbar h-full bg-[#F8F9FB] ">
-          {homeContent?.data && homeContent?.data?.length !== 0 && (!search || search === "") ? (
+          {homeContent?.data && homeContent?.data?.length !== 0 ? (
             homeContent?.data?.map((contentData: ContentHomeData, index: number) => {
               return (
                 <Flex direction="column" className="w-full  py-[10px]" key={index}>
