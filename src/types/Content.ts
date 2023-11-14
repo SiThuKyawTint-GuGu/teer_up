@@ -36,6 +36,7 @@ export interface FormConfig {
     input_config: Input_config[];
   }[];
   name: string;
+  submit_label: string;
   type: string;
   from_datetime: string;
 }

@@ -218,7 +218,7 @@ const Profile: React.FC = () => {
                       className="tab-trigger cursor-pointer"
                       value="competency"
                     >
-                      Hope Action Assessment
+                      Career Muscles
                     </Tabs.Trigger>
                     <Tabs.Trigger
                       onClick={() => handleTabTrigger("personalDetails")}
@@ -232,7 +232,7 @@ const Profile: React.FC = () => {
                     <CardBox className="rounded-none">
                       <Section className="bg-white" py="4" px="3">
                         <Heading as="h6" size="4" align="left" mb="4">
-                          Assessment Chart
+                          Career Muscle
                         </Heading>
                         <Box className="w-full h-full flex-wrap">
                           <RadarChart />
