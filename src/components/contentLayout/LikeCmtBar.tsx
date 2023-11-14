@@ -23,9 +23,11 @@ import SuccessFormPage from "./SuccessFormPage";
 type Props = {
   data: ContentData;
   mutate: any;
+  commets: number;
+  setComments: any;
 };
 
-const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
+const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) => {
   const { trigger: like } = useLikeContent();
   const { trigger: contentSave } = useSaveContent();
   const { trigger: postForm, isMutating } = useContentForm();

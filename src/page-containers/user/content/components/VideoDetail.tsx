@@ -6,7 +6,7 @@ import { useIsTruncated } from "@/hooks/useIsTruncated";
 import { ContentData } from "@/types/Content";
 import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import { Flex, Grid } from "@radix-ui/themes";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 type VideoDetailProp = {
   data: ContentData;
   contentMutate: any;
@@ -16,7 +16,12 @@ const VideoDetail: React.FC<VideoDetailProp> = ({ data, contentMutate }) => {
   const [readMore, setReadMore] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const detailDescription = useRef<HTMLParagraphElement>(null);
+  const [commets, setComments] = useState<number>(0);
   const isTruncated = useIsTruncated(detailDescription);
+
+  useEffect(() => {
+    setComments(data.comments);
+  }, [data.comments]);
 
   const handlePlayVideo = () => {
     if (videoRef.current) {
@@ -83,7 +88,7 @@ const VideoDetail: React.FC<VideoDetailProp> = ({ data, contentMutate }) => {
             )}
           </div>
           <div className="w-full fixed bottom-0 max-w-[400px] px-2">
-            {data && <LikeCmtBar data={data} mutate={contentMutate} />}
+            {data && <LikeCmtBar data={data} mutate={contentMutate} commets={commets} setComments={setComments} />}
           </div>
         </div>
       </Grid>

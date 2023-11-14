@@ -17,6 +17,11 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [showCmt, setShowCmt] = useState<boolean>(false);
   const [showDescription, setShowDescription] = useState<boolean>(false);
+  const [comments, setComments] = useState<number>(0);
+
+  useEffect(() => {
+    setComments(data.comments);
+  }, [data.comments]);
 
   useEffect(() => {
     if (autoplay && videoRef.current) {
@@ -149,7 +154,7 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
       </div>
 
       <CardBox className="px-[12px]">
-        <ReactionBar data={data} contentMutate={contentMutate} />
+        <ReactionBar data={data} contentMutate={contentMutate} comments={comments} setComments={setComments} />
       </CardBox>
     </div>
   );
