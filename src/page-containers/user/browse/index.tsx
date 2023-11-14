@@ -118,9 +118,9 @@ const BrowsePage = () => {
           </div>
         ))}
       </Flex>
-      {type === "all" ? (
+      {type === "all" && (!search || search === "") ? (
         <div className="overflow-y-scroll no-scrollbar h-full bg-[#F8F9FB] ">
-          {homeContent?.data && homeContent?.data?.length !== 0 && (!search || search === "") ? (
+          {homeContent?.data && homeContent?.data?.length !== 0 ? (
             homeContent?.data?.map((contentData: ContentHomeData, index: number) => {
               return (
                 <Flex direction="column" className="w-full  py-[10px]" key={index}>
@@ -164,25 +164,9 @@ const BrowsePage = () => {
               );
             })
           ) : (
-            <Flex direction="column" className="w-full h-full pt-[10px]">
-              <div className="w-full h-full overflow-y-scroll no-scrollbar" ref={containerRef}>
-                {searchDataArray.length !== 0 ? (
-                  searchDataArray.map((contentData: any, index: number) => (
-                    <div key={index} className="w-full h-[400px]">
-                      <BrowserCategoryContentLayout
-                        data={contentData?.content}
-                        contentMutate={mutate}
-                        redir={`/content/${contentData?.content?.slug}`}
-                      />
-                    </div>
-                  ))
-                ) : (
-                  <div className="w-full  flex justify-center h-full items-center">
-                    <p className="text-[16px] font-[600] text-center">No Content</p>
-                  </div>
-                )}
-              </div>
-            </Flex>
+            <div className="w-full  flex justify-center h-full items-center">
+              <p className="text-[16px] font-[600] text-center">No Content</p>
+            </div>
           )}
         </div>
       ) : (
