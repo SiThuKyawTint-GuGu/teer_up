@@ -27,10 +27,10 @@ const Search: React.FC = () => {
   const histories = getLocalStorage("history") || [];
   const debouncedOnChange = debounce(() => {
     setSearchValue(inputRef?.current?.value);
-    if (histories) {
-      const newData = [...histories, inputRef?.current?.value];
-      inputRef?.current?.value && setLocalStorage("history", newData);
-    }
+    // if (histories) {
+    //   const newData = [...histories, inputRef?.current?.value];
+    //   inputRef?.current?.value && setLocalStorage("history", newData);
+    // }
   }, 500);
 
   const handleSlotClick = () => {
@@ -38,6 +38,10 @@ const Search: React.FC = () => {
       startTransition(() => {
         router.push(`/home?search=${inputRef?.current?.value}`);
       });
+    }
+    if (histories) {
+      const newData = [...histories, inputRef?.current?.value];
+      inputRef?.current?.value && setLocalStorage("history", newData);
     }
   };
 
@@ -67,7 +71,7 @@ const Search: React.FC = () => {
           <header className="w-full max-w-[400px] h-[48px] mx-auto">
             <Flex onKeyDown={handleKeyPress} justify="between" align="center" height="100%" px="3" position="relative">
               <div className="pr-2" onClick={() => router.back()}>
-                <Icons.back className="text-[#373A36] w-[23px] h-[23px]" />
+                <Icons.back className="text-[#373A36] cursor-pointer w-[23px] h-[23px]" />
               </div>
               <InputSearch
                 onChange={debouncedOnChange}

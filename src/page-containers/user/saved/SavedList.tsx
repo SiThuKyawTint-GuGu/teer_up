@@ -1,4 +1,5 @@
 "use client";
+import Loading from "@/app/loading";
 import BGImage from "@/components/shared/BGImage";
 import NotFound from "@/components/shared/NotFound";
 import { Button } from "@/components/ui/Button";
@@ -105,6 +106,13 @@ const SavedList: React.FC = () => {
     setContent(data.content_id);
     setIsMenuVisible(isMenuVisible && data.content_id == content ? !isMenuVisible : true);
   };
+  if (isLoading) {
+    return (
+      <div className="w-full h-full flex justify-center items-center">
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <Dialog open={open} onOpenChange={val => setOpen(val)}>
@@ -130,7 +138,7 @@ const SavedList: React.FC = () => {
                   </Button>
                 </Link>
               )}
-              {savedContents?.data?.length && !isLoading ? (
+              {savedContents?.data?.length ? (
                 savedContents?.data?.map((each, key) => (
                   <Box key={key} pb="4">
                     <CardBox className="p-[8px]">
