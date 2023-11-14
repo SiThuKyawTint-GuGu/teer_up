@@ -8,7 +8,7 @@ import React, { useMemo, useState } from "react";
 const Share: React.FC<{ url: string }> = ({ url }) => {
   const [copy, setCopy] = useState<boolean>(false);
   const domain: string = window.location.host;
-  const shareLink = useMemo(() => domain + url, [domain, url]);
+  const shareLink = useMemo(() => `https://` + domain + url, [domain, url]);
   return (
     <div className="bg-white w-full px-4  pb-2 ">
       <div className="bg-primary  rounded-[6px]  w-[60px] h-[2px] mx-auto" />
