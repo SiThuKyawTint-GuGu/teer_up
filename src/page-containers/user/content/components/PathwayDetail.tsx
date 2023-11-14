@@ -28,11 +28,13 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
 
   useEffect(() => {
     if (data.content_pathways && data.content_pathways.length > 0 && pathwayProgress) {
-      const current_content = data.content_pathways?.find(
-        (each: ContentData) => parseInt(each.id) === pathwayProgress.current_content_id
-      );
-      if (current_content) {
-        const targetElement = document.getElementById(current_content.slug);
+      const index = Math.floor((pathwayProgress.progress * data.content_pathways.length - 1) / 100);
+
+      // const current_content = data.content_pathways?.find(
+      //   (each: ContentData) => parseInt(each.id) === pathwayProgress.current_content_id
+      // );
+      if (index) {
+        const targetElement = document.getElementById(data.content_pathways[index].slug);
         if (targetElement) {
           targetElement.scrollIntoView({
             behavior: "smooth",
@@ -111,7 +113,8 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
               if (user) {
                 postPathwayProgress({
                   id: data.id,
-                  current_content_id: data.type !== "html" ? data.content_pathways[newIndex].id : null,
+                  current_content_id:
+                    data.content_pathways[newIndex].type !== "html" ? data.content_pathways[newIndex].id : null,
                   progress: calculatePercentage(data.content_pathways, newIndex),
                 });
               }
