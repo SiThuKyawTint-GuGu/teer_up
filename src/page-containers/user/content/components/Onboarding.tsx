@@ -60,13 +60,13 @@ const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex, total }) => 
             setOpenModal(false);
           }}
         >
-          <div className="w-full max-w-[400px] min-w-[200px] p-5 z-[9999999] bg-white rounded-md">
+          <div className="w-full max-w-[380px] min-w-[200px] p-5 z-[99999999] bg-white rounded-md">
             {option?.feedback && (
               <>
                 {imageLoading ? (
                   <Spinner className="w-full" color="#DA291C" width={35} height={35} />
                 ) : (
-                  <div className="w-full">
+                  <div className="w-full h-[60dvh] overflow-y-scroll no-scrollbar">
                     <div
                       className="text-center w-full"
                       dangerouslySetInnerHTML={{
