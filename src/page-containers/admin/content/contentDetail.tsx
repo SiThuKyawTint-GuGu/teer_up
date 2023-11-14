@@ -1098,7 +1098,7 @@ const ContentDetail = ({ id }: Props) => {
               </div>
             </>
           )}
-          <div className="mb-10">
+          <div className="my-10">
             <TextField
               value={buttonLabel}
               onChange={e => setButtonLabel(e.target.value)}
