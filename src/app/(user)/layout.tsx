@@ -9,6 +9,7 @@ import { Grid } from "@radix-ui/themes";
 import Head from "next/head";
 import { ReactNode, useEffect } from "react";
 import "react-datepicker/dist/react-datepicker.css";
+import { mutate } from "swr";
 
 interface Props {
   children: ReactNode;
@@ -17,6 +18,13 @@ const token = getToken();
 const Layout = ({ children }: Props) => {
   const { openVerifyModal, verifyModalOpenHandler } = useVerifyModal();
   const { openVerifyEmailModal, verifyEmailModalOpenHandler } = useVerifyEmailModal();
+  useEffect(() => {
+    mutate(
+      () => true, // which cache keys are updated
+      undefined, // update cache data to `undefined`
+      { revalidate: false } // do not revalidate
+    );
+  }, []);
   useEffect(() => {
     const requestInterceptor = appAxios.interceptors.request.use(
       function (config) {

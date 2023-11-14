@@ -337,19 +337,26 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
             </Button>
           ) : (
             <Section className="bg-white" py="1" px="3" onClick={() => setOpenComment(true)}>
-              <InputText type="text" />
+              <div className="w-full h-[32px]">
+                <input
+                  className="w-full h-full px-[12px] py-[4px] rounded-[40px] bg-[#F8F9FB] dark:bg-[#F8F9FB]
+         outline-none placeholder:text-[16px] placeholder:font-[300]
+        "
+                  placeholder="Write your comment"
+                ></input>
+              </div>
             </Section>
           )}
 
           <div className="flex justify-between px-3 w-full flex-1">
-            <button className="flex items-center flex-wrap gap-x-[5px]" onClick={likePost}>
+            <div className="flex items-center cursor-pointer flex-wrap gap-x-[5px]" onClick={likePost}>
               {data.is_liked ? (
                 <Icons.likefill className="w-[20px] h-[20px] text-primary" />
               ) : (
                 <Icons.like className="w-[20px] h-[20px]" />
               )}
               <div className="text-[14px]">{data.likes}</div>
-            </button>
+            </div>
 
             <Dialog open={openComment} onOpenChange={val => setOpenComment(val)}>
               <DialogTrigger>
