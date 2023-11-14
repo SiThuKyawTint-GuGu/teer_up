@@ -41,6 +41,12 @@ const Search: React.FC = () => {
     }
   };
 
+  const handleKeyPress = (event: any) => {
+    if (event.key === "Enter") {
+      handleSlotClick();
+    }
+  };
+
   useEffect(() => {
     setSearchValue(get("keyword") || "");
     setCategory(get("category") || "");
@@ -51,7 +57,7 @@ const Search: React.FC = () => {
       <Container className="space-y-[]">
         <Box py="2" className="bg-white">
           <header className="w-full max-w-[400px] h-[48px] mx-auto">
-            <Flex justify="between" align="center" height="100%" px="3" position="relative">
+            <Flex onKeyDown={handleKeyPress} justify="between" align="center" height="100%" px="3" position="relative">
               <div className="pr-2" onClick={() => router.back()}>
                 <Icons.back className="text-[#373A36] w-[23px] h-[23px]" />
               </div>
@@ -109,9 +115,7 @@ const Search: React.FC = () => {
                 <>
                   {searchData?.data?.map((each, key) => (
                     <>
-
                       <Link key={key} href={`/home?search=${each?.title}`}>
-
                         <Text
                           className={cn(
                             "pb-[10px] mb-[10px]",
