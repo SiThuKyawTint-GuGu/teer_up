@@ -212,7 +212,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
             <Flex direction="column">
               <div className="font-[600] text-[16px]">{data?.title}</div>
               <div className="text-[14px] font-[300]">
-                {data?.content_pathways && calculatePercentage(data.content_pathways, visibleItemIndex)}%
+                Completed {data?.content_pathways && calculatePercentage(data.content_pathways, visibleItemIndex)}%
               </div>
             </Flex>
 
