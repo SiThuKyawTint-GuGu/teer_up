@@ -200,7 +200,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
               key={index}
               onClick={() => storeIndex(index)}
             >
-              <Box className="h-full w-full">{data && differentContent(data, index)}</Box>
+              <Box className="mt-20 w-full pt-2 h-full ">{data && differentContent(data, index)}</Box>
             </div>
           ))}
       </div>
