@@ -23,9 +23,11 @@ import SuccessFormPage from "./SuccessFormPage";
 type Props = {
   data: ContentData;
   mutate: any;
+  comments: number;
+  setComments: any;
 };
 
-const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
+const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) => {
   const { trigger: like } = useLikeContent();
   const { trigger: contentSave } = useSaveContent();
   const { trigger: postForm, isMutating } = useContentForm();
@@ -364,13 +366,13 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
                   <Icons.comment className="w-[20px] h-[20px]" />
                   <div>
                     {""}
-                    {data.comments}
+                    {comments}
                   </div>
                 </div>
               </DialogTrigger>
               {openComment && (
                 <DialogContent className="bg-white top-[initial] bottom-0 max-w-[400px] px-4 pt-8 pb-2 translate-y-0 rounded-10px-tl-tr">
-                  <CommentSection data={data} mutateParentData={mutate} />
+                  <CommentSection data={data} mutateParentData={mutate} setComments={setComments} />
                 </DialogContent>
               )}
             </Dialog>

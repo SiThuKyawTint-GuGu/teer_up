@@ -1,3 +1,4 @@
+"use client";
 import ReactionBar from "@/components/contentLayout/ReactionBar";
 import CardBox from "@/components/ui/Card";
 import { Text } from "@/components/ui/Typo/Text";
@@ -5,7 +6,7 @@ import "@/styles/video.css";
 import { ContentData } from "@/types/Content";
 import Link from "next/link";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 type ContentlayoutProps = {
   data: ContentData;
@@ -14,6 +15,11 @@ type ContentlayoutProps = {
 };
 
 const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, contentMutate }) => {
+  const [comments, setComments] = useState<number>(0);
+
+  useEffect(() => {
+    setComments(data.comments);
+  }, [data.comments]);
   return (
     <div className="w-full h-full p-2">
       <CardBox className="h-full ">
@@ -84,7 +90,7 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, conte
             <div className="w-full pt-3">
               <hr className="w-full h-[1px] bg-slateGray" />
             </div>
-            <ReactionBar data={data} contentMutate={contentMutate} />
+            <ReactionBar data={data} contentMutate={contentMutate} comments={comments} setComments={setComments} />
           </div>
         </div>
       </CardBox>
