@@ -45,7 +45,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
   }, [pathwayProgress, data.content_pathways]);
 
   const dataWithTitle = useMemo(() => {
-    if (data && data.content_pathways && data.content_pathways)
+    if (data && data.content_pathways && data.content_pathways.length > 0)
       return data.content_pathways.filter((each: ContentData) => each.title);
   }, [data]);
   useEffect(() => {
@@ -114,11 +114,11 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
                 postPathwayProgress({
                   id: data.id,
                   current_content_id:
-                    data.content_pathways[newIndex].type !== "html" ? data.content_pathways[newIndex]?.id : null,
+                    data?.content_pathways[newIndex]?.type !== "html" ? data.content_pathways[newIndex]?.id : null,
                   progress: calculatePercentage(data.content_pathways, newIndex),
                 });
               }
-              if (user && data.content_pathways[visibleItemIndex].type !== "html") {
+              if (user && data?.content_pathways[visibleItemIndex]?.type !== "html") {
                 calculateCount({
                   watched_time: totalTimeInView,
                   content_id: data.content_pathways[visibleItemIndex].id,
