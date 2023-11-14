@@ -707,7 +707,7 @@ const ContentDetail = ({ id }: Props) => {
   if (isLoading) return <p>Loading...</p>;
 
   return (
-    <div className="bg-white p-10 rounded-md">
+    <div className="bg-white p-10 rounded-md" style={{ minHeight: "2250px" }}>
       <form onSubmit={handleSubmit(submit)}>
         <div className="rounded-md">
           <div className="mb-10">
