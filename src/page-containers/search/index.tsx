@@ -5,8 +5,9 @@ import { InputSearch } from "@/components/ui/Inputs";
 import { Text } from "@/components/ui/Typo/Text";
 import { SearchParamsType, useGetContentSearch } from "@/services/content";
 import { ContentType } from "@/types/Content";
+import { getLocalStorage, setLocalStorage } from "@/utils";
 import { cn } from "@/utils/cn";
-import { Box, Container, Flex, Grid, Section } from "@radix-ui/themes";
+import { Box, Container, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import { debounce } from "lodash";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -23,14 +24,14 @@ const Search: React.FC = () => {
     search: searchValue,
   });
 
-  // const histories = getLocalStorage("history") || [];
+  const histories = getLocalStorage("history") || [];
   const debouncedOnChange = debounce(() => {
     setSearchValue(inputRef?.current?.value);
 
-    // if (histories) {
-    //   const newData = [...histories, inputRef?.current?.value];
-    //   inputRef?.current?.value && setLocalStorage("history", newData);
-    // }
+    if (histories) {
+      const newData = [...histories, inputRef?.current?.value];
+      inputRef?.current?.value && setLocalStorage("history", newData);
+    }
   }, 500);
 
   const handleSlotClick = () => {
@@ -77,7 +78,7 @@ const Search: React.FC = () => {
           </header>
         </Box>
         <Section pb="4" py="5" px="3">
-          {/* {histories?.length > 0 && (
+          {histories?.length > 0 && (
             <Box className="space-y-[10px] pb-[20px] mb-[30px] border-b border-b-[#BDC7D5]">
               <Heading as="h5" size="3" weight="medium">
                 History
@@ -93,20 +94,20 @@ const Search: React.FC = () => {
                   ))}
               </Flex>
             </Box>
-          )} */}
-          {/* <Box className="space-y-[6px]">
+          )}
+          <Box className="space-y-[6px]">
             <Heading as="h5" size="3" weight="medium">
               Suggested for you
             </Heading>
             <ul className="flex justify-start items-start flex-wrap list-square list-primary pl-5 marker:text-primary space-y-[6px]">
-              <li className="w-1/2">Career advice</li>
-              <li className="w-1/2">Career advice</li>
-              <li className="w-1/2">Interview tips</li>
-              <li className="w-1/2">Interview tips</li>
-              <li className="w-1/2">Build and maintain support system</li>
-              <li className="w-1/2">Build and maintain support system</li>
+              <li className="w-full">Career advice</li>
+              <li className="w-full">Career advice</li>
+              <li className="w-full">Interview tips</li>
+              <li className="w-full">Interview tips</li>
+              <li className="w-full">Build and maintain support system</li>
+              <li className="w-full">Build and maintain support system</li>
             </ul>
-          </Box> */}
+          </Box>
         </Section>
         {searchValue && (
           <div className="max-w-[400px] fixed top-[65px] z-20 w-full h-full bg-[#efefef]">
