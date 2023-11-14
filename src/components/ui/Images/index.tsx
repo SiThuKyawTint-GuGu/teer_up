@@ -48,7 +48,7 @@ import {
   IoSettingsOutline,
   IoShareSocialOutline,
 } from "react-icons/io5";
-import { MdDelete, MdOutlineDeleteSweep, MdOutlineMailOutline } from "react-icons/md";
+import { MdDelete, MdMoreVert, MdOutlineDeleteSweep, MdOutlineMailOutline } from "react-icons/md";
 import {
   PiAirplaneTiltLight,
   PiArrowDownRightThin,
@@ -199,6 +199,7 @@ export const Icons = {
   link: IoLinkOutline,
   info: BsInfoCircle,
   deleteCross: MdOutlineDeleteSweep,
+  moreOption: MdMoreVert,
 
   // Nav menu icons
   homeIcon: ({ ...props }: IconProps) => <HomeIcon {...props} />,
