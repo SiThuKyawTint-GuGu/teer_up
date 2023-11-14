@@ -1,3 +1,5 @@
+import { SkipStatusResponse } from "./Content";
+
 export interface User {
   id: number;
   created_at: string;
@@ -68,4 +70,8 @@ export interface UserScores {
 }
 export interface UserScoresResponse {
   data: UserScores[];
+}
+
+export interface UserOnboardingStatusResponse {
+  data: SkipStatusResponse;
 }
