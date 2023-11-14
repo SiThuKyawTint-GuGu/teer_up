@@ -106,8 +106,8 @@ const Login: React.FC = () => {
                       <Button type="button" className="p-0 h-auto" variant="link"></Button>
                     </DialogTrigger>
                     <Text as="span">and accepted the</Text>
-                    <Link href="/support/terms-of-use font-medium">
-                      <Button className="p-0 h-auto font-bold" variant="link">
+                    <Link href="/support/terms-of-use">
+                      <Button className="p-0 h-auto font-bold font-medium" variant="link">
                         Terms of Use
                       </Button>
                     </Link>
