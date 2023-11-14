@@ -65,7 +65,7 @@ const FormConfigTable: React.FC = () => {
       : undefined,
     muiTableContainerProps: {
       sx: {
-        maxHeight: "calc(100vh-200px)",
+        maxHeight: "calc(100vh - 200px)",
         minHeight: "480px",
       },
     },
