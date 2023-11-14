@@ -12,7 +12,7 @@ type ContentStartProp = {};
 const ContentStart: React.FC<ContentStartProp> = () => {
   return (
     <div className="w-full h-full px-[16px] snap-start">
-      <Flex justify="center" direction="column" align="center" className="w-full h-full">
+      <Flex justify="center" direction="column" align="center" className="w-full h-[80%]">
         <Heading className="text-[36px] font-[700] leading-[48px]">
           Empower your path with personalized resources
         </Heading>
