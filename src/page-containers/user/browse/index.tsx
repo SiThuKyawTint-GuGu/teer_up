@@ -164,25 +164,9 @@ const BrowsePage = () => {
               );
             })
           ) : (
-            <Flex direction="column" className="w-full h-full pt-[10px]">
-              <div className="w-full h-full overflow-y-scroll no-scrollbar" ref={containerRef}>
-                {searchDataArray.length !== 0 ? (
-                  searchDataArray.map((contentData: any, index: number) => (
-                    <div key={index} className="w-full h-[400px]">
-                      <BrowserCategoryContentLayout
-                        data={contentData?.content}
-                        contentMutate={mutate}
-                        redir={`/content/${contentData?.content?.slug}`}
-                      />
-                    </div>
-                  ))
-                ) : (
-                  <div className="w-full  flex justify-center h-full items-center">
-                    <p className="text-[16px] font-[600] text-center">No Content</p>
-                  </div>
-                )}
-              </div>
-            </Flex>
+            <div className="w-full  flex justify-center h-full items-center">
+              <p className="text-[16px] font-[600] text-center">No Content</p>
+            </div>
           )}
         </div>
       ) : (
