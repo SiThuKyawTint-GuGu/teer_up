@@ -61,6 +61,7 @@ const ContentCategoryDetail = ({ id }: Props) => {
   const [bannerUrl, setBannerUrl] = useState<string>("");
   const [bannerRes, setBannerRes] = useState<any>();
   const [order, setOrder] = useState<number>();
+  const [subtitle, setSubtitle] = useState<string>("");
 
   useEffect(() => {
     if (category?.data) {
@@ -120,6 +121,7 @@ const ContentCategoryDetail = ({ id }: Props) => {
       setImgUrl(category?.data.icon_url);
       setBannerUrl(category?.data.banner_icon_url);
       setOrder(category?.data.order);
+      setSubtitle(category?.data.sub_title);
     }
   }, [category?.data, searchContent, categorySlug]);
 
@@ -146,6 +148,7 @@ const ContentCategoryDetail = ({ id }: Props) => {
       content_ids: [id1, id2, id3, id4, id5],
       icon_url: imgurl,
       banner_icon_url: bannerurl,
+      sub_title: subtitle,
     };
     if (category?.data) {
       submitData.id = id;
@@ -228,6 +231,18 @@ const ContentCategoryDetail = ({ id }: Props) => {
             variant="outlined"
           />
           <p className="mt-2 text-red-700">{errors.name?.message}</p>
+        </div>
+        <div className="mb-10">
+          <TextField
+            multiline
+            name="Subtitle"
+            label="Subtitle"
+            rows={3}
+            className="w-full"
+            variant="outlined"
+            value={subtitle}
+            onChange={e => setSubtitle(e.target.value)}
+          />
         </div>
         <div className="mb-10">
           <div className="border border-dashed w-[30%] flex flex-col items-center justify-center p-10 border-gray-400 rounded-lg">
