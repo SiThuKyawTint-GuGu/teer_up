@@ -5,12 +5,12 @@ import { useContentWatchCount } from "@/services/content";
 import { useEffect, useMemo, useRef, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 
+import Loading from "@/app/loading";
 import { getLocalStorage, setLocalStorage } from "@/utils";
 import { getToken, getUserInfo } from "@/utils/auth";
 import { Box } from "@radix-ui/themes";
 import Link from "next/link";
 import ContentLayout from "./components/ContentLayout";
-import ContentStart from "./components/ContentStart";
 import Video from "./components/Video";
 
 const UserContent = () => {
@@ -32,11 +32,11 @@ const UserContent = () => {
       sessionStorage.removeItem("scrollPosition");
     }
   }, []);
-  const showStart = getLocalStorage("content");
+
   const {
     data: mmlData,
     mutate,
-    size,
+    isLoading,
     setSize,
   } = useSWRInfinite(index => `/content?page=${index + 1}&pagesize=${20}`, {
     revalidateFirstPage: false,
@@ -104,7 +104,7 @@ const UserContent = () => {
         container.removeEventListener("scroll", handleScroll);
       };
     }
-  }, [visibleItemIndex, startTime]);
+  }, [visibleItemIndex, startTime, calculateCount, contentDataArray, totalTimeInView, user]);
 
   useEffect(() => {
     const observerOptions = {
@@ -164,33 +164,38 @@ const UserContent = () => {
   }, []);
 
   return (
-    <Box
-      ref={containerRef}
-      className={`snap-y flex-col snap-mandatory h-[calc(100dvh-112px)] pt-[6px] pb-[6px] px-[12px]  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
-      style={{ scrollSnapStop: "always" }}
-    >
-      {showStart === 0 && token && <ContentStart />}
-      {contentDataArray &&
-        contentDataArray.length > 0 &&
-        contentDataArray.map((data: ContentData, index: number) => (
-          <Box
-            className="w-full h-full snap-start mt-[12px] mb-[12px]"
-            style={{ scrollSnapStop: "always" }}
-            id={index.toString()}
-            key={index}
-          >
-            {data.type === "video" ? (
-              <Box className="w-full h-full">{data && differentContent(data, visibleItemIndex)}</Box>
-            ) : (
-              <Link href={`/content/${data.slug}`} onClick={() => storeIndex(index)} className="w-full h-full">
-                {data && differentContent(data, visibleItemIndex)}
-              </Link>
-            )}
+    <>
+      {!isLoading ? (
+        <Box
+          ref={containerRef}
+          className={`snap-y flex-col snap-mandatory h-[calc(100dvh-112px)] pt-[6px] pb-[6px] px-[12px]  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
+          style={{ scrollSnapStop: "always" }}
+        >
+          {contentDataArray &&
+            contentDataArray.length > 0 &&
+            contentDataArray.map((data: ContentData, index: number) => (
+              <Box
+                className="w-full h-full snap-start mt-[12px] mb-[12px]"
+                style={{ scrollSnapStop: "always" }}
+                id={index.toString()}
+                key={index}
+              >
+                {data.type === "video" ? (
+                  <Box className="w-full h-full">{data && differentContent(data, visibleItemIndex)}</Box>
+                ) : (
+                  <Link href={`/content/${data.slug}`} onClick={() => storeIndex(index)} className="w-full h-full">
+                    {data && differentContent(data, visibleItemIndex)}
+                  </Link>
+                )}
 
-            {index === 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
-          </Box>
-        ))}
-    </Box>
+                {index === 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
+              </Box>
+            ))}
+        </Box>
+      ) : (
+        <Loading />
+      )}
+    </>
   );
 };
 
