@@ -50,7 +50,7 @@ const InputText = React.forwardRef<HTMLInputElement, Props>(
           <TextField.Root>
             <TextField.Input
               type={type}
-              className={cn(`font-light ${className}`, inputType !== USER_ROLE.ADMIN ? "shadow-theme" : "")}
+              className={cn(`font-light ${className} shadow-md`)}
               placeholder={placeholder}
               defaultValue={defaultValue || ""}
               size="3"
@@ -203,7 +203,7 @@ const InputStyled = styled.div<{ inputtype?: USER_ROLE | string; disabled?: bool
     outline: 0;
   }
 `;
-export { InputOtp, InputSearch, InputText, InputTextArea, InputStyled };
+export { InputOtp, InputSearch, InputStyled, InputText, InputTextArea };
 
 const InputOtpStyled = styled.input`
   width: 53px;
