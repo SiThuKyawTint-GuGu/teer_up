@@ -1,6 +1,5 @@
 "use client";
 import { Button } from "@/components/ui/Button";
-import CardBox from "@/components/ui/Card";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form";
 import { Icons } from "@/components/ui/Images";
 import { InputText } from "@/components/ui/Inputs";
@@ -8,21 +7,21 @@ import { Text } from "@/components/ui/Typo/Text";
 import { useDeleteEducation, useGetEducationById, useUpdateEducation } from "@/services/education";
 import { USER_ROLE } from "@/shared/enums";
 import { EducationById } from "@/types/Education";
+import { cn } from "@/utils/cn";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useTransition } from "react";
-import ReactDatePicker from "react-datepicker";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 const validationSchema = yup.object({
   school_name: yup.string().required("School is required!"),
   degree: yup.string().required("Degree is required!"),
-  start_date: yup.date().required("Start date is required!").typeError("Invalid date"),
-  end_date: yup.date().required("End date is required!").typeError("Invalid date"),
+  start_date: yup.string().required("Start Date is required!"),
+  end_date: yup.string().required("End Date is required!"),
 });
 
 const EditEducation: React.FC = () => {
@@ -34,14 +33,16 @@ const EditEducation: React.FC = () => {
   const { trigger: deleteTrigger, isMutating: deleteMutating } = useDeleteEducation();
 
   const form = useForm({
-    resolver: yupResolver(validationSchema),
+    resolver: yupResolver(validationSchema as any),
     defaultValues: {
       school_name: educationData?.data?.school_name,
       degree: educationData?.data?.degree,
+      start_date: dayjs(educationData?.data?.start_date).format("YYYY-MM-DD"),
+      end_date: dayjs(educationData?.data?.end_date).format("YYYY-MM-DD"),
     },
   });
 
-  const submit = async (data: { school_name: string; degree: string; start_date: any; end_date: any }) => {
+  const submit = async (data: any) => {
     const newData = {
       ...data,
       educationId: edu_id as string,
@@ -50,21 +51,27 @@ const EditEducation: React.FC = () => {
     };
     await trigger(newData, {
       onSuccess: () => {
-        router.push(`/profile/${id}/education`);
+        router.replace(`/profile/${id}/education`);
       },
     });
   };
 
   const handleDelete = async () => {
-    await deleteTrigger({ edu_id: edu_id as string });
-    setTimeout(() => {
-      startTransition(() => router.push(`/profile/${id}/education`));
-    }, 1000);
+    await deleteTrigger(
+      { edu_id: edu_id as string },
+      {
+        onSuccess: () => {
+          router.replace(`/profile/${id}/education`);
+        },
+      }
+    );
   };
 
   useEffect(() => {
     form.setValue("school_name", educationData?.data?.school_name || "");
     form.setValue("degree", educationData?.data?.degree || "");
+    form.setValue("start_date", dayjs(educationData?.data?.start_date).format("YYYY-MM-DD") || "");
+    form.setValue("end_date", dayjs(educationData?.data?.end_date).format("YYYY-MM-DD") || "");
   }, [form, educationData?.data]);
 
   return (
@@ -138,35 +145,56 @@ const EditEducation: React.FC = () => {
 
             <Box className="pb-[7px]">
               <Section className="bg-white" py="4" px="3">
-                <Heading as="h6" size="2" weight="medium" align="left" mb="2">
+                <Heading as="h6" size="4" align="left" mb="4">
                   Start Date
                 </Heading>
                 <FormField
                   control={form.control}
                   name="start_date"
-                  defaultValue={new Date()}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <CardBox className="px-[12px] py-[16px] flex justify-between items-center">
-                          <ReactDatePicker
-                            selected={dayjs(field.value).toDate()}
-                            onChange={date => field.onChange(dayjs(date).format())}
-                            dateFormat="dd/MM/yyyy"
-                            className="w-full bg-white"
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <FormControl>
+                          <input
+                            type="date"
+                            className={cn(
+                              "font-light shadow-md bg-white border-0 text-black w-full h-[40px] p-3 outline-none"
+                            )}
+                            {...field}
                           />
-                          <Icons.calender />
-                        </CardBox>
-                      </FormControl>
-                    </FormItem>
-                  )}
+                        </FormControl>
+                      </FormItem>
+                    );
+                  }}
                 />
               </Section>
             </Box>
 
             <Box className="pb-[7px]">
               <Section className="bg-white" py="4" px="3">
-                <Heading as="h6" size="2" weight="medium" align="left" mb="2">
+                <Heading as="h6" size="4" align="left" mb="4">
+                  End Date
+                </Heading>
+                <FormField
+                  control={form.control}
+                  name="end_date"
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <FormControl>
+                          <input
+                            type="date"
+                            className={cn(
+                              "font-light shadow-md bg-white border-0 text-black w-full h-[40px] p-3 outline-none"
+                            )}
+                            {...field}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    );
+                  }}
+                />
+                {/* <Heading as="h6" size="2" weight="medium" align="left" mb="2">
                   End Date
                 </Heading>
                 <FormField
@@ -188,7 +216,7 @@ const EditEducation: React.FC = () => {
                       </FormControl>
                     </FormItem>
                   )}
-                />
+                /> */}
               </Section>
             </Box>
 

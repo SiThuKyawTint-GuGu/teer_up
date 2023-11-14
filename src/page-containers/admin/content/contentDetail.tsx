@@ -126,6 +126,7 @@ const ContentDetail = ({ id }: Props) => {
   const [htmlContent, setHtmlContent] = useState<any>({});
   const [link, setLink] = useState<string>("");
   const [pathwayContent, setPathwayContent] = useState<any[]>([]);
+  const [htmlTitle, setHtmlTitle] = useState<any[]>([]);
   const [editor, setEditor] = useState<any>(null);
   const [oppoEditor, setOppoEditor] = useState<any>(null);
   const [htmlEditors, setHtmlEditors] = useState<any>(null);
@@ -213,6 +214,7 @@ const ContentDetail = ({ id }: Props) => {
               return {
                 html_body: path.html_body,
                 type: "html",
+                title: path.title,
               };
             } else {
               return {
@@ -609,7 +611,7 @@ const ContentDetail = ({ id }: Props) => {
     setPathwayContent(updatedOptions);
   };
   const handleAddHtmlBody = () => {
-    const updatedOptions = [...pathwayContent, { type: "html", html_body: "" }];
+    const updatedOptions = [...pathwayContent, { type: "html", html_body: "", title: "" }];
     setPathwayContent(updatedOptions);
   };
 
@@ -659,6 +661,13 @@ const ContentDetail = ({ id }: Props) => {
   const handleSelectPathwayChange = (event: any, newValue: any, index: number) => {
     const updatedPathways = [...pathwayContent];
     updatedPathways[index] = { type: "content", pathway_id: newValue ? newValue.id : "", name: newValue?.label };
+    setPathwayContent(updatedPathways);
+  };
+
+  const handleChangeHtmlTitle = (event: any, index: number) => {
+    const updatedPathways = [...pathwayContent];
+    const html = updatedPathways[index];
+    html.title = event.target.value;
     setPathwayContent(updatedPathways);
   };
 
@@ -1064,21 +1073,32 @@ const ContentDetail = ({ id }: Props) => {
                     </>
                   )}
                   {pathway.type === "html" && (
-                    <div key={index} className="mt-5 w-[80%] flex items-center ">
-                      <HtmlEditor
-                        init={(editorInit: any) => handleEditorHtmlBody(editorInit)}
-                        value={htmlContent[index] || ""}
-                        onEditorChange={(content: any) => {
-                          setHtmlContent((prevHtmlContent: any) => ({ ...prevHtmlContent, [index]: content }));
-                          handleEditorChange(index, content);
-                        }}
-                      />
-                      <div className="ml-3">
-                        <IconButton color="error" onClick={() => handleDeletePathway(index)}>
-                          <DeleteIcon fontSize="inherit" />
-                        </IconButton>
+                    <>
+                      <div className="my-10">
+                        <TextField
+                          label="Title"
+                          sx={{ width: "65%" }}
+                          variant="outlined"
+                          value={pathway.title}
+                          onChange={event => handleChangeHtmlTitle(event, index)}
+                        />
                       </div>
-                    </div>
+                      <div key={index} className="mt-5 w-[80%] flex items-center ">
+                        <HtmlEditor
+                          init={(editorInit: any) => handleEditorHtmlBody(editorInit)}
+                          value={htmlContent[index] || ""}
+                          onEditorChange={(content: any) => {
+                            setHtmlContent((prevHtmlContent: any) => ({ ...prevHtmlContent, [index]: content }));
+                            handleEditorChange(index, content);
+                          }}
+                        />
+                        <div className="ml-3">
+                          <IconButton color="error" onClick={() => handleDeletePathway(index)}>
+                            <DeleteIcon fontSize="inherit" />
+                          </IconButton>
+                        </div>
+                      </div>
+                    </>
                   )}
                 </>
               ))}
