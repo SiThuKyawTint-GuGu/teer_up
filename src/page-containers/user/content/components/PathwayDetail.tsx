@@ -200,8 +200,6 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
             onClick={() => storeIndex(index)}
           >
             <Box className="h-full w-full">{data && differentContent(data, index)}</Box>
-
-            {index == 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
           </div>
         ))}
       <div
