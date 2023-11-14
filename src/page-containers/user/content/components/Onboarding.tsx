@@ -7,7 +7,7 @@ import { usePostOnboarding } from "@/services/content";
 import { ContentData, OnBoardingOption } from "@/types/Content";
 import { cn } from "@/utils/cn";
 import { useRouter } from "next/navigation";
-import React, { startTransition, useState } from "react";
+import React, { useState } from "react";
 type OnboardingProps = {
   data: ContentData;
   parentIndex: string;
@@ -23,7 +23,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex, total }) => 
   const router = useRouter();
 
   return (
-    <CardBox className="w-full h-[92%] bg-white">
+    <CardBox className="w-full h-[80%] bg-white">
       <div className="w-full h-full">
         <div className="flex flex-col flex-wrap px-3  justify-between overflow-y-auto no-scrollbar  w-full h-full">
           <div className="text-gray-500 my-4 text-center">
@@ -89,10 +89,10 @@ const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex, total }) => 
                             onSuccess: () => {
                               setOpenModal(false);
 
-                              if (total && parseInt(parentIndex) === total) {
-                                startTransition(() => {
+                              if (total) {
+                                if (parseInt(parentIndex) === total) {
                                   router.push("/profile");
-                                });
+                                }
                               }
 
                               const targetElement = document.getElementById(`${parseInt(parentIndex) + 1}`);
