@@ -8,7 +8,6 @@ import { usePathname } from "next/navigation";
 
 const BottomNavbar = () => {
   const pathName = usePathname();
-
   return (
     <Flex
       className="bg-white w-full max-w-[400px] mx-auto z-[9] shadow-[0px_-3px_9px_0px_rgba(0,_0,_0,_0.06)] px-5"
@@ -25,10 +24,17 @@ const BottomNavbar = () => {
               scroll={false}
               className={cn(
                 "flex justify-center items-center flex-col",
-                (pathName === item.path || pathName.includes(item.path)) && "text-primary"
+                (pathName === item.path ||
+                  pathName.includes(item.path) ||
+                  ((pathName.length === 0 || pathName === "/") && item.path === "/home")) &&
+                  "text-primary"
               )}
             >
-              {pathName === item.path || pathName.includes(item.path) ? item.activeIcon : item.icon}
+              {pathName === item.path ||
+              pathName.includes(item.path) ||
+              ((pathName.length === 0 || pathName === "/") && item.path === "/home")
+                ? item.activeIcon
+                : item.icon}
               <p>{item.text}</p>
             </Link>
           </div>

@@ -7,12 +7,16 @@ import { ContentData, ContentKeywords } from "@/types/Content";
 import { Flex } from "@radix-ui/themes";
 
 import dayjs from "dayjs";
-import React from "react";
+import React, { useEffect, useState } from "react";
 type NormalContentDetailProp = {
   data: ContentData;
   contentMutate: any;
 };
 const NormalContentDetail: React.FC<NormalContentDetailProp> = ({ data, contentMutate }) => {
+  const [comments, setComments] = useState<number>(0);
+  useEffect(() => {
+    setComments(data.comments);
+  }, [data.comments]);
   return (
     <>
       {data && (
@@ -87,7 +91,7 @@ const NormalContentDetail: React.FC<NormalContentDetailProp> = ({ data, contentM
             </div>
           </div>
           <div className="w-full fixed bottom-0 max-w-[400px]">
-            <LikeCmtBar data={data} mutate={contentMutate} />
+            <LikeCmtBar data={data} mutate={contentMutate} comments={comments} setComments={setComments} />
           </div>
         </div>
       )}

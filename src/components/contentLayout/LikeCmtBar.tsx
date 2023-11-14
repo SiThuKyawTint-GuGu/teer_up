@@ -23,9 +23,11 @@ import SuccessFormPage from "./SuccessFormPage";
 type Props = {
   data: ContentData;
   mutate: any;
+  comments: number;
+  setComments: any;
 };
 
-const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
+const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) => {
   const { trigger: like } = useLikeContent();
   const { trigger: contentSave } = useSaveContent();
   const { trigger: postForm, isMutating } = useContentForm();
@@ -337,19 +339,26 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
             </Button>
           ) : (
             <Section className="bg-white" py="1" px="3" onClick={() => setOpenComment(true)}>
-              <InputText type="text" />
+              <div className="w-full h-[32px]">
+                <input
+                  className="w-full h-full px-[12px] py-[4px] rounded-[40px] bg-[#F8F9FB] dark:bg-[#F8F9FB]
+         outline-none placeholder:text-[16px] placeholder:font-[300]
+        "
+                  placeholder="Write your comment"
+                ></input>
+              </div>
             </Section>
           )}
 
           <div className="flex justify-between px-3 w-full flex-1">
-            <button className="flex items-center flex-wrap gap-x-[5px]" onClick={likePost}>
+            <div className="flex items-center cursor-pointer flex-wrap gap-x-[5px]" onClick={likePost}>
               {data.is_liked ? (
                 <Icons.likefill className="w-[20px] h-[20px] text-primary" />
               ) : (
                 <Icons.like className="w-[20px] h-[20px]" />
               )}
               <div className="text-[14px]">{data.likes}</div>
-            </button>
+            </div>
 
             <Dialog open={openComment} onOpenChange={val => setOpenComment(val)}>
               <DialogTrigger>
@@ -357,13 +366,13 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
                   <Icons.comment className="w-[20px] h-[20px]" />
                   <div>
                     {""}
-                    {data.comments}
+                    {comments}
                   </div>
                 </div>
               </DialogTrigger>
               {openComment && (
                 <DialogContent className="bg-white top-[initial] bottom-0 max-w-[400px] px-4 pt-8 pb-2 translate-y-0 rounded-10px-tl-tr">
-                  <CommentSection data={data} mutateParentData={mutate} />
+                  <CommentSection data={data} mutateParentData={mutate} setComments={setComments} />
                 </DialogContent>
               )}
             </Dialog>

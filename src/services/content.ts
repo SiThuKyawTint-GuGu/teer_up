@@ -305,7 +305,7 @@ export const useGetOnboardingQuestions = (params?: ParamsType): SWRResponse =>
 interface PathwayProgressArg {
   arg: {
     id: string | number;
-    current_content_id: number | string;
+    current_content_id: number | string | null;
     progress: number;
   };
 }
