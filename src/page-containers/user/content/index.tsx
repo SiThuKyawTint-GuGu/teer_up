@@ -9,7 +9,6 @@ import Loading from "@/app/loading";
 import { getLocalStorage, setLocalStorage } from "@/utils";
 import { getUserInfo } from "@/utils/auth";
 import { Box } from "@radix-ui/themes";
-import Link from "next/link";
 import ContentLayout from "./components/ContentLayout";
 import Video from "./components/Video";
 
@@ -180,13 +179,9 @@ const UserContent = () => {
                 id={index.toString()}
                 key={index}
               >
-                {data.type === "video" ? (
-                  <Box className="w-full h-full">{data && differentContent(data, visibleItemIndex)}</Box>
-                ) : (
-                  <Link href={`/content/${data.slug}`} onClick={() => storeIndex(index)} className="w-full h-full">
-                    {data && differentContent(data, visibleItemIndex)}
-                  </Link>
-                )}
+                <Box className="w-full h-full" onClick={() => storeIndex(index)}>
+                  {data && differentContent(data, visibleItemIndex)}
+                </Box>
 
                 {index === 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
               </Box>
