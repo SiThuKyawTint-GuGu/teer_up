@@ -77,7 +77,7 @@ const CommentSection: React.FC<CommentSectionProp> = ({ data }) => {
           </div>
 
           <div className="w-full z-[9]">
-            <form onSubmit={postSubmitHandler} className="w-full flex font-[16px]">
+            <form onSubmit={postSubmitHandler} autoFocus={false} className="w-full flex font-[16px]">
               <CmtInput setValue={setCommentValue} value={commentValue} />
               <Button
                 type="submit"

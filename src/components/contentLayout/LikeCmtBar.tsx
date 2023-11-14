@@ -331,20 +331,14 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
     <>
       {showSuccessPage === false ? (
         <div className="bg-white flex py-2 px-3 items-center">
-          {data.type === "event" && (
+          {form ? (
             <Button size="sm" className="w-[166px]" onClick={() => setOpenModal(true)}>
-              Join now
+              {form?.submit_label}
             </Button>
-          )}
-          {data.type === "opportunity" && (
-            <Button size="sm" className="w-[166px]" onClick={() => setOpenModal(true)}>
-              Apply now
-            </Button>
-          )}
-          {data.type === "article" && (
-            <Button size="sm" className="w-[166px]" onClick={() => setOpenModal(true)}>
-              Suggest Now
-            </Button>
+          ) : (
+            <Section className="bg-white" py="1" px="3" onClick={() => setOpenComment(true)}>
+              <InputText type="text" />
+            </Section>
           )}
 
           <div className="flex justify-between px-3 w-full flex-1">

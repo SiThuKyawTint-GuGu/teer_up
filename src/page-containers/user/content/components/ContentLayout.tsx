@@ -57,16 +57,24 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate }) =>
               <div
                 ref={contentRef}
                 className="flex flex-col"
-                style={{ maxHeight: maxHeight !== undefined ? `${maxHeight - 30}px` : "none", overflow: "hidden" }}
+                // style={{ maxHeight: maxHeight !== undefined ? `${maxHeight - 30}px` : "none", overflow: "hidden" }}
               >
                 <Text className="text-[24px] font-[700] leading-[32px]">{data.title}</Text>
-                <Text>{data.description}</Text>
+                <Text>
+                  {data.description.slice(0, 280)}
+
+                  {data.description.length > 280 && (
+                    <Text as="span" className="text-primary">
+                      {"..."}See more
+                    </Text>
+                  )}
+                </Text>
               </div>
-              {isOverflowing && (
+              {/* {isOverflowing && (
                 <div>
                   ...<Text className="text-primary">see more</Text>
                 </div>
-              )}
+              )} */}
             </Flex>
           </Link>
         </div>
