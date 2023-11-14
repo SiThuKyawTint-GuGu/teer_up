@@ -40,7 +40,7 @@ const Header: React.FC = () => {
   return (
     <header className="w-full max-w-[400px] h-[48px] mx-auto bg-white fixed top-0 z-10 shadow-[0px_1px_9px_0px_rgba(0,_0,_0,_0.06)]">
       <Flex justify="between" align="center" height="100%" px="3" position="relative" gap="3">
-        <Image src="/auth/teeUpLogo.svg" width={84} height={20} alt="teeup logo" />
+        <Image src="/auth/teeUpLogo.png" width={84} height={20} alt="teeup logo" />
         {get("search") ? (
           <InputSearch
             ref={inputRef}

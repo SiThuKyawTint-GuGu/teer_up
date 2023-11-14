@@ -216,5 +216,15 @@ interface Image {
 }
 
 export const Image: React.FC<Image> = ({ src, width, className, height, alt, ...props }: Image) => {
-  return <NextImage className={className} src={src} width={width || 0} height={height || 0} alt={alt} {...props} />;
+  return (
+    <NextImage
+      quality={100}
+      className={className}
+      src={src}
+      width={width || 0}
+      height={height || 0}
+      alt={alt}
+      {...props}
+    />
+  );
 };
