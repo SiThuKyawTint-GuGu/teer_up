@@ -94,7 +94,7 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
     <div className="w-full h-[100%] flex flex-col">
       <div className="w-full h-full  rounded-t-[8px] relative text-white" onClick={() => showCmt && setShowCmt(false)}>
         {data.content_video && (
-          <div className="video-wrapper" onClick={onVideoPress}>
+          <div className="video-wrapper relative z-[1] " onClick={onVideoPress}>
             <video
               poster={data.image_url}
               preload="none"
