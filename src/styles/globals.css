@@ -144,6 +144,10 @@ html {
   margin: 0;
 }
 
+input[type="date"] {
+  color-scheme: light;
+}
+
 h1 {
   @apply text-3xl;
 }
