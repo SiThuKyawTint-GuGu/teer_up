@@ -19,12 +19,12 @@ const AdminLayout = ({ children }: Props) => {
       {token ? (
         <PageLayout>
           <main className="bg-white w-full p-0" id="main-content">
-            {children}
+            <div style={{ height: "auto", marginBottom: "60px" }}>{children}</div>
           </main>
         </PageLayout>
       ) : (
         <main className="bg-white w-full p-0 " id="main-content">
-          {children}
+          <div style={{ height: "auto", marginBottom: "60px" }}>{children}</div>
         </main>
       )}
     </ThemeRegistry>

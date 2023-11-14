@@ -201,7 +201,7 @@ const ContentCategoryDetail = ({ id }: Props) => {
   };
 
   return (
-    <div className="bg-white p-5" style={{ marginBottom: "60px" }}>
+    <div className="bg-white p-5">
       <form onSubmit={handleSubmit(Submit)}>
         <div className="mb-10">
           <TextField
