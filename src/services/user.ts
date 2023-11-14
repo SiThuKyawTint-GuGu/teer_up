@@ -170,6 +170,13 @@ export const useGetUserScores = (): SWRResponse => {
   return useSWR<UserScoresResponse>(`/user/scores`);
 };
 
+export const useGetUserOnboardingStatus = <UserOnboardingStatusResponse>(): SWRResponse<
+  UserOnboardingStatusResponse,
+  any
+> => {
+  return useSWR<UserOnboardingStatusResponse>(`/user/onboarding/status`);
+};
+
 export const useUpdateUserOnboardingStatus = () =>
   useSWRMutation(`/user/onboarding/status`, (url, { arg }: { arg: { in_progress: boolean } }) => {
     return appAxios.put<{ arg: { skip: ON_BOARDING_SKIP } }>(url, arg);

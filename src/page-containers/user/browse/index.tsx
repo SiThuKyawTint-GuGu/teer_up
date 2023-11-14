@@ -125,7 +125,12 @@ const BrowsePage = () => {
               return (
                 <Flex direction="column" className="w-full  py-[10px]" key={index}>
                   <Flex direction={"row"} className="w-full  px-[12px] justify-between items-center">
-                    <p className="text-2xl font-[800]"> {contentData?.name} </p>
+                    <div className=" flex items-center text-2xl font-[800] ">
+                      {contentData?.icon_url && (
+                        <img src={contentData?.icon_url} className="w-[20px] mr-[10px] h-[20px] inline-block" />
+                      )}
+                      <p>{contentData?.name}</p>{" "}
+                    </div>
                     <p
                       className="text-primary font-[600] ml-[5px] cursor-pointer"
                       onClick={() => {

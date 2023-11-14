@@ -12,7 +12,7 @@ type VideoDetailProp = {
   contentMutate: any;
 };
 const VideoDetail: React.FC<VideoDetailProp> = ({ data, contentMutate }) => {
-  const [isPlayed, setIsPlayed] = useState(false);
+  const [isPlayed, setIsPlayed] = useState(true);
   const [readMore, setReadMore] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const detailDescription = useRef<HTMLParagraphElement>(null);
@@ -54,6 +54,8 @@ const VideoDetail: React.FC<VideoDetailProp> = ({ data, contentMutate }) => {
                     onClick={() => handlePlayVideo()}
                     ref={videoRef}
                     loop
+                    playsInline
+                    autoPlay
                   >
                     <source src={data.content_video.video_url} className="object-fill" type="video/mp4"></source>
                   </video>

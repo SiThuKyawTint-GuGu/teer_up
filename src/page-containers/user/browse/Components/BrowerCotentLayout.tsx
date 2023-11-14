@@ -18,7 +18,12 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, conte
     <div className="w-full h-full p-2">
       <CardBox className="h-full ">
         <div className="w-full h-full bg-white flex flex-col justify-between">
-          <div>
+          <div
+            className="flex flex-col"
+            style={{
+              height: "calc(100% - 50px) ",
+            }}
+          >
             <div className="w-full mx-auto  relative">
               {data.content_video ? (
                 <div className="w-full h-[200px]">
@@ -54,7 +59,7 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, conte
                 </Link>
               )}
             </div>
-            <Link href={redir}>
+            <Link href={redir} className="inline-block h-full ">
               <div className="w-full px-[12px] bg-white cursor-pointer">
                 <h1 className="font-[700] text-[24px]">{data.title}</h1>
                 {data.description && (

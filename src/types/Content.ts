@@ -131,6 +131,7 @@ export interface ContentHomeData {
   id: number;
   name: string;
   slug: string;
+  icon_url: string;
   category_contents: ContentData[] | [];
 }
 export interface ContentData {
