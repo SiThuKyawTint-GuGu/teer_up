@@ -246,7 +246,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
                           }
                         }}
                       >
-                        {data.title || "HTML Text Title"}
+                        {data.title || "--------"}
                       </div>
                       {index === visibleItemIndex && (
                         <Icons.checkMark
