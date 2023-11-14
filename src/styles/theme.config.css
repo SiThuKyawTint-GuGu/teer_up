@@ -16,8 +16,10 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
-.videos {
-  z-index: -1;
+@media screen and (display-mode: standalone) {
+  .videos {
+    z-index: -1 !important;
+  }
 }
 
 .video-wrapper {
