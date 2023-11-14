@@ -1,6 +1,6 @@
 "use client";
 import { Icons } from "@/components/ui/Images";
-import { useContentWatchCount, usePostPathwayProgress } from "@/services/content";
+import { useContentWatchCount, usePostPathwayProgress, useUnfinishPathway } from "@/services/content";
 import { ContentData } from "@/types/Content";
 import { getLocalStorage, setLocalStorage } from "@/utils";
 import { getUserInfo } from "@/utils/auth";
@@ -25,6 +25,24 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
   const [totalTimeInView, setTotalTimeInView] = useState<number>(0);
   const { trigger: calculateCount } = useContentWatchCount();
   const { trigger: postPathwayProgress } = usePostPathwayProgress();
+  const { data: pathwayProgress } = useUnfinishPathway(data.id);
+
+  useEffect(() => {
+    if (data.content_pathways && data.content_pathways.length > 0 && pathwayProgress) {
+      const current_content = data.content_pathways?.find(
+        (each: ContentData) => parseInt(each.id) === pathwayProgress.current_content_id
+      );
+      if (current_content) {
+        const targetElement = document.getElementById(current_content.slug);
+        if (targetElement) {
+          targetElement.scrollIntoView({
+            behavior: "smooth",
+          });
+        }
+      }
+    }
+  }, [pathwayProgress, data.content_pathways]);
+
   const dataWithTitle = useMemo(() => {
     if (data && data.content_pathways && data.content_pathways)
       return data.content_pathways.filter((each: ContentData) => each.title);
