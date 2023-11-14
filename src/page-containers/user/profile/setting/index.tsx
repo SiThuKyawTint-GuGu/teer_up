@@ -8,6 +8,7 @@ import { Box, Flex, Grid, Section } from "@radix-ui/themes";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState, useTransition } from "react";
+import { mutate } from "swr";
 
 const Setting: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -16,6 +17,11 @@ const Setting: React.FC = () => {
 
   const handleLogout = () => {
     logout();
+    mutate(
+      () => true, // which cache keys are updated
+      undefined, // update cache data to `undefined`
+      { revalidate: false } // do not revalidate
+    );
     startTransition(() => {
       router.push("/home");
     });

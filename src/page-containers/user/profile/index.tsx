@@ -81,7 +81,7 @@ const Profile: React.FC = () => {
   };
 
   const handleRetakeAssessment = async () => {
-    setLocalStorage("content", 0);
+    setLocalStorage("content", "0");
     mutate(
       () => true, // which cache keys are updated
       undefined, // update cache data to `undefined`
