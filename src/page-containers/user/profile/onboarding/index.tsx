@@ -32,7 +32,7 @@ const OnboardingQuestionPage = () => {
     }
   }, [onboardingArray, router]);
   return (
-    <div className="w-full h-[calc(100dvh-112px)] pt-[90px] pb-[10px]">
+    <div className="w-full h-[calc(100dvh-112px)] pt-[15px] pb-[10px]">
       <div
         className={`snap-y flex-col snap-mandatory h-full px-[16px]  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
         style={{ scrollSnapStop: "always" }}
