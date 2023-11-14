@@ -50,7 +50,7 @@ export const useUpdateExperience = () =>
     return appAxios.put<UpdateUserResType>(`${url}/${arg.exp_id}`, arg);
   });
 
-export const useDeleteEducation = () =>
-  useSWRMutation(`/user/profile/educations`, (url, { arg }: { arg: { edu_id: string } }) => {
-    return appAxios.delete(`${url}/${arg.edu_id}`);
+export const useDeleteExperience = () =>
+  useSWRMutation(`/user/profile/experiences`, (url, { arg }: { arg: { exp_id: string } }) => {
+    return appAxios.delete(`${url}/${arg.exp_id}`);
   });

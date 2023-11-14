@@ -16,3 +16,9 @@ export const getLocalStorage = (key: string) => {
     return storedData ? JSON.parse(storedData) : [];
   }
 };
+
+export const removeLocalStorage = (key: string) => {
+  if (typeof window !== "undefined") {
+    localStorage.removeItem(key);
+  }
+};

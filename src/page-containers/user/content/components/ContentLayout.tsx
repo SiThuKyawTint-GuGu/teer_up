@@ -15,6 +15,11 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate }) =>
   const contentRef = useRef<HTMLDivElement | null>(null);
   const [maxHeight, setMaxHeight] = useState<number | undefined>(undefined);
   const [isOverflowing, setIsOverflowing] = useState<boolean>(false);
+  const [comments, setComments] = useState<number>(0);
+
+  useEffect(() => {
+    setComments(data.comments);
+  }, []);
   useEffect(() => {
     if (contentRef.current) {
       const element = contentRef.current;
@@ -82,7 +87,7 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate }) =>
           <div className="w-full pt-3">
             <hr className="w-full h-[1px] bg-slateGray" />
           </div>
-          <ReactionBar data={data} contentMutate={contentMutate} />
+          <ReactionBar data={data} contentMutate={contentMutate} comments={comments} setComments={setComments} />
         </div>
       </Grid>
     </CardBox>

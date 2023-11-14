@@ -17,6 +17,7 @@ const token = getToken();
 const Layout = ({ children }: Props) => {
   const { openVerifyModal, verifyModalOpenHandler } = useVerifyModal();
   const { openVerifyEmailModal, verifyEmailModalOpenHandler } = useVerifyEmailModal();
+
   useEffect(() => {
     const requestInterceptor = appAxios.interceptors.request.use(
       function (config) {
@@ -37,11 +38,13 @@ const Layout = ({ children }: Props) => {
         return response;
       },
       function (error) {
-        if (error.response.status == 401) {
-          verifyModalOpenHandler();
-        }
-        if (error.response.status == 403) {
-          verifyEmailModalOpenHandler();
+        if (error?.response) {
+          if (error.response.status == 401) {
+            verifyModalOpenHandler();
+          }
+          if (error.response.status == 403) {
+            verifyEmailModalOpenHandler();
+          }
         }
         return Promise.reject(error);
       }
@@ -60,7 +63,7 @@ const Layout = ({ children }: Props) => {
       <Grid columns="1">
         {openVerifyModal && <VerifyPop />}
         {openVerifyEmailModal && <VerifyEmailModal />}
-        <div id="main-content" className="max-w-[400px] mx-auto h-screen relative bg-layout w-full">
+        <div id="main-content" className="max-w-[400px]  no-scrollbar mx-auto h-screen relative bg-layout w-full">
           {children}
         </div>
       </Grid>
