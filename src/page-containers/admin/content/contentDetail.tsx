@@ -257,6 +257,7 @@ const ContentDetail = ({ id }: Props) => {
       setSelectCategory(selectCategories);
       setValue("title", content?.data.title);
       setValue("description", content?.data.description);
+      setButtonLabel(content?.data.submit_label);
       // setValue("category", content?.data?.category?.id);
       setValue("type", content?.data.type);
       setValue("status", content?.data.status);
