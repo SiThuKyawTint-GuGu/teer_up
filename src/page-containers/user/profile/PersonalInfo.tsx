@@ -17,7 +17,6 @@ import dayjs from "dayjs";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
-import ReactDatePicker from "react-datepicker";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -25,9 +24,10 @@ const validationSchema = yup.object({
   gender: yup.string(),
   email: yup.string().email(),
   name: yup.string().required("Name is required!"),
-  day: yup.date().required("Day is required!").typeError("Invalid date"),
-  month: yup.date().required("Month is required!").typeError("Invalid date"),
-  year: yup.date().required("Year is required!").typeError("Invalid date"),
+  birthday: yup.string().required("Birthday is required!"),
+  // day: yup.date().required("Day is required!").typeError("Invalid date"),
+  // month: yup.date().required("Month is required!").typeError("Invalid date"),
+  // year: yup.date().required("Year is required!").typeError("Invalid date"),
 });
 
 const PersonalInfo: React.FC = () => {
@@ -43,18 +43,19 @@ const PersonalInfo: React.FC = () => {
     resolver: yupResolver(validationSchema),
     defaultValues: {
       name: userProfile?.name,
+      birthday: dayjs(userProfile?.personal_info?.birthday).format("YYYY-MM-DD"),
     },
   });
 
   const submit = async (data: any) => {
-    const day = dayjs(data?.day).format("DD");
-    const month = dayjs(data?.month).format("MM");
-    const year = dayjs(data?.year).year();
+    // const day = dayjs(data?.day).format("DD");
+    // const month = dayjs(data?.month).format("MM");
+    // const year = dayjs(data?.year).year();
 
     const newData = {
+      ...data,
       gender_id: Number(data.gender) || +defaultChecked,
       name: data.name,
-      birthday: `${year}-${month}-${day}`,
     };
 
     await trigger(newData, {
@@ -66,7 +67,8 @@ const PersonalInfo: React.FC = () => {
 
   useEffect(() => {
     form.setValue("name", userProfile?.name || "");
-  }, [form, userProfile?.name]);
+    form.setValue("birthday", dayjs(userProfile?.personal_info?.birthday).format("YYYY-MM-DD") || "");
+  }, [form, userProfile]);
 
   return (
     <>
@@ -136,6 +138,36 @@ const PersonalInfo: React.FC = () => {
                     </Section>
                   </CardBox>
                   <CardBox className="mb-[7px] rounded-none">
+                    <Section className="bg-white" py="4" px="3">
+                      <Heading as="h6" size="4" align="left" mb="4">
+                        Birthday
+                      </Heading>
+                      <FormField
+                        control={form.control}
+                        name="birthday"
+                        render={({ field }) => {
+                          return (
+                            <FormItem>
+                              <FormControl>
+                                <input
+                                  type="date"
+                                  className={cn(
+                                    "font-light shadow-md bg-white border-0 text-black w-full h-[40px] p-3 outline-none"
+                                  )}
+                                  {...field}
+                                  // value={
+                                  //   field.value || dayjs(userProfile?.personal_info?.birthday).format("YYYY-MM-DD")
+                                  // }
+                                  // onChange={e => field.onChange(e.target.value)}
+                                />
+                              </FormControl>
+                            </FormItem>
+                          );
+                        }}
+                      />
+                    </Section>
+                  </CardBox>
+                  {/* <CardBox className="mb-[7px] rounded-none">
                     <Section className="bg-white" py="4" px="3">
                       <Heading as="h6" size="4" align="left" mb="4">
                         Birthday
@@ -222,7 +254,7 @@ const PersonalInfo: React.FC = () => {
                         />
                       </Flex>
                     </Section>
-                  </CardBox>
+                  </CardBox> */}
                   <CardBox className="mb-[7px] rounded-none">
                     <Section className="bg-white" py="4" px="3">
                       <Heading as="h6" size="4" align="left" mb="4">
@@ -232,7 +264,6 @@ const PersonalInfo: React.FC = () => {
                         control={form.control}
                         name="name"
                         render={({ field }) => {
-                          console.log("field => ", field);
                           return (
                             <FormItem>
                               <FormControl>

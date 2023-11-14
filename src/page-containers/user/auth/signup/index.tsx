@@ -231,7 +231,7 @@ const SignUp = () => {
           </Text>
           <Flex justify="center">
             <DialogClose>
-              <Button className="w-[120px]">Close</Button>
+              <Button className="w-[120px]">Next</Button>
             </DialogClose>
           </Flex>
         </Box>

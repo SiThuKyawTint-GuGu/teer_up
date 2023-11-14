@@ -8,8 +8,10 @@ import { Flex, Heading } from "@radix-ui/themes";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-type ContentStartProp = {};
-const ContentStart: React.FC<ContentStartProp> = () => {
+type ContentStartProp = {
+  setShow: any;
+};
+const ContentStart: React.FC<ContentStartProp> = ({ setShow }) => {
   return (
     <div className="w-full h-full px-[16px] snap-start">
       <Flex justify="center" direction="column" align="center" className="w-full h-[80%]">
@@ -30,16 +32,14 @@ const ContentStart: React.FC<ContentStartProp> = () => {
         <Button
           className="w-full mt-[48px]"
           onClick={() => {
-            if (typeof window !== "undefined") {
-              // Perform localStorage action
-              setLocalStorage("content", "1");
-            }
-            const targetElement = document.getElementById("0");
-            if (targetElement) {
-              targetElement.scrollIntoView({
-                behavior: "smooth", // Smooth scroll effect
-              });
-            }
+            setLocalStorage("content", "1");
+            setShow(false);
+            // const targetElement = document.getElementById("0");
+            // if (targetElement) {
+            //   targetElement.scrollIntoView({
+            //     behavior: "smooth", // Smooth scroll effect
+            //   });
+            // }
           }}
         >
           Let’s get started <Icons.rightArrow />
