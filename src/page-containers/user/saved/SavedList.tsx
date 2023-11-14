@@ -7,14 +7,15 @@ import { Dialog, DialogClose, DialogContent, DialogTrigger } from "@/components/
 import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import {
-  SavedContentParams,
   SAVED_CONTENT_TYPES,
+  SavedContentParams,
   useGetSavedContents,
   useGetUnfinishedPathway,
+  useSaveContent,
 } from "@/services/content";
 import { SavedContentResponse, UnfinishedPathwayResponse } from "@/types/SavedContent";
 import { cn } from "@/utils/cn";
-import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
+import { Box, Flex, Grid, Heading, IconButton, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Link from "next/link";
@@ -59,7 +60,12 @@ enum TRIGGER_TYPE {
 
 const SavedList: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
+  const [isMenuVisible, setIsMenuVisible] = useState<boolean>(false);
+  const [content, setContent] = useState<number>(0);
+  const { trigger: contentSave } = useSaveContent();
   const [triggerType, setTriggerType] = useState<TRIGGER_TYPE>();
+  const [refreshKey, setRefreshKey] = useState<number>(0);
+
   const [filteredType, setFilterTypes] = useState<{
     key: SAVED_CONTENT_TYPES;
     value: string;
@@ -67,10 +73,34 @@ const SavedList: React.FC = () => {
     key: filterNames[0].key,
     value: filterNames[0].value,
   });
-  const { data: savedContents } = useGetSavedContents<SavedContentParams, SavedContentResponse>({
+  const { data: savedContents, mutate } = useGetSavedContents<SavedContentParams, SavedContentResponse>({
     type: filteredType.key === SAVED_CONTENT_TYPES.ALL ? "" : filteredType.key,
   });
   const { data: unFinishedPathways } = useGetUnfinishedPathway<UnfinishedPathwayResponse>();
+
+  const DropdownMenu = () => {
+    return (
+      <div className="dropdown-menu h-[100px] bg-red-600 flex items-center justify-center rounded ">
+        <ul>
+          <li onClick={unSaveContent} className="p-1 cursor-pointer text-white">
+            Unsave
+          </li>
+        </ul>
+      </div>
+    );
+  };
+
+  const unSaveContent = async () => {
+    await contentSave({
+      id: content,
+    });
+    await mutate();
+  };
+
+  const toggleMenu = (data: any) => {
+    setContent(data.content_id);
+    setIsMenuVisible(isMenuVisible && data.content_id == content ? !isMenuVisible : true);
+  };
 
   return (
     <Dialog open={open} onOpenChange={val => setOpen(val)}>
@@ -98,12 +128,12 @@ const SavedList: React.FC = () => {
               )}
               {savedContents?.data?.length ? (
                 savedContents?.data?.map((each, key) => (
-                  <Link key={key} href={`/content/${each?.content?.slug}`}>
-                    <Box pb="4">
-                      <CardBox className="p-[8px]">
-                        <Flex justify="start" align="start" gap="2">
-                          <BGImage width="128px" height="100px" url={each?.content?.image_url} />
-                          <Flex className="text-[#373A36] space-y-1 w-3/4" direction="column" wrap="wrap">
+                  <Box pb="4">
+                    <CardBox className="p-[8px]">
+                      <Flex justify="start" align="start" gap="2">
+                        <BGImage width="128px" height="100px" url={each?.content?.image_url} />
+                        <Link key={key} href={`/content/${each?.content?.slug}`} className="w-3/4">
+                          <Flex className="text-[#373A36] space-y-1" direction="column" wrap="wrap">
                             <Text>{each?.content?.title}</Text>
                             <Text size="2" weight="light">
                               <Text as="span" className="capitalize">
@@ -112,10 +142,15 @@ const SavedList: React.FC = () => {
                               . Saved {dayjs(each?.created_at).fromNow()}
                             </Text>
                           </Flex>
-                        </Flex>
-                      </CardBox>
-                    </Box>
-                  </Link>
+                        </Link>
+                        <IconButton size="2" variant="ghost" onClick={() => toggleMenu(each)}>
+                          <Icons.moreOption className={cn("w-[24px] h-[24px] text-[#5B6770]", "text-[#8d9499]")} />
+                        </IconButton>
+                        {isMenuVisible && content == each.content_id && <DropdownMenu />}
+                        {/* <DropdownMenu /> */}
+                      </Flex>
+                    </CardBox>
+                  </Box>
                 ))
               ) : (
                 <>
