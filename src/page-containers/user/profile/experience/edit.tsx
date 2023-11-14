@@ -6,15 +6,16 @@ import { Icons } from "@/components/ui/Images";
 import { InputText } from "@/components/ui/Inputs";
 import { Text } from "@/components/ui/Typo/Text";
 import { useDeleteEducation } from "@/services/education";
-import { useGetExperienceById, useUpdateExperience } from "@/services/experience";
+import { useUpdateExperience } from "@/services/experience";
+import { useGetUserById } from "@/services/user";
 import { USER_ROLE } from "@/shared/enums";
-import { ExperienceById } from "@/types/Experience";
+import { UserProfileResponse } from "@/types/Profile";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useMemo } from "react";
 import ReactDatePicker from "react-datepicker";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -29,15 +30,17 @@ const validationSchema = yup.object({
 const EditExperience: React.FC = () => {
   const { id, exp_id } = useParams();
   const router = useRouter();
-  const { data: experience } = useGetExperienceById<ExperienceById>(exp_id as string);
+  const { data: profileData } = useGetUserById<UserProfileResponse>(id as string);
   const { trigger, isMutating } = useUpdateExperience();
   const { trigger: deleteTrigger, isMutating: deleteMutating } = useDeleteEducation();
+  const experiences = profileData?.data?.experiences;
+  const experience = useMemo(() => experiences?.find(each => each.id.toString() === id.toString()), [experiences, id]);
 
   const form = useForm({
     resolver: yupResolver(validationSchema),
     defaultValues: {
-      company: experience?.data?.company,
-      position: experience?.data?.position,
+      // company: experience?.data?.company,
+      // position: experience?.data?.position,
     },
   });
 
@@ -66,12 +69,12 @@ const EditExperience: React.FC = () => {
   //   );
   // };
 
-  useEffect(() => {
-    form.setValue("company", experience?.data?.company || "");
-    form.setValue("position", experience?.data?.position || "");
-  }, [form, experience?.data]);
+  // useEffect(() => {
+  //   form.setValue("company", experience?.data?.company || "");
+  //   form.setValue("position", experience?.data?.position || "");
+  // }, [form, experience?.data]);
 
-  console.log("exp => ", experience);
+  console.log("experience => ", experience);
 
   return (
     <>
