@@ -232,7 +232,10 @@ const Profile: React.FC = () => {
                     <CardBox className="rounded-none">
                       <Section className="bg-white" py="4" px="3">
                         <Heading as="h6" size="4" align="left" mb="4">
-                          Your Career Muscles
+                          Your Career Muscles{" "}
+                          <span className="text-md font-normal">
+                            are competencies that you need to navigate the world of jobs
+                          </span>
                         </Heading>
                         <Box className="w-full h-full flex-wrap">
                           <RadarChart />
@@ -308,7 +311,7 @@ const Profile: React.FC = () => {
                                   {each?.content?.id && (
                                     <Flex width="100%">
                                       <Link className="w-full" href={`/content/${each?.content?.slug}`}>
-                                        <Button className="w-full">I&#39;m ready to dive in the explore</Button>
+                                        <Button className="w-full">I&#39;m ready to dive in and explore</Button>
                                       </Link>
                                     </Flex>
                                   )}
