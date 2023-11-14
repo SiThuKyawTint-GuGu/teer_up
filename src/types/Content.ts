@@ -56,6 +56,8 @@ export interface ContentArticle {
   body: TrustedHTML;
   published_by: string;
   content_id: string;
+  formconfig_id: number | string;
+  form_config: FormConfig;
 }
 
 export interface ContentKeywords {
@@ -129,6 +131,7 @@ export interface ContentHomeData {
   id: number;
   name: string;
   slug: string;
+  icon_url: string;
   category_contents: ContentData[] | [];
 }
 export interface ContentData {
@@ -232,4 +235,14 @@ export interface SkipStatusResponse {
   skip: boolean;
   updated_at: Date;
   user_id: boolean;
+}
+
+export interface PathwayProgress {
+  content_id: number | string;
+  created_at: Date;
+  current_content_id: number;
+  id: number | string;
+  progress: number;
+  updated_at: Date;
+  user_id: number;
 }

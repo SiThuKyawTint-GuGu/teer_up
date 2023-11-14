@@ -212,14 +212,14 @@ const Profile: React.FC = () => {
                   <Tabs.List className="space-x-[20px] px-3">
                     <Tabs.Trigger
                       onClick={() => handleTabTrigger("competency")}
-                      className="tab-trigger"
+                      className="tab-trigger cursor-pointer"
                       value="competency"
                     >
                       Hope Action Assessment
                     </Tabs.Trigger>
                     <Tabs.Trigger
                       onClick={() => handleTabTrigger("personalDetails")}
-                      className="tab-trigger"
+                      className="tab-trigger cursor-pointer"
                       value="personalDetails"
                     >
                       Personal details

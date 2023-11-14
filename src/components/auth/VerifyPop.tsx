@@ -25,7 +25,7 @@ const VerifyPop: React.FC = () => {
             gap="5"
           >
             <Text as="div" className="w-full text-center text-[36px] font-[700]">
-              You&apos;re not logg in
+              You&apos;re not logged in
             </Text>
             <Text as="div" className="w-full text-center">
               Log in now to comment and save the contents for better experience

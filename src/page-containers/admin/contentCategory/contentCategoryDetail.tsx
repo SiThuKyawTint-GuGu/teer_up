@@ -46,7 +46,6 @@ const ContentCategoryDetail = ({ id }: Props) => {
     search: searchContent,
     category: categorySlug,
   });
-  console.log("contents...", contents);
   const [contentOne, setContentOne] = useState<OptionType>();
   const [contentTwo, setContentTwo] = useState<OptionType>();
   const [contentThree, setContentThree] = useState<OptionType>();
@@ -54,9 +53,11 @@ const ContentCategoryDetail = ({ id }: Props) => {
   const [contentFive, setContentFive] = useState<OptionType>();
   const [initializeSearch, setInitializeSearch] = useState<boolean>(false);
   const [imgProgress, setImgProgress] = useState<number>();
+  const [bannerProgress, setBannerProgress] = useState<number>();
   const [imgUrl, setImgUrl] = useState<string>("");
   const [imgRes, setImgRes] = useState<any>();
-  const [iconMessge, setIconMessage] = useState<string>("");
+  const [bannerUrl, setBannerUrl] = useState<string>("");
+  const [bannerRes, setBannerRes] = useState<any>();
 
   useEffect(() => {
     if (contents?.data && contents?.data.length > 0) {
@@ -105,6 +106,7 @@ const ContentCategoryDetail = ({ id }: Props) => {
 
       setValue("name", category?.data.name);
       setImgUrl(category?.data.icon_url);
+      setBannerUrl(category?.data.banner_icon_url);
     }
   }, [category?.data, searchContent]);
 
@@ -125,14 +127,13 @@ const ContentCategoryDetail = ({ id }: Props) => {
     const id4 = contentFour?.content_id;
     const id5 = contentFive?.content_id;
     const imgurl = imgRes ? imgRes?.data?.data?.file_path : imgUrl;
-    if (!imgUrl) {
-      setIconMessage("Icon image is required!");
-      return;
-    }
+    const bannerurl = bannerRes ? bannerRes?.data?.data?.file_path : bannerUrl;
     const submitData: any = {
       name: data?.name,
       content_ids: [id1, id2, id3, id4, id5],
       icon_url: imgurl,
+      banner_icon_url: bannerurl,
+      order: 1,
     };
     if (category?.data) {
       submitData.id = id;
@@ -178,11 +179,24 @@ const ContentCategoryDetail = ({ id }: Props) => {
       setImgProgress(percentage);
     };
     const res = await fileTrigger({ file, handleProgress });
-    console.log(res);
     setImgRes(res);
     if (file) {
       const fileURL = URL.createObjectURL(file);
       setImgUrl(fileURL);
+    }
+  };
+
+  const handleBannerImageChange = async (event: any) => {
+    const file = event.target.files[0];
+    const handleProgress = (percentage: number) => {
+      // console.log(`progress ${percentage}`);
+      setBannerProgress(percentage);
+    };
+    const res = await fileTrigger({ file, handleProgress });
+    setBannerRes(res);
+    if (file) {
+      const fileURL = URL.createObjectURL(file);
+      setBannerUrl(fileURL);
     }
   };
 
@@ -224,7 +238,29 @@ const ContentCategoryDetail = ({ id }: Props) => {
                 <Image width={300} height={300} src={imgUrl} alt="File Preview" className="max-w-full h-auto" />
               </div>
             )}
-            {iconMessge && <p className="mt-2 text-red-700">{iconMessge}</p>}
+          </div>
+          <div className="mb-10">
+            <div className="border border-dashed w-[30%] flex flex-col items-center justify-center p-10 border-gray-400 rounded-lg">
+              <Button
+                sx={{ textTransform: "none", background: "#DA291C" }}
+                component="label"
+                variant="contained"
+                startIcon={<BiSolidCloudUpload />}
+                color="error"
+              >
+                Upload Banner Image
+                <VisuallyHiddenInput accept="image/*" onChange={handleBannerImageChange} type="file" />
+              </Button>
+              {bannerProgress && <ProgressBar progress={bannerProgress} />}
+            </div>
+          </div>
+          <div className="mb-10">
+            {bannerUrl && (
+              <div className="mt-4">
+                <p className="font-bold mb-2">Banner Image Preview:</p>
+                <Image width={300} height={300} src={bannerUrl} alt="File Preview" className="max-w-full h-auto" />
+              </div>
+            )}
           </div>
           <div className="mb-10">
             <Autocomplete

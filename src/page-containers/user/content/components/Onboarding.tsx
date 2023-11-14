@@ -12,16 +12,16 @@ type OnboardingProps = {
   data: ContentData;
   parentIndex: string;
   mutate: any;
+  total?: number;
 };
-const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
+const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex, total }) => {
   const [option, setOption] = useState<OnBoardingOption | null>(null);
   const [modalOpen, setOpenModal] = useState<boolean>(false);
-  const { trigger, isMutating, data: returnData } = usePostOnboarding();
-  const complete = returnData?.data.status.completed;
+  const { trigger, isMutating } = usePostOnboarding();
 
   const [imageLoading, setImageLoading] = useState(false);
   const router = useRouter();
-  console.log("q", complete);
+
   return (
     <CardBox className="w-full h-[80%] bg-white">
       <div className="w-full h-full">
@@ -88,9 +88,13 @@ const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
                           {
                             onSuccess: () => {
                               setOpenModal(false);
-                              if (complete) {
-                                router.push("/profile");
+
+                              if (total) {
+                                if (parseInt(parentIndex) === total) {
+                                  router.push("/profile");
+                                }
                               }
+
                               const targetElement = document.getElementById(`${parseInt(parentIndex) + 1}`);
                               if (targetElement) {
                                 targetElement.scrollIntoView({

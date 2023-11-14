@@ -91,42 +91,42 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
   }, []);
 
   return (
-    <div className="w-full h-[80%] flex flex-col">
-      <div
-        className="w-full h-full overflow-y-auto rounded-t-[8px] relative text-white"
-        onClick={() => showCmt && setShowCmt(false)}
-      >
+    <div className="w-full h-[100%] flex flex-col">
+      <div className="w-full h-full  rounded-t-[8px] relative text-white" onClick={() => showCmt && setShowCmt(false)}>
         {data.content_video && (
-          <video
-            poster={data.image_url}
-            preload="none"
-            data-video="0"
-            loop
-            onClick={onVideoPress}
-            ref={ref => {
-              videoRef.current = ref;
-              setVideoRef(ref);
-            }}
-            muted={isSafari}
-            playsInline={true}
-            className={`w-full h-full object-scale-down absolute bg-black`}
-          >
-            <source
-              className={`object-cover bg-cover bg-center`}
-              src={data.content_video.video_url}
-              type="video/mp4"
-            ></source>
-          </video>
+          <div className="video-wrapper" onClick={onVideoPress}>
+            <video
+              poster={data.image_url}
+              preload="none"
+              data-video="0"
+              loop
+              ref={ref => {
+                videoRef.current = ref;
+                setVideoRef(ref);
+              }}
+              muted={isSafari}
+              controls={false}
+              playsInline={true}
+              className={`w-full h-full object-scale-down absolute bg-black videos`}
+            >
+              <source
+                className={`object-cover bg-cover bg-center`}
+                src={data.content_video.video_url}
+                type="video/mp4"
+              ></source>
+            </video>
+          </div>
         )}
 
         <div
           className={`absolute flex flex-col items-baseline cursor-pointer w-full bottom-0 px-3 py-3 z-[1] text-[14px] font-[600] ${
             showDescription &&
-            "h-[50%] bg-[rgba(0,0,0,.5)] overflow-scroll no-scrollbar text-start items-end justify-end"
+            "max-h-[50%] h-auto bg-[rgba(0,0,0,.5)] overflow-y-scroll no-scrollbar text-start items-end justify-start"
           }`}
         >
           {!showDescription && (
             <div
+              className="h-full w-full"
               onClick={() => {
                 if (data.description.length > 50) {
                   setShowDescription(true);
