@@ -13,7 +13,7 @@ import { MaterialReactTable, useMaterialReactTable } from "material-react-table"
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const CategoryTable: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -21,6 +21,11 @@ const CategoryTable: React.FC = () => {
   const { data: contentCategories, isLoading, mutate } = useGetContentCategory<ContentCategoryResponse>();
   const { trigger: deleteTrigger } = useDeleteContentCategory();
   const { trigger: updateTrigger } = useUpdateContentCategory();
+  const [categories, setCategories] = useState<any>();
+
+  useEffect(() => {
+    setCategories(contentCategories?.data);
+  }, [contentCategories?.data]);
 
   const columns = useMemo(
     () => [
@@ -85,7 +90,9 @@ const CategoryTable: React.FC = () => {
 
   //UPDATE action
   const handleUpdateOrder = (row: any, order: string) => {
-    console.log(row);
+    const newIndex = order === "up" ? row.index - 1 : row.index + 1;
+    const updatedFields = [...(contentCategories?.data as any)];
+
     const contentIds: number[] = [];
     row?.original.category_contents.map((content: any) => contentIds.push(content.content_id));
     const data: any = {
@@ -94,15 +101,25 @@ const CategoryTable: React.FC = () => {
       content_ids: contentIds,
       icon_url: row?.original?.icon_url,
       banner_icon_url: row?.original?.banner_icon_url,
-      order: Number(row?.original?.order),
+      order: newIndex,
     };
-
-    if (order === "up") {
-      data.order -= 1;
-    } else {
-      data.order += 1;
-    }
     updateTrigger(data, {
+      onSuccess: () => {
+        mutate();
+      },
+    });
+    const existData = updatedFields[newIndex];
+    const existcontentIds: number[] = [];
+    existData.category_contents.map((content: any) => existcontentIds.push(content.content_id));
+    const existdata: any = {
+      id: existData?.id,
+      name: existData?.name,
+      content_ids: existcontentIds,
+      icon_url: existData?.icon_url,
+      banner_icon_url: existData?.banner_icon_url,
+      order: row.index,
+    };
+    updateTrigger(existdata, {
       onSuccess: () => {
         mutate();
       },
@@ -111,7 +128,7 @@ const CategoryTable: React.FC = () => {
 
   const table = useMaterialReactTable({
     columns,
-    data: (contentCategories?.data as any) || [],
+    data: (categories as any) || [],
     createDisplayMode: "row",
     editDisplayMode: "row",
     enableEditing: true,
