@@ -3,7 +3,7 @@ import { Icons } from "@/components/ui/Images";
 import { useContentWatchCount, usePostPathwayProgress, useUnfinishPathway } from "@/services/content";
 import { ContentData } from "@/types/Content";
 import { getLocalStorage, setLocalStorage } from "@/utils";
-import { getUserInfo } from "@/utils/auth";
+import { getToken, getUserInfo } from "@/utils/auth";
 import { Box, Flex } from "@radix-ui/themes";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import ContentLayout from "./ContentLayout";
@@ -25,7 +25,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
   const { trigger: calculateCount } = useContentWatchCount();
   const { trigger: postPathwayProgress } = usePostPathwayProgress();
   const { data: pathwayProgress } = useUnfinishPathway(data.id);
-
+  const token = getToken();
   useEffect(() => {
     if (data.content_pathways && data.content_pathways.length > 0 && pathwayProgress) {
       const index = Math.floor((pathwayProgress.progress * data.content_pathways.length - 1) / 100);
@@ -100,7 +100,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
 
       const handleScroll = () => {
         const scrollPosition = container.scrollTop;
-        const newIndex = Math.round(scrollPosition / (window.innerHeight - 96));
+        const newIndex = Math.round(scrollPosition / window.innerHeight);
         setStartTime(Date.now());
         setVisibleItemIndex(() => newIndex);
         if (newIndex !== visibleItemIndex) {
@@ -109,12 +109,12 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
             const endTime = Date.now();
             const timeInMilliseconds = endTime - startTime;
             setTotalTimeInView((totalTimeInView + timeInMilliseconds) / 1000);
-            if (data && data.content_pathways) {
-              if (user) {
+            if (data && data.content_pathways && data.content_pathways.length > 0) {
+              if (user && token) {
                 postPathwayProgress({
                   id: data.id,
                   current_content_id:
-                    data.content_pathways[newIndex].type !== "html" ? data.content_pathways[newIndex].id : null,
+                    data.content_pathways[newIndex].type !== "html" ? data.content_pathways[newIndex]?.id : null,
                   progress: calculatePercentage(data.content_pathways, newIndex),
                 });
               }
@@ -135,7 +135,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
         container.removeEventListener("scroll", handleScroll);
       };
     }
-  }, [visibleItemIndex, calculateCount, postPathwayProgress, totalTimeInView, data, startTime]);
+  }, [visibleItemIndex, calculateCount, postPathwayProgress, totalTimeInView, data, startTime, token]);
 
   const differentContent = (data: ContentData, index: number) => {
     if (data.type === "video" && data.content_video)
@@ -153,9 +153,9 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
       return (
         <div
           id={data.slug}
-          className="w-full h-[90%] z-[10] overflow-y-scroll no-scrollbar rounded-lg px-2 bg-white shadow-lg"
+          className="w-full h-[100%] z-[10] overflow-y-scroll no-scrollbar rounded-lg px-2 bg-white shadow-lg"
         >
-          <div className="p-2">
+          <div className="p-2 w-full h-full">
             <div
               className="text-start"
               dangerouslySetInnerHTML={{
