@@ -12,11 +12,12 @@ type CommentSectionProp = {
   data: ContentData;
   mutateParentData: () => any;
 };
-const CommentSection: React.FC<CommentSectionProp> = ({ data, mutateParentData }) => {
+const CommentSection: React.FC<CommentSectionProp> = ({ data }) => {
   const { data: cmtsArray, mutate: mutateCmt, setSize } = useGetComment(data.id);
 
   const commentDataArray: any = useMemo(() => cmtsArray?.flatMap(page => page?.data) || [], [cmtsArray]);
   const { trigger: postComment, isMutating } = usePostComment();
+  const [commentValue, setCommentValue] = useState<string>("");
 
   const postSubmitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -40,8 +41,6 @@ const CommentSection: React.FC<CommentSectionProp> = ({ data, mutateParentData }
       setSize(parseInt(lastCommentId));
     }
   };
-
-  const [commentValue, setCommentValue] = useState<string>("");
 
   return (
     <div className="w-full z-[9999]  h-[60vh] bg-white">
@@ -78,7 +77,7 @@ const CommentSection: React.FC<CommentSectionProp> = ({ data, mutateParentData }
           </div>
 
           <div className="w-full z-[9]">
-            <form onSubmit={postSubmitHandler} className="w-full flex font-[16px]">
+            <form onSubmit={postSubmitHandler} autoFocus={false} className="w-full flex font-[16px]">
               <CmtInput setValue={setCommentValue} value={commentValue} />
               <Button
                 type="submit"

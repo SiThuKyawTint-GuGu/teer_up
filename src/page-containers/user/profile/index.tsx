@@ -11,12 +11,14 @@ import {
   useDeleteCoverPhoto,
   useDeleteProfilePhoto,
   useGetUserById,
+  useGetUserOnboardingStatus,
   useResetScores,
   useUpdateUserOnboardingStatus,
 } from "@/services/user";
 import { PROFILE_TRIGGER } from "@/shared/enums";
 import { UserDimensionResultResponse } from "@/types/Dimension";
 import { UserProfileResponse } from "@/types/Profile";
+import { UserOnboardingStatusResponse } from "@/types/User";
 import { setLocalStorage } from "@/utils";
 import { getUserInfo } from "@/utils/auth";
 import { cn } from "@/utils/cn";
@@ -55,6 +57,7 @@ const Profile: React.FC = () => {
   const { data: profileData, mutate: mutateUser } = useGetUserById<UserProfileResponse>(user?.id);
   const { data: userDimensionData } = useGetUserDimensionResult<UserDimensionResultResponse>();
   const { trigger: onBoardingStatus } = useUpdateUserOnboardingStatus();
+  const { data: getOnboardingStatus } = useGetUserOnboardingStatus<UserOnboardingStatusResponse>();
 
   const { trigger: resetScores } = useResetScores();
   const { trigger: deleteProfileTrigger } = useDeleteCoverPhoto();
@@ -215,7 +218,7 @@ const Profile: React.FC = () => {
                       className="tab-trigger cursor-pointer"
                       value="competency"
                     >
-                      Hope Action Assessment
+                      Your Career Muscles
                     </Tabs.Trigger>
                     <Tabs.Trigger
                       onClick={() => handleTabTrigger("personalDetails")}
@@ -229,11 +232,16 @@ const Profile: React.FC = () => {
                     <CardBox className="rounded-none">
                       <Section className="bg-white" py="4" px="3">
                         <Heading as="h6" size="4" align="left" mb="4">
-                          Assessment Chart
+                          Your Career Muscles
                         </Heading>
                         <Box className="w-full h-full flex-wrap">
                           <RadarChart />
-                          <Button onClick={handleContinueAssessment} loading={isPending} className="w-full">
+                          <Button
+                            onClick={handleContinueAssessment}
+                            loading={isPending}
+                            disabled={getOnboardingStatus?.data?.in_progress}
+                            className="w-full"
+                          >
                             Continue assessment
                           </Button>
                           <Button onClick={handleRetakeAssessment} variant="link" className="w-full">

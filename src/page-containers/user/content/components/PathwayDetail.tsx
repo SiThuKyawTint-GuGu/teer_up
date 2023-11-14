@@ -5,7 +5,6 @@ import { ContentData } from "@/types/Content";
 import { getLocalStorage, setLocalStorage } from "@/utils";
 import { getUserInfo } from "@/utils/auth";
 import { Box, Flex } from "@radix-ui/themes";
-import Link from "next/link";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import ContentLayout from "./ContentLayout";
 import Video from "./Video";
@@ -184,26 +183,20 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
   return (
     <div
       ref={containerRef}
-      className={`snap-y flex-col snap-mandatory h-full px-2  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
+      className={`snap-y flex-col snap-mandatory h-[calc(100dvh-100px)] pt-[6px] pb-[6px] px-[12px]  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
       style={{ scrollSnapStop: "always" }}
     >
       {data?.content_pathways &&
         data?.content_pathways.length > 0 &&
         data?.content_pathways.map((data, index) => (
           <div
-            className="w-full h-full pt-2 snap-start"
+            className="w-full h-full snap-start mt-[12px] mb-[12px]"
             style={{ scrollSnapStop: "always" }}
             id={data.slug}
             key={index}
             onClick={() => storeIndex(index)}
           >
-            {data.type === "video" || data.type === "html" ? (
-              <Box className="w-full h-full">{data && differentContent(data, index)}</Box>
-            ) : (
-              <Link href={`/content/${data.slug}`} onClick={() => storeIndex(index)} className="w-full h-full">
-                {data && differentContent(data, index)}
-              </Link>
-            )}
+            <Box className="h-full w-full">{data && differentContent(data, index)}</Box>
 
             {index == 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
           </div>

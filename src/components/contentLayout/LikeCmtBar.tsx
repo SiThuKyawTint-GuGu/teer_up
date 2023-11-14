@@ -43,8 +43,6 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
   const [dateValue, setDateValue] = useState<Date>(new Date());
   const [openComment, setOpenComment] = useState<boolean>(false);
 
-  console.log(selectedOptions);
-
   const saveContent = async () => {
     await contentSave(
       {
@@ -207,19 +205,22 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
         <Box className="pb-[7px]">
           <Section className="bg-white" py="1" px="3">
             <label>{inputData.name}</label>
-            <CardBox className="px-[12px] py-[8px] flex justify-between items-center">
-              <ReactDatePicker
-                onChange={(date: Date | null) => {
-                  if (date) {
-                    handleInput(inputData.id, dayjs(date).format("DD/MM/YY"));
-                    setDateValue(date);
-                  }
-                }}
-                dateFormat="dd/MM/yy"
-                selected={dateValue}
-                className="w-full bg-white"
-              />
-              <Icons.calender />
+            <CardBox className="px-[12px] py-[8px] ">
+              <label className="flex justify-between items-center">
+                <ReactDatePicker
+                  onChange={(date: Date | null) => {
+                    if (date) {
+                      handleInput(inputData.id, dayjs(date).format("DD/MM/YY"));
+                      setDateValue(date);
+                    }
+                  }}
+                  dateFormat="dd/MM/yy"
+                  selected={dateValue}
+                  className="w-full bg-white"
+                  shouldCloseOnSelect
+                />
+                <Icons.calender />
+              </label>
             </CardBox>
           </Section>
         </Box>
@@ -289,7 +290,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
             </Select>
           </Section> */}
           <Autocomplete
-            className={cn("bg-white shadow-md")}
+            className={cn("bg-white shadow-md w-full")}
             placeholder={inputData.placeholder}
             onChange={val => {
               handleInput(inputData.id, val as string);
@@ -330,20 +331,14 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
     <>
       {showSuccessPage === false ? (
         <div className="bg-white flex py-2 px-3 items-center">
-          {data.type === "event" && (
+          {form ? (
             <Button size="sm" className="w-[166px]" onClick={() => setOpenModal(true)}>
-              Join now
+              {form?.submit_label || "Join Now"}
             </Button>
-          )}
-          {data.type === "opportunity" && (
-            <Button size="sm" className="w-[166px]" onClick={() => setOpenModal(true)}>
-              Apply now
-            </Button>
-          )}
-          {data.type === "article" && (
-            <Button size="sm" className="w-[166px]" onClick={() => setOpenModal(true)}>
-              Suggest Now
-            </Button>
+          ) : (
+            <Section className="bg-white" py="1" px="3" onClick={() => setOpenComment(true)}>
+              <InputText type="text" />
+            </Section>
           )}
 
           <div className="flex justify-between px-3 w-full flex-1">

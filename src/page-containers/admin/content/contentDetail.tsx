@@ -257,6 +257,7 @@ const ContentDetail = ({ id }: Props) => {
       setSelectCategory(selectCategories);
       setValue("title", content?.data.title);
       setValue("description", content?.data.description);
+      setButtonLabel(content?.data.submit_label);
       // setValue("category", content?.data?.category?.id);
       setValue("type", content?.data.type);
       setValue("status", content?.data.status);
@@ -707,7 +708,7 @@ const ContentDetail = ({ id }: Props) => {
   if (isLoading) return <p>Loading...</p>;
 
   return (
-    <div className="bg-white p-10 rounded-md" style={{ minHeight: "2250px" }}>
+    <div className="bg-white p-10 rounded-md">
       <form onSubmit={handleSubmit(submit)}>
         <div className="rounded-md">
           <div className="mb-10">
@@ -1097,7 +1098,7 @@ const ContentDetail = ({ id }: Props) => {
               </div>
             </>
           )}
-          <div className="mb-10">
+          <div className="my-10">
             <TextField
               value={buttonLabel}
               onChange={e => setButtonLabel(e.target.value)}

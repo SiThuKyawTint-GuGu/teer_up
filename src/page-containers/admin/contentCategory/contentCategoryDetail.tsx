@@ -3,6 +3,7 @@ import ProgressBar from "@/components/ui/Progress";
 import { ParamsType, useGetBrowseContent, usePostFile } from "@/services/content";
 import {
   useCreateContentCategory,
+  useGetContentCategory,
   useGetContentCategoryById,
   useUpdateContentCategory,
 } from "@/services/contentCategory";
@@ -40,6 +41,7 @@ const ContentCategoryDetail = ({ id }: Props) => {
   const [searchContent, setSearchContent] = useState<string>("");
   const [contentOptions, setContentOptions] = useState<OptionType[]>([]);
   const [categorySlug, setCategorySlug] = useState<string>("");
+  const { data: contentCategories } = useGetContentCategory<any>();
   const { data: contents } = useGetBrowseContent<ParamsType, ContentType>({
     page: 1,
     pagesize: 10,
@@ -58,21 +60,31 @@ const ContentCategoryDetail = ({ id }: Props) => {
   const [imgRes, setImgRes] = useState<any>();
   const [bannerUrl, setBannerUrl] = useState<string>("");
   const [bannerRes, setBannerRes] = useState<any>();
+  const [order, setOrder] = useState<number>();
 
   useEffect(() => {
-    if (contents?.data && contents?.data.length > 0) {
-      const updatedOptions = contents?.data.map((option: any) => ({
-        label: option.title ? option.title : "",
-        content_id: option.id,
-      }));
-      setContentOptions(updatedOptions);
+    if (category?.data) {
+      const name = category?.data.name;
+      const slug = name.toLowerCase().replace(/ /g, "-");
+      setCategorySlug(slug);
     }
-    if (initializeSearch === false) {
-      if (category?.data) {
-        const name = category?.data.name;
-        const slug = name.toLowerCase().replace(/ /g, "-");
-        setCategorySlug(slug);
+
+    if (categorySlug) {
+      if (contents?.data && contents?.data.length > 0) {
+        const updatedOptions = contents?.data.map((option: any) => ({
+          label: option.title ? option.title : "",
+          content_id: option.id,
+        }));
+        setContentOptions(updatedOptions);
       }
+    }
+
+    if (initializeSearch === false) {
+      // if (category?.data) {
+      //   const name = category?.data.name;
+      //   const slug = name.toLowerCase().replace(/ /g, "-");
+      //   setCategorySlug(slug);
+      // }
       if (category?.data.category_contents[0]) {
         setContentOne({
           label: category?.data.category_contents[0]?.content.title,
@@ -107,8 +119,9 @@ const ContentCategoryDetail = ({ id }: Props) => {
       setValue("name", category?.data.name);
       setImgUrl(category?.data.icon_url);
       setBannerUrl(category?.data.banner_icon_url);
+      setOrder(category?.data.order);
     }
-  }, [category?.data, searchContent]);
+  }, [category?.data, searchContent, categorySlug]);
 
   const {
     register,
@@ -133,14 +146,15 @@ const ContentCategoryDetail = ({ id }: Props) => {
       content_ids: [id1, id2, id3, id4, id5],
       icon_url: imgurl,
       banner_icon_url: bannerurl,
-      order: 1,
     };
     if (category?.data) {
       submitData.id = id;
+      submitData.order = order;
       await updateTrigger(submitData, {
         onSuccess: () => mutate(),
       });
     } else {
+      submitData.order = contentCategories?.data.length + 1;
       await createTrigger(submitData);
     }
     router.push("/admin/contents/category");
@@ -201,7 +215,7 @@ const ContentCategoryDetail = ({ id }: Props) => {
   };
 
   return (
-    <div className="bg-white p-5" style={{ marginBottom: "60px" }}>
+    <div className="bg-white p-5">
       <form onSubmit={handleSubmit(Submit)}>
         <div className="mb-10">
           <TextField
