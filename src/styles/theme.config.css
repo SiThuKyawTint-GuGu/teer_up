@@ -15,10 +15,18 @@ body {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
-
-.videos {
-  z-index: -1;
+@supports (-webkit-touch-callout: none) {
+  .videos {
+    z-index: -1 !important;
+  }
 }
+
+/* @media screen and (display-mode: standalone) {
+  .videos {
+    z-index: -1 !important;
+    display: none !important;
+  }
+} */
 
 .video-wrapper {
   width: 100%;

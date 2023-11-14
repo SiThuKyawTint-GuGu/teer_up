@@ -11,7 +11,7 @@ import Modal from "@/components/ui/Modal";
 import { Text } from "@/components/ui/Typo/Text";
 import { useOtpVerified } from "@/services/user";
 import { setLocalStorage } from "@/utils";
-import { AUTH_TYPE, getToken, JWT_DECODE, setUserInfo } from "@/utils/auth";
+import { AUTH_TYPE, JWT_DECODE, getToken, setUserInfo } from "@/utils/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Flex, Grid, Heading } from "@radix-ui/themes";
 import jwt_decode from "jwt-decode";
@@ -80,7 +80,7 @@ const Otp = () => {
             <Flex justify="center" align="center" mb="6">
               <Image src="/uploads/icons/auth/otp.svg" width={180} height={180} alt="login" />
             </Flex>
-            <div className="flex justify-start w-full flex-col mb-[32px] flex-wrap gap-y-3">
+            <div className="flex justify-start w-full flex-col mb-[32px] flex-wrap gap-y-1">
               <Heading as="h3" size="6">
                 {jwtDecode?.action === AUTH_TYPE.SIGNUP ? "Verify email" : "Enter OTP"}
               </Heading>
@@ -91,7 +91,7 @@ const Otp = () => {
 
             <Form {...form}>
               <form
-                className="w-full flex flex-col justify-center flex-wrap gap-y-3 hide-number-spin"
+                className="w-full flex flex-col justify-center flex-wrap gap-y-3 hide-number-spin "
                 onSubmit={form.handleSubmit(onSubmit)}
               >
                 <FormField
@@ -100,28 +100,29 @@ const Otp = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <OtpInput
-                          numInputs={6}
-                          inputType="number"
-                          inputStyle={{
-                            width: 53,
-                            height: 64,
-                            background: "#ffffff",
-                            boxShadow: "0px 26px 30px 0px rgba(0, 0, 0, 0.05)",
-                            borderRadius: 8,
-                            marginRight: 5,
-                            outline: 0,
-                          }}
-                          {...field}
-                          renderInput={props => <input {...props} />}
-                        />
-                        {/* <OtpInput /> */}
+                        <div className="flex align-middle justify-center">
+                          <OtpInput
+                            numInputs={6}
+                            inputType="number"
+                            inputStyle={{
+                              width: "16%",
+                              height: 64,
+                              background: "#ffffff",
+                              boxShadow: "0px 26px 30px 0px rgba(0, 0, 0, 0.05)",
+                              borderRadius: 8,
+                              margin: 5,
+                              outline: 0,
+                            }}
+                            {...field}
+                            renderInput={props => <input {...props} />}
+                          />
+                        </div>
                       </FormControl>
                     </FormItem>
                   )}
                 />
 
-                <Button type="submit" loading={isPending} disabled={isPending || verifiedLoading}>
+                <Button type="submit" loading={isPending} disabled={isPending || verifiedLoading} className="mt-5">
                   Login
                 </Button>
                 {jwtDecode?.action === AUTH_TYPE.SIGNUP && <Button variant="link">Change email</Button>}
