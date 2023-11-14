@@ -64,6 +64,8 @@ const SavedList: React.FC = () => {
   const [content, setContent] = useState<number>(0);
   const { trigger: contentSave } = useSaveContent();
   const [triggerType, setTriggerType] = useState<TRIGGER_TYPE>();
+  const [refreshKey, setRefreshKey] = useState<number>(0);
+
   const [filteredType, setFilterTypes] = useState<{
     key: SAVED_CONTENT_TYPES;
     value: string;
@@ -73,14 +75,15 @@ const SavedList: React.FC = () => {
   });
   const { data: savedContents } = useGetSavedContents<SavedContentParams, SavedContentResponse>({
     type: filteredType.key === SAVED_CONTENT_TYPES.ALL ? "" : filteredType.key,
+    refreshKey,
   });
   const { data: unFinishedPathways } = useGetUnfinishedPathway<UnfinishedPathwayResponse>();
 
   const DropdownMenu = () => {
     return (
-      <div className="dropdown-menu">
+      <div className="dropdown-menu h-[100px] bg-red-600 flex items-center justify-center rounded ">
         <ul>
-          <li className="h-[100px]" onClick={() => console.log("hello")}>
+          <li onClick={unSaveContent} className="p-1 cursor-pointer text-white">
             Unsave
           </li>
         </ul>
@@ -88,16 +91,12 @@ const SavedList: React.FC = () => {
     );
   };
 
-  // const saveContent = async () => {
-  //   await contentSave(
-  //     {
-  //       id: data.id,
-  //     },
-  //     {
-  //       onSuccess: () => mutate(),
-  //     }
-  //   );
-  // };
+  const unSaveContent = async () => {
+    await contentSave({
+      id: content,
+    });
+    setRefreshKey(content); // This will trigger the re-fetch
+  };
 
   const toggleMenu = (data: any) => {
     setContent(data.content_id);
@@ -149,6 +148,7 @@ const SavedList: React.FC = () => {
                           <Icons.moreOption className={cn("w-[24px] h-[24px] text-[#5B6770]", "text-[#8d9499]")} />
                         </IconButton>
                         {isMenuVisible && content == each.content_id && <DropdownMenu />}
+                        {/* <DropdownMenu /> */}
                       </Flex>
                     </CardBox>
                   </Box>
