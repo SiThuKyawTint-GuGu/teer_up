@@ -5,8 +5,6 @@ import { cn } from "@/utils/cn";
 import * as Ariakit from "@ariakit/react";
 
 import "@/styles/combobox.css";
-import { Button } from "../Button";
-import { Icons } from "../Images";
 
 const Item = React.forwardRef<HTMLDivElement, { className?: string; value: string; children: React.ReactNode }>(
   ({ className, value, children, ...props }, ref) => (
@@ -46,9 +44,10 @@ const Autocomplete = React.forwardRef<
           className={cn("w-full h-10 rounded-md px-4 font-light outline-0", className)}
           // setValueOnChange={e => console.log(e.value)}
         />
-        <Button variant="ghost" className="absolute top-1 right-1 h-8 w-8">
+        <Ariakit.ComboboxDisclosure className="button secondary disclosure absolute top-0 right-1" />
+        {/* <Ariakit.ComboboxDisclosure variant="ghost" className="absolute top-1 right-1 h-8 w-8">
           <Icons.downArrow />
-        </Button>
+        </Ariakit.ComboboxDisclosure> */}
         <Ariakit.ComboboxPopover gutter={4} sameWidth className="popover">
           {children}
         </Ariakit.ComboboxPopover>
