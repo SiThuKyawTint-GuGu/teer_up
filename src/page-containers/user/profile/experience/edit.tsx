@@ -59,7 +59,7 @@ const EditExperience: React.FC = () => {
 
     await trigger(newData, {
       onSuccess: () => {
-        router.push(`/profile/${id}/experience`);
+        router.replace(`/profile/${id}/experience`);
       },
     });
   };
@@ -69,7 +69,7 @@ const EditExperience: React.FC = () => {
       { exp_id: exp_id as string },
       {
         onSuccess: () => {
-          router.push(`/profile/${id}/experience`);
+          router.replace(`/profile/${id}/experience`);
         },
       }
     );
@@ -217,7 +217,7 @@ const EditExperience: React.FC = () => {
                   )}
                 /> */}
                 <Heading as="h6" size="4" align="left" mb="4">
-                  Birthday
+                  End Date
                 </Heading>
                 <FormField
                   control={form.control}
