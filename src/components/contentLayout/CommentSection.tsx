@@ -2,6 +2,7 @@ import CmtInput from "@/components/contentLayout/CmtInput";
 import { useGetComment, useLikeComment, usePostComment } from "@/services/content";
 import { CommentData, ContentData } from "@/types/Content";
 import { showTime } from "@/utils/time";
+import * as Avatar from "@radix-ui/react-avatar";
 import { Flex } from "@radix-ui/themes";
 import React, { FormEvent, useEffect, useMemo, useState } from "react";
 
@@ -119,7 +120,6 @@ const SingleComment: React.FC<SingleCommentProp> = ({ data, parentData, mutateCm
     }));
   }, [data]);
 
-  console.log("re", reaction);
   const { trigger: likeComment } = useLikeComment();
   const LikeCommentHandler = async () => {
     if (reaction.is_liked) {
@@ -149,15 +149,29 @@ const SingleComment: React.FC<SingleCommentProp> = ({ data, parentData, mutateCm
       }
     );
   };
+
   return (
     <>
-      <div
+      {/* <div
         className="rounded-full w-[32px] h-[32px]"
         style={{
-          background: `url(${data.user.profile_url ?? "/mainLogo.png"}) center / cover `,
+          background: `url(${data.user.profile_url ?? "/uploads/icons/user-profile.svg"}) center / cover `,
         }}
-      />
-
+      /> */}
+      <Avatar.Root className="bg-blackA1  inline-flex h-[32px] w-[32px] select-none items-center justify-center overflow-hidden rounded-full align-middle">
+        <Avatar.Image
+          className="h-full w-full rounded-[inherit] object-cover"
+          src={data?.user?.profile_url}
+          alt="User profile"
+        />
+        <Avatar.Fallback
+          style={{ backgroundColor: "#FFC5C5" }}
+          className={`text-violet11   leading-1 flex h-full w-full items-center justify-center  text-[15px] font-medium`}
+          delayMs={600}
+        >
+          {data?.user?.name[0]}
+        </Avatar.Fallback>
+      </Avatar.Root>
       <div className="flex flex-col w-full ms-2">
         <div className="flex w-full items-center flex-wrap gap-x-2">
           <Text as="div" className="text-[16px] font-[600]">
