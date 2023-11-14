@@ -35,15 +35,27 @@ const BrowsePage = () => {
     () => homeContent?.data?.flatMap((page: any) => page?.category_contents) || [],
     [search, homeContent]
   );
+  const parentContainer = useRef<HTMLDivElement>(null);
+
+  const currentCategoryElement = useRef<HTMLDivElement>(null);
+
   const bannerIconUrl = contentCategories?.data?.find((each: any) => each.slug === type)?.banner_icon_url;
-  console.log(homeContent?.data?.flatMap((page: any) => page?.category_contents), "error");
-  console.log(searchDataArray);
+
   const params = useSearchParams();
   useEffect(() => {
     if (params.get("category")) {
       setType(params.get("category") || "all");
     }
   }, [params.get("category")]);
+
+  useEffect(() => {
+    if (parentContainer.current && currentCategoryElement.current) {
+      const remainingSpace = parentContainer?.current?.clientWidth - currentCategoryElement.current.offsetWidth;
+      const spaceLeftAndRight = remainingSpace / 2;
+      parentContainer.current!.scrollLeft = currentCategoryElement.current.offsetLeft - spaceLeftAndRight;
+      console.log("Hi this is me");
+    }
+  }, [parentContainer.current, currentCategoryElement.current]);
 
   useEffect(() => {
     if (containerRef.current) {
@@ -76,7 +88,10 @@ const BrowsePage = () => {
   }
   return (
     <div className="relative w-full h-full pb-[52px]  bg-[#F8F9FB]">
-      <Flex className="p-3 w-full sticky top-0 overflow-auto gap-[15px] no-scrollbar bg-white">
+      <Flex
+        className="p-3 w-full sticky top-0 overflow-auto gap-[15px] no-scrollbar bg-white scroll-smooth"
+        ref={parentContainer}
+      >
         <div
           onClick={() => {
             handleCategoryChange("all");
@@ -84,6 +99,7 @@ const BrowsePage = () => {
           className={`cursor-pointer border-primary  px-10 flex-0 flex-shrink-0  py-1 rounded-lg border ${
             type == "all" ? "bg-[#FCE8EA] " : "border-[#E4E4E4] hover:border-primary"
           }     `}
+          {...(type === "all" && { ref: currentCategoryElement })}
         >
           {" "}
           <p
@@ -104,6 +120,7 @@ const BrowsePage = () => {
             className={`cursor-pointer px-10 flex-0 flex-shrink-0  py-1 rounded-lg border border-primary ${
               type == data.slug ? " bg-[#FCE8EA] " : "border-[#E4E4E4] hover:border-primary"
             }     `}
+            {...(type === data.slug && { ref: currentCategoryElement })}
           >
             {" "}
             <div
@@ -206,34 +223,3 @@ type HeaderType = {
   text: string;
   value: string;
 };
-
-const BrowsePageHeader: HeaderType[] = [
-  {
-    text: "All",
-    value: "all",
-  },
-  {
-    text: "Video",
-    value: "video",
-  },
-  {
-    text: "Opportunity",
-    value: "opportunity",
-  },
-  {
-    text: "Event",
-    value: "event",
-  },
-  {
-    text: "Pathway",
-    value: "pathway",
-  },
-  {
-    text: "Article",
-    value: "article",
-  },
-  {
-    text: "Mentor",
-    value: "mentor",
-  },
-];
