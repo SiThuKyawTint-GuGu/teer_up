@@ -45,6 +45,13 @@ const Search: React.FC = () => {
     }
   };
 
+  const handleTextClick = (data: string) => {
+    if (histories) {
+      const newData = [...histories, data];
+      data && setLocalStorage("history", newData);
+    }
+  };
+
   const handleHistoryClick = (data: string) => {
     if (data) {
       startTransition(() => {
@@ -101,7 +108,12 @@ const Search: React.FC = () => {
                   .map((each, key) => {
                     if (key < 5) {
                       return (
-                        <Button key={key} variant="outline" onClick={() => handleHistoryClick(each)}>
+                        <Button
+                          key={key}
+                          className="border-[#BBC7D6]"
+                          variant="outline"
+                          onClick={() => handleHistoryClick(each)}
+                        >
                           {each}
                         </Button>
                       );
@@ -132,15 +144,17 @@ const Search: React.FC = () => {
                   {searchData?.data?.map((each, key) => (
                     <>
                       <Link key={key} href={`/home?search=${each?.title}`}>
-                        <Text
-                          className={cn(
-                            "pb-[10px] mb-[10px]",
-                            key !== (searchData?.data ? searchData?.data.length - 1 : -1) &&
-                              "border-b border-b-[#BDC7D5]"
-                          )}
-                        >
-                          {each?.title}
-                        </Text>
+                        <div onClick={() => handleTextClick(each?.title)}>
+                          <Text
+                            className={cn(
+                              "pb-[10px] mb-[10px]",
+                              key !== (searchData?.data ? searchData?.data.length - 1 : -1) &&
+                                "border-b border-b-[#BDC7D5]"
+                            )}
+                          >
+                            {each?.title}
+                          </Text>
+                        </div>
                       </Link>
                     </>
                   ))}
