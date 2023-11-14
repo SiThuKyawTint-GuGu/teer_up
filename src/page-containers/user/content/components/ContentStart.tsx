@@ -12,16 +12,20 @@ type ContentStartProp = {};
 const ContentStart: React.FC<ContentStartProp> = () => {
   return (
     <div className="w-full h-full px-[16px] snap-start">
-      <Flex justify="center" direction="column" align="center" className="w-full h-[80%]">
-        <Heading className="text-[36px] font-[700] leading-[48px]">
-          Empower your path with personalized resources
-        </Heading>
+      <Flex justify="center" direction="column" align="center" className="w-full h-[100%]">
+        <Heading className="text-[20px] text-center font-[700] leading-[30px]">Start your journey!</Heading>
+        <Heading className="text-[20px] text-center font-[700] leading-[30px]">Tell us about yourself.</Heading>
 
         <Text as="p" className="pt-[12px] font-[16px]">
-          Answer some questions to help us personalize resources and opportunities for you based on the{" "}
-          <Text as="span" className="text-primary font-semibold">
+          Simply answer the following questions to help us customise resources and opportunities for you. These
+          questions indicate where you sit within the 7 dimensions of
+          <Text as="span">
             {" "}
-            Hope - Action and Career Construction Theory
+            <strong className="text-primary font-semibold">the Hope-Action and Career Construction Theory</strong>:{" "}
+            <span className="pt-[12px] font-[16px]">
+              Hopefulness, Self-Reflection, Self-Clarity, Visioning, Goal Setting and Planning, Implementing and
+              Adapting.
+            </span>
           </Text>
         </Text>
         <Flex justify="center" align="center" className="pt-[32px]">
