@@ -5,6 +5,7 @@ import CardBox from "@/components/ui/Card";
 import { Text } from "@/components/ui/Typo/Text";
 import "@/styles/video.css";
 import { ContentData } from "@/types/Content";
+import { setLocalStorage } from "@/utils";
 import Link from "next/link";
 
 import React, { useEffect, useState } from "react";
@@ -13,9 +14,11 @@ type ContentlayoutProps = {
   data: ContentData;
   contentMutate: any;
   redir: string;
+  id?: string;
 };
 
-const BrowserCategoryContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, contentMutate }) => {
+
+const BrowserCategoryContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, contentMutate, id}) => {
   const [commets, setComments] = useState<number>(0);
   useEffect(() => {
     setComments(data?.comments);
@@ -43,7 +46,12 @@ const BrowserCategoryContentLayout: React.FC<ContentlayoutProps> = ({ redir, dat
                 </video>
               </div>
             ) : (
-              <Link href={`/content/${data.slug}`}>
+              <Link
+                href={`/content/${data.slug}`}
+                onClick={() => {
+                  id && setLocalStorage("home-content-id", id);
+                }}
+              >
                 <div
                   className="relative w-full h-[200px]"
                   style={{
@@ -59,7 +67,12 @@ const BrowserCategoryContentLayout: React.FC<ContentlayoutProps> = ({ redir, dat
               </Link>
             )}
           </div>
-          <Link href={redir}>
+          <Link
+            href={redir}
+            onClick={() => {
+              id && setLocalStorage("home-content-id", id);
+            }}
+          >
             <div className="w-full px-[12px] bg-white cursor-pointer">
               <h1 className="font-[700] text-[24px]">{data.title}</h1>
               {data.description && (

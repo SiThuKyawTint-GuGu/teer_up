@@ -4,6 +4,7 @@ import CardBox from "@/components/ui/Card";
 import { Text } from "@/components/ui/Typo/Text";
 import "@/styles/video.css";
 import { ContentData } from "@/types/Content";
+import { setLocalStorage } from "@/utils";
 import Link from "next/link";
 
 import React, { useEffect, useState } from "react";
@@ -12,17 +13,21 @@ type ContentlayoutProps = {
   data: ContentData;
   contentMutate: any;
   redir: string;
+  contentListId?: string;
 };
 
-const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, contentMutate }) => {
+const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, contentMutate , contentListId}) => {
   const [comments, setComments] = useState<number>(0);
-
+  const storeContentList = (id: string) => {
+    setLocalStorage("contentListPosition", id);
+  };
   useEffect(() => {
     setComments(data.comments);
   }, [data.comments]);
+
   return (
     <div className="w-full h-full p-2">
-      <CardBox className="h-full ">
+      <CardBox className="h-full">
         <div className="w-full h-full bg-white flex flex-col justify-between">
           <div
             className="flex flex-col"
@@ -49,7 +54,12 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, conte
                   </video>
                 </div>
               ) : (
-                <Link href={`/content/${data.slug}`}>
+                <Link
+                  href={`/content/${data.slug}`}
+                  onClick={() => {
+                    contentListId && storeContentList(contentListId);
+                  }}
+                >
                   <div
                     className="relative w-full h-[200px]"
                     style={{
@@ -65,7 +75,13 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, conte
                 </Link>
               )}
             </div>
-            <Link href={redir} className="inline-block h-full ">
+            <Link
+              href={redir}
+              className="inline-block h-full"
+              onClick={() => {
+                contentListId && storeContentList(contentListId);
+              }}
+            >
               <div className="w-full px-[12px] bg-white cursor-pointer">
                 <h1 className="font-[700] text-[24px]">{data.title}</h1>
                 {data.description && (
