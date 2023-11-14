@@ -333,7 +333,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
         <div className="bg-white flex py-2 px-3 items-center">
           {form ? (
             <Button size="sm" className="w-[166px]" onClick={() => setOpenModal(true)}>
-              {form?.submit_label}
+              {form?.submit_label || "Join Now"}
             </Button>
           ) : (
             <Section className="bg-white" py="1" px="3" onClick={() => setOpenComment(true)}>

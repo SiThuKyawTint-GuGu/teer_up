@@ -37,22 +37,21 @@ const NormalContentDetail: React.FC<NormalContentDetailProp> = ({ data, contentM
               <h1 className="font-[700] text-[24px]">{data?.title}</h1>
               <div className="w-full h-full flex flex-col flex-wrap gap-y-3">
                 {data.type !== "opportunity" && data.type !== "article" && (
-                  <div
+                  <section
                     dangerouslySetInnerHTML={{
                       __html: data?.description,
                     }}
                   />
                 )}
-
                 {data?.content_article && (
-                  <div
+                  <section
                     dangerouslySetInnerHTML={{
                       __html: data?.content_article.body,
                     }}
                   />
                 )}
                 {data?.content_opportunity && (
-                  <div
+                  <section
                     dangerouslySetInnerHTML={{
                       __html: data?.content_opportunity.body,
                     }}
