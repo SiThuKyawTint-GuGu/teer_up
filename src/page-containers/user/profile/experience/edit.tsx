@@ -5,16 +5,20 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form";
 import { Icons } from "@/components/ui/Images";
 import { InputText } from "@/components/ui/Inputs";
 import { Text } from "@/components/ui/Typo/Text";
-import { useDeleteEducation } from "@/services/education";
-import { useGetExperienceById, useUpdateExperience } from "@/services/experience";
+import {
+  ExperienceParamsType,
+  useDeleteExperience,
+  useGetUserExperiences,
+  useUpdateExperience,
+} from "@/services/experience";
 import { USER_ROLE } from "@/shared/enums";
-import { ExperienceById } from "@/types/Experience";
+import { ExperienceResponse } from "@/types/Experience";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import ReactDatePicker from "react-datepicker";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -29,66 +33,75 @@ const validationSchema = yup.object({
 const EditExperience: React.FC = () => {
   const { id, exp_id } = useParams();
   const router = useRouter();
-  const { data: experience } = useGetExperienceById<ExperienceById>(exp_id as string);
   const { trigger, isMutating } = useUpdateExperience();
-  const { trigger: deleteTrigger, isMutating: deleteMutating } = useDeleteEducation();
+  const { trigger: deleteTrigger, isMutating: deleteMutating } = useDeleteExperience();
+  const { data: experiences } = useGetUserExperiences<ExperienceParamsType, ExperienceResponse>();
+
+  const experience = useMemo(
+    () => experiences?.data?.find(each => each.id.toString() === exp_id.toString()),
+    [experiences, exp_id]
+  );
 
   const form = useForm({
     resolver: yupResolver(validationSchema),
     defaultValues: {
-      company: experience?.data?.company,
-      position: experience?.data?.position,
+      company: experience?.company,
+      position: experience?.position,
     },
   });
 
   const submit = async (data: { company: string; position: string; start_date: any; end_date: any }) => {
     const newData = {
       ...data,
-      exp_id,
-      start_date: dayjs(data.start_date).format("YYYY-MM-DD"),
-      end_date: dayjs(data.end_date).format("YYYY-MM-DD"),
+      exp_id: exp_id as string,
     };
-    // await trigger(newData, {
-    //   onSuccess: () => {
-    //     router.push(`/profile/${id}/experience`);
-    //   },
-    // });
+
+    await trigger(newData, {
+      onSuccess: () => {
+        router.push(`/profile/${id}/experience`);
+      },
+    });
   };
 
-  // const handleDelete = async () => {
-  //   await deleteTrigger(
-  //     { edu_id: edu_id as string },
-  //     {
-  //       onSuccess: () => {
-  //         router.push(`/profile/${id}/education`);
-  //       },
-  //     }
-  //   );
-  // };
+  const handleDelete = async () => {
+    await deleteTrigger(
+      { exp_id: exp_id as string },
+      {
+        onSuccess: () => {
+          router.push(`/profile/${id}/experience`);
+        },
+      }
+    );
+  };
 
   useEffect(() => {
-    form.setValue("company", experience?.data?.company || "");
-    form.setValue("position", experience?.data?.position || "");
-  }, [form, experience?.data]);
+    form.setValue("company", experience?.company || "");
+    form.setValue("position", experience?.position || "");
+  }, [form, experience]);
 
-  console.log("exp => ", experience);
+  console.log("experience => ", experience);
 
   return (
     <>
       <Form {...form}>
         <form className="mx-auto flex flex-col justify-center gap-y-3 w-full" onSubmit={form.handleSubmit(submit)}>
-          <Grid columns="1">
-            <Flex justify="between" align="center" className="bg-white" p="3">
-              <div className="cursor-pointer" onClick={() => router.back()}>
-                <Icons.back className="text-[#373A36] w-[23px] h-[23px]" />
+          <Grid columns="1" pb="9">
+            <div className="mb-[45px]">
+              <div className="max-w-[400px] fixed top-0 z-10 w-full shadow-[0px_1px_9px_0px_rgba(0,_0,_0,_0.06)]">
+                <Flex justify="between" align="center" className="bg-white" p="3">
+                  <div className="cursor-pointer" onClick={() => router.back()}>
+                    <Icons.back className="text-[#373A36] w-[23px] h-[23px]" />
+                  </div>
+                  <Text size="3" weight="medium">
+                    Edit Experience
+                  </Text>
+                  <Link href={`/profile/${id}/education/create`} className="opacity-0">
+                    <Icons.plus className="text-primary w-[23px] h-[23px]" />
+                  </Link>
+                </Flex>
               </div>
-              <Text size="3" weight="medium">
-                Add Education
-              </Text>
-              <Link href={`/profile/${id}/education/create`} className="opacity-0">
-                <Icons.plus className="text-primary w-[23px] h-[23px]" />
-              </Link>
-            </Flex>
+            </div>
+
             <Box className="pb-[7px]">
               <Section className="bg-white" py="4" px="3">
                 <Heading as="h6" size="2" weight="medium" align="left" mb="2">
@@ -191,9 +204,10 @@ const EditExperience: React.FC = () => {
                 <Button
                   type="button"
                   loading={deleteMutating}
-                  // onClick={handleDelete}
+                  onClick={handleDelete}
                   variant="outline"
                   className="border-primary w-full"
+                  spinnerColor="#DA291C"
                 >
                   Delete
                 </Button>
