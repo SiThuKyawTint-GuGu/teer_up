@@ -184,27 +184,26 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
   }, []);
 
   return (
-
     <>
-     
-    <div
-      ref={containerRef}
-      className={`snap-y  flex-col snap-mandatory h-[calc(100dvh-100px)] pt-[6px] pb-[6px] px-[12px]  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
-      style={{ scrollSnapStop: "always" }}
-    >
-      {data?.content_pathways &&
-        data?.content_pathways.length > 0 &&
-        data?.content_pathways.map((data, index) => (
-          <div
-            className="w-full h-full snap-start mt-[12px] mb-[12px]"
-            style={{ scrollSnapStop: "always" }}
-            id={index.toString()}
-            key={index}
-            onClick={() => storeIndex(index)}
-          >
-            <Box className="h-full w-full">{data && differentContent(data, index)}</Box>
-          </div>
-        ))}
+      <div
+        ref={containerRef}
+        className={`snap-y  flex-col snap-mandatory h-[calc(100dvh-100px)] pt-[6px] pb-[6px] px-[12px]  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
+        style={{ scrollSnapStop: "always" }}
+      >
+        {data?.content_pathways &&
+          data?.content_pathways.length > 0 &&
+          data?.content_pathways.map((data, index) => (
+            <div
+              className="w-full h-full snap-start mt-[12px] mb-[12px]"
+              style={{ scrollSnapStop: "always" }}
+              id={index.toString()}
+              key={index}
+              onClick={() => storeIndex(index)}
+            >
+              <Box className="h-full w-full">{data && differentContent(data, index)}</Box>
+            </div>
+          ))}
+      </div>
       <div
         className={`max-w-[400px] pathwayBottomNav mx-auto py-3 left-0 w-full flex flex-column sticky bottom-0  overflow-y-scroll rounded-lg ${
           showPathTitle && "h-[60%]"
