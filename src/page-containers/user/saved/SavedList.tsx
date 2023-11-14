@@ -7,8 +7,8 @@ import { Dialog, DialogClose, DialogContent, DialogTrigger } from "@/components/
 import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import {
-  SAVED_CONTENT_TYPES,
   SavedContentParams,
+  SAVED_CONTENT_TYPES,
   useGetSavedContents,
   useGetUnfinishedPathway,
   useSaveContent,
@@ -73,7 +73,11 @@ const SavedList: React.FC = () => {
     key: filterNames[0].key,
     value: filterNames[0].value,
   });
-  const { data: savedContents, mutate } = useGetSavedContents<SavedContentParams, SavedContentResponse>({
+  const {
+    data: savedContents,
+    mutate,
+    isLoading,
+  } = useGetSavedContents<SavedContentParams, SavedContentResponse>({
     type: filteredType.key === SAVED_CONTENT_TYPES.ALL ? "" : filteredType.key,
   });
   const { data: unFinishedPathways } = useGetUnfinishedPathway<UnfinishedPathwayResponse>();
@@ -117,7 +121,7 @@ const SavedList: React.FC = () => {
               </Button>
             </DialogTrigger>
           </Flex>
-          <Box className="pb-[7px]">
+          <Box className="pb-[50px]">
             <Section className="" py="4" px="3">
               {unFinishedPathways?.data && unFinishedPathways?.data?.length > 0 && (
                 <Link href="/saved/unfinished-pathway">
@@ -126,9 +130,9 @@ const SavedList: React.FC = () => {
                   </Button>
                 </Link>
               )}
-              {savedContents?.data?.length ? (
+              {savedContents?.data?.length && !isLoading ? (
                 savedContents?.data?.map((each, key) => (
-                  <Box pb="4">
+                  <Box key={key} pb="4">
                     <CardBox className="p-[8px]">
                       <Flex justify="start" align="start" gap="2">
                         <BGImage width="128px" height="100px" url={each?.content?.image_url} />
