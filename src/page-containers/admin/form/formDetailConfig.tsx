@@ -296,7 +296,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(handleAddFormConfig)} style={{ marginBottom: "60px" }}>
+    <form onSubmit={handleSubmit(handleAddFormConfig)}>
       <div className="bg-white p-7 rounded-md">
         <div className="mb-10">
           <TextField
