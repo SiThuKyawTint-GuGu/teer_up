@@ -47,7 +47,8 @@ const Search: React.FC = () => {
       startTransition(() => {
         router.push(`/home?search=${data}`);
       });
-      
+    }
+    
   const handleKeyPress = (event: any) => {
     if (event.key === "Enter") {
       handleSlotClick();
