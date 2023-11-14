@@ -2,6 +2,7 @@
 
 import ReactionBar from "@/components/contentLayout/ReactionBar";
 import CardBox from "@/components/ui/Card";
+import { Text } from "@/components/ui/Typo/Text";
 import { ContentData } from "@/types/Content";
 
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -138,15 +139,24 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
                 }
               }}
             >
-              <div>{data.title}</div>
+              <div className="mb-3">{data.title}</div>
               <div>
-                {data.description.length > 50 ? data.description.slice(0, 50) + "...see more" : data.description}
+                {data.description.length > 50 ? (
+                  <div>
+                    {data.description.slice(0, 50)}...
+                    <Text as="span" className="text-primary">
+                      see more
+                    </Text>
+                  </div>
+                ) : (
+                  <Text>data.description</Text>
+                )}
               </div>
             </div>
           )}
           {showDescription && data.description.length > 50 && (
             <div onClick={() => setShowDescription(false)}>
-              <div>{data.title}</div>
+              <div className="mb-3">{data.title}</div>
               <div>{data.description}</div>
             </div>
           )}

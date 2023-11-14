@@ -20,6 +20,8 @@ const SecondStartPage: React.FC<ContentStartProp> = () => {
         <Flex justify="center" align="center" className="pt-[32px]">
           <Image src="/content/secondPage.svg" width={192} height={148} alt="startImage" />
         </Flex>
+
+        <Text className="w-full h-full text-center font-[500] text-[20px] mt-7 text-primary">Scroll up to start</Text>
         {/* <Button
           className="w-full mt-[48px]"
           onClick={() => {
