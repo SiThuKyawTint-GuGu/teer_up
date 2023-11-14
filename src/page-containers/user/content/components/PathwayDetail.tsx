@@ -184,6 +184,9 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
   }, []);
 
   return (
+
+    <>
+     
     <div
       ref={containerRef}
       className={`snap-y  flex-col snap-mandatory h-[calc(100dvh-100px)] pt-[6px] pb-[6px] px-[12px]  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
@@ -208,7 +211,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
         } px-2 flex-wrap  bg-white z-[99999]`}
       >
         <div className="w-full h-full relative">
-          <Flex justify="between" className="w-full">
+          <Flex justify="between" onClick={() => setShowPathTitle(pre => !pre)} className="w-full">
             <Flex direction="column">
               <div className="font-[600] text-[16px]">{data?.title}</div>
               <div className="text-[14px] font-[300]">
@@ -217,10 +220,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
             </Flex>
 
             {!showPathTitle ? (
-              <Icons.upArrow
-                className="text-primary w-[20px] cursor-pointer h-[20px] absolute top-0 right-0"
-                onClick={() => setShowPathTitle(true)}
-              />
+              <Icons.upArrow className="text-primary w-[20px] cursor-pointer h-[20px] absolute top-0 right-0" />
             ) : (
               <Icons.downArrow
                 className="text-primary w-[20px] cursor-pointer h-[20px] absolute top-0 right-0"
@@ -262,7 +262,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
           )}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
