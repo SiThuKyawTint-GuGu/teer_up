@@ -242,7 +242,7 @@ const Profile: React.FC = () => {
                           <Button
                             onClick={handleContinueAssessment}
                             loading={isPending}
-                            disabled={getOnboardingStatus?.data?.in_progress}
+                            disabled={getOnboardingStatus?.data?.completed}
                             className="w-full"
                           >
                             Continue Questionnaire
