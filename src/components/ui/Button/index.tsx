@@ -39,15 +39,16 @@ export interface ButtonProps
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
   loading?: boolean;
+  spinnerColor?: string;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ children, className, loading, variant, size, asChild = false, ...props }, ref) => {
+  ({ children, className, loading, variant, size, spinnerColor, asChild = false, ...props }, ref) => {
     const Component = asChild ? Slot : "button";
     return (
       <Component className={cn("space-x-[5px]", buttonVariants({ variant, size, className }))} ref={ref} {...props}>
         {loading ? (
-          <Spinner width={25} height={25} color="#ffffff" />
+          <Spinner width={25} height={25} color={spinnerColor || "#ffffff"} />
         ) : (
           <span className="flex justify-center items-center gap-[5px]">{children}</span>
         )}

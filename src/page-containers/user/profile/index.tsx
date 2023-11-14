@@ -245,10 +245,10 @@ const Profile: React.FC = () => {
                             disabled={getOnboardingStatus?.data?.in_progress}
                             className="w-full"
                           >
-                            Continue assessment
+                            Continue Questionnaire
                           </Button>
                           <Button onClick={handleRetakeAssessment} variant="link" className="w-full">
-                            Retake assessment
+                            Retake Questionnaire
                           </Button>
                         </Box>
                       </Section>
