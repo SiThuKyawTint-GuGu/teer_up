@@ -157,6 +157,13 @@ const BrowsePage = () => {
                       Show More
                     </p>
                   </Flex>
+                  <p
+                    className="
+                  text-[14px] text-[#4B5563] font-[400] px-[12px] py-[5px]
+                  "
+                  >
+                    {contentData?.sub_title}
+                  </p>
                   <div className="w-full h-full  flex  overflow-x-scroll no-scrollbar">
                     {contentData?.category_contents && contentData?.category_contents.length === 0 ? (
                       <div className="w-full  flex justify-center h-[200px] items-center">
