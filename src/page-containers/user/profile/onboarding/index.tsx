@@ -4,24 +4,29 @@ import { Button } from "@/components/ui/Button";
 import { useGetOnboardingQuestions, useSkipOnboarding } from "@/services/content";
 import { ContentData } from "@/types/Content";
 import { getLocalStorage } from "@/utils";
-import { getToken } from "@/utils/auth";
 import { Box } from "@radix-ui/themes";
 import { useRouter } from "next/navigation";
 
-import { useEffect, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import ContentStart from "../../content/components/ContentStart";
 import Onboarding from "../../content/components/Onboarding";
 import SecondStartPage from "../../content/components/SecondStartPage";
 
 const OnboardingQuestionPage = () => {
-  const token = getToken();
+  const [showStart, setShowStart] = useState<boolean>(false);
   const { data: onboardingArray } = useGetOnboardingQuestions({
     page: 1,
     pagesize: 25,
   });
 
-  const showStart = getLocalStorage("content");
-  useEffect(() => {}, [showStart]);
+  useEffect(() => {
+    const show = getLocalStorage("content");
+    if (show === 0) {
+      setShowStart(false);
+      return;
+    }
+    setShowStart(true);
+  }, []);
   const { trigger: skipOnboarding } = useSkipOnboarding();
   const [ispending, startTransition] = useTransition();
   const router = useRouter();
@@ -34,14 +39,15 @@ const OnboardingQuestionPage = () => {
       startTransition(() => router.push("/profile"));
     }
   }, [onboardingArray, router]);
+
   return (
     <Box className="w-full h-[calc(100dvh-96px)]">
       <div
         className={`snap-y flex-col snap-mandatory h-full px-[16px]  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
         style={{ scrollSnapStop: "always" }}
       >
-        {showStart === 0 ? (
-          token && <ContentStart />
+        {showStart ? (
+          <ContentStart setShow={setShowStart} />
         ) : (
           <>
             <SecondStartPage />
