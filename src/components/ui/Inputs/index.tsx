@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, HTMLInputTypeAttribute } from "react";
 import styled, { css } from "styled-components";
 
 import { IconButton, TextArea, TextField } from "@radix-ui/themes";
@@ -13,7 +13,7 @@ export enum SLOT_DIRECTION {
 }
 
 type Props = {
-  type?: "text" | "email" | "password" | "number" | "submit" | "hidden";
+  type?: HTMLInputTypeAttribute;
   label?: string;
   className?: string;
   error?: any;
@@ -203,6 +203,7 @@ const InputStyled = styled.div<{ inputtype?: USER_ROLE | string; disabled?: bool
     outline: 0;
   }
 `;
+
 export { InputOtp, InputSearch, InputStyled, InputText, InputTextArea };
 
 const InputOtpStyled = styled.input`
