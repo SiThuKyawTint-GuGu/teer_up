@@ -1,26 +1,24 @@
 "use client";
 import { Button } from "@/components/ui/Button";
-import CardBox from "@/components/ui/Card";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form";
 import { Icons } from "@/components/ui/Images";
 import { InputText } from "@/components/ui/Inputs";
 import { Text } from "@/components/ui/Typo/Text";
 import { useCreateExperiences } from "@/services/experience";
 import { USER_ROLE } from "@/shared/enums";
+import { cn } from "@/utils/cn";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
-import dayjs from "dayjs";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import ReactDatePicker from "react-datepicker";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 const validationSchema = yup.object({
   company: yup.string().required("School is required!"),
   position: yup.string().required("Degree is required!"),
-  start_date: yup.date().required("Start date is required!").typeError("Invalid date"),
-  end_date: yup.date().required("End date is required!").typeError("Invalid date"),
+  start_date: yup.string().required("Start Date is required!"),
+  end_date: yup.string().required("End Date is required!"),
 });
 
 const CreateExperience: React.FC = () => {
@@ -33,14 +31,9 @@ const CreateExperience: React.FC = () => {
   });
 
   const submit = async (data: { company: string; position: string; start_date: any; end_date: any }) => {
-    const newData = {
-      ...data,
-      start_date: dayjs(data.start_date).format("YYYY-MM-DD"),
-      end_date: dayjs(data.end_date).format("YYYY-MM-DD"),
-    };
-    await trigger(newData, {
+    await trigger(data, {
       onSuccess: () => {
-        router.push(`/profile/${id}/experience`);
+        router.replace(`/profile/${id}/experience`);
       },
     });
   };
@@ -106,7 +99,7 @@ const CreateExperience: React.FC = () => {
 
             <Box className="pb-[7px]">
               <Section className="bg-white" py="4" px="3">
-                <Heading as="h6" size="2" weight="medium" align="left" mb="2">
+                {/* <Heading as="h6" size="2" weight="medium" align="left" mb="2">
                   Start Date
                 </Heading>
                 <FormField
@@ -128,13 +121,35 @@ const CreateExperience: React.FC = () => {
                       </FormControl>
                     </FormItem>
                   )}
+                /> */}
+                <Heading as="h6" size="4" align="left" mb="4">
+                  Start Date
+                </Heading>
+                <FormField
+                  control={form.control}
+                  name="start_date"
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <FormControl>
+                          <input
+                            type="date"
+                            className={cn(
+                              "font-light shadow-md bg-white border-0 text-black w-full h-[40px] p-3 outline-none"
+                            )}
+                            {...field}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    );
+                  }}
                 />
               </Section>
             </Box>
 
             <Box className="pb-[7px]">
               <Section className="bg-white" py="4" px="3">
-                <Heading as="h6" size="2" weight="medium" align="left" mb="2">
+                {/* <Heading as="h6" size="2" weight="medium" align="left" mb="2">
                   End Date
                 </Heading>
                 <FormField
@@ -156,6 +171,28 @@ const CreateExperience: React.FC = () => {
                       </FormControl>
                     </FormItem>
                   )}
+                /> */}
+                <Heading as="h6" size="4" align="left" mb="4">
+                  End Date
+                </Heading>
+                <FormField
+                  control={form.control}
+                  name="end_date"
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <FormControl>
+                          <input
+                            type="date"
+                            className={cn(
+                              "font-light shadow-md bg-white border-0 text-black w-full h-[40px] p-3 outline-none"
+                            )}
+                            {...field}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    );
+                  }}
                 />
               </Section>
             </Box>
