@@ -203,6 +203,7 @@ const InputStyled = styled.div<{ inputtype?: USER_ROLE | string; disabled?: bool
     outline: 0;
   }
 `;
+
 export { InputOtp, InputSearch, InputStyled, InputText, InputTextArea };
 
 const InputOtpStyled = styled.input`

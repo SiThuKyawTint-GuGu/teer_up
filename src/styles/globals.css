@@ -143,3 +143,7 @@ html {
   -webkit-appearance: none;
   margin: 0;
 }
+
+input[type="date"] {
+  color-scheme: light;
+}

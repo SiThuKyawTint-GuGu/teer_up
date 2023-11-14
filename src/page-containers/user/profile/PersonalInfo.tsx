@@ -39,13 +39,11 @@ const PersonalInfo: React.FC = () => {
   const userProfile = profileData?.data;
   const defaultChecked = userProfile?.personal_info?.gender?.id.toString() || "1";
 
-  console.log(userProfile);
-
   const form = useForm({
     resolver: yupResolver(validationSchema),
     defaultValues: {
       name: userProfile?.name,
-      birthday: dayjs(userProfile?.personal_info?.birthday).format("MM/DD/YYYY"),
+      birthday: dayjs(userProfile?.personal_info?.birthday).format("YYYY-MM-DD"),
     },
   });
 
@@ -69,10 +67,8 @@ const PersonalInfo: React.FC = () => {
 
   useEffect(() => {
     form.setValue("name", userProfile?.name || "");
-    form.setValue("birthday", dayjs(userProfile?.personal_info?.birthday).format("MM/DD/YYYY") || "");
+    form.setValue("birthday", dayjs(userProfile?.personal_info?.birthday).format("YYYY-MM-DD") || "");
   }, [form, userProfile]);
-
-  console.log(dayjs(userProfile?.personal_info?.birthday).format("MM/DD/YYYY"));
 
   return (
     <>
@@ -153,11 +149,16 @@ const PersonalInfo: React.FC = () => {
                           return (
                             <FormItem>
                               <FormControl>
-                                <InputText
+                                <input
                                   type="date"
-                                  className="bg-white shadow-md"
-                                  defaultValue={dayjs(userProfile?.personal_info?.birthday).format("MM/DD/YYYY")}
+                                  className={cn(
+                                    "font-light shadow-md bg-white border-0 text-black w-full h-[40px] p-3 outline-none"
+                                  )}
                                   {...field}
+                                  // value={
+                                  //   field.value || dayjs(userProfile?.personal_info?.birthday).format("YYYY-MM-DD")
+                                  // }
+                                  // onChange={e => field.onChange(e.target.value)}
                                 />
                               </FormControl>
                             </FormItem>
