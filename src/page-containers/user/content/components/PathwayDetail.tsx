@@ -28,11 +28,13 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
 
   useEffect(() => {
     if (data.content_pathways && data.content_pathways.length > 0 && pathwayProgress) {
-      const current_content = data.content_pathways?.find(
-        (each: ContentData) => parseInt(each.id) === pathwayProgress.current_content_id
-      );
-      if (current_content) {
-        const targetElement = document.getElementById(current_content.slug);
+      const index = Math.floor((pathwayProgress.progress * data.content_pathways.length - 1) / 100);
+
+      // const current_content = data.content_pathways?.find(
+      //   (each: ContentData) => parseInt(each.id) === pathwayProgress.current_content_id
+      // );
+      if (index) {
+        const targetElement = document.getElementById(index.toString());
         if (targetElement) {
           targetElement.scrollIntoView({
             behavior: "smooth",
@@ -111,7 +113,8 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
               if (user) {
                 postPathwayProgress({
                   id: data.id,
-                  current_content_id: data.content_pathways[newIndex].id,
+                  current_content_id:
+                    data.content_pathways[newIndex].type !== "html" ? data.content_pathways[newIndex].id : null,
                   progress: calculatePercentage(data.content_pathways, newIndex),
                 });
               }
@@ -181,28 +184,27 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
   }, []);
 
   return (
-    <>
-      <div
-        ref={containerRef}
-        className={`snap-y  flex-col snap-mandatory h-[calc(100dvh-100px)] pt-[6px] pb-[6px] px-[12px]  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
-        style={{ scrollSnapStop: "always" }}
-      >
-        {data?.content_pathways &&
-          data?.content_pathways.length > 0 &&
-          data?.content_pathways.map((data, index) => (
-            <div
-              className="w-full h-full snap-start mt-[12px] mb-[12px]"
-              style={{ scrollSnapStop: "always" }}
-              id={data.slug}
-              key={index}
-              onClick={() => storeIndex(index)}
-            >
-              <Box className="h-full w-full">{data && differentContent(data, index)}</Box>
 
-              {index == 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
-            </div>
-          ))}
-      </div>
+    <>
+     
+    <div
+      ref={containerRef}
+      className={`snap-y  flex-col snap-mandatory h-[calc(100dvh-100px)] pt-[6px] pb-[6px] px-[12px]  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
+      style={{ scrollSnapStop: "always" }}
+    >
+      {data?.content_pathways &&
+        data?.content_pathways.length > 0 &&
+        data?.content_pathways.map((data, index) => (
+          <div
+            className="w-full h-full snap-start mt-[12px] mb-[12px]"
+            style={{ scrollSnapStop: "always" }}
+            id={index.toString()}
+            key={index}
+            onClick={() => storeIndex(index)}
+          >
+            <Box className="h-full w-full">{data && differentContent(data, index)}</Box>
+          </div>
+        ))}
       <div
         className={`max-w-[400px] pathwayBottomNav mx-auto py-3 left-0 w-full flex flex-column sticky bottom-0  overflow-y-scroll rounded-lg ${
           showPathTitle && "h-[60%]"
@@ -213,7 +215,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
             <Flex direction="column">
               <div className="font-[600] text-[16px]">{data?.title}</div>
               <div className="text-[14px] font-[300]">
-                {data?.content_pathways && calculatePercentage(data.content_pathways, visibleItemIndex)}%
+                Completed {data?.content_pathways && calculatePercentage(data.content_pathways, visibleItemIndex)}%
               </div>
             </Flex>
 
