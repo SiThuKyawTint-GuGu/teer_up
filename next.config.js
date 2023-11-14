@@ -4,7 +4,6 @@ const nextConfig = {
     domains: ["teeup-dev.s3.amazonaws.com", "teeup-dev.s3.ap-southeast-1.amazonaws.com", "karawanico.com"],
   },
   experimental: {
-    appDir: true,
     scrollRestoration: true,
   },
 };
