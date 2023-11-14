@@ -5,10 +5,9 @@
     transform: translateX(-50%) !important;
   }
 } */
-@supports (-webkit-appearance: none) {
-  /* Your Safari-specific styles go here */
+/* @supports (-webkit-appearance: none) {
   .pathwayBottomNav {
     left: 50% !important;
     transform: translateX(-50%) !important;
   }
-}
+} */

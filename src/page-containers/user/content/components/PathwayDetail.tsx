@@ -202,7 +202,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
           </div>
         ))}
       <div
-        className={`max-w-[400px] pathwayBottomNav mx-auto py-3 left-0 w-full flex flex-column fixed bottom-0  overflow-y-scroll rounded-lg ${
+        className={`max-w-[400px] pathwayBottomNav mx-auto py-3 left-0 w-full flex flex-column sticky bottom-0  overflow-y-scroll rounded-lg ${
           showPathTitle && "h-[60%]"
         } px-2 flex-wrap  bg-white z-[99999]`}
       >
