@@ -201,153 +201,151 @@ const ContentCategoryDetail = ({ id }: Props) => {
   };
 
   return (
-    <>
-      <div>
-        <form onSubmit={handleSubmit(Submit)} className="bg-white h-full p-5">
-          <div className="mb-10">
-            <TextField
-              InputLabelProps={{ shrink: !!watch("name") }}
-              {...register("name")}
-              name="name"
-              multiline
-              label="Name"
-              className="w-full"
-              variant="outlined"
-            />
-            <p className="mt-2 text-red-700">{errors.name?.message}</p>
+    <div className="bg-white p-5" style={{ marginBottom: "60px" }}>
+      <form onSubmit={handleSubmit(Submit)}>
+        <div className="mb-10">
+          <TextField
+            InputLabelProps={{ shrink: !!watch("name") }}
+            {...register("name")}
+            name="name"
+            multiline
+            label="Name"
+            className="w-full"
+            variant="outlined"
+          />
+          <p className="mt-2 text-red-700">{errors.name?.message}</p>
+        </div>
+        <div className="mb-10">
+          <div className="border border-dashed w-[30%] flex flex-col items-center justify-center p-10 border-gray-400 rounded-lg">
+            <Button
+              sx={{ textTransform: "none", background: "#DA291C" }}
+              component="label"
+              variant="contained"
+              startIcon={<BiSolidCloudUpload />}
+              color="error"
+            >
+              Upload Icon
+              <VisuallyHiddenInput accept="image/*" onChange={handleImageChange} type="file" />
+            </Button>
+            {imgProgress && <ProgressBar progress={imgProgress} />}
           </div>
-          <div className="mb-10">
-            <div className="border border-dashed w-[30%] flex flex-col items-center justify-center p-10 border-gray-400 rounded-lg">
-              <Button
-                sx={{ textTransform: "none", background: "#DA291C" }}
-                component="label"
+        </div>
+        <div className="mb-10">
+          {imgUrl && (
+            <div className="mt-4">
+              <p className="font-bold mb-2">Icon Preview:</p>
+              <Image width={300} height={300} src={imgUrl} alt="File Preview" className="max-w-full h-auto" />
+            </div>
+          )}
+        </div>
+        <div className="mb-10">
+          <div className="border border-dashed w-[30%] flex flex-col items-center justify-center p-10 border-gray-400 rounded-lg">
+            <Button
+              sx={{ textTransform: "none", background: "#DA291C" }}
+              component="label"
+              variant="contained"
+              startIcon={<BiSolidCloudUpload />}
+              color="error"
+            >
+              Upload Banner Image
+              <VisuallyHiddenInput accept="image/*" onChange={handleBannerImageChange} type="file" />
+            </Button>
+            {bannerProgress && <ProgressBar progress={bannerProgress} />}
+          </div>
+        </div>
+        <div className="mb-10">
+          {bannerUrl && (
+            <div className="mt-4">
+              <p className="font-bold mb-2">Banner Image Preview:</p>
+              <Image width={300} height={300} src={bannerUrl} alt="File Preview" className="max-w-full h-auto" />
+            </div>
+          )}
+        </div>
+        <div className="mb-10">
+          <Autocomplete
+            disablePortal
+            id="dimension"
+            options={contentOptions || []}
+            value={contentOne ? contentOne : null}
+            onInputChange={event => handleInputChange(event)}
+            onChange={(event, newValue) => handleChangeOne(event, newValue)}
+            renderInput={params => <TextField {...params} label="Content One" />}
+          />
+        </div>
+        <div className="mb-10">
+          <Autocomplete
+            disablePortal
+            id="dimension"
+            options={contentOptions || []}
+            value={contentTwo ? contentTwo : null}
+            onInputChange={event => handleInputChange(event)}
+            onChange={(event, newValue) => handleChangeTwo(event, newValue)}
+            renderInput={params => <TextField {...params} label="Content Two" />}
+          />
+        </div>
+        <div className="mb-10">
+          <Autocomplete
+            disablePortal
+            id="dimension"
+            options={contentOptions || []}
+            value={contentThree ? contentThree : null}
+            onInputChange={event => handleInputChange(event)}
+            onChange={(event, newValue) => handleChangeThree(event, newValue)}
+            renderInput={params => <TextField {...params} label="Content Three" />}
+          />
+        </div>
+        <div className="mb-10">
+          <Autocomplete
+            disablePortal
+            id="dimension"
+            options={contentOptions || []}
+            value={contentFour ? contentFour : null}
+            onInputChange={event => handleInputChange(event)}
+            onChange={(event, newValue) => handleChangeFour(event, newValue)}
+            renderInput={params => <TextField {...params} label="Content Four" />}
+          />
+        </div>
+        <div className="mb-10">
+          <Autocomplete
+            disablePortal
+            id="dimension"
+            options={contentOptions || []}
+            value={contentFive ? contentFive : null}
+            onInputChange={event => handleInputChange(event)}
+            onChange={(event, newValue) => handleChangeFive(event, newValue)}
+            renderInput={params => <TextField {...params} label="Content Five" />}
+          />
+        </div>
+        <div className="flex justify-between">
+          <div></div>
+          <div>
+            {category?.data ? (
+              <LoadingButton
+                loading={updateMutating}
+                loadingPosition="start"
+                startIcon={<SaveIcon />}
                 variant="contained"
-                startIcon={<BiSolidCloudUpload />}
+                type="submit"
                 color="error"
               >
-                Upload Icon
-                <VisuallyHiddenInput accept="image/*" onChange={handleImageChange} type="file" />
-              </Button>
-              {imgProgress && <ProgressBar progress={imgProgress} />}
-            </div>
-          </div>
-          <div className="mb-10">
-            {imgUrl && (
-              <div className="mt-4">
-                <p className="font-bold mb-2">Icon Preview:</p>
-                <Image width={300} height={300} src={imgUrl} alt="File Preview" className="max-w-full h-auto" />
-              </div>
-            )}
-          </div>
-          <div className="mb-10">
-            <div className="border border-dashed w-[30%] flex flex-col items-center justify-center p-10 border-gray-400 rounded-lg">
-              <Button
-                sx={{ textTransform: "none", background: "#DA291C" }}
-                component="label"
+                Update
+              </LoadingButton>
+            ) : (
+              <LoadingButton
+                loading={postMutating}
+                loadingPosition="start"
+                startIcon={<SaveIcon />}
                 variant="contained"
-                startIcon={<BiSolidCloudUpload />}
+                type="submit"
                 color="error"
               >
-                Upload Banner Image
-                <VisuallyHiddenInput accept="image/*" onChange={handleBannerImageChange} type="file" />
-              </Button>
-              {bannerProgress && <ProgressBar progress={bannerProgress} />}
-            </div>
-          </div>
-          <div className="mb-10">
-            {bannerUrl && (
-              <div className="mt-4">
-                <p className="font-bold mb-2">Banner Image Preview:</p>
-                <Image width={300} height={300} src={bannerUrl} alt="File Preview" className="max-w-full h-auto" />
-              </div>
+                Save
+              </LoadingButton>
             )}
           </div>
-          <div className="mb-10">
-            <Autocomplete
-              disablePortal
-              id="dimension"
-              options={contentOptions || []}
-              value={contentOne ? contentOne : null}
-              onInputChange={event => handleInputChange(event)}
-              onChange={(event, newValue) => handleChangeOne(event, newValue)}
-              renderInput={params => <TextField {...params} label="Content One" />}
-            />
-          </div>
-          <div className="mb-10">
-            <Autocomplete
-              disablePortal
-              id="dimension"
-              options={contentOptions || []}
-              value={contentTwo ? contentTwo : null}
-              onInputChange={event => handleInputChange(event)}
-              onChange={(event, newValue) => handleChangeTwo(event, newValue)}
-              renderInput={params => <TextField {...params} label="Content Two" />}
-            />
-          </div>
-          <div className="mb-10">
-            <Autocomplete
-              disablePortal
-              id="dimension"
-              options={contentOptions || []}
-              value={contentThree ? contentThree : null}
-              onInputChange={event => handleInputChange(event)}
-              onChange={(event, newValue) => handleChangeThree(event, newValue)}
-              renderInput={params => <TextField {...params} label="Content Three" />}
-            />
-          </div>
-          <div className="mb-10">
-            <Autocomplete
-              disablePortal
-              id="dimension"
-              options={contentOptions || []}
-              value={contentFour ? contentFour : null}
-              onInputChange={event => handleInputChange(event)}
-              onChange={(event, newValue) => handleChangeFour(event, newValue)}
-              renderInput={params => <TextField {...params} label="Content Four" />}
-            />
-          </div>
-          <div className="mb-10">
-            <Autocomplete
-              disablePortal
-              id="dimension"
-              options={contentOptions || []}
-              value={contentFive ? contentFive : null}
-              onInputChange={event => handleInputChange(event)}
-              onChange={(event, newValue) => handleChangeFive(event, newValue)}
-              renderInput={params => <TextField {...params} label="Content Five" />}
-            />
-          </div>
-          <div className="flex justify-between">
-            <div></div>
-            <div>
-              {category?.data ? (
-                <LoadingButton
-                  loading={updateMutating}
-                  loadingPosition="start"
-                  startIcon={<SaveIcon />}
-                  variant="contained"
-                  type="submit"
-                  color="error"
-                >
-                  Update
-                </LoadingButton>
-              ) : (
-                <LoadingButton
-                  loading={postMutating}
-                  loadingPosition="start"
-                  startIcon={<SaveIcon />}
-                  variant="contained"
-                  type="submit"
-                  color="error"
-                >
-                  Save
-                </LoadingButton>
-              )}
-            </div>
-          </div>
-        </form>
-      </div>
-    </>
+        </div>
+      </form>
+    </div>
   );
 };
 
