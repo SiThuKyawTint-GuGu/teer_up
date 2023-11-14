@@ -229,16 +229,16 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
           </Flex>
           {showPathTitle && (
             <div className="py-5">
-              {dataWithTitle &&
-                dataWithTitle.length > 0 &&
-                dataWithTitle.map((data, index) => (
+              {data?.content_pathways &&
+                data?.content_pathways.length > 0 &&
+                data.content_pathways.map((data, index) => (
                   <div key={index} className="font-[600]  flex flex-col w-full text-[16px] py-1">
                     <Flex justify="between" className="w-full py-2">
                       <div
                         className={`cursor-pointer ${visibleItemIndex === index && "text-primary"}`}
                         onClick={() => {
                           setShowPathTitle(false);
-                          const targetElement = document.getElementById(data.slug);
+                          const targetElement = document.getElementById(index.toString());
                           if (targetElement) {
                             targetElement.scrollIntoView({
                               behavior: "smooth", // Smooth scroll effect
@@ -246,7 +246,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
                           }
                         }}
                       >
-                        {data.title}
+                        {data.title || "HTML Text Title"}
                       </div>
                       {index === visibleItemIndex && (
                         <Icons.checkMark
