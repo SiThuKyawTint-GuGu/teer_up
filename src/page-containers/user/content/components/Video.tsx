@@ -94,26 +94,28 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
     <div className="w-full h-[100%] flex flex-col">
       <div className="w-full h-full  rounded-t-[8px] relative text-white" onClick={() => showCmt && setShowCmt(false)}>
         {data.content_video && (
-          <video
-            poster={data.image_url}
-            preload="none"
-            data-video="0"
-            loop
-            onClick={onVideoPress}
-            ref={ref => {
-              videoRef.current = ref;
-              setVideoRef(ref);
-            }}
-            muted={isSafari}
-            playsInline={true}
-            className={`w-full h-full object-scale-down absolute bg-black`}
-          >
-            <source
-              className={`object-cover bg-cover bg-center`}
-              src={data.content_video.video_url}
-              type="video/mp4"
-            ></source>
-          </video>
+          <div className="video-wrapper" onClick={onVideoPress}>
+            <video
+              poster={data.image_url}
+              preload="none"
+              data-video="0"
+              loop
+              ref={ref => {
+                videoRef.current = ref;
+                setVideoRef(ref);
+              }}
+              muted={isSafari}
+              controls={false}
+              playsInline={true}
+              className={`w-full h-full object-scale-down absolute bg-black videos`}
+            >
+              <source
+                className={`object-cover bg-cover bg-center`}
+                src={data.content_video.video_url}
+                type="video/mp4"
+              ></source>
+            </video>
+          </div>
         )}
 
         <div
