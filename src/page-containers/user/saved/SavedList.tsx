@@ -73,9 +73,8 @@ const SavedList: React.FC = () => {
     key: filterNames[0].key,
     value: filterNames[0].value,
   });
-  const { data: savedContents } = useGetSavedContents<SavedContentParams, SavedContentResponse>({
+  const { data: savedContents, mutate } = useGetSavedContents<SavedContentParams, SavedContentResponse>({
     type: filteredType.key === SAVED_CONTENT_TYPES.ALL ? "" : filteredType.key,
-    refreshKey,
   });
   const { data: unFinishedPathways } = useGetUnfinishedPathway<UnfinishedPathwayResponse>();
 
@@ -95,7 +94,7 @@ const SavedList: React.FC = () => {
     await contentSave({
       id: content,
     });
-    setRefreshKey(content); // This will trigger the re-fetch
+    await mutate();
   };
 
   const toggleMenu = (data: any) => {
