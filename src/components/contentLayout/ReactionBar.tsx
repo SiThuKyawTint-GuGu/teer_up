@@ -8,8 +8,10 @@ import Share from "../../page-containers/admin/content/Share";
 type ReactionBarProp = {
   data: ContentData;
   contentMutate: any;
+  comments: number;
+  setComments: any;
 };
-const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate }) => {
+const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate, comments, setComments }) => {
   const [openComment, setOpenComment] = useState<boolean>(false);
   const [openShare, setOpenShare] = useState<boolean>(false);
   const { trigger: like } = useLikeContent();
@@ -68,18 +70,22 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate }) => {
           </div>
         </button>
         <Dialog open={openComment} onOpenChange={val => setOpenComment(val)}>
-          <DialogTrigger>
-            <div className="flex items-center flex-wrap gap-x-[10px]">
-              <Icons.comment className="w-[20px] h-[20px]" />
-              <div>
-                {""}
-                {data.comments}
-              </div>
+          <div
+            className="flex items-center flex-wrap gap-x-[10px]"
+            onClick={() => {
+              setOpenComment(true);
+            }}
+          >
+            <Icons.comment className="w-[20px] h-[20px]" />
+            <div>
+              {""}
+              {comments}
             </div>
-          </DialogTrigger>
+          </div>
+
           {openComment && (
             <DialogContent className="bg-white top-[initial] bottom-0 max-w-[400px] px-4 pt-8 pb-2 translate-y-0 rounded-10px-tl-tr">
-              <CommentSection data={data} mutateParentData={contentMutate} />
+              <CommentSection data={data} mutateParentData={contentMutate} setComments={setComments} />
             </DialogContent>
           )}
         </Dialog>
@@ -98,13 +104,13 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate }) => {
         </button>
         <Dialog open={openShare} onOpenChange={val => setOpenShare(val)}>
           <DialogTrigger>
-            <button className="flex items-center flex-wrap gap-x-1" onClick={() => setOpenShare(true)}>
+            <div className="flex items-center flex-wrap gap-x-1 cursor-pointer" onClick={() => setOpenShare(true)}>
               <Icons.share className="w-[20px] h-[20px]" />
               <div>
                 {""}
                 Share
               </div>
-            </button>
+            </div>
           </DialogTrigger>
           <DialogContent className="bg-white top-[initial]  bottom-0 max-w-[400px] px-4  translate-y-0 rounded-10px-tl-tr">
             {openShare && <Share url={`/content/${data.slug}`} />}
