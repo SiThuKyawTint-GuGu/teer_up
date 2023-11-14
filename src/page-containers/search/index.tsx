@@ -27,7 +27,6 @@ const Search: React.FC = () => {
   const histories = getLocalStorage("history") || [];
   const debouncedOnChange = debounce(() => {
     setSearchValue(inputRef?.current?.value);
-
     if (histories) {
       const newData = [...histories, inputRef?.current?.value];
       inputRef?.current?.value && setLocalStorage("history", newData);
@@ -94,12 +93,16 @@ const Search: React.FC = () => {
               <Flex justify="start" wrap="wrap" align="center" gap="2">
                 {(histories as string[])
                   ?.filter(each => each.trim() !== "")
-                  .sort((a, b) => b.localeCompare(a))
-                  .map((each, key) => (
-                    <Button key={key} variant="outline" onClick={() => handleHistoryClick(each)}>
-                      {each}
-                    </Button>
-                  ))}
+                  .reverse()
+                  .map((each, key) => {
+                    if (key < 5) {
+                      return (
+                        <Button key={key} variant="outline" onClick={() => handleHistoryClick(each)}>
+                          {each}
+                        </Button>
+                      );
+                    }
+                  })}
               </Flex>
             </Box>
           )}
