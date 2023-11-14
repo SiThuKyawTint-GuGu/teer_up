@@ -37,11 +37,13 @@ const Layout = ({ children }: Props) => {
         return response;
       },
       function (error) {
-        if (error.response.status == 401) {
-          verifyModalOpenHandler();
-        }
-        if (error.response.status == 403) {
-          verifyEmailModalOpenHandler();
+        if (error?.response) {
+          if (error.response.status == 401) {
+            verifyModalOpenHandler();
+          }
+          if (error.response.status == 403) {
+            verifyEmailModalOpenHandler();
+          }
         }
         return Promise.reject(error);
       }
