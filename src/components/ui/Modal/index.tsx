@@ -14,7 +14,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, children }) => {
       <span className="hidden sm:inline-block sm:align-middle z-[99999] sm:h-screen" aria-hidden="true">
         &#8203;
       </span>
-      <div className="inline-block align-bottom text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-top">
+      <div className="inline-block align-bottom text-left overflow-visible shadow-xl transform transition-all sm:my-8 sm:align-top">
         {children}
       </div>
     </div>

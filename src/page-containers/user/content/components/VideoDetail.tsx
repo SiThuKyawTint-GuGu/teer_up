@@ -54,6 +54,7 @@ const VideoDetail: React.FC<VideoDetailProp> = ({ data, contentMutate }) => {
                     onClick={() => handlePlayVideo()}
                     ref={videoRef}
                     loop
+                    playsInline
                   >
                     <source src={data.content_video.video_url} className="object-fill" type="video/mp4"></source>
                   </video>

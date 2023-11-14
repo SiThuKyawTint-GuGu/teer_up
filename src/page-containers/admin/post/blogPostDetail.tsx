@@ -123,7 +123,7 @@ const BlogPostDetail = ({ id }: Props) => {
 
   return (
     <>
-      <div className="bg-white p-10 rounded-md">
+      <div className="bg-white p-10 rounded-md" style={{ marginBottom: "60px" }}>
         <form onSubmit={handleSubmit(submit)} className="space-y-8">
           <div>
             <TextField

@@ -268,7 +268,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
         //     </option>
         //   ))}
         // </select>
-        <Box className="pb-[7px]">
+        <Box className="pb-[7px] px-3">
           {/* <Section className="bg-white w-full" py="1" px="3">
             <Select
               onValueChange={(value: string) => {
@@ -289,7 +289,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate }) => {
             </Select>
           </Section> */}
           <Autocomplete
-            className={cn("bg-white shadow-md w-full")}
+            className={cn("bg-white shadow-md")}
             placeholder={inputData.placeholder}
             onChange={val => {
               handleInput(inputData.id, val as string);

@@ -85,6 +85,7 @@ const CategoryTable: React.FC = () => {
 
   //UPDATE action
   const handleUpdateOrder = (row: any, order: string) => {
+    console.log(row);
     const contentIds: number[] = [];
     row?.original.category_contents.map((content: any) => contentIds.push(content.content_id));
     const data: any = {
@@ -93,11 +94,13 @@ const CategoryTable: React.FC = () => {
       content_ids: contentIds,
       icon_url: row?.original?.icon_url,
       banner_icon_url: row?.original?.banner_icon_url,
+      order: Number(row?.original?.order),
     };
+
     if (order === "up") {
-      data.order = Number(row?.original?.order) - 1;
+      data.order -= 1;
     } else {
-      data.order = Number(row?.original?.order) + 1;
+      data.order += 1;
     }
     updateTrigger(data, {
       onSuccess: () => {
