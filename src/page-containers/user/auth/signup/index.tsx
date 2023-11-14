@@ -161,10 +161,10 @@ const SignUp = () => {
                     <Checkbox onCheckedChange={(val: boolean) => setChecked(val)} />
                     <Text className="space-x-[5px]" as="div" weight="light" size="2">
                       <Text as="span">By clicking &#34;Next&#34;, I have read, understood, and given my</Text>
-                      <DialogTrigger className="p-0 h-auto text-primary font-medium">consent</DialogTrigger>
+                      <DialogTrigger className="p-0 h-auto text-primary font-bold">consent</DialogTrigger>
                       <Text as="span">and accepted the</Text>
                       <Link href="/support/terms-of-use">
-                        <Button className="p-0 h-auto" variant="link">
+                        <Button className="p-0 h-auto font-bold" variant="link">
                           Terms of Use
                         </Button>
                       </Link>
@@ -183,7 +183,7 @@ const SignUp = () => {
               <Flex justify="center" wrap="wrap" width="100%" gap="2">
                 <Text weight="light">Already have an account?</Text>
                 <Link href="/auth/login">
-                  <button className="text-primary">Log in</button>
+                  <button className="text-primary font-bold">Log in</button>
                 </Link>
               </Flex>
             </div>
