@@ -39,12 +39,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
-interface InputConfigFieldsProps {
-  name: string;
-  placeholder: string;
-  type: string;
-}
-
 interface OptionsProps {
   label: string;
   value: string;
@@ -52,15 +46,6 @@ interface OptionsProps {
 
 interface Props {
   id: string;
-}
-interface AddInputFieldType {
-  id: number;
-  name: string;
-  placeholder: string;
-  type: string;
-  created_at: string;
-  updated_at: string;
-  input_options?: [];
 }
 
 const validationSchema = yup.object({
@@ -311,7 +296,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(handleAddFormConfig)}>
+    <form onSubmit={handleSubmit(handleAddFormConfig)} style={{ marginBottom: "60px" }}>
       <div className="bg-white p-7 rounded-md">
         <div className="mb-10">
           <TextField
