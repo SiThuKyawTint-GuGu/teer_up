@@ -34,7 +34,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
       //   (each: ContentData) => parseInt(each.id) === pathwayProgress.current_content_id
       // );
       if (index) {
-        const targetElement = document.getElementById(data.content_pathways[index].slug);
+        const targetElement = document.getElementById(index.toString());
         if (targetElement) {
           targetElement.scrollIntoView({
             behavior: "smooth",
@@ -195,13 +195,11 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
           <div
             className="w-full h-full snap-start mt-[12px] mb-[12px]"
             style={{ scrollSnapStop: "always" }}
-            id={data.slug}
+            id={index.toString()}
             key={index}
             onClick={() => storeIndex(index)}
           >
             <Box className="h-full w-full">{data && differentContent(data, index)}</Box>
-
-            {index == 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
           </div>
         ))}
       <div
