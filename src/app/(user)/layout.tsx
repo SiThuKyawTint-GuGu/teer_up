@@ -70,7 +70,7 @@ const Layout = ({ children }: Props) => {
       <Grid columns="1">
         {openVerifyModal && <VerifyPop />}
         {openVerifyEmailModal && <VerifyEmailModal />}
-        <div id="main-content" className="max-w-[400px] mx-auto h-screen relative bg-layout w-full">
+        <div id="main-content" className="max-w-[400px]  no-scrollbar mx-auto h-screen relative bg-layout w-full">
           {children}
         </div>
       </Grid>
