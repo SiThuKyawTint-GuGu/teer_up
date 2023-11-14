@@ -7,8 +7,8 @@ import { getUserInfo } from "@/utils/auth";
 import { Box, Flex } from "@radix-ui/themes";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import ContentLayout from "./ContentLayout";
+import "./PathwayDetail.css";
 import Video from "./Video";
-
 type PathwayDetailProp = {
   data: ContentData;
   contentMutate: any;
@@ -165,7 +165,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
     if ((data && data.content_article) || data.content_event || data.content_opportunity) {
       return <ContentLayout data={data} contentMutate={contentMutate} />;
     }
-    return <div className="w-full h-full justify-center items-center">Data must be null</div>;
+    return <div className="w-full  h-full justify-center items-center">Data must be null</div>;
   };
 
   const storeIndex = (index: number) => {
@@ -183,7 +183,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
   return (
     <div
       ref={containerRef}
-      className={`snap-y flex-col snap-mandatory h-[calc(100dvh-100px)] pt-[6px] pb-[6px] px-[12px]  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
+      className={`snap-y  flex-col snap-mandatory h-[calc(100dvh-100px)] pt-[6px] pb-[6px] px-[12px]  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
       style={{ scrollSnapStop: "always" }}
     >
       {data?.content_pathways &&
@@ -202,9 +202,9 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
           </div>
         ))}
       <div
-        className={`max-w-[400px] mx-auto py-3 w-full flex flex-column fixed bottom-0  overflow-y-scroll rounded-lg ${
+        className={`max-w-[400px] pathwayBottomNav mx-auto py-3 left-0 w-full flex flex-column fixed bottom-0  overflow-y-scroll rounded-lg ${
           showPathTitle && "h-[60%]"
-        } p-3 flex-wrap  bg-white z-[99999]`}
+        } px-2 flex-wrap  bg-white z-[99999]`}
       >
         <div className="w-full h-full relative">
           <Flex justify="between" className="w-full">
