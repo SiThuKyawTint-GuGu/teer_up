@@ -163,31 +163,6 @@ const UserContent = () => {
   }, []);
 
   return (
-<<<<<<< HEAD
-    <Box
-      ref={containerRef}
-      className={`snap-y flex-col snap-mandatory h-[calc(100dvh-112px)] pt-[6px] pb-[6px] px-[12px]  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
-      style={{ scrollSnapStop: "always" }}
-    >
-      {showStart === 0 && token && <ContentStart />}
-      {contentDataArray &&
-        contentDataArray.length > 0 &&
-        contentDataArray.map((data: ContentData, index: number) => (
-          <Box
-            className="w-full h-full snap-start mt-[12px] mb-[12px]"
-            style={{ scrollSnapStop: "always" }}
-            id={index.toString()}
-            key={index}
-          >
-            <Box onClick={() => storeIndex(index)} className="w-full h-full">
-              {data && differentContent(data, visibleItemIndex)}
-            </Box>
-
-            {index === 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
-          </Box>
-        ))}
-    </Box>
-=======
     <>
       {!isLoading ? (
         <Box
@@ -204,13 +179,9 @@ const UserContent = () => {
                 id={index.toString()}
                 key={index}
               >
-                {data.type === "video" ? (
-                  <Box className="w-full h-full">{data && differentContent(data, visibleItemIndex)}</Box>
-                ) : (
-                  <Link href={`/content/${data.slug}`} onClick={() => storeIndex(index)} className="w-full h-full">
-                    {data && differentContent(data, visibleItemIndex)}
-                  </Link>
-                )}
+                <Box className="w-full h-full" onClick={() => storeIndex(index)}>
+                  {data && differentContent(data, visibleItemIndex)}
+                </Box>
 
                 {index === 0 && <div className="py-4 text-center font-[300]">Swipe up for more</div>}
               </Box>
@@ -220,7 +191,6 @@ const UserContent = () => {
         <Loading />
       )}
     </>
->>>>>>> 7639751122a24d8ac93ec95f881da3286873dd72
   );
 };
 
