@@ -35,11 +35,7 @@ const OnboardingQuestionPage = () => {
     }
   }, [onboardingArray, router]);
   return (
-<<<<<<< HEAD
     <Box className="w-full h-[calc(100dvh-96px)]">
-=======
-    <div className="w-full h-[calc(100dvh-112px)] pt-[15px] pb-[10px]">
->>>>>>> 09fd6301b6fff310cc22230fc62ccd6e5c624997
       <div
         className={`snap-y flex-col snap-mandatory h-full px-[16px]  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
         style={{ scrollSnapStop: "always" }}

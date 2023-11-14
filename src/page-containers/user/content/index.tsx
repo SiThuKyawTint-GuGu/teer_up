@@ -7,7 +7,7 @@ import useSWRInfinite from "swr/infinite";
 
 import Loading from "@/app/loading";
 import { getLocalStorage, setLocalStorage } from "@/utils";
-import { getToken, getUserInfo } from "@/utils/auth";
+import { getUserInfo } from "@/utils/auth";
 import { Box } from "@radix-ui/themes";
 import Link from "next/link";
 import ContentLayout from "./components/ContentLayout";
@@ -18,7 +18,7 @@ const UserContent = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [visibleItemIndex, setVisibleItemIndex] = useState<number>(0);
   const user = getUserInfo();
-  const token = getToken();
+
   const [startTime, setStartTime] = useState<number | null>(null);
   const [totalTimeInView, setTotalTimeInView] = useState<number>(0);
   const { trigger: calculateCount } = useContentWatchCount();
