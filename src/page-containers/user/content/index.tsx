@@ -6,6 +6,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 
 import Loading from "@/app/loading";
+import fetcher from "@/lib/fetcher";
 import { getLocalStorage, setLocalStorage } from "@/utils";
 import { getUserInfo } from "@/utils/auth";
 import { Box } from "@radix-ui/themes";
@@ -37,12 +38,12 @@ const UserContent = () => {
     mutate,
     isLoading,
     setSize,
-  } = useSWRInfinite(index => `/content?page=${index + 1}&pagesize=${20}`, {
+  } = useSWRInfinite(index => `/content?page=${index + 1}&pagesize=${20}`, fetcher, {
     revalidateFirstPage: false,
     revalidateAll: false,
-    revalidateIfStale: true,
-    revalidateOnFocus: true,
-    revalidateOnReconnect: true,
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
     parallel: false,
   });
   const issues: any = mmlData ? [].concat(...mmlData) : [];

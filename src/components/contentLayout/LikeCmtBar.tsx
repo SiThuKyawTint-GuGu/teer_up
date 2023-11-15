@@ -6,7 +6,7 @@ import { cn } from "@/utils/cn";
 import { Box, Flex, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
 import Link from "next/link";
-import React, { ChangeEvent, useMemo, useState } from "react";
+import React, { ChangeEvent, useEffect, useMemo, useState } from "react";
 import ReactDatePicker from "react-datepicker";
 import { Button } from "../ui/Button";
 import CardBox from "../ui/Card";
@@ -46,24 +46,43 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
   const [dateValue, setDateValue] = useState<Date>(new Date());
   const [openComment, setOpenComment] = useState<boolean>(false);
   const [checked, setChecked] = useState<boolean>(false);
+  const [reaction, setReacion] = useState({
+    likes: 0,
+    is_like: false,
+    saves: 0,
+    is_save: false,
+  });
+
+  useEffect(() => {
+    setReacion(prev => ({
+      ...prev,
+      ["saves"]: data.saves,
+      ["is_save"]: data.is_saved,
+      ["likes"]: data.likes,
+      ["is_like"]: data.is_liked,
+    }));
+  }, [data]);
+
+  const likePost = async () => {
+    if (reaction.is_like) {
+      setReacion(prev => ({ ...prev, ["likes"]: prev.likes - 1, ["is_like"]: false }));
+    }
+    if (!reaction.is_like) {
+      setReacion(prev => ({ ...prev, ["likes"]: prev.likes + 1, ["is_like"]: true }));
+    }
+    await like({ id: data.id });
+  };
 
   const saveContent = async () => {
-    await contentSave(
-      {
-        id: data.id,
-      },
-      {
-        onSuccess: () => mutate(),
-      }
-    );
-  };
-  const likePost = async () => {
-    await like(
-      { id: data.id },
-      {
-        onSuccess: () => mutate(),
-      }
-    );
+    if (reaction.is_save) {
+      setReacion(prev => ({ ...prev, ["saves"]: prev.saves - 1, ["is_save"]: false }));
+    }
+    if (!reaction.is_save) {
+      setReacion(prev => ({ ...prev, ["saves"]: prev.saves + 1, ["is_save"]: true }));
+    }
+    await contentSave({
+      id: data.id,
+    });
   };
 
   const handleRadio = (input: Input_options, InputConfigId: number | string) => {
@@ -437,12 +456,12 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
 
           <div className="flex justify-between px-3 w-full flex-1">
             <div className="flex items-center cursor-pointer flex-wrap gap-x-[5px]" onClick={likePost}>
-              {data.is_liked ? (
+              {reaction.is_like ? (
                 <Icons.likefill className="w-[20px] h-[20px] text-primary" />
               ) : (
                 <Icons.like className="w-[20px] h-[20px]" />
               )}
-              <div className="text-[14px]">{data.likes}</div>
+              <div className="text-[14px]">{reaction.likes}</div>
             </div>
 
             <Dialog open={openComment} onOpenChange={val => setOpenComment(val)}>
@@ -463,12 +482,12 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
             </Dialog>
 
             <button className="flex items-center flex-wrap  gap-x-[5px]" onClick={saveContent}>
-              {data.is_saved ? (
+              {reaction.is_save ? (
                 <Icons.savedFill className="w-[20px] h-[20px] text-primary" />
               ) : (
                 <Icons.saved className="w-[20px] h-[20px]" />
               )}
-              <div>{data.saves}</div>
+              <div>{reaction.saves}</div>
             </button>
           </div>
         </div>
