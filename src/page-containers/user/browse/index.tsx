@@ -40,6 +40,8 @@ const BrowsePage = () => {
   const bannerIconUrl = contentCategories?.data?.find((each: any) => each.slug === type)?.banner_icon_url;
 
   const params = useSearchParams();
+  const parentContainer = useRef<HTMLDivElement>(null);
+  const currentCategoryElement = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (params.get("category")) {
       setType(params.get("category") || "all");
@@ -50,7 +52,6 @@ const BrowsePage = () => {
     const storeContentList = getLocalStorage("contentListPosition");
     const targetElement = document.getElementById(`${storeContentList}`);
     const storeHomeContent = getLocalStorage("home-content-id");
-    console.log(storeHomeContent);
 
     const targetContentElement = document.getElementById(`${storeHomeContent}`);
     if (targetElement) {
@@ -62,14 +63,13 @@ const BrowsePage = () => {
     }
   }, [type]);
 
-  // useEffect(() => {
-  //   if (parentContainer.current && currentCategoryElement.current) {
-  //     const remainingSpace = parentContainer?.current?.clientWidth - currentCategoryElement.current.offsetWidth;
-  //     const spaceLeftAndRight = remainingSpace / 2;
-  //     parentContainer.current!.scrollLeft = currentCategoryElement.current.offsetLeft - spaceLeftAndRight;
-  //     console.log("Hi this is me");
-  //   }
-  // }, [parentContainer.current, currentCategoryElement.current]);
+  useEffect(() => {
+    if (parentContainer.current && currentCategoryElement.current) {
+      const remainingSpace = parentContainer?.current?.clientWidth - currentCategoryElement.current.offsetWidth;
+      const spaceLeftAndRight = remainingSpace / 2;
+      parentContainer.current!.scrollLeft = currentCategoryElement.current.offsetLeft - spaceLeftAndRight;
+    }
+  }, [parentContainer.current, currentCategoryElement.current, type]);
 
   useEffect(() => {
     if (containerRef.current) {
@@ -104,7 +104,7 @@ const BrowsePage = () => {
     <div className="relative w-full h-full pb-[52px]  bg-[#F8F9FB]">
       <Flex
         className="p-3 w-full sticky top-0 overflow-auto gap-[15px] no-scrollbar bg-white scroll-smooth"
-        // ref={parentContainer}
+        ref={parentContainer}
       >
         <div
           onClick={() => {
@@ -113,7 +113,7 @@ const BrowsePage = () => {
           className={`cursor-pointer border-primary  px-10 flex-0 flex-shrink-0  py-1 rounded-lg border ${
             type == "all" ? "bg-[#FCE8EA] " : "border-[#E4E4E4] hover:border-primary"
           }     `}
-          // {...(type === "all" && { ref: currentCategoryElement })}
+          {...(type === "all" && { ref: currentCategoryElement })}
         >
           {" "}
           <p
@@ -134,7 +134,7 @@ const BrowsePage = () => {
             className={`cursor-pointer px-10 flex-0 flex-shrink-0  py-1 rounded-lg border border-primary ${
               type == data.slug ? " bg-[#FCE8EA] " : "border-[#E4E4E4] hover:border-primary"
             }     `}
-            // {...(type === data.slug && { ref: currentCategoryElement })}
+            {...(type === data.slug && { ref: currentCategoryElement })}
           >
             {" "}
             <div
