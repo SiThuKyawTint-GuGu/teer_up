@@ -20,9 +20,7 @@ body {
     z-index: -1 !important;
   }
 } */
-.video {
-  position: absolute;
-}
+
 /* @media screen and (display-mode: standalone) {
   .videos {
     z-index: -1 !important;
