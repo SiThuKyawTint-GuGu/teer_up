@@ -57,16 +57,16 @@ const Department: React.FC = () => {
           </div>
         </div>
 
-        <Box className="pb-[7px] h-[100vh-56px] bg-white">
+        <Box className="pb-[65px] h-[100vh-56px] bg-white">
           <Section className="bg-white" py="4" px="3">
-            <Flex justify="center" align="center" className="mb-[25px]">
+            <Flex justify="center" align="center" className="mb-[40px] mt-[10px]">
               <InputSearch onChange={debouncedOnChange} ref={inputRef} placeholder="Search Interests" />
             </Flex>
             {filteredDepartments?.map((each, key) => {
               const isChecked = departmentsData?.find(department => department.department_id === each?.id);
 
               return (
-                <Label key={key} className="block mb-[25px]">
+                <Label key={key} className="block mb-[20px]">
                   <Flex justify="between" align="start">
                     <Flex direction="column" gap="2">
                       <Text as="label" weight="regular" size="3">

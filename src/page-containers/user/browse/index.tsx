@@ -6,12 +6,13 @@ import { ContentData, ContentHomeData } from "@/types/Content";
 
 import { ContentCategoryResponse } from "@/types/ContentCategory";
 import { getLocalStorage, removeLocalStorage } from "@/utils";
-import { Flex } from "@radix-ui/themes";
+import { Box, Flex } from "@radix-ui/themes";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import BrowserCategoryContentLayout from "./Components/BroswerCategoryContentLayout";
 import BrowserContentLayout from "./Components/BrowerCotentLayout";
-const BrowsePage = () => {
+
+const BrowsePage: React.FC = () => {
   const router = useRouter();
   const [type, setType] = useState<string>("all");
   const searchParams = useSearchParams();
@@ -216,11 +217,17 @@ const BrowsePage = () => {
       ) : (
         <Flex direction="column" className="w-full h-full pt-[10px]">
           <div className="w-full h-full overflow-y-scroll no-scrollbar " ref={containerRef}>
-            {bannerIconUrl && (
-              <div className="mx-2  overflow-hidden">
-                <img alt="banner" src={bannerIconUrl} className="w-full h-auto rounded-md inline-block object-cover " />
-              </div>
-            )}
+            <Box className="">
+              {bannerIconUrl && (
+                <div className="mx-2  overflow-hidden pb-[15px] mb-[10px] border-b border-b-[#BDC7D5]">
+                  <img
+                    alt="banner"
+                    src={bannerIconUrl}
+                    className="w-full h-auto rounded-md inline-block object-cover "
+                  />
+                </div>
+              )}
+            </Box>
 
             {browseDataArray && browseDataArray.length !== 0 ? (
               browseDataArray.map((contentData: ContentData, index: number) => (
