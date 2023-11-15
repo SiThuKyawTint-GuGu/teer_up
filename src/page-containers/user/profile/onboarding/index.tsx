@@ -38,9 +38,6 @@ const OnboardingQuestionPage = () => {
     if (onboardingArray?.total === 0) {
       startTransition(() => router.push("/profile"));
     }
-    if (onboardingArray?.status?.complete) {
-      startTransition(() => router.push("/profile"));
-    }
   }, [onboardingArray, router]);
 
   return (
@@ -61,7 +58,12 @@ const OnboardingQuestionPage = () => {
                 id={index.toString()}
                 key={index}
               >
-                <Onboarding data={data} parentIndex={index.toString()} total={onboardingArray?.total} />
+                <Onboarding
+                  data={data}
+                  parentIndex={index.toString()}
+                  mutate
+                  total={onboardingArray?.data.length - 1}
+                />
 
                 <Button
                   variant="link"
