@@ -65,7 +65,7 @@ const Bio: React.FC = () => {
                       <FormControl>
                         <InputTextArea
                           inputType={USER_ROLE.ADMIN}
-                          className="text-sm h-[130px]"
+                          className="text-sm h-[130px] rounded-none"
                           placeholder="Ex: Boston University"
                           defaultValue={profileData?.data?.bio}
                           {...field}

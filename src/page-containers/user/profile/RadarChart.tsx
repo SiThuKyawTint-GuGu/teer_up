@@ -51,7 +51,7 @@ const RadarChart: React.FC = () => {
   };
 
   const options = {
-    maintainAspectRatio: true,
+    maintainAspectRatio: false,
     scales: {
       r: {
         pointLabels: {
@@ -72,7 +72,7 @@ const RadarChart: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-full flex-wrap radar-chart-container">
+    <div className="w-full h-64 flex-wrap radar-chart-container my-5">
       <Radar data={data} options={options} className="w-full h-full font-[12px]" />
     </div>
   );
