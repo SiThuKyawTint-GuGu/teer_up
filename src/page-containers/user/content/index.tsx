@@ -40,9 +40,9 @@ const UserContent = () => {
   } = useSWRInfinite(index => `/content?page=${index + 1}&pagesize=${20}`, {
     revalidateFirstPage: false,
     revalidateAll: false,
-    revalidateIfStale: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
+    revalidateIfStale: true,
+    revalidateOnFocus: true,
+    revalidateOnReconnect: true,
     parallel: false,
   });
   const issues: any = mmlData ? [].concat(...mmlData) : [];

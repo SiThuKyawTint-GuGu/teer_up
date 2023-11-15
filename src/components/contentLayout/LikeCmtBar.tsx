@@ -342,7 +342,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
                   {form?.submit_label || "Join Now"}
                 </Button>
               </DialogTrigger>
-              <DialogContent className="border-none shadow-none h-full ">
+              <DialogContent className="border-none w-full h-full ">
                 {openModal && (
                   <Modal onClose={() => setOpenModal(false)}>
                     <div className="w-[400px] p-5 h-[80dvh] z-[99] no-scrollbar  bg-white  overflow-y-scroll">
@@ -354,7 +354,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
                           {message}
                         </Text>
                       )}
-                      <div className="mx-auto flex flex-col   bg-white justify-center flex-wrap gap-y-5 w-full">
+                      <div className="mx-auto flex flex-col   bg-white justify-center flex-wrap gap-y-5 w-full h-full">
                         <Flex direction="column" justify="center" className="w-full h-full">
                           {form &&
                             form.formdetails_configs.map((formData: any, formIndex) => (
@@ -362,7 +362,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
                                 {formElements(formData.input_config)}
                               </div>
                             ))}
-                          <div>
+                          <div className="w-full ">
                             <Text>
                               By submitting this form, I confirm that I have read, understood and given my consent for
                               Prudential Assurance Company Singapore and its related corporations, respective
@@ -372,10 +372,18 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
                               data for the purpose(s) of:
                             </Text>
                             <ul>
-                              <li>1) Registration for TEE Up Programme application.</li>
-                              <li>2) Events and Courses sign ups.</li>
-                              <li>3) Internship or Job applications.</li>
-                              <li>4) Educational and promotional purposes.</li>
+                              <li>
+                                <Text>1) Registration for TEE Up Programme application.</Text>
+                              </li>
+                              <li>
+                                <Text>2) Events and Courses sign ups.</Text>
+                              </li>
+                              <li>
+                                <Text>3) Internship or Job applications.</Text>
+                              </li>
+                              <li>
+                                <Text>4) Educational and promotional purposes.</Text>
+                              </li>
                               <li>
                                 <Text>
                                   I understand that I can refer to Prudential Data Privacy, which is available at{" "}
@@ -392,8 +400,8 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
                                 </Text>
                               </li>
                             </ul>
-                            <Flex gap="3" align="center" my="2">
-                              <Checkbox onCheckedChange={(val: boolean) => setChecked(val)} />
+                            <Flex gap="3" align="center" my="2" width="100%">
+                              <Checkbox className="me-3" onCheckedChange={(val: boolean) => setChecked(val)} />
                               <Text>I have read, agreed and consent</Text>
                             </Flex>
                           </div>
