@@ -8,8 +8,8 @@ import { Dialog, DialogClose, DialogContent, DialogTrigger } from "@/components/
 import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import {
-  SavedContentParams,
   SAVED_CONTENT_TYPES,
+  SavedContentParams,
   useGetSavedContents,
   useGetUnfinishedPathway,
   useSaveContent,
@@ -66,7 +66,6 @@ const SavedList: React.FC = () => {
   const { trigger: contentSave } = useSaveContent();
   const [triggerType, setTriggerType] = useState<TRIGGER_TYPE>();
   const [refreshKey, setRefreshKey] = useState<number>(0);
-
   const [filteredType, setFilterTypes] = useState<{
     key: SAVED_CONTENT_TYPES;
     value: string;
@@ -119,7 +118,7 @@ const SavedList: React.FC = () => {
       <Grid columns="1">
         <Box>
           <Flex justify="between" align="center" className="bg-white" p="3">
-            <Heading as="h6" size="4" align="left">
+            <Heading as="h6" size="7" align="left">
               Saved items
             </Heading>
             <DialogTrigger asChild onClick={() => setTriggerType(TRIGGER_TYPE.FILTER)}>
@@ -141,9 +140,14 @@ const SavedList: React.FC = () => {
               {savedContents?.data?.length ? (
                 savedContents?.data?.map((each, key) => (
                   <Box key={key} pb="4">
-                    <CardBox className="p-[8px]">
+                    <CardBox className="p-[8px] bg-white">
                       <Flex justify="start" align="start" gap="2">
-                        <BGImage width="128px" height="100px" url={each?.content?.image_url} />
+                        <BGImage
+                          width="128px"
+                          height="100px"
+                          className="rounded-[4px]"
+                          url={each?.content?.image_url}
+                        />
                         <Link key={key} href={`/content/${each?.content?.slug}`} className="w-3/4">
                           <Flex className="text-[#373A36] space-y-1" direction="column" wrap="wrap">
                             <Text>{each?.content?.title}</Text>
