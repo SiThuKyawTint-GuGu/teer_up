@@ -59,9 +59,10 @@ const CommentSection: React.FC<CommentSectionProp> = ({ data, setComments }) => 
                 {commentDataArray && commentDataArray.length > 0 && (
                   <>
                     {commentDataArray.map((comment: CommentData, index: number) => (
-                      <div className="flex items-start  w-full h-full mb-2  " key={index}>
+                      <Flex direction="column" className="w-full h-full mb-2  " key={index}>
                         <SingleComment data={comment} parentData={data} mutateCmt={mutateCmt} />
-                      </div>
+                        <hr className="h-[1px] bg-slateGray w-full" />
+                      </Flex>
                     ))}
                     {cmtsArray && cmtsArray.length > 0 && cmtsArray[cmtsArray.length - 1].hasNextPage && (
                       <div
@@ -84,7 +85,7 @@ const CommentSection: React.FC<CommentSectionProp> = ({ data, setComments }) => 
               <CmtInput setValue={setCommentValue} value={commentValue} />
               <Button
                 type="submit"
-                className={`${isMutating ? "text-slateGray" : "text-primary"} p-1`}
+                className={`${isMutating ? "text-slateGray" : "text-primary font-[600]"} p-1`}
                 disabled={isMutating || commentValue === ""}
                 variant="destructive"
               >
@@ -151,7 +152,7 @@ const SingleComment: React.FC<SingleCommentProp> = ({ data, parentData, mutateCm
   };
 
   return (
-    <>
+    <Flex>
       {/* <div
         className="rounded-full w-[32px] h-[32px]"
         style={{
@@ -189,9 +190,8 @@ const SingleComment: React.FC<SingleCommentProp> = ({ data, parentData, mutateCm
             {reaction.likes}
           </Flex>
         </div>
-
         <div className="text-start">{data.comment}</div>
       </div>
-    </>
+    </Flex>
   );
 };
