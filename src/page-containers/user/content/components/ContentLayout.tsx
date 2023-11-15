@@ -66,9 +66,9 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate }) =>
               >
                 <Text className="text-[24px] font-[700] leading-[32px]">{data.title}</Text>
                 <Text>
-                  {data.description.slice(0, 280)}
+                  {data.description.slice(0, 150)}
 
-                  {data.description.length > 280 && (
+                  {data.description.length > 150 && (
                     <Text as="span" className="text-primary">
                       {"..."}See more
                     </Text>
