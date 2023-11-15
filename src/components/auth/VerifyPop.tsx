@@ -25,6 +25,7 @@ const VerifyPop: React.FC = () => {
               </Text>
               <Button
                 disabled={isPending}
+                className="mb-4"
                 onClick={() => {
                   verifyModalCloseHandler();
                   startTransition(() => {
