@@ -55,7 +55,7 @@ const CareerInterests: React.FC = () => {
 
         <Box className="mb-[56px]">
           <Section className="bg-white" py="4" px="3">
-            <Flex justify="center" align="center" className="mb-[25px]">
+            <Flex justify="center" align="center" className="mb-[40px] mt-[10px]">
               {/* <InputSearch placeholder="Search Interests" /> */}
               <InputSearch onChange={debouncedOnChange} ref={inputRef} placeholder="Search Interests" />
             </Flex>
