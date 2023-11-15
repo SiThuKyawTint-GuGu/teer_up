@@ -413,14 +413,24 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
                               <li>
                                 <Text>
                                   I understand that I can refer to Prudential Data Privacy, which is available at{" "}
-                                  <Link href="http://www.prudential.com.sg/Privacy-Notice">
+                                  <Link
+                                    className="text-primary"
+                                    target="_blank"
+                                    href="http://www.prudential.com.sg/Privacy-Notice"
+                                  >
                                     http://www.prudential.com.sg/Privacy-Notice
                                   </Link>{" "}
                                   for more information.
                                 </Text>
                                 <Text>
                                   I may contact{" "}
-                                  <Link href="mailto:innovation@prudential.com.sg">innovation@prudential.com.sg</Link>{" "}
+                                  <Link
+                                    className="text-primary"
+                                    target="_blank"
+                                    href="mailto:innovation@prudential.com.sg"
+                                  >
+                                    innovation@prudential.com.sg
+                                  </Link>{" "}
                                   on how I may access and correct my personal data or withdraw consent to the
                                   collection, use or disclosure of my personal data.
                                 </Text>
