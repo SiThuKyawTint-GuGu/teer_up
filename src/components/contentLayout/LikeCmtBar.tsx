@@ -5,6 +5,7 @@ import { ContentData, Input_config, Input_options } from "@/types/Content";
 import { cn } from "@/utils/cn";
 import { Box, Flex, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
+import Link from "next/link";
 import React, { ChangeEvent, useMemo, useState } from "react";
 import ReactDatePicker from "react-datepicker";
 import { Button } from "../ui/Button";
@@ -44,6 +45,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
   const [showSuccessPage, setShowSuccessPage] = useState<boolean>(false);
   const [dateValue, setDateValue] = useState<Date>(new Date());
   const [openComment, setOpenComment] = useState<boolean>(false);
+  const [checked, setChecked] = useState<boolean>(false);
 
   const saveContent = async () => {
     await contentSave(
@@ -334,9 +336,84 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
       {showSuccessPage === false ? (
         <div className="bg-white flex py-2 px-3 items-center">
           {form ? (
-            <Button size="sm" className="w-[166px]" onClick={() => setOpenModal(true)}>
-              {form?.submit_label || "Join Now"}
-            </Button>
+            <Dialog open={openModal} onOpenChange={val => setOpenModal(val)}>
+              <DialogTrigger asChild>
+                <Button size="sm" className="w-[166px]" onClick={() => setOpenModal(true)}>
+                  {form?.submit_label || "Join Now"}
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="border-none shadow-none h-full ">
+                {openModal && (
+                  <Modal onClose={() => setOpenModal(false)}>
+                    <div className="w-[400px] p-5 h-[80dvh] z-[99] no-scrollbar  bg-white  overflow-y-scroll">
+                      <Text as="div" className="text-[28px] font-700">
+                        {form?.name}
+                      </Text>
+                      {message && (
+                        <Text as="div" className="text-center w-full text-green-600 font-[600] text-sm">
+                          {message}
+                        </Text>
+                      )}
+                      <div className="mx-auto flex flex-col   bg-white justify-center flex-wrap gap-y-5 w-full">
+                        <Flex direction="column" justify="center" className="w-full h-full">
+                          {form &&
+                            form.formdetails_configs.map((formData: any, formIndex) => (
+                              <div key={formIndex} className="my-1 px-2">
+                                {formElements(formData.input_config)}
+                              </div>
+                            ))}
+                          <div>
+                            <Text>
+                              By submitting this form, I confirm that I have read, understood and given my consent for
+                              Prudential Assurance Company Singapore and its related corporations, respective
+                              representatives, agents, third party service providers, contractors and/or appointed
+                              distribution/business partners (collectively referred to as “Prudential”), and Small and
+                              Medium-sized Enterprises (“SME”) to collect, use, disclose and/or process my/our personal
+                              data for the purpose(s) of:
+                            </Text>
+                            <ul>
+                              <li>1) Registration for TEE Up Programme application.</li>
+                              <li>2) Events and Courses sign ups.</li>
+                              <li>3) Internship or Job applications.</li>
+                              <li>4) Educational and promotional purposes.</li>
+                              <li>
+                                <Text>
+                                  I understand that I can refer to Prudential Data Privacy, which is available at{" "}
+                                  <Link href="http://www.prudential.com.sg/Privacy-Notice">
+                                    http://www.prudential.com.sg/Privacy-Notice
+                                  </Link>{" "}
+                                  for more information.
+                                </Text>
+                                <Text>
+                                  I may contact{" "}
+                                  <Link href="mailto:innovation@prudential.com.sg">innovation@prudential.com.sg</Link>{" "}
+                                  on how I may access and correct my personal data or withdraw consent to the
+                                  collection, use or disclosure of my personal data.
+                                </Text>
+                              </li>
+                            </ul>
+                            <Flex gap="3" align="center" my="2">
+                              <Checkbox onCheckedChange={(val: boolean) => setChecked(val)} />
+                              <Text>I have read, agreed and consent</Text>
+                            </Flex>
+                          </div>
+                        </Flex>
+                      </div>
+                      <Section py="1" px="3">
+                        <Button
+                          loading={isMutating}
+                          disabled={isMutating || !checked}
+                          className="w-full"
+                          onClick={formSubmit}
+                        >
+                          Submit
+                        </Button>
+                      </Section>
+                    </div>
+                  </Modal>
+                )}
+              </DialogContent>
+            </Dialog>
           ) : (
             <Section className="bg-white" py="1" px="3" onClick={() => setOpenComment(true)}>
               <div className="w-full h-[32px]">
@@ -386,35 +463,6 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
               <div>{data.saves}</div>
             </button>
           </div>
-          {openModal && (
-            <Modal onClose={() => setOpenModal(false)}>
-              <div className="w-[400px] p-5 h-full bg-white rounded-md overflow-y-scroll">
-                <Text as="div" className="text-[28px] font-700">
-                  {form?.name}
-                </Text>
-                {message && (
-                  <Text as="div" className="text-center w-full text-green-600 font-[600] text-sm">
-                    {message}
-                  </Text>
-                )}
-                <div className="mx-auto flex flex-col  bg-white justify-center flex-wrap gap-y-5 w-full">
-                  <Flex direction="column" justify="center">
-                    {form &&
-                      form.formdetails_configs.map((formData: any, formIndex) => (
-                        <div key={formIndex} className="my-1 px-2">
-                          {formElements(formData.input_config)}
-                        </div>
-                      ))}
-                  </Flex>
-                </div>
-                <Section py="1" px="3">
-                  <Button loading={isMutating} disabled={isMutating} className="w-full" onClick={formSubmit}>
-                    Submit
-                  </Button>
-                </Section>
-              </div>
-            </Modal>
-          )}
         </div>
       ) : (
         <SuccessFormPage />
