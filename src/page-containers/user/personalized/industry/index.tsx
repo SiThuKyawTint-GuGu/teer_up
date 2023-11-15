@@ -6,6 +6,7 @@ import { Text } from "@/components/ui/Typo/Text";
 import { useGetIndustry, useUpdateUserIndustry } from "@/services/industry";
 import { IndustryData, IndustryResponse } from "@/types/Industry";
 import { Flex } from "@radix-ui/themes";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useMemo, useState, useTransition } from "react";
 import QuestionPageCard from "../components/QuestionPageCard";
@@ -59,8 +60,8 @@ const IndustryPage = () => {
             layout
             subTitle="Pick 1 or more industry"
           >
-            <Flex direction="column" className=" w-full h-full overflow-y-auto gap-y-3">
-              <div className="grid grid-cols-2 gap-3  no-scrollbar  grid-flow-row">
+            <Flex direction="column" className=" w-full h-full no-scrollbar overflow-y-auto gap-y-3">
+              <div className="flex justify-between flex-wrap   no-scrollbar ">
                 {publicIndustry &&
                   publicIndustry.length > 0 &&
                   publicIndustry.map((each: IndustryData, index: number) => (
@@ -69,13 +70,23 @@ const IndustryPage = () => {
                       onClick={() => {
                         onChange(each.id);
                       }}
-                      className={`flex justify-center items-center w-full h-[104px] overflow-hidden p-3 border-[1px]
-                 shadow-md bg-[#fefefe] rounded-md cursor-pointer text-center
-             ${selectData.find(data => data === each.id) && "border-[1px] border-primary bg-secondary"}
-        
-            `}
+                      className="w-1/2 py-3 px-3"
                     >
-                      <Text>{each.name}</Text>
+                      <div
+                        className={`flex justify-center relative items-center h-[104px]  p-3 border-[1px]
+                 shadow-md bg-[#fefefe] rounded-md cursor-pointer text-center
+             ${selectData.find(data => data === each.id) && "border-[1px] border-primary bg-secondary "}
+            `}
+                      >
+                        <div
+                          className={`absolute right-0 top-0 translate-x-1/2 z-[100] translate-y-[-50%] ${
+                            selectData.find(data => data === each.id) ? "block" : "hidden"
+                          }`}
+                        >
+                          <Image src="/personalize/ActiveIcon.svg" width={24} height={24} alt="industry" />
+                        </div>
+                        <Text>{each.name}</Text>
+                      </div>
                     </div>
                   ))}
               </div>
