@@ -7,18 +7,18 @@ import { usePostOnboarding } from "@/services/content";
 import { ContentData, OnBoardingOption } from "@/types/Content";
 import { cn } from "@/utils/cn";
 import { useRouter } from "next/navigation";
-import React, { useState, useTransition } from "react";
+import React, { useState } from "react";
 type OnboardingProps = {
   data: ContentData;
   parentIndex: string;
-
+  mutate: any;
   total?: number;
 };
-const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
+const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex, total }) => {
   const [option, setOption] = useState<OnBoardingOption | null>(null);
   const [modalOpen, setOpenModal] = useState<boolean>(false);
   const { trigger, isMutating } = usePostOnboarding();
-  const [ispending, startTransition] = useTransition();
+
   const [imageLoading, setImageLoading] = useState(false);
   const router = useRouter();
 
@@ -86,15 +86,15 @@ const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
                             question_id: data.id,
                           },
                           {
-                            onSuccess: res => {
-                              console.log("res", res?.data?.status?.completed);
-                              if (res?.data?.status?.completed) {
-                                startTransition(() => {
-                                  router.push("/profile");
-                                  return;
-                                });
-                              }
+                            onSuccess: () => {
                               setOpenModal(false);
+
+                              if (total) {
+                                if (parseInt(parentIndex) === total) {
+                                  router.push("/profile");
+                                }
+                              }
+
                               const targetElement = document.getElementById(`${parseInt(parentIndex) + 1}`);
                               if (targetElement) {
                                 targetElement.scrollIntoView({
@@ -105,7 +105,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex }) => {
                           }
                         );
                       }}
-                      disabled={isMutating || ispending}
+                      disabled={isMutating}
                     >
                       Next
                     </Button>
