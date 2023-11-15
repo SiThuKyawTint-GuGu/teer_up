@@ -41,7 +41,7 @@ const Setting: React.FC = () => {
               <Icons.back className="text-[#373A36] w-[23px] h-[23px]" />
             </div>
           </Link>
-          <Text size="3" weight="medium">
+          <Text size="3" className="font-[400]">
             Settings
           </Text>
           <Icons.plus className="text-primary w-[23px] h-[23px] opacity-0" />
@@ -59,7 +59,7 @@ const Setting: React.FC = () => {
             <div className="pb-[15px] mb-[15px] border-b border-b-[#BDC7D5]">
               <Link className="block" href="/about">
                 <Flex justify="between" align="start">
-                  <Text as="label" weight="bold" size="3">
+                  <Text as="label" className="font-[400]" size="3">
                     About TEE-UP
                   </Text>
                   <Icons.caretRight className="w-[25px!important] h-[25px!important]" />
@@ -69,7 +69,7 @@ const Setting: React.FC = () => {
             <div className="pb-[15px] mb-[15px] border-b border-b-[#BDC7D5]">
               <Link className="block" href="/support/consent">
                 <Flex justify="between" align="start">
-                  <Text as="label" weight="bold" size="3">
+                  <Text as="label" className="font-[400]" size="3">
                     Consent
                   </Text>
                   <Icons.caretRight className="w-[25px] h-[25px]" />
@@ -79,7 +79,7 @@ const Setting: React.FC = () => {
             <div className="pb-[15px] mb-[15px] border-b border-b-[#BDC7D5]">
               <Link className="block" href="/support/hope-action-theory">
                 <Flex justify="between" align="start">
-                  <Text as="label" weight="bold" size="3">
+                  <Text as="label" className="font-[400]" size="3">
                     Underlying Theories
                   </Text>
                   <Icons.caretRight className="w-[25px] h-[25px]" />
@@ -89,7 +89,7 @@ const Setting: React.FC = () => {
             <div>
               <Link className="block" href="https://www.prudential.com.sg/Privacy-Notice" target="_blank">
                 <Flex justify="between" align="start">
-                  <Text as="label" weight="bold" size="3">
+                  <Text as="label" className="font-[400]" size="3">
                     Privacy Policy
                   </Text>
                   <Icons.link className="w-[25px] h-[25px]" />
@@ -108,7 +108,7 @@ const Setting: React.FC = () => {
         </Box>
         <Box className="bg-white" mt="5" p="2">
           <DialogTrigger className="w-full text-primary">
-            <Flex justify="center" align="center">
+            <Flex justify="center" className="font-bold" align="center">
               Log out
             </Flex>
           </DialogTrigger>
@@ -121,7 +121,7 @@ const Setting: React.FC = () => {
             You won’t receive any messages from the app. But you could log in again with your email address.
           </Text>
           <Flex justify="center" className="gap-3">
-            <Button className="w-1/2" onClick={handleLogout} loading={isPending}>
+            <Button className="w-1/2 font-[600]" onClick={handleLogout} loading={isPending}>
               Log out
             </Button>
             <DialogClose className="w-1/2">
