@@ -6,7 +6,7 @@ import { cn } from "@/utils/cn";
 import { Box, Flex, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
 import Link from "next/link";
-import React, { ChangeEvent, useMemo, useState } from "react";
+import React, { ChangeEvent, useEffect, useMemo, useState } from "react";
 import ReactDatePicker from "react-datepicker";
 import { Button } from "../ui/Button";
 import CardBox from "../ui/Card";
@@ -46,24 +46,43 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
   const [dateValue, setDateValue] = useState<Date>(new Date());
   const [openComment, setOpenComment] = useState<boolean>(false);
   const [checked, setChecked] = useState<boolean>(false);
+  const [reaction, setReacion] = useState({
+    likes: 0,
+    is_like: false,
+    saves: 0,
+    is_save: false,
+  });
+
+  useEffect(() => {
+    setReacion(prev => ({
+      ...prev,
+      ["saves"]: data.saves,
+      ["is_save"]: data.is_saved,
+      ["likes"]: data.likes,
+      ["is_like"]: data.is_liked,
+    }));
+  }, [data]);
+
+  const likePost = async () => {
+    if (reaction.is_like) {
+      setReacion(prev => ({ ...prev, ["likes"]: prev.likes - 1, ["is_like"]: false }));
+    }
+    if (!reaction.is_like) {
+      setReacion(prev => ({ ...prev, ["likes"]: prev.likes + 1, ["is_like"]: true }));
+    }
+    await like({ id: data.id });
+  };
 
   const saveContent = async () => {
-    await contentSave(
-      {
-        id: data.id,
-      },
-      {
-        onSuccess: () => mutate(),
-      }
-    );
-  };
-  const likePost = async () => {
-    await like(
-      { id: data.id },
-      {
-        onSuccess: () => mutate(),
-      }
-    );
+    if (reaction.is_save) {
+      setReacion(prev => ({ ...prev, ["saves"]: prev.saves - 1, ["is_save"]: false }));
+    }
+    if (!reaction.is_save) {
+      setReacion(prev => ({ ...prev, ["saves"]: prev.saves + 1, ["is_save"]: true }));
+    }
+    await contentSave({
+      id: data.id,
+    });
   };
 
   const handleRadio = (input: Input_options, InputConfigId: number | string) => {
@@ -342,7 +361,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
                   {form?.submit_label || "Join Now"}
                 </Button>
               </DialogTrigger>
-              <DialogContent className="border-none shadow-none h-full ">
+              <DialogContent className="border-none w-full h-full ">
                 {openModal && (
                   <Modal onClose={() => setOpenModal(false)}>
                     <div className="w-[400px] p-5 h-[80dvh] z-[99] no-scrollbar  bg-white  overflow-y-scroll">
@@ -354,7 +373,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
                           {message}
                         </Text>
                       )}
-                      <div className="mx-auto flex flex-col   bg-white justify-center flex-wrap gap-y-5 w-full">
+                      <div className="mx-auto flex flex-col   bg-white justify-center flex-wrap gap-y-5 w-full h-full">
                         <Flex direction="column" justify="center" className="w-full h-full">
                           {form &&
                             form.formdetails_configs.map((formData: any, formIndex) => (
@@ -362,7 +381,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
                                 {formElements(formData.input_config)}
                               </div>
                             ))}
-                          <div>
+                          <div className="w-full ">
                             <Text>
                               By submitting this form, I confirm that I have read, understood and given my consent for
                               Prudential Assurance Company Singapore and its related corporations, respective
@@ -372,10 +391,18 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
                               data for the purpose(s) of:
                             </Text>
                             <ul>
-                              <li>1) Registration for TEE Up Programme application.</li>
-                              <li>2) Events and Courses sign ups.</li>
-                              <li>3) Internship or Job applications.</li>
-                              <li>4) Educational and promotional purposes.</li>
+                              <li>
+                                <Text>1) Registration for TEE Up Programme application.</Text>
+                              </li>
+                              <li>
+                                <Text>2) Events and Courses sign ups.</Text>
+                              </li>
+                              <li>
+                                <Text>3) Internship or Job applications.</Text>
+                              </li>
+                              <li>
+                                <Text>4) Educational and promotional purposes.</Text>
+                              </li>
                               <li>
                                 <Text>
                                   I understand that I can refer to Prudential Data Privacy, which is available at{" "}
@@ -392,8 +419,8 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
                                 </Text>
                               </li>
                             </ul>
-                            <Flex gap="3" align="center" my="2">
-                              <Checkbox onCheckedChange={(val: boolean) => setChecked(val)} />
+                            <Flex gap="3" align="center" my="2" width="100%">
+                              <Checkbox className="me-3" onCheckedChange={(val: boolean) => setChecked(val)} />
                               <Text>I have read, agreed and consent</Text>
                             </Flex>
                           </div>
@@ -429,12 +456,12 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
 
           <div className="flex justify-between px-3 w-full flex-1">
             <div className="flex items-center cursor-pointer flex-wrap gap-x-[5px]" onClick={likePost}>
-              {data.is_liked ? (
+              {reaction.is_like ? (
                 <Icons.likefill className="w-[20px] h-[20px] text-primary" />
               ) : (
                 <Icons.like className="w-[20px] h-[20px]" />
               )}
-              <div className="text-[14px]">{data.likes}</div>
+              <div className="text-[14px]">{reaction.likes}</div>
             </div>
 
             <Dialog open={openComment} onOpenChange={val => setOpenComment(val)}>
@@ -455,12 +482,12 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
             </Dialog>
 
             <button className="flex items-center flex-wrap  gap-x-[5px]" onClick={saveContent}>
-              {data.is_saved ? (
+              {reaction.is_save ? (
                 <Icons.savedFill className="w-[20px] h-[20px] text-primary" />
               ) : (
                 <Icons.saved className="w-[20px] h-[20px]" />
               )}
-              <div>{data.saves}</div>
+              <div>{reaction.saves}</div>
             </button>
           </div>
         </div>
