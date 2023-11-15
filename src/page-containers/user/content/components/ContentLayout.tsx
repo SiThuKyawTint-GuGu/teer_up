@@ -65,11 +65,11 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate }) =>
                 // style={{ maxHeight: maxHeight !== undefined ? `${maxHeight - 30}px` : "none", overflow: "hidden" }}
               >
                 <Text className="text-[24px] font-[700] leading-[32px]">{data.title}</Text>
-                <Text>
+                <Text className="pt-[10px]">
                   {data.description.slice(0, 150)}
 
                   {data.description.length > 150 && (
-                    <Text as="span" className="text-primary">
+                    <Text as="span" className="text-primary ">
                       {"..."}See more
                     </Text>
                   )}

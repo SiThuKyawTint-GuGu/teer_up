@@ -89,8 +89,8 @@ const Search: React.FC = () => {
                 placeholder="Search"
                 defaultValue={get("keyword") || ""}
               />
-              <Button onClick={handleSlotClick} className="pr-0" variant="ghost">
-                Search
+              <Button onClick={() => router.back()} className="pr-0" variant="ghost">
+                Cancel
               </Button>
             </Flex>
           </header>
@@ -137,7 +137,7 @@ const Search: React.FC = () => {
           </Box> */}
         </Section>
         {searchValue && (
-          <div className="max-w-[400px] fixed top-[65px] z-20 w-full h-full bg-[#efefef]">
+          <div className="max-w-[400px] fixed top-[65px] z-20 w-full h-full bg-[#F8F9FB]">
             <Box p="3">
               {searchData?.data?.length ? (
                 <>
