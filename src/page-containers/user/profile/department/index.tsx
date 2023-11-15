@@ -57,7 +57,7 @@ const Department: React.FC = () => {
           </div>
         </div>
 
-        <Box className="pb-[7px] h-[100vh-56px] bg-white">
+        <Box className="pb-[65px] h-[100vh-56px] bg-white">
           <Section className="bg-white" py="4" px="3">
             <Flex justify="center" align="center" className="mb-[25px]">
               <InputSearch onChange={debouncedOnChange} ref={inputRef} placeholder="Search Interests" />
