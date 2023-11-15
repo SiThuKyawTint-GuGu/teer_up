@@ -40,7 +40,6 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate, comments,
     if (!reaction.is_like) {
       setReacion(prev => ({ ...prev, ["likes"]: prev.likes + 1, ["is_like"]: true }));
     }
-
     await like({ id: data.id });
   };
 
