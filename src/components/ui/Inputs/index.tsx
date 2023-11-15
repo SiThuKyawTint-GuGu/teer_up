@@ -99,7 +99,7 @@ const InputSearch = React.forwardRef<HTMLInputElement, InputProps>(
     ref
   ) => {
     return (
-      <InputStyled className={cn("w-full shadow-input", variant && "rounded-full bg-[#e1e5e9]")}>
+      <InputStyled className={cn("w-full shadow-input p-[10px]", variant && "rounded-full bg-[#e1e5e9]")}>
         <TextField.Root>
           {slotDir === SLOT_DIRECTION.LEFT && (
             <TextField.Slot>

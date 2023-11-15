@@ -48,14 +48,14 @@ const Preferences: React.FC = () => {
 
         <Box className="pb-[7px]">
           <Section className="bg-white" py="4" px="3">
-            <Flex justify="center" align="center" className="mb-[25px]">
+            <Flex justify="center" align="center" className="mb-[25px] mt-[10px]">
               <InputSearch placeholder="Search Interests" />
             </Flex>
             {preferencesData?.data?.map((each, key) => {
               const isChecked = preferences?.find(preference => preference.preference_id === each?.id);
 
               return (
-                <Label key={key} className="block mb-[25px]">
+                <Label key={key} className="block mb-[20px]">
                   <Flex justify="between" align="start">
                     <Flex direction="column" gap="2">
                       <Text as="label" weight="regular" size="3">
