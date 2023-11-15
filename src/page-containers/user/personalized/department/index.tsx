@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/Button";
 import { useGetDepartment, useUpdateUserDepartment } from "@/services/department";
 import { DepartmentResponse } from "@/types/Department";
 import { IndustryData } from "@/types/Industry";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useMemo, useState, useTransition } from "react";
 import QuestionPageCard from "../components/QuestionPageCard";
@@ -51,7 +52,7 @@ const DepartmentPage = () => {
             layout
             subTitle="Pick 1 or more fields"
           >
-            <div className="grid grid-cols-2 gap-3 max-h-full overflow-y-scroll no-scrollbar grid-flow-row">
+            <div className="flex justify-between flex-wrap   no-scrollbar ">
               {industry &&
                 industry.length > 0 &&
                 industry.map((each: IndustryData, index: number) => (
@@ -60,13 +61,23 @@ const DepartmentPage = () => {
                     onClick={() => {
                       onChange(each.id);
                     }}
-                    className={`flex justify-center items-center w-full h-[104px] p-3 text-center border-[1px]
-                 shadow-md bg-[#fefefe] rounded-md cursor-pointer
-             ${selectData.find(data => data === each.id) && "border-[1px] border-primary bg-secondary"}
-        
-            `}
+                    className="w-1/2 py-3 px-3"
                   >
-                    {each.name}
+                    <div
+                      className={`flex justify-center relative items-center h-[104px]  p-3 border-[1px]
+             shadow-md bg-[#fefefe] rounded-md cursor-pointer text-center
+         ${selectData.find(data => data === each.id) && "border-[1px] border-primary bg-secondary "}
+        `}
+                    >
+                      <div
+                        className={`absolute right-0 top-0 translate-x-1/2 z-[100] translate-y-[-50%] ${
+                          selectData.find(data => data === each.id) ? "block" : "hidden"
+                        }`}
+                      >
+                        <Image src="/personalize/ActiveIcon.svg" width={24} height={24} alt="industry" />
+                      </div>
+                      {each.name}
+                    </div>
                   </div>
                 ))}
             </div>
