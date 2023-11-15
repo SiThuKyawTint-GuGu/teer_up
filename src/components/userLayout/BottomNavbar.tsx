@@ -19,44 +19,24 @@ const BottomNavbar = () => {
       {navbarItems.map((item: NavbarType, index: number) => {
         return (
           <div key={index} className="p-2">
-            {item.path === "/home" || item.path === "/explore" ? (
-              <a
-                href={item.path}
-                className={cn(
-                  "flex justify-center items-center flex-col",
-                  (pathName === item.path ||
-                    pathName.includes(item.path) ||
-                    ((pathName.length === 0 || pathName === "/") && item.path === "/home")) &&
-                    "text-primary"
-                )}
-              >
-                {pathName === item.path ||
-                pathName.includes(item.path) ||
-                ((pathName.length === 0 || pathName === "/") && item.path === "/home")
-                  ? item.activeIcon
-                  : item.icon}
-                <p>{item.text}</p>
-              </a>
-            ) : (
-              <Link
-                href={item.path}
-                scroll={false}
-                className={cn(
-                  "flex justify-center items-center flex-col",
-                  (pathName === item.path ||
-                    pathName.includes(item.path) ||
-                    ((pathName.length === 0 || pathName === "/") && item.path === "/home")) &&
-                    "text-primary"
-                )}
-              >
-                {pathName === item.path ||
-                pathName.includes(item.path) ||
-                ((pathName.length === 0 || pathName === "/") && item.path === "/home")
-                  ? item.activeIcon
-                  : item.icon}
-                <p>{item.text}</p>
-              </Link>
-            )}
+            <Link
+              href={item.path}
+              scroll={false}
+              className={cn(
+                "flex justify-center items-center flex-col",
+                (pathName === item.path ||
+                  pathName.includes(item.path) ||
+                  ((pathName.length === 0 || pathName === "/") && item.path === "/home")) &&
+                  "text-primary"
+              )}
+            >
+              {pathName === item.path ||
+              pathName.includes(item.path) ||
+              ((pathName.length === 0 || pathName === "/") && item.path === "/home")
+                ? item.activeIcon
+                : item.icon}
+              <p>{item.text}</p>
+            </Link>
           </div>
         );
       })}
