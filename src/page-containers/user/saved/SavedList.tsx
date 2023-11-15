@@ -66,8 +66,19 @@ const SavedList: React.FC = () => {
   const { trigger: contentSave } = useSaveContent();
   const [triggerType, setTriggerType] = useState<TRIGGER_TYPE>();
   const [refreshKey, setRefreshKey] = useState<number>(0);
-  const [filteredType, setFilterTypes] = useState<{
-    key: SAVED_CONTENT_TYPES;
+  const [filteredType, setFilterTypes] = useState<
+    {
+      key: SAVED_CONTENT_TYPES;
+      value: string;
+    }[]
+  >([
+    {
+      key: filterNames[0].key,
+      value: filterNames[0].value,
+    },
+  ]);
+  const [filteredParams, setFilterParams] = useState<{
+    key: string;
     value: string;
   }>({
     key: filterNames[0].key,
@@ -78,7 +89,7 @@ const SavedList: React.FC = () => {
     mutate,
     isLoading,
   } = useGetSavedContents<SavedContentParams, SavedContentResponse>({
-    type: filteredType.key === SAVED_CONTENT_TYPES.ALL ? "" : filteredType.key,
+    type: filteredParams.key === SAVED_CONTENT_TYPES.ALL ? "" : filteredParams.key,
   });
   const { data: unFinishedPathways } = useGetUnfinishedPathway<UnfinishedPathwayResponse>();
 
@@ -123,7 +134,11 @@ const SavedList: React.FC = () => {
             </Heading>
             <DialogTrigger asChild onClick={() => setTriggerType(TRIGGER_TYPE.FILTER)}>
               <Button variant="ghost" className="text-primary">
-                {filteredType.key === SAVED_CONTENT_TYPES.ALL ? "All" : filteredType.value}
+                {/* {filteredType.key === SAVED_CONTENT_TYPES.ALL ? "All" : filteredType.value} */}
+                {/* {
+                  filteredType.find(data => data.key === filteredParams.key)?.value ||
+                  filteredParams.value
+                } */}
                 <Icons.caretDown />
               </Button>
             </DialogTrigger>
@@ -203,20 +218,34 @@ const SavedList: React.FC = () => {
               key={key}
               className={cn(
                 "pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]",
-                each.key === filteredType.key && "text-primary"
+                filteredType.find(data => data.key === each.key) && "text-primary",
+                key === filterNames.length - 1 && "border-none"
               )}
-              onClick={() => setFilterTypes(each)}
+              onClick={() => {
+                filteredType.find(data => data.key === each.key)
+                  ? setFilterTypes(filteredType.filter(data => data.key !== each.key))
+                  : setFilterTypes([...filteredType, each]);
+              }}
             >
-              <DialogClose className="w-full">
-                <Flex justify="between" align="center" gap="2">
-                  <Text as="label" weight="bold" size="3">
-                    {each.value}
-                  </Text>
-                  <Icons.check />
-                </Flex>
-              </DialogClose>
+              <Flex justify="between" align="center" gap="2">
+                <Text as="label" weight="bold" size="3">
+                  {each.value}
+                </Text>
+                <Icons.check />
+              </Flex>
             </div>
           ))}
+          <DialogClose
+            className="w-full"
+            onClick={async () => {
+              setFilterParams({
+                key: filteredType.map(data => data.key).join(","),
+                value: filteredType[0].value,
+              });
+            }}
+          >
+            <Button className="w-full">Apply filters</Button>
+          </DialogClose>
         </Box>
       </DialogContent>
     </Dialog>
