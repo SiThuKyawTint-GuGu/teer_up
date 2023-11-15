@@ -149,7 +149,7 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
                     </Text>
                   </div>
                 ) : (
-                  <Text>data.description</Text>
+                  <Text>{data.description}</Text>
                 )}
               </div>
             </div>
