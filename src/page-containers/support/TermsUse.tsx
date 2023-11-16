@@ -10,6 +10,8 @@ import React, { useTransition } from "react";
 const TermsUse: React.FC = () => {
   const router = useRouter();
   const [, startTransition] = useTransition();
+  const currentOrigin = window.location.origin;
+
   return (
     <Grid columns="1">
       <Box>
@@ -41,9 +43,9 @@ const TermsUse: React.FC = () => {
               <Text size="1">
                 These terms and conditions outline the rules and regulations for the use of TEE-Up&#39;s Website,
                 located at{" "}
-                <Link href="https://tee-up.me/">
+                <Link href={currentOrigin} target="_blank">
                   <Text as="span" className="text-primary">
-                    www.tee-up.me
+                    www.tee-up.world
                   </Text>
                 </Link>
               </Text>
