@@ -12,7 +12,7 @@ type AlignProps = (typeof textPropDefs)["align"]["values"][number];
 interface Props {
   children?: React.ReactNode;
   className?: string;
-  as?: "p" | "div" | "span" | "label";
+  as?: React.ElementType;
   size?: SizePropValues;
   weight?: WeightPropsValues;
   color?: ColorPropsValues;

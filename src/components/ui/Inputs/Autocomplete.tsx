@@ -11,7 +11,10 @@ const Item = React.forwardRef<HTMLDivElement, { className?: string; value: strin
     <Ariakit.ComboboxItem
       ref={ref}
       value={value}
-      className={cn("flex items-center gap-2 rounded outline-none scroll-m-2 p-2 hover:bg-[#99d6ff]", className)}
+      className={cn(
+        "flex text-black items-center gap-2 rounded outline-none scroll-m-2 p-2 hover:bg-[#99d6ff]",
+        className
+      )}
       {...props}
     >
       {children}
@@ -41,7 +44,7 @@ const Autocomplete = React.forwardRef<
         <Ariakit.Combobox
           ref={ref}
           placeholder={placeholder}
-          className={cn("w-full h-10 rounded-md px-4 font-light outline-0", className)}
+          className={cn("w-full h-10 rounded-md px-4 font-light text-black outline-0", className)}
           // setValueOnChange={e => console.log(e.value)}
         />
         <Ariakit.ComboboxDisclosure className="button secondary disclosure absolute top-0 right-1" />
