@@ -49,6 +49,7 @@ const Otp = () => {
   });
 
   const getOtp = async () => {
+    setSeconds(20);
     await getOtpCode(null, {
       onSuccess: (res: any) => {
         setMessage(prev => ({ ...prev, isError: false, messageValue: res.data.message }));
