@@ -17,7 +17,7 @@ const Search: React.FC = () => {
   const [searchValue, setSearchValue] = useState<string>("");
   const router = useRouter();
   const { get } = useSearchParams();
-  const [isPending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
   const inputRef = useRef<any>(null);
   const [category, setCategory] = useState<string>();
   const { data: searchData } = useGetContentSearch<SearchParamsType, ContentType>({
@@ -70,6 +70,8 @@ const Search: React.FC = () => {
     setSearchValue(get("keyword") || "");
     setCategory(get("category") || "");
   }, [get]);
+
+  console.log(searchData);
 
   return (
     <Grid>
@@ -142,23 +144,42 @@ const Search: React.FC = () => {
             <Box p="3">
               {searchData?.data?.length ? (
                 <>
-                  {searchData?.data?.map((each, key) => (
-                    <>
-                      <Link key={key} href={`/home?search=${each?.title}`}>
-                        <div onClick={() => handleTextClick(each?.title)}>
-                          <Text
-                            className={cn(
-                              "pb-[10px] mb-[10px]",
-                              key !== (searchData?.data ? searchData?.data.length - 1 : -1) &&
-                                "border-b border-b-[#BDC7D5]"
-                            )}
-                          >
-                            {each?.title}
-                          </Text>
-                        </div>
-                      </Link>
-                    </>
-                  ))}
+                  {searchData?.data?.map((each, key) => {
+                    const titleWords = each?.title?.split(" ");
+                    const searchWords = searchValue?.split(" ");
+
+                    // const haveKeyword = each?.title?.split(" ")?.find(str => searchValue.includes(str));
+                    // console.log(each?.title?.split(" "));
+                    return (
+                      <>
+                        <Link key={key} href={`/home?search=${each?.title}`}>
+                          <div onClick={() => handleTextClick(each?.title)}>
+                            <Text
+                              className={cn(
+                                "pb-[10px] mb-[10px]",
+                                key !== (searchData?.data ? searchData?.data.length - 1 : -1) &&
+                                  "border-b border-b-[#BDC7D5]"
+                              )}
+                            >
+                              {titleWords.map((word, index) => (
+                                <span
+                                  key={index}
+                                  className={cn({
+                                    "text-red-500": searchWords.includes(word),
+                                    // Add other styles for the non-matching words
+                                  })}
+                                >
+                                  {word}{" "}
+                                </span>
+                              ))}
+                              {/* {each?.title?.split(" ")?.find(str => searchValue.includes(str))} */}
+                              {/* {each?.title} */}
+                            </Text>
+                          </div>
+                        </Link>
+                      </>
+                    );
+                  })}
                   <Flex justify="center">
                     <Button onClick={handleSlotClick} variant="link">
                       See More
