@@ -73,6 +73,7 @@ const ContentCategoryDetail = ({ id }: Props) => {
           label: option.title ? option.title : "",
           content_id: option.id,
         }));
+        // console.log("content options", contentOptions);
         setContentOptions(updatedOptions);
       }
     }
@@ -162,22 +163,33 @@ const ContentCategoryDetail = ({ id }: Props) => {
   const handleChangeOne = (event: any, newValue: any) => {
     setContentOne(newValue);
     setSearchContent("");
+    const updatedOptions = contentOptions.filter(content => content.content_id !== newValue.content_id);
+    setContentOptions(updatedOptions);
+    console.log(updatedOptions);
   };
   const handleChangeTwo = (event: any, newValue: any) => {
     setContentTwo(newValue);
     setSearchContent("");
+    const updatedOptions = contentOptions.filter(content => content.content_id !== newValue.content_id);
+    setContentOptions(updatedOptions);
   };
   const handleChangeThree = (event: any, newValue: any) => {
     setContentThree(newValue);
     setSearchContent("");
+    const updatedOptions = contentOptions.filter(content => content.content_id !== newValue.content_id);
+    setContentOptions(updatedOptions);
   };
   const handleChangeFour = (event: any, newValue: any) => {
     setContentFour(newValue);
     setSearchContent("");
+    const updatedOptions = contentOptions.filter(content => content.content_id !== newValue.content_id);
+    setContentOptions(updatedOptions);
   };
   const handleChangeFive = (event: any, newValue: any) => {
     setContentFive(newValue);
     setSearchContent("");
+    const updatedOptions = contentOptions.filter(content => content.content_id !== newValue.content_id);
+    setContentOptions(updatedOptions);
   };
 
   const handleImageChange = async (event: any) => {
