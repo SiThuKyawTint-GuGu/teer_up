@@ -40,8 +40,8 @@ const VideoDetail: React.FC<VideoDetailProp> = ({ data, contentMutate }) => {
 
   return (
     <Dialog>
-      <Grid columns="1">
-        <div className="w-full h-screen">
+      <Grid columns="1" className="h-full w-full">
+        <div className="w-full h-full">
           <div className="w-full mx-auto h-full relative p-2">
             {data?.content_video && (
               <Flex className="w-full h-full">
