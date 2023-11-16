@@ -25,12 +25,9 @@ const Search: React.FC = () => {
   });
 
   const histories = getLocalStorage("history") || [];
+
   const debouncedOnChange = debounce(() => {
     setSearchValue(inputRef?.current?.value);
-    // if (histories) {
-    //   const newData = [...histories, inputRef?.current?.value];
-    //   inputRef?.current?.value && setLocalStorage("history", newData);
-    // }
   }, 500);
 
   const handleSlotClick = () => {
@@ -40,8 +37,12 @@ const Search: React.FC = () => {
       });
     }
     if (histories) {
-      const newData = [...histories, inputRef?.current?.value];
-      inputRef?.current?.value && setLocalStorage("history", newData);
+      const words = inputRef?.current?.value.split(" ");
+      if (words.length > 4) {
+        const truncatedWords = words.slice(0, 4);
+        const newData = [...histories, truncatedWords];
+        inputRef?.current?.value && setLocalStorage("history", newData);
+      }
     }
   };
 
@@ -70,8 +71,6 @@ const Search: React.FC = () => {
     setSearchValue(get("keyword") || "");
     setCategory(get("category") || "");
   }, [get]);
-
-  console.log(searchData);
 
   return (
     <Grid>
@@ -109,6 +108,7 @@ const Search: React.FC = () => {
                   ?.filter(each => each.trim() !== "")
                   .reverse()
                   .map((each, key) => {
+                    const truncated = each.split(" ").slice(0, 4);
                     if (key < 5) {
                       return (
                         <Button
@@ -117,7 +117,7 @@ const Search: React.FC = () => {
                           variant="outline"
                           onClick={() => handleHistoryClick(each)}
                         >
-                          {each}
+                          {each.split(" ").length > 3 ? `${truncated.join(" ")} ...` : each}
                         </Button>
                       );
                     }
@@ -148,8 +148,6 @@ const Search: React.FC = () => {
                     const titleWords = each?.title?.split(" ");
                     const searchWords = searchValue?.split(" ");
 
-                    // const haveKeyword = each?.title?.split(" ")?.find(str => searchValue.includes(str));
-                    // console.log(each?.title?.split(" "));
                     return (
                       <>
                         <Link key={key} href={`/home?search=${each?.title}`}>
@@ -166,14 +164,11 @@ const Search: React.FC = () => {
                                   key={index}
                                   className={cn({
                                     "text-red-500": searchWords.includes(word),
-                                    // Add other styles for the non-matching words
                                   })}
                                 >
                                   {word}{" "}
                                 </span>
                               ))}
-                              {/* {each?.title?.split(" ")?.find(str => searchValue.includes(str))} */}
-                              {/* {each?.title} */}
                             </Text>
                           </div>
                         </Link>
