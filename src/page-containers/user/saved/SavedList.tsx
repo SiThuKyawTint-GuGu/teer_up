@@ -104,7 +104,10 @@ const SavedList: React.FC = () => {
       </div>
     );
   };
-
+  function capitalizeFirstLetter(string: string) {
+    if (!string) return;
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
   const unSaveContent = async () => {
     await contentSave({
       id: content,
@@ -144,7 +147,7 @@ const SavedList: React.FC = () => {
             </Heading>
             <DialogTrigger asChild onClick={() => setTriggerType(TRIGGER_TYPE.FILTER)}>
               <Button variant="ghost" className="text-primary">
-                {filteredParams.key.split(",")[0]}
+                {capitalizeFirstLetter(filteredParams?.key?.split(",")?.[0])}
                 {filteredParams.key.split(",").length > 1 && ` + ${filteredParams.key.split(",").length - 1} more`}
                 {/* {
                   filteredType.find(data => data.key === filteredParams.key)?.value ||
