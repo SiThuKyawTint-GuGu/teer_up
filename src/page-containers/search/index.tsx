@@ -17,7 +17,7 @@ const Search: React.FC = () => {
   const [searchValue, setSearchValue] = useState<string>("");
   const router = useRouter();
   const { get } = useSearchParams();
-  const [isPending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
   const inputRef = useRef<any>(null);
   const [category, setCategory] = useState<string>();
   const { data: searchData } = useGetContentSearch<SearchParamsType, ContentType>({
@@ -25,12 +25,9 @@ const Search: React.FC = () => {
   });
 
   const histories = getLocalStorage("history") || [];
+
   const debouncedOnChange = debounce(() => {
     setSearchValue(inputRef?.current?.value);
-    // if (histories) {
-    //   const newData = [...histories, inputRef?.current?.value];
-    //   inputRef?.current?.value && setLocalStorage("history", newData);
-    // }
   }, 500);
 
   const handleSlotClick = () => {
@@ -40,8 +37,12 @@ const Search: React.FC = () => {
       });
     }
     if (histories) {
-      const newData = [...histories, inputRef?.current?.value];
-      inputRef?.current?.value && setLocalStorage("history", newData);
+      const words = inputRef?.current?.value.split(" ");
+      if (words.length > 4) {
+        const truncatedWords = words.slice(0, 4);
+        const newData = [...histories, truncatedWords];
+        inputRef?.current?.value && setLocalStorage("history", newData);
+      }
     }
   };
 
@@ -107,6 +108,7 @@ const Search: React.FC = () => {
                   ?.filter(each => each.trim() !== "")
                   .reverse()
                   .map((each, key) => {
+                    const truncated = each.split(" ").slice(0, 4);
                     if (key < 5) {
                       return (
                         <Button
@@ -115,7 +117,7 @@ const Search: React.FC = () => {
                           variant="outline"
                           onClick={() => handleHistoryClick(each)}
                         >
-                          {each}
+                          {each.split(" ").length > 3 ? `${truncated.join(" ")} ...` : each}
                         </Button>
                       );
                     }
@@ -142,23 +144,37 @@ const Search: React.FC = () => {
             <Box p="3">
               {searchData?.data?.length ? (
                 <>
-                  {searchData?.data?.map((each, key) => (
-                    <>
-                      <Link key={key} href={`/home?search=${each?.title}`}>
-                        <div onClick={() => handleTextClick(each?.title)}>
-                          <Text
-                            className={cn(
-                              "pb-[10px] mb-[10px]",
-                              key !== (searchData?.data ? searchData?.data.length - 1 : -1) &&
-                                "border-b border-b-[#BDC7D5]"
-                            )}
-                          >
-                            {each?.title}
-                          </Text>
-                        </div>
-                      </Link>
-                    </>
-                  ))}
+                  {searchData?.data?.map((each, key) => {
+                    const titleWords = each?.title?.split(" ");
+                    const searchWords = searchValue?.split(" ");
+
+                    return (
+                      <>
+                        <Link key={key} href={`/home?search=${each?.title}`}>
+                          <div onClick={() => handleTextClick(each?.title)}>
+                            <Text
+                              className={cn(
+                                "pb-[10px] mb-[10px]",
+                                key !== (searchData?.data ? searchData?.data.length - 1 : -1) &&
+                                  "border-b border-b-[#BDC7D5]"
+                              )}
+                            >
+                              {titleWords.map((word, index) => (
+                                <span
+                                  key={index}
+                                  className={cn({
+                                    "text-red-500": searchWords.includes(word),
+                                  })}
+                                >
+                                  {word}{" "}
+                                </span>
+                              ))}
+                            </Text>
+                          </div>
+                        </Link>
+                      </>
+                    );
+                  })}
                   <Flex justify="center">
                     <Button onClick={handleSlotClick} variant="link">
                       See More

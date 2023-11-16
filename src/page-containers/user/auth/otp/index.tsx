@@ -49,6 +49,7 @@ const Otp = () => {
   });
 
   const getOtp = async () => {
+    setSeconds(20);
     await getOtpCode(null, {
       onSuccess: (res: any) => {
         setMessage(prev => ({ ...prev, isError: false, messageValue: res.data.message }));
@@ -102,7 +103,7 @@ const Otp = () => {
   return (
     <Dialog>
       <Grid columns="1">
-        <Box className="h-screen" px="4">
+        <Box className="h-[100dvh-96px]" px="4">
           <Flex direction="column" position="relative" height="100%">
             <Flex justify="between" align="center">
               <Button onClick={() => router.back()} className="p-0" variant="ghost">
