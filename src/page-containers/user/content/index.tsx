@@ -163,13 +163,15 @@ const UserContent = () => {
       removeLocalStorage("contentPosition");
     }
   }, []);
-
+  // bg-transparent
   return (
     <>
       {!isLoading ? (
         <Box
           ref={containerRef}
-          className={`snap-y flex-col snap-mandatory h-[calc(100dvh-112px)] pt-[6px] pb-[6px] px-[12px]  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll scroll-smooth`}
+
+          className={`snap-y flex-col bg-transparent snap-mandatory h-[calc(100dvh-112px)] pt-[6px] pb-[6px] px-[12px]  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll scroll-smooth`}
+
           style={{ scrollSnapStop: "always" }}
           id="explore-list-container"
         >
