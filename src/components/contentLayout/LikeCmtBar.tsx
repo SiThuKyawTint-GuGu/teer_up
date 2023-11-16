@@ -1,18 +1,15 @@
 "use client";
-import { Autocomplete, Item } from "@/components/ui/Inputs/Autocomplete";
 import { useContentForm, useLikeContent, useSaveContent } from "@/services/content";
 import { ContentData, Input_config, Input_options } from "@/types/Content";
 import { cn } from "@/utils/cn";
 import { Box, Flex, Section } from "@radix-ui/themes";
-import dayjs from "dayjs";
 import Link from "next/link";
 import React, { ChangeEvent, useEffect, useMemo, useState } from "react";
-import ReactDatePicker from "react-datepicker";
 import { Button } from "../ui/Button";
-import CardBox from "../ui/Card";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/Dialog";
 import { Icons } from "../ui/Images";
 import { InputText } from "../ui/Inputs";
+import { Autocomplete, Item } from "../ui/Inputs/Autocomplete";
 import { Checkbox } from "../ui/Inputs/Checkbox";
 import { Radio, RadioItem } from "../ui/Inputs/Radio";
 import { Label } from "../ui/Label";
@@ -52,7 +49,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
     saves: 0,
     is_save: false,
   });
-
+  console.log(selectedOptions);
   useEffect(() => {
     setReacion(prev => ({
       ...prev,
@@ -85,10 +82,12 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
     });
   };
 
-  const handleRadio = (input: Input_options, InputConfigId: number | string) => {
+  const handleCheckBox = (input: Input_options, InputConfigId: number | string) => {
     const sameId = selectedOptions.find(e => e.value === input.value);
+    console.log(sameId);
+
     if (sameId) {
-      setSelectedOptions(prev => prev.filter(e => e.inputconfig_id !== InputConfigId));
+      setSelectedOptions(prev => prev.filter(e => e.value !== input.value));
       return;
     }
     const config = {
@@ -198,9 +197,9 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
         <>
           <Box className="pb-[7px]">
             <Section py="1" px="3">
-              <label htmlFor="email" className="block mb-3 text-md font-medium text-gray-700">
-                {inputData.placeholder}
-              </label>
+              <Text as="label" className="block mb-3 text-md font-medium text-gray-700">
+                {inputData.name}
+              </Text>
               {/* {inputData.input_options.map((input: Input_options, index: number) => (
                 <div key={index} className="flex w-full flex-wrap items-center gap-x-2">
                   <RadioButton changeHandler={() => handleRadio(input, inputData.id)} />
@@ -229,37 +228,43 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
         </>
       );
     }
-    if (inputData.type === "date") {
-      return (
-        <Box className="pb-[7px]">
-          <Section className="" py="1" px="3">
-            <label>{inputData.name}</label>
-            <CardBox className="px-[12px] py-[8px] ">
-              <label className="flex justify-between items-center">
-                <ReactDatePicker
-                  onChange={(date: Date | null) => {
-                    if (date) {
-                      handleInput(inputData.id, dayjs(date).format("DD/MM/YY"));
-                      setDateValue(date);
-                    }
-                  }}
-                  dateFormat="dd/MM/yy"
-                  selected={dateValue}
-                  className="w-full bg-white"
-                  shouldCloseOnSelect
-                />
-                <Icons.calender />
-              </label>
-            </CardBox>
-          </Section>
-        </Box>
-      );
-    }
+    // if (inputData.type === "date") {
+    //   return (
+    //     <Box className="pb-[7px]">
+    //       <Section className="" py="1" px="3">
+    //         <Text as="label">{inputData.name}</Text>
+    //         {/* <CardBox className="px-[12px] py-[8px] "> */}
+    //         {/* <label className="flex justify-between items-center">
+    //             <ReactDatePicker
+    //               onChange={(date: Date | null) => {
+    //                 if (date) {
+    //                   handleInput(inputData.id, dayjs(date).format("DD/MM/YY"));
+    //                   setDateValue(date);
+    //                 }
+    //               }}
+    //               dateFormat="dd/MM/yy"
+    //               selected={dateValue}
+    //               className="w-full bg-white"
+    //               shouldCloseOnSelect
+    //             />
+    //             <Icons.calender />
+    //           </label> */}
+    //         {/* <input
+    //           type="date"
+    //           className={cn("font-light shadow-md bg-white border-0 text-black w-full h-[40px] p-3 outline-none")}
+    //           onChange={}
+    //         /> */}
+    //         {/* </CardBox> */}
+    //       </Section>
+    //     </Box>
+    //   );
+    // }
     if (
       inputData.type === "text" ||
       // inputData.type === "phone" ||
       inputData.type === "password" ||
-      inputData.type === "email"
+      inputData.type === "email" ||
+      inputData.type === "date"
     )
       return (
         // <TextFieldInput
@@ -271,9 +276,10 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
         //   }}
         // />
         <Box className="pb-[7px]">
+          <Text as="label">{inputData.name}</Text>
           <Section className="bg-white" py="1" px="3">
             <InputText
-              type="text"
+              type={inputData.type === "date" ? "date" : "text"}
               className="p-2"
               inputType={inputData.type}
               placeholder={inputData.placeholder}
@@ -299,7 +305,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
         //     </option>
         //   ))}
         // </select>
-        <Box className="pb-[7px] ">
+        <Box className="pb-[7px]">
           {/* <Section className="bg-white w-full" py="1" px="3">
             <Select
               onValueChange={(value: string) => {
@@ -319,15 +325,21 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
               </SelectContent>
             </Select>
           </Section> */}
+          <Text as="label">{inputData.name}</Text>
           <Autocomplete
             className={cn("bg-white shadow-md w-full")}
+            onChange={() => {}}
             placeholder={inputData.placeholder}
-            onChange={val => {
-              handleInput(inputData.id, val as string);
-            }}
           >
             {inputData.input_options.map((dropdown: Input_options, index: number) => (
-              <Item key={index} value={dropdown.value}>
+              <Item
+                key={index}
+                value={dropdown.label}
+                onClick={() => {
+                  console.log(dropdown);
+                  handleInput(inputData.id, dropdown.value);
+                }}
+              >
                 {dropdown.label}
               </Item>
             ))}
@@ -337,18 +349,18 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
     if (inputData.type === "checkbox") {
       return (
         <Box className="pb-[7px]">
-          <Section
-            py="1"
-            px="3"
-            onChange={(event: ChangeEvent<HTMLInputElement>) => {
-              handleInput(inputData.id, event.target.value);
-            }}
-          >
-            <label className="block text-md font-medium text-gray-700">{inputData.placeholder}</label>
+          <Section py="1" px="3">
+            <Text as="label" className="block text-md font-medium text-gray-700">
+              {inputData.placeholder}
+            </Text>
             {inputData.input_options.map((input: Input_options, index: number) => (
               <div key={index} className="flex w-full flex-wrap my-2 items-center gap-x-2">
-                <Checkbox defaultChecked={false} value={input.value} />
-                <label>{input.label}</label>
+                <Checkbox
+                  defaultChecked={false}
+                  onCheckedChange={() => handleCheckBox(input, inputData.id)}
+                  value={input.value}
+                />
+                <Text>{input.label}</Text>
               </div>
             ))}
           </Section>
@@ -388,7 +400,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
                                 {formElements(formData.input_config)}
                               </div>
                             ))}
-                          <div className="w-full min-h-full pt-2">
+                          <div className="w-full min-h-full pt-2 px-2">
                             <Flex>
                               <Checkbox className="me-3" onCheckedChange={(val: boolean) => setChecked(val)} />
                               <Flex direction="column">

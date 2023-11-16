@@ -6,7 +6,7 @@ const defaultTheme = createTheme({
     fontFamily: fontSans.style.fontFamily,
   },
   palette: {
-    mode: "light",
+    // mode: "light",
     primary: {
       main: "#DA291C",
     },
