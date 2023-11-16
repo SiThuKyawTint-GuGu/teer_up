@@ -198,7 +198,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
           <Box className="pb-[7px]">
             <Section py="1" px="3">
               <Text as="label" className="block mb-3 text-md font-medium text-gray-700">
-                {inputData.placeholder}
+                {inputData.name}
               </Text>
               {/* {inputData.input_options.map((input: Input_options, index: number) => (
                 <div key={index} className="flex w-full flex-wrap items-center gap-x-2">
@@ -276,6 +276,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
         //   }}
         // />
         <Box className="pb-[7px]">
+          <Text as="label">{inputData.name}</Text>
           <Section className="bg-white" py="1" px="3">
             <InputText
               type={inputData.type === "date" ? "date" : "text"}
@@ -324,6 +325,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
               </SelectContent>
             </Select>
           </Section> */}
+          <Text as="label">{inputData.name}</Text>
           <Autocomplete
             className={cn("bg-white shadow-md w-full")}
             onChange={() => {}}
