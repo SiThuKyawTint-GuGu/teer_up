@@ -131,7 +131,7 @@ const Profile: React.FC = () => {
                 </Flex>
               </div>
             </div>
-            <Box className="mb-[7px] rounded-none">
+            <Box className="mb-[0px] rounded-none">
               <Section p="0">
                 <DialogTrigger onClick={() => setTriggerType(PROFILE_TRIGGER.COVER)} className="w-full">
                   {userProfile?.cover_url ? (
@@ -149,7 +149,7 @@ const Profile: React.FC = () => {
                   )}
                 </DialogTrigger>
               </Section>
-              <Section className="bg-white pt-[70px]" pb="4" px="3" position="relative">
+              <Section className="bg-white pt-[70px]" pb="0" px="3" position="relative">
                 <DialogTrigger onClick={() => setTriggerType(PROFILE_TRIGGER.PROFILE)} className="w-full">
                   <div className="absolute -top-[30%]">
                     {userProfile?.profile_url ? (
@@ -157,7 +157,7 @@ const Profile: React.FC = () => {
                         justify="center"
                         align="center"
                         position="relative"
-                        className="w-[120px] h-[120px] rounded-full bg-primary bg-opacity-70 ring-4 ring-white"
+                        className="w-[96px] h-[96px] rounded-full bg-primary bg-opacity-70 ring-4 ring-white"
                         style={{
                           background: `url(${userProfile?.profile_url}) center / cover`,
                         }}
@@ -175,7 +175,7 @@ const Profile: React.FC = () => {
                         justify="center"
                         align="center"
                         position="relative"
-                        className="w-[120px] h-[120px] rounded-full ring-4 ring-white bg-gradient-to-b from-white to-red-500 "
+                        className="w-[96px] h-[96px] rounded-full ring-4 ring-white bg-gradient-to-b from-white to-red-500 "
                       >
                         <Image
                           className=""
@@ -195,7 +195,7 @@ const Profile: React.FC = () => {
                     )}
                   </div>
                 </DialogTrigger>
-                <div className="absolute top-10 right-2">
+                <div className="absolute top-6 right-2">
                   <Link href={`/profile/${user?.id}`}>
                     <Button variant="outline" className="border-2 border-[#F4153D] rounded-[30px] space-x-[5px]">
                       <Image src="/uploads/icons/pencil.svg" width={20} height={20} alt="pencil" />
