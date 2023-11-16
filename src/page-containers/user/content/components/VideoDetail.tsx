@@ -45,9 +45,9 @@ const VideoDetail: React.FC<VideoDetailProp> = ({ data, contentMutate }) => {
           <div className="w-full mx-auto h-full relative p-2">
             {data?.content_video && (
               <Flex className="w-full h-full">
-                <div className="w-full h-[88vh] relative">
+                <div className="w-full h-[88vh] relative rounded-md bg-black">
                   <video
-                    className={`w-full  h-full object-cover rounded-md`}
+                    className={`w-full h-full object-contain rounded-md`}
                     id="myVideo"
                     poster={
                       data.image_url ||
@@ -71,7 +71,7 @@ const VideoDetail: React.FC<VideoDetailProp> = ({ data, contentMutate }) => {
                       />
                     </div>
                   )}
-                  <div className="absolute bottom-0 text-white font-semibold bg-black bg-opacity-30 rounded-b-md">
+                  <div className="absolute bottom-0 text-white font-semibold bg-black bg-opacity-30 rounded-b-md w-full">
                     <div className="overflow-hidden p-3">
                       <p className={`${readMore ? "" : "line-clamp-3"} transition-all`} ref={detailDescription}>
                         {data.description}

@@ -11,7 +11,7 @@ import { Box, Container, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import { debounce } from "lodash";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useRef, useState, useTransition } from "react";
+import React, { KeyboardEvent, useEffect, useRef, useState, useTransition } from "react";
 
 const Search: React.FC = () => {
   const [searchValue, setSearchValue] = useState<string>("");
@@ -60,7 +60,7 @@ const Search: React.FC = () => {
     }
   };
 
-  const handleKeyPress = (event: any) => {
+  const handleKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       handleSlotClick();
     }
@@ -76,13 +76,14 @@ const Search: React.FC = () => {
       <Container className="space-y-[]">
         <Box py="2" className="bg-white">
           <header className="w-full max-w-[400px] h-[48px] mx-auto">
-            <Flex onKeyDown={handleKeyPress} justify="between" align="center" height="100%" px="3" position="relative">
+            <Flex justify="between" align="center" height="100%" px="3" position="relative">
               <div className="pr-2" onClick={() => router.back()}>
                 <Icons.back className="text-[#373A36] cursor-pointer w-[23px] h-[23px]" />
               </div>
               <InputSearch
                 onChange={debouncedOnChange}
                 onSlotClick={handleSlotClick}
+                onKeyPress={handleKeyPress}
                 ref={inputRef}
                 variant="contain"
                 className="caret-primary"
