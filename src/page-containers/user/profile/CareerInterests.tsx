@@ -57,7 +57,12 @@ const CareerInterests: React.FC = () => {
           <Section className="bg-white" py="4" px="3">
             <Flex justify="center" align="center" className="mb-[40px] mt-[10px]">
               {/* <InputSearch placeholder="Search Interests" /> */}
-              <InputSearch onChange={debouncedOnChange} ref={inputRef} placeholder="Search Interests" />
+              <InputSearch
+                onChange={debouncedOnChange}
+                ref={inputRef}
+                placeholder="Search Interests"
+                inputClassName="p-[10px]"
+              />
             </Flex>
             <div className="space-y-4">
               {industryData?.data?.published?.map((each, key) => {

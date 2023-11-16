@@ -345,6 +345,11 @@ const ContentDetail = ({ id }: Props) => {
     }
   };
 
+  const handleVideoDelete = () => {
+    setVideoRes(null);
+    setVideoUrl("");
+  };
+
   const submit = async (data: any) => {
     let postdata: any = {};
     if (!imgUrl) {
@@ -578,6 +583,11 @@ const ContentDetail = ({ id }: Props) => {
     }
   };
 
+  const handleImgDelete = () => {
+    setImgRes(null);
+    setImgUrl("");
+  };
+
   const handleSelectChange = (event: SelectChangeEvent) => {
     setSelectedValue(event.target.value);
     setSelectForm("");
@@ -623,24 +633,23 @@ const ContentDetail = ({ id }: Props) => {
   };
 
   const handleDepartmentChange = (event: any, newValue: any) => {
-    newValue.map((value: any) => {
-      if (value.id === 0) {
-        const updatedOptions = departmentOptions.filter(option => option.id !== 0);
-        setSelectedDepartment(updatedOptions);
-      } else {
-        setSelectedDepartment(newValue);
-      }
-    });
+    const hasZeroId = newValue.some((value: any) => value.id === 0);
+    if (hasZeroId) {
+      const optionsWithoutZeroId = departmentOptions.filter(option => option.id !== 0);
+      setSelectedDepartment(optionsWithoutZeroId);
+    } else {
+      setSelectedDepartment(newValue);
+    }
   };
+
   const handleIndustryChange = (event: any, newValue: any) => {
-    newValue.map((value: any) => {
-      if (value.id === 0) {
-        const updatedOptions = industryOptions.filter(option => option.id !== 0);
-        setSelectedIndustry(updatedOptions);
-      } else {
-        setSelectedIndustry(newValue);
-      }
-    });
+    const hasZeroId = newValue.some((value: any) => value.id === 0);
+    if (hasZeroId) {
+      const optionsWithoutZeroId = industryOptions.filter(option => option.id !== 0);
+      setSelectedIndustry(optionsWithoutZeroId);
+    } else {
+      setSelectedIndustry(newValue);
+    }
   };
 
   const handleDeletePathway = (indexValue: number) => {
@@ -783,6 +792,7 @@ const ContentDetail = ({ id }: Props) => {
               id="tags-outlined"
               options={departmentOptions || []}
               value={selectedDepartment}
+              defaultValue={selectedDepartment}
               onChange={handleDepartmentChange}
               renderInput={params => <TextField {...params} label="Career Interest" placeholder="Career Interest" />}
             />
@@ -854,12 +864,19 @@ const ContentDetail = ({ id }: Props) => {
                 </div>
 
                 {videoUrl && (
-                  <div className="mt-4">
-                    <p className="font-bold mb-2">Video Preview:</p>
-                    <video className="w-[300px] h-[300px]" controls>
-                      <source src={videoUrl} type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
+                  <div className="mt-4 flex">
+                    <div>
+                      <p className="font-bold mb-2">Video Preview:</p>
+                      <video className="w-[300px] h-[300px]" controls>
+                        <source src={videoUrl} type="video/mp4" />
+                        Your browser does not support the video tag.
+                      </video>
+                    </div>
+                    <div className="p-[100px]">
+                      <IconButton color="error" onClick={handleVideoDelete}>
+                        <DeleteIcon fontSize="inherit" />
+                      </IconButton>
+                    </div>
                   </div>
                 )}
               </div>
@@ -1143,9 +1160,16 @@ const ContentDetail = ({ id }: Props) => {
               {imgProgress && <ProgressBar progress={imgProgress} />}
             </div>
             {imgUrl && (
-              <div className="mt-4">
-                <p className="font-bold mb-2">Image Preview:</p>
-                <Image width={300} height={300} src={imgUrl} alt="File Preview" className="max-w-full h-auto" />
+              <div className="mt-4 flex">
+                <div>
+                  <p className="font-bold mb-2">Image Preview:</p>
+                  <Image width={300} height={300} src={imgUrl} alt="File Preview" className="max-w-full h-auto" />
+                </div>
+                <div className="p-[100px]">
+                  <IconButton color="error" onClick={handleImgDelete}>
+                    <DeleteIcon fontSize="inherit" />
+                  </IconButton>
+                </div>
               </div>
             )}
           </div>
@@ -1219,7 +1243,7 @@ const ContentDetail = ({ id }: Props) => {
           <div style={{ display: "flex", marginTop: 20, justifyContent: "flex-end" }}>
             {content?.data ? (
               <LoadingButton
-                loading={fileMutating || updateMutating}
+                loading={updateMutating}
                 loadingPosition="start"
                 startIcon={<SaveIcon />}
                 variant="contained"
@@ -1230,7 +1254,7 @@ const ContentDetail = ({ id }: Props) => {
               </LoadingButton>
             ) : (
               <LoadingButton
-                loading={fileMutating || postMutating}
+                loading={postMutating}
                 loadingPosition="start"
                 startIcon={<SaveIcon />}
                 variant="contained"

@@ -78,6 +78,7 @@ export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   clearSlot?: boolean;
   onSlotClick?: (arg?: any) => void;
   onClear?: () => void;
+  inputClassName?: string;
 };
 
 const InputSearch = React.forwardRef<HTMLInputElement, InputProps>(
@@ -95,11 +96,12 @@ const InputSearch = React.forwardRef<HTMLInputElement, InputProps>(
       onChange,
       onKeyPress,
       onFocus,
+      inputClassName = "",
     },
     ref
   ) => {
     return (
-      <InputStyled className={cn("w-full shadow-input", variant && "rounded-full bg-[#e1e5e9]")}>
+      <InputStyled className={cn("w-full shadow-input " + inputClassName, variant && "rounded-full bg-[#e1e5e9]")}>
         <TextField.Root>
           {slotDir === SLOT_DIRECTION.LEFT && (
             <TextField.Slot>

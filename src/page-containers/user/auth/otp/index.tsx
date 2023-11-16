@@ -32,10 +32,11 @@ const Otp = () => {
   const token = getToken();
   const formRef = useRef<any>();
   const [isPending, startTransition] = useTransition();
+  const [showResend, setShowResend] = useState<boolean>(false);
+  const [seconds, setSeconds] = useState<number>(20);
 
-  const { isMutating: verifiedLoading, trigger: verified, error } = useOtpVerified();
+  const { isMutating: verifiedLoading, trigger: verified } = useOtpVerified();
   const { isMutating, trigger: getOtpCode } = useGetOtp();
-  const [otpLoading, setOtpLoading] = useState<boolean>(false);
 
   const form = useForm({
     resolver: yupResolver(validationSchema),
@@ -48,12 +49,13 @@ const Otp = () => {
   });
 
   const getOtp = async () => {
+    setSeconds(20);
     await getOtpCode(null, {
       onSuccess: (res: any) => {
         setMessage(prev => ({ ...prev, isError: false, messageValue: res.data.message }));
       },
       onError: (res: any) => {
-        setMessage(prev => ({ ...prev, isError: true, messageValue: res.data.message }));
+        setMessage(prev => ({ ...prev, isError: true, messageValue: res.response.data.message }));
       },
     });
   };
@@ -72,16 +74,25 @@ const Otp = () => {
           router.push("/industry");
         });
       },
+      onError: (res: any) => {
+        setMessage(prev => ({ ...prev, isError: true, messageValue: res.response.data.message }));
+      },
     });
   }, []);
+
   useEffect(() => {
-    setTimeout(() => {
-      setOtpLoading(() => true);
-      return () => {
-        setOtpLoading(() => false);
-      };
-    }, 20000);
-  }, []);
+    const coundSeconds = setInterval(() => {
+      setSeconds(prevSeconds => prevSeconds - 1);
+    }, 1000);
+    if (seconds === 0) {
+      setShowResend(() => true);
+      clearInterval(coundSeconds);
+    }
+    return () => {
+      clearInterval(coundSeconds);
+      setShowResend(() => false);
+    };
+  }, [seconds]);
 
   useEffect(() => {
     if (otpValue && otpValue.length === 6) {
@@ -92,7 +103,7 @@ const Otp = () => {
   return (
     <Dialog>
       <Grid columns="1">
-        <Box className="h-screen" px="4">
+        <Box className="h-[100dvh-96px]" px="4">
           <Flex direction="column" position="relative" height="100%">
             <Flex justify="between" align="center">
               <Button onClick={() => router.back()} className="p-0" variant="ghost">
@@ -104,14 +115,25 @@ const Otp = () => {
                 </Button>
               )}
             </Flex>
+            {message.messageValue && (
+              <Flex
+                gap="2"
+                className={`${
+                  message.isError ? "bg-red-100" : "bg-green-100"
+                } text-start font-[400] text-[16px]  p-[16px] w-full `}
+              >
+                <Image
+                  src={message.isError ? "/auth/error.svg" : "/personalize/ActiveIcon.svg"}
+                  width={24}
+                  height={24}
+                  alt="error OTP"
+                />
+                {message.messageValue}
+              </Flex>
+            )}
             <Flex direction="column" justify="start" align="center" wrap="wrap" mt="6">
-              {message && (
-                // <div className={`${message.isError ? "bg-red" : "bg-green"}" p-[16px]`}>
-                <Text className={message.isError ? "text-primary" : "text-green-600"}>{message.messageValue}</Text>
-                // </div>
-              )}
               <Flex justify="center" align="center" mb="6">
-                <Image src="/uploads/icons/auth/otp.svg" width={180} height={180} alt="login" />
+                <Image src={"/uploads/icons/auth/otp.svg"} width={180} height={180} alt="login" />
               </Flex>
               <div className="flex justify-start w-full flex-col mb-[32px] flex-wrap gap-y-1">
                 <Heading as="h3" size="6">
@@ -121,7 +143,7 @@ const Otp = () => {
                   Check your inbox and enter the received OTP
                 </Text>
               </div>
-              {error && <Text className="text-primary">{error.response.data.message}</Text>}
+
               <Form {...form}>
                 <form
                   className="w-full flex flex-col justify-center flex-wrap gap-y-3 hide-number-spin "
@@ -158,16 +180,22 @@ const Otp = () => {
                     }}
                   />
                   <Flex align="center">
-                    <Text>Didn&apos;t get it? </Text>
-                    <Button
-                      variant="link"
-                      className="text-primary text-[16px]"
-                      onClick={getOtp}
-                      loading={isMutating}
-                      disabled={isMutating || !otpLoading}
-                    >
-                      Resend
-                    </Button>
+                    {showResend ? (
+                      <>
+                        <Text>Didn&apos;t get it? </Text>
+                        <Button
+                          variant="link"
+                          className="text-primary text-[16px]"
+                          onClick={getOtp}
+                          loading={isMutating}
+                          disabled={isMutating}
+                        >
+                          Resend
+                        </Button>
+                      </>
+                    ) : (
+                      <Text as="div">Resend code in {seconds}s</Text>
+                    )}
                   </Flex>
 
                   <Button type="submit" loading={isPending} disabled={isPending || verifiedLoading} className="mt-5">

@@ -16,7 +16,7 @@ type ContentlayoutProps = {
   contentListId?: string;
 };
 
-const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, contentMutate , contentListId}) => {
+const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, contentMutate, contentListId }) => {
   const [comments, setComments] = useState<number>(0);
   const storeContentList = (id: string) => {
     setLocalStorage("contentListPosition", id);
