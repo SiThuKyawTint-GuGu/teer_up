@@ -388,57 +388,61 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
                                 {formElements(formData.input_config)}
                               </div>
                             ))}
-                          <div className="w-full min-h-full ">
-                            <Text>
-                              By submitting this form, I confirm that I have read, understood and given my consent for
-                              Prudential Assurance Company Singapore and its related corporations, respective
-                              representatives, agents, third party service providers, contractors and/or appointed
-                              distribution/business partners (collectively referred to as “Prudential”), and Small and
-                              Medium-sized Enterprises (“SME”) to collect, use, disclose and/or process my/our personal
-                              data for the purpose(s) of:
-                            </Text>
-                            <ul>
-                              <li>
-                                <Text>1) Registration for TEE Up Programme application.</Text>
-                              </li>
-                              <li>
-                                <Text>2) Events and Courses sign ups.</Text>
-                              </li>
-                              <li>
-                                <Text>3) Internship or Job applications.</Text>
-                              </li>
-                              <li>
-                                <Text>4) Educational and promotional purposes.</Text>
-                              </li>
-                              <li>
-                                <Text>
-                                  I understand that I can refer to Prudential Data Privacy, which is available at{" "}
-                                  <Link
-                                    className="text-primary"
-                                    target="_blank"
-                                    href="http://www.prudential.com.sg/Privacy-Notice"
-                                  >
-                                    http://www.prudential.com.sg/Privacy-Notice
-                                  </Link>{" "}
-                                  for more information.
-                                </Text>
-                                <Text>
-                                  I may contact{" "}
-                                  <Link
-                                    className="text-primary"
-                                    target="_blank"
-                                    href="mailto:innovation@prudential.com.sg"
-                                  >
-                                    innovation@prudential.com.sg
-                                  </Link>{" "}
-                                  on how I may access and correct my personal data or withdraw consent to the
-                                  collection, use or disclosure of my personal data.
-                                </Text>
-                              </li>
-                            </ul>
-                            <Flex gap="3" align="center" my="2" width="100%">
+                          <div className="w-full min-h-full pt-2">
+                            <Flex>
                               <Checkbox className="me-3" onCheckedChange={(val: boolean) => setChecked(val)} />
-                              <Text>I have read, agreed and consent</Text>
+                              <Flex direction="column">
+                                <Text>
+                                  By submitting this form, I confirm that I have read, understood and given my consent
+                                  for Prudential Assurance Company Singapore and its related corporations, respective
+                                  representatives, agents, third party service providers, contractors and/or appointed
+                                  distribution/business partners (collectively referred to as “Prudential”), and Small
+                                  and Medium-sized Enterprises (“SME”) to collect, use, disclose and/or process my/our
+                                  personal data for the purpose(s) of:
+                                </Text>
+                                <ul>
+                                  <li>
+                                    <Text>1) Registration for TEE Up Programme application.</Text>
+                                  </li>
+                                  <li>
+                                    <Text>2) Events and Courses sign ups.</Text>
+                                  </li>
+                                  <li>
+                                    <Text>3) Internship or Job applications.</Text>
+                                  </li>
+                                  <li>
+                                    <Text>4) Educational and promotional purposes.</Text>
+                                  </li>
+                                  <li>
+                                    <Text>
+                                      I understand that I can refer to Prudential Data Privacy, which is available at{" "}
+                                      <Link
+                                        className="text-primary"
+                                        target="_blank"
+                                        href="http://www.prudential.com.sg/Privacy-Notice"
+                                      >
+                                        http://www.prudential.com.sg/Privacy-Notice
+                                      </Link>{" "}
+                                      for more information.
+                                    </Text>
+                                    <Text>
+                                      I may contact{" "}
+                                      <Link
+                                        className="text-primary"
+                                        target="_blank"
+                                        href="mailto:innovation@prudential.com.sg"
+                                      >
+                                        innovation@prudential.com.sg
+                                      </Link>{" "}
+                                      on how I may access and correct my personal data or withdraw consent to the
+                                      collection, use or disclosure of my personal data.
+                                    </Text>
+                                  </li>
+                                </ul>
+                                <Flex gap="3" align="center" my="2" width="100%">
+                                  <Text>I have read, agreed and consent</Text>
+                                </Flex>
+                              </Flex>
                             </Flex>
                           </div>
                         </Flex>
