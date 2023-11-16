@@ -91,7 +91,7 @@ const NormalContentDetail: React.FC<NormalContentDetailProp> = ({ data, contentM
             </div>
           </div>
           <div className="w-full fixed bottom-0 max-w-[400px]">
-            <LikeCmtBar data={data} mutate={contentMutate} comments={comments} setComments={setComments} />
+            {data && <LikeCmtBar data={data} mutate={contentMutate} comments={comments} setComments={setComments} />}
           </div>
         </div>
       )}
