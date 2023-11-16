@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
-import { useForm } from "react-hook-form";
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
+import { useForm, useWatch } from "react-hook-form";
 import * as yup from "yup";
 
 import { Button } from "@/components/ui/Button";
@@ -27,22 +27,25 @@ interface OtpFormData {
 
 const Otp = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const { isMutating: verifiedLoading, trigger: verified, error } = useOtpVerified();
   const router = useRouter();
-  const [isPending, startTransition] = useTransition();
   const token = getToken();
-  const jwtDecode = token && (jwt_decode(token) as JWT_DECODE);
+  const formRef = useRef<any>();
+  const [isPending, startTransition] = useTransition();
+
+  const { isMutating: verifiedLoading, trigger: verified, error } = useOtpVerified();
   // const { isMutating, trigger: getOtpCode } = useGetOtp();
+
+  const form = useForm({
+    resolver: yupResolver(validationSchema),
+  });
+  const otpValue = useWatch({ control: form?.control, name: "verificationCode" });
+  const jwtDecode = token && (jwt_decode(token) as JWT_DECODE);
 
   // const getOtp = async () => {
   //   await getOtpCode();
   // };
 
-  const form = useForm({
-    resolver: yupResolver(validationSchema),
-  });
-
-  const onSubmit = async (data: OtpFormData) => {
+  const onSubmit = useCallback(async (data: OtpFormData) => {
     await verified(data, {
       onSuccess: res => {
         setUserInfo(res.data.token, res.data.data);
@@ -52,14 +55,18 @@ const Otp = () => {
             router.push("/home");
             return;
           }
-
           setLocalStorage("content", 0);
-
           router.push("/industry");
         });
       },
     });
-  };
+  }, []);
+
+  useEffect(() => {
+    if (otpValue && otpValue.length === 6) {
+      form.handleSubmit(onSubmit)();
+    }
+  }, [form, otpValue, onSubmit]);
 
   return (
     <Grid columns="1">
@@ -76,7 +83,6 @@ const Otp = () => {
             )}
           </Flex>
           <Flex direction="column" justify="start" align="center" wrap="wrap" mt="6">
-            <div>{error && <div className="text-primary">{error.response.data.message}</div>}</div>
             <Flex justify="center" align="center" mb="6">
               <Image src="/uploads/icons/auth/otp.svg" width={180} height={180} alt="login" />
             </Flex>
@@ -88,38 +94,41 @@ const Otp = () => {
                 Check your inbox and enter the received OTP
               </Text>
             </div>
-
+            {error && <Text className="text-primary">{error.response.data.message}</Text>}
             <Form {...form}>
               <form
                 className="w-full flex flex-col justify-center flex-wrap gap-y-3 hide-number-spin "
                 onSubmit={form.handleSubmit(onSubmit)}
+                ref={formRef}
               >
                 <FormField
                   control={form.control}
                   name="verificationCode"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <div className="flex align-middle justify-center">
-                          <OtpInput
-                            numInputs={6}
-                            inputType="number"
-                            inputStyle={{
-                              width: "16%",
-                              height: 64,
-                              background: "#ffffff",
-                              boxShadow: "0px 26px 30px 0px rgba(0, 0, 0, 0.05)",
-                              borderRadius: 8,
-                              margin: 5,
-                              outline: 0,
-                            }}
-                            {...field}
-                            renderInput={props => <input {...props} />}
-                          />
-                        </div>
-                      </FormControl>
-                    </FormItem>
-                  )}
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <FormControl>
+                          <div className="flex align-middle justify-center">
+                            <OtpInput
+                              numInputs={6}
+                              inputType="number"
+                              inputStyle={{
+                                width: "16%",
+                                height: 64,
+                                background: "#ffffff",
+                                boxShadow: "0px 26px 30px 0px rgba(0, 0, 0, 0.05)",
+                                borderRadius: 8,
+                                margin: 5,
+                                outline: 0,
+                              }}
+                              {...field}
+                              renderInput={props => <input {...props} />}
+                            />
+                          </div>
+                        </FormControl>
+                      </FormItem>
+                    );
+                  }}
                 />
 
                 <Button type="submit" loading={isPending} disabled={isPending || verifiedLoading} className="mt-5">
