@@ -151,7 +151,7 @@ const BrowsePage: React.FC = () => {
         ))}
       </Flex>
       {type === "all" && (!search || search === "") ? (
-        <div className="overflow-y-scroll no-scrollbar h-full bg-[#F8F9FB] ">
+        <div className="overflow-y-scroll no-scrollbar h-full bg-[#F8F9FB] scroll-smooth" id="content-list-container">
           {homeContent?.data && homeContent?.data?.length !== 0 ? (
             homeContent?.data?.map((contentData: ContentHomeData, index: number) => {
               return (
@@ -216,7 +216,11 @@ const BrowsePage: React.FC = () => {
         </div>
       ) : (
         <Flex direction="column" className="w-full h-full pt-[10px]">
-          <div className="w-full h-full overflow-y-scroll no-scrollbar " ref={containerRef}>
+          <div
+            className="w-full h-full overflow-y-scroll no-scrollbar scroll-smooth"
+            ref={containerRef}
+            id="content-list-container"
+          >
             <Box className="">
               {bannerIconUrl && (
                 <div className="mx-2  overflow-hidden pb-[15px] mb-[10px] border-b border-b-[#BDC7D5]">

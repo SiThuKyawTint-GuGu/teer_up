@@ -134,14 +134,14 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
             <div
               className="h-full w-full"
               onClick={() => {
-                if (data.description.length > 50) {
+                if (data?.description?.length > 50) {
                   setShowDescription(true);
                 }
               }}
             >
               <div className="mb-3">{data.title}</div>
               <div>
-                {data.description.length > 50 ? (
+                {data?.description?.length > 50 ? (
                   <div>
                     {data.description.slice(0, 50)}...
                     <Text as="span" className="text-primary">
@@ -149,7 +149,7 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
                     </Text>
                   </div>
                 ) : (
-                  <Text>data.description</Text>
+                  <Text>{data.description}</Text>
                 )}
               </div>
             </div>

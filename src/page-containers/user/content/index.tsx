@@ -6,7 +6,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 
 import Loading from "@/app/loading";
-import { getLocalStorage, setLocalStorage } from "@/utils";
+import fetcher from "@/lib/fetcher";
+import { getLocalStorage, removeLocalStorage, setLocalStorage } from "@/utils";
 import { getUserInfo } from "@/utils/auth";
 import { Box } from "@radix-ui/themes";
 import ContentLayout from "./components/ContentLayout";
@@ -37,7 +38,7 @@ const UserContent = () => {
     mutate,
     isLoading,
     setSize,
-  } = useSWRInfinite(index => `/content?page=${index + 1}&pagesize=${20}`, {
+  } = useSWRInfinite(index => `/content?page=${index + 1}&pagesize=${20}`, fetcher, {
     revalidateFirstPage: false,
     revalidateAll: false,
     revalidateIfStale: false,
@@ -159,6 +160,7 @@ const UserContent = () => {
     const targetElement = document.getElementById(`${storeContentIndex}`);
     if (targetElement) {
       targetElement.scrollIntoView({});
+      removeLocalStorage("contentPosition");
     }
   }, []);
 
@@ -167,8 +169,9 @@ const UserContent = () => {
       {!isLoading ? (
         <Box
           ref={containerRef}
-          className={`snap-y flex-col snap-mandatory h-[calc(100dvh-112px)] pt-[6px] pb-[6px] px-[12px]  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
+          className={`snap-y flex-col snap-mandatory h-[calc(100dvh-112px)] pt-[6px] pb-[6px] px-[12px]  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll scroll-smooth`}
           style={{ scrollSnapStop: "always" }}
+          id="explore-list-container"
         >
           {contentDataArray &&
             contentDataArray.length > 0 &&

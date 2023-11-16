@@ -20,7 +20,7 @@ const NormalContentDetail: React.FC<NormalContentDetailProp> = ({ data, contentM
   return (
     <>
       {data && (
-        <div className="w-full  h-full bg-[##F8F9FB] no-scrollbar  overflow-y-auto ">
+        <div className="w-full  h-full no-scrollbar  overflow-y-auto">
           {" "}
           <div className="w-full mx-auto h-[300px] relative p-2">
             <div
@@ -37,9 +37,9 @@ const NormalContentDetail: React.FC<NormalContentDetailProp> = ({ data, contentM
             </div>
           </div>
           <div className="w-full px-[16px]">
-            <div className="w-full h-full">
+            <div className="w-full">
               <h1 className="font-[700] text-[24px]">{data?.title}</h1>
-              <div className="w-full h-full flex flex-col flex-wrap gap-y-3">
+              <div className="w-full  flex flex-col flex-wrap gap-y-3">
                 {data.type !== "opportunity" && data.type !== "article" && (
                   <section
                     dangerouslySetInnerHTML={{
@@ -90,8 +90,8 @@ const NormalContentDetail: React.FC<NormalContentDetailProp> = ({ data, contentM
               </div>
             </div>
           </div>
-          <div className="w-full fixed bottom-0 max-w-[400px]">
-            <LikeCmtBar data={data} mutate={contentMutate} comments={comments} setComments={setComments} />
+          <div className="w-full fixed bottom-0 max-w-[400px] z-[999]">
+            {data && <LikeCmtBar data={data} mutate={contentMutate} comments={comments} setComments={setComments} />}
           </div>
         </div>
       )}

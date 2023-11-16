@@ -182,10 +182,10 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
       targetElement.scrollIntoView({});
     }
   }, []);
-
   return (
     <>
       <div
+        onClick={() => setShowPathTitle(pre => !pre)}
         ref={containerRef}
         className={`snap-y  flex-col snap-mandatory h-[calc(100dvh-100px)] pt-[6px] pb-[6px] px-[12px]  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
         style={{ scrollSnapStop: "always" }}
@@ -194,7 +194,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
           data?.content_pathways.length > 0 &&
           data?.content_pathways.map((data, index) => (
             <div
-              className="w-full h-full snap-start mt-[12px] mb-[12px]"
+              className="w-full h-full snap-start mt-[12px] mb-[15px]"
               style={{ scrollSnapStop: "always" }}
               id={index.toString()}
               key={index}
@@ -205,11 +205,11 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
           ))}
       </div>
       <div
-        className={`max-w-[400px] pathwayBottomNav mx-auto py-3 left-0 w-full flex flex-column sticky bottom-0  overflow-y-scroll rounded-lg ${
+        className={`max-w-[379px] pathwayBottomNav mx-auto py-3 left-0 w-full flex flex-column sticky bottom-0  overflow-y-scroll rounded-lg ${
           showPathTitle && "h-[60%]"
         } px-2 flex-wrap  bg-white z-[99999]`}
       >
-        <div className="w-full h-full relative">
+        <div className="w-full h-full bg-white relative ">
           <Flex justify="between" onClick={() => setShowPathTitle(pre => !pre)} className="w-full">
             <Flex direction="column">
               <div className="font-[600] text-[16px]">{data?.title}</div>
@@ -217,14 +217,10 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
                 Completed {data?.content_pathways && calculatePercentage(data.content_pathways, visibleItemIndex)}%
               </div>
             </Flex>
-
             {!showPathTitle ? (
               <Icons.upArrow className="text-primary w-[20px] cursor-pointer h-[20px] absolute top-0 right-0" />
             ) : (
-              <Icons.downArrow
-                className="text-primary w-[20px] cursor-pointer h-[20px] absolute top-0 right-0"
-                onClick={() => setShowPathTitle(false)}
-              />
+              <Icons.downArrow className="text-primary w-[20px] cursor-pointer h-[20px] absolute top-0 right-0" />
             )}
           </Flex>
           {showPathTitle && (
@@ -232,20 +228,21 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
               {data?.content_pathways &&
                 data?.content_pathways.length > 0 &&
                 data.content_pathways.map((data, index) => (
-                  <div key={index} className="font-[600]  flex flex-col w-full text-[16px] py-1">
+                  <div
+                    key={index}
+                    onClick={() => {
+                      setShowPathTitle(false);
+                      const targetElement = document.getElementById(index.toString());
+                      if (targetElement) {
+                        targetElement.scrollIntoView({
+                          behavior: "smooth", // Smooth scroll effect
+                        });
+                      }
+                    }}
+                    className="font-[600]  flex flex-col w-full text-[16px] py-1"
+                  >
                     <Flex justify="between" className="w-full py-2">
-                      <div
-                        className={`cursor-pointer ${visibleItemIndex === index && "text-primary"}`}
-                        onClick={() => {
-                          setShowPathTitle(false);
-                          const targetElement = document.getElementById(index.toString());
-                          if (targetElement) {
-                            targetElement.scrollIntoView({
-                              behavior: "smooth", // Smooth scroll effect
-                            });
-                          }
-                        }}
-                      >
+                      <div className={`cursor-pointer ${visibleItemIndex === index && "text-primary"}`}>
                         {data.title || "--------"}
                       </div>
                       {index === visibleItemIndex && (

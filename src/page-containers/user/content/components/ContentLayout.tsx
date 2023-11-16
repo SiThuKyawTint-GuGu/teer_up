@@ -41,11 +41,11 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate }) =>
   return (
     <CardBox className="w-full shadow-xl rounded-lg h-[100%] justify-start flex-col mt-[15px] mb-[15px]">
       <Grid rows="3" className="h-full w-full flex flex-col bg-white shadow-lg">
-        <Link href={`/content/${data.slug}`} className="w-full h-[250px] mx-auto relative block">
+        <Link href={`/content/${data?.slug}`} className="w-full h-[250px] mx-auto relative block">
           <div
             className="relative w-full max-w-[400px] h-[250px] rounded-t-[8px]"
             style={{
-              background: `url(${data.image_url}) center / cover`,
+              background: `url(${data?.image_url}) center / cover`,
             }}
           >
             {data.type !== "video" && (
@@ -56,7 +56,7 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate }) =>
           </div>
         </Link>
         <div className="w-full h-full pt-[16px] px-[16px]">
-          <Link href={`/content/${data.slug}`}>
+          <Link href={`/content/${data?.slug}`}>
             <Flex direction="column" className="w-full h-full">
               {/* Ref to get the content height and dynamically set max height */}
               <div
@@ -64,12 +64,12 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate }) =>
                 className="flex flex-col"
                 // style={{ maxHeight: maxHeight !== undefined ? `${maxHeight - 30}px` : "none", overflow: "hidden" }}
               >
-                <Text className="text-[24px] font-[700] leading-[32px]">{data.title}</Text>
-                <Text className="pt-[10px]">
-                  {data.description.slice(0, 150)}
+                <Text className="text-[24px] font-[700] leading-[32px]">{data?.title}</Text>
+                <Text>
+                  {data?.description?.slice(0, 150)}
 
-                  {data.description.length > 150 && (
-                    <Text as="span" className="text-primary ">
+                  {data?.description?.length > 150 && (
+                    <Text as="span" className="text-primary">
                       {"..."}See more
                     </Text>
                   )}

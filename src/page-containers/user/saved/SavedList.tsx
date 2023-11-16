@@ -8,8 +8,8 @@ import { Dialog, DialogClose, DialogContent, DialogTrigger } from "@/components/
 import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import {
-  SavedContentParams,
   SAVED_CONTENT_TYPES,
+  SavedContentParams,
   useGetSavedContents,
   useGetUnfinishedPathway,
   useSaveContent,
@@ -66,9 +66,19 @@ const SavedList: React.FC = () => {
   const { trigger: contentSave } = useSaveContent();
   const [triggerType, setTriggerType] = useState<TRIGGER_TYPE>();
   const [refreshKey, setRefreshKey] = useState<number>(0);
-
-  const [filteredType, setFilterTypes] = useState<{
-    key: SAVED_CONTENT_TYPES;
+  const [filteredType, setFilterTypes] = useState<
+    {
+      key: SAVED_CONTENT_TYPES;
+      value: string;
+    }[]
+  >([
+    {
+      key: filterNames[0].key,
+      value: filterNames[0].value,
+    },
+  ]);
+  const [filteredParams, setFilterParams] = useState<{
+    key: string;
     value: string;
   }>({
     key: filterNames[0].key,
@@ -79,7 +89,7 @@ const SavedList: React.FC = () => {
     mutate,
     isLoading,
   } = useGetSavedContents<SavedContentParams, SavedContentResponse>({
-    type: filteredType.key === SAVED_CONTENT_TYPES.ALL ? "" : filteredType.key,
+    type: filteredParams.key === SAVED_CONTENT_TYPES.ALL ? "" : filteredParams.key,
   });
   const { data: unFinishedPathways } = useGetUnfinishedPathway<UnfinishedPathwayResponse>();
 
@@ -94,14 +104,27 @@ const SavedList: React.FC = () => {
       </div>
     );
   };
-
+  function capitalizeFirstLetter(string: string) {
+    if (!string) return;
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
   const unSaveContent = async () => {
     await contentSave({
       id: content,
     });
     await mutate();
   };
-
+  const handleCheckFilter = (each: { key: SAVED_CONTENT_TYPES; value: string }) => {
+    if (each.key === SAVED_CONTENT_TYPES.ALL) {
+      setFilterTypes([each]);
+      return;
+    }
+    let filteredData = filteredType.filter(data => data.key !== SAVED_CONTENT_TYPES.ALL);
+    filteredData.find(data => data.key === each.key)
+      ? setFilterTypes(filteredData.filter(data => data.key !== each.key))
+      : setFilterTypes([...filteredData, each]);
+    return;
+  };
   const toggleMenu = (data: any) => {
     setContent(data.content_id);
     setIsMenuVisible(isMenuVisible && data.content_id == content ? !isMenuVisible : true);
@@ -119,12 +142,17 @@ const SavedList: React.FC = () => {
       <Grid columns="1">
         <Box>
           <Flex justify="between" align="center" className="bg-white" p="3">
-            <Heading as="h6" size="4" align="left">
+            <Heading as="h6" size="7" align="left">
               Saved items
             </Heading>
             <DialogTrigger asChild onClick={() => setTriggerType(TRIGGER_TYPE.FILTER)}>
               <Button variant="ghost" className="text-primary">
-                {filteredType.key === SAVED_CONTENT_TYPES.ALL ? "All" : filteredType.value}
+                {capitalizeFirstLetter(filteredParams?.key?.split(",")?.[0])}
+                {filteredParams.key.split(",").length > 1 && ` + ${filteredParams.key.split(",").length - 1} more`}
+                {/* {
+                  filteredType.find(data => data.key === filteredParams.key)?.value ||
+                  filteredParams.value
+                } */}
                 <Icons.caretDown />
               </Button>
             </DialogTrigger>
@@ -141,9 +169,14 @@ const SavedList: React.FC = () => {
               {savedContents?.data?.length ? (
                 savedContents?.data?.map((each, key) => (
                   <Box key={key} pb="4">
-                    <CardBox className="p-[8px]">
+                    <CardBox className="p-[8px] bg-white">
                       <Flex justify="start" align="start" gap="2">
-                        <BGImage width="128px" height="100px" url={each?.content?.image_url} />
+                        <BGImage
+                          width="128px"
+                          height="100px"
+                          className="rounded-[4px]"
+                          url={each?.content?.image_url}
+                        />
                         <Link key={key} href={`/content/${each?.content?.slug}`} className="w-3/4">
                           <Flex className="text-[#373A36] space-y-1" direction="column" wrap="wrap">
                             <Text>{each?.content?.title}</Text>
@@ -199,20 +232,32 @@ const SavedList: React.FC = () => {
               key={key}
               className={cn(
                 "pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]",
-                each.key === filteredType.key && "text-primary"
+                filteredType.find(data => data.key === each.key) && "text-primary",
+                key === filterNames.length - 1 && "border-none"
               )}
-              onClick={() => setFilterTypes(each)}
+              onClick={() => {
+                handleCheckFilter(each);
+              }}
             >
-              <DialogClose className="w-full">
-                <Flex justify="between" align="center" gap="2">
-                  <Text as="label" weight="bold" size="3">
-                    {each.value}
-                  </Text>
-                  <Icons.check />
-                </Flex>
-              </DialogClose>
+              <Flex justify="between" align="center" gap="2">
+                <Text as="label" weight="bold" size="3">
+                  {each.value}
+                </Text>
+                <Icons.check className="text-lg" />
+              </Flex>
             </div>
           ))}
+          <DialogClose
+            className="w-full"
+            onClick={async () => {
+              setFilterParams({
+                key: filteredType.map(data => data.key).join(","),
+                value: filteredType[0].value,
+              });
+            }}
+          >
+            <Button className="w-full">Apply filters</Button>
+          </DialogClose>
         </Box>
       </DialogContent>
     </Dialog>
