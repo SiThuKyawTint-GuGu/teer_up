@@ -17,8 +17,7 @@ type ContentlayoutProps = {
   id?: string;
 };
 
-
-const BrowserCategoryContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, contentMutate, id}) => {
+const BrowserCategoryContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, contentMutate, id }) => {
   const [commets, setComments] = useState<number>(0);
   useEffect(() => {
     setComments(data?.comments);

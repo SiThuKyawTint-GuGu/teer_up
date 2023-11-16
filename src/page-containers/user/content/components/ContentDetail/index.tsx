@@ -4,7 +4,7 @@ import LikeCmtBar from "@/components/contentLayout/LikeCmtBar";
 import { Icons } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import { ContentData, ContentKeywords } from "@/types/Content";
-import { Flex } from "@radix-ui/themes";
+import { Flex, Grid } from "@radix-ui/themes";
 
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
@@ -18,7 +18,7 @@ const NormalContentDetail: React.FC<NormalContentDetailProp> = ({ data, contentM
     setComments(data.comments);
   }, [data.comments]);
   return (
-    <>
+    <Grid columns="1" className="w-full h-full">
       {data && (
         <div className="w-full  h-full no-scrollbar  overflow-y-auto">
           {" "}
@@ -95,7 +95,7 @@ const NormalContentDetail: React.FC<NormalContentDetailProp> = ({ data, contentM
           </div>
         </div>
       )}
-    </>
+    </Grid>
   );
 };
 
