@@ -198,7 +198,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
         <>
           <Box className="pb-[7px]">
             <Section py="1" px="3">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="email" className="block mb-3 text-md font-medium text-gray-700">
                 {inputData.placeholder}
               </label>
               {/* {inputData.input_options.map((input: Input_options, index: number) => (
@@ -208,11 +208,17 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
                   <label>{input.label}</label>
                 </div>
               ))} */}
-              <Radio className="space-y-[10px]" onValueChange={val => handleInput(inputData.id, val)}>
+              <Radio className="space-y-[10px] mb-2" onValueChange={val => handleInput(inputData.id, val)}>
                 {inputData.input_options?.map((input: Input_options, key) => (
                   <Label key={key}>
-                    <Flex className="capitalize w-full" justify="end" gap="3" direction="row-reverse" align="center">
-                      <Text>{input.label}</Text>
+                    <Flex
+                      className="capitalize mb-2  w-full"
+                      justify="end"
+                      gap="3"
+                      direction="row-reverse"
+                      align="center"
+                    >
+                      <Text className="px-2">{input.label}</Text>
                       <RadioItem value={input.value} />
                     </Flex>
                   </Label>
@@ -226,7 +232,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
     if (inputData.type === "date") {
       return (
         <Box className="pb-[7px]">
-          <Section className="bg-white" py="1" px="3">
+          <Section className="" py="1" px="3">
             <label>{inputData.name}</label>
             <CardBox className="px-[12px] py-[8px] ">
               <label className="flex justify-between items-center">
@@ -268,6 +274,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
           <Section className="bg-white" py="1" px="3">
             <InputText
               type="text"
+              className="p-2"
               inputType={inputData.type}
               placeholder={inputData.placeholder}
               handleChange={(e: ChangeEvent<HTMLInputElement>) => {
@@ -292,7 +299,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
         //     </option>
         //   ))}
         // </select>
-        <Box className="pb-[7px] px-3">
+        <Box className="pb-[7px] ">
           {/* <Section className="bg-white w-full" py="1" px="3">
             <Select
               onValueChange={(value: string) => {
@@ -337,7 +344,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
               handleInput(inputData.id, event.target.value);
             }}
           >
-            <label className="block text-sm font-medium text-gray-700">{inputData.placeholder}</label>
+            <label className="block text-md font-medium text-gray-700">{inputData.placeholder}</label>
             {inputData.input_options.map((input: Input_options, index: number) => (
               <div key={index} className="flex w-full flex-wrap my-2 items-center gap-x-2">
                 <Checkbox defaultChecked={false} value={input.value} />
@@ -373,7 +380,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
                           {message}
                         </Text>
                       )}
-                      <div className="mx-auto flex flex-col   bg-white justify-center flex-wrap gap-y-5 w-full h-full">
+                      <div className="mx-auto flex flex-col   bg-white justify-center flex-wrap gap-y-5 w-full">
                         <Flex direction="column" justify="center" className="w-full h-full">
                           {form &&
                             form.formdetails_configs.map((formData: any, formIndex) => (
@@ -381,7 +388,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
                                 {formElements(formData.input_config)}
                               </div>
                             ))}
-                          <div className="w-full ">
+                          <div className="w-full min-h-full ">
                             <Text>
                               By submitting this form, I confirm that I have read, understood and given my consent for
                               Prudential Assurance Company Singapore and its related corporations, respective
@@ -406,14 +413,24 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
                               <li>
                                 <Text>
                                   I understand that I can refer to Prudential Data Privacy, which is available at{" "}
-                                  <Link href="http://www.prudential.com.sg/Privacy-Notice">
+                                  <Link
+                                    className="text-primary"
+                                    target="_blank"
+                                    href="http://www.prudential.com.sg/Privacy-Notice"
+                                  >
                                     http://www.prudential.com.sg/Privacy-Notice
                                   </Link>{" "}
                                   for more information.
                                 </Text>
                                 <Text>
                                   I may contact{" "}
-                                  <Link href="mailto:innovation@prudential.com.sg">innovation@prudential.com.sg</Link>{" "}
+                                  <Link
+                                    className="text-primary"
+                                    target="_blank"
+                                    href="mailto:innovation@prudential.com.sg"
+                                  >
+                                    innovation@prudential.com.sg
+                                  </Link>{" "}
                                   on how I may access and correct my personal data or withdraw consent to the
                                   collection, use or disclosure of my personal data.
                                 </Text>
@@ -426,7 +443,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
                           </div>
                         </Flex>
                       </div>
-                      <Section py="1" px="3">
+                      <Section py="1" className="mt-3" px="3">
                         <Button
                           loading={isMutating}
                           disabled={isMutating || !checked}

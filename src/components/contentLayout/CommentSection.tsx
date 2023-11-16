@@ -81,11 +81,11 @@ const CommentSection: React.FC<CommentSectionProp> = ({ data, setComments }) => 
           </div>
 
           <div className="w-full z-[9]">
-            <form onSubmit={postSubmitHandler} autoFocus={false} className="w-full flex font-[16px]">
+            <form onSubmit={postSubmitHandler} autoFocus={false} className="w-full flex">
               <CmtInput setValue={setCommentValue} value={commentValue} />
               <Button
                 type="submit"
-                className={`${isMutating ? "text-slateGray" : "text-primary font-[600]"} p-1`}
+                className={`${isMutating ? "text-slateGray" : "text-primary font-[600] text-[16px]"} p-1`}
                 disabled={isMutating || commentValue === ""}
                 variant="destructive"
               >
