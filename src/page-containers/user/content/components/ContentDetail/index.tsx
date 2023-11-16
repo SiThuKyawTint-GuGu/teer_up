@@ -20,7 +20,7 @@ const NormalContentDetail: React.FC<NormalContentDetailProp> = ({ data, contentM
   return (
     <>
       {data && (
-        <div className="w-full  h-full bg-white no-scrollbar  overflow-y-auto">
+        <div className="w-full  h-full no-scrollbar  overflow-y-auto">
           {" "}
           <div className="w-full mx-auto h-[300px] relative p-2">
             <div
