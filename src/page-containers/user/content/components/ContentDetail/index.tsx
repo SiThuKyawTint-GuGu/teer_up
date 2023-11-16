@@ -37,9 +37,9 @@ const NormalContentDetail: React.FC<NormalContentDetailProp> = ({ data, contentM
             </div>
           </div>
           <div className="w-full px-[16px]">
-            <div className="w-full h-full">
+            <div className="w-full">
               <h1 className="font-[700] text-[24px]">{data?.title}</h1>
-              <div className="w-full h-full flex flex-col flex-wrap gap-y-3">
+              <div className="w-full  flex flex-col flex-wrap gap-y-3">
                 {data.type !== "opportunity" && data.type !== "article" && (
                   <section
                     dangerouslySetInnerHTML={{
