@@ -4,12 +4,9 @@ import { useContentForm, useLikeContent, useSaveContent } from "@/services/conte
 import { ContentData, Input_config, Input_options } from "@/types/Content";
 import { cn } from "@/utils/cn";
 import { Box, Flex, Section } from "@radix-ui/themes";
-import dayjs from "dayjs";
 import Link from "next/link";
 import React, { ChangeEvent, useEffect, useMemo, useState } from "react";
-import ReactDatePicker from "react-datepicker";
 import { Button } from "../ui/Button";
-import CardBox from "../ui/Card";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/Dialog";
 import { Icons } from "../ui/Images";
 import { InputText } from "../ui/Inputs";
@@ -52,7 +49,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
     saves: 0,
     is_save: false,
   });
-
+  console.log(selectedOptions);
   useEffect(() => {
     setReacion(prev => ({
       ...prev,
@@ -85,10 +82,12 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
     });
   };
 
-  const handleRadio = (input: Input_options, InputConfigId: number | string) => {
+  const handleCheckBox = (input: Input_options, InputConfigId: number | string) => {
     const sameId = selectedOptions.find(e => e.value === input.value);
+    console.log(sameId);
+
     if (sameId) {
-      setSelectedOptions(prev => prev.filter(e => e.inputconfig_id !== InputConfigId));
+      setSelectedOptions(prev => prev.filter(e => e.value !== input.value));
       return;
     }
     const config = {
@@ -233,9 +232,9 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
       return (
         <Box className="pb-[7px]">
           <Section className="" py="1" px="3">
-            <label>{inputData.name}</label>
-            <CardBox className="px-[12px] py-[8px] ">
-              <label className="flex justify-between items-center">
+            <Text as="label">{inputData.name}</Text>
+            {/* <CardBox className="px-[12px] py-[8px] "> */}
+            {/* <label className="flex justify-between items-center">
                 <ReactDatePicker
                   onChange={(date: Date | null) => {
                     if (date) {
@@ -249,8 +248,12 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
                   shouldCloseOnSelect
                 />
                 <Icons.calender />
-              </label>
-            </CardBox>
+              </label> */}
+            <input
+              type="date"
+              className={cn("font-light shadow-md bg-white border-0 text-black w-full h-[40px] p-3 outline-none")}
+            />
+            {/* </CardBox> */}
           </Section>
         </Box>
       );
@@ -327,8 +330,14 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
             }}
           >
             {inputData.input_options.map((dropdown: Input_options, index: number) => (
-              <Item key={index} value={dropdown.value}>
-                {dropdown.label}
+              <Item
+                key={index}
+                value={dropdown.value}
+                // onChange={() => {
+                //   handleInput(inputData.id, dropdown.value);
+                // }}
+              >
+                <Text>{dropdown.label}</Text>
               </Item>
             ))}
           </Autocomplete>
@@ -337,18 +346,16 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
     if (inputData.type === "checkbox") {
       return (
         <Box className="pb-[7px]">
-          <Section
-            py="1"
-            px="3"
-            onChange={(event: ChangeEvent<HTMLInputElement>) => {
-              handleInput(inputData.id, event.target.value);
-            }}
-          >
+          <Section py="1" px="3">
             <label className="block text-md font-medium text-gray-700">{inputData.placeholder}</label>
             {inputData.input_options.map((input: Input_options, index: number) => (
               <div key={index} className="flex w-full flex-wrap my-2 items-center gap-x-2">
-                <Checkbox defaultChecked={false} value={input.value} />
-                <label>{input.label}</label>
+                <Checkbox
+                  defaultChecked={false}
+                  onCheckedChange={() => handleCheckBox(input, inputData.id)}
+                  value={input.value}
+                />
+                <Text>{input.label}</Text>
               </div>
             ))}
           </Section>
