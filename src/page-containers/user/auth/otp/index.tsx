@@ -52,6 +52,9 @@ const Otp = () => {
       onSuccess: (res: any) => {
         setMessage(prev => ({ ...prev, isError: false, messageValue: res.data.message }));
       },
+      onError: (res: any) => {
+        setMessage(prev => ({ ...prev, isError: true, messageValue: res.data.message }));
+      },
     });
   };
 
@@ -103,7 +106,9 @@ const Otp = () => {
             </Flex>
             <Flex direction="column" justify="start" align="center" wrap="wrap" mt="6">
               {message && (
-                <Text className={`${message.isError ? "text-primary" : "text-green-600"}`}>{message.messageValue}</Text>
+                // <div className={`${message.isError ? "bg-red" : "bg-green"}" p-[16px]`}>
+                <Text className={message.isError ? "text-primary" : "text-green-600"}>{message.messageValue}</Text>
+                // </div>
               )}
               <Flex justify="center" align="center" mb="6">
                 <Image src="/uploads/icons/auth/otp.svg" width={180} height={180} alt="login" />
@@ -152,15 +157,24 @@ const Otp = () => {
                       );
                     }}
                   />
+                  <Flex align="center">
+                    <Text>Didn&apos;t get it? </Text>
+                    <Button
+                      variant="link"
+                      className="text-primary text-[16px]"
+                      onClick={getOtp}
+                      loading={isMutating}
+                      disabled={isMutating || !otpLoading}
+                    >
+                      Resend
+                    </Button>
+                  </Flex>
 
                   <Button type="submit" loading={isPending} disabled={isPending || verifiedLoading} className="mt-5">
                     Login
                   </Button>
                   {jwtDecode?.action === AUTH_TYPE.SIGNUP && <Button variant="link">Change email</Button>}
                 </form>
-                <Button onClick={getOtp} loading={isMutating} disabled={isMutating || !otpLoading}>
-                  Resend Varification
-                </Button>
               </Form>
             </Flex>
             {modalOpen && (
