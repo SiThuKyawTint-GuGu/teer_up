@@ -113,10 +113,23 @@ const UserTable: React.FC = () => {
         },
       },
       {
+        accessorKey: "last_login",
+        header: "Last Login",
+        enableEditing: false,
+        size: 1,
+        Cell: ({ row }: any) => {
+          const lastLogin = row.original.last_login;
+          if (lastLogin && dayjs(lastLogin).isValid()) {
+            return dayjs(lastLogin).format("MMM D, YYYY h:mm A");
+          }
+          return "-";
+        },
+      },
+      {
         accessorKey: "created_at",
         header: "Created At",
         enableEditing: false,
-        size: 3,
+        size: 1,
         Cell: ({ row }: any) => {
           const createdAt = row.original.created_at;
           if (createdAt && dayjs(createdAt).isValid()) {
@@ -129,7 +142,7 @@ const UserTable: React.FC = () => {
         accessorKey: "updated_at",
         header: "Updated At",
         enableEditing: false,
-        size: 3,
+        size: 1,
         Cell: ({ row }: any) => {
           const updatedAt = row.original.updated_at;
           if (updatedAt && dayjs(updatedAt).isValid()) {
@@ -205,6 +218,8 @@ const UserTable: React.FC = () => {
   const table = useMaterialReactTable({
     columns,
     data: (userData?.data as any) || [],
+    // enableColumnPinning: true,
+    // enableRowActions: true,
     createDisplayMode: "row",
     editDisplayMode: "row",
     enableEditing: true,
@@ -232,6 +247,7 @@ const UserTable: React.FC = () => {
     manualPagination: true,
     rowCount: userData?.total,
     initialState: {
+      // columnPinning: { left: ["id"], right: [] },
       pagination: {
         pageSize: 10,
         pageIndex: 0,

@@ -153,7 +153,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
       return (
         <div
           id={data.slug}
-          className="w-full h-[100%] z-[10] overflow-y-scroll no-scrollbar rounded-lg px-2 bg-white shadow-lg"
+          className="w-full h-full z-[10] overflow-y-scroll no-scrollbar rounded-lg px-2 bg-white shadow-lg"
         >
           <div className="p-2 w-full h-full">
             <div
@@ -210,28 +210,17 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
         } px-2 flex-wrap  bg-white z-[99999]`}
       >
         <div className="w-full h-full bg-white relative ">
-          <Flex
-            justify="between"
-            // onClick={() => setShowPathTitle(pre => !pre)}
-            className="w-full"
-          >
+          <Flex justify="between" onClick={() => setShowPathTitle(pre => !pre)} className="w-full">
             <Flex direction="column">
               <div className="font-[600] text-[16px]">{data?.title}</div>
               <div className="text-[14px] font-[300]">
                 Completed {data?.content_pathways && calculatePercentage(data.content_pathways, visibleItemIndex)}%
               </div>
             </Flex>
-
             {!showPathTitle ? (
-              <Icons.upArrow
-                onClick={() => setShowPathTitle(pre => !pre)}
-                className="text-primary w-[20px] cursor-pointer h-[20px] absolute top-0 right-0"
-              />
+              <Icons.upArrow className="text-primary w-[20px] cursor-pointer h-[20px] absolute top-0 right-0" />
             ) : (
-              <Icons.downArrow
-                className="text-primary w-[20px] cursor-pointer h-[20px] absolute top-0 right-0"
-                onClick={() => setShowPathTitle(pre => !pre)}
-              />
+              <Icons.downArrow className="text-primary w-[20px] cursor-pointer h-[20px] absolute top-0 right-0" />
             )}
           </Flex>
           {showPathTitle && (
@@ -239,20 +228,21 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
               {data?.content_pathways &&
                 data?.content_pathways.length > 0 &&
                 data.content_pathways.map((data, index) => (
-                  <div key={index} className="font-[600]  flex flex-col w-full text-[16px] py-1">
+                  <div
+                    key={index}
+                    onClick={() => {
+                      setShowPathTitle(false);
+                      const targetElement = document.getElementById(index.toString());
+                      if (targetElement) {
+                        targetElement.scrollIntoView({
+                          behavior: "smooth", // Smooth scroll effect
+                        });
+                      }
+                    }}
+                    className="font-[600]  flex flex-col w-full text-[16px] py-1"
+                  >
                     <Flex justify="between" className="w-full py-2">
-                      <div
-                        className={`cursor-pointer ${visibleItemIndex === index && "text-primary"}`}
-                        onClick={() => {
-                          setShowPathTitle(false);
-                          const targetElement = document.getElementById(index.toString());
-                          if (targetElement) {
-                            targetElement.scrollIntoView({
-                              behavior: "smooth", // Smooth scroll effect
-                            });
-                          }
-                        }}
-                      >
+                      <div className={`cursor-pointer ${visibleItemIndex === index && "text-primary"}`}>
                         {data.title || "--------"}
                       </div>
                       {index === visibleItemIndex && (
