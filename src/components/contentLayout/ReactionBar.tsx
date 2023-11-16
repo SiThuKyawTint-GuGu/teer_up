@@ -83,7 +83,7 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate, comments,
           </div>
 
           {openComment && (
-            <DialogContent className="bg-white top-[initial] bottom-0 max-w-[400px] px-4 pt-8 pb-2 translate-y-0 rounded-10px-tl-tr">
+            <DialogContent className="top-[initial] bottom-0">
               <CommentSection data={data} mutateParentData={contentMutate} setComments={setComments} />
             </DialogContent>
           )}
