@@ -162,13 +162,13 @@ const UserContent = () => {
       targetElement.scrollIntoView({});
     }
   }, []);
-
+  // bg-transparent
   return (
     <>
       {!isLoading ? (
         <Box
           ref={containerRef}
-          className={`snap-y flex-col snap-mandatory h-[calc(100dvh-112px)] pt-[6px] pb-[6px] px-[12px]  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
+          className={`snap-y bg-transparent flex-col snap-mandatory h-[calc(100dvh-112px)] pt-[6px] pb-[6px] px-[12px]  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
           style={{ scrollSnapStop: "always" }}
         >
           {contentDataArray &&
