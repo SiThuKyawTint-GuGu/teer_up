@@ -111,7 +111,17 @@ const SavedList: React.FC = () => {
     });
     await mutate();
   };
-
+  const handleCheckFilter = (each: { key: SAVED_CONTENT_TYPES; value: string }) => {
+    if (each.key === SAVED_CONTENT_TYPES.ALL) {
+      setFilterTypes([each]);
+      return;
+    }
+    let filteredData = filteredType.filter(data => data.key !== SAVED_CONTENT_TYPES.ALL);
+    filteredData.find(data => data.key === each.key)
+      ? setFilterTypes(filteredData.filter(data => data.key !== each.key))
+      : setFilterTypes([...filteredData, each]);
+    return;
+  };
   const toggleMenu = (data: any) => {
     setContent(data.content_id);
     setIsMenuVisible(isMenuVisible && data.content_id == content ? !isMenuVisible : true);
@@ -134,7 +144,8 @@ const SavedList: React.FC = () => {
             </Heading>
             <DialogTrigger asChild onClick={() => setTriggerType(TRIGGER_TYPE.FILTER)}>
               <Button variant="ghost" className="text-primary">
-                {/* {filteredType.key === SAVED_CONTENT_TYPES.ALL ? "All" : filteredType.value} */}
+                {filteredParams.key.split(",")[0]}
+                {filteredParams.key.split(",").length > 1 && ` + ${filteredParams.key.split(",").length - 1} more`}
                 {/* {
                   filteredType.find(data => data.key === filteredParams.key)?.value ||
                   filteredParams.value
@@ -222,16 +233,14 @@ const SavedList: React.FC = () => {
                 key === filterNames.length - 1 && "border-none"
               )}
               onClick={() => {
-                filteredType.find(data => data.key === each.key)
-                  ? setFilterTypes(filteredType.filter(data => data.key !== each.key))
-                  : setFilterTypes([...filteredType, each]);
+                handleCheckFilter(each);
               }}
             >
               <Flex justify="between" align="center" gap="2">
                 <Text as="label" weight="bold" size="3">
                   {each.value}
                 </Text>
-                <Icons.check />
+                <Icons.check className="text-lg" />
               </Flex>
             </div>
           ))}
