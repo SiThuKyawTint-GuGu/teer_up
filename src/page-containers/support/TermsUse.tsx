@@ -5,12 +5,14 @@ import { Text } from "@/components/ui/Typo/Text";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useTransition } from "react";
+import React, { useMemo, useTransition } from "react";
 
 const TermsUse: React.FC = () => {
   const router = useRouter();
   const [, startTransition] = useTransition();
-  const currentOrigin = window.location.origin;
+  const currentOrigin = useMemo(() => {
+    return typeof window !== "undefined" ? window.location.origin : null;
+  }, []);
 
   return (
     <Grid columns="1">
@@ -43,7 +45,7 @@ const TermsUse: React.FC = () => {
               <Text size="1">
                 These terms and conditions outline the rules and regulations for the use of TEE-Up&#39;s Website,
                 located at{" "}
-                <Link href={currentOrigin} target="_blank">
+                <Link href={currentOrigin || ""} target="_blank">
                   <Text as="span" className="text-primary">
                     www.tee-up.world
                   </Text>
