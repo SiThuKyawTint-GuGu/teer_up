@@ -1,6 +1,7 @@
 "use client";
 import { useContentForm, useLikeContent, useSaveContent } from "@/services/content";
 import { ContentData, Input_config, Input_options } from "@/types/Content";
+import { getToken } from "@/utils/auth";
 import { cn } from "@/utils/cn";
 import { Box, Flex, Section } from "@radix-ui/themes";
 import Link from "next/link";
@@ -43,6 +44,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
   const [dateValue, setDateValue] = useState<Date>(new Date());
   const [openComment, setOpenComment] = useState<boolean>(false);
   const [checked, setChecked] = useState<boolean>(false);
+  const token = getToken();
   const [reaction, setReacion] = useState({
     likes: 0,
     is_like: false,
@@ -61,20 +63,20 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
   }, [data]);
 
   const likePost = async () => {
-    if (reaction.is_like) {
+    if (reaction.is_like && token) {
       setReacion(prev => ({ ...prev, ["likes"]: prev.likes - 1, ["is_like"]: false }));
     }
-    if (!reaction.is_like) {
+    if (!reaction.is_like && token) {
       setReacion(prev => ({ ...prev, ["likes"]: prev.likes + 1, ["is_like"]: true }));
     }
     await like({ id: data.id });
   };
 
   const saveContent = async () => {
-    if (reaction.is_save) {
+    if (reaction.is_save && token) {
       setReacion(prev => ({ ...prev, ["saves"]: prev.saves - 1, ["is_save"]: false }));
     }
-    if (!reaction.is_save) {
+    if (!reaction.is_save && token) {
       setReacion(prev => ({ ...prev, ["saves"]: prev.saves + 1, ["is_save"]: true }));
     }
     await contentSave({

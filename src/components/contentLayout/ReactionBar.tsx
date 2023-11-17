@@ -3,6 +3,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons } from "@/components/ui/Images";
 import { useLikeContent, useSaveContent } from "@/services/content";
 import { ContentData } from "@/types/Content";
+import { getToken } from "@/utils/auth";
 import React, { useEffect, useState } from "react";
 import Share from "../../page-containers/admin/content/Share";
 type ReactionBarProp = {
@@ -16,6 +17,7 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate, comments,
   const [openShare, setOpenShare] = useState<boolean>(false);
   const { trigger: like } = useLikeContent();
   const { trigger: contentSave } = useSaveContent();
+  const token = getToken();
   const [reaction, setReacion] = useState({
     likes: 0,
     is_like: false,
@@ -26,29 +28,29 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate, comments,
   useEffect(() => {
     setReacion(prev => ({
       ...prev,
-      ["saves"]: data.saves,
-      ["is_save"]: data.is_saved,
-      ["likes"]: data.likes,
-      ["is_like"]: data.is_liked,
+      saves: data.saves,
+      is_save: data.is_saved,
+      likes: data.likes,
+      is_like: data.is_liked,
     }));
   }, [data]);
 
   const likePost = async () => {
-    if (reaction.is_like) {
-      setReacion(prev => ({ ...prev, ["likes"]: prev.likes - 1, ["is_like"]: false }));
+    if (reaction.is_like && token) {
+      setReacion(prev => ({ ...prev, likes: prev.likes - 1, is_like: false }));
     }
-    if (!reaction.is_like) {
-      setReacion(prev => ({ ...prev, ["likes"]: prev.likes + 1, ["is_like"]: true }));
+    if (!reaction.is_like && token) {
+      setReacion(prev => ({ ...prev, likes: prev.likes + 1, is_like: true }));
     }
     await like({ id: data.id });
   };
 
   const saveContent = async () => {
-    if (reaction.is_save) {
-      setReacion(prev => ({ ...prev, ["saves"]: prev.saves - 1, ["is_save"]: false }));
+    if (reaction.is_save && token) {
+      setReacion(prev => ({ ...prev, saves: prev.saves - 1, is_save: false }));
     }
-    if (!reaction.is_save) {
-      setReacion(prev => ({ ...prev, ["saves"]: prev.saves + 1, ["is_save"]: true }));
+    if (!reaction.is_save && token) {
+      setReacion(prev => ({ ...prev, saves: prev.saves + 1, is_save: true }));
     }
     await contentSave({
       id: data.id,
