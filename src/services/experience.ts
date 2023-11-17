@@ -27,8 +27,9 @@ interface CreateUserReqType {
   arg: {
     company: string;
     position: string;
+    is_present?: boolean;
     start_date: string;
-    end_date: string;
+    end_date?: string;
   };
 }
 export const useCreateExperiences = () =>
@@ -41,8 +42,9 @@ interface UpdateUserResType {
     exp_id: string;
     company: string;
     position: string;
+    is_present?: boolean;
     start_date: string;
-    end_date: string;
+    end_date?: string;
   };
 }
 export const useUpdateExperience = () =>
