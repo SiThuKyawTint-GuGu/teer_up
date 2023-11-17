@@ -38,7 +38,7 @@ const QuestionPageCard: React.FC<QuestionPageCardProp> = ({ children, title, lay
           </Text>
         )}
         {subTitle && (
-          <Text as="div" className="text-[18px] font-[400] text-slateGray">
+          <Text as="div" className="text-[18px] font-[400] text-[#373A36]">
             {subTitle}
           </Text>
         )}

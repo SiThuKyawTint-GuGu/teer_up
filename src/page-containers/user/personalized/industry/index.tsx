@@ -53,7 +53,7 @@ const IndustryPage = () => {
       {isLoading ? (
         <Loading />
       ) : (
-        <div className="w-full">
+        <div className="w-full bg-[#F8F9FB]">
           <QuestionPageCard
             nextPage="/department"
             title="Which industry are you most interested in?"
@@ -85,7 +85,7 @@ const IndustryPage = () => {
                         >
                           <Image src="/personalize/ActiveIcon.svg" width={24} height={24} alt="industry" />
                         </div>
-                        <Text>{each.name}</Text>
+                        <Text className="font-semibold text-[#373A36]">{each.name}</Text>
                       </div>
                     </div>
                   ))}
