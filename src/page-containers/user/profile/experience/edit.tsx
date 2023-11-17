@@ -199,7 +199,7 @@ const EditExperience: React.FC = () => {
                   <Checkbox
                     defaultChecked={isPresent}
                     checked={isPresent}
-                    onCheckedChange={(checked: boolean) => setIsPresent(checked)}
+                    onCheckedChange={() => setIsPresent(!isPresent)}
                   />
                   <Text className="pl-2">Present</Text>
                 </Flex>

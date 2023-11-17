@@ -19,9 +19,7 @@ export const useGetUserEducations = <EducationParamsType, EducationResponse>(
   return useSWR<EducationResponse>(`/user/profile/educations?${routeFilter(params)}`);
 };
 
-export const useGetEducationById = <EducationResponse>(
-  id: string
-): SWRResponse<EducationResponse, any> => {
+export const useGetEducationById = <EducationResponse>(id: string): SWRResponse<EducationResponse, any> => {
   return useSWR<EducationResponse>(`/user/profile/educations/${id}`);
 };
 
@@ -29,6 +27,7 @@ interface CreateUserResType {
   arg: {
     school_name: string;
     degree: string;
+    is_present?: boolean;
     start_date: string;
     end_date: string;
   };
@@ -43,6 +42,7 @@ interface UpdateUserResType {
     educationId: string;
     school_name: string;
     degree: string;
+    is_present?: boolean;
     start_date: string;
     end_date: string;
   };
@@ -54,6 +54,7 @@ export const useUpdateEducation = () =>
       degree: arg?.degree,
       start_date: arg?.start_date,
       end_date: arg?.end_date,
+      is_present: arg?.is_present,
     });
   });
 
