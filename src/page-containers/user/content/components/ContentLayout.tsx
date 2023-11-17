@@ -41,9 +41,14 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate }) =>
   return (
     <CardBox className="w-full shadow-xl rounded-lg h-[100%] justify-start flex-col mt-[15px] mb-[15px]">
       <Grid rows="3" className="h-full w-full flex flex-col bg-white shadow-lg">
-        <Link href={`/content/${data?.slug}`} className="w-full h-[250px] mx-auto relative block">
+        <Link
+          href={`/content/${data?.slug}`}
+          className={`w-full ${data.type !== "mentor" ? "h-[200px]" : "h-[300px]"} mx-auto relative block`}
+        >
           <div
-            className="relative w-full max-w-[400px] h-[250px] rounded-t-[8px]"
+            className={`relative w-full max-w-[400px] ${
+              data.type !== "mentor" ? "h-[200px]" : "h-[300px]"
+            } rounded-t-[8px]`}
             style={{
               background: `url(${data?.image_url}) center / cover`,
             }}

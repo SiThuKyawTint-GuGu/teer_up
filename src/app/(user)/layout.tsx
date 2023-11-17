@@ -54,7 +54,7 @@ const Layout = ({ children }: Props) => {
       appAxios.interceptors.response.eject(responseInterceptor);
     };
   }, [token]);
-
+  // bg-transparent
   return (
     <>
       <Head>
@@ -63,7 +63,10 @@ const Layout = ({ children }: Props) => {
       <Grid columns="1">
         {openVerifyModal && <VerifyPop />}
         {openVerifyEmailModal && <VerifyEmailModal />}
-        <div id="main-content" className="max-w-[400px]  no-scrollbar mx-auto h-screen relative bg-layout w-full">
+        <div
+          id="main-content"
+          className="max-w-[400px]  bg-transparent no-scrollbar mx-auto h-screen relative bg-layout w-full"
+        >
           {children}
         </div>
       </Grid>

@@ -4,7 +4,7 @@ import LikeCmtBar from "@/components/contentLayout/LikeCmtBar";
 import { Icons } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import { ContentData, ContentKeywords } from "@/types/Content";
-import { Flex } from "@radix-ui/themes";
+import { Flex, Grid } from "@radix-ui/themes";
 
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
@@ -18,11 +18,11 @@ const NormalContentDetail: React.FC<NormalContentDetailProp> = ({ data, contentM
     setComments(data.comments);
   }, [data.comments]);
   return (
-    <>
+    <Grid columns="1" className="w-full h-full">
       {data && (
-        <div className="w-full  h-full bg-white no-scrollbar  overflow-y-auto">
+        <div className="w-full  h-full no-scrollbar  overflow-y-auto">
           {" "}
-          <div className="w-full mx-auto h-[300px] relative p-2">
+          <div className={`w-full mx-auto ${data.type !== "mentor" ? "h-[200px]" : "h-[300px]"}  relative p-2`}>
             <div
               className="relative w-full max-w-[400px]  rounded-lg h-full"
               style={{
@@ -37,9 +37,9 @@ const NormalContentDetail: React.FC<NormalContentDetailProp> = ({ data, contentM
             </div>
           </div>
           <div className="w-full px-[16px]">
-            <div className="w-full h-full">
+            <div className="w-full">
               <h1 className="font-[700] text-[24px]">{data?.title}</h1>
-              <div className="w-full h-full flex flex-col flex-wrap gap-y-3">
+              <div className="w-full  flex flex-col flex-wrap gap-y-3">
                 {data.type !== "opportunity" && data.type !== "article" && (
                   <section
                     dangerouslySetInnerHTML={{
@@ -90,12 +90,12 @@ const NormalContentDetail: React.FC<NormalContentDetailProp> = ({ data, contentM
               </div>
             </div>
           </div>
-          <div className="w-full fixed bottom-0 max-w-[400px]">
-            <LikeCmtBar data={data} mutate={contentMutate} comments={comments} setComments={setComments} />
+          <div className="w-full fixed bottom-0 max-w-[400px] z-[999]">
+            {data && <LikeCmtBar data={data} mutate={contentMutate} comments={comments} setComments={setComments} />}
           </div>
         </div>
       )}
-    </>
+    </Grid>
   );
 };
 

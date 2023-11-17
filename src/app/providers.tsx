@@ -14,12 +14,7 @@ export default function Providers({ children }: PropsWithChildren) {
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
           <Theme>
             {children}
-            <ProgressBar
-              height="4px"
-              color="#DA291C"
-              options={{ showSpinner: false }}
-              shallowRouting
-            />
+            <ProgressBar height="4px" color="#DA291C" options={{ showSpinner: false }} shallowRouting />
           </Theme>
         </ThemeProvider>
       </StoreProvider>
