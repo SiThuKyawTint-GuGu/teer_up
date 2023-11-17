@@ -7,7 +7,6 @@ import { getToken, getUserInfo } from "@/utils/auth";
 import { Box, Flex } from "@radix-ui/themes";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import ContentLayout from "./ContentLayout";
-import "./PathwayDetail.css";
 import Video from "./Video";
 type PathwayDetailProp = {
   data: ContentData;

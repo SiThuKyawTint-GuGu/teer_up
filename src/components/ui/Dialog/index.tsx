@@ -1,6 +1,5 @@
 "use client";
 import * as React from "react";
-import { RxCross2 } from "react-icons/rx";
 
 import { cn } from "@/utils/cn";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
@@ -49,7 +48,7 @@ const DialogContent = React.forwardRef<
       {...props}
     >
       {children}
-      {isClose && (
+      {/* {isClose && (
         <DialogPrimitive.Close
           onClick={() => {
             handleOnClose && handleOnClose(false);
@@ -62,7 +61,7 @@ const DialogContent = React.forwardRef<
           <RxCross2 />
           <span className="sr-only">Close</span>
         </DialogPrimitive.Close>
-      )}
+      )} */}
     </DialogPrimitive.Content>
   </DialogPortal>
 ));

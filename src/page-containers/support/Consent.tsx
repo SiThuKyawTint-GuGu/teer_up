@@ -53,7 +53,7 @@ const Consent: React.FC = () => {
             </Text>
             <Text className="text-sm">
               I understand that I can refer to Prudential Data Privacy, which is available at{" "}
-              <Link href="https://www.prudential.com.sg/Privacy-Notice">
+              <Link href="https://www.prudential.com.sg/Privacy-Notice" target="_blank">
                 <Text as="span" className="text-primary">
                   Privacy Notice
                 </Text>{" "}
@@ -63,7 +63,9 @@ const Consent: React.FC = () => {
             <Text>
               I may contact{" "}
               <Text as="span" className="text-primary">
-                innovation@prudential.com.sg
+                <a target="_blank" href="mailto:innovation@prudential.com.sg">
+                  innovation@prudential.com.sg
+                </a>
               </Text>{" "}
               on how I may access and correct my personal data or withdraw consent to the collection, use or disclosure
               of my personal data.
