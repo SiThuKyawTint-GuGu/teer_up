@@ -7,7 +7,6 @@ import { getToken, getUserInfo } from "@/utils/auth";
 import { Box, Flex } from "@radix-ui/themes";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import ContentLayout from "./ContentLayout";
-import "./PathwayDetail.css";
 import Video from "./Video";
 type PathwayDetailProp = {
   data: ContentData;
@@ -205,7 +204,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
           ))}
       </div>
       <div
-        className={`max-w-[379px] pathwayBottomNav mx-auto py-3 left-0 w-full flex flex-column sticky bottom-0  overflow-y-scroll rounded-lg ${
+        className={`max-w-[379px] no-scrollbar pathwayBottomNav mx-auto py-3 left-0 w-full flex flex-column sticky bottom-0  overflow-y-scroll rounded-lg ${
           showPathTitle && "h-[60%]"
         } px-2 flex-wrap  bg-white z-[99999]`}
       >
