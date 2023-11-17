@@ -190,6 +190,9 @@ const EditExperience: React.FC = () => {
                 />
               </Section>
             </Box>
+            {/* <Box>
+              <Checkbox defaultChecked={true} onCheckedChange={() => console.log("check")} />
+            </Box> */}
 
             <Box className="pb-[7px]">
               <Section className="bg-white" py="4" px="3">
