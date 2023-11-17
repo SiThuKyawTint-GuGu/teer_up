@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/Button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form";
 import { Icons } from "@/components/ui/Images";
 import { InputText } from "@/components/ui/Inputs";
+import { Checkbox } from "@/components/ui/Inputs/Checkbox";
 import { Text } from "@/components/ui/Typo/Text";
 import {
   ExperienceParamsType,
@@ -18,7 +19,7 @@ import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -26,7 +27,7 @@ const validationSchema = yup.object({
   company: yup.string().required("School is required!"),
   position: yup.string().required("Degree is required!"),
   start_date: yup.string().required("Start Date is required!"),
-  end_date: yup.string().required("End Date is required!"),
+  end_date: yup.string(),
 });
 
 const EditExperience: React.FC = () => {
@@ -35,6 +36,7 @@ const EditExperience: React.FC = () => {
   const { trigger, isMutating } = useUpdateExperience();
   const { trigger: deleteTrigger, isMutating: deleteMutating } = useDeleteExperience();
   const { data: experiences } = useGetUserExperiences<ExperienceParamsType, ExperienceResponse>();
+  const [isPresent, setIsPresent] = useState<boolean>();
 
   const experience = useMemo(
     () => experiences?.data?.find(each => each.id.toString() === exp_id.toString()),
@@ -54,9 +56,9 @@ const EditExperience: React.FC = () => {
   const submit = async (data: any) => {
     const newData = {
       ...data,
+      is_present: isPresent,
       exp_id: exp_id as string,
     };
-
     await trigger(newData, {
       onSuccess: () => {
         router.replace(`/profile/${id}/experience`);
@@ -80,6 +82,7 @@ const EditExperience: React.FC = () => {
     form.setValue("position", experience?.position || "");
     form.setValue("start_date", dayjs(experience?.start_date).format("YYYY-MM-DD") || "");
     form.setValue("end_date", dayjs(experience?.end_date).format("YYYY-MM-DD") || "");
+    setIsPresent(experience?.is_present || false);
   }, [form, experience]);
 
   return (
@@ -190,13 +193,22 @@ const EditExperience: React.FC = () => {
                 />
               </Section>
             </Box>
-            {/* <Box>
-              <Checkbox defaultChecked={true} onCheckedChange={() => console.log("check")} />
-            </Box> */}
-
             <Box className="pb-[7px]">
               <Section className="bg-white" py="4" px="3">
-                {/* <Heading as="h6" size="2" weight="medium" align="left" mb="2">
+                <Flex className="items-center">
+                  <Checkbox
+                    defaultChecked={isPresent}
+                    checked={isPresent}
+                    onCheckedChange={(checked: boolean) => setIsPresent(checked)}
+                  />
+                  <Text className="pl-2">Present</Text>
+                </Flex>
+              </Section>
+            </Box>
+            {!isPresent && (
+              <Box className="pb-[7px]">
+                <Section className="bg-white" py="4" px="3">
+                  {/* <Heading as="h6" size="2" weight="medium" align="left" mb="2">
                   End Date
                 </Heading>
                 <FormField
@@ -219,30 +231,31 @@ const EditExperience: React.FC = () => {
                     </FormItem>
                   )}
                 /> */}
-                <Heading as="h6" size="4" align="left" mb="4">
-                  End Date
-                </Heading>
-                <FormField
-                  control={form.control}
-                  name="end_date"
-                  render={({ field }) => {
-                    return (
-                      <FormItem>
-                        <FormControl>
-                          <input
-                            type="date"
-                            className={cn(
-                              "font-light shadow-md bg-white border-0 text-black w-full h-[40px] p-3 outline-none"
-                            )}
-                            {...field}
-                          />
-                        </FormControl>
-                      </FormItem>
-                    );
-                  }}
-                />
-              </Section>
-            </Box>
+                  <Heading as="h6" size="4" align="left" mb="4">
+                    End Date
+                  </Heading>
+                  <FormField
+                    control={form.control}
+                    name="end_date"
+                    render={({ field }) => {
+                      return (
+                        <FormItem>
+                          <FormControl>
+                            <input
+                              type="date"
+                              className={cn(
+                                "font-light shadow-md bg-white border-0 text-black w-full h-[40px] p-3 outline-none"
+                              )}
+                              {...field}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                </Section>
+              </Box>
+            )}
 
             <Box className="pb-[7px]">
               <Section py="4" px="3" className="space-y-[15px]">
