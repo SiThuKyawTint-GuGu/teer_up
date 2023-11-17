@@ -165,13 +165,11 @@ const UserContent = () => {
   }, []);
   // bg-transparent
   return (
-    <>
+    <div className="w-full h-[calc(100vh-96px)]">
       {!isLoading ? (
         <Box
           ref={containerRef}
-
-          className={`snap-y flex-col bg-transparent snap-mandatory h-[calc(100dvh-112px)] pt-[6px] pb-[6px] px-[12px]  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll scroll-smooth`}
-
+          className={`snap-y flex-col snap-mandatory h-full px-2   w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
           style={{ scrollSnapStop: "always" }}
           id="explore-list-container"
         >
@@ -179,7 +177,7 @@ const UserContent = () => {
             contentDataArray.length > 0 &&
             contentDataArray.map((data: ContentData, index: number) => (
               <Box
-                className="w-full h-full snap-start mt-[12px] mb-[12px]"
+                className="w-full h-full snap-start"
                 style={{ scrollSnapStop: "always" }}
                 id={index.toString()}
                 key={index}
@@ -193,7 +191,7 @@ const UserContent = () => {
       ) : (
         <Loading />
       )}
-    </>
+    </div>
   );
 };
 
