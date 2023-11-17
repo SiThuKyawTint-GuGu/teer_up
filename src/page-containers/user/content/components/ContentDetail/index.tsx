@@ -20,7 +20,7 @@ const NormalContentDetail: React.FC<NormalContentDetailProp> = ({ data, contentM
   return (
     <Grid columns="1" className="w-full h-screen">
       {data && (
-        <div className="w-full  h-full no-scrollbar  overflow-y-auto">
+        <div className="w-full  h-full no-scrollbar   overflow-y-auto">
           {" "}
           <div className="w-full mx-auto h-[300px] relative p-2">
             <div
@@ -39,7 +39,7 @@ const NormalContentDetail: React.FC<NormalContentDetailProp> = ({ data, contentM
           <div className="w-full px-[16px]">
             <div className="w-full">
               <h1 className="font-[700] text-[24px]">{data?.title}</h1>
-              <div className="w-full  flex flex-col flex-wrap gap-y-3">
+              <div className="w-full  flex flex-col flex-wrap gap-y-3 ">
                 {data.type !== "opportunity" && data.type !== "article" && (
                   <section
                     dangerouslySetInnerHTML={{
