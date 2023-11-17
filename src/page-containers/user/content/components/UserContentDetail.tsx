@@ -37,14 +37,16 @@ const UserContentDetail: React.FC<ContentLayoutProps> = () => {
   };
 
   return (
-    <Grid columns="1">
+    <Grid columns="1" className="h-[100dvh] py-[48px]">
       {!isLoading ? (
-        <div className="w-full h-[100dvh] pb-[48px]">
+        <>
           <div className="fixed max-w-[400px]  w-full  top-0  mx-auto flex flex-wrap z-10">
             <ContentDetailHeader title={`${contentData?.title}`} />
           </div>
-          <div className="w-full h-full">{getContentDetail()}</div>
-        </div>
+          <div className="w-full h-full">
+            <div className="w-full h-full">{getContentDetail()}</div>
+          </div>
+        </>
       ) : (
         <Loading />
       )}
