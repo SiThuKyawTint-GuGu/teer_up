@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/Button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form";
 import { Icons } from "@/components/ui/Images";
 import { InputText } from "@/components/ui/Inputs";
+import { Checkbox } from "@/components/ui/Inputs/Checkbox";
 import { Text } from "@/components/ui/Typo/Text";
 import { useCreateEducation } from "@/services/education";
 import { USER_ROLE } from "@/shared/enums";
@@ -11,6 +12,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -18,20 +20,25 @@ const validationSchema = yup.object({
   school_name: yup.string().required("School is required!"),
   degree: yup.string().required("Degree is required!"),
   start_date: yup.string().required("Start Date is required!"),
-  end_date: yup.string().required("End Date is required!"),
+  end_date: yup.string(),
 });
 
 const CreateEducation: React.FC = () => {
   const { id } = useParams();
   const router = useRouter();
   const { trigger, isMutating } = useCreateEducation();
+  const [isPresent, setIsPresent] = useState<boolean>(false);
 
   const form = useForm({
     resolver: yupResolver(validationSchema),
   });
 
   const submit = async (data: any) => {
-    await trigger(data, {
+    const submitData = {
+      ...data,
+      is_present: isPresent,
+    };
+    await trigger(submitData, {
       onSuccess: () => {
         router.replace(`/profile/${id}/education`);
       },
@@ -133,33 +140,42 @@ const CreateEducation: React.FC = () => {
                 />
               </Section>
             </Box>
-
             <Box className="pb-[7px]">
               <Section className="bg-white" py="4" px="3">
-                <Heading as="h6" size="4" align="left" mb="4">
-                  End Date
-                </Heading>
-                <FormField
-                  control={form.control}
-                  name="end_date"
-                  render={({ field }) => {
-                    return (
-                      <FormItem>
-                        <FormControl>
-                          <input
-                            type="date"
-                            className={cn(
-                              "font-light shadow-md bg-white border-0 text-black w-full h-[40px] p-3 outline-none"
-                            )}
-                            {...field}
-                          />
-                        </FormControl>
-                      </FormItem>
-                    );
-                  }}
-                />
+                <Flex className="items-center">
+                  <Checkbox defaultChecked={isPresent} onCheckedChange={() => setIsPresent(!isPresent)} />
+                  <Text className="pl-2">Present</Text>
+                </Flex>
               </Section>
             </Box>
+            {!isPresent && (
+              <Box className="pb-[7px]">
+                <Section className="bg-white" py="4" px="3">
+                  <Heading as="h6" size="4" align="left" mb="4">
+                    End Date
+                  </Heading>
+                  <FormField
+                    control={form.control}
+                    name="end_date"
+                    render={({ field }) => {
+                      return (
+                        <FormItem>
+                          <FormControl>
+                            <input
+                              type="date"
+                              className={cn(
+                                "font-light shadow-md bg-white border-0 text-black w-full h-[40px] p-3 outline-none"
+                              )}
+                              {...field}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                </Section>
+              </Box>
+            )}
 
             <Box className="pb-[7px]">
               <Section py="4" px="3">
