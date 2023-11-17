@@ -152,7 +152,7 @@ export const useDeleteCoverPhoto = () =>
   });
 
 export const useDeleteProfilePhoto = () =>
-  useSWRMutation(`/user/profile/cover-img`, url => {
+  useSWRMutation(`/user/profile/profile-img`, url => {
     return appAxios.delete(url);
   });
 

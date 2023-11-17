@@ -14,6 +14,8 @@ import {
   useGetUserOnboardingStatus,
   useResetScores,
   useUpdateUserOnboardingStatus,
+  useUploadCover,
+  useUploadProfile,
 } from "@/services/user";
 import { PROFILE_TRIGGER } from "@/shared/enums";
 import { UserDimensionResultResponse } from "@/types/Dimension";
@@ -26,7 +28,7 @@ import { Box, Flex, Grid, Heading, Section, Tabs } from "@radix-ui/themes";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useState, useTransition } from "react";
+import { ChangeEvent, useState, useTransition } from "react";
 import { mutate } from "swr";
 import RadarChart from "./RadarChart";
 
@@ -34,7 +36,14 @@ const profileTrigger = {
   [PROFILE_TRIGGER.COVER]: "See cover picture",
   [PROFILE_TRIGGER.PROFILE]: "See profile picture",
 };
-
+const profileEditTrigger = {
+  [PROFILE_TRIGGER.COVER]: "Change cover picture",
+  [PROFILE_TRIGGER.PROFILE]: "Change profile picture",
+};
+const profileCreateTrigger = {
+  [PROFILE_TRIGGER.COVER]: "Select cover picture",
+  [PROFILE_TRIGGER.PROFILE]: "Select profile picture",
+};
 const profileDeleteTrigger = {
   [PROFILE_TRIGGER.COVER]: "Delete cover picture",
   [PROFILE_TRIGGER.PROFILE]: "Delete profile picture",
@@ -45,9 +54,14 @@ const profileTriggerIcon = {
   [PROFILE_TRIGGER.PROFILE]: "/uploads/icons/see-profile.svg",
 };
 
+const profileEditTriggerIcon = {
+  [PROFILE_TRIGGER.COVER]: "/uploads/icons/photo-edit.svg",
+  [PROFILE_TRIGGER.PROFILE]: "/uploads/icons/photo-edit.svg",
+};
 const Profile: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [viewImage, setViewImage] = useState<boolean>(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
   const [triggerType, setTriggerType] = useState<PROFILE_TRIGGER>();
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
@@ -58,12 +72,27 @@ const Profile: React.FC = () => {
   const { data: userDimensionData } = useGetUserDimensionResult<UserDimensionResultResponse>();
   const { trigger: onBoardingStatus } = useUpdateUserOnboardingStatus();
   const { data: getOnboardingStatus } = useGetUserOnboardingStatus<UserOnboardingStatusResponse>();
-
+  const { trigger: uploadCoverTrigger } = useUploadCover();
   const { trigger: resetScores } = useResetScores();
-  const { trigger: deleteProfileTrigger } = useDeleteCoverPhoto();
-  const { trigger: deleteCoverTrigger } = useDeleteProfilePhoto();
-  const userProfile = profileData?.data;
+  const { trigger: deleteCoverTrigger } = useDeleteCoverPhoto();
+  const { trigger: deleteProfileTrigger } = useDeleteProfilePhoto();
+  const { trigger: uploadProfileTrigger } = useUploadProfile();
 
+  const userProfile = profileData?.data;
+  const handleUploadImage = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = await getFileFromEvent(event);
+    if (file) {
+      const triggerFunction =
+        triggerType === PROFILE_TRIGGER.PROFILE ? uploadProfileTrigger({ file }) : uploadCoverTrigger({ file });
+      try {
+        await triggerFunction;
+        await mutateUser();
+        setOpen(!open);
+      } catch (error) {
+        console.error("Upload failed =>", error);
+      }
+    }
+  };
   const handleContinueAssessment = async () => {
     setLocalStorage("content", "0");
     mutate(
@@ -94,26 +123,40 @@ const Profile: React.FC = () => {
 
   const handleDeletePhoto = async () => {
     const triggerFunction = triggerType === PROFILE_TRIGGER.PROFILE ? deleteProfileTrigger() : deleteCoverTrigger();
-
     try {
       await triggerFunction;
       await mutateUser();
+      setDeleteModalOpen(false);
       setOpen(!open);
     } catch (error) {
       console.error("Upload failed =>", error);
     }
   };
-
+  const getFileFromEvent = async (event: ChangeEvent<HTMLInputElement>) => {
+    const inputElement = event.target as HTMLInputElement;
+    const files = inputElement?.files;
+    return files ? files[0] : null;
+  };
   const handleTabTrigger = (key: string) => {
     router.push(`${pathname}?tab=${key}`);
   };
-
+  const showEditDeleteProilPhoto = triggerType === PROFILE_TRIGGER.COVER && userProfile?.cover_url;
+  const showEditDeleteCoverPhoto = triggerType === PROFILE_TRIGGER.PROFILE && userProfile?.profile_url;
+  const CreateUpdateLabelForPhoto =
+    triggerType === PROFILE_TRIGGER.COVER
+      ? userProfile?.cover_url
+        ? profileEditTrigger[triggerType as PROFILE_TRIGGER]
+        : profileCreateTrigger[triggerType as PROFILE_TRIGGER]
+      : userProfile?.profile_url
+      ? profileEditTrigger[triggerType as PROFILE_TRIGGER]
+      : profileCreateTrigger[triggerType as PROFILE_TRIGGER];
   return (
     <>
       <Dialog
         open={open}
         onOpenChange={val => {
           setOpen(val);
+          setViewImage(false);
         }}
       >
         <Grid columns="1">
@@ -583,6 +626,7 @@ const Profile: React.FC = () => {
             </CardBox>
           </Box>
         </Grid>
+
         <DialogContent
           className={cn(
             "bg-white top-[initial] bottom-0 px-4 pt-8 pb-2 translate-y-0 rounded-10px-tl-tr",
@@ -592,30 +636,88 @@ const Profile: React.FC = () => {
         >
           {!viewImage ? (
             <Box className="space-y-[20px]">
-              <Flex
-                justify="start"
-                align="center"
-                className="pb-[20px] mb-[20px] border-b border-b-[#BDC7D5] gap-[10px]"
-                onClick={() => setViewImage(true)}
-              >
-                <Image
-                  src={profileTriggerIcon[triggerType as PROFILE_TRIGGER]}
-                  width={20}
-                  height={20}
-                  alt={profileTrigger[triggerType as PROFILE_TRIGGER]}
-                />
-                <Text className="text-black ml-2">{profileTrigger[triggerType as PROFILE_TRIGGER]}</Text>
-              </Flex>
+              {showEditDeleteProilPhoto ? (
+                <Flex
+                  justify="start"
+                  align="center"
+                  className="pb-[16px] mb-[16px] border-b border-b-[#BDC7D5] gap-[10px]"
+                  onClick={() => setViewImage(true)}
+                >
+                  <Image
+                    src={profileTriggerIcon[triggerType as PROFILE_TRIGGER]}
+                    width={20}
+                    height={20}
+                    alt={profileTrigger[triggerType as PROFILE_TRIGGER]}
+                  />
+                  <Text className="text-black ml-2">{profileTrigger[triggerType as PROFILE_TRIGGER]}</Text>
+                </Flex>
+              ) : (
+                showEditDeleteCoverPhoto && (
+                  <Flex
+                    justify="start"
+                    align="center"
+                    className="pb-[16px] mb-[16px] border-b border-b-[#BDC7D5] gap-[10px]"
+                    onClick={() => setViewImage(true)}
+                  >
+                    <Image
+                      src={profileTriggerIcon[triggerType as PROFILE_TRIGGER]}
+                      width={20}
+                      height={20}
+                      alt={profileTrigger[triggerType as PROFILE_TRIGGER]}
+                    />
+                    <Text className="text-black ml-2">{profileTrigger[triggerType as PROFILE_TRIGGER]}</Text>
+                  </Flex>
+                )
+              )}
 
               <Flex
                 justify="start"
                 align="center"
-                className="pb-[20px] mb-[20px] border-b border-b-[#BDC7D5] gap-[10px]"
-                onClick={handleDeletePhoto}
+                position="relative"
+                className={`pb-[16px]  gap-[10px]  ${
+                  (showEditDeleteProilPhoto || showEditDeleteCoverPhoto) && "border-b border-b-[#BDC7D5] mb-[16px]"
+                }                 `}
               >
-                <Icons.deleteCross className="w-7 h-7 text-[#373A36]" />
-                <Text className="text-black">{profileDeleteTrigger[triggerType as PROFILE_TRIGGER]}</Text>
+                <input
+                  type="file"
+                  onChange={handleUploadImage}
+                  className="absolute top-0 left-0 w-full h-full opacity-0 z-50"
+                />
+                <Image
+                  src={profileEditTriggerIcon[triggerType as PROFILE_TRIGGER]}
+                  width={20}
+                  height={20}
+                  alt={profileCreateTrigger[triggerType as PROFILE_TRIGGER]}
+                />
+                <Text className="text-black">{CreateUpdateLabelForPhoto}</Text>
               </Flex>
+              {showEditDeleteProilPhoto ? (
+                <Flex
+                  justify="start"
+                  align="center"
+                  className="pb-[16px] mb-[16px] border-b border-b-[#BDC7D5] gap-[10px]"
+                  onClick={() => {
+                    setDeleteModalOpen(true);
+                  }}
+                >
+                  <Icons.deleteCross className="w-7 h-7 text-[#373A36]" />
+                  <Text className="text-black">{profileDeleteTrigger[triggerType as PROFILE_TRIGGER]}</Text>
+                </Flex>
+              ) : (
+                showEditDeleteCoverPhoto && (
+                  <Flex
+                    justify="start"
+                    align="center"
+                    className="pb-[16px] mb-[16px] gap-[10px]"
+                    onClick={() => {
+                      setDeleteModalOpen(true);
+                    }}
+                  >
+                    <Icons.deleteCross className="w-7 h-7 text-[#373A36]" />
+                    <Text className="text-black">{profileDeleteTrigger[triggerType as PROFILE_TRIGGER]}</Text>
+                  </Flex>
+                )
+              )}
             </Box>
           ) : (
             <Flex className="relative" justify="center" align="center">
@@ -627,6 +729,35 @@ const Profile: React.FC = () => {
             </Flex>
           )}
         </DialogContent>
+        {deleteModalOpen && (
+          <DialogContent isClose={false} className="border-none shadow-none">
+            <div className="text-center space-y-[10px] bg-white p-4 rounded-lg">
+              <Text className="text-[#373A36] text-[20px] font-[700]">
+                {" "}
+                Are you sure to delete your {triggerType?.toLocaleLowerCase()} picture?
+              </Text>
+              <Text className="text-[#373A36]">
+                Your {triggerType?.toLocaleLowerCase()} picture will be displayed as default
+                {triggerType?.toLocaleLowerCase()} after you deleted.
+              </Text>
+              <Flex justify="center" className="gap-3">
+                <Button className="w-1/2 font-[600]" onClick={handleDeletePhoto} loading={isPending}>
+                  Delete
+                </Button>
+
+                <Button
+                  onClick={() => {
+                    setDeleteModalOpen(false);
+                  }}
+                  className="w-1/2"
+                  variant="outline"
+                >
+                  Cancel
+                </Button>
+              </Flex>
+            </div>
+          </DialogContent>
+        )}
       </Dialog>
     </>
   );
