@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/Button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form";
 import { Icons } from "@/components/ui/Images";
 import { InputText } from "@/components/ui/Inputs";
+import { Checkbox } from "@/components/ui/Inputs/Checkbox";
 import { Text } from "@/components/ui/Typo/Text";
 import { useDeleteEducation, useGetEducationById, useUpdateEducation } from "@/services/education";
 import { USER_ROLE } from "@/shared/enums";
@@ -13,7 +14,7 @@ import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -21,7 +22,7 @@ const validationSchema = yup.object({
   school_name: yup.string().required("School is required!"),
   degree: yup.string().required("Degree is required!"),
   start_date: yup.string().required("Start Date is required!"),
-  end_date: yup.string().required("End Date is required!"),
+  end_date: yup.string(),
 });
 
 const EditEducation: React.FC = () => {
@@ -31,6 +32,7 @@ const EditEducation: React.FC = () => {
   const { data: educationData } = useGetEducationById<EducationById>(edu_id as string);
   const { trigger, isMutating } = useUpdateEducation();
   const { trigger: deleteTrigger, isMutating: deleteMutating } = useDeleteEducation();
+  const [isPresent, setIsPresent] = useState<boolean>();
 
   const form = useForm({
     resolver: yupResolver(validationSchema as any),
@@ -45,6 +47,7 @@ const EditEducation: React.FC = () => {
   const submit = async (data: any) => {
     const newData = {
       ...data,
+      is_present: isPresent,
       educationId: edu_id as string,
       start_date: dayjs(data.start_date).format("YYYY-MM-DD"),
       end_date: dayjs(data.end_date).format("YYYY-MM-DD"),
@@ -72,6 +75,7 @@ const EditEducation: React.FC = () => {
     form.setValue("degree", educationData?.data?.degree || "");
     form.setValue("start_date", dayjs(educationData?.data?.start_date).format("YYYY-MM-DD") || "");
     form.setValue("end_date", dayjs(educationData?.data?.end_date).format("YYYY-MM-DD") || "");
+    setIsPresent(educationData?.data?.is_present);
   }, [form, educationData?.data]);
 
   return (
@@ -169,32 +173,44 @@ const EditEducation: React.FC = () => {
                 />
               </Section>
             </Box>
-
             <Box className="pb-[7px]">
               <Section className="bg-white" py="4" px="3">
-                <Heading as="h6" size="4" align="left" mb="4">
-                  End Date
-                </Heading>
-                <FormField
-                  control={form.control}
-                  name="end_date"
-                  render={({ field }) => {
-                    return (
-                      <FormItem>
-                        <FormControl>
-                          <input
-                            type="date"
-                            className={cn(
-                              "font-light shadow-md bg-white border-0 text-black w-full h-[40px] p-3 outline-none"
-                            )}
-                            {...field}
-                          />
-                        </FormControl>
-                      </FormItem>
-                    );
-                  }}
-                />
-                {/* <Heading as="h6" size="2" weight="medium" align="left" mb="2">
+                <Flex className="items-center">
+                  <Checkbox
+                    defaultChecked={isPresent}
+                    checked={isPresent}
+                    onCheckedChange={() => setIsPresent(!isPresent)}
+                  />
+                  <Text className="pl-2">Present</Text>
+                </Flex>
+              </Section>
+            </Box>
+            {!isPresent && (
+              <Box className="pb-[7px]">
+                <Section className="bg-white" py="4" px="3">
+                  <Heading as="h6" size="4" align="left" mb="4">
+                    End Date
+                  </Heading>
+                  <FormField
+                    control={form.control}
+                    name="end_date"
+                    render={({ field }) => {
+                      return (
+                        <FormItem>
+                          <FormControl>
+                            <input
+                              type="date"
+                              className={cn(
+                                "font-light shadow-md bg-white border-0 text-black w-full h-[40px] p-3 outline-none"
+                              )}
+                              {...field}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                  {/* <Heading as="h6" size="2" weight="medium" align="left" mb="2">
                   End Date
                 </Heading>
                 <FormField
@@ -217,8 +233,9 @@ const EditEducation: React.FC = () => {
                     </FormItem>
                   )}
                 /> */}
-              </Section>
-            </Box>
+                </Section>
+              </Box>
+            )}
 
             <Box className="pb-[7px]">
               <Section py="4" px="3" className="space-y-[15px]">
