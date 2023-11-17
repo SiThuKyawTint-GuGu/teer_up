@@ -39,7 +39,7 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate }) =>
   }, [maxHeight, contentRef, data.description]);
 
   return (
-    <CardBox className="w-full shadow-xl rounded-lg h-[100%] justify-start flex-col mt-[15px] mb-[15px]">
+    <CardBox className="w-full shadow-xl rounded-lg h-[95%] justify-start flex-col">
       <Grid rows="3" className="h-full w-full flex flex-col bg-white shadow-lg">
         <Link
           href={`/content/${data?.slug}`}

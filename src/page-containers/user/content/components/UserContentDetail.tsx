@@ -37,7 +37,7 @@ const UserContentDetail: React.FC<ContentLayoutProps> = () => {
   };
 
   return (
-    <Grid columns="1">
+    <Grid columns="1" className="h-[100dvh] py-[48px]">
       {!isLoading ? (
         <>
           <div className="fixed max-w-[400px]  w-full  top-0  mx-auto flex flex-wrap z-10">

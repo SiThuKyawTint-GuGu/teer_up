@@ -18,9 +18,9 @@ const NormalContentDetail: React.FC<NormalContentDetailProp> = ({ data, contentM
     setComments(data.comments);
   }, [data.comments]);
   return (
-    <Grid columns="1" className="w-full h-full">
+    <Grid columns="1" className="w-full h-full pb-[46px]">
       {data && (
-        <div className="w-full  h-full no-scrollbar  overflow-y-auto">
+        <div className="w-full  h-full no-scrollbar   overflow-y-auto">
           {" "}
           <div className={`w-full mx-auto ${data.type !== "mentor" ? "h-[200px]" : "h-[300px]"}  relative p-2`}>
             <div
@@ -39,7 +39,7 @@ const NormalContentDetail: React.FC<NormalContentDetailProp> = ({ data, contentM
           <div className="w-full px-[16px]">
             <div className="w-full">
               <h1 className="font-[700] text-[24px]">{data?.title}</h1>
-              <div className="w-full  flex flex-col flex-wrap gap-y-3">
+              <div className="w-full  flex flex-col flex-wrap gap-y-3 ">
                 {data.type !== "opportunity" && data.type !== "article" && (
                   <section
                     dangerouslySetInnerHTML={{

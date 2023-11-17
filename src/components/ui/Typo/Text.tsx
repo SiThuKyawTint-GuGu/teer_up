@@ -12,6 +12,7 @@ type AlignProps = (typeof textPropDefs)["align"]["values"][number];
 interface Props {
   children?: React.ReactNode;
   className?: string;
+  onClick?: () => void;
   as?: React.ElementType;
   size?: SizePropValues;
   weight?: WeightPropsValues;

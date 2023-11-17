@@ -53,7 +53,7 @@ const CommentSection: React.FC<CommentSectionProp> = ({ data, setComments }) => 
           {cmtsArray && cmtsArray.length > 0 && cmtsArray[0].total} comments
         </div>
         <Flex direction="column" justify="between" className="w-full h-full">
-          <div className="overflow-y-auto h-[45vh]">
+          <div className="overflow-y-auto h-[45vh] no-scrolbar">
             <div>
               <div>
                 {commentDataArray && commentDataArray.length > 0 && (
@@ -61,7 +61,6 @@ const CommentSection: React.FC<CommentSectionProp> = ({ data, setComments }) => 
                     {commentDataArray.map((comment: CommentData, index: number) => (
                       <Flex direction="column" className="w-full h-full mb-2  " key={index}>
                         <SingleComment data={comment} parentData={data} mutateCmt={mutateCmt} />
-                        <hr className="h-[1px] bg-slateGray w-full" />
                       </Flex>
                     ))}
                     {cmtsArray && cmtsArray.length > 0 && cmtsArray[cmtsArray.length - 1].hasNextPage && (
@@ -159,7 +158,7 @@ const SingleComment: React.FC<SingleCommentProp> = ({ data, parentData, mutateCm
           background: `url(${data.user.profile_url ?? "/uploads/icons/user-profile.svg"}) center / cover `,
         }}
       /> */}
-      <Avatar.Root className="bg-blackA1  inline-flex h-[32px] w-[32px] select-none items-center justify-center overflow-hidden rounded-full align-middle">
+      <Avatar.Root className="bg-blackA1 mr-[6px] grow-0 shrink-0 basis-[32px]  inline-flex h-[32px] w-[32px] select-none items-center justify-center overflow-hidden rounded-full align-middle">
         <Avatar.Image
           className="h-full w-full rounded-[inherit] object-cover"
           src={data?.user?.profile_url}
@@ -191,6 +190,7 @@ const SingleComment: React.FC<SingleCommentProp> = ({ data, parentData, mutateCm
           </Flex>
         </div>
         <div className="text-start">{data.comment}</div>
+        <hr className="h-[1px] my-[16px] bg-slateGray w-full" />
       </div>
     </Flex>
   );

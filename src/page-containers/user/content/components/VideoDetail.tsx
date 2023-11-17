@@ -40,19 +40,14 @@ const VideoDetail: React.FC<VideoDetailProp> = ({ data, contentMutate }) => {
 
   return (
     <Dialog>
-      <Grid columns="1" className="h-full w-full">
+      <Grid columns="1" className="h-full  w-full">
         <div className="w-full h-full">
           <div className="w-full mx-auto h-full relative p-2">
             {data?.content_video && (
               <Flex className="w-full h-full">
-                <div className="w-full h-[88vh] relative rounded-md bg-black">
+                <div className="w-full h-full relative rounded-md bg-black">
                   <video
-                    className={`w-full h-full object-contain rounded-md`}
-                    id="myVideo"
-                    poster={
-                      data.image_url ||
-                      "https://teeup-dev.s3.ap-southeast-1.amazonaws.com/1697257229853-125476757-demoimage1.jpeg"
-                    }
+                    poster={data.image_url}
                     preload="none"
                     data-video="0"
                     muted={false}
@@ -60,8 +55,14 @@ const VideoDetail: React.FC<VideoDetailProp> = ({ data, contentMutate }) => {
                     ref={videoRef}
                     loop
                     playsInline
+                    // className={`w-full h-full object-scale-down absolute z-[99] bg-black videos`}
+                    className={`w-full h-full object-scale-down absolute bg-black`}
                   >
-                    <source src={data.content_video.video_url} className="object-fill" type="video/mp4"></source>
+                    <source
+                      className={`object-cover bg-cover bg-center`}
+                      src={data.content_video.video_url}
+                      type="video/mp4"
+                    ></source>
                   </video>
                   {!isPlayed && (
                     <div className="absolute top-1/2 right-[45%]">
