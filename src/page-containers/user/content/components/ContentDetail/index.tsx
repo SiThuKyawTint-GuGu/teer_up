@@ -22,7 +22,7 @@ const NormalContentDetail: React.FC<NormalContentDetailProp> = ({ data, contentM
       {data && (
         <div className="w-full  h-full no-scrollbar   overflow-y-auto">
           {" "}
-          <div className="w-full mx-auto h-[300px] relative p-2">
+          <div className={`w-full mx-auto ${data.type !== "mentor" ? "h-[200px]" : "h-[300px]"}  relative p-2`}>
             <div
               className="relative w-full max-w-[400px]  rounded-lg h-full"
               style={{

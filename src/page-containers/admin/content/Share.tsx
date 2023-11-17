@@ -10,7 +10,7 @@ const Share: React.FC<{ url: string }> = ({ url }) => {
   const domain: string = window.location.host;
   const shareLink = useMemo(() => `https://` + domain + url, [domain, url]);
   return (
-    <div className="bg-white w-full">
+    <div className="bg-white w-full max-w-[400px] px-[16px] pt-[8px] rounded-t-[16px]">
       <div className="bg-primary rounded-[6px]  w-[60px] h-[2px] mx-auto" />
       <Text className="text-[24px] font-[700]">Share To</Text>
       <Flex gap="5" className="py-[15px]">
