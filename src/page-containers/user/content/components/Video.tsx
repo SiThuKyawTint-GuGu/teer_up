@@ -2,7 +2,6 @@
 
 import ReactionBar from "@/components/contentLayout/ReactionBar";
 import CardBox from "@/components/ui/Card";
-import { Text } from "@/components/ui/Typo/Text";
 import { ContentData } from "@/types/Content";
 
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -97,10 +96,10 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
   }, []);
 
   return (
-    <div className="w-full h-[100%] flex flex-col">
-      <div className="w-full h-full  rounded-t-[8px] relative text-white" onClick={() => showCmt && setShowCmt(false)}>
+    <div className="w-full h-[95%] flex flex-col">
+      <div className="w-full h-full  rounded-t-[8px] relative  text-white" onClick={() => showCmt && setShowCmt(false)}>
         {data.content_video && (
-          <div className="video-wrapper  " onClick={onVideoPress}>
+          <div className="video-wrapper " onClick={onVideoPress}>
             <video
               poster={data.image_url}
               preload="none"
@@ -113,7 +112,8 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
               muted={isSafari}
               controls={false}
               playsInline={true}
-              className={`w-full h-full object-scale-down absolute bg-black videos`}
+              // className={`w-full h-full object-scale-down absolute z-[99] bg-black videos`}
+              className={`w-full h-full object-scale-down absolute bg-black`}
             >
               <source
                 className={`object-cover bg-cover bg-center`}
@@ -121,46 +121,45 @@ const Video: React.FC<VideoProps> = ({ data, setVideoRef, autoplay, contentMutat
                 type="video/mp4"
               ></source>
             </video>
-          </div>
-        )}
-
-        <div
-          className={`absolute flex flex-col items-baseline cursor-pointer w-full bottom-0 px-3 py-3 z-[1] text-[14px] font-[600] ${
-            showDescription &&
-            "max-h-[50%] h-auto bg-[rgba(0,0,0,.5)] overflow-y-scroll no-scrollbar text-start items-end justify-start"
-          }`}
-        >
-          {!showDescription && (
-            <div
-              className="h-full w-full"
-              onClick={() => {
-                if (data?.description?.length > 50) {
-                  setShowDescription(true);
-                }
-              }}
-            >
-              <div className="mb-3">{data.title}</div>
-              <div>
-                {data?.description?.length > 50 ? (
-                  <div>
-                    {data.description.slice(0, 50)}...
-                    <Text as="span" className="text-primary">
-                      see more
-                    </Text>
+            <div className="relative w-full h-full">
+              <div
+                className={`absolute flex flex-col items-baseline cursor-pointer w-full bottom-0 px-3 py-3 z-[1] text-[14px] font-[600] ${
+                  showDescription &&
+                  "max-h-[50%] h-auto bg-[rgba(0,0,0,.5)] overflow-y-scroll no-scrollbar text-start items-end justify-start"
+                }`}
+              >
+                {!showDescription && (
+                  <div
+                    className="h-full w-full"
+                    onClick={() => {
+                      if (data?.description?.length > 50) {
+                        setShowDescription(true);
+                      }
+                    }}
+                  >
+                    <div className="mb-3">{data.title}</div>
+                    <div>
+                      {data?.description?.length > 50 ? (
+                        <div className="w-full">
+                          {data?.description.slice(0, 50)}...
+                          <span className="text-primary">see more</span>
+                        </div>
+                      ) : (
+                        <div className="w-full">{data.description}</div>
+                      )}
+                    </div>
                   </div>
-                ) : (
-                  <Text>{data.description}</Text>
+                )}
+                {showDescription && data.description.length > 50 && (
+                  <div onClick={() => setShowDescription(false)}>
+                    <div className="mb-3">{data.title}</div>
+                    <div>{data.description}</div>
+                  </div>
                 )}
               </div>
             </div>
-          )}
-          {showDescription && data.description.length > 50 && (
-            <div onClick={() => setShowDescription(false)}>
-              <div className="mb-3">{data.title}</div>
-              <div>{data.description}</div>
-            </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
 
       <CardBox className="px-[12px]">

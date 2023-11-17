@@ -65,15 +65,16 @@ const Profile: React.FC = () => {
   const userProfile = profileData?.data;
 
   const handleContinueAssessment = async () => {
+    setLocalStorage("content", "0");
+    mutate(
+      () => true, // which cache keys are updated
+      undefined, // update cache data to `undefined`
+      { revalidate: true } // do not revalidate
+    );
     await onBoardingStatus(
       { in_progress: true },
       {
         onSuccess: () => {
-          mutate(
-            () => true, // which cache keys are updated
-            undefined, // update cache data to `undefined`
-            { revalidate: true } // do not revalidate
-          );
           router.push(`/profile/onboarding`);
         },
       }
@@ -81,7 +82,7 @@ const Profile: React.FC = () => {
   };
 
   const handleRetakeAssessment = async () => {
-    setLocalStorage("content", "0");
+    setLocalStorage("content", "1");
     mutate(
       () => true, // which cache keys are updated
       undefined, // update cache data to `undefined`
@@ -396,9 +397,15 @@ const Profile: React.FC = () => {
                                 <Text size="2" weight="light">
                                   -
                                 </Text>
-                                <Text size="2" weight="light">
-                                  {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "present"}
-                                </Text>
+                                {each?.is_present === true ? (
+                                  <Text size="2" weight="light">
+                                    {"present"}
+                                  </Text>
+                                ) : (
+                                  <Text size="2" weight="light">
+                                    {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "-"}
+                                  </Text>
+                                )}
                               </Flex>
                             </Flex>
                           ))
@@ -452,9 +459,18 @@ const Profile: React.FC = () => {
                                 <Text size="2" weight="light">
                                   -
                                 </Text>
-                                <Text size="2" weight="light">
+                                {each?.is_present === true ? (
+                                  <Text size="2" weight="light">
+                                    {"present"}
+                                  </Text>
+                                ) : (
+                                  <Text size="2" weight="light">
+                                    {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "-"}
+                                  </Text>
+                                )}
+                                {/* <Text size="2" weight="light">
                                   {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "present"}
-                                </Text>
+                                </Text> */}
                               </Flex>
                             </Flex>
                           ))

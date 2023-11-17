@@ -18,7 +18,7 @@ const NormalContentDetail: React.FC<NormalContentDetailProp> = ({ data, contentM
     setComments(data.comments);
   }, [data.comments]);
   return (
-    <Grid columns="1" className="w-full h-screen">
+    <Grid columns="1" className="w-full h-full pb-[46px]">
       {data && (
         <div className="w-full  h-full no-scrollbar   overflow-y-auto">
           {" "}
