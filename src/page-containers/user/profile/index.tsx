@@ -65,15 +65,16 @@ const Profile: React.FC = () => {
   const userProfile = profileData?.data;
 
   const handleContinueAssessment = async () => {
+    setLocalStorage("content", "0");
+    mutate(
+      () => true, // which cache keys are updated
+      undefined, // update cache data to `undefined`
+      { revalidate: true } // do not revalidate
+    );
     await onBoardingStatus(
       { in_progress: true },
       {
         onSuccess: () => {
-          mutate(
-            () => true, // which cache keys are updated
-            undefined, // update cache data to `undefined`
-            { revalidate: true } // do not revalidate
-          );
           router.push(`/profile/onboarding`);
         },
       }
@@ -81,7 +82,7 @@ const Profile: React.FC = () => {
   };
 
   const handleRetakeAssessment = async () => {
-    setLocalStorage("content", "0");
+    setLocalStorage("content", "1");
     mutate(
       () => true, // which cache keys are updated
       undefined, // update cache data to `undefined`
