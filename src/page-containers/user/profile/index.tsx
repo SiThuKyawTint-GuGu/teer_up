@@ -396,9 +396,15 @@ const Profile: React.FC = () => {
                                 <Text size="2" weight="light">
                                   -
                                 </Text>
-                                <Text size="2" weight="light">
-                                  {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "present"}
-                                </Text>
+                                {each?.is_present === true ? (
+                                  <Text size="2" weight="light">
+                                    {"present"}
+                                  </Text>
+                                ) : (
+                                  <Text size="2" weight="light">
+                                    {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "-"}
+                                  </Text>
+                                )}
                               </Flex>
                             </Flex>
                           ))
@@ -452,9 +458,18 @@ const Profile: React.FC = () => {
                                 <Text size="2" weight="light">
                                   -
                                 </Text>
-                                <Text size="2" weight="light">
+                                {each?.is_present === true ? (
+                                  <Text size="2" weight="light">
+                                    {"present"}
+                                  </Text>
+                                ) : (
+                                  <Text size="2" weight="light">
+                                    {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "-"}
+                                  </Text>
+                                )}
+                                {/* <Text size="2" weight="light">
                                   {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "present"}
-                                </Text>
+                                </Text> */}
                               </Flex>
                             </Flex>
                           ))
