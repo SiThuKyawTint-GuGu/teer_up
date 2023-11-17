@@ -18,15 +18,16 @@ const OnboardingQuestionPage = () => {
     page: 1,
     pagesize: 25,
   });
-
+  const show = getLocalStorage("content");
   useEffect(() => {
-    const show = getLocalStorage("content");
-    if (show === 0) {
+    if (show === "0") {
       setShowStart(false);
       return;
     }
     setShowStart(true);
-  }, []);
+  }, [show]);
+
+  console.log(showStart);
   const { trigger: skipOnboarding } = useSkipOnboarding();
   const [ispending, startTransition] = useTransition();
   const router = useRouter();
