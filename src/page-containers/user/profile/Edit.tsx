@@ -1,6 +1,6 @@
 "use client";
 import BGImage from "@/components/shared/BGImage";
-import { WIDTH_TYPES, bgTypes } from "@/components/shared/enums";
+import { bgTypes, WIDTH_TYPES } from "@/components/shared/enums";
 import { Button } from "@/components/ui/Button";
 import CardBox from "@/components/ui/Card";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
@@ -238,9 +238,18 @@ const ProfileEdit: React.FC = () => {
                         <Text size="2" weight="light">
                           -
                         </Text>
-                        <Text size="2" weight="light">
+                        {each?.is_present === true ? (
+                          <Text size="2" weight="light">
+                            {"present"}
+                          </Text>
+                        ) : (
+                          <Text size="2" weight="light">
+                            {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "-"}
+                          </Text>
+                        )}
+                        {/* <Text size="2" weight="light">
                           {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "present"}
-                        </Text>
+                        </Text> */}
                       </Flex>
                     </Flex>
                   ))
@@ -296,9 +305,18 @@ const ProfileEdit: React.FC = () => {
                         <Text size="2" weight="light">
                           -
                         </Text>
-                        <Text size="2" weight="light">
+                        {each?.is_present === true ? (
+                          <Text size="2" weight="light">
+                            {"present"}
+                          </Text>
+                        ) : (
+                          <Text size="2" weight="light">
+                            {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "-"}
+                          </Text>
+                        )}
+                        {/* <Text size="2" weight="light">
                           {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "present"}
-                        </Text>
+                        </Text> */}
                       </Flex>
                     </Flex>
                   ))
