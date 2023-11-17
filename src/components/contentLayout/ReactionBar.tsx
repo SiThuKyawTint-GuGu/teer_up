@@ -83,7 +83,7 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate, comments,
           </div>
 
           {openComment && (
-            <DialogContent className="top-[initial] bottom-0">
+            <DialogContent className="top-[initial]  mx-auto pt-[8px]  bottom-0 max-w-[400px] translate-y-0">
               <CommentSection data={data} mutateParentData={contentMutate} setComments={setComments} />
             </DialogContent>
           )}
@@ -111,7 +111,7 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate, comments,
               </div>
             </div>
           </DialogTrigger>
-          <DialogContent className="bg-white top-[initial] pt-[8px]  bottom-0 max-w-[378px] px-4  translate-y-0 rounded-10px-tl-tr">
+          <DialogContent className="top-[initial] mx-auto   bottom-0 max-w-[400px] translate-y-0">
             {openShare && <Share url={`/content/${data.slug}`} />}
           </DialogContent>
         </Dialog>
