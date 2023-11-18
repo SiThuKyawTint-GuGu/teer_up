@@ -6,15 +6,23 @@ import { ContentData } from "@/types/Content";
 import { getToken } from "@/utils/auth";
 import React, { useEffect, useState } from "react";
 import Share from "../../page-containers/admin/content/Share";
-type ReactionBarProp = {
+
+enum dialogTrigger {
+  COMMENT = "comment",
+  SHARE = "share",
+}
+
+interface ReactionBarProp {
   data: ContentData;
   contentMutate: any;
   comments: number;
   setComments: any;
-};
+}
+
 const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate, comments, setComments }) => {
   const [openComment, setOpenComment] = useState<boolean>(false);
   const [openShare, setOpenShare] = useState<boolean>(false);
+  const [triggerType, setTriggerType] = useState<dialogTrigger>();
   const { trigger: like } = useLikeContent();
   const { trigger: contentSave } = useSaveContent();
   const token = getToken();
@@ -57,68 +65,76 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate, comments,
     });
   };
   return (
-    <div className="w-full py-2">
-      <div className="flex justify-between items-center">
-        <button className="flex items-center flex-wrap gap-x-[10px]" onClick={likePost}>
-          {reaction.is_like ? (
-            <Icons.likefill className="w-[20px] h-[20px] text-primary" />
-          ) : (
-            <Icons.like className="w-[20px] h-[20px]" />
-          )}
-          <div className={reaction.is_like ? "text-primary" : ""}>
-            {""}
-            {reaction.likes}
-          </div>
-        </button>
-        <Dialog open={openComment} onOpenChange={val => setOpenComment(val)}>
-          <div
-            className="flex items-center flex-wrap gap-x-[10px]"
-            onClick={() => {
-              setOpenComment(true);
-            }}
-          >
-            <Icons.comment className="w-[20px] h-[20px]" />
-            <div>
-              {""}
-              {comments}
-            </div>
-          </div>
+    <>
+      <Dialog>
+        <div className="w-full py-2">
+          <div className="flex justify-between items-center">
+            <button className="flex items-center flex-wrap gap-x-[10px]" onClick={likePost}>
+              {reaction.is_like ? (
+                <Icons.likeFill className="w-[20px] h-[20px] text-primary" />
+              ) : (
+                <Icons.like className="w-[20px] h-[20px]" />
+              )}
+              <div className={reaction.is_like ? "text-primary" : ""}>{reaction.likes}</div>
+            </button>
 
-          {openComment && (
-            <DialogContent className="top-[initial] mx-auto   bottom-0 max-w-[400px] translate-y-0">
-              <CommentSection data={data} mutateParentData={contentMutate} setComments={setComments} />
-            </DialogContent>
-          )}
-        </Dialog>
-
-        <button className="flex items-center flex-wrap gap-x-[10px]" onClick={saveContent}>
-          {reaction.is_save ? (
-            <Icons.savedFill className="w-[20px] h-[20px] text-primary" />
-          ) : (
-            <Icons.saved className="w-[20px] h-[20px]" />
-          )}
-
-          <div className={reaction.is_save ? "text-primary" : ""}>
-            {""}
-            {reaction.saves}
-          </div>
-        </button>
-        <Dialog open={openShare} onOpenChange={val => setOpenShare(val)}>
-          <DialogTrigger>
-            <div className="flex items-center flex-wrap gap-x-1 cursor-pointer" onClick={() => setOpenShare(true)}>
-              <Icons.share className="w-[20px] h-[20px]" />
-              <div>
-                {""}
-                Share
+            {/**
+             * comment button trigger
+             */}
+            <DialogTrigger onClick={() => setTriggerType(dialogTrigger.COMMENT)}>
+              <div
+                className="flex items-center flex-wrap gap-x-[10px]"
+                // onClick={() => {
+                //   setOpenComment(true);
+                // }}
+              >
+                <Icons.comment className="w-[20px] h-[20px]" />
+                <div>{comments}</div>
               </div>
-            </div>
-          </DialogTrigger>
-          <DialogContent className="top-[initial] mx-auto   bottom-0 max-w-[400px] translate-y-0">
-            {openShare && <Share url={`/content/${data.slug}`} />}
-          </DialogContent>
-        </Dialog>
-      </div>
-    </div>
+            </DialogTrigger>
+
+            {/* {openComment && (
+                <DialogContent className="top-[initial] mx-auto bottom-0 max-w-[400px] translate-y-0">
+                  <CommentSection data={data} mutateParentData={contentMutate} setComments={setComments} />
+                </DialogContent>
+              )} */}
+
+            <button className="flex items-center flex-wrap gap-x-[10px]" onClick={saveContent}>
+              {reaction.is_save ? (
+                <Icons.savedFill className="w-[20px] h-[20px] text-primary" />
+              ) : (
+                <Icons.saved className="w-[20px] h-[20px]" />
+              )}
+
+              <div className={reaction.is_save ? "text-primary" : ""}>
+                {""}
+                {reaction.saves}
+              </div>
+            </button>
+
+            {/**
+             * share button trigger
+             */}
+            <DialogTrigger onClick={() => setTriggerType(dialogTrigger.SHARE)}>
+              <div className="flex items-center flex-wrap gap-x-1 cursor-pointer" onClick={() => setOpenShare(true)}>
+                <Icons.share className="w-[20px] h-[20px]" />
+                <div>Share</div>
+              </div>
+            </DialogTrigger>
+            {/* <DialogContent className="top-[initial] mx-auto   bottom-0 max-w-[400px] translate-y-0">
+                {openShare && <Share url={`/content/${data.slug}`} />}
+              </DialogContent> */}
+          </div>
+        </div>
+        <DialogContent className="bg-white top-[initial] bottom-0 px-0 py-2 translate-y-0 rounded-16px-tl-tr">
+          {triggerType === dialogTrigger.COMMENT ? (
+            <CommentSection data={data} mutateParentData={contentMutate} setComments={setComments} />
+          ) : (
+            <Share url={`/content/${data.slug}`} />
+          )}
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 
