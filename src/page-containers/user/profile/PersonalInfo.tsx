@@ -4,6 +4,7 @@ import CardBox from "@/components/ui/Card";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form";
 import { Icons } from "@/components/ui/Images";
 import { InputText } from "@/components/ui/Inputs";
+import InputDate from "@/components/ui/Inputs/InputDate";
 import { Radio, RadioItem } from "@/components/ui/Inputs/Radio";
 import { Label } from "@/components/ui/Label";
 import { Text } from "@/components/ui/Typo/Text";
@@ -142,13 +143,14 @@ const PersonalInfo: React.FC = () => {
                           return (
                             <FormItem>
                               <FormControl>
-                                <input
+                                <InputDate {...field} />
+                                {/* <input
                                   type="date"
                                   className={cn(
                                     "font-light shadow-md bg-white border-0 text-black w-full h-[40px] p-3 outline-none"
                                   )}
                                   {...field}
-                                />
+                                /> */}
                               </FormControl>
                             </FormItem>
                           );
