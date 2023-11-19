@@ -492,7 +492,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
           <div className="flex justify-between px-3 w-full flex-1">
             <div className="flex items-center cursor-pointer flex-wrap gap-x-[5px]" onClick={likePost}>
               {reaction.is_like ? (
-                <Icons.likefill className="w-[20px] h-[20px] text-primary" />
+                <Icons.likeFill className="w-[20px] h-[20px] text-primary" />
               ) : (
                 <Icons.like className="w-[20px] h-[20px]" />
               )}
