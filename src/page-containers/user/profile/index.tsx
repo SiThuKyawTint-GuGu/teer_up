@@ -3,7 +3,7 @@ import BGImage from "@/components/shared/BGImage";
 import { WIDTH_TYPES } from "@/components/shared/enums";
 import { Button } from "@/components/ui/Button";
 import CardBox from "@/components/ui/Card";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
+import { Animate, Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import { useGetUserDimensionResult } from "@/services/dimension";
@@ -57,9 +57,10 @@ const Profile: React.FC = () => {
   const { data: profileData, mutate: mutateUser } = useGetUserById<UserProfileResponse>(user?.id);
   const { data: userDimensionData } = useGetUserDimensionResult<UserDimensionResultResponse>();
   const { trigger: onBoardingStatus } = useUpdateUserOnboardingStatus();
-  const { data: getOnboardingStatus } = useGetUserOnboardingStatus<UserOnboardingStatusResponse>();
+  const { data: getOnboardingStatus, isLoading: statusLoading } =
+    useGetUserOnboardingStatus<UserOnboardingStatusResponse>();
 
-  const { trigger: resetScores } = useResetScores();
+  const { trigger: resetScores, isMutating: scoresLoading } = useResetScores();
   const { trigger: deleteProfileTrigger } = useDeleteCoverPhoto();
   const { trigger: deleteCoverTrigger } = useDeleteProfilePhoto();
   const userProfile = profileData?.data;
@@ -75,7 +76,7 @@ const Profile: React.FC = () => {
       { in_progress: true },
       {
         onSuccess: () => {
-          router.push(`/profile/onboarding`);
+          startTransition(() => router.push(`/profile/onboarding`));
         },
       }
     );
@@ -242,13 +243,18 @@ const Profile: React.FC = () => {
                           <RadarChart />
                           <Button
                             onClick={handleContinueAssessment}
-                            loading={isPending}
+                            loading={statusLoading}
                             disabled={getOnboardingStatus?.data?.completed}
                             className="w-full"
                           >
                             Continue Questionnaire
                           </Button>
-                          <Button onClick={handleRetakeAssessment} variant="link" className="w-full">
+                          <Button
+                            onClick={handleRetakeAssessment}
+                            loading={scoresLoading}
+                            variant="link"
+                            className="w-full"
+                          >
                             Retake Questionnaire
                           </Button>
                         </Box>
@@ -397,9 +403,15 @@ const Profile: React.FC = () => {
                                 <Text size="2" weight="light">
                                   -
                                 </Text>
-                                <Text size="2" weight="light">
-                                  {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "present"}
-                                </Text>
+                                {each?.is_present === true ? (
+                                  <Text size="2" weight="light">
+                                    {"present"}
+                                  </Text>
+                                ) : (
+                                  <Text size="2" weight="light">
+                                    {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "-"}
+                                  </Text>
+                                )}
                               </Flex>
                             </Flex>
                           ))
@@ -453,9 +465,18 @@ const Profile: React.FC = () => {
                                 <Text size="2" weight="light">
                                   -
                                 </Text>
-                                <Text size="2" weight="light">
+                                {each?.is_present === true ? (
+                                  <Text size="2" weight="light">
+                                    {"present"}
+                                  </Text>
+                                ) : (
+                                  <Text size="2" weight="light">
+                                    {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "-"}
+                                  </Text>
+                                )}
+                                {/* <Text size="2" weight="light">
                                   {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "present"}
-                                </Text>
+                                </Text> */}
                               </Flex>
                             </Flex>
                           ))
@@ -574,6 +595,7 @@ const Profile: React.FC = () => {
             viewImage && "top-0 rounded-none"
           )}
           handleOnClose={setViewImage}
+          animate={Animate.SLIDE}
         >
           {!viewImage ? (
             <Box className="space-y-[20px]">

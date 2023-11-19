@@ -53,7 +53,7 @@ const Bio: React.FC = () => {
               </Link>
             </Flex>
             <Box className="pb-[7px]">
-              <Section className="bg-white" py="4" px="3">
+              <Section className="bg-[#F8F9FB]" py="4" px="3">
                 <Heading as="h6" size="4" weight="medium" align="left" mb="2">
                   Describe yourself
                 </Heading>
@@ -61,11 +61,11 @@ const Bio: React.FC = () => {
                   control={form.control}
                   name="bio"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="bg-white shadow-lg rounded-md">
                       <FormControl>
                         <InputTextArea
                           inputType={USER_ROLE.ADMIN}
-                          className="text-sm h-[130px] rounded-none"
+                          className="text-sm bg-white h-[130px] rounded-md"
                           placeholder="Ex: Boston University"
                           defaultValue={profileData?.data?.bio}
                           {...field}

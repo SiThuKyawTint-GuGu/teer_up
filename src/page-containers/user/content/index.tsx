@@ -169,7 +169,7 @@ const UserContent = () => {
       {!isLoading ? (
         <Box
           ref={containerRef}
-          className={`snap-y flex-col snap-mandatory h-full px-2   w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
+          className={`snap-y flex-col snap-mandatory h-full px-2 w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
           style={{ scrollSnapStop: "always" }}
           id="explore-list-container"
         >
