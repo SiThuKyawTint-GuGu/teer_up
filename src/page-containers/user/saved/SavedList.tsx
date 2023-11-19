@@ -8,13 +8,14 @@ import { Dialog, DialogClose, DialogContent, DialogTrigger } from "@/components/
 import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import {
-  SavedContentParams,
   SAVED_CONTENT_TYPES,
+  SavedContentParams,
   useGetSavedContents,
   useGetUnfinishedPathway,
   useSaveContent,
 } from "@/services/content";
 import { SavedContentResponse, UnfinishedPathwayResponse } from "@/types/SavedContent";
+import { capitalizeFirstLetter } from "@/utils";
 import { cn } from "@/utils/cn";
 import { Box, Flex, Grid, Heading, IconButton, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
@@ -93,27 +94,19 @@ const SavedList: React.FC = () => {
   });
   const { data: unFinishedPathways } = useGetUnfinishedPathway<UnfinishedPathwayResponse>();
 
-  const DropdownMenu = () => {
-    return (
-      <div className="dropdown-menu h-[100px] bg-red-600 flex items-center justify-center rounded ">
-        <ul>
-          <li onClick={unSaveContent} className="p-1 cursor-pointer text-white">
-            Unsave
-          </li>
-        </ul>
-      </div>
-    );
-  };
-  function capitalizeFirstLetter(string: string) {
-    if (!string) return;
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  }
+  // const DropdownMenu = () => {
+  //   return (
+
+  //   );
+  // };
+
   const unSaveContent = async () => {
     await contentSave({
       id: content,
     });
     await mutate();
   };
+
   const handleCheckFilter = (each: { key: SAVED_CONTENT_TYPES; value: string }) => {
     if (each.key === SAVED_CONTENT_TYPES.ALL) {
       setFilterTypes([each]);
@@ -125,10 +118,12 @@ const SavedList: React.FC = () => {
       : setFilterTypes([...filteredData, each]);
     return;
   };
+
   const toggleMenu = (data: any) => {
     setContent(data.content_id);
     setIsMenuVisible(isMenuVisible && data.content_id == content ? !isMenuVisible : true);
   };
+
   if (isLoading) {
     return (
       <div className="w-full h-full flex justify-center items-center">
@@ -170,7 +165,7 @@ const SavedList: React.FC = () => {
                 savedContents?.data?.map((each, key) => (
                   <Box key={key} pb="4">
                     <CardBox className="p-[8px] bg-white">
-                      <Flex justify="start" align="start" gap="2">
+                      <Flex justify="between" align="start" gap="2">
                         <Link key={key} href={`/content/${each?.content?.slug}`} className="w-3/4">
                           <Flex justify="start" align="start" gap="2">
                             <BGImage
@@ -193,7 +188,15 @@ const SavedList: React.FC = () => {
                         <IconButton size="2" variant="ghost" onClick={() => toggleMenu(each)}>
                           <Icons.moreOption className={cn("w-[24px] h-[24px] text-[#5B6770]", "text-[#8d9499]")} />
                         </IconButton>
-                        {isMenuVisible && content == each.content_id && <DropdownMenu />}
+                        {isMenuVisible && content == each.content_id && (
+                          <div className="dropdown-menu h-[100px] bg-red-600 flex items-center justify-center rounded ">
+                            <ul>
+                              <li onClick={unSaveContent} className="p-1 cursor-pointer text-white">
+                                Unsave
+                              </li>
+                            </ul>
+                          </div>
+                        )}
                         {/* <DropdownMenu /> */}
                       </Flex>
                     </CardBox>
