@@ -44,7 +44,7 @@ const UserContentDetail: React.FC<ContentLayoutProps> = () => {
             <ContentDetailHeader title={`${contentData?.title}`} />
           </div>
           <div className="w-full h-full">
-            <div className="w-full h-full">{getContentDetail()}</div>
+            <div className="w-full h-[100dvh] py-[48px]">{getContentDetail()}</div>
           </div>
         </>
       ) : (
