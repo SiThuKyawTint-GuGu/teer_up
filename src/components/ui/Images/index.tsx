@@ -25,6 +25,7 @@ import { FaArrowRight, FaFacebook, FaLightbulb, FaTelegram, FaUserCircle, FaWhat
 import { FcBusinesswoman } from "react-icons/fc";
 import { FiUsers } from "react-icons/fi";
 import { GoCommentDiscussion } from "react-icons/go";
+import { HiPlus } from "react-icons/hi";
 import {
   IoBookmark,
   IoBookmarkOutline,
@@ -71,7 +72,6 @@ import {
   PiHouseThin,
   PiNotePencil,
   PiPlanetThin,
-  PiPlusThin,
   PiUserThin,
   PiWallet,
 } from "react-icons/pi";
@@ -127,7 +127,7 @@ export const Icons = {
   arrowDown: KeyboardArrowDownIcon,
   caretRight: KeyboardArrowRightIcon,
   caretLeft: PiCaretLeftThin,
-  plus: PiPlusThin,
+  plus: HiPlus,
   check: PiCheckThin,
   email: MdOutlineMailOutline,
   notification: IoNotificationsOutline,
