@@ -1,5 +1,5 @@
 import CommentSection from "@/components/contentLayout/CommentSection";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
+import { Animate, Dialog, DialogClose, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons, Image } from "@/components/ui/Images";
 import { useLikeContent, useSaveContent } from "@/services/content";
 import { ContentData } from "@/types/Content";
@@ -71,7 +71,7 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate, comments,
 
   return (
     <>
-      <Dialog onOpenChange={val => !val && setIsCopied(!isCopied)}>
+      <Dialog onOpenChange={val => !val && setIsCopied(false)}>
         <div className="w-full py-2">
           <div className="flex justify-between items-center">
             <button className="flex items-center flex-wrap gap-x-[10px]" onClick={likePost}>
@@ -131,7 +131,10 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate, comments,
               </DialogContent> */}
           </div>
         </div>
-        <DialogContent className={cn("bg-white top-[initial] bottom-0 px-0 py-2 translate-y-0 rounded-16px-tl-tr")}>
+        <DialogContent
+          animate={Animate.SLIDE}
+          className={cn("bg-white top-[initial] bottom-0 px-0 py-2 translate-y-0 rounded-16px-tl-tr")}
+        >
           {triggerType === dialogTrigger.COMMENT ? (
             <CommentSection data={data} mutateParentData={contentMutate} setComments={setComments} />
           ) : (
@@ -139,16 +142,18 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate, comments,
           )}
         </DialogContent>
         {isCopied && (
-          <DialogContent className="border-0 shadow-none outline-none">
-            <Flex justify="center">
-              <Box className="w-[180px] px-6 py-3 rounded-full bg-white">
-                <Flex justify="center" align="center" className="gap-x-2">
-                  <Image src="/uploads/icons/checkmark.svg" width={24} height={24} alt="check" />
-                  <Text className="text-[#373A36] text-lg font-semibold">Link copied</Text>
-                </Flex>
-              </Box>
-            </Flex>
-          </DialogContent>
+          <DialogClose asChild>
+            <DialogContent animate={Animate.SLIDE} className="border-0 shadow-none outline-none">
+              <Flex justify="center" align="center">
+                <Box className="w-[180px] h-[52px] px-6 py-3 rounded-full bg-white">
+                  <Flex justify="center" align="center" className="gap-x-2">
+                    <Image src="/uploads/icons/checkmark.svg" width={24} height={24} alt="check" />
+                    <Text className="text-[#373A36] text-lg font-semibold">Link copied</Text>
+                  </Flex>
+                </Box>
+              </Flex>
+            </DialogContent>
+          </DialogClose>
         )}
       </Dialog>
     </>
