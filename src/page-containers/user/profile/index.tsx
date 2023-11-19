@@ -3,7 +3,7 @@ import BGImage from "@/components/shared/BGImage";
 import { WIDTH_TYPES } from "@/components/shared/enums";
 import { Button } from "@/components/ui/Button";
 import CardBox from "@/components/ui/Card";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
+import { Animate, Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import { useGetUserDimensionResult } from "@/services/dimension";
@@ -595,6 +595,7 @@ const Profile: React.FC = () => {
             viewImage && "top-0 rounded-none"
           )}
           handleOnClose={setViewImage}
+          animate={Animate.SLIDE}
         >
           {!viewImage ? (
             <Box className="space-y-[20px]">
