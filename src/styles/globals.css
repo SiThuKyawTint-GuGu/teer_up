@@ -127,6 +127,12 @@ body {
   .border-card {
     @apply border border-primary rounded-md;
   }
+  .border-line {
+    @apply border-b border-b-[#BDC7D5] border-opacity-50;
+  }
+  .border-top-line {
+    @apply border-t border-t-[#BDC7D5] border-opacity-50;
+  }
 }
 
 .rt-TabsTriggerInner,

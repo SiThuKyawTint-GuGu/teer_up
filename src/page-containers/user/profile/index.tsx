@@ -57,9 +57,10 @@ const Profile: React.FC = () => {
   const { data: profileData, mutate: mutateUser } = useGetUserById<UserProfileResponse>(user?.id);
   const { data: userDimensionData } = useGetUserDimensionResult<UserDimensionResultResponse>();
   const { trigger: onBoardingStatus } = useUpdateUserOnboardingStatus();
-  const { data: getOnboardingStatus } = useGetUserOnboardingStatus<UserOnboardingStatusResponse>();
+  const { data: getOnboardingStatus, isLoading: statusLoading } =
+    useGetUserOnboardingStatus<UserOnboardingStatusResponse>();
 
-  const { trigger: resetScores } = useResetScores();
+  const { trigger: resetScores, isMutating: scoresLoading } = useResetScores();
   const { trigger: deleteProfileTrigger } = useDeleteCoverPhoto();
   const { trigger: deleteCoverTrigger } = useDeleteProfilePhoto();
   const userProfile = profileData?.data;
@@ -75,7 +76,7 @@ const Profile: React.FC = () => {
       { in_progress: true },
       {
         onSuccess: () => {
-          router.push(`/profile/onboarding`);
+          startTransition(() => router.push(`/profile/onboarding`));
         },
       }
     );
@@ -242,13 +243,18 @@ const Profile: React.FC = () => {
                           <RadarChart />
                           <Button
                             onClick={handleContinueAssessment}
-                            loading={isPending}
+                            loading={statusLoading}
                             disabled={getOnboardingStatus?.data?.completed}
                             className="w-full"
                           >
                             Continue Questionnaire
                           </Button>
-                          <Button onClick={handleRetakeAssessment} variant="link" className="w-full">
+                          <Button
+                            onClick={handleRetakeAssessment}
+                            loading={scoresLoading}
+                            variant="link"
+                            className="w-full"
+                          >
                             Retake Questionnaire
                           </Button>
                         </Box>

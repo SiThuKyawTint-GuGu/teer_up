@@ -29,6 +29,7 @@ const config: Config = {
       },
       borderRadius: {
         "10px-tl-tr": "10px 10px 0 0",
+        "16px-tl-tr": "16px 16px 0 0",
       },
       listStyleType: {
         square: "square",
