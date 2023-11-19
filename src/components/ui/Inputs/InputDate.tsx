@@ -1,15 +1,16 @@
 "use client";
 import React, { ChangeEventHandler, useRef, useState } from "react";
 
+import { Button } from "@/components/ui/Button";
+import { Image } from "@/components/ui/Images";
 import { cn } from "@/utils/cn";
 import { format, isValid, parse } from "date-fns";
 import { DayPicker, SelectSingleEventHandler } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { usePopper } from "react-popper";
-import { Button } from "../Button";
-import { Image } from "../Images";
 
 interface DatePickerProps {
+  defaultValue?: string;
   onChange: (arg?: string) => void;
 }
 
@@ -65,7 +66,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ ...props }: DatePickerProps) =>
             "font-light shadow-md rounded-md bg-white border-0 text-black w-full h-[40px] p-3 outline-none"
           )}
           placeholder={format(new Date(), "y-MM-dd")}
-          value={inputValue}
+          value={inputValue || (props?.defaultValue ? format(new Date(props.defaultValue), "y-MM-dd") : "")}
           onChange={handleInputChange}
         />
         <Button
