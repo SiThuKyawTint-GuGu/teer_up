@@ -3,10 +3,10 @@ import { Text } from "@/components/ui/Typo/Text";
 import { copyUrl } from "@/utils/helper";
 import { Flex, Grid } from "@radix-ui/themes";
 import Link from "next/link";
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 
-const Share: React.FC<{ url: string }> = ({ url }) => {
-  const [copy, setCopy] = useState<boolean>(false);
+const Share: React.FC<{ url: string; onClickCopied: (arg: boolean) => void }> = ({ url, onClickCopied }) => {
+  // const [copy, setCopy] = useState<boolean>(false);
   const domain: string = window.location.host;
   const shareLink = useMemo(() => `https://` + domain + url, [domain, url]);
 
@@ -22,7 +22,7 @@ const Share: React.FC<{ url: string }> = ({ url }) => {
             className="bg-[#BDC7D5] w-10 h-10 rounded-full cursor-pointer"
             onClick={() => {
               copyUrl(shareLink);
-              setCopy(true);
+              onClickCopied(true);
             }}
           >
             <Icons.shareLink className="text-2xl text-white text-center" />
@@ -66,11 +66,11 @@ const Share: React.FC<{ url: string }> = ({ url }) => {
         </Link>
       </Grid>
 
-      {copy && (
+      {/* {copy && (
         <Text as="div" className="text-green-700 w-full text-center">
           Copied
         </Text>
-      )}
+      )} */}
     </div>
   );
 };

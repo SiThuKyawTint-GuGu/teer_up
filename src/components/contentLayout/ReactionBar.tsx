@@ -4,6 +4,7 @@ import { Icons } from "@/components/ui/Images";
 import { useLikeContent, useSaveContent } from "@/services/content";
 import { ContentData } from "@/types/Content";
 import { getToken } from "@/utils/auth";
+import { cn } from "@/utils/cn";
 import React, { useEffect, useState } from "react";
 import Share from "../../page-containers/admin/content/Share";
 
@@ -22,11 +23,12 @@ interface ReactionBarProp {
 const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate, comments, setComments }) => {
   const [openComment, setOpenComment] = useState<boolean>(false);
   const [openShare, setOpenShare] = useState<boolean>(false);
+  const [isCopied, setIsCopied] = useState<boolean>(false);
   const [triggerType, setTriggerType] = useState<dialogTrigger>();
   const { trigger: like } = useLikeContent();
   const { trigger: contentSave } = useSaveContent();
   const token = getToken();
-  const [reaction, setReacion] = useState({
+  const [reaction, setReaction] = useState({
     likes: 0,
     is_like: false,
     saves: 0,
@@ -34,7 +36,7 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate, comments,
   });
 
   useEffect(() => {
-    setReacion(prev => ({
+    setReaction(prev => ({
       ...prev,
       saves: data.saves,
       is_save: data.is_saved,
@@ -45,25 +47,26 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate, comments,
 
   const likePost = async () => {
     if (reaction.is_like && token) {
-      setReacion(prev => ({ ...prev, likes: prev.likes - 1, is_like: false }));
+      setReaction(prev => ({ ...prev, likes: prev.likes - 1, is_like: false }));
     }
     if (!reaction.is_like && token) {
-      setReacion(prev => ({ ...prev, likes: prev.likes + 1, is_like: true }));
+      setReaction(prev => ({ ...prev, likes: prev.likes + 1, is_like: true }));
     }
     await like({ id: data.id });
   };
 
   const saveContent = async () => {
     if (reaction.is_save && token) {
-      setReacion(prev => ({ ...prev, saves: prev.saves - 1, is_save: false }));
+      setReaction(prev => ({ ...prev, saves: prev.saves - 1, is_save: false }));
     }
     if (!reaction.is_save && token) {
-      setReacion(prev => ({ ...prev, saves: prev.saves + 1, is_save: true }));
+      setReaction(prev => ({ ...prev, saves: prev.saves + 1, is_save: true }));
     }
     await contentSave({
       id: data.id,
     });
   };
+
   return (
     <>
       <Dialog>
@@ -126,11 +129,16 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate, comments,
               </DialogContent> */}
           </div>
         </div>
-        <DialogContent className="bg-white top-[initial] bottom-0 px-0 py-2 translate-y-0 rounded-16px-tl-tr">
+        <DialogContent
+          className={cn(
+            "bg-white top-[initial] bottom-0 px-0 py-2 translate-y-0 rounded-16px-tl-tr",
+            isCopied && "top-0 bg-red"
+          )}
+        >
           {triggerType === dialogTrigger.COMMENT ? (
             <CommentSection data={data} mutateParentData={contentMutate} setComments={setComments} />
           ) : (
-            <Share url={`/content/${data.slug}`} />
+            <Share url={`/content/${data.slug}`} onClickCopied={setIsCopied} />
           )}
         </DialogContent>
       </Dialog>
