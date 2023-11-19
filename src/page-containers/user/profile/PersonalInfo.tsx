@@ -143,14 +143,7 @@ const PersonalInfo: React.FC = () => {
                           return (
                             <FormItem>
                               <FormControl>
-                                <InputDate {...field} />
-                                {/* <input
-                                  type="date"
-                                  className={cn(
-                                    "font-light shadow-md bg-white border-0 text-black w-full h-[40px] p-3 outline-none"
-                                  )}
-                                  {...field}
-                                /> */}
+                                <InputDate {...field} defaultValue={userProfile?.personal_info?.birthday} />
                               </FormControl>
                             </FormItem>
                           );
