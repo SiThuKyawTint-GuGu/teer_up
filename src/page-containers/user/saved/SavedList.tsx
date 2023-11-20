@@ -80,10 +80,8 @@ const SavedList: React.FC = () => {
   ]);
   const [filteredParams, setFilterParams] = useState<{
     key: string;
-    value: string;
   }>({
     key: filterNames[0].key,
-    value: filterNames[0].value,
   });
   const {
     data: savedContents,
@@ -151,8 +149,19 @@ const SavedList: React.FC = () => {
     <Dialog
       open={open}
       onOpenChange={val => {
-        if (!val) {
-          setFilterTypes(pre => pre.filter(data => filteredParams?.key?.split(",").includes(data.key)));
+        if (val) {
+          setFilterTypes(pre => {
+            const filterData = pre.filter(data => filteredParams?.key?.split(",").includes(data.key));
+            if (filterData.length === 0) {
+              return [
+                {
+                  key: SAVED_CONTENT_TYPES.ALL,
+                  value: "All content types",
+                },
+              ];
+            }
+            return filterData;
+          });
         }
         setOpen(val);
       }}
@@ -285,7 +294,6 @@ const SavedList: React.FC = () => {
             onClick={async () => {
               setFilterParams({
                 key: filteredType.map(data => data.key).join(","),
-                value: filteredType[0].value,
               });
             }}
           >
