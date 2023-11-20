@@ -266,7 +266,9 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
                           }
                         }}
                       >
-                        <Text className={` ${visibleItemIndex === index && "text-primary w-[calc(100%-40px)]"}`}>
+                        <Text
+                          className={` ${visibleItemIndex === index && "text-primary text-start w-[calc(100%-40px)]"}`}
+                        >
                           {data.title || "--------"}
                         </Text>
 
