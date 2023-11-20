@@ -86,13 +86,23 @@ const Setting: React.FC = () => {
                 </Flex>
               </Link>
             </div>
-            <div>
+            <div className="pb-[15px] mb-[15px] border-b border-b-[#BDC7D5]">
               <Link className="block" href="https://www.prudential.com.sg/Privacy-Notice" target="_blank">
                 <Flex justify="between" align="start">
                   <Text as="label" className="font-[400]" size="3">
                     Privacy Policy
                   </Text>
                   <Icons.link className="w-[25px] h-[25px]" />
+                </Flex>
+              </Link>
+            </div>
+            <div>
+              <Link className="block" href="/profile/setting/refer-friend">
+                <Flex justify="between" align="start">
+                  <Text as="label" className="font-[400]" size="3">
+                    Refer a friend
+                  </Text>
+                  <Icons.caretRight className="w-[25px] h-[25px]" />
                 </Flex>
               </Link>
             </div>

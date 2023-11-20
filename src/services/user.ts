@@ -23,6 +23,9 @@ export type ParamsType = {
 export const useGetUsers = <ParamsType, User>(params: ParamsType): SWRResponse<User, any> => {
   return useSWR<User>(`/user?${routeFilter(params)}`);
 };
+export const useGetUser = <UserProfileResponse>(): SWRResponse<UserProfileResponse, any> => {
+  return useSWR<UserProfileResponse>(`/user/profile`);
+};
 
 export const useGetUserById = <UserProfileResponse>(
   id: string,
