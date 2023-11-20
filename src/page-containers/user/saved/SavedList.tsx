@@ -4,12 +4,12 @@ import BGImage from "@/components/shared/BGImage";
 import NotFound from "@/components/shared/NotFound";
 import { Button } from "@/components/ui/Button";
 import CardBox from "@/components/ui/Card";
-import { Dialog, DialogClose, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
+import { Animate, Dialog, DialogClose, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import {
-  SavedContentParams,
   SAVED_CONTENT_TYPES,
+  SavedContentParams,
   useGetSavedContents,
   useGetUnfinishedPathway,
   useSaveContent,
@@ -280,6 +280,7 @@ const SavedList: React.FC = () => {
         </Box>
       </Grid>
       <DialogContent
+        animate={Animate.SLIDE}
         className={cn(
           "bg-white top-[initial] bottom-0 px-4 py-8 translate-y-0 rounded-10px-tl-tr",
           triggerType === TRIGGER_TYPE.UNFINISHED && "top-0 rounded-none"
