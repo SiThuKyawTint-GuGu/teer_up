@@ -1,5 +1,5 @@
 "use client";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -35,6 +35,8 @@ const validationSchema = yup.object({
 const SignUp = () => {
   const router = useRouter();
   const comboboxRef = useRef<any>(null);
+  const searchParams = useSearchParams();
+  const referalCode = searchParams.get("referalCode");
   const [isPending, startTransition] = useTransition();
   const [checked, setChecked] = useState<boolean>(false);
   const { trigger, error, isMutating } = useUserRegister();
@@ -44,12 +46,15 @@ const SignUp = () => {
   });
 
   const onSubmit = async (data: SignUpFormType) => {
-    await trigger(data, {
-      onSuccess: response => {
-        setUserInfo(response.data.token, response.data.data);
-        startTransition(() => router.push("/auth/otp"));
-      },
-    });
+    await trigger(
+      { ...data, referal_code: referalCode || null },
+      {
+        onSuccess: response => {
+          setUserInfo(response.data.token, response.data.data);
+          startTransition(() => router.push("/auth/otp"));
+        },
+      }
+    );
   };
 
   return (
