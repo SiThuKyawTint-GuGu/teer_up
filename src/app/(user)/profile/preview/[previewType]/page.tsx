@@ -1,9 +1,10 @@
 "use client";
 import CoverPhotoPreview from "@/page-containers/user/profile/preview/CoverPhotoPreview";
 import ProfilePhotoRreview from "@/page-containers/user/profile/preview/ProfilePhotoPreview";
+import { NextPage } from "next";
 import { useParams } from "next/navigation";
 
-const page = () => {
+const PreviewPage: NextPage = () => {
   const { previewType } = useParams();
   if (previewType === "cover-photo") {
     return <CoverPhotoPreview />;
@@ -11,4 +12,4 @@ const page = () => {
   return <ProfilePhotoRreview />;
 };
 
-export default page;
+export default PreviewPage;
