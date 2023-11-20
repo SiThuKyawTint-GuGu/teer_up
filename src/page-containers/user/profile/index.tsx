@@ -3,7 +3,7 @@ import BGImage from "@/components/shared/BGImage";
 import { WIDTH_TYPES } from "@/components/shared/enums";
 import { Button } from "@/components/ui/Button";
 import CardBox from "@/components/ui/Card";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
+import { Animate, Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import { useGetUserDimensionResult } from "@/services/dimension";
@@ -71,12 +71,17 @@ const Profile: React.FC = () => {
   const { data: profileData, mutate: mutateUser } = useGetUserById<UserProfileResponse>(user?.id);
   const { data: userDimensionData } = useGetUserDimensionResult<UserDimensionResultResponse>();
   const { trigger: onBoardingStatus } = useUpdateUserOnboardingStatus();
-  const { data: getOnboardingStatus } = useGetUserOnboardingStatus<UserOnboardingStatusResponse>();
+
   const { trigger: uploadCoverTrigger } = useUploadCover();
-  const { trigger: resetScores } = useResetScores();
+
   const { trigger: deleteCoverTrigger } = useDeleteCoverPhoto();
   const { trigger: deleteProfileTrigger } = useDeleteProfilePhoto();
   const { trigger: uploadProfileTrigger } = useUploadProfile();
+
+  const { data: getOnboardingStatus, isLoading: statusLoading } =
+    useGetUserOnboardingStatus<UserOnboardingStatusResponse>();
+
+  const { trigger: resetScores, isMutating: scoresLoading } = useResetScores();
 
   const userProfile = profileData?.data;
   const handleUploadImage = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -104,7 +109,7 @@ const Profile: React.FC = () => {
       { in_progress: true },
       {
         onSuccess: () => {
-          router.push(`/profile/onboarding`);
+          startTransition(() => router.push(`/profile/onboarding`));
         },
       }
     );
@@ -285,13 +290,18 @@ const Profile: React.FC = () => {
                           <RadarChart />
                           <Button
                             onClick={handleContinueAssessment}
-                            loading={isPending}
+                            loading={statusLoading}
                             disabled={getOnboardingStatus?.data?.completed}
                             className="w-full"
                           >
                             Continue Questionnaire
                           </Button>
-                          <Button onClick={handleRetakeAssessment} variant="link" className="w-full">
+                          <Button
+                            onClick={handleRetakeAssessment}
+                            loading={scoresLoading}
+                            variant="link"
+                            className="w-full"
+                          >
                             Retake Questionnaire
                           </Button>
                         </Box>
@@ -633,6 +643,7 @@ const Profile: React.FC = () => {
             viewImage && "top-0 rounded-none"
           )}
           handleOnClose={setViewImage}
+          animate={Animate.SLIDE}
         >
           {!viewImage ? (
             <Box className="space-y-[20px]">

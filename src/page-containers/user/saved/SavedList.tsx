@@ -15,6 +15,7 @@ import {
   useSaveContent,
 } from "@/services/content";
 import { SavedContentResponse, UnfinishedPathwayResponse } from "@/types/SavedContent";
+import { capitalizeFirstLetter } from "@/utils";
 import { cn } from "@/utils/cn";
 import { Box, Flex, Grid, Heading, IconButton, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
@@ -93,27 +94,19 @@ const SavedList: React.FC = () => {
   });
   const { data: unFinishedPathways } = useGetUnfinishedPathway<UnfinishedPathwayResponse>();
 
-  const DropdownMenu = () => {
-    return (
-      <div className="dropdown-menu h-[100px] bg-red-600 flex items-center justify-center rounded ">
-        <ul>
-          <li onClick={unSaveContent} className="p-1 cursor-pointer text-white">
-            Unsave
-          </li>
-        </ul>
-      </div>
-    );
-  };
-  function capitalizeFirstLetter(string: string) {
-    if (!string) return;
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  }
+  // const DropdownMenu = () => {
+  //   return (
+
+  //   );
+  // };
+
   const unSaveContent = async () => {
     await contentSave({
       id: content,
     });
     await mutate();
   };
+
   const handleCheckFilter = (each: { key: SAVED_CONTENT_TYPES; value: string }) => {
     if (each.key === SAVED_CONTENT_TYPES.ALL) {
       setFilterTypes([each]);
@@ -125,10 +118,12 @@ const SavedList: React.FC = () => {
       : setFilterTypes([...filteredData, each]);
     return;
   };
+
   const toggleMenu = (data: any) => {
     setContent(data.content_id);
     setIsMenuVisible(isMenuVisible && data.content_id == content ? !isMenuVisible : true);
   };
+
   if (isLoading) {
     return (
       <div className="w-full h-full flex justify-center items-center">
@@ -170,28 +165,38 @@ const SavedList: React.FC = () => {
                 savedContents?.data?.map((each, key) => (
                   <Box key={key} pb="4">
                     <CardBox className="p-[8px] bg-white">
-                      <Flex justify="start" align="start" gap="2">
-                        <BGImage
-                          width="128px"
-                          height="100px"
-                          className="rounded-[4px]"
-                          url={each?.content?.image_url}
-                        />
+                      <Flex justify="between" align="start" gap="2">
                         <Link key={key} href={`/content/${each?.content?.slug}`} className="w-3/4">
-                          <Flex className="text-[#373A36] space-y-1" direction="column" wrap="wrap">
-                            <Text>{each?.content?.title}</Text>
-                            <Text size="2" weight="light">
-                              <Text as="span" className="capitalize">
-                                {each?.content?.type}
-                              </Text>{" "}
-                              . Saved {dayjs(each?.created_at).fromNow()}
-                            </Text>
+                          <Flex justify="start" align="start" gap="2">
+                            <BGImage
+                              width="128px"
+                              height="100px"
+                              className="rounded-[4px]"
+                              url={each?.content?.image_url}
+                            />
+                            <Flex className="text-[#373A36] space-y-1" direction="column" wrap="wrap">
+                              <Text>{each?.content?.title}</Text>
+                              <Text size="2" weight="light">
+                                <Text as="span" className="capitalize">
+                                  {each?.content?.type}
+                                </Text>{" "}
+                                . Saved {dayjs(each?.created_at).fromNow()}
+                              </Text>
+                            </Flex>
                           </Flex>
                         </Link>
                         <IconButton size="2" variant="ghost" onClick={() => toggleMenu(each)}>
                           <Icons.moreOption className={cn("w-[24px] h-[24px] text-[#5B6770]", "text-[#8d9499]")} />
                         </IconButton>
-                        {isMenuVisible && content == each.content_id && <DropdownMenu />}
+                        {isMenuVisible && content == each.content_id && (
+                          <div className="dropdown-menu h-[100px] bg-red-600 flex items-center justify-center rounded ">
+                            <ul>
+                              <li onClick={unSaveContent} className="p-1 cursor-pointer text-white">
+                                Unsave
+                              </li>
+                            </ul>
+                          </div>
+                        )}
                         {/* <DropdownMenu /> */}
                       </Flex>
                     </CardBox>
@@ -203,13 +208,13 @@ const SavedList: React.FC = () => {
                     icon={<Image src="/uploads/icons/saved-icon.svg" width={80} height={80} alt="saved" />}
                     content={
                       <>
-                        <Text>There’s no items saved.</Text>
-                        <Text>Items saved will be added here.</Text>
+                        <Text className="text-[16px]">There’s no items saved.</Text>
+                        <Text className="text-[16px]">Items saved will be added here.</Text>
                       </>
                     }
                     link={
                       <Link href="/home">
-                        <Button>Browse now</Button>
+                        <Button className="mt-[16px] text-[18px]">Browse now</Button>
                       </Link>
                     }
                   />

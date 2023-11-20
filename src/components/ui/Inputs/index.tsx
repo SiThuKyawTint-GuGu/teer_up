@@ -50,7 +50,7 @@ const InputText = React.forwardRef<HTMLInputElement, Props>(
           <TextField.Root>
             <TextField.Input
               type={type}
-              className={cn(`font-light ${className} shadow-md`)}
+              className={cn(`${className} shadow-md text-[#2A2A2A]`)}
               placeholder={placeholder}
               defaultValue={defaultValue || ""}
               size="3"
@@ -101,12 +101,12 @@ const InputSearch = React.forwardRef<HTMLInputElement, InputProps>(
     ref
   ) => {
     return (
-      <InputStyled className={cn("w-full shadow-input " + inputClassName, variant && "rounded-full bg-[#e1e5e9]")}>
+      <InputStyled className={cn("w-full shadow-input " + inputClassName, variant && "rounded-full bg-[#e1e5e9] ")}>
         <TextField.Root>
           {slotDir === SLOT_DIRECTION.LEFT && (
             <TextField.Slot>
               {/* <IconButton size="2" variant="ghost" onClick={onSlotClick}> */}
-              <Icons.search className={cn("w-[24px] h-[24px] text-[#5B6770]", variant && "text-[#8d9499]")} />
+              <Icons.search className={cn("w-[24px] h-[24px] text-[#5B6770] ", variant && "text-[#8d9499]")} />
               {/* </IconButton> */}
             </TextField.Slot>
           )}
