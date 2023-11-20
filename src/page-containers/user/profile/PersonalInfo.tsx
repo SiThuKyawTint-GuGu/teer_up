@@ -88,7 +88,7 @@ const PersonalInfo: React.FC = () => {
                     </div>
                   </div>
 
-                  <CardBox className="mb-[7px] rounded-none">
+                  <CardBox className="mb-[0px] rounded-none">
                     <Section className="bg-white" py="4" px="3">
                       <Flex justify="between" align="center" mb="4">
                         <Heading as="h6" size="4" align="left">
@@ -131,7 +131,7 @@ const PersonalInfo: React.FC = () => {
                       )}
                     </Section>
                   </CardBox>
-                  <CardBox className="mb-[7px] rounded-none">
+                  <CardBox className="mb-[0px] rounded-none">
                     <Section className="bg-white" py="4" px="3">
                       <Heading as="h6" size="4" align="left" mb="4">
                         Birthday
@@ -239,7 +239,7 @@ const PersonalInfo: React.FC = () => {
                       </Flex>
                     </Section>
                   </CardBox> */}
-                  <CardBox className="mb-[7px] rounded-none">
+                  <CardBox className="mb-[0px] rounded-none">
                     <Section className="bg-white" py="4" px="3">
                       <Heading as="h6" size="4" align="left" mb="4">
                         Name
@@ -264,7 +264,7 @@ const PersonalInfo: React.FC = () => {
                       />
                     </Section>
                   </CardBox>
-                  <CardBox className="mb-[7px] rounded-none">
+                  <CardBox className="mb-[0px] rounded-none">
                     <Section className="bg-white" py="4" px="3">
                       <Heading as="h6" size="4" align="left" mb="4">
                         Email
