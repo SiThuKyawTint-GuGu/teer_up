@@ -106,7 +106,7 @@ const EditExperience: React.FC = () => {
               </div>
             </div>
 
-            <Box className="pb-[7px]">
+            <Box className="pb-[0px]">
               <Section className="bg-white" py="4" px="3">
                 <Heading as="h6" size="2" weight="medium" align="left" mb="2">
                   Company
@@ -125,7 +125,7 @@ const EditExperience: React.FC = () => {
               </Section>
             </Box>
 
-            <Box className="pb-[7px]">
+            <Box className="pb-[0px]">
               <Section className="bg-white" py="4" px="3">
                 <Heading as="h6" size="2" weight="medium" align="left" mb="2">
                   Position
@@ -144,7 +144,7 @@ const EditExperience: React.FC = () => {
               </Section>
             </Box>
 
-            <Box className="pb-[7px]">
+            <Box className="pb-[0px]">
               <Section className="bg-white" py="4" px="3">
                 {/* <Heading as="h6" size="2" weight="medium" align="left" mb="2">
                   Start Date
@@ -193,7 +193,7 @@ const EditExperience: React.FC = () => {
                 />
               </Section>
             </Box>
-            <Box className="pb-[7px]">
+            <Box className="pb-[0px]">
               <Section className="bg-white" py="4" px="3">
                 <Flex className="items-center">
                   <Checkbox

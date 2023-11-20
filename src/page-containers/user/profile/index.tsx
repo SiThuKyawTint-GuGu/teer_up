@@ -379,7 +379,7 @@ const Profile: React.FC = () => {
                   </Tabs.Content>
 
                   <Tabs.Content value="personalDetails">
-                    <CardBox className="mb-[7px] rounded-none">
+                    <CardBox className="mb-[2px] rounded-none">
                       <Section className="bg-white" py="4" px="3">
                         <Heading as="h6" size="4" align="left" mb="4">
                           Personal information
@@ -415,7 +415,7 @@ const Profile: React.FC = () => {
                         </div>
                       </Section>
                     </CardBox>
-                    <CardBox className="mb-[7px] rounded-none">
+                    <CardBox className="mb-[2px] rounded-none">
                       <Section className="bg-white" py="4" px="3">
                         <Heading as="h6" size="4" align="left" mb="4">
                           Job Experience
@@ -477,7 +477,7 @@ const Profile: React.FC = () => {
                       </Section>
                     </CardBox>
 
-                    <CardBox className="mb-[7px] rounded-none">
+                    <CardBox className="mb-[2px] rounded-none">
                       <Section className="bg-white" py="4" px="3">
                         <Heading as="h6" size="4" align="left" mb="4">
                           Education
@@ -572,7 +572,7 @@ const Profile: React.FC = () => {
                           : "-"}
                       </Section>
                     </CardBox> */}
-                    <CardBox className="mb-[7px] rounded-none">
+                    <CardBox className="mb-[2px] rounded-none">
                       <Section className="bg-white" py="4" px="3">
                         <Heading as="h6" size="4" align="left" mb="4">
                           Career interests
@@ -592,7 +592,7 @@ const Profile: React.FC = () => {
                       </Section>
                     </CardBox>
 
-                    <CardBox className="mb-[7px] rounded-none">
+                    <CardBox className="mb-[5px] rounded-none">
                       <Section className="bg-white" py="4" px="3">
                         <Heading as="h6" size="4" align="left" mb="4">
                           Industry interests

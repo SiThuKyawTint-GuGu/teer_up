@@ -113,7 +113,7 @@ const ProfileEdit: React.FC = () => {
                 </Flex>
               </div>
             </div>
-            <CardBox className="mb-[7px] rounded-none">
+            <CardBox className="mb-[2px] rounded-none">
               <Section className="bg-white" py="4" px="3">
                 <div>
                   <Flex justify="between" align="center" mb="4">
@@ -171,7 +171,7 @@ const ProfileEdit: React.FC = () => {
                 </div>
               </Section>
             </CardBox>
-            <CardBox className="mb-[7px] rounded-none">
+            <CardBox className="mb-[2px] rounded-none">
               <Section className="bg-white" py="4" px="3">
                 <Flex justify="between" align="center" mb="4">
                   <Heading as="h6" size="4" align="left">
@@ -184,7 +184,7 @@ const ProfileEdit: React.FC = () => {
                 <Text>{userProfile?.bio ? userProfile?.bio : "-"}</Text>
               </Section>
             </CardBox>
-            <CardBox className="mb-[7px] rounded-none">
+            <CardBox className="mb-[2px] rounded-none">
               <Section className="bg-white" py="4" px="3">
                 <Flex justify="between" align="center" mb="4">
                   <Heading as="h6" size="4" align="left">
@@ -235,7 +235,7 @@ const ProfileEdit: React.FC = () => {
               </Section>
             </CardBox>
 
-            <CardBox className="mb-[7px] rounded-none">
+            <CardBox className="mb-[2px] rounded-none">
               <Section className="bg-white" py="4" px="3">
                 <Flex justify="between" align="center" mb="4">
                   <Heading as="h6" size="4" align="left">
@@ -302,7 +302,7 @@ const ProfileEdit: React.FC = () => {
               </Section>
             </CardBox>
 
-            <CardBox className="mb-[7px] rounded-none">
+            <CardBox className="mb-[2px] rounded-none">
               <Section className="bg-white" py="4" px="3">
                 <Flex justify="between" align="center" mb="4">
                   <Heading as="h6" size="4" align="left">
@@ -369,7 +369,7 @@ const ProfileEdit: React.FC = () => {
               </Section>
             </CardBox>
 
-            <CardBox className="mb-[7px] rounded-none">
+            <CardBox className="mb-[2px] rounded-none">
               <Section className="bg-white" py="4" px="3">
                 <Flex justify="between" align="center" mb="4">
                   <Heading as="h6" size="4" align="left">
