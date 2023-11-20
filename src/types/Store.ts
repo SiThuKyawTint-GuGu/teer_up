@@ -9,3 +9,8 @@ export type VerifyEmailModalState = {
   verifyEmailModalOpenHandler: () => void;
   verifyEmailModalCloseHandler: () => void;
 };
+
+export interface DrawerState {
+  open: boolean;
+  setOpen: (value: boolean) => void;
+}

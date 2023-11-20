@@ -1,4 +1,4 @@
-import { VerifyEmailModalState, VerifyModalState } from "@/types/Store";
+import { DrawerState, VerifyEmailModalState, VerifyModalState } from "@/types/Store";
 import { create } from "zustand";
 
 export const useVerifyModal = create<VerifyModalState>(set => {
@@ -16,3 +16,8 @@ export const useVerifyEmailModal = create<VerifyEmailModalState>(set => {
     verifyEmailModalCloseHandler: () => set({ openVerifyEmailModal: false }),
   };
 });
+
+export const useDrawerStore = create<DrawerState>(set => ({
+  open: true,
+  setOpen: value => set({ open: value }),
+}));
