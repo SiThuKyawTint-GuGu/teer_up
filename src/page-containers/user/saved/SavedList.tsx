@@ -21,6 +21,7 @@ import { Box, Flex, Grid, Heading, IconButton, Section } from "@radix-ui/themes"
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 dayjs.extend(relativeTime);
 
@@ -61,6 +62,7 @@ enum TRIGGER_TYPE {
 }
 
 const SavedList: React.FC = () => {
+  const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
   const [isMenuVisible, setIsMenuVisible] = useState<boolean>(false);
   const [content, setContent] = useState<number>(0);
@@ -92,13 +94,29 @@ const SavedList: React.FC = () => {
   });
   const { data: unFinishedPathways } = useGetUnfinishedPathway<UnfinishedPathwayResponse>();
 
-  // const DropdownMenu = () => {
-  //   return (
 
-  //   );
-  // };
-
-  const unSaveContent = async () => {
+  const DropdownMenu = () => {
+    return (
+      <div className="dropdown-menu h-[100px] bg-red-600 flex items-center justify-center rounded ">
+        <ul>
+          <li
+            onClick={(e: any) => {
+              unSaveContent(e);
+            }}
+            className="p-1 cursor-pointer text-white"
+          >
+            Unsave
+          </li>
+        </ul>
+      </div>
+    );
+  };
+  function capitalizeFirstLetter(string: string) {
+    if (!string) return;
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+  const unSaveContent = async (e: any) => {
+    e.stopPropagation();
     await contentSave({
       id: content,
     });
@@ -201,28 +219,38 @@ const SavedList: React.FC = () => {
               {savedContents?.data?.length ? (
                 savedContents?.data?.map((each, key) => (
                   <Box key={key} pb="4">
-                    <CardBox className="p-[8px] bg-white">
-                      <Flex justify="between" align="start" gap="2">
-                        <Link key={key} href={`/content/${each?.content?.slug}`} className="w-3/4">
-                          <Flex justify="start" align="start" gap="2">
-                            <BGImage
-                              width="128px"
-                              height="100px"
-                              className="rounded-[4px]"
-                              url={each?.content?.image_url}
-                            />
-                            <Flex className="text-[#373A36] space-y-1" direction="column" wrap="wrap">
-                              <Text>{each?.content?.title}</Text>
-                              <Text size="2" weight="light">
-                                <Text as="span" className="capitalize">
-                                  {each?.content?.type}
-                                </Text>{" "}
-                                . Saved {dayjs(each?.created_at).fromNow()}
-                              </Text>
-                            </Flex>
-                          </Flex>
-                        </Link>
-                        <IconButton size="2" variant="ghost" onClick={() => toggleMenu(each)}>
+
+                    {/* <Link key={key} href={`/content/${each?.content?.slug}`} className="w-3/4" passHref> */}
+                    <CardBox
+                      className="p-[8px] bg-white cursor-pointer"
+                      onClick={() => router.push(`/content/${each?.content?.slug}`)}
+                    >
+                      <Flex justify="start" align="start" gap="2">
+                        <BGImage
+                          width="128px"
+                          height="100px"
+                          className="rounded-[4px]"
+                          url={each?.content?.image_url}
+                        />
+                        <Flex className="text-[#373A36] space-y-1" direction="column" wrap="wrap">
+                          <Text>{each?.content?.title}</Text>
+                          <Text size="2" weight="light">
+                            <Text as="span" className="capitalize">
+                              {each?.content?.type}
+                            </Text>{" "}
+                            <Text>Saved {dayjs(each?.created_at).fromNow()}</Text>
+                          </Text>
+                        </Flex>
+
+                        <IconButton
+                          size="2"
+                          variant="ghost"
+                          onClick={e => {
+                            e.stopPropagation();
+                            toggleMenu(each);
+                          }}
+                        >
+
                           <Icons.moreOption className={cn("w-[24px] h-[24px] text-[#5B6770]", "text-[#8d9499]")} />
                         </IconButton>
                         {isMenuVisible && content == each.content_id && (
@@ -237,6 +265,7 @@ const SavedList: React.FC = () => {
                         {/* <DropdownMenu /> */}
                       </Flex>
                     </CardBox>
+                    {/* </Link> */}
                   </Box>
                 ))
               ) : (
