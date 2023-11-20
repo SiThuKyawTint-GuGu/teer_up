@@ -1,14 +1,16 @@
 "use client";
 
+import { Animate, Dialog, DialogClose, DialogContent } from "@/components/ui/Dialog";
+import { Icons, Image } from "@/components/ui/Images";
+import { Text } from "@/components/ui/Typo/Text";
 import Share from "@/page-containers/admin/content/Share";
+import { cn } from "@/utils/cn";
 import { DialogTrigger } from "@radix-ui/react-dialog";
+import { Box, Flex } from "@radix-ui/themes";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Marquee from "react-fast-marquee";
 import styled from "styled-components";
-import { Dialog, DialogContent } from "../ui/Dialog";
-import { Icons } from "../ui/Images";
-import { Text } from "../ui/Typo/Text";
 
 type ContentDetailHeaderProps = {
   title: string;
@@ -38,7 +40,7 @@ const ContentDetailHeader: React.FC<ContentDetailHeaderProps> = ({ title }) => {
   }, [title]);
 
   return (
-    <Dialog open={modalOpen} onOpenChange={val => setModalOpen(val)}>
+    <Dialog onOpenChange={val => !val && setIsCopied(false)}>
       <div className="flex justify-between h-[48px] z-50  items-center bg-white fixed top-0 w-full max-w-[400px] mx-auto">
         <div
           className="w-[40px] h-full flex items-center px-2 justify-start cursor-pointer"
@@ -69,13 +71,25 @@ const ContentDetailHeader: React.FC<ContentDetailHeaderProps> = ({ title }) => {
             <Icons.share className="w-[20px] h-[20px]" />
           </div>
         </DialogTrigger>
-        {modalOpen && (
-          // <Modal onClose={() => setModalOpen(false)}>
-          //   <Share url={pathname} />
-          // </Modal>
-          <DialogContent className="top-[initial] bottom-0 max-w-[400px] pt-[10px] mx-auto translate-y-0 ">
-            <Share url={pathname} onClickCopied={setIsCopied} />
-          </DialogContent>
+        <DialogContent
+          animate={Animate.SLIDE}
+          className={cn("bg-white top-[initial] bottom-0 px-0 py-2 translate-y-0 rounded-16px-tl-tr")}
+        >
+          <Share url={pathname} onClickCopied={setIsCopied} />
+        </DialogContent>
+        {isCopied && (
+          <DialogClose asChild>
+            <DialogContent animate={Animate.SLIDE} className="border-0 shadow-none outline-none">
+              <Flex justify="center" align="center">
+                <Box className="w-[180px] h-[52px] px-6 py-3 rounded-full bg-white">
+                  <Flex justify="center" align="center" className="gap-x-2">
+                    <Image src="/uploads/icons/checkmark.svg" width={24} height={24} alt="check" />
+                    <Text className="text-[#373A36] text-lg font-semibold">Link copied</Text>
+                  </Flex>
+                </Box>
+              </Flex>
+            </DialogContent>
+          </DialogClose>
         )}
       </div>
     </Dialog>
