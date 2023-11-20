@@ -14,9 +14,10 @@ type ContentDetailHeaderProps = {
   title: string;
 };
 const ContentDetailHeader: React.FC<ContentDetailHeaderProps> = ({ title }) => {
+  const [isCopied, setIsCopied] = useState<boolean>(false);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
   const router = useRouter();
   const pathname = usePathname();
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
   const textRef = useRef<any>();
   const divRef = useRef<any>();
   const [shouldMarquee, setShouldMarquee] = useState(false);
@@ -73,7 +74,7 @@ const ContentDetailHeader: React.FC<ContentDetailHeaderProps> = ({ title }) => {
           //   <Share url={pathname} />
           // </Modal>
           <DialogContent className="top-[initial] bottom-0 max-w-[400px] pt-[10px] mx-auto translate-y-0 ">
-            <Share url={pathname} />
+            <Share url={pathname} onClickCopied={setIsCopied} />
           </DialogContent>
         )}
       </div>
