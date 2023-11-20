@@ -4,7 +4,7 @@ import { Icons } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import { useGetUserById, useUploadProfile } from "@/services/user";
 import { UserProfileResponse } from "@/types/Profile";
-import { getLocalStorage } from "@/utils";
+import { getLocalStorage, removeLocalStorage } from "@/utils";
 import { getUserInfo } from "@/utils/auth";
 import { Flex, Grid } from "@radix-ui/themes";
 import Link from "next/link";
@@ -24,6 +24,8 @@ const ProfilePhotoRreview: React.FC = () => {
       try {
         await uploadProfileTrigger({ file: blob });
         await mutateUser();
+
+        removeLocalStorage("profilePhoto");
         router.push("/profile");
       } catch (error) {
         console.error("Upload failed =>", error);
