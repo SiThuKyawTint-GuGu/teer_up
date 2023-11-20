@@ -2,6 +2,7 @@
 
 import Loading from "@/app/loading";
 import { Button } from "@/components/ui/Button";
+import { Text } from "@/components/ui/Typo/Text";
 import { useGetDepartment, useUpdateUserDepartment } from "@/services/department";
 import { DepartmentResponse } from "@/types/Department";
 import { IndustryData } from "@/types/Industry";
@@ -9,6 +10,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useMemo, useState, useTransition } from "react";
 import QuestionPageCard from "../components/QuestionPageCard";
+
 const DepartmentPage = () => {
   const router = useRouter();
   const { trigger } = useUpdateUserDepartment();
@@ -76,7 +78,7 @@ const DepartmentPage = () => {
                       >
                         <Image src="/personalize/ActiveIcon.svg" width={24} height={24} alt="industry" />
                       </div>
-                      {each.name}
+                      <Text className="font-semibold text-[#373A36]">{each.name}</Text>
                     </div>
                   </div>
                 ))}
