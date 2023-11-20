@@ -4,7 +4,7 @@ import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import { useGetUserById, useUploadCover } from "@/services/user";
 import { UserProfileResponse } from "@/types/Profile";
-import { getLocalStorage } from "@/utils";
+import { getLocalStorage, removeLocalStorage } from "@/utils";
 import { getUserInfo } from "@/utils/auth";
 import { Box, Flex, Grid, Section } from "@radix-ui/themes";
 import Link from "next/link";
@@ -24,6 +24,8 @@ const CoverPhotoPreview: React.FC = () => {
       try {
         await uploadCoverTrigger({ file: blob });
         await mutateUser();
+        removeLocalStorage("coverPhoto");
+        removeLocalStorage("profilePhoto");
         router.push("/profile");
       } catch (error) {
         console.error("Upload failed =>", error);
