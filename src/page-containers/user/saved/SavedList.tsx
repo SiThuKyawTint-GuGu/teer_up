@@ -198,9 +198,9 @@ const SavedList: React.FC = () => {
                             <Text>Saved {dayjs(each?.created_at).fromNow()}</Text>
                           </Text>
                         </Flex>
-
                         <IconButton
                           size="2"
+                          className="ml-auto"
                           variant="ghost"
                           onClick={e => {
                             e.stopPropagation();
@@ -209,6 +209,7 @@ const SavedList: React.FC = () => {
                         >
                           <Icons.moreOption className={cn("w-[24px] h-[24px] text-[#5B6770]", "text-[#8d9499]")} />
                         </IconButton>
+
                         {isMenuVisible && content == each.content_id && <DropdownMenu />}
                         {/* <DropdownMenu /> */}
                       </Flex>
