@@ -374,7 +374,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
   return (
     <>
       {showSuccessPage === false ? (
-        <div className="bg-white flex px-3 items-center">
+        <div className="bg-white flex px-3 items-center py-2">
           {form ? (
             <Dialog open={openModal} onOpenChange={val => setOpenModal(val)}>
               <DialogTrigger asChild>

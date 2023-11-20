@@ -183,14 +183,14 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
       <div
         onClick={() => setShowPathTitle(false)}
         ref={containerRef}
-        className={`snap-y flex-col snap-mandatory h-full px-2   w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
+        className={`snap-y flex-col snap-mandatory h-[calc(100dvh-96px)] px-2   w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
         style={{ scrollSnapStop: "always" }}
       >
         {data?.content_pathways &&
           data?.content_pathways.length > 0 &&
           data?.content_pathways.map((data, index) => (
             <div
-              className="w-full h-full pt-2 snap-start"
+              className="w-full h-full px-2 snap-start"
               style={{ scrollSnapStop: "always" }}
               id={index.toString()}
               key={index}
