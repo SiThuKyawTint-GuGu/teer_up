@@ -24,8 +24,6 @@ const UserContent = () => {
   const { trigger: calculateCount } = useContentWatchCount();
   const [showContentLoading, setShowContentLoading] = useState<boolean>(false);
 
-  useEffect(() => {});
-
   // restore scroll position
   useEffect(() => {
     if ("scrollPosition" in sessionStorage) {
@@ -39,6 +37,7 @@ const UserContent = () => {
     mutate,
     isLoading,
     setSize,
+    isValidating,
   } = useSWRInfinite(index => `/content?page=${index + 1}&pagesize=${20}`, fetcher, {
     revalidateFirstPage: false,
     revalidateAll: false,
@@ -82,8 +81,8 @@ const UserContent = () => {
         if (contentDataArray && contentDataArray.length > 0) {
           if (newIndex === contentDataArray.length - 1) {
             setShowContentLoading(true);
-            console.log("scroll", true);
           }
+          setShowContentLoading(false);
         }
 
         if (newIndex !== visibleItemIndex) {
@@ -172,7 +171,7 @@ const UserContent = () => {
   }, []);
   // bg-transparent
   return (
-    <div className="w-full h-[calc(100vh-96px)]">
+    <div className="w-full h-[calc(100dvh-96px)]">
       {!isLoading ? (
         <Box
           ref={containerRef}
@@ -192,7 +191,7 @@ const UserContent = () => {
                 <Box className="w-full h-full " onClick={() => storeIndex(index)}>
                   {data && differentContent(data, visibleItemIndex)}
 
-                  {showContentLoading && <LinearProgress color="error" />}
+                  {isValidating && <LinearProgress color="error" />}
                 </Box>
               </Box>
             ))}

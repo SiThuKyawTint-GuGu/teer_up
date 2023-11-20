@@ -1,6 +1,7 @@
 "use client";
 import { ParamsType, useCreateUser, useDeleteUser, useGetUsers, useUpdateUser } from "@/services/user";
 import { USER_ROLE } from "@/shared/enums";
+import { useDrawerStore } from "@/store/authStore";
 import { UserResponse } from "@/types/User";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -44,6 +45,7 @@ const UserTable: React.FC = () => {
   const { trigger: createTrigger, error: createError } = useCreateUser();
   const { trigger: updateTrigger, error: updateError } = useUpdateUser();
   const { trigger: deleteTrigger } = useDeleteUser();
+  const { open: drawerOpen } = useDrawerStore();
 
   const columns = useMemo<any>(
     () => [
@@ -244,7 +246,7 @@ const UserTable: React.FC = () => {
       sx: {
         maxHeight: "calc(100vh - 200px)",
         minHeight: "480px",
-        maxWidth: "calc(100vw - 245px)",
+        maxWidth: drawerOpen ? "calc(100vw - 245px)" : "calc(100vw - 65px)",
       },
     },
     enableStickyFooter: true,
