@@ -29,7 +29,6 @@ import dayjs from "dayjs";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useState, useTransition } from "react";
-import { mutate } from "swr";
 import RadarChart from "./RadarChart";
 
 const profileTrigger = {
@@ -70,7 +69,7 @@ const Profile: React.FC = () => {
   const { get } = useSearchParams();
   const { data: profileData, mutate: mutateUser } = useGetUserById<UserProfileResponse>(user?.id);
   const { data: userDimensionData } = useGetUserDimensionResult<UserDimensionResultResponse>();
-  const { trigger: onBoardingStatus } = useUpdateUserOnboardingStatus();
+  const { trigger: onBoardingStatus, isMutating: statusLoading } = useUpdateUserOnboardingStatus();
 
   const { trigger: uploadCoverTrigger } = useUploadCover();
 
@@ -78,8 +77,7 @@ const Profile: React.FC = () => {
   const { trigger: deleteProfileTrigger } = useDeleteProfilePhoto();
   const { trigger: uploadProfileTrigger } = useUploadProfile();
 
-  const { data: getOnboardingStatus, isLoading: statusLoading } =
-    useGetUserOnboardingStatus<UserOnboardingStatusResponse>();
+  const { data: getOnboardingStatus } = useGetUserOnboardingStatus<UserOnboardingStatusResponse>();
 
   const { trigger: resetScores, isMutating: scoresLoading } = useResetScores();
 
@@ -100,11 +98,6 @@ const Profile: React.FC = () => {
   };
   const handleContinueAssessment = async () => {
     setLocalStorage("content", "0");
-    mutate(
-      () => true, // which cache keys are updated
-      undefined, // update cache data to `undefined`
-      { revalidate: true } // do not revalidate
-    );
     await onBoardingStatus(
       { in_progress: true },
       {
@@ -117,11 +110,6 @@ const Profile: React.FC = () => {
 
   const handleRetakeAssessment = async () => {
     setLocalStorage("content", "1");
-    mutate(
-      () => true, // which cache keys are updated
-      undefined, // update cache data to `undefined`
-      { revalidate: true } // do not revalidate
-    );
     await resetScores();
     startTransition(() => router.push("/profile/onboarding"));
   };
