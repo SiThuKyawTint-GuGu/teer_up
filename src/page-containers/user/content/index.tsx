@@ -9,10 +9,10 @@ import Loading from "@/app/loading";
 import fetcher from "@/lib/fetcher";
 import { getLocalStorage, removeLocalStorage, setLocalStorage } from "@/utils";
 import { getUserInfo } from "@/utils/auth";
+import { LinearProgress } from "@mui/material";
 import { Box } from "@radix-ui/themes";
 import ContentLayout from "./components/ContentLayout";
 import Video from "./components/Video";
-
 const UserContent = () => {
   const videoRefs = useRef<HTMLVideoElement[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -22,6 +22,7 @@ const UserContent = () => {
   const [startTime, setStartTime] = useState<number | null>(null);
   const [totalTimeInView, setTotalTimeInView] = useState<number>(0);
   const { trigger: calculateCount } = useContentWatchCount();
+  const [showContentLoading, setShowContentLoading] = useState<boolean>(false);
 
   useEffect(() => {});
 
@@ -78,6 +79,12 @@ const UserContent = () => {
         //   }
         //   return s;
         // });
+        if (contentDataArray && contentDataArray.length > 0) {
+          if (newIndex === contentDataArray.length - 1) {
+            setShowContentLoading(true);
+            console.log("scroll", true);
+          }
+        }
 
         if (newIndex !== visibleItemIndex) {
           if (user && contentDataArray && contentDataArray.length > 0) {
@@ -182,8 +189,10 @@ const UserContent = () => {
                 id={index.toString()}
                 key={index}
               >
-                <Box className="w-full h-full" onClick={() => storeIndex(index)}>
+                <Box className="w-full h-full " onClick={() => storeIndex(index)}>
                   {data && differentContent(data, visibleItemIndex)}
+
+                  {showContentLoading && <LinearProgress color="error" />}
                 </Box>
               </Box>
             ))}
