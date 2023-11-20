@@ -8,19 +8,19 @@ import { Dialog, DialogClose, DialogContent, DialogTrigger } from "@/components/
 import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import {
-  SAVED_CONTENT_TYPES,
   SavedContentParams,
+  SAVED_CONTENT_TYPES,
   useGetSavedContents,
   useGetUnfinishedPathway,
   useSaveContent,
 } from "@/services/content";
 import { SavedContentResponse, UnfinishedPathwayResponse } from "@/types/SavedContent";
-import { capitalizeFirstLetter } from "@/utils";
 import { cn } from "@/utils/cn";
 import { Box, Flex, Grid, Heading, IconButton, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 dayjs.extend(relativeTime);
 
@@ -61,6 +61,7 @@ enum TRIGGER_TYPE {
 }
 
 const SavedList: React.FC = () => {
+  const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
   const [isMenuVisible, setIsMenuVisible] = useState<boolean>(false);
   const [content, setContent] = useState<number>(0);
@@ -80,10 +81,8 @@ const SavedList: React.FC = () => {
   ]);
   const [filteredParams, setFilterParams] = useState<{
     key: string;
-    value: string;
   }>({
     key: filterNames[0].key,
-    value: filterNames[0].value,
   });
   const {
     data: savedContents,
@@ -94,13 +93,28 @@ const SavedList: React.FC = () => {
   });
   const { data: unFinishedPathways } = useGetUnfinishedPathway<UnfinishedPathwayResponse>();
 
-  // const DropdownMenu = () => {
-  //   return (
-
-  //   );
-  // };
-
-  const unSaveContent = async () => {
+  const DropdownMenu = () => {
+    return (
+      <div className="dropdown-menu h-[100px] bg-red-600 flex items-center justify-center rounded ">
+        <ul>
+          <li
+            onClick={(e: any) => {
+              unSaveContent(e);
+            }}
+            className="p-1 cursor-pointer text-white"
+          >
+            Unsave
+          </li>
+        </ul>
+      </div>
+    );
+  };
+  function capitalizeFirstLetter(string: string) {
+    if (!string) return;
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+  const unSaveContent = async (e: any) => {
+    e.stopPropagation();
     await contentSave({
       id: content,
     });
@@ -148,26 +162,50 @@ const SavedList: React.FC = () => {
   }
 
   return (
-    <Dialog open={open} onOpenChange={val => setOpen(val)}>
+    <Dialog
+      open={open}
+      onOpenChange={val => {
+        if (val) {
+          setFilterTypes(pre => {
+            const filterData = pre.filter(data => filteredParams?.key?.split(",").includes(data.key));
+            if (filterData.length === 0) {
+              return [
+                {
+                  key: SAVED_CONTENT_TYPES.ALL,
+                  value: "All content types",
+                },
+              ];
+            }
+            return filterData;
+          });
+        }
+        setOpen(val);
+      }}
+    >
       <Grid columns="1">
         <Box>
-          <Flex justify="between" align="center" className="bg-white" p="3">
-            <Heading as="h6" size="7" align="left">
-              Saved items
-            </Heading>
-            <DialogTrigger asChild onClick={() => setTriggerType(TRIGGER_TYPE.FILTER)}>
-              <Button variant="ghost" className="text-primary">
-                {capitalizeFirstLetter(filteredParams?.key?.split(",")?.[0])}
-                {filteredParams.key.split(",").length > 1 && ` + ${filteredParams.key.split(",").length - 1} more`}
-                {/* {
+          <div className="mb-[45px]">
+            <div className="max-w-[400px] fixed top-0 z-10 w-full shadow-[0px_1px_9px_0px_rgba(0,_0,_0,_0.06)]">
+              <Flex justify="between" position="relative" className="bg-white" p="3">
+                <Heading as="h6" size="7" align="left">
+                  Saved items
+                </Heading>
+                <DialogTrigger asChild onClick={() => setTriggerType(TRIGGER_TYPE.FILTER)}>
+                  <Button variant="ghost" className="text-primary">
+                    {capitalizeFirstLetter(filteredParams?.key?.split(",")?.[0])}
+                    {filteredParams.key.split(",").length > 1 && ` + ${filteredParams.key.split(",").length - 1} more`}
+                    {/* {
                   filteredType.find(data => data.key === filteredParams.key)?.value ||
                   filteredParams.value
                 } */}
-                <Icons.caretDown />
-              </Button>
-            </DialogTrigger>
-          </Flex>
-          <Box className="pb-[50px]">
+                    <Icons.caretDown />
+                  </Button>
+                </DialogTrigger>
+              </Flex>
+            </div>
+          </div>
+
+          <Box className="pb-[50px] pt-[20px]">
             <Section className="" py="4" px="3">
               {unFinishedPathways?.data && unFinishedPathways?.data?.length > 0 && (
                 <Link href="/saved/unfinished-pathway">
@@ -179,42 +217,44 @@ const SavedList: React.FC = () => {
               {savedContents?.data?.length ? (
                 savedContents?.data?.map((each, key) => (
                   <Box key={key} pb="4">
-                    <CardBox className="p-[8px] bg-white">
-                      <Flex justify="between" align="start" gap="2">
-                        <Link key={key} href={`/content/${each?.content?.slug}`} className="w-3/4">
-                          <Flex justify="start" align="start" gap="2">
-                            <BGImage
-                              width="128px"
-                              height="100px"
-                              className="rounded-[4px]"
-                              url={each?.content?.image_url}
-                            />
-                            <Flex className="text-[#373A36] space-y-1" direction="column" wrap="wrap">
-                              <Text>{each?.content?.title}</Text>
-                              <Text size="2" weight="light">
-                                <Text as="span" className="capitalize">
-                                  {each?.content?.type}
-                                </Text>{" "}
-                                . Saved {dayjs(each?.created_at).fromNow()}
-                              </Text>
-                            </Flex>
-                          </Flex>
-                        </Link>
-                        <IconButton size="2" variant="ghost" onClick={() => toggleMenu(each)}>
+                    {/* <Link key={key} href={`/content/${each?.content?.slug}`} className="w-3/4" passHref> */}
+                    <CardBox
+                      className="p-[8px] bg-white cursor-pointer"
+                      onClick={() => router.push(`/content/${each?.content?.slug}`)}
+                    >
+                      <Flex justify="start" align="start" gap="2">
+                        <BGImage
+                          width="128px"
+                          height="100px"
+                          className="rounded-[4px]"
+                          url={each?.content?.image_url}
+                        />
+                        <Flex className="text-[#373A36] space-y-1" direction="column" wrap="wrap">
+                          <Text>{each?.content?.title}</Text>
+                          <Text size="2" weight="light">
+                            <Text as="span" className="capitalize">
+                              {each?.content?.type}
+                            </Text>{" "}
+                            <Text>Saved {dayjs(each?.created_at).fromNow()}</Text>
+                          </Text>
+                        </Flex>
+                        <IconButton
+                          size="2"
+                          className="ml-auto"
+                          variant="ghost"
+                          onClick={e => {
+                            e.stopPropagation();
+                            toggleMenu(each);
+                          }}
+                        >
                           <Icons.moreOption className={cn("w-[24px] h-[24px] text-[#5B6770]", "text-[#8d9499]")} />
                         </IconButton>
-                        {isMenuVisible && content == each.content_id && (
-                          <div className="dropdown-menu h-[100px] bg-red-600 flex items-center justify-center rounded ">
-                            <ul>
-                              <li onClick={unSaveContent} className="p-1 cursor-pointer text-white">
-                                Unsave
-                              </li>
-                            </ul>
-                          </div>
-                        )}
+
+                        {isMenuVisible && content == each.content_id && <DropdownMenu />}
                         {/* <DropdownMenu /> */}
                       </Flex>
                     </CardBox>
+                    {/* </Link> */}
                   </Box>
                 ))
               ) : (
@@ -272,7 +312,6 @@ const SavedList: React.FC = () => {
             onClick={async () => {
               setFilterParams({
                 key: filteredType.map(data => data.key).join(","),
-                value: filteredType[0].value,
               });
             }}
           >

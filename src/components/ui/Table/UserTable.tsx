@@ -113,6 +113,16 @@ const UserTable: React.FC = () => {
         },
       },
       {
+        accessorKey: "referred_by_user?.name",
+        header: "Referred By",
+        enableEditing: false,
+        Cell: ({ row }: any) => {
+          const name = row.original.referred_by_user?.name;
+          if (name) return name;
+          return "-";
+        },
+      },
+      {
         accessorKey: "last_login",
         header: "Last Login",
         enableEditing: false,
@@ -218,8 +228,7 @@ const UserTable: React.FC = () => {
   const table = useMaterialReactTable({
     columns,
     data: (userData?.data as any) || [],
-    // enableColumnPinning: true,
-    // enableRowActions: true,
+    enableColumnPinning: true,
     createDisplayMode: "row",
     editDisplayMode: "row",
     enableEditing: true,
@@ -235,6 +244,7 @@ const UserTable: React.FC = () => {
       sx: {
         maxHeight: "calc(100vh - 200px)",
         minHeight: "480px",
+        maxWidth: "calc(100vw - 245px)",
       },
     },
     enableStickyFooter: true,
@@ -247,7 +257,6 @@ const UserTable: React.FC = () => {
     manualPagination: true,
     rowCount: userData?.total,
     initialState: {
-      // columnPinning: { left: ["id"], right: [] },
       pagination: {
         pageSize: 10,
         pageIndex: 0,
