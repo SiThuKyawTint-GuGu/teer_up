@@ -1,6 +1,7 @@
 "use client";
 import { Icons } from "@/components/ui/Images";
 import { menuList } from "@/shared/data/Menu";
+import { useDrawerStore } from "@/store/authStore";
 import { logout } from "@/utils/auth";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -95,7 +96,8 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: prop => prop !== "open" })
 
 const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }: { children: React.ReactNode }) => {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(true);
+  // const [open, setOpen] = React.useState(true);
+  const { open, setOpen } = useDrawerStore();
   // const [collapseOpen, setCollapseOpen] = React.useState<boolean>(true);
   const [collapseOpen, setCollapseOpen] = React.useState(menuList.map(() => false));
   const router = useRouter();
