@@ -8,13 +8,13 @@ import { Dialog, DialogClose, DialogContent, DialogTrigger } from "@/components/
 import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import {
-  SavedContentParams,
   SAVED_CONTENT_TYPES,
+  SavedContentParams,
   useGetSavedContents,
   useGetUnfinishedPathway,
   useSaveContent,
 } from "@/services/content";
-import { SavedContentResponse, UnfinishedPathwayResponse } from "@/types/SavedContent";
+import { SavedContent, SavedContentResponse, UnfinishedPathwayResponse } from "@/types/SavedContent";
 import { cn } from "@/utils/cn";
 import { Box, Flex, Grid, Heading, IconButton, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
@@ -93,22 +93,6 @@ const SavedList: React.FC = () => {
   });
   const { data: unFinishedPathways } = useGetUnfinishedPathway<UnfinishedPathwayResponse>();
 
-  const DropdownMenu = () => {
-    return (
-      <div className="dropdown-menu h-[100px] bg-red-600 flex items-center justify-center rounded ">
-        <ul>
-          <li
-            onClick={(e: any) => {
-              unSaveContent(e);
-            }}
-            className="p-1 cursor-pointer text-white"
-          >
-            Unsave
-          </li>
-        </ul>
-      </div>
-    );
-  };
   function capitalizeFirstLetter(string: string) {
     if (!string) return;
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -148,7 +132,7 @@ const SavedList: React.FC = () => {
     return;
   };
 
-  const toggleMenu = (data: any) => {
+  const toggleMenu = (data: SavedContent) => {
     setContent(data.content_id);
     setIsMenuVisible(isMenuVisible && data.content_id == content ? !isMenuVisible : true);
   };
@@ -219,18 +203,18 @@ const SavedList: React.FC = () => {
                   <Box key={key} pb="4">
                     {/* <Link key={key} href={`/content/${each?.content?.slug}`} className="w-3/4" passHref> */}
                     <CardBox
-                      className="p-[8px] bg-white cursor-pointer"
+                      className="p-[8px] bg-white cursor-pointer overflow-hidden"
                       onClick={() => router.push(`/content/${each?.content?.slug}`)}
                     >
-                      <Flex justify="start" align="start" gap="2">
+                      <Flex justify="start" align="start">
                         <BGImage
                           width="128px"
                           height="100px"
-                          className="rounded-[4px]"
+                          className="rounded-[4px] mr-2"
                           url={each?.content?.image_url}
                         />
-                        <Flex className="text-[#373A36] space-y-1" direction="column" wrap="wrap">
-                          <Text>{each?.content?.title}</Text>
+                        <Flex className="text-[#373A36] space-y-1 w-[calc(100%-160px)]" direction="column" wrap="wrap">
+                          <Text weight="medium">{each?.content?.title}</Text>
                           <Text size="2" weight="light">
                             <Text as="span" className="capitalize">
                               {each?.content?.type}
@@ -238,20 +222,53 @@ const SavedList: React.FC = () => {
                             <Text>Saved {dayjs(each?.created_at).fromNow()}</Text>
                           </Text>
                         </Flex>
-                        <IconButton
-                          size="2"
-                          className="ml-auto"
-                          variant="ghost"
-                          onClick={e => {
-                            e.stopPropagation();
-                            toggleMenu(each);
-                          }}
+                        <div
+                          className={cn(
+                            "flex animate-in duration-300",
+                            isMenuVisible && content === each.content_id
+                              ? "slide-in-from-right translate-x-0"
+                              : "slide-out-to-right translate-x-[65px]"
+                          )}
                         >
-                          <Icons.moreOption className={cn("w-[24px] h-[24px] text-[#5B6770]", "text-[#8d9499]")} />
-                        </IconButton>
+                          <IconButton
+                            size="2"
+                            className="ml-auto"
+                            variant="ghost"
+                            onClick={e => {
+                              e.stopPropagation();
+                              toggleMenu(each);
+                            }}
+                          >
+                            <Icons.moreOption className={cn("w-[24px] h-[24px] text-[#5B6770]", "text-[#8d9499]")} />
+                          </IconButton>
+                          <Flex className="bg-red-600 h-[100px] rounded" justify="center" align="center">
+                            <ul>
+                              <li
+                                onClick={(e: any) => {
+                                  unSaveContent(e);
+                                }}
+                                className="p-1 cursor-pointer text-white"
+                              >
+                                Unsave
+                              </li>
+                            </ul>
+                          </Flex>
+                        </div>
 
-                        {isMenuVisible && content == each.content_id && <DropdownMenu />}
-                        {/* <DropdownMenu /> */}
+                        {/* {isMenuVisible && content == each.content_id && (
+                          <div className="animate-in slide-in-from-right slide-out-to-right duration-300 dropdown-menu h-[100px] bg-red-600 flex items-center justify-center rounded ">
+                            <ul>
+                              <li
+                                onClick={(e: any) => {
+                                  unSaveContent(e);
+                                }}
+                                className="p-1 cursor-pointer text-white"
+                              >
+                                Unsave
+                              </li>
+                            </ul>
+                          </div>
+                        )} */}
                       </Flex>
                     </CardBox>
                     {/* </Link> */}
