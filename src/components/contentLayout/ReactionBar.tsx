@@ -87,22 +87,11 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate, comments,
              * comment button trigger
              */}
             <DialogTrigger onClick={() => setTriggerType(dialogTrigger.COMMENT)}>
-              <div
-                className="flex items-center flex-wrap gap-x-[10px]"
-                // onClick={() => {
-                //   setOpenComment(true);
-                // }}
-              >
+              <div className="flex items-center flex-wrap gap-x-[10px]">
                 <Icons.comment className="w-[20px] h-[20px]" />
                 <div>{comments}</div>
               </div>
             </DialogTrigger>
-
-            {/* {openComment && (
-                <DialogContent className="top-[initial] mx-auto bottom-0 max-w-[400px] translate-y-0">
-                  <CommentSection data={data} mutateParentData={contentMutate} setComments={setComments} />
-                </DialogContent>
-              )} */}
 
             <button className="flex items-center flex-wrap gap-x-[10px]" onClick={saveContent}>
               {reaction.is_save ? (
@@ -126,9 +115,6 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate, comments,
                 <div>Share</div>
               </div>
             </DialogTrigger>
-            {/* <DialogContent className="top-[initial] mx-auto   bottom-0 max-w-[400px] translate-y-0">
-                {openShare && <Share url={`/content/${data.slug}`} />}
-              </DialogContent> */}
           </div>
         </div>
         <DialogContent

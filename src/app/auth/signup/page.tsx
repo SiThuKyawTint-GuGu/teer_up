@@ -1,6 +1,9 @@
 import SignUp from "@/page-containers/user/auth/signup";
-import { NextPage } from "next";
-
+import { Metadata, NextPage } from "next";
+export const metadata: Metadata = {
+  title: "TeeUP - Sign Up",
+  description: "Sign Up to TeeUP",
+};
 const SignUpPage: NextPage = () => {
   return <SignUp />;
 };

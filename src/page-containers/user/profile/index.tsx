@@ -10,7 +10,7 @@ import { useGetUserDimensionResult } from "@/services/dimension";
 import {
   useDeleteCoverPhoto,
   useDeleteProfilePhoto,
-  useGetUserById,
+  useGetUser,
   useGetUserOnboardingStatus,
   useResetScores,
   useUpdateUserOnboardingStatus,
@@ -65,7 +65,7 @@ const Profile: React.FC = () => {
   const pathname = usePathname();
   const user = getUserInfo();
   const { get } = useSearchParams();
-  const { data: profileData, mutate: mutateUser } = useGetUserById<UserProfileResponse>(user?.id);
+  const { data: profileData, mutate: mutateUser } = useGetUser<UserProfileResponse>();
   const { data: userDimensionData } = useGetUserDimensionResult<UserDimensionResultResponse>();
   const { trigger: onBoardingStatus, isMutating: statusLoading } = useUpdateUserOnboardingStatus();
 

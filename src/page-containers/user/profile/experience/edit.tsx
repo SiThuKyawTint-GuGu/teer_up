@@ -61,7 +61,8 @@ const EditExperience: React.FC = () => {
     };
     await trigger(newData, {
       onSuccess: () => {
-        router.replace(`/profile/${id}/experience`);
+        // router.replace(`/profile/${id}/experience`);
+        router.back();
       },
     });
   };

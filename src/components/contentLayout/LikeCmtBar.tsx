@@ -7,17 +7,21 @@ import { Box, Flex, Section } from "@radix-ui/themes";
 import Link from "next/link";
 import React, { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { Button } from "../ui/Button";
-import { Dialog, DialogContent, DialogTrigger } from "../ui/Dialog";
+import { Animate, Dialog, DialogClose, DialogContent, DialogTrigger } from "../ui/Dialog";
 import { Icons } from "../ui/Images";
 import { InputText } from "../ui/Inputs";
 import { Autocomplete, Item } from "../ui/Inputs/Autocomplete";
 import { Checkbox } from "../ui/Inputs/Checkbox";
 import { Radio, RadioItem } from "../ui/Inputs/Radio";
 import { Label } from "../ui/Label";
-import Modal from "../ui/Modal";
 import { Text } from "../ui/Typo/Text";
 import CommentSection from "./CommentSection";
 import SuccessFormPage from "./SuccessFormPage";
+
+enum dialogTrigger {
+  COMMENT = "comment",
+  FORM = "form",
+}
 
 type Props = {
   data: ContentData;
@@ -31,6 +35,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
   const { trigger: contentSave } = useSaveContent();
   const { trigger: postForm, isMutating } = useContentForm();
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const [triggerType, setTriggerType] = useState<dialogTrigger>();
   const form = useMemo(() => {
     if (data?.type === "event") return data.content_event?.form_config;
     if (data?.type === "opportunity") return data.content_opportunity?.form_config;
@@ -372,20 +377,26 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
   };
 
   return (
-    <>
+    <Dialog>
       {showSuccessPage === false ? (
         <div className="bg-white flex px-3 items-center py-2">
           {form ? (
-            <Dialog open={openModal} onOpenChange={val => setOpenModal(val)}>
-              <DialogTrigger asChild>
+            <>
+              <DialogTrigger asChild onClick={() => setTriggerType(dialogTrigger.FORM)}>
                 <Button size="sm" className="w-[166px]" onClick={() => setOpenModal(true)}>
                   {form?.submit_label || "Join Now"}
                 </Button>
               </DialogTrigger>
-              <DialogContent className="border-none w-full h-full ">
-                {openModal && (
-                  <Modal onClose={() => setOpenModal(false)}>
-                    <div className="w-[400px] p-5 h-[80dvh] z-[99] no-scrollbar  bg-white  overflow-y-scroll">
+              {triggerType === dialogTrigger.FORM && (
+                <DialogClose asChild>
+                  <DialogContent
+                    animate={Animate.SLIDE}
+                    className={cn("bg-white top-[initial] bottom-0 px-0 py-2 translate-y-0 rounded-16px-tl-tr")}
+                  >
+                    <Box className="bg-white px-4 space-y-4 max-h-[600px] rounded-md overflow-y-scroll">
+                      <div className="fixed top-0 left-0 w-full h-5 flex items-center bg-white z-10">
+                        <div className="bg-primary rounded-[6px] w-[60px] h-[2px] mx-auto" />
+                      </div>
                       <Text as="div" className="text-[28px] font-700">
                         {form?.name}
                       </Text>
@@ -471,22 +482,22 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
                           Submit
                         </Button>
                       </Section>
-                    </div>
-                  </Modal>
-                )}
-              </DialogContent>
-            </Dialog>
+                    </Box>
+                  </DialogContent>
+                </DialogClose>
+              )}
+            </>
           ) : (
-            <Section className="bg-white" py="1" px="3" onClick={() => setOpenComment(true)}>
-              <div className="w-full h-[32px]">
-                <input
-                  className="w-full h-full px-[12px] py-[4px] rounded-[40px] bg-[#F8F9FB] dark:bg-[#F8F9FB]
-         outline-none placeholder:text-[16px] placeholder:font-[300]
-        "
-                  placeholder="Write your comment"
-                ></input>
-              </div>
-            </Section>
+            <DialogTrigger asChild onClick={() => setTriggerType(dialogTrigger.COMMENT)}>
+              <Section className="bg-white" py="1" px="3">
+                <div className="w-full h-[32px]">
+                  <input
+                    className="w-full h-full px-[12px] py-[4px] rounded-[40px] bg-[#F8F9FB] dark:bg-[#F8F9FB] outline-none placeholder:text-[16px] placeholder:font-[300]"
+                    placeholder="Write your comment"
+                  ></input>
+                </div>
+              </Section>
+            </DialogTrigger>
           )}
 
           <div className="flex justify-between px-3 w-full flex-1">
@@ -499,22 +510,23 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
               <div className="text-[14px]">{reaction.likes}</div>
             </div>
 
-            <Dialog open={openComment} onOpenChange={val => setOpenComment(val)}>
-              <DialogTrigger>
-                <div className="flex items-center flex-wrap gap-x-[10px]">
-                  <Icons.comment className="w-[20px] h-[20px]" />
-                  <div>
-                    {""}
-                    {comments}
-                  </div>
+            <DialogTrigger onClick={() => setTriggerType(dialogTrigger.COMMENT)}>
+              <div className="flex items-center flex-wrap gap-x-[10px]">
+                <Icons.comment className="w-[20px] h-[20px]" />
+                <div>
+                  {""}
+                  {comments}
                 </div>
-              </DialogTrigger>
-              {openComment && (
-                <DialogContent className="top-[initial] mx-auto   bottom-0 max-w-[400px] translate-y-0">
-                  <CommentSection data={data} mutateParentData={mutate} setComments={setComments} />
-                </DialogContent>
-              )}
-            </Dialog>
+              </div>
+            </DialogTrigger>
+            {triggerType === dialogTrigger.COMMENT && (
+              <DialogContent
+                animate={Animate.SLIDE}
+                className={cn("bg-white top-[initial] bottom-0 px-0 py-2 translate-y-0 rounded-16px-tl-tr")}
+              >
+                <CommentSection data={data} mutateParentData={mutate} setComments={setComments} />
+              </DialogContent>
+            )}
 
             <button className="flex items-center flex-wrap  gap-x-[5px]" onClick={saveContent}>
               {reaction.is_save ? (
@@ -529,7 +541,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
       ) : (
         <SuccessFormPage />
       )}
-    </>
+    </Dialog>
   );
 };
 

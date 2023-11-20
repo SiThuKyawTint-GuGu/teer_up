@@ -5,7 +5,11 @@ import { Flex, Grid } from "@radix-ui/themes";
 import Link from "next/link";
 import React, { useMemo } from "react";
 
-const Share: React.FC<{ url: string; onClickCopied: (arg: boolean) => void }> = ({ url, onClickCopied }) => {
+const Share: React.FC<{ url: string; onClickCopied: (arg: boolean) => void; header?: string }> = ({
+  url,
+  onClickCopied,
+  header,
+}) => {
   // const [copy, setCopy] = useState<boolean>(false);
   const domain: string = window.location.host;
   const shareLink = useMemo(() => `https://` + domain + url, [domain, url]);
@@ -13,7 +17,7 @@ const Share: React.FC<{ url: string; onClickCopied: (arg: boolean) => void }> = 
   return (
     <div className="bg-white w-full">
       <div className="bg-primary rounded-[6px] w-[60px] h-[2px] mx-auto" />
-      <Text className="text-[24px] font-[700] px-4">Share To</Text>
+      <Text className="text-[24px] font-[700] px-4">{header ? header : "Share To"}</Text>
       <Grid columns="4" className="py-[15px]">
         <Flex direction="column" align="center" className="cursor-pointer space-y-1">
           <Flex
