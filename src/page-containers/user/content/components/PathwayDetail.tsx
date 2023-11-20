@@ -1,5 +1,5 @@
 "use client";
-import { Animate, Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
+import { Animate, Dialog, DialogClose, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import { useContentWatchCount, usePostPathwayProgress, useUnfinishPathway } from "@/services/content";
@@ -184,7 +184,6 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
   return (
     <Dialog>
       <div
-        onClick={() => setShowPathTitle(false)}
         ref={containerRef}
         className={`snap-y flex-col snap-mandatory h-[calc(100dvh-96px)] px-2   w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
         style={{ scrollSnapStop: "always" }}
@@ -253,11 +252,12 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
                 data?.content_pathways.length > 0 &&
                 data.content_pathways.map((data, index) => (
                   <div key={index} className="font-[600]  flex flex-col w-full text-[16px]  py-[12px]">
-                    <Flex justify="between" align="center" className="w-full cursor-pointer">
-                      <Text
-                        className={` ${visibleItemIndex === index && "text-primary w-[calc(100%-40px)]"}`}
+                    <DialogClose>
+                      <Flex
+                        justify="between"
+                        align="center"
+                        className="w-full cursor-pointer"
                         onClick={() => {
-                          setShowPathTitle(false);
                           const targetElement = document.getElementById(index.toString());
                           if (targetElement) {
                             targetElement.scrollIntoView({
@@ -266,15 +266,18 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
                           }
                         }}
                       >
-                        {data.title || "--------"}
-                      </Text>
+                        <Text className={` ${visibleItemIndex === index && "text-primary w-[calc(100%-40px)]"}`}>
+                          {data.title || "--------"}
+                        </Text>
 
-                      <Icons.checkMark
-                        className={`  ${
-                          visibleItemIndex === index ? "text-primary w-[20px] h-[20px] text-[20px]" : "hidden"
-                        }`}
-                      />
-                    </Flex>
+                        <Icons.checkMark
+                          className={`  ${
+                            visibleItemIndex === index ? "text-primary w-[20px] h-[20px] text-[20px]" : "hidden"
+                          }`}
+                        />
+                      </Flex>
+                    </DialogClose>
+
                     <hr className="w-full h-[2px] mt-[12px] bg-slateGray" />
                   </div>
                 ))}
