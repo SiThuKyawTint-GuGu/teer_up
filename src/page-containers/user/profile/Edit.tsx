@@ -73,14 +73,8 @@ const ProfileEdit: React.FC = () => {
         router.push("/profile/preview/cover-photo");
         return;
       }
-      const triggerFunction = uploadProfileTrigger({ file });
-      try {
-        await triggerFunction;
-        await mutate();
-        setOpen(!open);
-      } catch (error) {
-        console.error("Upload failed =>", error);
-      }
+      setLocalStorage("profilePhoto", URL.createObjectURL(file));
+      router.push("/profile/preview/profile-photo");
     }
   };
 

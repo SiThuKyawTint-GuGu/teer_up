@@ -14,8 +14,6 @@ import {
   useGetUserOnboardingStatus,
   useResetScores,
   useUpdateUserOnboardingStatus,
-  useUploadCover,
-  useUploadProfile,
 } from "@/services/user";
 import { PROFILE_TRIGGER } from "@/shared/enums";
 import { UserDimensionResultResponse } from "@/types/Dimension";
@@ -72,11 +70,8 @@ const Profile: React.FC = () => {
   const { data: userDimensionData } = useGetUserDimensionResult<UserDimensionResultResponse>();
   const { trigger: onBoardingStatus } = useUpdateUserOnboardingStatus();
 
-  const { trigger: uploadCoverTrigger } = useUploadCover();
-
   const { trigger: deleteCoverTrigger } = useDeleteCoverPhoto();
   const { trigger: deleteProfileTrigger } = useDeleteProfilePhoto();
-  const { trigger: uploadProfileTrigger } = useUploadProfile();
 
   const { data: getOnboardingStatus, isLoading: statusLoading } =
     useGetUserOnboardingStatus<UserOnboardingStatusResponse>();
@@ -93,14 +88,8 @@ const Profile: React.FC = () => {
         router.push("/profile/preview/cover-photo");
         return;
       }
-      const triggerFunction = uploadProfileTrigger({ file });
-      try {
-        await triggerFunction;
-        await mutateUser();
-        setOpen(!open);
-      } catch (error) {
-        console.error("Upload failed =>", error);
-      }
+      setLocalStorage("profilePhoto", URL.createObjectURL(file));
+      router.push("/profile/preview/profile-photo");
     }
   };
   const handleContinueAssessment = async () => {
