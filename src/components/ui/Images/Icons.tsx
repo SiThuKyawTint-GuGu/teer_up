@@ -8,6 +8,8 @@ export interface IconProps {
   activeFill?: string;
   width?: number;
   height?: number;
+  className?: string;
+  color?: string;
 }
 
 export const LandingIcon: React.FC = () => {
