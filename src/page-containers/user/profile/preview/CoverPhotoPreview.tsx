@@ -3,28 +3,19 @@ import { Button } from "@/components/ui/Button";
 import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import { useGetUserById, useUploadCover } from "@/services/user";
-import { PROFILE_TRIGGER } from "@/shared/enums";
 import { UserProfileResponse } from "@/types/Profile";
 import { getLocalStorage } from "@/utils";
 import { getUserInfo } from "@/utils/auth";
 import { Box, Flex, Grid, Section } from "@radix-ui/themes";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useState, useTransition } from "react";
 
 const CoverPhotoPreview: React.FC = () => {
-  const [open, setOpen] = useState<boolean>(false);
-  const [viewImage, setViewImage] = useState<boolean>(false);
-  const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
-  const [triggerType, setTriggerType] = useState<PROFILE_TRIGGER>();
-  const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const user = getUserInfo();
-  const { data: profileData, mutate: mutateUser } = useGetUserById<UserProfileResponse>(user?.id);
+  const { data, mutate: mutateUser } = useGetUserById<UserProfileResponse>(user?.id);
   const { trigger: uploadCoverTrigger } = useUploadCover();
-  const userProfile = profileData?.data;
   const getCoverPhoto = getLocalStorage("coverPhoto");
-  console.log("getCoverPhoto", getCoverPhoto);
 
   const getProfilePhoto = getLocalStorage("profilePhoto");
   const handleUploadImage = async () => {
@@ -38,12 +29,6 @@ const CoverPhotoPreview: React.FC = () => {
         console.error("Upload failed =>", error);
       }
     }
-  };
-
-  const getFileFromEvent = async (event: ChangeEvent<HTMLInputElement>) => {
-    const inputElement = event.target as HTMLInputElement;
-    const files = inputElement?.files;
-    return files ? files[0] : null;
   };
 
   return (
