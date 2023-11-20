@@ -274,7 +274,7 @@ const ProfileEdit: React.FC = () => {
                         </Text>
                         {each?.is_present === true ? (
                           <Text size="2" weight="light">
-                            {"present"}
+                            {"Present"}
                           </Text>
                         ) : (
                           <Text size="2" weight="light">
@@ -341,7 +341,7 @@ const ProfileEdit: React.FC = () => {
                         </Text>
                         {each?.is_present === true ? (
                           <Text size="2" weight="light">
-                            {"present"}
+                            {"Present"}
                           </Text>
                         ) : (
                           <Text size="2" weight="light">
