@@ -39,7 +39,7 @@ const Education: React.FC = () => {
                 key={key}
                 className={cn(
                   "pb-[10px] mb-[10px]",
-                  key !== (educationList?.data ? educationList?.data.length - 1 : -1) && "border-b border-b-[#BDC7D5]"
+                  key !== (educationList?.data ? educationList?.data.length - 1 : -1) && "border-line"
                 )}
               >
                 <Flex justify="between" align="start">

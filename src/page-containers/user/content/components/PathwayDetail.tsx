@@ -7,7 +7,6 @@ import { getToken, getUserInfo } from "@/utils/auth";
 import { Box, Flex } from "@radix-ui/themes";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import ContentLayout from "./ContentLayout";
-import "./PathwayDetail.css";
 import Video from "./Video";
 type PathwayDetailProp = {
   data: ContentData;
@@ -151,10 +150,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
 
     if (data.type === "html" && data.html_body)
       return (
-        <div
-          id={data.slug}
-          className="w-full h-full z-[10] overflow-y-scroll no-scrollbar rounded-lg px-2 bg-white shadow-lg"
-        >
+        <div id={data.slug} className="w-full h-[95%] overflow-y-scroll rounded-lg px-2 bg-white shadow-lg">
           <div className="p-2 w-full h-full">
             <div
               className="text-start"
@@ -168,7 +164,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
     if ((data && data.content_article) || data.content_event || data.content_opportunity) {
       return <ContentLayout data={data} contentMutate={contentMutate} />;
     }
-    return <div className="w-full  h-full justify-center items-center">Data must be null</div>;
+    return <div className="w-full  h-[95%] justify-center items-center">Data must be null</div>;
   };
 
   const storeIndex = (index: number) => {
@@ -187,25 +183,25 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
       <div
         onClick={() => setShowPathTitle(false)}
         ref={containerRef}
-        className={`snap-y  flex-col snap-mandatory h-[calc(100dvh-100px)] pt-[6px] pb-[6px] px-[12px]  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
+        className={`snap-y flex-col snap-mandatory h-[calc(100dvh-96px)] px-2   w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
         style={{ scrollSnapStop: "always" }}
       >
         {data?.content_pathways &&
           data?.content_pathways.length > 0 &&
           data?.content_pathways.map((data, index) => (
             <div
-              className="w-full h-full snap-start mt-[12px] mb-[15px]"
+              className="w-full h-full px-2 snap-start"
               style={{ scrollSnapStop: "always" }}
               id={index.toString()}
               key={index}
               onClick={() => storeIndex(index)}
             >
-              <Box className="mt-20 w-full pt-2 h-full ">{data && differentContent(data, index)}</Box>
+              <Box className="w-full h-full">{data && differentContent(data, index)}</Box>
             </div>
           ))}
       </div>
       <div
-        className={`max-w-[379px] pathwayBottomNav mx-auto py-3 left-0 w-full flex flex-column sticky bottom-0  overflow-y-scroll rounded-lg ${
+        className={`max-w-[400px] pathwayBottomNav mx-auto py-3  w-full flex flex-column fixed  bottom-0  overflow-y-scroll rounded-lg ${
           showPathTitle && "h-[60%]"
         } px-2 flex-wrap  bg-white z-[99999]`}
       >

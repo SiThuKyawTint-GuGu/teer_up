@@ -99,7 +99,7 @@ const EditEducation: React.FC = () => {
               </div>
             </div>
 
-            <Box className="pb-[7px]">
+            <Box className="pb-[0px]">
               <Section className="bg-white" py="4" px="3">
                 <Heading as="h6" size="2" weight="medium" align="left" mb="2">
                   School
@@ -123,7 +123,7 @@ const EditEducation: React.FC = () => {
               </Section>
             </Box>
 
-            <Box className="pb-[7px]">
+            <Box className="pb-[0px]">
               <Section className="bg-white" py="4" px="3">
                 <Heading as="h6" size="2" weight="medium" align="left" mb="2">
                   Degree
@@ -147,7 +147,7 @@ const EditEducation: React.FC = () => {
               </Section>
             </Box>
 
-            <Box className="pb-[7px]">
+            <Box className="pb-[0px]">
               <Section className="bg-white" py="4" px="3">
                 <Heading as="h6" size="4" align="left" mb="4">
                   Start Date
@@ -173,7 +173,7 @@ const EditEducation: React.FC = () => {
                 />
               </Section>
             </Box>
-            <Box className="pb-[7px]">
+            <Box className="pb-[0px]">
               <Section className="bg-white" py="4" px="3">
                 <Flex className="items-center">
                   <Checkbox

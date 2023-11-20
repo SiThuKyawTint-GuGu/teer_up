@@ -81,10 +81,8 @@ const SavedList: React.FC = () => {
   ]);
   const [filteredParams, setFilterParams] = useState<{
     key: string;
-    value: string;
   }>({
     key: filterNames[0].key,
-    value: filterNames[0].value,
   });
   const {
     data: savedContents,
@@ -122,21 +120,39 @@ const SavedList: React.FC = () => {
     });
     await mutate();
   };
+
   const handleCheckFilter = (each: { key: SAVED_CONTENT_TYPES; value: string }) => {
     if (each.key === SAVED_CONTENT_TYPES.ALL) {
       setFilterTypes([each]);
       return;
     }
+
     let filteredData = filteredType.filter(data => data.key !== SAVED_CONTENT_TYPES.ALL);
-    filteredData.find(data => data.key === each.key)
-      ? setFilterTypes(filteredData.filter(data => data.key !== each.key))
-      : setFilterTypes([...filteredData, each]);
+    const isExist = filteredData.find(data => data.key === each.key);
+    if (isExist) {
+      filteredData = filteredData.filter(data => data.key !== each.key);
+      if (filteredData.length === 0) {
+        setFilterTypes([
+          {
+            key: SAVED_CONTENT_TYPES.ALL,
+            value: "All content types",
+          },
+        ]);
+        return;
+      }
+      setFilterTypes(filteredData);
+      return;
+    }
+
+    setFilterTypes([...filteredData, each]);
     return;
   };
+
   const toggleMenu = (data: any) => {
     setContent(data.content_id);
     setIsMenuVisible(isMenuVisible && data.content_id == content ? !isMenuVisible : true);
   };
+
   if (isLoading) {
     return (
       <div className="w-full h-full flex justify-center items-center">
@@ -146,26 +162,50 @@ const SavedList: React.FC = () => {
   }
 
   return (
-    <Dialog open={open} onOpenChange={val => setOpen(val)}>
+    <Dialog
+      open={open}
+      onOpenChange={val => {
+        if (val) {
+          setFilterTypes(pre => {
+            const filterData = pre.filter(data => filteredParams?.key?.split(",").includes(data.key));
+            if (filterData.length === 0) {
+              return [
+                {
+                  key: SAVED_CONTENT_TYPES.ALL,
+                  value: "All content types",
+                },
+              ];
+            }
+            return filterData;
+          });
+        }
+        setOpen(val);
+      }}
+    >
       <Grid columns="1">
         <Box>
-          <Flex justify="between" align="center" className="bg-white" p="3">
-            <Heading as="h6" size="7" align="left">
-              Saved items
-            </Heading>
-            <DialogTrigger asChild onClick={() => setTriggerType(TRIGGER_TYPE.FILTER)}>
-              <Button variant="ghost" className="text-primary">
-                {capitalizeFirstLetter(filteredParams?.key?.split(",")?.[0])}
-                {filteredParams.key.split(",").length > 1 && ` + ${filteredParams.key.split(",").length - 1} more`}
-                {/* {
+          <div className="mb-[45px]">
+            <div className="max-w-[400px] fixed top-0 z-10 w-full shadow-[0px_1px_9px_0px_rgba(0,_0,_0,_0.06)]">
+              <Flex justify="between" position="relative" className="bg-white" p="3">
+                <Heading as="h6" size="7" align="left">
+                  Saved items
+                </Heading>
+                <DialogTrigger asChild onClick={() => setTriggerType(TRIGGER_TYPE.FILTER)}>
+                  <Button variant="ghost" className="text-primary">
+                    {capitalizeFirstLetter(filteredParams?.key?.split(",")?.[0])}
+                    {filteredParams.key.split(",").length > 1 && ` + ${filteredParams.key.split(",").length - 1} more`}
+                    {/* {
                   filteredType.find(data => data.key === filteredParams.key)?.value ||
                   filteredParams.value
                 } */}
-                <Icons.caretDown />
-              </Button>
-            </DialogTrigger>
-          </Flex>
-          <Box className="pb-[50px]">
+                    <Icons.caretDown />
+                  </Button>
+                </DialogTrigger>
+              </Flex>
+            </div>
+          </div>
+
+          <Box className="pb-[50px] pt-[20px]">
             <Section className="" py="4" px="3">
               {unFinishedPathways?.data && unFinishedPathways?.data?.length > 0 && (
                 <Link href="/saved/unfinished-pathway">
@@ -272,7 +312,6 @@ const SavedList: React.FC = () => {
             onClick={async () => {
               setFilterParams({
                 key: filteredType.map(data => data.key).join(","),
-                value: filteredType[0].value,
               });
             }}
           >

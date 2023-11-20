@@ -49,7 +49,7 @@ const CreateEducation: React.FC = () => {
     <>
       <Form {...form}>
         <form className="mx-auto flex flex-col justify-center gap-y-3 w-full" onSubmit={form.handleSubmit(submit)}>
-          <Grid columns="1">
+          <Grid columns="1" className="bg-[#F8F9FB]">
             <div className="mb-[45px]">
               <div className="max-w-[400px] fixed top-0 z-10 w-full shadow-[0px_1px_9px_0px_rgba(0,_0,_0,_0.06)]">
                 <Flex justify="between" align="center" className="bg-white" p="3">
@@ -66,7 +66,7 @@ const CreateEducation: React.FC = () => {
               </div>
             </div>
 
-            <Box className="pb-[7px]">
+            <Box className="pb-[0px]">
               <Section className="bg-white" py="4" px="3">
                 <Heading as="h6" size="2" weight="medium" align="left" mb="2">
                   School
@@ -90,7 +90,7 @@ const CreateEducation: React.FC = () => {
               </Section>
             </Box>
 
-            <Box className="pb-[7px]">
+            <Box className="pb-[0px]">
               <Section className="bg-white" py="4" px="3">
                 <Heading as="h6" size="2" weight="medium" align="left" mb="2">
                   Degree
@@ -114,7 +114,7 @@ const CreateEducation: React.FC = () => {
               </Section>
             </Box>
 
-            <Box className="pb-[7px]">
+            <Box className="pb-[0px]">
               <Section className="bg-white" py="4" px="3">
                 <Heading as="h6" size="4" align="left" mb="4">
                   Start Date
@@ -140,7 +140,7 @@ const CreateEducation: React.FC = () => {
                 />
               </Section>
             </Box>
-            <Box className="pb-[7px]">
+            <Box className="pb-[0px]">
               <Section className="bg-white" py="4" px="3">
                 <Flex className="items-center">
                   <Checkbox defaultChecked={isPresent} onCheckedChange={() => setIsPresent(!isPresent)} />

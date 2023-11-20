@@ -39,11 +39,16 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate }) =>
   }, [maxHeight, contentRef, data.description]);
 
   return (
-    <CardBox className="w-full shadow-xl rounded-lg h-[100%] justify-start flex-col mt-[15px] mb-[15px]">
+    <CardBox className="w-full shadow-xl rounded-lg h-[95%] justify-start flex-col">
       <Grid rows="3" className="h-full w-full flex flex-col bg-white shadow-lg">
-        <Link href={`/content/${data?.slug}`} className="w-full h-[250px] mx-auto relative block">
+        <Link
+          href={`/content/${data?.slug}`}
+          className={`w-full ${data.type !== "mentor" ? "h-[200px]" : "h-[300px]"} mx-auto relative block`}
+        >
           <div
-            className="relative w-full max-w-[400px] h-[250px] rounded-t-[8px]"
+            className={`relative w-full max-w-[400px] ${
+              data.type !== "mentor" ? "h-[200px]" : "h-[300px]"
+            } rounded-t-[8px]`}
             style={{
               background: `url(${data?.image_url}) center / cover`,
             }}
@@ -55,9 +60,9 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate }) =>
             )}
           </div>
         </Link>
-        <div className="w-full h-full pt-[16px] px-[16px]">
+        <Link href={`/content/${data.slug}`} className="w-full h-full pt-[16px] px-[16px]">
           <Link href={`/content/${data?.slug}`}>
-            <Flex direction="column" className="w-full h-full">
+            <Flex direction="column" className="w-full">
               {/* Ref to get the content height and dynamically set max height */}
               <div
                 ref={contentRef}
@@ -82,7 +87,7 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate }) =>
               )} */}
             </Flex>
           </Link>
-        </div>
+        </Link>
         <div className="mt-2 w-full px-[16px]">
           <div className="w-full pt-3">
             <hr className="w-full h-[1px] bg-slateGray" />

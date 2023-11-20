@@ -9,10 +9,10 @@ import Loading from "@/app/loading";
 import fetcher from "@/lib/fetcher";
 import { getLocalStorage, removeLocalStorage, setLocalStorage } from "@/utils";
 import { getUserInfo } from "@/utils/auth";
+import { LinearProgress } from "@mui/material";
 import { Box } from "@radix-ui/themes";
 import ContentLayout from "./components/ContentLayout";
 import Video from "./components/Video";
-
 const UserContent = () => {
   const videoRefs = useRef<HTMLVideoElement[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -22,6 +22,7 @@ const UserContent = () => {
   const [startTime, setStartTime] = useState<number | null>(null);
   const [totalTimeInView, setTotalTimeInView] = useState<number>(0);
   const { trigger: calculateCount } = useContentWatchCount();
+  const [showContentLoading, setShowContentLoading] = useState<boolean>(false);
 
   useEffect(() => {});
 
@@ -78,6 +79,12 @@ const UserContent = () => {
         //   }
         //   return s;
         // });
+        if (contentDataArray && contentDataArray.length > 0) {
+          if (newIndex === contentDataArray.length - 1) {
+            setShowContentLoading(true);
+            console.log("scroll", true);
+          }
+        }
 
         if (newIndex !== visibleItemIndex) {
           if (user && contentDataArray && contentDataArray.length > 0) {
@@ -165,13 +172,11 @@ const UserContent = () => {
   }, []);
   // bg-transparent
   return (
-    <>
+    <div className="w-full h-[calc(100vh-96px)]">
       {!isLoading ? (
         <Box
           ref={containerRef}
-
-          className={`snap-y flex-col bg-transparent snap-mandatory h-[calc(100dvh-112px)] pt-[6px] pb-[6px] px-[12px]  w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll scroll-smooth`}
-
+          className={`snap-y flex-col snap-mandatory h-full px-2 w-full bg-[#F8F9FB] no-scrollbar overflow-y-scroll`}
           style={{ scrollSnapStop: "always" }}
           id="explore-list-container"
         >
@@ -179,13 +184,15 @@ const UserContent = () => {
             contentDataArray.length > 0 &&
             contentDataArray.map((data: ContentData, index: number) => (
               <Box
-                className="w-full h-full snap-start mt-[12px] mb-[12px]"
+                className="w-full h-full snap-start"
                 style={{ scrollSnapStop: "always" }}
                 id={index.toString()}
                 key={index}
               >
-                <Box className="w-full h-full" onClick={() => storeIndex(index)}>
+                <Box className="w-full h-full " onClick={() => storeIndex(index)}>
                   {data && differentContent(data, visibleItemIndex)}
+
+                  {showContentLoading && <LinearProgress color="error" />}
                 </Box>
               </Box>
             ))}
@@ -193,7 +200,7 @@ const UserContent = () => {
       ) : (
         <Loading />
       )}
-    </>
+    </div>
   );
 };
 
