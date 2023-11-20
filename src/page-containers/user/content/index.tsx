@@ -82,8 +82,8 @@ const UserContent = () => {
         if (contentDataArray && contentDataArray.length > 0) {
           if (newIndex === contentDataArray.length - 1) {
             setShowContentLoading(true);
-            console.log("scroll", true);
           }
+          setShowContentLoading(false);
         }
 
         if (newIndex !== visibleItemIndex) {
@@ -172,7 +172,7 @@ const UserContent = () => {
   }, []);
   // bg-transparent
   return (
-    <div className="w-full h-[calc(100vh-96px)]">
+    <div className="w-full h-[calc(100dvh-96px)]">
       {!isLoading ? (
         <Box
           ref={containerRef}
