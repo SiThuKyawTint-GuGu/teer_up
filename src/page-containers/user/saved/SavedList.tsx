@@ -112,10 +112,25 @@ const SavedList: React.FC = () => {
       setFilterTypes([each]);
       return;
     }
+
     let filteredData = filteredType.filter(data => data.key !== SAVED_CONTENT_TYPES.ALL);
-    filteredData.find(data => data.key === each.key)
-      ? setFilterTypes(filteredData.filter(data => data.key !== each.key))
-      : setFilterTypes([...filteredData, each]);
+    const isExist = filteredData.find(data => data.key === each.key);
+    if (isExist) {
+      filteredData = filteredData.filter(data => data.key !== each.key);
+      if (filteredData.length === 0) {
+        setFilterTypes([
+          {
+            key: SAVED_CONTENT_TYPES.ALL,
+            value: "All content types",
+          },
+        ]);
+        return;
+      }
+      setFilterTypes(filteredData);
+      return;
+    }
+
+    setFilterTypes([...filteredData, each]);
     return;
   };
 
