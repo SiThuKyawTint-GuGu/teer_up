@@ -78,6 +78,7 @@ interface RegisterArgType {
   arg: {
     name: string;
     email: string;
+    referal_code: string | null;
   };
 }
 export const useUserRegister = () => {
