@@ -60,7 +60,7 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate }) =>
             )}
           </div>
         </Link>
-        <div className="w-full h-full pt-[16px] px-[16px]">
+        <Link href={`/content/${data.slug}`} className="w-full h-full pt-[16px] px-[16px]">
           <Link href={`/content/${data?.slug}`}>
             <Flex direction="column" className="w-full">
               {/* Ref to get the content height and dynamically set max height */}
@@ -87,7 +87,7 @@ const ContentLayout: React.FC<ContentlayoutProps> = ({ data, contentMutate }) =>
               )} */}
             </Flex>
           </Link>
-        </div>
+        </Link>
         <div className="mt-2 w-full px-[16px]">
           <div className="w-full pt-3">
             <hr className="w-full h-[1px] bg-slateGray" />

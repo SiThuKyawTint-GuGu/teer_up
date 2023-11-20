@@ -6,7 +6,7 @@ import ContentDetailHeader from "@/components/contentLayout/ContentDetailHeader"
 import { useGetContentBySlug } from "@/services/content";
 import { ContentData } from "@/types/Content";
 
-import { Grid } from "@radix-ui/themes";
+import { Flex, Grid } from "@radix-ui/themes";
 import { useParams } from "next/navigation";
 import React, { useMemo } from "react";
 import NormalContentDetail from "./ContentDetail";
@@ -44,7 +44,9 @@ const UserContentDetail: React.FC<ContentLayoutProps> = () => {
             <ContentDetailHeader title={`${contentData?.title}`} />
           </div>
           <div className="w-full h-full">
-            <div className="w-full h-[100dvh] py-[48px]">{getContentDetail()}</div>
+            <Flex justify="center" className="w-full h-full">
+              {getContentDetail()}
+            </Flex>
           </div>
         </>
       ) : (
