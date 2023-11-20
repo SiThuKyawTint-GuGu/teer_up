@@ -741,7 +741,7 @@ const Profile: React.FC = () => {
           )}
         </DialogContent>
         {deleteModalOpen && (
-          <DialogContent isClose={false} className="border-none shadow-none">
+          <DialogContent isClose={false} className="border-none shadow-none h-fit top-[50%] translate-y-[-50%]">
             <div className="text-center space-y-[10px] bg-white p-4 rounded-lg">
               <Text className="text-[#373A36] text-[20px] font-[700]">
                 {" "}
