@@ -60,7 +60,7 @@ const DialogContent = React.forwardRef<
       {...props}
     >
       <Flex justify="center" align="center">
-        <Box className="relative">
+        <Box className="relative w-full">
           {children}
           {isClose && (
             <DialogPrimitive.Close
