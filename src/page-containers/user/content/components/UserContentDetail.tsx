@@ -43,8 +43,8 @@ const UserContentDetail: React.FC<ContentLayoutProps> = () => {
           <div className="fixed max-w-[400px]  w-full  top-0  mx-auto flex flex-wrap z-10">
             <ContentDetailHeader title={`${contentData?.title}`} />
           </div>
-          <div className="w-full h-[100dvh-96px] flex justify-center items-center">
-            <div className="w-full h-full">{getContentDetail()}</div>
+          <div className="w-full h-full">
+            <div className="w-full h-[100dvh] py-[48px]">{getContentDetail()}</div>
           </div>
         </>
       ) : (
