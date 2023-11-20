@@ -1,9 +1,12 @@
 "use client";
+import { Animate, Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons } from "@/components/ui/Images";
+import { Text } from "@/components/ui/Typo/Text";
 import { useContentWatchCount, usePostPathwayProgress, useUnfinishPathway } from "@/services/content";
 import { ContentData } from "@/types/Content";
 import { getLocalStorage, setLocalStorage } from "@/utils";
 import { getToken, getUserInfo } from "@/utils/auth";
+import { cn } from "@/utils/cn";
 import { Box, Flex } from "@radix-ui/themes";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import ContentLayout from "./ContentLayout";
@@ -99,9 +102,9 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
 
       const handleScroll = () => {
         const scrollPosition = container.scrollTop;
-        const newIndex = Math.round(scrollPosition / window.innerHeight);
+        const newIndex = Math.round(scrollPosition / (window.innerHeight - 92));
         setStartTime(Date.now());
-        setVisibleItemIndex(() => newIndex);
+        setVisibleItemIndex(newIndex);
         if (newIndex !== visibleItemIndex) {
           // Calculate time in view when the item changes
           if (startTime !== null) {
@@ -179,7 +182,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
     }
   }, []);
   return (
-    <>
+    <Dialog>
       <div
         onClick={() => setShowPathTitle(false)}
         ref={containerRef}
@@ -200,61 +203,86 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
             </div>
           ))}
       </div>
+
       <div
-        className={`max-w-[400px] pathwayBottomNav mx-auto py-3  w-full flex flex-column fixed  bottom-0  overflow-y-scroll rounded-lg ${
-          showPathTitle && "h-[60%]"
-        } px-2 flex-wrap  bg-white z-[99999]`}
+        className={`max-w-[400px] pathwayBottomNav mx-auto py-3  w-full flex flex-column fixed  bottom-0  rounded-lg px-2 flex-wrap  bg-white `}
       >
-        <div className="w-full h-full bg-white relative ">
-          <Flex justify="between" onClick={() => setShowPathTitle(pre => !pre)} className="w-full">
-            <Flex direction="column">
-              <div className="font-[600] text-[16px]">{data?.title}</div>
-              <div className="text-[14px] font-[300]">
-                Completed {data?.content_pathways && calculatePercentage(data.content_pathways, visibleItemIndex)}%
-              </div>
-            </Flex>
-            {!showPathTitle ? (
+        <DialogTrigger asChild>
+          <div className="w-full h-full relative ">
+            <Flex justify="between" className="w-full">
+              <Flex direction="column">
+                <div className="font-[600] text-[16px]">{data?.title}</div>
+                <div className="text-[14px] font-[300]">
+                  Completed {data?.content_pathways && calculatePercentage(data.content_pathways, visibleItemIndex)}%
+                </div>
+              </Flex>
+
               <Icons.upArrow className="text-primary w-[20px] cursor-pointer h-[20px] absolute top-0 right-0" />
-            ) : (
-              <Icons.downArrow className="text-primary w-[20px] cursor-pointer h-[20px] absolute top-0 right-0" />
-            )}
-          </Flex>
-          {showPathTitle && (
-            <div className="py-5">
+            </Flex>
+          </div>
+        </DialogTrigger>
+        <DialogContent
+          animate={Animate.SLIDE}
+          className={cn(
+            " top-[initial] bottom-0 px-0 py-2 translate-y-0 border-0 bg-white shadow-none outline-none rounded-16px-tl-tr"
+          )}
+        >
+          <div
+            className={`max-w-[400px]  mx-auto  left-0 w-full flex flex-column  bottom-0   overflow-y-scroll rounded-lg 
+           
+             px-2 flex-wrap  `}
+          >
+            <div className="w-full max-w-[400px] fixed bg-white">
+              <div className="bg-primary rounded-[6px] w-[60px] h-[2px] mx-auto" />
+              <Flex justify="between" className="relative w-full mt-[16px] px-4">
+                <Flex direction="column" className="w-full">
+                  <Flex justify="between" align="center" className="w-full">
+                    <Text className="font-[600] text-[16px]">{data?.title}</Text>
+                    <Icons.downArrow className="text-primary w-[20px] cursor-pointer h-[20px]  " />
+                  </Flex>
+
+                  <Text className="text-[14px] font-[300]">
+                    Completed {data?.content_pathways && calculatePercentage(data.content_pathways, visibleItemIndex)}%
+                  </Text>
+                </Flex>
+              </Flex>
+            </div>
+
+            <div className=" pt-[70px] px-4 w-full h-[60dvh]">
               {data?.content_pathways &&
                 data?.content_pathways.length > 0 &&
                 data.content_pathways.map((data, index) => (
-                  <div
-                    key={index}
-                    onClick={() => {
-                      setShowPathTitle(false);
-                      const targetElement = document.getElementById(index.toString());
-                      if (targetElement) {
-                        targetElement.scrollIntoView({
-                          behavior: "smooth", // Smooth scroll effect
-                        });
-                      }
-                    }}
-                    className="font-[600]  flex flex-col w-full text-[16px] py-1"
-                  >
-                    <Flex justify="between" className="w-full py-2">
-                      <div className={`cursor-pointer ${visibleItemIndex === index && "text-primary"}`}>
+                  <div key={index} className="font-[600]  flex flex-col w-full text-[16px]  py-[12px]">
+                    <Flex justify="between" align="center" className="w-full cursor-pointer">
+                      <Text
+                        className={` ${visibleItemIndex === index && "text-primary w-[calc(100%-40px)]"}`}
+                        onClick={() => {
+                          setShowPathTitle(false);
+                          const targetElement = document.getElementById(index.toString());
+                          if (targetElement) {
+                            targetElement.scrollIntoView({
+                              behavior: "smooth", // Smooth scroll effect
+                            });
+                          }
+                        }}
+                      >
                         {data.title || "--------"}
-                      </div>
-                      {index === visibleItemIndex && (
-                        <Icons.checkMark
-                          className={`w-[20px] h-[20px] ${visibleItemIndex === index && "text-primary"}`}
-                        />
-                      )}
+                      </Text>
+
+                      <Icons.checkMark
+                        className={`  ${
+                          visibleItemIndex === index ? "text-primary w-[20px] h-[20px] text-[20px]" : "hidden"
+                        }`}
+                      />
                     </Flex>
-                    <hr className="w-full h-[2px] bg-slateGray" />
+                    <hr className="w-full h-[2px] mt-[12px] bg-slateGray" />
                   </div>
                 ))}
             </div>
-          )}
-        </div>
+          </div>
+        </DialogContent>
       </div>
-    </>
+    </Dialog>
   );
 };
 
