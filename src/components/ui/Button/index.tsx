@@ -48,7 +48,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <Component className={cn("space-x-[5px]", buttonVariants({ variant, size, className }))} ref={ref} {...props}>
         {loading ? (
-          <Spinner width={25} height={25} color={spinnerColor || "#ffffff"} />
+          <Spinner width={25} height={25} color={variant === "link" ? "#DA291C" : spinnerColor || "#ffffff"} />
         ) : (
           <span className="flex justify-center items-center gap-[5px]">{children}</span>
         )}

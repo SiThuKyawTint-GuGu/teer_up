@@ -14,9 +14,10 @@ type ContentDetailHeaderProps = {
   title: string;
 };
 const ContentDetailHeader: React.FC<ContentDetailHeaderProps> = ({ title }) => {
+  const [isCopied, setIsCopied] = useState<boolean>(false);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
   const router = useRouter();
   const pathname = usePathname();
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
   const textRef = useRef<any>();
   const divRef = useRef<any>();
   const [shouldMarquee, setShouldMarquee] = useState(false);
@@ -37,31 +38,32 @@ const ContentDetailHeader: React.FC<ContentDetailHeaderProps> = ({ title }) => {
   }, [title]);
 
   return (
-    <div className="flex justify-between h-[48px] z-50  items-center bg-white fixed top-0 w-full max-w-[400px] mx-auto">
-      <div
-        className="w-[40px] h-full flex items-center px-2 justify-start cursor-pointer"
-        onClick={() => router.back()}
-      >
-        <Icons.back className="w-[20px] h-[20px]" />
-      </div>
-      <div className="flex justify-center" style={{ width: 300, padding: "0 20px" }} ref={divRef}>
-        {shouldMarquee ? (
-          <Marquee>
-            <MarqueeText
-              className="capitalize font-[600] text-[16px] flex justify-start items-center gap-5"
-              ref={textRef}
-            >
-              <span>{title}</span>
-              <span />
+    <Dialog open={modalOpen} onOpenChange={val => setModalOpen(val)}>
+      <div className="flex justify-between h-[48px] z-50  items-center bg-white fixed top-0 w-full max-w-[400px] mx-auto">
+        <div
+          className="w-[40px] h-full flex items-center px-2 justify-start cursor-pointer"
+          onClick={() => router.back()}
+        >
+          <Icons.back className="w-[20px] h-[20px]" />
+        </div>
+        <div className="flex justify-center" style={{ width: 300, padding: "0 20px" }} ref={divRef}>
+          {shouldMarquee ? (
+            <Marquee>
+              <MarqueeText
+                className="capitalize font-[600] text-[16px] flex justify-start items-center gap-5"
+                ref={textRef}
+              >
+                <span>{title}</span>
+                <span />
+              </MarqueeText>
+            </Marquee>
+          ) : (
+            <MarqueeText className="capitalize font-[600] text-[16px]" ref={textRef}>
+              {title}
             </MarqueeText>
-          </Marquee>
-        ) : (
-          <MarqueeText className="capitalize font-[600] text-[16px]" ref={textRef}>
-            {title}
-          </MarqueeText>
-        )}
-      </div>
-      <Dialog open={modalOpen} onOpenChange={val => setModalOpen(val)}>
+          )}
+        </div>
+
         <DialogTrigger>
           <div onClick={() => setModalOpen(true)} className="w-[40px] h-[48px] justify-end flex items-center  px-2">
             <Icons.share className="w-[20px] h-[20px]" />
@@ -71,12 +73,12 @@ const ContentDetailHeader: React.FC<ContentDetailHeaderProps> = ({ title }) => {
           // <Modal onClose={() => setModalOpen(false)}>
           //   <Share url={pathname} />
           // </Modal>
-          <DialogContent className="bg-white top-[initial] h-auto bottom-0 max-w-[400px] px-4 translate-y-0 rounded-10px-tl-tr">
-            <Share url={pathname} />
+          <DialogContent className="top-[initial] bottom-0 max-w-[400px] pt-[10px] mx-auto translate-y-0 ">
+            <Share url={pathname} onClickCopied={setIsCopied} />
           </DialogContent>
         )}
-      </Dialog>
-    </div>
+      </div>
+    </Dialog>
   );
 };
 

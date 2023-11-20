@@ -3,6 +3,7 @@ import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import { ExperienceParamsType, useGetUserExperiences } from "@/services/experience";
 import { ExperienceResponse } from "@/types/Experience";
+import { cn } from "@/utils/cn";
 import { Box, Flex, Grid, Section } from "@radix-ui/themes";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -34,7 +35,13 @@ const Experience: React.FC = () => {
         <Box className="pb-[7px]">
           <Section className="bg-white" py="4" px="3">
             {experiences?.data?.map((each, key) => (
-              <div key={key} className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
+              <div
+                key={key}
+                className={cn(
+                  "pb-[10px] mb-[10px]",
+                  key !== (experiences?.data ? experiences?.data.length - 1 : -1) && "border-line"
+                )}
+              >
                 <Flex justify="between" align="start">
                   <Flex direction="column" gap="2">
                     <Text as="label" weight="bold" size="3">

@@ -4,6 +4,7 @@ import CardBox from "@/components/ui/Card";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form";
 import { Icons } from "@/components/ui/Images";
 import { InputText } from "@/components/ui/Inputs";
+import InputDate from "@/components/ui/Inputs/InputDate";
 import { Radio, RadioItem } from "@/components/ui/Inputs/Radio";
 import { Label } from "@/components/ui/Label";
 import { Text } from "@/components/ui/Typo/Text";
@@ -87,7 +88,7 @@ const PersonalInfo: React.FC = () => {
                     </div>
                   </div>
 
-                  <CardBox className="mb-[7px] rounded-none">
+                  <CardBox className="mb-[0px] rounded-none">
                     <Section className="bg-white" py="4" px="3">
                       <Flex justify="between" align="center" mb="4">
                         <Heading as="h6" size="4" align="left">
@@ -130,7 +131,7 @@ const PersonalInfo: React.FC = () => {
                       )}
                     </Section>
                   </CardBox>
-                  <CardBox className="mb-[7px] rounded-none">
+                  <CardBox className="mb-[0px] rounded-none">
                     <Section className="bg-white" py="4" px="3">
                       <Heading as="h6" size="4" align="left" mb="4">
                         Birthday
@@ -142,13 +143,7 @@ const PersonalInfo: React.FC = () => {
                           return (
                             <FormItem>
                               <FormControl>
-                                <input
-                                  type="date"
-                                  className={cn(
-                                    "font-light shadow-md bg-white border-0 text-black w-full h-[40px] p-3 outline-none"
-                                  )}
-                                  {...field}
-                                />
+                                <InputDate {...field} defaultValue={userProfile?.personal_info?.birthday} />
                               </FormControl>
                             </FormItem>
                           );
@@ -244,7 +239,7 @@ const PersonalInfo: React.FC = () => {
                       </Flex>
                     </Section>
                   </CardBox> */}
-                  <CardBox className="mb-[7px] rounded-none">
+                  <CardBox className="mb-[0px] rounded-none">
                     <Section className="bg-white" py="4" px="3">
                       <Heading as="h6" size="4" align="left" mb="4">
                         Name
@@ -269,7 +264,7 @@ const PersonalInfo: React.FC = () => {
                       />
                     </Section>
                   </CardBox>
-                  <CardBox className="mb-[7px] rounded-none">
+                  <CardBox className="mb-[0px] rounded-none">
                     <Section className="bg-white" py="4" px="3">
                       <Heading as="h6" size="4" align="left" mb="4">
                         Email
