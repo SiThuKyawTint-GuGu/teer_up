@@ -5,19 +5,29 @@ import { useDrawerStore } from "@/store/authStore";
 import { UserResponse } from "@/types/User";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import InfoIcon from "@mui/icons-material/Info";
 import { Alert, Box, Button, IconButton, Modal, Tooltip, Typography } from "@mui/material";
 import dayjs from "dayjs";
+import { download, generateCsv, mkConfig } from "export-to-csv";
 import {
   MaterialReactTable,
   MRT_ColumnFiltersState,
   MRT_PaginationState,
+  MRT_Row,
   useMaterialReactTable,
   type MRT_TableOptions,
 } from "material-react-table";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { type User } from "./makeData";
+
+const csvConfig = mkConfig({
+  fieldSeparator: ",",
+  decimalSeparator: ".",
+  useKeysAsHeaders: true,
+  filename: "users",
+});
 
 const UserTable: React.FC = () => {
   const [validationErrors, setValidationErrors] = useState<Record<string, string | undefined>>({});
@@ -225,6 +235,12 @@ const UserTable: React.FC = () => {
     );
   };
 
+  const handleExportRows = (rows: MRT_Row<User>[]) => {
+    const rowData = rows.map(row => row.original);
+    const csv = generateCsv(csvConfig)(rowData);
+    download(csvConfig)(csv);
+  };
+
   // console.log("globalFilter => ", globalFilter);
 
   const table = useMaterialReactTable({
@@ -303,16 +319,27 @@ const UserTable: React.FC = () => {
       </Box>
     ),
     renderTopToolbarCustomActions: ({ table }) => (
-      <Button
-        onClick={() => {
-          table.setCreatingRow(true);
-        }}
-        variant="contained"
-        color="error"
-        sx={{ background: "#DA291C", textTransform: "none" }}
-      >
-        Create New User
-      </Button>
+      <div>
+        <Button
+          onClick={() => {
+            table.setCreatingRow(true);
+          }}
+          variant="contained"
+          color="error"
+          sx={{ background: "#DA291C", textTransform: "none" }}
+        >
+          Create New User
+        </Button>
+        <Button
+          sx={{ marginLeft: "5px", textTransform: "none" }}
+          variant="contained"
+          disabled={table.getRowModel().rows.length === 0}
+          onClick={() => handleExportRows(table.getRowModel().rows)}
+          startIcon={<FileDownloadIcon />}
+        >
+          Export User Data
+        </Button>
+      </div>
     ),
   });
 
