@@ -15,6 +15,7 @@ import {
 } from "@/services/user";
 import { PROFILE_TRIGGER } from "@/shared/enums";
 import { UserProfileResponse } from "@/types/Profile";
+import { setLocalStorage } from "@/utils";
 import { cn } from "@/utils/cn";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
@@ -65,11 +66,14 @@ const ProfileEdit: React.FC = () => {
   };
   const handleUploadImage = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = await getFileFromEvent(event);
-
     if (file) {
-      const triggerFunction =
-        triggerType === PROFILE_TRIGGER.PROFILE ? uploadProfileTrigger({ file }) : uploadCoverTrigger({ file });
-
+      if (triggerType !== PROFILE_TRIGGER.PROFILE) {
+        setLocalStorage("coverPhoto", URL.createObjectURL(file));
+        setLocalStorage("profilePhoto", userProfile?.profile_url || "");
+        router.push("/profile/preview/cover-photo");
+        return;
+      }
+      const triggerFunction = uploadProfileTrigger({ file });
       try {
         await triggerFunction;
         await mutate();
