@@ -115,22 +115,24 @@ const Setting: React.FC = () => {
         </Box>
       </Grid>
       <DialogContent isClose={false} className="border-none shadow-none">
-        <div className="text-center space-y-[10px] bg-white p-4 rounded-lg">
-          <Text className="text-[#373A36] text-[20px] font-[700]">Are you sure to log out of account?</Text>
-          <Text className="text-[#373A36]">
-            You won’t receive any messages from the app. But you could log in again with your email address.
-          </Text>
-          <Flex justify="center" className="gap-3">
-            <Button className="w-1/2 font-[600]" onClick={handleLogout} loading={isPending}>
-              Log out
-            </Button>
-            <DialogClose className="w-1/2">
-              <Button className="w-full" variant="outline">
-                Cancel
+        <Flex justify="center" align="center">
+          <div className="text-center bg-white h-[270px] p-4 rounded-lg">
+            <Text className="text-[#373A36] text-[26px] font-[700] mb-3">Are you sure to log out of account?</Text>
+            <Text className="text-[#373A36] mb-6">
+              You won’t receive any messages from the app. But you could log in again with your email address.
+            </Text>
+            <Flex justify="center" className="gap-3">
+              <Button className="w-1/2 font-[600]" onClick={handleLogout} loading={isPending}>
+                Log out
               </Button>
-            </DialogClose>
-          </Flex>
-        </div>
+              <DialogClose className="w-1/2">
+                <Button className="w-full" variant="outline">
+                  Cancel
+                </Button>
+              </DialogClose>
+            </Flex>
+          </div>
+        </Flex>
       </DialogContent>
     </Dialog>
   );
