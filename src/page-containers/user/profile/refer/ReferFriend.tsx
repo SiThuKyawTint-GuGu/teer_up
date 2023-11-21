@@ -67,7 +67,7 @@ const ReferFriend = () => {
           className={cn("bg-white top-[initial] bottom-0 px-0 py-2 translate-y-0 rounded-16px-tl-tr")}
         >
           <Share
-            url={`/auth/signup?referalCode=${user.referral_code}`}
+            url={`/auth/signup?referralCode=${user.referral_code}`}
             header={"Share Link To"}
             onClickCopied={setIsCopied}
           />
