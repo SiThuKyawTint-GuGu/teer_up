@@ -7,9 +7,11 @@ import { InputTextArea } from "@/components/ui/Inputs";
 import { Text } from "@/components/ui/Typo/Text";
 import { useRequestMentorship } from "@/services/content";
 import { ContentData } from "@/types/Content";
+import { cn } from "@/utils/cn";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { Box, Flex, Heading, Section } from "@radix-ui/themes";
+import dayjs from "dayjs";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -20,9 +22,9 @@ const validationSchema = yup.object({
 
 type MentorDetailProp = {
   data: ContentData;
-  contentMutate: any;
+  contentMutate?: any;
 };
-const MentorDetail: React.FC<MentorDetailProp> = ({ data, contentMutate }) => {
+const MentorDetail: React.FC<MentorDetailProp> = ({ data }) => {
   const [open, setOpen] = useState<boolean>(false);
 
   const { trigger, isMutating } = useRequestMentorship();
@@ -60,7 +62,7 @@ const MentorDetail: React.FC<MentorDetailProp> = ({ data, contentMutate }) => {
                       position="relative"
                       className="w-[120px] h-[120px] rounded-full bg-[#D9D9D9] ring-4 ring-white"
                       style={{
-                        background: `url(${data.mentor.profile_url}) center / cover`,
+                        background: `url(${data?.mentor?.profile_url}) center / cover`,
                       }}
                     />
                   ) : (
@@ -82,32 +84,18 @@ const MentorDetail: React.FC<MentorDetailProp> = ({ data, contentMutate }) => {
                 </div>
 
                 <Heading as="h4" size="5" mb="4">
-                  {}
+                  {data?.mentor?.name}
                 </Heading>
-                <Text>{data.mentor.bio}</Text>
+                <Text>{data?.mentor?.bio}</Text>
               </Section>
             </Box>
             <Box className="pb-[7px]">
               <Section className="bg-white" py="4" px="3">
                 <Heading as="h6" size="4" align="left" mb="4">
-                  Personal information
+                  About
                 </Heading>
-                <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
-                  <Flex direction="column" gap="2">
-                    <Text as="label" weight="bold" size="3">
-                      Gender
-                    </Text>
-                    <Text>Male</Text>
-                  </Flex>
-                </div>
-                <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
-                  <Flex direction="column" gap="2">
-                    <Text as="label" weight="bold" size="3">
-                      Birthday
-                    </Text>
-                    <Text>24th December 2002</Text>
-                  </Flex>
-                </div>
+                <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">This is about</div>
+
                 <div className="pb-[10px] mb-[10px]">
                   <Flex direction="column" gap="2">
                     <Text as="label" weight="bold" size="3">
@@ -118,51 +106,122 @@ const MentorDetail: React.FC<MentorDetailProp> = ({ data, contentMutate }) => {
                 </div>
               </Section>
             </Box>
+
             <Box className="pb-[7px]">
               <Section className="bg-white" py="4" px="3">
                 <Heading as="h6" size="4" align="left" mb="4">
                   Experties
                 </Heading>
-                <span className="px-2 py-1 rounded-xl text-center text-[14px] bg-secondary border-[1px] border-primary">
-                  Programming
-                </span>
-              </Section>
-            </Box>
-            <Box className="pb-[7px]">
-              <Section className="bg-white" py="4" px="3">
-                <Heading as="h6" size="4" align="left" mb="4">
-                  Career interests
-                </Heading>
-                <Flex wrap="wrap" gap="2">
-                  Industry
-                </Flex>
-              </Section>
-            </Box>
-            <Box className="pb-[7px]">
-              <Section className="bg-white" py="4" px="3">
-                <Heading as="h6" size="4" align="left" mb="4">
-                  Experience
-                </Heading>
-                <Flex wrap="wrap" gap="2">
-                  Frontend Developer
-                </Flex>
+
+                {data?.mentor?.industries?.length > 0 &&
+                  data?.mentor?.industries?.map((each, index) => (
+                    <Text
+                      key={index}
+                      as="span"
+                      className="px-2 py-1 rounded-xl text-center text-[14px] bg-secondary border-[1px] border-primary"
+                    >
+                      {each?.industry?.name}
+                    </Text>
+                  ))}
               </Section>
             </Box>
           </Box>
           <Box className="pb-[7px]">
             <Section className="bg-white" py="4" px="3">
               <Heading as="h6" size="4" align="left" mb="4">
+                Job Experience
+              </Heading>
+              {data?.mentor?.experiences?.length > 0 &&
+                data?.mentor?.experiences?.map((each, key) => (
+                  <Flex
+                    key={key}
+                    justify="between"
+                    align="start"
+                    className={cn(
+                      "pb-[10px] mb-[10px]",
+                      key !== (data?.mentor?.experiences ? data?.mentor?.experiences.length - 1 : -1) &&
+                        "border-b border-b-[#BDC7D5]"
+                    )}
+                  >
+                    <Flex justify="start" align="start" gap="2">
+                      <Image src="/uploads/icons/experience.svg" width={32} height={32} alt="experience" />
+                      <Flex direction="column" gap="2">
+                        <Text as="label" weight="bold" size="3">
+                          {each?.position}
+                        </Text>
+                        <Text size="2" weight="light">
+                          {each?.company || "-"}
+                        </Text>
+                      </Flex>
+                    </Flex>
+                    <Flex justify="end" align="center" gap="1">
+                      <Text size="2" weight="light">
+                        {dayjs(each?.start_date).format("MMM, YYYY")}
+                      </Text>
+                      <Text size="2" weight="light">
+                        -
+                      </Text>
+                      {each?.is_present === true ? (
+                        <Text size="2" weight="light">
+                          {"Present"}
+                        </Text>
+                      ) : (
+                        <Text size="2" weight="light">
+                          {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "-"}
+                        </Text>
+                      )}
+                    </Flex>
+                  </Flex>
+                ))}
+            </Section>
+          </Box>
+          <Box className="pb-[7px]">
+            <Section className="bg-white" py="4" px="3">
+              <Heading as="h6" size="4" align="left" mb="4">
                 Education
               </Heading>
-
-              <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
-                <Flex direction="column" gap="2">
-                  <Text as="label" weight="bold" size="3">
-                    National Management Degree Collegue
-                  </Text>
-                  <Text>BA</Text>
-                </Flex>
-              </div>
+              {data?.mentor?.education?.length > 0 &&
+                data?.mentor?.education?.map((each, key) => (
+                  <Flex
+                    key={key}
+                    justify="between"
+                    align="start"
+                    className={cn(
+                      "pb-[10px] mb-[10px]",
+                      key !== (data?.mentor?.education ? data?.mentor?.education.length - 1 : -1) &&
+                        "border-b border-b-[#BDC7D5]"
+                    )}
+                  >
+                    <Flex justify="start" align="start" gap="2">
+                      <Image src="/uploads/icons/experience.svg" width={32} height={32} alt="experience" />
+                      <Flex direction="column" gap="2">
+                        <Text as="label" weight="bold" size="3">
+                          {each?.degree}
+                        </Text>
+                        <Text size="2" weight="light">
+                          {each?.school_name || "-"}
+                        </Text>
+                      </Flex>
+                    </Flex>
+                    <Flex justify="end" align="center" gap="1">
+                      <Text size="2" weight="light">
+                        {dayjs(each?.start_date).format("MMM, YYYY")}
+                      </Text>
+                      <Text size="2" weight="light">
+                        -
+                      </Text>
+                      {each?.is_present ? (
+                        <Text size="2" weight="light">
+                          {"Present"}
+                        </Text>
+                      ) : (
+                        <Text size="2" weight="light">
+                          {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "-"}
+                        </Text>
+                      )}
+                    </Flex>
+                  </Flex>
+                ))}
             </Section>
           </Box>
         </div>

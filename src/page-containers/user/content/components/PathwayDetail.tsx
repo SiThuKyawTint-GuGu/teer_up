@@ -237,7 +237,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
                 <Flex justify="between" className="relative w-full mt-[16px] px-4">
                   <Flex direction="column" className="w-full">
                     <Flex justify="between" align="center" className="w-full">
-                      <Text className="font-[600] text-[16px]">{data?.title}</Text>
+                      <Text className="font-[700] text-[24px]">{data?.title}</Text>
                       <Icons.downArrow className="text-primary w-[20px] cursor-pointer h-[20px]  " />
                     </Flex>
 
