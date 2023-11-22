@@ -23,7 +23,9 @@ const UserContent = () => {
   const [totalTimeInView, setTotalTimeInView] = useState<number>(0);
   const { trigger: calculateCount } = useContentWatchCount();
   const [showContentLoading, setShowContentLoading] = useState<boolean>(false);
-
+  const storeIndex = (index: number) => {
+    setLocalStorage("contentPosition", index);
+  };
   // restore scroll position
   useEffect(() => {
     if ("scrollPosition" in sessionStorage) {
@@ -66,6 +68,7 @@ const UserContent = () => {
       const handleScroll = () => {
         const scrollPosition = container.scrollTop;
         const newIndex = Math.round(scrollPosition / (window.innerHeight - 92));
+        storeIndex(newIndex);
         setStartTime(Date.now());
         setVisibleItemIndex(newIndex);
         // if (container.scrollHeight - scrollPosition - container.clientHeight === 0) {
@@ -155,10 +158,6 @@ const UserContent = () => {
     if (data?.type === "video" && data.content_video)
       return <Video data={data} setVideoRef={handleVideoRef(index)} autoplay={true} contentMutate={mutate} />;
     return <ContentLayout data={data} contentMutate={mutate} />;
-  };
-
-  const storeIndex = (index: number) => {
-    setLocalStorage("contentPosition", index);
   };
 
   useEffect(() => {

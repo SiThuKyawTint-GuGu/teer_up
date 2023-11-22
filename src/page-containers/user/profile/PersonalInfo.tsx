@@ -54,7 +54,8 @@ const PersonalInfo: React.FC = () => {
 
     await trigger(newData, {
       onSuccess: () => {
-        router.push(`/profile/${id}`);
+        // router.push(`/profile/${id}`);
+        router.back();
       },
     });
   };
