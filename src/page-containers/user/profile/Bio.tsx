@@ -31,7 +31,8 @@ const Bio: React.FC = () => {
   const submit = async (data: { bio: string }) => {
     await trigger(data, {
       onSuccess: () => {
-        router.push(`/profile/${id}`);
+        // router.push(`/profile/${id}`);
+        router.back();
       },
     });
   };
