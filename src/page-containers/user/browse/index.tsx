@@ -1,5 +1,6 @@
 "use client";
 import Loading from "@/app/loading";
+import MainPageLayout from "@/components/userLayout/MainPageLayout";
 import { useGetBrowseInfinite, useGetHomeContent } from "@/services/content";
 import { useGetContentCategory } from "@/services/contentCategory";
 import { ContentData, ContentHomeData } from "@/types/Content";
@@ -102,157 +103,159 @@ const BrowsePage: React.FC = () => {
     );
   }
   return (
-    <div className="relative w-full h-full pb-[52px]  bg-[#F8F9FB]">
-      <Flex
-        className="p-3 w-full sticky top-0 overflow-auto gap-[15px] no-scrollbar bg-white scroll-smooth"
-        ref={parentContainer}
-      >
-        <div
-          onClick={() => {
-            handleCategoryChange("all");
-          }}
-          className={`cursor-pointer border-primary  px-10 flex-0 flex-shrink-0  py-1 rounded-lg border ${
-            type == "all" ? "bg-[#FCE8EA] " : "border-[#E4E4E4] hover:border-primary"
-          }     `}
-          {...(type === "all" && { ref: currentCategoryElement })}
+    <MainPageLayout hideFooter={search ? true : false}>
+      <div className="relative w-full h-full pb-[52px]  bg-[#F8F9FB]">
+        <Flex
+          className="p-3 w-full sticky top-0 overflow-auto gap-[15px] no-scrollbar bg-white scroll-smooth"
+          ref={parentContainer}
         >
-          {" "}
-          <p
-            className="w-auto font-[600] text-[16px] text-center"
-            // className={`w-auto   ${
-            //   type === data.value && "border-b-[2px]  text-[16px] font-[600]"
-            // }`}
-          >
-            All
-          </p>
-        </div>
-        {contentCategories?.data?.map((data, index: number) => (
           <div
-            key={index}
             onClick={() => {
-              handleCategoryChange(data?.slug);
+              handleCategoryChange("all");
             }}
-            className={`cursor-pointer px-10 flex-0 flex-shrink-0  py-1 rounded-lg border border-primary ${
-              type == data.slug ? " bg-[#FCE8EA] " : "border-[#E4E4E4] hover:border-primary"
+            className={`cursor-pointer border-primary  px-10 flex-0 flex-shrink-0  py-1 rounded-lg border ${
+              type == "all" ? "bg-[#FCE8EA] " : "border-[#E4E4E4] hover:border-primary"
             }     `}
-            {...(type === data.slug && { ref: currentCategoryElement })}
+            {...(type === "all" && { ref: currentCategoryElement })}
           >
             {" "}
-            <div
-              className="w-auto font-[600] text-[16px] flex space-between items-center "
+            <p
+              className="w-auto font-[600] text-[16px] text-center"
               // className={`w-auto   ${
               //   type === data.value && "border-b-[2px]  text-[16px] font-[600]"
               // }`}
             >
-              {data?.icon_url && <img src={data?.icon_url} className="w-[20px] mr-[10px] h-[20px] inline-block" />}
-              <p> {data.name}</p>
-            </div>
+              All
+            </p>
           </div>
-        ))}
-      </Flex>
-      {type === "all" && (!search || search === "") ? (
-        <div className="overflow-y-scroll no-scrollbar h-full bg-[#F8F9FB] scroll-smooth" id="content-list-container">
-          {homeContent?.data && homeContent?.data?.length !== 0 ? (
-            homeContent?.data?.map((contentData: ContentHomeData, index: number) => {
-              return (
-                <Flex
-                  direction="column"
-                  className="w-full  py-[10px]"
-                  key={index}
-                  id={"content-list-" + contentData.id.toString()}
-                >
-                  <Flex direction={"row"} className="w-full  px-[12px] justify-between items-center">
-                    <div className=" flex items-center text-2xl font-[800] ">
-                      {contentData?.icon_url && (
-                        <img src={contentData?.icon_url} className="w-[20px] mr-[10px] h-[20px] inline-block" />
-                      )}
-                      <p>{contentData?.name}</p>
-                    </div>
+          {contentCategories?.data?.map((data, index: number) => (
+            <div
+              key={index}
+              onClick={() => {
+                handleCategoryChange(data?.slug);
+              }}
+              className={`cursor-pointer px-10 flex-0 flex-shrink-0  py-1 rounded-lg border border-primary ${
+                type == data.slug ? " bg-[#FCE8EA] " : "border-[#E4E4E4] hover:border-primary"
+              }     `}
+              {...(type === data.slug && { ref: currentCategoryElement })}
+            >
+              {" "}
+              <div
+                className="w-auto font-[600] text-[16px] flex space-between items-center "
+                // className={`w-auto   ${
+                //   type === data.value && "border-b-[2px]  text-[16px] font-[600]"
+                // }`}
+              >
+                {data?.icon_url && <img src={data?.icon_url} className="w-[20px] mr-[10px] h-[20px] inline-block" />}
+                <p> {data.name}</p>
+              </div>
+            </div>
+          ))}
+        </Flex>
+        {type === "all" && (!search || search === "") ? (
+          <div className="overflow-y-scroll no-scrollbar h-full bg-[#F8F9FB] scroll-smooth" id="content-list-container">
+            {homeContent?.data && homeContent?.data?.length !== 0 ? (
+              homeContent?.data?.map((contentData: ContentHomeData, index: number) => {
+                return (
+                  <Flex
+                    direction="column"
+                    className="w-full  py-[10px]"
+                    key={index}
+                    id={"content-list-" + contentData.id.toString()}
+                  >
+                    <Flex direction={"row"} className="w-full  px-[12px] justify-between items-center">
+                      <div className=" flex items-center text-2xl font-[800] ">
+                        {contentData?.icon_url && (
+                          <img src={contentData?.icon_url} className="w-[20px] mr-[10px] h-[20px] inline-block" />
+                        )}
+                        <p>{contentData?.name}</p>
+                      </div>
+                      <p
+                        className="text-primary font-[600] ml-[5px] cursor-pointer"
+                        onClick={() => {
+                          handleCategoryChange(contentData?.slug);
+                        }}
+                      >
+                        Show More
+                      </p>
+                    </Flex>
                     <p
-                      className="text-primary font-[600] ml-[5px] cursor-pointer"
-                      onClick={() => {
-                        handleCategoryChange(contentData?.slug);
-                      }}
-                    >
-                      Show More
-                    </p>
-                  </Flex>
-                  <p
-                    className="
+                      className="
                   text-[14px] text-[#4B5563] font-[400] px-[12px] py-[5px]
                   "
-                  >
-                    {contentData?.sub_title}
-                  </p>
-                  <div className="w-full h-full  flex  overflow-x-scroll no-scrollbar">
-                    {contentData?.category_contents && contentData?.category_contents.length === 0 ? (
-                      <div className="w-full  flex justify-center h-[200px] items-center">
-                        <p className="text-[16px] font-[600] text-center">No Content</p>
-                      </div>
-                    ) : (
-                      contentData?.category_contents.map((c: any, index: number) => {
-                        return (
-                          <div key={index} className="flex-0 flex-shrink-0 basis-3/4 h-auto">
-                            <BrowserContentLayout
-                              key={index}
-                              data={c?.content}
-                              contentListId={"content-list-" + contentData.id.toString()}
-                              contentMutate={mutate}
-                              redir={`/content/${c.content.slug}`}
-                            />
-                          </div>
-                        );
-                      })
-                    )}
-                  </div>
-                </Flex>
-              );
-            })
-          ) : (
-            <div className="w-full  flex justify-center h-full items-center">
-              <p className="text-[16px] font-[600] text-center">No Content</p>
-            </div>
-          )}
-        </div>
-      ) : (
-        <Flex direction="column" className="w-full h-full pt-[10px]">
-          <div
-            className="w-full h-full overflow-y-scroll no-scrollbar scroll-smooth"
-            ref={containerRef}
-            id="content-list-container"
-          >
-            <Box className="">
-              {bannerIconUrl && (
-                <div className="mx-2  overflow-hidden pb-[15px] mb-[10px] border-b border-b-[#BDC7D5]">
-                  <img
-                    alt="banner"
-                    src={bannerIconUrl}
-                    className="w-full h-auto rounded-md inline-block object-cover "
-                  />
-                </div>
-              )}
-            </Box>
-
-            {browseDataArray && browseDataArray.length !== 0 ? (
-              browseDataArray.map((contentData: ContentData, index: number) => (
-                <div key={index} className="w-full h-auto" id={"home-content-" + contentData.id.toString()}>
-                  <BrowserCategoryContentLayout
-                    data={contentData}
-                    contentMutate={mutate}
-                    id={`home-content-${contentData.id.toString()}`}
-                    redir={`/content/${contentData.slug}`}
-                  />
-                </div>
-              ))
+                    >
+                      {contentData?.sub_title}
+                    </p>
+                    <div className="w-full h-full  flex  overflow-x-scroll no-scrollbar">
+                      {contentData?.category_contents && contentData?.category_contents.length === 0 ? (
+                        <div className="w-full  flex justify-center h-[200px] items-center">
+                          <p className="text-[16px] font-[600] text-center">No Content</p>
+                        </div>
+                      ) : (
+                        contentData?.category_contents.map((c: any, index: number) => {
+                          return (
+                            <div key={index} className="flex-0 flex-shrink-0 basis-3/4 h-auto">
+                              <BrowserContentLayout
+                                key={index}
+                                data={c?.content}
+                                contentListId={"content-list-" + contentData.id.toString()}
+                                contentMutate={mutate}
+                                redir={`/content/${c.content.slug}`}
+                              />
+                            </div>
+                          );
+                        })
+                      )}
+                    </div>
+                  </Flex>
+                );
+              })
             ) : (
-              <div className={`w-full  flex justify-center  items-center ${bannerIconUrl ? "h-1/2" : "h-full"} `}>
+              <div className="w-full  flex justify-center h-full items-center">
                 <p className="text-[16px] font-[600] text-center">No Content</p>
               </div>
             )}
           </div>
-        </Flex>
-      )}
-    </div>
+        ) : (
+          <Flex direction="column" className="w-full h-full pt-[10px]">
+            <div
+              className="w-full h-full overflow-y-scroll no-scrollbar scroll-smooth"
+              ref={containerRef}
+              id="content-list-container"
+            >
+              <Box className="">
+                {bannerIconUrl && (
+                  <div className="mx-2  overflow-hidden pb-[15px] mb-[10px] border-b border-b-[#BDC7D5]">
+                    <img
+                      alt="banner"
+                      src={bannerIconUrl}
+                      className="w-full h-auto rounded-md inline-block object-cover "
+                    />
+                  </div>
+                )}
+              </Box>
+
+              {browseDataArray && browseDataArray.length !== 0 ? (
+                browseDataArray.map((contentData: ContentData, index: number) => (
+                  <div key={index} className="w-full h-auto" id={"home-content-" + contentData.id.toString()}>
+                    <BrowserCategoryContentLayout
+                      data={contentData}
+                      contentMutate={mutate}
+                      id={`home-content-${contentData.id.toString()}`}
+                      redir={`/content/${contentData.slug}`}
+                    />
+                  </div>
+                ))
+              ) : (
+                <div className={`w-full  flex justify-center  items-center ${bannerIconUrl ? "h-1/2" : "h-full"} `}>
+                  <p className="text-[16px] font-[600] text-center">No Content</p>
+                </div>
+              )}
+            </div>
+          </Flex>
+        )}
+      </div>
+    </MainPageLayout>
   );
 };
 
