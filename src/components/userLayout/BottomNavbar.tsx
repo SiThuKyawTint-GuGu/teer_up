@@ -25,7 +25,7 @@ const BottomNavbar = () => {
             <Link
               href={
                 item.path === "/home"
-                  ? `${item.path}?${search.get("category") && `category=${search.get("category")}`}`
+                  ? `${item.path}?${search.get("category") ? `category=${search.get("category")}` : ""}`
                   : item.path
               }
               scroll={false}
