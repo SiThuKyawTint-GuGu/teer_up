@@ -231,32 +231,35 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
            
              px-2 flex-wrap  `}
           >
-            <div className="w-full max-w-[400px] fixed bg-white">
-              <div className="bg-primary rounded-[6px] w-[60px] h-[2px] mx-auto" />
-              <Flex justify="between" className="relative w-full mt-[16px] px-4">
-                <Flex direction="column" className="w-full">
-                  <Flex justify="between" align="center" className="w-full">
-                    <Text className="font-[600] text-[16px]">{data?.title}</Text>
-                    <Icons.downArrow className="text-primary w-[20px] cursor-pointer h-[20px]  " />
-                  </Flex>
+            <DialogClose>
+              <div className="w-full max-w-[400px] top-0 fixed bg-white">
+                <div className="bg-primary rounded-[6px] mt-[6px] w-[60px] h-[2px] mx-auto" />
+                <Flex justify="between" className="relative w-full mt-[16px] px-4">
+                  <Flex direction="column" className="w-full">
+                    <Flex justify="between" align="center" className="w-full">
+                      <Text className="font-[600] text-[16px]">{data?.title}</Text>
+                      <Icons.downArrow className="text-primary w-[20px] cursor-pointer h-[20px]  " />
+                    </Flex>
 
-                  <Text className="text-[14px] font-[300]">
-                    Completed {data?.content_pathways && calculatePercentage(data.content_pathways, visibleItemIndex)}%
-                  </Text>
+                    <Text className="text-[14px] font-[300] w-full text-start">
+                      Completed {data?.content_pathways && calculatePercentage(data.content_pathways, visibleItemIndex)}
+                      %
+                    </Text>
+                  </Flex>
                 </Flex>
-              </Flex>
-            </div>
+              </div>
+            </DialogClose>
 
             <div className=" pt-[70px] px-4 w-full h-[60dvh]">
               {data?.content_pathways &&
                 data?.content_pathways.length > 0 &&
                 data.content_pathways.map((data, index) => (
-                  <div key={index} className="font-[600]  flex flex-col w-full text-[16px]  py-[12px]">
+                  <div key={index} className="font-[600]  flex flex-col w-full  ">
                     <DialogClose>
                       <Flex
                         justify="between"
                         align="center"
-                        className="w-full cursor-pointer"
+                        className="w-full cursor-pointer py-[12px] text-[16px] text-start"
                         onClick={() => {
                           const targetElement = document.getElementById(index.toString());
                           if (targetElement) {
@@ -266,9 +269,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
                           }
                         }}
                       >
-                        <Text
-                          className={` ${visibleItemIndex === index && "text-primary text-start w-[calc(100%-40px)]"}`}
-                        >
+                        <Text className={` ${visibleItemIndex === index && "text-primary  w-[calc(100%-40px)]"}`}>
                           {data.title || "--------"}
                         </Text>
 
@@ -280,7 +281,7 @@ const PathwayDetail: React.FC<PathwayDetailProp> = ({ data, contentMutate }) => 
                       </Flex>
                     </DialogClose>
 
-                    <hr className="w-full h-[2px] mt-[12px] bg-slateGray" />
+                    <hr className="w-full h-[1px]  bg-[rgba(187, 199, 214, 0.5)]" />
                   </div>
                 ))}
             </div>
