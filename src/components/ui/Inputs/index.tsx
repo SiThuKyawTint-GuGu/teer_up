@@ -50,7 +50,7 @@ const InputText = React.forwardRef<HTMLInputElement, Props>(
           <TextField.Root>
             <TextField.Input
               type={type}
-              className={cn(`${className} shadow-md text-[#2A2A2A]`)}
+              className={cn(`${className} shadow-md text-[#2A2A2A] `)}
               placeholder={placeholder}
               defaultValue={defaultValue || ""}
               size="3"
@@ -113,7 +113,7 @@ const InputSearch = React.forwardRef<HTMLInputElement, InputProps>(
 
           <TextField.Input
             type={type}
-            className={cn(className, variant && "placeholder-[#373A36]")}
+            className={cn(className, variant && "placeholder-[#373A36] text-[16px]")}
             placeholder={placeholder}
             ref={ref}
             onChange={onChange}
