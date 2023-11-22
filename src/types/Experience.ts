@@ -1,5 +1,5 @@
 export interface Experience {
-  id: 5;
+  id: number;
   created_at: string;
   updated_at: string;
   company: string;

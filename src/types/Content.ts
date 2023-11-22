@@ -100,28 +100,50 @@ export interface ContentOpportunity {
   form_config: FormConfig;
 }
 export interface MentorEducation {
-  id: number | string;
-  degree: string;
+  id: number;
   school_name: string;
-  user_id: number | string;
+  degree: string;
+  start_date: Date;
+  end_date: Date;
+  is_present: boolean;
+  created_at: Date;
+  updated_at: Date;
+  user_id: 53;
 }
 export interface MentorExperience {
-  company: string;
   id: number | string;
-  is_present: boolean;
+  created_at: Date;
+  updated_at: Date;
+  company: string;
   position: string;
+  start_date: Date;
+  end_date: Date;
+  is_present: boolean;
   user_id: number | string;
 }
 
-export interface MentorIndustry {}
+export interface MentorIndustry {
+  id: number | string;
+  industry_id: number | string;
+  created_at: Date;
+  updated_at: Date;
+  content_id: number | string;
+  industry: {
+    id: number | string;
+    name: string;
+    created_at: Date;
+    updated_at: Date;
+    is_published: boolean;
+  };
+}
 export interface ContentMentor {
   bio: string;
   name: string;
   education: MentorEducation[];
   email: string;
-  expericence: MentorExperience[];
+  experiences: MentorExperience[];
   id: number | string;
-  industries: [];
+  industries: MentorIndustry[];
   profile_url: string;
   cover_url: string;
 }
