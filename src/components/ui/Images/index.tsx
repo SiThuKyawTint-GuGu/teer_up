@@ -11,6 +11,7 @@ import KeyIcon from "@mui/icons-material/Key";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import LogoutIcon from "@mui/icons-material/Logout";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
 import PostAddIcon from "@mui/icons-material/PostAdd";
@@ -53,9 +54,9 @@ import { MdDelete, MdMoreVert, MdOutlineDeleteSweep, MdOutlineMailOutline } from
 import {
   PiAirplaneTiltLight,
   PiArrowDownRightThin,
-  PiArrowUpRightThin,
   PiArrowsLeftRightDuotone,
   PiArrowsLeftRightThin,
+  PiArrowUpRightThin,
   PiBagSimpleThin,
   PiCameraLight,
   PiCameraPlusFill,
@@ -96,6 +97,7 @@ export const Icons = {
   teeupFooter: TeeupFooterIcon,
   innovates: FaLightbulb,
   users: FiUsers,
+  noti: NotificationsIcon,
   userscore: SupervisedUserCircleIcon,
   content: ArticleIcon,
   category: BallotIcon,
