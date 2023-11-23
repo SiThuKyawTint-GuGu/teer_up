@@ -40,9 +40,9 @@ const MentorDetail: React.FC<MentorDetailProp> = ({ data }) => {
   };
 
   return (
-    <div className="w-full h-[calc(100dvh-96px)] overflow-y-auto no-scroll-bar">
+    <div className="w-full h-[calc(100dvh-96px)] overflow-y-auto no-scrollbar">
       {data && (
-        <div className="w-full h-full overflow-y-auto">
+        <div className="w-full h-full overflow-y-auto no-scrollbar">
           <Box className="pb-[55px]">
             <Box className="pb-[7px]">
               <Section p="0">
