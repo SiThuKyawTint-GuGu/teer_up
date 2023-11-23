@@ -62,14 +62,15 @@ const NormalContentDetail: React.FC<NormalContentDetailProp> = ({ data, contentM
                       }}
                     />
                   )}
+                  <Flex gap="3">
 
-                  {data.content_keywords.length > 0 &&
-                    data.content_keywords.map((key: ContentKeywords, index: number) => (
-                      <Flex gap="3" key={index}>
-                        <Text className="text-primary font-[600] text-[16px]">#{key.keyword.keyword}</Text>
-                      </Flex>
-                    ))}
-
+                    {data.content_keywords.length > 0 &&
+                      data.content_keywords.map((key: ContentKeywords, index: number) => (
+                        <Text className="text-primary font-[600] text-[16px]" key={index}>
+                          #{key.keyword.keyword}
+                        </Text>
+                      ))}
+                  </Flex>
                   {data?.content_event && (
                     <div className="flex flex-wrap gap-x-2 items-center text-[16px] font-[700]">
                       <Icons.location className="w-[20px] h-[20px]" />

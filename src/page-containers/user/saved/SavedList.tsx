@@ -254,21 +254,6 @@ const SavedList: React.FC = () => {
                             </ul>
                           </Flex>
                         </div>
-
-                        {/* {isMenuVisible && content == each.content_id && (
-                          <div className="animate-in slide-in-from-right slide-out-to-right duration-300 dropdown-menu h-[100px] bg-red-600 flex items-center justify-center rounded ">
-                            <ul>
-                              <li
-                                onClick={(e: any) => {
-                                  unSaveContent(e);
-                                }}
-                                className="p-1 cursor-pointer text-white"
-                              >
-                                Unsave
-                              </li>
-                            </ul>
-                          </div>
-                        )} */}
                       </Flex>
                     </CardBox>
                     {/* </Link> */}
