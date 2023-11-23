@@ -19,12 +19,12 @@ export const navbarItems: NavbarType[] = [
     icon: <Icons.globeIcon width={24} height={24} fill="#373A36" />,
     activeIcon: <Icons.globeIcon width={24} height={24} activeFill="#DA291C" active />,
   },
-
-  // {
-  //   text: "Mentorship",
-  //   path: "/mentorship",
-  //   icon: <Icons.people width={24} height={24} />,
-  // },
+  {
+    text: "Mentorship",
+    path: "/mentorship",
+    icon: <Icons.mentorshipIcon width={24} height={24} />,
+    activeIcon: <Icons.mentorshipIcon width={24} height={24} activeFill="#DA291C" active />,
+  },
   {
     text: "Saved",
     path: "/saved",

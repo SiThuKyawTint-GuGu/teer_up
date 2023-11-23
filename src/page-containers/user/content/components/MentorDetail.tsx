@@ -6,12 +6,15 @@ import { Image } from "@/components/ui/Images";
 import { InputTextArea } from "@/components/ui/Inputs";
 import { Text } from "@/components/ui/Typo/Text";
 import { useRequestMentorship } from "@/services/content";
+import { REQUEST_TYPES } from "@/shared/enums";
 import { ContentData } from "@/types/Content";
 import { cn } from "@/utils/cn";
+import { CapitalizeWord } from "@/utils/helper";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { Box, Flex, Heading, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -26,21 +29,50 @@ type MentorDetailProp = {
 };
 const MentorDetail: React.FC<MentorDetailProp> = ({ data }) => {
   const [open, setOpen] = useState<boolean>(false);
-
+  const router = useRouter();
   const { trigger, isMutating } = useRequestMentorship();
   const form = useForm({
     resolver: yupResolver(validationSchema),
   });
 
   const submit = async (formData: { message: string }) => {
-    await trigger({
-      message: formData.message,
-      content_id: data?.id,
-    });
+    try {
+      await trigger({
+        message: formData.message,
+        content_id: data?.id,
+      });
+      setOpen(false);
+      router.push("/mentorship");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const SendRequestMentorship = () => {
+    if (data?.mentorship_status === REQUEST_TYPES.DENIED || !data?.mentorship_status) {
+      return (
+        <DialogTrigger>
+          <div className="fixed w-full max-w-[400px] shadow-inner bottom-0 z-[9] bg-white p-3 ">
+            <Button size="sm" className="w-full">
+              Send Request
+            </Button>
+          </div>
+        </DialogTrigger>
+      );
+    }
+
+    return (
+      <div className="fixed w-full max-w-[400px] shadow-inner bottom-0 z-[9] bg-white p-3 ">
+        <Button size="sm" className="w-full" onClick={() => router.push("/mentorship")}>
+          {CapitalizeWord(data?.mentorship_status)}
+        </Button>
+      </div>
+    );
   };
 
   return (
-    <div className="w-full h-[calc(100dvh-96px)] overflow-y-auto no-scrollbar">
+
+    <div className="w-full h-[calc(100dvh-96px)] ">
+
       {data && (
         <div className="w-full h-full overflow-y-auto no-scrollbar">
           <Box className="pb-[55px]">
@@ -227,13 +259,7 @@ const MentorDetail: React.FC<MentorDetailProp> = ({ data }) => {
         </div>
       )}
       <Dialog open={open} onOpenChange={val => setOpen(val)}>
-        <DialogTrigger>
-          <div className="fixed w-full max-w-[400px] shadow-inner bottom-0 z-[9] bg-white p-3 ">
-            <Button size="sm" className="w-full">
-              Send Request
-            </Button>
-          </div>
-        </DialogTrigger>
+        {SendRequestMentorship()}
 
         <DialogContent className="bg-white top-[initial] h-auto bottom-0 max-w-[400px] px-4 pt-8 pb-2 translate-y-0 rounded-10px-tl-tr">
           <Flex gap="3" direction="column" className="bg-white h-full">

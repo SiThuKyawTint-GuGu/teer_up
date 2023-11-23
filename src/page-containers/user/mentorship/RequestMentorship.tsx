@@ -2,6 +2,7 @@
 import NotFound from "@/components/shared/NotFound";
 import { Button } from "@/components/ui/Button";
 import CardBox from "@/components/ui/Card";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form";
 import { Icons, Image } from "@/components/ui/Images";
 import { InputTextArea } from "@/components/ui/Inputs";
 import { Text } from "@/components/ui/Typo/Text";
@@ -10,33 +11,52 @@ import { REQUEST_TYPES, USER_ROLE } from "@/shared/enums";
 import { MentorshipResponse } from "@/types/Mentorship";
 import { User } from "@/types/User";
 import { getUserInfo } from "@/utils/auth";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import React, { useCallback, useMemo } from "react";
-
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+const validationSchema = yup.object({
+  reply: yup.string(),
+  status: yup.string(),
+});
+type RequestFormData = { reply?: string; id: number };
 const RequestMentorship: React.FC = () => {
-  const { data: requestMentorship } = useGetMentorship<ParamsType, MentorshipResponse>();
+  const form = useForm({
+    resolver: yupResolver(validationSchema),
+  });
+  const { data: requestMentorship, mutate } = useGetMentorship<ParamsType, MentorshipResponse>();
   const { trigger: approvedTrigger } = useApproveMentorship();
   const role = useMemo(() => {
     const userInfo = getUserInfo() as User;
     return userInfo?.role;
   }, []);
-
   const getStatus = useCallback((status: string) => {
     switch (status) {
       case REQUEST_TYPES.ACCEPTED:
         return (
-          <Text className="px-4 py-1 border-2 border-[#AADF9F] bg-[#E4F5E1] text-black rounded-full">Accepted</Text>
+          <Text className="px-4 py-1 border-2 border-[#AADF9F] text-[14px] bg-[#E4F5E1] text-black rounded-full">
+            Accepted
+          </Text>
         );
       case REQUEST_TYPES.CONFIRMED:
         return (
-          <Text className="px-4 py-1 border-2 border-[#A793DD] bg-[#EFEAFC] text-black rounded-full">Confirmed</Text>
+          <Text className="px-[16px] py-[4px] border-2 border-[#A793DD] text-[14px] bg-[#EFEAFC] text-black rounded-full">
+            Confirmed
+          </Text>
         );
       case REQUEST_TYPES.PENDING:
         return (
-          <Text className="px-4 py-1 border-2 border-[#8ED4DE] bg-[#EDFAFD] text-black rounded-full">Pending</Text>
+          <Text className="px-4 py-1 border-2 border-[#8ED4DE] text-[14px] bg-[#EDFAFD] text-black rounded-full">
+            Pending
+          </Text>
         );
       case REQUEST_TYPES.DENIED:
-        return <Text className="px-4 py-1 border-2 border-[#EAA1A6] bg-[#F9E9EB] text-black rounded-full">Denied</Text>;
+        return (
+          <Text className="px-4 py-1 border-2 border-[#EAA1A6] text-[14px] bg-[#F9E9EB] text-black rounded-full">
+            Denied
+          </Text>
+        );
 
       default:
         return null;
@@ -44,13 +64,24 @@ const RequestMentorship: React.FC = () => {
   }, []);
 
   const handleApprovedRequest = useCallback(
-    async (status: REQUEST_TYPES) => {
+    async (status: REQUEST_TYPES, id: number, reply?: string) => {
       await approvedTrigger({
         status,
+        id,
+        reply,
       });
+      await mutate();
     },
     [approvedTrigger]
   );
+
+  const submit = async (formData: RequestFormData) => {
+    await approvedTrigger({
+      status: REQUEST_TYPES.ACCEPTED,
+      id: formData.id,
+      reply: formData.reply || "",
+    });
+  };
 
   return (
     <Grid>
@@ -86,8 +117,8 @@ const RequestMentorship: React.FC = () => {
                     {role === USER_ROLE.STUDENT && each?.status === REQUEST_TYPES.ACCEPTED && (
                       <Flex justify="start" align="center">
                         <Button
-                          onClick={() => handleApprovedRequest(REQUEST_TYPES.CONFIRMED)}
-                          className="bg-primary w-full"
+                          onClick={() => handleApprovedRequest(REQUEST_TYPES.CONFIRMED, each?.id)}
+                          className="bg-primary w-full  text-[14px] "
                         >
                           Confirm
                         </Button>
@@ -95,29 +126,62 @@ const RequestMentorship: React.FC = () => {
                     )}
                     {each?.status === REQUEST_TYPES.PENDING && role === USER_ROLE.MENTOR && (
                       <>
-                        <div className="pt-[20px] mt-[20px] border-t border-t-[#BDC7D5]">
-                          <Flex justify="start" align="center" direction="column" gap="2">
-                            <InputTextArea
-                              inputType={USER_ROLE.ADMIN}
-                              className="text-sm h-[130px]"
-                              placeholder="Enter message for student"
-                            />
+                        <Form {...form}>
+                          <form
+                            onSubmit={form.handleSubmit((formData: { reply?: string }) =>
+                              submit({
+                                reply: formData.reply,
+                                id: each?.id,
+                              })
+                            )}
+                          >
+                            <div className="py-[16px]  border-t border-t-[#BDC7D5]">
+                              <FormField
+                                control={form.control}
+                                name="reply"
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormControl>
+                                      <InputTextArea
+                                        inputType="text"
+                                        placeholder="Enter message for student"
+                                        {...field}
+                                        className="p-3 "
+                                      />
+                                    </FormControl>
+                                  </FormItem>
+                                )}
+                              />
+                              {/* <InputTextArea
+                                  inputType={USER_ROLE.ADMIN}
+                                  value={reply}
+                                  className="text-sm h-[130px]"
+                                  placeholder="Enter message for student"
+                                /> */}
+                            </div>
+                            <Flex justify="start" align="center" mb="2" gap="2">
+                              <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() =>
+                                  handleApprovedRequest(REQUEST_TYPES.DENIED, each?.id, form.getValues("reply"))
+                                }
+                                className="  w-full"
+                              >
+                                Denie
+                              </Button>
+                              <Button type="submit" className="bg-primary w-full">
+                                Accept & Send
+                              </Button>
+                            </Flex>
                             <Flex align="start" gap="1">
                               <Icons.inputError className="w-[20px] h-[20px]" />
                               <Text weight="light" size="2">
                                 Send message to accept the mentorship request.
                               </Text>
                             </Flex>
-                          </Flex>
-                        </div>
-                        <Flex justify="start" align="center">
-                          <Button
-                            onClick={() => handleApprovedRequest(REQUEST_TYPES.ACCEPTED)}
-                            className="bg-primary w-full"
-                          >
-                            Accept & Send
-                          </Button>
-                        </Flex>
+                          </form>
+                        </Form>
                       </>
                     )}
                   </div>
