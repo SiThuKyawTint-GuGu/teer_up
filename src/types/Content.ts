@@ -161,6 +161,7 @@ export interface ContentHomeData {
 export interface ContentData {
   content: {
     id: string;
+    mentorship_status: string;
     title: string;
     description: string;
     created_at: string;
@@ -195,6 +196,7 @@ export interface ContentData {
 export interface ContentData {
   id: string;
   title: string;
+  mentorship_status?: string;
   description: string;
   created_at: string;
   type: "video" | "article" | "event" | "opportunity" | "pathway" | "onboarding" | "mentor" | "html";
