@@ -58,7 +58,7 @@ const Login: React.FC = () => {
             <Heading className="text-[36px]" as="h4" weight="bold" mb="3">
               Log in
             </Heading>
-            <Text weight="light">An OTP code will be send to your email</Text>
+            <Text weight="light">An OTP code will be sent to your email</Text>
           </Flex>
           {error && <div className="text-primary">{error.response.data.message}</div>}
           <div className="space-y-[10px]">
