@@ -286,6 +286,11 @@ const UserTable: React.FC = () => {
       columnFilters,
       isLoading,
     },
+    muiPaginationProps: {
+      rowsPerPageOptions: [10, 25, 50, 75, 100, 500, 700, 1000],
+      showFirstButton: false,
+      showLastButton: false,
+    },
     onGlobalFilterChange: setGlobalFilter,
     onColumnFiltersChange: setColumnFilters,
     onPaginationChange: setPagination,
