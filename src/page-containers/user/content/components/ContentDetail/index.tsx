@@ -62,7 +62,8 @@ const NormalContentDetail: React.FC<NormalContentDetailProp> = ({ data, contentM
                       }}
                     />
                   )}
-                  <Flex gap="3" className="w-full flex-wrap">
+                  <Flex gap="3">
+
                     {data.content_keywords.length > 0 &&
                       data.content_keywords.map((key: ContentKeywords, index: number) => (
                         <Text className="text-primary font-[600] text-[16px]" key={index}>

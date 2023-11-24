@@ -118,7 +118,6 @@ const BrowsePage: React.FC = () => {
             }     `}
             {...(type === "all" && { ref: currentCategoryElement })}
           >
-            {" "}
             <p
               className="w-auto font-[600] text-[16px] text-center"
               // className={`w-auto   ${

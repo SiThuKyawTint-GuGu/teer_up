@@ -83,6 +83,7 @@ import {
   IconProps,
   LandingIcon,
   LoadingIcon,
+  MentorshipIcon,
   ProfileIcon,
   SavedIcon,
   TeeupFooterIcon,
@@ -186,6 +187,7 @@ export const Icons = {
   globeIcon: ({ ...props }: IconProps) => <GlobalIcon {...props} />,
   savedIcon: ({ ...props }: IconProps) => <SavedIcon {...props} />,
   profileIcon: ({ ...props }: IconProps) => <ProfileIcon {...props} />,
+  mentorshipIcon: ({ ...props }: IconProps) => <MentorshipIcon {...props} />,
 };
 
 interface Image {
