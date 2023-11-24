@@ -13,8 +13,8 @@ type ContentStartProp = {
 };
 const ContentStart: React.FC<ContentStartProp> = ({ setShow }) => {
   return (
-    <div className="w-full h-[80%] px-[16px] snap-start">
-      <Flex justify="center" direction="column" align="center" className="w-full h-[100%]">
+    <div className="w-full h-full px-[16px]">
+      <Flex direction="column" align="center" className="w-full h-full">
         <Heading className="text-[20px] text-center font-[700] leading-[30px]">Start your journey!</Heading>
         <Heading className="text-[20px] text-center font-[700] leading-[30px]">Tell us about yourself.</Heading>
 

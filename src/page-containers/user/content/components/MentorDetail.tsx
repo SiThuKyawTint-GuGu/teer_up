@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/Button";
-import { Dialog, DialogContent } from "@/components/ui/Dialog";
+import { Animate, Dialog, DialogContent } from "@/components/ui/Dialog";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form";
 import { Image } from "@/components/ui/Images";
 import { InputTextArea } from "@/components/ui/Inputs";
@@ -70,12 +70,10 @@ const MentorDetail: React.FC<MentorDetailProp> = ({ data }) => {
   };
 
   return (
-
     <div className="w-full h-[calc(100dvh-96px)] ">
-
       {data && (
         <div className="w-full h-full overflow-y-auto no-scrollbar">
-          <Box className="pb-[55px]">
+          <Box className="pb-[7]">
             <Box className="pb-[7px]">
               <Section p="0">
                 <div
@@ -115,7 +113,7 @@ const MentorDetail: React.FC<MentorDetailProp> = ({ data }) => {
                   )}
                 </div>
 
-                <Heading as="h4" size="5" mb="4">
+                <Heading as="h4" size="5" mb="4" mt="3">
                   {data?.mentor?.name}
                 </Heading>
                 <Text>{data?.mentor?.bio}</Text>
@@ -144,17 +142,18 @@ const MentorDetail: React.FC<MentorDetailProp> = ({ data }) => {
                 <Heading as="h6" size="4" align="left" mb="4">
                   Experties
                 </Heading>
-
-                {data?.mentor?.industries?.length > 0 &&
-                  data?.mentor?.industries?.map((each, index) => (
-                    <Text
-                      key={index}
-                      as="span"
-                      className="px-2 py-1 rounded-xl text-center text-[14px] bg-secondary border-[1px] border-primary"
-                    >
-                      {each?.industry?.name}
-                    </Text>
-                  ))}
+                <Flex gap="3" wrap="wrap">
+                  {data?.mentor?.industries?.length > 0 &&
+                    data?.mentor?.industries?.map((each, index) => (
+                      <Text
+                        key={index}
+                        as="span"
+                        className="px-2 py-1  rounded-xl text-center text-[14px] bg-secondary border-[1px] border-primary"
+                      >
+                        {each?.industry?.name}
+                      </Text>
+                    ))}
+                </Flex>
               </Section>
             </Box>
           </Box>
@@ -261,11 +260,16 @@ const MentorDetail: React.FC<MentorDetailProp> = ({ data }) => {
       <Dialog open={open} onOpenChange={val => setOpen(val)}>
         {SendRequestMentorship()}
 
-        <DialogContent className="bg-white top-[initial] h-auto bottom-0 max-w-[400px] px-4 pt-8 pb-2 translate-y-0 rounded-10px-tl-tr">
-          <Flex gap="3" direction="column" className="bg-white h-full">
-            <div className="bg-primary rounded-[6px] w-[60px] h-[2px] my-3 mx-auto"></div>
+        <DialogContent
+          animate={Animate.SLIDE}
+          className={cn(
+            " top-[initial] bottom-0 px-0 py-2 translate-y-0 border-0  bg-white shadow-none outline-none rounded-16px-tl-tr"
+          )}
+        >
+          <Flex direction="column" className="bg-white h-full">
+            <div className="bg-primary rounded-[6px] w-[60px] h-[2px] mt-[8px]  mx-auto" />
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(submit)}>
+              <form onSubmit={form.handleSubmit(submit)} className="p-4">
                 <FormField
                   control={form.control}
                   name="message"
@@ -276,13 +280,13 @@ const MentorDetail: React.FC<MentorDetailProp> = ({ data }) => {
                           type="text"
                           placeholder="Include you available time and describe why you want this mentorship"
                           {...field}
-                          className="p-3"
+                          className="p-3 h-[190px]"
                         />
                       </FormControl>
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full my-5" disabled={isMutating}>
+                <Button type="submit" className="w-full mt-[24px]" disabled={isMutating}>
                   Send
                 </Button>
               </form>
