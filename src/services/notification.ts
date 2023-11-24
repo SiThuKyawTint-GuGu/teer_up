@@ -1,4 +1,5 @@
 "use client";
+import { routeFilter } from "@/utils";
 import useSWR, { SWRResponse } from "swr";
 
 export type ParamsType = {
@@ -9,5 +10,5 @@ export type ParamsType = {
 export const useGetNotifications = <ParamsType, NotificationResponse>(
   params?: ParamsType
 ): SWRResponse<NotificationResponse, any> => {
-  return useSWR<NotificationResponse>(`/user/notifications`);
+  return useSWR<NotificationResponse>(`/user/notifications?${routeFilter(params)}`);
 };

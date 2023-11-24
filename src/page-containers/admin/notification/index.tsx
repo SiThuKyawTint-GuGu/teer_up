@@ -1,12 +1,8 @@
 "use client";
 import { ParamsType } from "@/services/mentorship";
 import { useGetNotifications } from "@/services/notification";
-import {
-  MaterialReactTable,
-  MRT_ColumnFiltersState,
-  MRT_PaginationState,
-  useMaterialReactTable,
-} from "material-react-table";
+import dayjs from "dayjs";
+import { MaterialReactTable, MRT_PaginationState, useMaterialReactTable } from "material-react-table";
 import { useMemo, useState } from "react";
 
 const NotificationTable: React.FC = () => {
@@ -14,14 +10,11 @@ const NotificationTable: React.FC = () => {
     pageIndex: 0,
     pageSize: 10,
   });
-  const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>([]);
+  // const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>([]);
   const params: ParamsType = {
     page: pagination.pageIndex + 1,
     pagesize: pagination.pageSize,
   };
-  if (columnFilters[0]) {
-    params.status = columnFilters.find(filter => filter.id === "status")?.value as string;
-  }
   const { data: notifications, isLoading } = useGetNotifications<ParamsType, any>(params);
 
   const columns = useMemo(
@@ -33,17 +26,40 @@ const NotificationTable: React.FC = () => {
         size: 2,
       },
       {
-        accessorKey: "message",
-        header: "Message",
+        accessorKey: "mentorship.student_reply",
+        header: "Student Reply",
         enableEditing: false,
       },
-      // {
-      //   accessorKey: "created_at",
-      //   header: "Created At",
-      //   enableEditing: false,
-      //   size: 3,
-      //   Cell: ({ row }: any) => dayjs(row.original.created_at).format("MMM D, YYYY h:mm A"),
-      // },
+      {
+        accessorKey: "mentorship.mentor_reply",
+        header: "Mentor Reply",
+        enableEditing: false,
+      },
+      {
+        accessorKey: "read_at",
+        header: "Read At",
+        enableEditing: false,
+        size: 3,
+        Cell: ({ row }: any) => {
+          const readAt = row.original.read_at;
+          if (readAt) return dayjs(readAt).format("MMM D, YYYY h:mm A");
+          return "-";
+        },
+      },
+      {
+        accessorKey: "created_at",
+        header: "Created At",
+        enableEditing: false,
+        size: 3,
+        Cell: ({ row }: any) => dayjs(row.original.created_at).format("MMM D, YYYY h:mm A"),
+      },
+      {
+        accessorKey: "updated_at",
+        header: "Updated At",
+        enableEditing: false,
+        size: 3,
+        Cell: ({ row }: any) => dayjs(row.original.updated_at).format("MMM D, YYYY h:mm A"),
+      },
     ],
     []
   );
@@ -66,9 +82,9 @@ const NotificationTable: React.FC = () => {
     },
     enableStickyFooter: true,
     enableStickyHeader: true,
-    manualFiltering: true,
-    manualPagination: true,
-    rowCount: notifications?.data?.length,
+    // manualFiltering: true,
+    // manualPagination: true,
+    rowCount: notifications?.total,
     initialState: {
       pagination: {
         pageSize: 10,
@@ -80,10 +96,11 @@ const NotificationTable: React.FC = () => {
       showSkeletons: isLoading ?? false,
       pagination,
       isLoading,
-      columnFilters,
+      // columnFilters,
+      // globalFilter,
     },
     // onGlobalFilterChange: setGlobalFilter,
-    onColumnFiltersChange: setColumnFilters,
+    // onColumnFiltersChange: setColumnFilters,
     onPaginationChange: setPagination,
   });
 
