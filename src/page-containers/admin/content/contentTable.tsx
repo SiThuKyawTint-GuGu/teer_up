@@ -143,7 +143,7 @@ const ContentTable: React.FC = () => {
     enableStickyHeader: true,
     enableStickyFooter: true,
     muiPaginationProps: {
-      rowsPerPageOptions: [10, 25, 50, 75, 100, 500],
+      rowsPerPageOptions: [10, 25, 50, 75, 100, 500, 700, 1000],
       showFirstButton: false,
       showLastButton: false,
     },
