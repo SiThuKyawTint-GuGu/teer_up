@@ -113,7 +113,7 @@ const MentorDetail: React.FC<MentorDetailProp> = ({ data }) => {
                   )}
                 </div>
 
-                <Heading as="h4" size="5" mb="4">
+                <Heading as="h4" size="5" mb="4" mt="3">
                   {data?.mentor?.name}
                 </Heading>
                 <Text>{data?.mentor?.bio}</Text>
