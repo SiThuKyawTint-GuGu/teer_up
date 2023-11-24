@@ -1,6 +1,7 @@
 "use client";
 import { ParamsType } from "@/services/mentorship";
 import { useGetNotifications } from "@/services/notification";
+import { useDrawerStore } from "@/store/authStore";
 import dayjs from "dayjs";
 import { MaterialReactTable, MRT_PaginationState, useMaterialReactTable } from "material-react-table";
 import { useMemo, useState } from "react";
@@ -16,6 +17,7 @@ const NotificationTable: React.FC = () => {
     pagesize: pagination.pageSize,
   };
   const { data: notifications, isLoading } = useGetNotifications<ParamsType, any>(params);
+  const { open: drawerOpen } = useDrawerStore();
 
   const columns = useMemo(
     () => [
@@ -23,7 +25,13 @@ const NotificationTable: React.FC = () => {
         accessorKey: "id",
         header: "ID",
         enableEditing: false,
-        size: 2,
+        size: 1,
+      },
+      {
+        accessorKey: "user_id",
+        header: "User ID",
+        enableEditing: false,
+        size: 1,
       },
       {
         accessorKey: "mentorship.student_reply",
@@ -78,6 +86,7 @@ const NotificationTable: React.FC = () => {
       sx: {
         maxHeight: "calc(100vh - 200px)",
         minHeight: "480px",
+        maxWidth: drawerOpen ? "calc(100vw - 245px)" : "calc(100vw - 65px)",
       },
     },
     enableStickyFooter: true,
