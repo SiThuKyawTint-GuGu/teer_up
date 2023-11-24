@@ -40,10 +40,10 @@ const MentorDetail: React.FC<MentorDetailProp> = ({ data }) => {
   };
 
   return (
-    <div className="w-full h-[calc(100dvh-96px)] overflow-y-auto no-scrollbar">
+    <div className="w-full h-[calc(100dvh-96px)]">
       {data && (
         <div className="w-full h-full overflow-y-auto no-scrollbar">
-          <Box className="pb-[55px]">
+          <Box className="pb-[7]">
             <Box className="pb-[7px]">
               <Section p="0">
                 <div
@@ -235,7 +235,7 @@ const MentorDetail: React.FC<MentorDetailProp> = ({ data }) => {
           </div>
         </DialogTrigger>
 
-        <DialogContent className="bg-white top-[initial] h-auto bottom-0 max-w-[400px] px-4 pt-8 pb-2 translate-y-0 rounded-10px-tl-tr">
+        <DialogContent className={cn("bg-white top-[initial] bottom-0 px-0 py-2 translate-y-0 rounded-16px-tl-tr")}>
           <Flex gap="3" direction="column" className="bg-white h-full">
             <div className="bg-primary rounded-[6px] w-[60px] h-[2px] my-3 mx-auto"></div>
             <Form {...form}>
