@@ -142,17 +142,18 @@ const MentorDetail: React.FC<MentorDetailProp> = ({ data }) => {
                 <Heading as="h6" size="4" align="left" mb="4">
                   Experties
                 </Heading>
-
-                {data?.mentor?.industries?.length > 0 &&
-                  data?.mentor?.industries?.map((each, index) => (
-                    <Text
-                      key={index}
-                      as="span"
-                      className="px-2 py-1 rounded-xl text-center text-[14px] bg-secondary border-[1px] border-primary"
-                    >
-                      {each?.industry?.name}
-                    </Text>
-                  ))}
+                <Flex gap="3" wrap="wrap">
+                  {data?.mentor?.industries?.length > 0 &&
+                    data?.mentor?.industries?.map((each, index) => (
+                      <Text
+                        key={index}
+                        as="span"
+                        className="px-2 py-1  rounded-xl text-center text-[14px] bg-secondary border-[1px] border-primary"
+                      >
+                        {each?.industry?.name}
+                      </Text>
+                    ))}
+                </Flex>
               </Section>
             </Box>
           </Box>
