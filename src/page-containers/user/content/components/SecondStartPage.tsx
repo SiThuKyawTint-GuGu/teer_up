@@ -7,7 +7,7 @@ import React from "react";
 type ContentStartProp = {};
 const SecondStartPage: React.FC<ContentStartProp> = () => {
   return (
-    <div className="w-full h-full px-[16px] snap-start">
+    <div className="w-full h-full px-[16px] py-4 snap-start">
       <Flex justify="center" direction="column" align="center" className="w-full h-[80%]">
         {/* <Heading className="text-[36px] font-[700] leading-[48px]">About TEE-UP</Heading> */}
 

@@ -54,7 +54,14 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate, comments,
     if (!reaction.is_like && token) {
       setReaction(prev => ({ ...prev, likes: prev.likes + 1, is_like: true }));
     }
-    await like({ id: data.id });
+    await like(
+      { id: data.id },
+      {
+        onSuccess: () => {
+          // contentMutate();
+        },
+      }
+    );
   };
 
   const saveContent = async () => {
@@ -64,9 +71,16 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate, comments,
     if (!reaction.is_save && token) {
       setReaction(prev => ({ ...prev, saves: prev.saves + 1, is_save: true }));
     }
-    await contentSave({
-      id: data.id,
-    });
+    await contentSave(
+      {
+        id: data.id,
+      },
+      {
+        onSuccess: () => {
+          // contentMutate();
+        },
+      }
+    );
   };
 
   return (
