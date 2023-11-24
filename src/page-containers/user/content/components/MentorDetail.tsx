@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/Button";
-import { Dialog, DialogContent } from "@/components/ui/Dialog";
+import { Animate, Dialog, DialogContent } from "@/components/ui/Dialog";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form";
 import { Image } from "@/components/ui/Images";
 import { InputTextArea } from "@/components/ui/Inputs";
@@ -235,11 +235,16 @@ const MentorDetail: React.FC<MentorDetailProp> = ({ data }) => {
           </div>
         </DialogTrigger>
 
-        <DialogContent className={cn("bg-white top-[initial] bottom-0 px-0 py-2 translate-y-0 rounded-16px-tl-tr")}>
-          <Flex gap="3" direction="column" className="bg-white h-full">
-            <div className="bg-primary rounded-[6px] w-[60px] h-[2px] my-3 mx-auto"></div>
+        <DialogContent
+          animate={Animate.SLIDE}
+          className={cn(
+            " top-[initial] bottom-0 px-0 py-2 translate-y-0 border-0  bg-white shadow-none outline-none rounded-16px-tl-tr"
+          )}
+        >
+          <Flex direction="column" className="bg-white h-full">
+            <div className="bg-primary rounded-[6px] w-[60px] h-[2px] mt-[8px]  mx-auto" />
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(submit)}>
+              <form onSubmit={form.handleSubmit(submit)} className="p-4">
                 <FormField
                   control={form.control}
                   name="message"
@@ -250,13 +255,13 @@ const MentorDetail: React.FC<MentorDetailProp> = ({ data }) => {
                           type="text"
                           placeholder="Include you available time and describe why you want this mentorship"
                           {...field}
-                          className="p-3"
+                          className="p-3 h-[190px]"
                         />
                       </FormControl>
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full my-5" disabled={isMutating}>
+                <Button type="submit" className="w-full mt-[24px]" disabled={isMutating}>
                   Send
                 </Button>
               </form>
