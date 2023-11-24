@@ -81,14 +81,15 @@ const RequestMentorship: React.FC = () => {
       id: formData.id,
       reply: formData.reply || "",
     });
+    await mutate();
   };
 
   return (
     <Grid>
       <Box>
-        <Section p="0" mx="3" my="6">
+        <Section p="0" mx="3" my="6" className="overflow-y-scroll no-scrollbar h-full">
           {requestMentorship?.data?.length ? (
-            requestMentorship?.data?.map((each, key) => (
+            requestMentorship?.data.map((each, key) => (
               <CardBox key={key} p="4" className="space-y-[16px] bg-white" mb="4">
                 <Heading as="h4" size="4">
                   Mentorship session with{" "}
