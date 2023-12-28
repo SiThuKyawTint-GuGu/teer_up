@@ -5,6 +5,11 @@ export type User = {
   lastName?: string;
   email?: string;
   state?: string;
+  user_scores: any;
+  last_login: string;
+  referred_by_user: any;
+  created_at: string;
+  updated_at: string;
 };
 
 //50 us states array
