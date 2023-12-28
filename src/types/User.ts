@@ -1,6 +1,7 @@
 import { SkipStatusResponse } from "./Content";
 
 export interface User {
+  referred_by_user: any;
   id: number;
   created_at: string;
   updated_at: string;
@@ -13,6 +14,8 @@ export interface User {
   cover_url: string;
   country_id: number;
   verified: boolean;
+  user_scores: any[];
+  last_login: string;
 }
 
 export type UserResponse = {

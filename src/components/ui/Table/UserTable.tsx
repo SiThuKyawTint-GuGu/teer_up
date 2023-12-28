@@ -14,12 +14,11 @@ import {
   MaterialReactTable,
   MRT_ColumnFiltersState,
   MRT_PaginationState,
-  MRT_Row,
   useMaterialReactTable,
   type MRT_TableOptions,
 } from "material-react-table";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { type User } from "./makeData";
 
 const csvConfig = mkConfig({
@@ -37,6 +36,7 @@ const UserTable: React.FC = () => {
     pageIndex: 0,
     pageSize: 10,
   });
+  const [total, setTotal] = useState<number>(0);
   const [open, setOpen] = useState<boolean>(false);
   const [id, setId] = useState<string>("");
   const {
@@ -56,9 +56,35 @@ const UserTable: React.FC = () => {
   const { trigger: updateTrigger, error: updateError } = useUpdateUser();
   const { trigger: deleteTrigger } = useDeleteUser();
   const { open: drawerOpen } = useDrawerStore();
+  const [shortNames, setShortName] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (userData?.data) {
+      const uniqueShortNames = Array.from(
+        new Set(userData.data.flatMap(user => user.user_scores.map(score => score.dimension.short_name)))
+      );
+      setShortName(uniqueShortNames);
+    }
+    setTotal(userData?.total || 0);
+
+    if (pagination.pageSize === userData?.total) {
+      handleExportRows();
+    }
+  }, [userData?.data, pagination.pageSize]);
 
   const columns = useMemo<any>(
     () => [
+      ...shortNames.map((shortName: string) => ({
+        accessor: shortName,
+        Header: shortName,
+        enableEditing: false,
+        id: shortName,
+        size: 1,
+        Cell: ({ row }: any) => {
+          const score = row.original.user_scores.find((s: any) => s.dimension.short_name === shortName);
+          return score ? score.skill : "-";
+        },
+      })),
       {
         accessorKey: "id",
         header: "ID",
@@ -147,6 +173,7 @@ const UserTable: React.FC = () => {
           return "-";
         },
       },
+
       {
         accessorKey: "created_at",
         header: "Created At",
@@ -164,7 +191,6 @@ const UserTable: React.FC = () => {
         accessorKey: "updated_at",
         header: "Updated At",
         enableEditing: false,
-        size: 1,
         Cell: ({ row }: any) => {
           const updatedAt = row.original.updated_at;
           if (updatedAt && dayjs(updatedAt).isValid()) {
@@ -174,7 +200,7 @@ const UserTable: React.FC = () => {
         },
       },
     ],
-    [validationErrors]
+    [shortNames, validationErrors]
   );
 
   //CREATE action
@@ -235,18 +261,42 @@ const UserTable: React.FC = () => {
     );
   };
 
-  const handleExportRows = (rows: MRT_Row<User>[]) => {
-    const rowData = rows.map(row => row.original);
-    const csv = generateCsv(csvConfig)(rowData);
-    download(csvConfig)(csv);
+  const handleExportRows = () => {
+    if (userData?.data) {
+      const csvData = userData.data.map(user => {
+        const userScoresData = user.user_scores.reduce((acc: any, score: any) => {
+          acc[score.dimension.short_name] = score.skill;
+          return acc;
+        }, {});
+
+        return {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          referred_by: user.referred_by_user?.name,
+          last_login: user.last_login,
+          created_at: user.created_at,
+          updated_at: user.updated_at,
+          ...userScoresData,
+        };
+      });
+      const csv = generateCsv(csvConfig)(csvData);
+      download(csvConfig)(csv);
+    }
+    setPagination(prevPagination => ({
+      ...prevPagination,
+      pageSize: 10,
+    }));
   };
 
   // console.log("globalFilter => ", globalFilter);
 
   const table = useMaterialReactTable({
-    columns,
+    columns: columns,
     data: (userData?.data as any) || [],
     enableColumnPinning: true,
+    // positionActionsColumn: "last",
     createDisplayMode: "row",
     editDisplayMode: "row",
     enableEditing: true,
@@ -270,7 +320,6 @@ const UserTable: React.FC = () => {
     onCreatingRowCancel: () => setValidationErrors({}),
     onCreatingRowSave: handleCreateUser,
     onEditingRowCancel: () => setValidationErrors({}),
-    positionActionsColumn: "last",
     manualFiltering: true,
     manualPagination: true,
     rowCount: userData?.total,
@@ -334,10 +383,15 @@ const UserTable: React.FC = () => {
           sx={{ marginLeft: "5px", textTransform: "none" }}
           variant="contained"
           disabled={table.getRowModel().rows.length === 0}
-          onClick={() => handleExportRows(table.getRowModel().rows)}
+          onClick={() => {
+            setPagination(prevPagination => ({
+              ...prevPagination,
+              pageSize: total,
+            }));
+          }}
           startIcon={<FileDownloadIcon />}
         >
-          Export User Data
+          Export All User Data
         </Button>
       </div>
     ),
