@@ -12,15 +12,15 @@ export default function GoogleLogin() {
 
   const loginWithGoogle = useGoogleLogin({
     onSuccess: codeResponse => {
-      console.log(codeResponse);
       trigger(
         { accessToken: codeResponse.access_token },
         {
           onSuccess: res => {
             setUserInfo(res.data.token, res.data.data);
-            {
-              startTransition(() => router.push("/"));
-            }
+            startTransition(() => {
+              router.push("/");
+              router.refresh();
+            });
           },
         }
       );
@@ -32,9 +32,9 @@ export default function GoogleLogin() {
       onClick={() => {
         loginWithGoogle();
       }}
-      className="w-full justify-center flex mx-auto py-1 items-center gap-2 font-bold"
+      className="w-full border-[1px] border-black rounded-[30px] justify-center flex mx-auto py-1 items-center gap-2 font-bold"
     >
-      <FcGoogle size={32} /> {isMutating || isPending ? "Loading..." : "Login with Google"}
+      <FcGoogle size={28} /> {isMutating || isPending ? "Loading..." : "Login with Google"}
     </button>
   );
 }
