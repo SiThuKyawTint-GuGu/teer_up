@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
+import GoogleLogin from "./GoogleLogin";
 
 const validationSchema = yup.object({
   email: yup.string().email().required("Please enter email address").default(""),
@@ -116,6 +117,11 @@ const Login: React.FC = () => {
                   Send OTP code
                 </Button>
               </form>
+              <Text align="center" className="my-1">
+                Or
+              </Text>
+
+              <GoogleLogin />
             </Form>
             <Flex justify="center" wrap="wrap" width="100%" gap="2">
               <Text weight="light">Don’t have an account? </Text>
