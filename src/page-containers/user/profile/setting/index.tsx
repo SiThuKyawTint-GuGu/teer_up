@@ -23,7 +23,7 @@ const Setting: React.FC = () => {
       { revalidate: false } // do not revalidate
     );
     startTransition(() => {
-      router.push("/home");
+      router.push("/");
     });
   };
 

@@ -4,7 +4,7 @@ import VerifyEmailModal from "@/components/auth/VerifyEmailModal";
 import VerifyPop from "@/components/auth/VerifyPop";
 import appAxios from "@/lib/appAxios";
 import { useVerifyEmailModal, useVerifyModal } from "@/store/authStore";
-import { getToken } from "@/utils/auth";
+import { getToken, logout } from "@/utils/auth";
 import { Grid } from "@radix-ui/themes";
 import Head from "next/head";
 import { ReactNode, useEffect } from "react";
@@ -40,6 +40,7 @@ const Layout = ({ children }: Props) => {
       function (error) {
         if (error?.response) {
           if (error.response.status == 401) {
+            logout();
             verifyModalOpenHandler();
           }
           if (error.response.status == 403) {
