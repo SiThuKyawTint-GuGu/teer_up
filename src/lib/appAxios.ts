@@ -15,7 +15,9 @@ appAxios.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     if (config.headers) {
       const token = getToken();
-      config.headers.Authorization = token ? `Bearer ${token}` : "";
+      if (!config.headers.getAuthorization()) {
+        config.headers.Authorization = token ? `Bearer ${token}` : "";
+      }
     }
     return config;
   },

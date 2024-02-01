@@ -97,6 +97,22 @@ export const useUserLogin = () => {
     return appAxios.post<AuthResponse>(url, arg);
   });
 };
+interface OAuthLoginArgType {
+  arg: {
+    accessToken: string;
+  };
+}
+export const useOAuthLogin = () => {
+  return useSWRMutation(`/user/oauth`, (url, { arg }: OAuthLoginArgType) => {
+    return appAxios.post<AuthResponse>(
+      url,
+      {},
+      {
+        headers: { Authorization: arg.accessToken },
+      }
+    );
+  });
+};
 
 interface OtpArgType {
   arg: {
