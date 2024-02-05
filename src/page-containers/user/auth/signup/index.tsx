@@ -20,6 +20,7 @@ import { Box, Flex, Grid, Heading } from "@radix-ui/themes";
 import Link from "next/link";
 import { useRef, useState, useTransition } from "react";
 import { useUserRegister } from "../../../../services/user";
+import GoogleLogin from "../login/GoogleLogin";
 interface SignUpFormType {
   email: string;
   name: string;
@@ -70,7 +71,7 @@ const SignUp = () => {
             </Button>
           </Flex>
         </Box>
-        <Box className="h-screen" px="4" mt="1">
+        <Box className="h-[calc(100vh-42px)]  overflow-y-scroll no-scrollbar" mb="5" pb="5" px="4" mt="1">
           <Flex direction="column" position="relative">
             <Flex justify="center" align="center" mb="6">
               <Image src="/uploads/icons/auth/login.svg" width={180} height={180} alt="login" />
@@ -185,6 +186,10 @@ const SignUp = () => {
                   </Button>
                 </form>
               </Form>
+              <Text align="center" className="my-1">
+                Or
+              </Text>
+              <GoogleLogin />
               <Flex justify="center" wrap="wrap" width="100%" gap="2">
                 <Text weight="light">Already have an account?</Text>
                 <Link href="/auth/login">
