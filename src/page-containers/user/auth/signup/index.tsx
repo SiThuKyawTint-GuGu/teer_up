@@ -189,7 +189,7 @@ const SignUp = () => {
               <Text align="center" className="my-1">
                 Or
               </Text>
-              <GoogleLogin />
+              <GoogleLogin forLogin={false} />
               <Flex justify="center" wrap="wrap" width="100%" gap="2">
                 <Text weight="light">Already have an account?</Text>
                 <Link href="/auth/login">
