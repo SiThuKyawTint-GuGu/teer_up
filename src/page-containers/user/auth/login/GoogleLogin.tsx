@@ -1,11 +1,14 @@
 import { useOAuthLogin } from "@/services/user";
+import { setLocalStorage } from "@/utils";
 import { setUserInfo } from "@/utils/auth";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { FcGoogle } from "react-icons/fc";
-
-export default function GoogleLogin() {
+type Props = {
+  forLogin?: boolean;
+};
+export default function GoogleLogin({ forLogin = true }: Props) {
   const { isMutating, trigger } = useOAuthLogin();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -18,7 +21,12 @@ export default function GoogleLogin() {
           onSuccess: res => {
             setUserInfo(res.data.token, res.data.data);
             startTransition(() => {
-              router.push("/");
+              if (forLogin) {
+                router.push("/");
+              } else {
+                setLocalStorage("content", 0);
+                router.push("/industry");
+              }
               router.refresh();
             });
           },
