@@ -1,7 +1,6 @@
 "use client";
 import ProgressBar from "@/components/ui/Progress";
-import { usePostBanner, useUpdateBanner } from "@/services/banner";
-import { usePostFile } from "@/services/content";
+import { usePostBanner, useUpdateBanner, usePostFile } from "@/services/banner";
 import { yupResolver } from "@hookform/resolvers/yup";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SaveIcon from "@mui/icons-material/Save";
