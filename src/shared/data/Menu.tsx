@@ -35,6 +35,12 @@ export const menuList: Menu[] = [
     ],
   },
   {
+    key: "/admin/banners",
+    icon: <Icons.setting1 className="w-[20px] h-[20px]" />,
+    title: "Banners",
+    child: [],
+  },
+  {
     key: "/admin/form",
     icon: <Icons.form className="w-[20px] h-[20px]" />,
     title: "Form Config",
