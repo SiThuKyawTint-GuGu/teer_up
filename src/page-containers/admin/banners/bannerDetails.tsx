@@ -1,11 +1,12 @@
 "use client";
 import ProgressBar from "@/components/ui/Progress";
+import { usePostBanner, useUpdateBanner } from "@/services/banner";
 import { usePostFile } from "@/services/content";
 import { yupResolver } from "@hookform/resolvers/yup";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SaveIcon from "@mui/icons-material/Save";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { IconButton, Button as MuiButton, TextField } from "@mui/material";
+import { Alert, IconButton, Button as MuiButton, TextField } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -25,11 +26,11 @@ const validationSchema = yup.object({
 
 const BannerDetail = ({ id }: Props) => {
   const router = useRouter();
-  //   const { trigger: createTrigger, isMutating: postMutating, error: createError } = useCreateBanner();
-  //   const { trigger: updateTrigger, isMutating: updateMutating, error: updateError } = useUpdateBanner();
-  //   const { trigger: updateJoinDepartment } = useUpdateJoinDepartment();
+  const { trigger: createTrigger, isMutating: bannerMutating, error: createError } = usePostBanner();
+  const { trigger: updateTrigger, isMutating: updateMutating, error: updateError } = useUpdateBanner();
+
   const [imgProgress, setImgProgress] = useState<number>();
-  const [shouldUpdate, setShouldUpdate] = useState<boolean>(false);
+  const [shouldUpdate, setShouldUpdate] = useState<boolean>(true);
   const [imgUrl, setImgUrl] = useState<string>("");
   const [imgRes, setImgRes] = useState<any>();
   const [name, setName] = useState<string>("");
@@ -52,6 +53,7 @@ const BannerDetail = ({ id }: Props) => {
       setImgProgress(percentage);
     };
     const res = await fileTrigger({ file, handleProgress });
+    console.log(res);
     setImgRes(res);
     if (file) {
       const fileURL = URL.createObjectURL(file);
@@ -65,29 +67,30 @@ const BannerDetail = ({ id }: Props) => {
   };
 
   const Submit = async (data: any) => {
-    // const options = selectedDepartment.map(dep => dep.id);
-    // if (options.length <= 0) {
-    //   setError("Department is required!");
-    //   return;
-    // }
-    // const joinData = {
-    //   departments: options,
-    //   Banner_id: Banner?.data.id,
-    // };
-    // const status = selectedStatus === "published" ? true : false;
-    // if (Banner?.data) {
-    //   await updateJoinDepartment(joinData);
-    //   await updateTrigger({ id, name: data?.name, departments: options, is_published: status });
-    // } else {
-    //   await createTrigger({ name: data?.name, departments: options, is_published: status });
-    // }
-    // router.push("/admin/configs/Banner");
+    if (id !== "0") {
+      const updateData = {
+        id: id,
+        name: data?.name,
+        link: data?.link,
+        image: imgRes ? imgRes?.data?.data?.file_path : imgUrl,
+      };
+      await updateTrigger(updateData);
+    } else {
+      const postData = {
+        name: data?.name,
+        link: data?.link,
+        image: imgRes ? imgRes?.data?.data?.file_path : imgUrl,
+      };
+
+      await createTrigger(postData);
+    }
+    router.push("/admin/banners");
   };
 
   return (
     <>
       <form onSubmit={handleSubmit(Submit)} className="h-full p-5">
-        {/* {createError && (
+        {createError && (
           <Alert sx={{ marginBottom: "20px", width: "60%", marginLeft: "12px" }} severity="error">
             {createError.response.data.error}
           </Alert>
@@ -96,7 +99,7 @@ const BannerDetail = ({ id }: Props) => {
           <Alert sx={{ marginBottom: "20px", width: "60%", marginLeft: "12px" }} severity="error">
             {updateError.response.data.error}
           </Alert>
-        )} */}
+        )}
         <div className="mb-10">
           {name ? (
             <TextField

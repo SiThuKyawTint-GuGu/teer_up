@@ -7,9 +7,10 @@ import useSWRMutation from "swr/mutation";
 
 export interface BannerArgType {
   arg: {
-    link: string;
-    name: string;
-    image: string;
+    id?: string;
+    link?: string;
+    name?: string;
+    image?: string;
   };
 }
 
@@ -30,9 +31,9 @@ export const useGetBanner = <ParamsType, ContentType>(params?: ParamsType): SWRR
   return useSWR<ContentType>(`/admin/banners?${routeFilter(params)}`);
 };
 
-export const useUpdateBanner = (id: string) =>
+export const useUpdateBanner = () =>
   useSWRMutation(`/admin/banners`, (url, { arg }: BannerArgType) => {
-    return appAxios.put<BannerArgType>(`${url}/${id}`, arg);
+    return appAxios.put<BannerArgType>(`${url}/${arg.id}`, arg);
   });
 
 export const usePostBanner = () =>
