@@ -22,6 +22,7 @@ const csvConfig = mkConfig({
 export default function Banner() {
   const { trigger: deleteTrigger, isMutating: deletingBanner } = useDeleteBanner();
   const [open, setOpen] = useState<boolean>(false);
+  const [imageOpen, setImageOpen] = useState<boolean>(false);
   const [id, setId] = useState<string>("");
   const isLoading = false;
   const [globalFilter, setGlobalFilter] = useState<string>("");
@@ -34,7 +35,7 @@ export default function Banner() {
     {
       id: 1,
       name: "Banner 1",
-      imageUrl: "https://via.placeholder.com/150",
+      imageUrl: "https://via.placeholder.com/1275x956.25",
       link: "https://google.com",
       created_at: "2024-09-01T00:00:00Z",
       updated_at: "2024-09-01T00:00:00Z",
@@ -42,7 +43,7 @@ export default function Banner() {
     {
       id: 2,
       name: "Banner 2",
-      imageUrl: "https://via.placeholder.com/150",
+      imageUrl: "https://via.placeholder.com/1275x956.25",
       link: "https://google.com",
       created_at: "2024-09-01T00:00:00Z",
       updated_at: "2024-09-01T00:00:00Z",
@@ -66,8 +67,18 @@ export default function Banner() {
         accessorKey: "imageUrl",
         header: "Image",
         enableEditing: false,
+
         Cell: ({ row }: any) => (
-          <Image src={row.original.imageUrl} alt={row.original.name} width={75} height={75} className="object-cover" />
+          <Image
+            onClick={() => {
+              setImageOpen(true);
+            }}
+            src={row.original.imageUrl}
+            alt={row.original.name}
+            width={75}
+            height={75}
+            className="object-cover"
+          />
         ),
       },
       {
@@ -227,6 +238,11 @@ export default function Banner() {
               </LoadingButton>
             </div>
           </div>
+        </Box>
+      </Modal>
+      <Modal open={imageOpen} onClose={() => setImageOpen(false)}>
+        <Box sx={style}>
+          <Image src="https://via.placeholder.com/1275x956.25" alt="Banner" width={400} height={400} />
         </Box>
       </Modal>
     </>
