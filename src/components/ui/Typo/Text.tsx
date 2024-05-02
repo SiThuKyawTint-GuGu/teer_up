@@ -1,10 +1,11 @@
+/* eslint-disable no-unused-vars */
 "use client";
 import * as React from "react";
 
 import { cn } from "@/utils/cn";
 import { Text as RText, textPropDefs } from "@radix-ui/themes";
 
-type SizePropValues = (typeof textPropDefs)["size"]["values"][number];
+type SizePropValues = (typeof textPropDefs)["size"]["values"][number] | "sm" | "md" | "lg" | "xl"; 
 type WeightPropsValues = (typeof textPropDefs)["weight"]["values"][number];
 type ColorPropsValues = (typeof textPropDefs)["color"]["values"][number];
 type AlignProps = (typeof textPropDefs)["align"]["values"][number];
@@ -25,11 +26,11 @@ interface Props {
 }
 
 export const Text = React.forwardRef<HTMLDivElement, Props>(
-  ({ children, as, className, dangerouslySetInnerHTML, ...rest }: Props, ref) => (
+  ({ children, as, className, size, dangerouslySetInnerHTML, ...rest }: Props, ref) => (
     <RText
       ref={ref}
       as={as || "p"}
-      className={cn("text-black", className)}
+      className={cn("text-black", className, size && `text-${size}`)}
       dangerouslySetInnerHTML={dangerouslySetInnerHTML}
       {...(rest as any)}
     >

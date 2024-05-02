@@ -86,51 +86,6 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate, comments,
   return (
     <>
       <Dialog onOpenChange={val => !val && setIsCopied(false)}>
-        <div className="w-full py-2">
-          <div className="flex justify-between items-center">
-            <button className="flex items-center flex-wrap gap-x-[10px]" onClick={likePost}>
-              {reaction.is_like ? (
-                <Icons.likeFill className="w-[20px] h-[20px] text-primary" />
-              ) : (
-                <Icons.like className="w-[20px] h-[20px]" />
-              )}
-              <div className={reaction.is_like ? "text-primary" : ""}>{reaction.likes}</div>
-            </button>
-
-            {/**
-             * comment button trigger
-             */}
-            <DialogTrigger onClick={() => setTriggerType(dialogTrigger.COMMENT)}>
-              <div className="flex items-center flex-wrap gap-x-[10px]">
-                <Icons.comment className="w-[20px] h-[20px]" />
-                <div>{comments}</div>
-              </div>
-            </DialogTrigger>
-
-            <button className="flex items-center flex-wrap gap-x-[10px]" onClick={saveContent}>
-              {reaction.is_save ? (
-                <Icons.savedFill className="w-[20px] h-[20px] text-primary" />
-              ) : (
-                <Icons.saved className="w-[20px] h-[20px]" />
-              )}
-
-              <div className={reaction.is_save ? "text-primary" : ""}>
-                {""}
-                {reaction.saves}
-              </div>
-            </button>
-
-            {/**
-             * share button trigger
-             */}
-            <DialogTrigger onClick={() => setTriggerType(dialogTrigger.SHARE)}>
-              <div className="flex items-center flex-wrap gap-x-1 cursor-pointer" onClick={() => setOpenShare(true)}>
-                <Icons.share className="w-[20px] h-[20px]" />
-                <div>Share</div>
-              </div>
-            </DialogTrigger>
-          </div>
-        </div>
         <DialogContent
           animate={Animate.SLIDE}
           className={cn("bg-white top-[initial] bottom-0 px-0 py-2 translate-y-0 rounded-16px-tl-tr")}
@@ -141,6 +96,57 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate, comments,
             <Share url={`/content/${data.slug}`} onClickCopied={setIsCopied} />
           )}
         </DialogContent>
+
+        <div className="w-full py-2">
+          <div className="flex justify-between space-x-16 ms-1  items-center">
+            <DialogTrigger onClick={() => setTriggerType(dialogTrigger.COMMENT)}>
+              <div className="flex items-center flex-wrap gap-x-[10px] rounded-[15px]  bg-[#17161621] h-[35px] w-[55px] justify-center">
+                <Icons.comment className="w-[20px] h-[20px]  text-white font-[600]" />
+                <div className=" text-white font-[600]">{comments}</div>
+              </div>
+            </DialogTrigger>
+
+            <button
+              className="flex items-center flex-wrap gap-x-[10px] bg-[#17161621] h-[35px] w-[35px] justify-center rounded-[50%]"
+              onClick={likePost}
+            >
+              {reaction.is_like ? (
+                <Icons.likeFill className="w-[20px] h-[20px] text-primary " />
+              ) : (
+                <Icons.like className="w-[20px] h-[20px]  text-white font-[600]" />
+              )}
+              {/* <div className={reaction.is_like ? "text-primary" : ""}>{reaction.likes}</div> */}
+            </button>
+
+            {/**
+             * comment button trigger
+             */}
+
+            {/* <button className="flex items-center flex-wrap gap-x-[10px]" onClick={saveContent}>
+              {reaction.is_save ? (
+                <Icons.savedFill className="w-[20px] h-[20px] text-primary" />
+              ) : (
+                <Icons.saved className="w-[20px] h-[20px]" />
+              )}
+
+              <div className={reaction.is_save ? "text-primary" : ""}>
+                {""}
+                {reaction.saves}
+              </div>
+            </button> */}
+
+            {/**
+             * share button trigger
+             */}
+            {/* <DialogTrigger onClick={() => setTriggerType(dialogTrigger.SHARE)}>
+              <div className="flex items-center flex-wrap gap-x-1 cursor-pointer" onClick={() => setOpenShare(true)}>
+                <Icons.share className="w-[20px] h-[20px]" />
+                <div>Share</div>
+              </div>
+            </DialogTrigger> */}
+          </div>
+        </div>
+
         {isCopied && (
           <DialogClose asChild>
             <DialogContent animate={Animate.SLIDE} className="border-0 shadow-none outline-none">

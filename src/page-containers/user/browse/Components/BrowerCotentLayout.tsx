@@ -8,6 +8,7 @@ import { setLocalStorage } from "@/utils";
 import Link from "next/link";
 
 import React, { useEffect, useState } from "react";
+import CardButton from "./CardButton";
 
 type ContentlayoutProps = {
   data: ContentData;
@@ -26,9 +27,9 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, conte
   }, [data.comments]);
 
   return (
-    <div className="w-full h-full p-2">
+    <div className=" h-full p-2">
       <CardBox className="h-full">
-        <div className="w-full h-full bg-white flex flex-col justify-between">
+        <div className="w-full h-full bg-white flex flex-col justify-between relative">
           <div
             className="flex flex-col"
             style={{
@@ -82,17 +83,24 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, conte
                 contentListId && storeContentList(contentListId);
               }}
             >
-              <div className="w-full px-[12px] bg-white cursor-pointer">
-                <h1 className="font-[700] text-[24px]">{data.title}</h1>
+              <div className="w-full px-[12px] p-3 bg-white cursor-pointer">
+                <h1 className="font-[600] text-[21px]">
+                  {data.title.slice(0, 26)}{" "}
+                  {data.title.length > 26 && (
+                    <Text as="span" className="">
+                      {"..."}
+                    </Text>
+                  )}
+                </h1>
                 {data.description && (
-                  <div className="w-full h-full">
+                  <div className="w-full h-full mt-2">
                     <div className="flex flex-col w-full">
-                      <Text>
-                        {data.description.slice(0, 100)}
+                      <Text size="md">
+                        {data.description.slice(0, 43)}
 
-                        {data.description.length > 100 && (
-                          <Text as="span" className="text-primary">
-                            {"..."}See more
+                        {data.description.length > 43 && (
+                          <Text as="span" className="">
+                            {"..."}
                           </Text>
                         )}
                       </Text>
@@ -103,10 +111,15 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, conte
             </Link>
           </div>
           <div className="w-full  px-[12px]">
-            <div className="w-full pt-3">
+            {/* <div className="w-full pt-3">
               <hr className="w-full h-[1px] bg-slateGray" />
+            </div> */}
+            <div className=" absolute top-0">
+              <ReactionBar data={data} contentMutate={contentMutate} comments={comments} setComments={setComments} />
             </div>
-            <ReactionBar data={data} contentMutate={contentMutate} comments={comments} setComments={setComments} />
+            <div className="mb-3">
+              <CardButton/>
+            </div>
           </div>
         </div>
       </CardBox>

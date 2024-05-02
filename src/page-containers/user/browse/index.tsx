@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import Loading from "@/app/loading";
 import MainPageLayout from "@/components/userLayout/MainPageLayout";
@@ -12,6 +13,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import BrowserCategoryContentLayout from "./Components/BroswerCategoryContentLayout";
 import BrowserContentLayout from "./Components/BrowerCotentLayout";
+import HeaderCarousel from "./Components/HeaderCarousel";
 
 const BrowsePage: React.FC = () => {
   const router = useRouter();
@@ -51,6 +53,7 @@ const BrowsePage: React.FC = () => {
   }, [params.get("category")]);
 
   useEffect(() => {
+    console.log(type);
     const storeContentList = getLocalStorage("contentListPosition");
     const targetElement = document.getElementById(`${storeContentList}`);
     const storeHomeContent = getLocalStorage("home-content-id");
@@ -105,6 +108,7 @@ const BrowsePage: React.FC = () => {
   return (
     <MainPageLayout hideFooter={search ? true : false}>
       <div className="relative w-full h-full pb-[52px]  bg-[#F8F9FB]">
+        <HeaderCarousel />
         <Flex
           className="p-3 w-full sticky top-0 overflow-auto gap-[15px] no-scrollbar bg-white scroll-smooth"
           ref={parentContainer}
@@ -113,19 +117,12 @@ const BrowsePage: React.FC = () => {
             onClick={() => {
               handleCategoryChange("all");
             }}
-            className={`cursor-pointer border-primary  px-10 flex-0 flex-shrink-0  py-1 rounded-lg border ${
-              type == "all" ? "bg-[#FCE8EA] " : "border-[#E4E4E4] hover:border-primary"
+            className={`cursor-pointer border-[#BDC7D5]  px-3 flex-0 flex-shrink-0  py-1 rounded-[160px] border ${
+              type == "all" ? "bg-[#FCE8EA] border-[#DD524C] " : "border-[#E4E4E4] hover:border-primary"
             }     `}
             {...(type === "all" && { ref: currentCategoryElement })}
           >
-            <p
-              className="w-auto font-[600] text-[16px] text-center"
-              // className={`w-auto   ${
-              //   type === data.value && "border-b-[2px]  text-[16px] font-[600]"
-              // }`}
-            >
-              All
-            </p>
+            <p style={{ color: type === "all" ? "#DA291C" : "#373A36" }}>All</p>
           </div>
           {contentCategories?.data?.map((data, index: number) => (
             <div
@@ -133,20 +130,22 @@ const BrowsePage: React.FC = () => {
               onClick={() => {
                 handleCategoryChange(data?.slug);
               }}
-              className={`cursor-pointer px-10 flex-0 flex-shrink-0  py-1 rounded-lg border border-primary ${
-                type == data.slug ? " bg-[#FCE8EA] " : "border-[#E4E4E4] hover:border-primary"
-              }     `}
+              className={`cursor-pointer px-3  flex-0 flex-shrink-0 py-1 rounded-[160px] border border-[#BDC7D5] ${
+                type === data.slug ? "bg-[#FCE8EA] border-[#DD524C]" : "border-[#E4E4E4] hover:border-primary"
+              }`}
               {...(type === data.slug && { ref: currentCategoryElement })}
             >
-              {" "}
-              <div
-                className="w-auto font-[600] text-[16px] flex space-between items-center "
-                // className={`w-auto   ${
-                //   type === data.value && "border-b-[2px]  text-[16px] font-[600]"
-                // }`}
-              >
-                {data?.icon_url && <img src={data?.icon_url} className="w-[20px] mr-[10px] h-[20px] inline-block" />}
-                <p> {data.name}</p>
+              <div className="w-auto font-[500] text-[16px] flex space-between items-center">
+                {data?.icon_url && (
+                  <img
+                    src={data?.icon_url}
+                    className={`w-[20px] mr-[10px] h-[20px] inline-block ${
+                      type === data.slug ? "text-blue-500" : "text-green-200"
+                    }`}
+                    alt="Category Icon"
+                  />
+                )}
+                <p style={{ color: type === data.slug ? "#DA291C" : "#373A36" }}>{data.name}</p>
               </div>
             </div>
           ))}
@@ -178,6 +177,14 @@ const BrowsePage: React.FC = () => {
                         Show More
                       </p>
                     </Flex>
+                    <h1
+                      className="
+                       ms-7
+                  text-[16px] text-[#4B5563] font-[400] px-[12px] mb-2
+                  "
+                    >
+                      Get a glimpse of what you can find on TEE-UP
+                    </h1>
                     <p
                       className="
                   text-[14px] text-[#4B5563] font-[400] px-[12px] py-[5px]
@@ -193,7 +200,7 @@ const BrowsePage: React.FC = () => {
                       ) : (
                         contentData?.category_contents.map((c: any, index: number) => {
                           return (
-                            <div key={index} className="flex-0 flex-shrink-0 basis-3/4 h-auto">
+                            <div key={index} className="flex-0 flex-shrink-0 basis-1/2 h-auto">
                               <BrowserContentLayout
                                 key={index}
                                 data={c?.content}
