@@ -9,6 +9,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { generateCsv, mkConfig, download } from "export-to-csv";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import { useDeleteBanner } from "@/services/banner";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const csvConfig = mkConfig({
   fieldSeparator: ",",
@@ -18,6 +20,7 @@ const csvConfig = mkConfig({
 });
 
 export default function Banner() {
+  const { trigger: deleteTrigger, isMutating: deletingBanner } = useDeleteBanner();
   const [open, setOpen] = useState<boolean>(false);
   const [id, setId] = useState<string>("");
   const isLoading = false;
@@ -175,11 +178,11 @@ export default function Banner() {
     download(csvConfig)(csv);
   };
 
-  const handleDeleteConfirm = async () => {
+  const handleDeleteBanner = async () => {
     setOpen(false);
     const updatedData = data.filter((content: any) => content.id !== id);
     // setContentData(data);
-    // await deleteTrigger({ id });
+    await deleteTrigger({ id });
     console.log("Deleted", id);
   };
 
@@ -213,9 +216,15 @@ export default function Banner() {
               >
                 Cancel
               </Button>
-              <Button onClick={handleDeleteConfirm} color="error" sx={{ textTransform: "none" }} variant="contained">
+              <LoadingButton
+                loading={deletingBanner}
+                onClick={handleDeleteBanner}
+                color="error"
+                sx={{ textTransform: "none" }}
+                variant="contained"
+              >
                 Delete
-              </Button>
+              </LoadingButton>
             </div>
           </div>
         </Box>

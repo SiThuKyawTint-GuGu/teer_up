@@ -22,7 +22,7 @@ interface FileArgType {
   };
 }
 
-export const useDeleteContent = () =>
+export const useDeleteBanner = () =>
   useSWRMutation(`/admin/banners`, (url, { arg }: { arg: { id: string } }) => {
     return appAxios.delete<BannerArgType>(`${url}/${arg.id}`);
   });
