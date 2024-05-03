@@ -1,14 +1,14 @@
 import CommentSection from "@/components/contentLayout/CommentSection";
 import { Animate, Dialog, DialogClose, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons, Image } from "@/components/ui/Images";
+import { Text } from "@/components/ui/Typo/Text";
+import Share from "@/page-containers/admin/content/Share";
 import { useLikeContent, useSaveContent } from "@/services/content";
 import { ContentData } from "@/types/Content";
 import { getToken } from "@/utils/auth";
 import { cn } from "@/utils/cn";
 import { Box, Flex } from "@radix-ui/themes";
 import React, { useEffect, useState } from "react";
-import Share from "../../page-containers/admin/content/Share";
-import { Text } from "../ui/Typo/Text";
 
 enum dialogTrigger {
   COMMENT = "comment",
@@ -22,7 +22,7 @@ interface ReactionBarProp {
   setComments: any;
 }
 
-const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate, comments, setComments }) => {
+const CardReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate, comments, setComments }) => {
   const [openComment, setOpenComment] = useState<boolean>(false);
   const [openShare, setOpenShare] = useState<boolean>(false);
   const [isCopied, setIsCopied] = useState<boolean>(false);
@@ -98,31 +98,31 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate, comments,
         </DialogContent>
 
         <div className="w-full py-2">
-          <div className="flex justify-between  items-center">
+          <div className="flex justify-between space-x-16 ms-1  items-center">
+            <DialogTrigger onClick={() => setTriggerType(dialogTrigger.COMMENT)}>
+              <div className="flex items-center flex-wrap gap-x-[10px] rounded-[15px]  bg-[#17161621] h-[35px] w-[55px] justify-center">
+                <Icons.comment className="w-[20px] h-[20px]  text-white font-[600]" />
+                <div className=" text-white font-[600]">{comments}</div>
+              </div>
+            </DialogTrigger>
+
             <button
-              className="flex items-center flex-wrap gap-x-[10px]"
+              className="flex items-center flex-wrap gap-x-[10px] bg-[#17161621] h-[35px] w-[35px] justify-center rounded-[50%]"
               onClick={likePost}
             >
               {reaction.is_like ? (
                 <Icons.likeFill className="w-[20px] h-[20px] text-primary " />
               ) : (
-                <Icons.like className="w-[20px] h-[20px]" />
+                <Icons.like className="w-[20px] h-[20px]  text-white font-[600]" />
               )}
-              <div className={reaction.is_like ? "text-primary" : ""}>{reaction.likes}</div>
+              {/* <div className={reaction.is_like ? "text-primary" : ""}>{reaction.likes}</div> */}
             </button>
-
-            <DialogTrigger onClick={() => setTriggerType(dialogTrigger.COMMENT)}>
-              <div className="flex items-center flex-wrap gap-x-[10px] rounded-[15px] ">
-                <Icons.comment className="w-[20px] h-[20px] " />
-                <div className="">{comments}</div>
-              </div>
-            </DialogTrigger>
 
             {/**
              * comment button trigger
              */}
 
-            <button className="flex items-center flex-wrap gap-x-[10px]" onClick={saveContent}>
+            {/* <button className="flex items-center flex-wrap gap-x-[10px]" onClick={saveContent}>
               {reaction.is_save ? (
                 <Icons.savedFill className="w-[20px] h-[20px] text-primary" />
               ) : (
@@ -133,17 +133,17 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate, comments,
                 {""}
                 {reaction.saves}
               </div>
-            </button>
+            </button> */}
 
             {/**
              * share button trigger
              */}
-            <DialogTrigger onClick={() => setTriggerType(dialogTrigger.SHARE)}>
+            {/* <DialogTrigger onClick={() => setTriggerType(dialogTrigger.SHARE)}>
               <div className="flex items-center flex-wrap gap-x-1 cursor-pointer" onClick={() => setOpenShare(true)}>
                 <Icons.share className="w-[20px] h-[20px]" />
                 <div>Share</div>
               </div>
-            </DialogTrigger>
+            </DialogTrigger> */}
           </div>
         </div>
 
@@ -166,4 +166,4 @@ const ReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate, comments,
   );
 };
 
-export default ReactionBar;
+export default CardReactionBar;
