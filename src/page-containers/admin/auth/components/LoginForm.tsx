@@ -44,7 +44,7 @@ const LoginForm = () => {
           </Alert>
         )}
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(loginHandler)} className="space-y-8">
+          <form method="POST" onSubmit={form.handleSubmit(loginHandler)} className="space-y-8">
             <FormField
               control={form.control}
               name="email"

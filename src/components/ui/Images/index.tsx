@@ -1,3 +1,4 @@
+import ViewCarouselIcon from "@mui/icons-material/ViewCarousel";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import ArticleIcon from "@mui/icons-material/Article";
@@ -112,6 +113,7 @@ export const Icons = {
   industry: CorporateFareIcon,
   department: ApartmentIcon,
   mentor: AccountBoxIcon,
+  carousel: ViewCarouselIcon,
   discussions: GoCommentDiscussion,
   contents: ChromeReaderModeIcon,
   wallet: PiWallet,
