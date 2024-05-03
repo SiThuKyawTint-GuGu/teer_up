@@ -1,5 +1,4 @@
 "use client";
-import ReactionBar from "@/components/contentLayout/ReactionBar";
 import CardBox from "@/components/ui/Card";
 import { Text } from "@/components/ui/Typo/Text";
 import "@/styles/video.css";
@@ -9,6 +8,7 @@ import Link from "next/link";
 
 import React, { useEffect, useState } from "react";
 import CardButton from "./CardButton";
+import CardReactionBar from "./CardReactionBar";
 
 type ContentlayoutProps = {
   data: ContentData;
@@ -115,7 +115,7 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, conte
               <hr className="w-full h-[1px] bg-slateGray" />
             </div> */}
             <div className=" absolute top-0">
-              <ReactionBar data={data} contentMutate={contentMutate} comments={comments} setComments={setComments} />
+              <CardReactionBar data={data} contentMutate={contentMutate} comments={comments} setComments={setComments} />
             </div>
             <div className="mb-3">
               <CardButton/>

@@ -27,7 +27,7 @@ const HeaderCarousel = () => {
     }]
   return (
     <>
-      <div className="carousel carousel-center max-w-md p-4 space-x-4 bg-white rounded-box h-[32%]">
+      <div className="carousel carousel-center max-w-md p-4 space-x-4 rounded-box h-[32%] relative top-[5%]">
         {carouselData?.map((item, index) => (
           <div key={index} className="carousel-item w-[90%]">
             <img
