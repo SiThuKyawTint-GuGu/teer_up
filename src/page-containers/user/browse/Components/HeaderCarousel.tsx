@@ -1,45 +1,19 @@
-/* eslint-disable react/jsx-key */
-/* eslint-disable jsx-a11y/alt-text */
-/* eslint-disable @next/next/no-img-element */
 import React from "react";
+import ReactDOM from "react-dom/client";
+import EmblaCarousel from "./EmblaCarousel";
+import { EmblaOptionsType } from "embla-carousel";
+import "../Components/css/base.css";
+import "../Components/css/sandbox.css";
+import "../Components/css/embla.css";
 
-const HeaderCarousel = () => {
-    const carouselData = [
-    {
-        id:1,
-        link:"https://www.google.com"
-    },
-    {
-        id:2,
-        link:"https://www.google.com"
-    },
-    {
-        id:3,
-        link:"https://www.google.com"
-    },
-    {
-        id:4,
-        link:"https://www.google.com"
-    },
-    {
-        id:5,
-        link:"https://www.google.com"
-    }]
-  return (
-    <>
-      <div className="carousel carousel-center max-w-md p-4 space-x-4 rounded-box h-[32%] relative top-[5%]">
-        {carouselData?.map((item, index) => (
-          <div key={index} className="carousel-item w-[90%]">
-            <img
-              src="https://daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.jpg"
-              className="rounded-box w-full h-full object-cover"
-            />
-          </div>
-        ))}
-      </div>
-      
-    </>
-  );
-};
+const OPTIONS: EmblaOptionsType = {};
+const SLIDE_COUNT = 5;
+const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
+
+const HeaderCarousel: React.FC = () => (
+  <div className="relative top-[9%] mb-4">
+    <EmblaCarousel slides={SLIDES} options={OPTIONS} />
+  </div>
+);
 
 export default HeaderCarousel;
