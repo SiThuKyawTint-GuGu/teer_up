@@ -5,6 +5,7 @@ import { Flex } from "@radix-ui/themes";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { KeyboardEvent, useRef, useState, useTransition } from "react";
+import Sidebar from "../ui/Sidebar";
 
 const Header: React.FC = () => {
   const [search, setSearch] = useState<string>();
@@ -57,8 +58,9 @@ const Header: React.FC = () => {
           />
         ) : (
           <>
+            <Sidebar />
             <Image src="/auth/teeUpLogo.png" width={84} height={20} alt="teeup logo" />
-            <Flex justify="center" align="center" className="absolute top-0 right-2 bottom-0">
+            <Flex justify="center" align="center">
               <Link href={`/search`}>
                 <Icons.search className="w-[25px] h-[25px]" />
               </Link>
