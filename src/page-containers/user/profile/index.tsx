@@ -207,7 +207,7 @@ const Profile: React.FC = () => {
                     )}
                   </div>
                 </DialogTrigger>
-                <Heading as="h4" className="text-center" size="6" mb="4">
+                <Heading as="h4" className="text-center" size="6" my="4">
                   {userProfile?.name}
                 </Heading>
                 <Text className="text-center">{userProfile?.bio}</Text>
