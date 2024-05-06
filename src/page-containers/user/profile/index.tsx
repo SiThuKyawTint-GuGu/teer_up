@@ -177,7 +177,7 @@ const Profile: React.FC = () => {
                         <Flex
                           justify="center"
                           align="center"
-                          className="absolute bottom-0 right-0 w-[30px] h-[30px] rounded-full bg-white shadow-profile ring-2 ring-white"
+                          className="absolute bottom-0 right-0 w-[30px] h-[30px] rounded-full bg-white  ring-2 ring-white"
                         >
                           <Icons.profileCamera className="w-[15] h-[15] text-primary" />
                         </Flex>
@@ -338,7 +338,7 @@ const Profile: React.FC = () => {
                       <div></div>
                       <Link href={`/profile/${user?.id}`} className="ml-auto">
                         <Button variant="ghost" className="">
-                          <Image src="/uploads/icons/pencil.svg" width={20} height={20} alt="pencil" />
+                          <Image src="/uploads/icons/pencil-square.svg" width={20} height={20} alt="pencil" />
                           <Text className="text-primary">Edit Profile</Text>
                         </Button>
                       </Link>
