@@ -10,7 +10,7 @@ import { UserProfileResponse } from "@/types/Profile";
 import { logout } from "@/utils/auth";
 import { cn } from "@/utils/cn";
 import * as Dialog from "@radix-ui/react-dialog";
-import { Flex, Heading } from "@radix-ui/themes";
+import { Box, Heading } from "@radix-ui/themes";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useTransition } from "react";
@@ -39,21 +39,21 @@ const Sidebar: React.FC<SidebarProps> = () => {
     <Dialog.Root>
       <Dialog.Trigger asChild>
         <button className="hamburger-button">
-          <span>☰</span>
+          <Image src="/uploads/icons/hambuger.png" width={20} height={20} alt="hambuger menu" />
         </button>
       </Dialog.Trigger>
 
       <Dialog.Portal>
         <Dialog.Overlay className="dialog-overlay" />
         <Dialog.Content className="dialog-content">
-          <Flex direction="column">
-            <div className="flex flex-col items-center gap-8 p-10">
-              <Flex>
-                <Image src="/auth/teeUpLogo.png" width={84} height={20} alt="teeup logo" />
+          <div className="grid grid-rows-3">
+            <div className="flex flex-col items-center gap-8 py-14">
+              <div className="grid grid-cols-3">
+                <Image src="/auth/teeUpLogo.png" width={84} height={20} alt="teeup logo" className="col-start-2" />
                 <Dialog.Close>
                   <button className="close-button ms-10">✕</button>
                 </Dialog.Close>
-              </Flex>
+              </div>
               {userProfile?.cover_url ? (
                 <BGImage width={WIDTH_TYPES.FULL} height="130px" url={userProfile?.cover_url} />
               ) : (
@@ -63,14 +63,14 @@ const Sidebar: React.FC<SidebarProps> = () => {
                 {userProfile?.name}
               </Heading>
             </div>
-            <nav className="sidebar space-y-5">
+            <nav>
               {navbarItems.map((item: NavbarType, index: number) => {
                 return (
                   <Link
                     href={`${item.path}`}
                     key={index}
                     className={cn(
-                      "flex justify-center items-center p-5",
+                      "flex p-5",
                       (pathName === item.path ||
                         pathName.includes(item.path) ||
                         ((pathName.length === 0 || pathName === "/") && item.path === "/home")) &&
@@ -99,8 +99,8 @@ const Sidebar: React.FC<SidebarProps> = () => {
                 );
               })}
             </nav>
-            <div className="grid h-[250px] items-end">
-              <div className="space-y-5">
+            <Box className="grid p-5">
+              <div className="self-end space-y-3">
                 <div className="flex items-center gap-4">
                   <Image src="/sidebar/Logout.png" width={25} height={25} alt="logout icon" />
                   <Button onClick={handleLogout} loading={isPending} variant="link" className="p-0 text-black">
@@ -109,8 +109,8 @@ const Sidebar: React.FC<SidebarProps> = () => {
                 </div>
                 <p>Version 1.1.0</p>
               </div>
-            </div>
-          </Flex>
+            </Box>
+          </div>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>
