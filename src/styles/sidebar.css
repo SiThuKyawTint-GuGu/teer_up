@@ -10,9 +10,9 @@
 .dialog-content {
   position: fixed;
   top: 0;
-  left: 0;
+  left: calc(50% - 200px);
   height: 100%;
-  width: 2/3;
+  width: 250px;
   background-color: white;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
 }
