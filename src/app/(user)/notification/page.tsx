@@ -4,7 +4,7 @@ import { NextPage } from "next";
 
 const Notifications: NextPage = () => {
   return (
-    <MainPageLayout hideHeader>
+    <MainPageLayout hideHeader={false}>
       <NotificationPage />
     </MainPageLayout>
   );
