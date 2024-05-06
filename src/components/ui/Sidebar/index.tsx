@@ -11,7 +11,7 @@ import { cn } from "@/utils/cn";
 import { Box, Heading } from "@radix-ui/themes";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useState, useTransition } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import { mutate } from "swr";
 
 type SidebarProps = {};
@@ -33,6 +33,20 @@ const Sidebar: React.FC<SidebarProps> = () => {
     });
   };
 
+  const handleDocumentClick = (event: MouseEvent) => {
+    const sidebar = document.getElementById("sidebar");
+    if (openMenu && sidebar && !sidebar.contains(event.target as Node)) {
+      setOpenMenu(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleDocumentClick);
+    return () => {
+      document.removeEventListener("click", handleDocumentClick);
+    };
+  }, [openMenu]);
+
   return (
     <>
       <button className="hamburger-button" onClick={() => setOpenMenu(true)}>
@@ -41,7 +55,7 @@ const Sidebar: React.FC<SidebarProps> = () => {
       {openMenu && (
         <>
           <div className="absolute w-full h-screen bg-black top-0 left-0 opacity-50 z-40"></div>
-          <div className="absolute w-2/3 h-screen bg-white top-0 left-0 z-50">
+          <div className="absolute w-2/3 h-screen bg-white top-0 left-0 z-50" id="sidebar">
             <div className="grid grid-rows-3 h-full">
               <div className="flex flex-col items-center justify-center gap-8 py-14 h-full">
                 <div className="grid grid-cols-3">

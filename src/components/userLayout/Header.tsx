@@ -65,7 +65,7 @@ const Header: React.FC = () => {
                 <Icons.search className="w-[25px] h-[25px]" />
               </Link>
               <Link href={"/notification"}>
-                <Image src="/uploads/icons/mi--notification.png" width={23} height={23} alt="noti" />
+                <Image src="/uploads/icons/notification-bell.png" width={23} height={23} alt="noti" />
               </Link>
             </Flex>
           </>
