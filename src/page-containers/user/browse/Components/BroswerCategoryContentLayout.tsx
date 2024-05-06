@@ -95,7 +95,9 @@ const BrowserCategoryContentLayout: React.FC<ContentlayoutProps> = ({ redir, dat
             <div className="w-full pt-3">
               <hr className="w-full h-[1px] bg-slateGray" />
             </div>
-            <ReactionBar data={data} contentMutate={contentMutate} comments={commets} setComments={setComments} />
+            <div className="">
+              <ReactionBar data={data} contentMutate={contentMutate} comments={commets} setComments={setComments} />
+            </div>
           </div>
         </div>
       </CardBox>
