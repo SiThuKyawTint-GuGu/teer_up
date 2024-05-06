@@ -7,7 +7,6 @@ import { setLocalStorage } from "@/utils";
 import Link from "next/link";
 
 import React, { useEffect, useState } from "react";
-import CardButton from "./CardButton";
 import CardReactionBar from "./CardReactionBar";
 
 type ContentlayoutProps = {
@@ -84,9 +83,9 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, conte
               }}
             >
               <div className="w-full px-[12px] p-3 bg-white cursor-pointer">
-                <h1 className="font-[600] text-[21px]">
-                  {data.title.slice(0, 26)}{" "}
-                  {data.title.length > 26 && (
+                <h1 className="font-[600] text-[16px]">
+                  {data.title.slice(0, 33)}{" "}
+                  {data.title.length > 33 && (
                     <Text as="span" className="">
                       {"..."}
                     </Text>
@@ -94,11 +93,11 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, conte
                 </h1>
                 {data.description && (
                   <div className="w-full h-full mt-2">
-                    <div className="flex flex-col w-full">
+                    <div className="flex text-[13px] flex-col w-full">
                       <Text size="md">
-                        {data.description.slice(0, 43)}
+                        {data.description.slice(0, 50)}
 
-                        {data.description.length > 43 && (
+                        {data.description.length > 50 && (
                           <Text as="span" className="">
                             {"..."}
                           </Text>
@@ -118,7 +117,6 @@ const BrowserContentLayout: React.FC<ContentlayoutProps> = ({ redir, data, conte
               <CardReactionBar data={data} contentMutate={contentMutate} comments={comments} setComments={setComments} />
             </div>
             <div className="mb-3">
-              <CardButton/>
             </div>
           </div>
         </div>
