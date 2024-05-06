@@ -382,18 +382,30 @@ const Profile: React.FC = () => {
 
                     <CardBox className="mb-4 rounded-md">
                       <Section className="bg-white" py="4" px="3">
-                        <Heading as="h6" size="4" align="left" mb="4">
-                          Job Experience
-                        </Heading>
+                        <Flex justify={"between"} align={"baseline"} mb="4">
+                          <Heading as="h6" size="4" align="left">
+                            Job Experience
+                          </Heading>
+                          {userProfile?.experiences?.length && userProfile?.experiences?.length > 2 && (
+                            <Text className="ml-auto">
+                              <Link href={`/profile/${user?.id}/experience`}>
+                                <Button variant="link" className="text-primary font-bold">
+                                  See All
+                                </Button>
+                              </Link>
+                            </Text>
+                          )}
+                        </Flex>
                         {userProfile?.experiences?.length ? (
-                          userProfile?.experiences?.map((each, key) => (
+                          userProfile?.experiences?.slice(0, 2).map((each, key) => (
                             <Flex
                               key={key}
                               justify="between"
                               align="start"
                               className={cn(
                                 "pb-[10px] mb-[10px]",
-                                key !== (userProfile?.experiences ? userProfile.experiences.length - 1 : -1) &&
+                                key !==
+                                  (userProfile?.experiences ? userProfile.experiences.slice(0, 2).length - 1 : -1) &&
                                   "border-b border-b-[#BDC7D5]"
                               )}
                             >
