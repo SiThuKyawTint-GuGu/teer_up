@@ -1,6 +1,4 @@
 "use client";
-import BGImage from "@/components/shared/BGImage";
-import { WIDTH_TYPES } from "@/components/shared/enums";
 import { Button } from "@/components/ui/Button";
 import CardBox from "@/components/ui/Card";
 import { Animate, Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
@@ -163,26 +161,9 @@ const Profile: React.FC = () => {
               </div>
             </div>
             <Box className="mb-[0px] rounded-none">
-              <Section p="0">
-                <DialogTrigger onClick={() => setTriggerType(PROFILE_TRIGGER.COVER)} className="w-full">
-                  {userProfile?.cover_url ? (
-                    <BGImage width={WIDTH_TYPES.FULL} height="130px" url={userProfile?.cover_url} />
-                  ) : (
-                    <Flex className="h-[130px] bg-cover relative" justify="center" align="center">
-                      <Flex
-                        justify="center"
-                        align="center"
-                        className="absolute top-2 right-2 w-[30px] h-[30px] rounded-full bg-white shadow-profile ring-2 ring-white"
-                      >
-                        <Icons.profileCamera className="w-[15] h-[15] text-primary" />
-                      </Flex>
-                    </Flex>
-                  )}
-                </DialogTrigger>
-              </Section>
-              <Section className="bg-white pt-[70px]" pb="0" px="3" position="relative">
+              <Section className="pt-[40px]" pb="0" px="3" position="relative">
                 <DialogTrigger onClick={() => setTriggerType(PROFILE_TRIGGER.PROFILE)} className="w-full">
-                  <div className="absolute -top-[30%]">
+                  <div className="grid place-items-center">
                     {userProfile?.profile_url ? (
                       <Flex
                         justify="center"
@@ -226,41 +207,33 @@ const Profile: React.FC = () => {
                     )}
                   </div>
                 </DialogTrigger>
-                <div className="absolute top-6 right-2">
-                  <Link href={`/profile/${user?.id}`}>
-                    <Button variant="outline" className="border-2 border-[#F4153D] rounded-[30px] space-x-[5px]">
-                      <Image src="/uploads/icons/pencil.svg" width={20} height={20} alt="pencil" />
-                      <Text className="text-primary">Edit Profile</Text>
-                    </Button>
-                  </Link>
-                </div>
-                <Heading as="h4" size="6" mb="4">
+                <Heading as="h4" className="text-center" size="6" mb="4">
                   {userProfile?.name}
                 </Heading>
-                <Text>{userProfile?.bio}</Text>
+                <Text className="text-center">{userProfile?.bio}</Text>
               </Section>
             </Box>
             <CardBox className="mb-[7px] rounded-none">
-              <Section className="bg-white" pt="4" pb="0">
+              <Section className="" pt="4" pb="0">
                 <Tabs.Root defaultValue={(get("tab") ? get("tab") : "competency") ?? ""}>
-                  <Tabs.List className="space-x-[20px] px-3">
+                  <Tabs.List className="space-x-[20px] px-3 flex justify-center mb-2">
                     <Tabs.Trigger
                       onClick={() => handleTabTrigger("competency")}
-                      className="tab-trigger cursor-pointer"
+                      className="tab-trigger cursor-pointer text-lg"
                       value="competency"
                     >
                       Your Career Muscles
                     </Tabs.Trigger>
                     <Tabs.Trigger
                       onClick={() => handleTabTrigger("personalDetails")}
-                      className="tab-trigger cursor-pointer"
+                      className="tab-trigger cursor-pointer text-lg"
                       value="personalDetails"
                     >
                       Personal details
                     </Tabs.Trigger>
                   </Tabs.List>
-                  <Tabs.Content value="competency" className="space-y-[7px]">
-                    <CardBox className="rounded-none">
+                  <Tabs.Content value="competency" className="space-y-[7px] p-2">
+                    <CardBox className="rounded-md">
                       <Section className="bg-white" py="4" px="3">
                         <Heading as="h6" size="4" align="left" mb="4">
                           Your Career Muscles{" "}
@@ -309,7 +282,7 @@ const Profile: React.FC = () => {
                       </Section>
                     </CardBox> */}
                     <CardBox className="rounded-none">
-                      <Section className="bg-white" py="4" px="3">
+                      <Section className="" py="4" px="3">
                         <Heading as="h6" size="4" align="left" mb="4">
                           Here&#39;s what we noticed about you
                         </Heading>
@@ -320,7 +293,7 @@ const Profile: React.FC = () => {
                                 <Box
                                   key={key}
                                   position="relative"
-                                  className="bg-[#F8F9FB] rounded-[8px] space-y-4"
+                                  className="bg-white rounded-[8px] space-y-4"
                                   mb="4"
                                   p="3"
                                 >
@@ -341,7 +314,7 @@ const Profile: React.FC = () => {
                                           </div>
                                         </div>
                                       </Flex>
-                                      <Text>{each.skill_body}</Text>
+                                      <Text className="whitespace-break-spaces">{each.skill_body}</Text>
                                     </Flex>
                                   </Flex>
                                   {each?.content?.id && (
@@ -360,8 +333,17 @@ const Profile: React.FC = () => {
                     </CardBox>
                   </Tabs.Content>
 
-                  <Tabs.Content value="personalDetails">
-                    <CardBox className="mb-[2px] rounded-none">
+                  <Tabs.Content value="personalDetails" className="p-2">
+                    <div className="flex justify-between mb-2">
+                      <div></div>
+                      <Link href={`/profile/${user?.id}`} className="ml-auto">
+                        <Button variant="ghost" className="">
+                          <Image src="/uploads/icons/pencil.svg" width={20} height={20} alt="pencil" />
+                          <Text className="text-primary">Edit Profile</Text>
+                        </Button>
+                      </Link>
+                    </div>
+                    <CardBox className="mb-4 rounded-md ">
                       <Section className="bg-white" py="4" px="3">
                         <Heading as="h6" size="4" align="left" mb="4">
                           Personal information
@@ -397,7 +379,8 @@ const Profile: React.FC = () => {
                         </div>
                       </Section>
                     </CardBox>
-                    <CardBox className="mb-[2px] rounded-none">
+
+                    <CardBox className="mb-4 rounded-md">
                       <Section className="bg-white" py="4" px="3">
                         <Heading as="h6" size="4" align="left" mb="4">
                           Job Experience
@@ -459,7 +442,7 @@ const Profile: React.FC = () => {
                       </Section>
                     </CardBox>
 
-                    <CardBox className="mb-[2px] rounded-none">
+                    <CardBox className="mb-4 rounded-md">
                       <Section className="bg-white" py="4" px="3">
                         <Heading as="h6" size="4" align="left" mb="4">
                           Education
@@ -554,7 +537,7 @@ const Profile: React.FC = () => {
                           : "-"}
                       </Section>
                     </CardBox> */}
-                    <CardBox className="mb-[2px] rounded-none">
+                    <CardBox className="mb-4 rounded-md">
                       <Section className="bg-white" py="4" px="3">
                         <Heading as="h6" size="4" align="left" mb="4">
                           Career interests
@@ -574,7 +557,7 @@ const Profile: React.FC = () => {
                       </Section>
                     </CardBox>
 
-                    <CardBox className="mb-[5px] rounded-none">
+                    <CardBox className="mb-4 rounded-md">
                       <Section className="bg-white" py="4" px="3">
                         <Heading as="h6" size="4" align="left" mb="4">
                           Industry interests
@@ -715,6 +698,7 @@ const Profile: React.FC = () => {
           ) : (
             <Flex className="relative" justify="center" align="center">
               {triggerType === PROFILE_TRIGGER.COVER ? (
+                /* eslint-disable @next/next/no-img-element */
                 <img src={userProfile?.cover_url} alt="" />
               ) : (
                 <img src={userProfile?.profile_url} alt="" />
