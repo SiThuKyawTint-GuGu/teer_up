@@ -1,7 +1,6 @@
 "use client";
-import { Button } from "@/components/ui/Button";
 import CardBox from "@/components/ui/Card";
-import { Animate, Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
+import { DialogTrigger } from "@/components/ui/Dialog";
 import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import { useGetUserDimensionResult } from "@/services/dimension";
@@ -19,18 +18,14 @@ import { UserProfileResponse } from "@/types/Profile";
 import { UserOnboardingStatusResponse } from "@/types/User";
 import { setLocalStorage } from "@/utils";
 import { getUserInfo } from "@/utils/auth";
-import { cn } from "@/utils/cn";
 import { Box, Flex, Grid, Heading, Section, Tabs } from "@radix-ui/themes";
-import dayjs from "dayjs";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useState, useTransition } from "react";
-import RadarChart from "./RadarChart";
+import CareerMuscles from "./CareerMuscles";
+import PersonalDetails from "./PersonalDetails";
+import ProfilePhotoModal from "./ProfilePhotoModal";
 
-const profileTrigger = {
-  [PROFILE_TRIGGER.COVER]: "See cover picture",
-  [PROFILE_TRIGGER.PROFILE]: "See profile picture",
-};
 const profileEditTrigger = {
   [PROFILE_TRIGGER.COVER]: "Change cover picture",
   [PROFILE_TRIGGER.PROFILE]: "Change profile picture",
@@ -39,20 +34,7 @@ const profileCreateTrigger = {
   [PROFILE_TRIGGER.COVER]: "Select cover picture",
   [PROFILE_TRIGGER.PROFILE]: "Select profile picture",
 };
-const profileDeleteTrigger = {
-  [PROFILE_TRIGGER.COVER]: "Delete cover picture",
-  [PROFILE_TRIGGER.PROFILE]: "Delete profile picture",
-};
 
-const profileTriggerIcon = {
-  [PROFILE_TRIGGER.COVER]: "/uploads/icons/select-profile.svg",
-  [PROFILE_TRIGGER.PROFILE]: "/uploads/icons/see-profile.svg",
-};
-
-const profileEditTriggerIcon = {
-  [PROFILE_TRIGGER.COVER]: "/uploads/icons/photo-edit.svg",
-  [PROFILE_TRIGGER.PROFILE]: "/uploads/icons/photo-edit.svg",
-};
 const Profile: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [viewImage, setViewImage] = useState<boolean>(false);
@@ -137,12 +119,22 @@ const Profile: React.FC = () => {
       : profileCreateTrigger[triggerType as PROFILE_TRIGGER];
   return (
     <>
-      <Dialog
+      <ProfilePhotoModal
         open={open}
-        onOpenChange={val => {
-          setOpen(val);
-          setViewImage(false);
-        }}
+        setOpen={setOpen}
+        viewImage={viewImage}
+        setViewImage={setViewImage}
+        deleteModalOpen={deleteModalOpen}
+        setDeleteModalOpen={setDeleteModalOpen}
+        triggerType={triggerType as PROFILE_TRIGGER}
+        setTriggerType={setTriggerType}
+        isPending={isPending}
+        handleDeletePhoto={handleDeletePhoto}
+        handleUploadImage={handleUploadImage}
+        showEditDeleteProilPhoto={showEditDeleteProilPhoto as boolean}
+        showEditDeleteCoverPhoto={showEditDeleteCoverPhoto as boolean}
+        CreateUpdateLabelForPhoto={CreateUpdateLabelForPhoto}
+        userProfile={{ data: userProfile } as UserProfileResponse}
       >
         <Grid columns="1">
           <Box className="pb-[55px]">
@@ -163,7 +155,7 @@ const Profile: React.FC = () => {
                         <Flex
                           justify="center"
                           align="center"
-                          className="absolute bottom-0 right-0 w-[30px] h-[30px] rounded-full bg-white shadow-profile ring-2 ring-white"
+                          className="absolute bottom-0 right-0 w-[30px] h-[30px] rounded-full bg-white  ring-2 ring-white"
                         >
                           <Icons.profileCamera className="w-[15] h-[15] text-primary" />
                         </Flex>
@@ -193,7 +185,7 @@ const Profile: React.FC = () => {
                     )}
                   </div>
                 </DialogTrigger>
-                <Heading as="h4" className="text-center" size="6" mb="4">
+                <Heading as="h4" className="text-center" size="6" my="4">
                   {userProfile?.name}
                 </Heading>
                 <Text className="text-center">{userProfile?.bio}</Text>
@@ -219,511 +211,33 @@ const Profile: React.FC = () => {
                     </Tabs.Trigger>
                   </Tabs.List>
                   <Tabs.Content value="competency" className="space-y-[7px] p-2">
-                    <CardBox className="rounded-md">
-                      <Section className="bg-white" py="4" px="3">
-                        <Heading as="h6" size="4" align="left" mb="4">
-                          Your Career Muscles{" "}
-                          <span className="text-md font-normal">
-                            are competencies that you need to navigate the world of jobs
-                          </span>
-                        </Heading>
-                        <Box className="w-full h-full flex-wrap">
-                          <RadarChart />
-                          <Button
-                            onClick={handleContinueAssessment}
-                            loading={statusLoading}
-                            disabled={getOnboardingStatus?.data?.completed}
-                            className="w-full"
-                          >
-                            Continue Questionnaire
-                          </Button>
-                          <Button
-                            onClick={handleRetakeAssessment}
-                            loading={scoresLoading}
-                            variant="link"
-                            className="w-full"
-                          >
-                            Retake Questionnaire
-                          </Button>
-                        </Box>
-                      </Section>
-                    </CardBox>
-                    {/* <CardBox>
-                      <Section className="bg-white" py="4" px="3">
-                        <Heading as="h6" size="4" align="left" mb="4">
-                          Here’s what we noticed about your competencies:
-                        </Heading>
-                        {userDimensionData?.data?.length && (
-                          <>
-                            {userDimensionData?.data?.map((each, key) => (
-                              <Box key={key} className="bg-[#F8F9FB] rounded-[8px]" mb="4" p="3">
-                                <Flex justify="start" align="start" gap="2">
-                                  <div className="w-[12px] h-[12px] mt-[5px] rounded-sm bg-primary" />
-                                  <Text className="w-[calc(100%-12px)]">{each.name}</Text>
-                                </Flex>
-                              </Box>
-                            ))}
-                          </>
-                        )}
-                      </Section>
-                    </CardBox> */}
-                    <CardBox className="rounded-none">
-                      <Section className="" py="4" px="3">
-                        <Heading as="h6" size="4" align="left" mb="4">
-                          Here&#39;s what we noticed about you
-                        </Heading>
-                        {userDimensionData?.data?.length && (
-                          <>
-                            {userDimensionData?.data?.map((each, key) => {
-                              return (
-                                <Box
-                                  key={key}
-                                  position="relative"
-                                  className="bg-white rounded-[8px] space-y-4"
-                                  mb="4"
-                                  p="3"
-                                >
-                                  <Flex justify="start" align="start" gap="2">
-                                    <div className="w-[12px] h-[12px] mt-[5px] rounded-sm bg-primary" />
-                                    <Flex className="w-[calc(100%-12px)] relative" direction="column" align="start">
-                                      <Flex justify="start" align="center" gap="2">
-                                        <Text size="3" weight="bold">
-                                          {each.short_name}
-                                        </Text>
-                                        {/* <Tooltip content={each.name} open={key === touched?.key || touched?.open}>
-                                          <Icons.info onClick={() => handleTouchedTooltip(key)} />
-                                        </Tooltip> */}
-                                        <div className="group inline-block duration-300">
-                                          <Icons.info />
-                                          <div className="absolute -left-4 top-6 hidden group-hover:flex px-2 py-1 bg-gray-700 rounded-lg text-white text-sm">
-                                            {each.name}
-                                          </div>
-                                        </div>
-                                      </Flex>
-                                      <Text className="whitespace-break-spaces">{each.skill_body}</Text>
-                                    </Flex>
-                                  </Flex>
-                                  {each?.content?.id && (
-                                    <Flex width="100%">
-                                      <Link className="w-full" href={`/content/${each?.content?.slug}`}>
-                                        <Button className="w-full">I&#39;m ready to dive in and explore</Button>
-                                      </Link>
-                                    </Flex>
-                                  )}
-                                </Box>
-                              );
-                            })}
-                          </>
-                        )}
-                      </Section>
-                    </CardBox>
+                    <CareerMuscles
+                      userDimensionData={userDimensionData as UserDimensionResultResponse}
+                      statusLoading={statusLoading}
+                      getOnboardingStatus={getOnboardingStatus as UserOnboardingStatusResponse}
+                      scoresLoading={scoresLoading}
+                      handleContinueAssessment={handleContinueAssessment}
+                      handleRetakeAssessment={handleRetakeAssessment}
+                    />
                   </Tabs.Content>
 
                   <Tabs.Content value="personalDetails" className="p-2">
-                    <div className="flex justify-between mb-2">
-                      <div></div>
-                      <Link href={`/profile/${user?.id}`} className="ml-auto">
-                        <Button variant="ghost" className="">
-                          <Image src="/uploads/icons/pencil.svg" width={20} height={20} alt="pencil" />
-                          <Text className="text-primary">Edit Profile</Text>
-                        </Button>
-                      </Link>
-                    </div>
-                    <CardBox className="mb-4 rounded-md ">
-                      <Section className="bg-white" py="4" px="3">
-                        <Heading as="h6" size="4" align="left" mb="4">
-                          Personal information
-                        </Heading>
-                        <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
-                          <Flex justify="start" align="center" gap="2">
-                            <Image
-                              src="/uploads/icons/personal-profile.svg"
-                              width={16}
-                              height={16}
-                              alt="personal profile"
-                            />
-                            <Text className="capitalize text-[#373A36]">
-                              {userProfile?.personal_info?.gender ? userProfile?.personal_info?.gender?.type : "-"}
-                            </Text>
-                          </Flex>
-                        </div>
-                        <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
-                          <Flex justify="start" align="center" gap="2">
-                            <Image src="/uploads/icons/birthday.svg" width={16} height={16} alt="birthday" />
-                            <Text className="text-[#373A36]">
-                              {userProfile?.personal_info?.birthday
-                                ? dayjs(userProfile?.personal_info?.birthday).format("MMMM D, YYYY")
-                                : "-"}
-                            </Text>
-                          </Flex>
-                        </div>
-                        <div className="pb-[10px] mb-[10px]">
-                          <Flex justify="start" align="center" gap="2">
-                            <Image src="/uploads/icons/mail-outline.svg" width={16} height={16} alt="mail" />
-                            <Text className="text-[#373A36]">{userProfile?.email ? userProfile?.email : "-"}</Text>
-                          </Flex>
-                        </div>
-                      </Section>
-                    </CardBox>
-
-                    <CardBox className="mb-4 rounded-md">
-                      <Section className="bg-white" py="4" px="3">
-                        <Heading as="h6" size="4" align="left" mb="4">
-                          Job Experience
-                        </Heading>
-                        {userProfile?.experiences?.length ? (
-                          userProfile?.experiences?.map((each, key) => (
-                            <Flex
-                              key={key}
-                              justify="between"
-                              align="start"
-                              className={cn(
-                                "pb-[10px] mb-[10px]",
-                                key !== (userProfile?.experiences ? userProfile.experiences.length - 1 : -1) &&
-                                  "border-b border-b-[#BDC7D5]"
-                              )}
-                            >
-                              <Flex justify="start" align="start" gap="2">
-                                <Image src="/uploads/icons/experience.svg" width={32} height={32} alt="experience" />
-                                <Flex direction="column" gap="2">
-                                  <Text as="label" weight="bold" size="3">
-                                    {each?.position}
-                                  </Text>
-                                  <Text size="2" weight="light">
-                                    {each?.company}
-                                  </Text>
-                                </Flex>
-                              </Flex>
-                              <Flex justify="end" align="center" gap="1">
-                                <Text size="2" weight="light">
-                                  {dayjs(each?.start_date).format("MMM, YYYY")}
-                                </Text>
-                                <Text size="2" weight="light">
-                                  -
-                                </Text>
-                                {each?.is_present === true ? (
-                                  <Text size="2" weight="light">
-                                    {"Present"}
-                                  </Text>
-                                ) : (
-                                  <Text size="2" weight="light">
-                                    {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "-"}
-                                  </Text>
-                                )}
-                              </Flex>
-                            </Flex>
-                          ))
-                        ) : (
-                          <Flex direction="column" justify="center" align="center">
-                            <Text size="2" weight="light">
-                              You haven’t added any experience yet.
-                            </Text>
-                            <Link href={`/profile/${user?.id}/experience/create`}>
-                              <Button variant="link" className="text-base">
-                                + Add experience
-                              </Button>
-                            </Link>
-                          </Flex>
-                        )}
-                      </Section>
-                    </CardBox>
-
-                    <CardBox className="mb-4 rounded-md">
-                      <Section className="bg-white" py="4" px="3">
-                        <Heading as="h6" size="4" align="left" mb="4">
-                          Education
-                        </Heading>
-                        {userProfile?.educations?.length ? (
-                          userProfile?.educations?.map((each, key) => (
-                            <Flex
-                              key={key}
-                              justify="between"
-                              align="start"
-                              className={cn(
-                                "pb-[10px] mb-[10px]",
-                                key !== (userProfile?.educations ? userProfile.educations.length - 1 : -1) &&
-                                  "border-b border-b-[#BDC7D5]"
-                              )}
-                            >
-                              <Flex justify="start" align="start" gap="2">
-                                <Image src="/uploads/icons/education.svg" width={32} height={32} alt="experience" />
-                                <Flex direction="column" gap="2">
-                                  <Text as="label" weight="bold" size="3">
-                                    {each.degree}
-                                  </Text>
-                                  <Text size="2" weight="light">
-                                    {each.school_name}
-                                  </Text>
-                                </Flex>
-                              </Flex>
-                              <Flex justify="end" align="center" gap="1">
-                                <Text size="2" weight="light">
-                                  {dayjs(each?.start_date).format("MMM, YYYY")}
-                                </Text>
-                                <Text size="2" weight="light">
-                                  -
-                                </Text>
-                                {each?.is_present === true ? (
-                                  <Text size="2" weight="light">
-                                    {"Present"}
-                                  </Text>
-                                ) : (
-                                  <Text size="2" weight="light">
-                                    {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "-"}
-                                  </Text>
-                                )}
-                                {/* <Text size="2" weight="light">
-                                  {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "present"}
-                                </Text> */}
-                              </Flex>
-                            </Flex>
-                          ))
-                        ) : (
-                          <Flex direction="column" justify="center" align="center">
-                            <Text size="2" weight="light">
-                              You haven’t added any education yet.
-                            </Text>
-                            <Link href={`/profile/${user?.id}/education/create`}>
-                              <Button variant="link" className="text-base">
-                                + Add education
-                              </Button>
-                            </Link>
-                          </Flex>
-                        )}
-                      </Section>
-                    </CardBox>
-
-                    {/* <CardBox className="mb-[7px] rounded-none">
-                      <Section className="bg-white" py="4" px="3">
-                        <Heading as="h6" size="4" align="left" mb="4">
-                          Department
-                        </Heading>
-                        {userProfile?.departments?.length
-                          ? userProfile?.departments?.map((each, key) => (
-                              <Flex
-                                key={key}
-                                justify="between"
-                                align="start"
-                                className={cn(
-                                  "pb-[10px] mb-[10px]",
-                                  key !== (userProfile?.departments ? userProfile.departments.length - 1 : -1) &&
-                                    "border-b border-b-[#BDC7D5]"
-                                )}
-                              >
-                                <Flex justify="start" align="start" gap="2">
-                                  <Image src="/uploads/icons/education.svg" width={32} height={32} alt="experience" />
-                                  <Flex direction="column" gap="2">
-                                    <Text as="label" weight="bold" size="3">
-                                      {each.department.name}
-                                    </Text>
-                                  </Flex>
-                                </Flex>
-                              </Flex>
-                            ))
-                          : "-"}
-                      </Section>
-                    </CardBox> */}
-                    <CardBox className="mb-4 rounded-md">
-                      <Section className="bg-white" py="4" px="3">
-                        <Heading as="h6" size="4" align="left" mb="4">
-                          Career interests
-                        </Heading>
-                        <Flex wrap="wrap" gap="2">
-                          {userProfile?.departments?.length
-                            ? userProfile?.departments?.map((each, key) => (
-                                <Button
-                                  key={key}
-                                  className="border border-[#EAA1A6] bg-[#F9E9EB] text-black hover:bg-[#F9E9EB]"
-                                >
-                                  {each.department.name}
-                                </Button>
-                              ))
-                            : "-"}
-                        </Flex>
-                      </Section>
-                    </CardBox>
-
-                    <CardBox className="mb-4 rounded-md">
-                      <Section className="bg-white" py="4" px="3">
-                        <Heading as="h6" size="4" align="left" mb="4">
-                          Industry interests
-                        </Heading>
-                        <Flex wrap="wrap" gap="2">
-                          {userProfile?.industries?.length
-                            ? userProfile?.industries?.map((each, key) => (
-                                <Button
-                                  key={key}
-                                  className="border border-[#EAA1A6] bg-[#F9E9EB] text-black hover:bg-[#F9E9EB]"
-                                >
-                                  {each.industry.name}
-                                </Button>
-                              ))
-                            : "-"}
-                        </Flex>
-                      </Section>
-                    </CardBox>
-                    {/* <CardBox className="mb-[7px] rounded-none">
-                      <Section className="bg-white" py="4" px="3">
-                        <Heading as="h6" size="4" align="left" mb="4">
-                          Preferences
-                        </Heading>
-                        <Flex wrap="wrap" gap="2">
-                          {userProfile?.preferences?.length
-                            ? userProfile?.preferences?.map((each, key) => (
-                                <Button
-                                  key={key}
-                                  className="border border-[#EAA1A6] bg-[#F9E9EB] text-black hover:bg-[#F9E9EB]"
-                                >
-                                  {each.preference.name}
-                                </Button>
-                              ))
-                            : "-"}
-                        </Flex>
-                      </Section>
-                    </CardBox> */}
+                    <PersonalDetails
+                      user={user}
+                      userProfile={
+                        {
+                          data: userProfile,
+                        } as UserProfileResponse
+                      }
+                    />
                   </Tabs.Content>
                 </Tabs.Root>
               </Section>
             </CardBox>
           </Box>
         </Grid>
-
-        <DialogContent
-          className={cn(
-            "bg-white top-[initial] bottom-0 px-4 pt-8 pb-2 translate-y-0 rounded-10px-tl-tr",
-            viewImage && "top-0 rounded-none"
-          )}
-          handleOnClose={setViewImage}
-          animate={Animate.SLIDE}
-        >
-          {!viewImage ? (
-            <Box className="space-y-[20px]">
-              {showEditDeleteProilPhoto ? (
-                <Flex
-                  justify="start"
-                  align="center"
-                  className="pb-[16px] mb-[16px] border-b border-b-[#BDC7D5] gap-[10px]"
-                  onClick={() => setViewImage(true)}
-                >
-                  <Image
-                    src={profileTriggerIcon[triggerType as PROFILE_TRIGGER]}
-                    width={20}
-                    height={20}
-                    alt={profileTrigger[triggerType as PROFILE_TRIGGER]}
-                  />
-                  <Text className="text-black ml-2">{profileTrigger[triggerType as PROFILE_TRIGGER]}</Text>
-                </Flex>
-              ) : (
-                showEditDeleteCoverPhoto && (
-                  <Flex
-                    justify="start"
-                    align="center"
-                    className="pb-[16px] mb-[16px] border-b border-b-[#BDC7D5] gap-[10px]"
-                    onClick={() => setViewImage(true)}
-                  >
-                    <Image
-                      src={profileTriggerIcon[triggerType as PROFILE_TRIGGER]}
-                      width={20}
-                      height={20}
-                      alt={profileTrigger[triggerType as PROFILE_TRIGGER]}
-                    />
-                    <Text className="text-black ml-2">{profileTrigger[triggerType as PROFILE_TRIGGER]}</Text>
-                  </Flex>
-                )
-              )}
-
-              <Flex
-                justify="start"
-                align="center"
-                position="relative"
-                className={`pb-[16px]  gap-[10px]  ${
-                  (showEditDeleteProilPhoto || showEditDeleteCoverPhoto) && "border-b border-b-[#BDC7D5] mb-[16px]"
-                }                 `}
-              >
-                <input
-                  type="file"
-                  onChange={handleUploadImage}
-                  className="absolute top-0 left-0 w-full h-full opacity-0 z-50"
-                />
-                <Image
-                  src={profileEditTriggerIcon[triggerType as PROFILE_TRIGGER]}
-                  width={20}
-                  height={20}
-                  alt={profileCreateTrigger[triggerType as PROFILE_TRIGGER]}
-                />
-                <Text className="text-black">{CreateUpdateLabelForPhoto}</Text>
-              </Flex>
-              {showEditDeleteProilPhoto ? (
-                <Flex
-                  justify="start"
-                  align="center"
-                  className="pb-[16px] mb-[16px] border-b border-b-[#BDC7D5] gap-[10px]"
-                  onClick={() => {
-                    setDeleteModalOpen(true);
-                  }}
-                >
-                  <Icons.deleteCross className="w-7 h-7 text-[#373A36]" />
-                  <Text className="text-black">{profileDeleteTrigger[triggerType as PROFILE_TRIGGER]}</Text>
-                </Flex>
-              ) : (
-                showEditDeleteCoverPhoto && (
-                  <Flex
-                    justify="start"
-                    align="center"
-                    className="pb-[16px] mb-[16px] gap-[10px]"
-                    onClick={() => {
-                      setDeleteModalOpen(true);
-                    }}
-                  >
-                    <Icons.deleteCross className="w-7 h-7 text-[#373A36]" />
-                    <Text className="text-black">{profileDeleteTrigger[triggerType as PROFILE_TRIGGER]}</Text>
-                  </Flex>
-                )
-              )}
-            </Box>
-          ) : (
-            <Flex className="relative" justify="center" align="center">
-              {triggerType === PROFILE_TRIGGER.COVER ? (
-                /* eslint-disable @next/next/no-img-element */
-                <img src={userProfile?.cover_url} alt="" />
-              ) : (
-                <img src={userProfile?.profile_url} alt="" />
-              )}
-            </Flex>
-          )}
-        </DialogContent>
-        {deleteModalOpen && (
-          <DialogContent isClose={false} className="border-none shadow-none h-fit top-[50%] translate-y-[-50%]">
-            <div className="text-center space-y-[10px] bg-white p-4 rounded-lg">
-              <Text className="text-[#373A36] text-[20px] font-[700]">
-                {" "}
-                Are you sure to delete your {triggerType?.toLocaleLowerCase()} picture?
-              </Text>
-              <Text className="text-[#373A36]">
-                Your {triggerType?.toLocaleLowerCase()} picture will be displayed as default
-                {triggerType?.toLocaleLowerCase()} after you deleted.
-              </Text>
-              <Flex justify="center" className="gap-3">
-                <Button className="w-1/2 font-[600]" onClick={handleDeletePhoto} loading={isPending}>
-                  Delete
-                </Button>
-
-                <Button
-                  onClick={() => {
-                    setDeleteModalOpen(false);
-                  }}
-                  className="w-1/2"
-                  variant="outline"
-                >
-                  Cancel
-                </Button>
-              </Flex>
-            </div>
-          </DialogContent>
-        )}
-      </Dialog>
+      </ProfilePhotoModal>
     </>
   );
 };
-
 export default Profile;
