@@ -112,7 +112,7 @@ const BrowsePage: React.FC = () => {
       <MainPageLayout hideFooter={search ? true : false}>
         <div className="relative w-full h-full pb-[52px]">
           <Flex
-          style={{top:'5.3%',zIndex:10}}
+          style={{top:'5.3%'}}
             className="p-3 w-full py-5 sticky overflow-auto gap-[7px] bg-white no-scrollbar scroll-smooth"
             ref={parentContainer}
           >

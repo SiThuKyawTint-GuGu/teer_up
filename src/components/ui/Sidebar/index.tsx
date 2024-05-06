@@ -40,8 +40,8 @@ const Sidebar: React.FC<SidebarProps> = () => {
       </button>
       {openMenu && (
         <>
-          <div className="absolute w-full h-screen bg-black top-0 left-0 opacity-50"></div>
-          <div className="absolute w-2/3 h-screen bg-white top-0 left-0">
+          <div className="absolute w-full h-screen bg-black top-0 left-0 opacity-50 z-40"></div>
+          <div className="absolute w-2/3 h-screen bg-white top-0 left-0 z-50">
             <div className="grid grid-rows-3 h-full">
               <div className="flex flex-col items-center justify-center gap-8 py-14 h-full">
                 <div className="grid grid-cols-3">
