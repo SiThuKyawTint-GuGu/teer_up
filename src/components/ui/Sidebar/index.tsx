@@ -53,7 +53,7 @@ const Sidebar: React.FC<SidebarProps> = () => {
                 {userProfile?.cover_url ? (
                   <BGImage width={WIDTH_TYPES.FULL} height="130px" url={userProfile?.cover_url} />
                 ) : (
-                  <Image src="/sidebar/profile.png" width={84} height={20} alt="profile" />
+                  <Image src="/uploads/icons/auth/default-profile.png" width={84} height={84} alt="profile" />
                 )}
                 <Heading as="h2" size="6">
                   {userProfile?.name}
@@ -66,7 +66,7 @@ const Sidebar: React.FC<SidebarProps> = () => {
                       href={`${item.path}`}
                       key={index}
                       className={cn(
-                        "flex p-8",
+                        "flex p-6",
                         (pathName === item.path ||
                           pathName.includes(item.path) ||
                           ((pathName.length === 0 || pathName === "/") && item.path === "/home")) &&
