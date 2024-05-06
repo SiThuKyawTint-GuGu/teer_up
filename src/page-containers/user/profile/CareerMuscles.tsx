@@ -79,7 +79,9 @@ function CareerMuscles({
                     {each?.content?.id && (
                       <Flex width="100%">
                         <Link className="w-full" href={`/content/${each?.content?.slug}`}>
-                          <Button className="w-full">I&#39;m ready to dive in and explore</Button>
+                          <Button variant="outline" className="w-full">
+                            I&#39;m ready to dive in and explore
+                          </Button>
                         </Link>
                       </Flex>
                     )}

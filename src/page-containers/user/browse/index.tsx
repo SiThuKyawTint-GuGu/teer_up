@@ -15,6 +15,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import BrowserCategoryContentLayout from "./Components/BroswerCategoryContentLayout";
 import BrowserContentLayout from "./Components/BrowerCotentLayout";
 import HeaderCarousel from "./Components/HeaderCarousel";
+import { Button } from "@/components/ui/Button";
 
 const BrowsePage: React.FC = () => {
   const router = useRouter();
@@ -109,10 +110,11 @@ const BrowsePage: React.FC = () => {
   return (
     <div>
       <HeaderCarousel />
+
       <MainPageLayout hideFooter={search ? true : false}>
         <div className="relative w-full h-full pb-[52px]">
           <Flex
-          style={{top:'5.3%',zIndex:10}}
+            style={{ top: "5.3%", zIndex: 10 }}
             className="p-3 w-full py-5 sticky overflow-auto gap-[7px] bg-white no-scrollbar scroll-smooth"
             ref={parentContainer}
           >
@@ -155,10 +157,7 @@ const BrowsePage: React.FC = () => {
           </Flex>
           {type === "all" && (!search || search === "") ? (
             //  bg-[#F8F9FB]
-            <div
-              className="overflow-y-scroll no-scrollbar h-full  scroll-smooth"
-              id="content-list-container"
-            >
+            <div className="overflow-y-scroll no-scrollbar h-full  scroll-smooth" id="content-list-container">
               {homeContent?.data && homeContent?.data?.length !== 0 ? (
                 homeContent?.data?.map((contentData: ContentHomeData, index: number) => {
                   return (
@@ -269,6 +268,8 @@ const BrowsePage: React.FC = () => {
           )}
         </div>
       </MainPageLayout>
+
+      <Button onClick={() => router.push("/profile")}>Profile</Button>
     </div>
   );
 };
