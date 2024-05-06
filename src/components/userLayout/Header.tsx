@@ -61,11 +61,11 @@ const Header: React.FC = () => {
             <Sidebar />
             <Image src="/auth/teeUpLogo.png" width={84} height={20} alt="teeup logo" />
             <Flex justify="center" align="center" gap="2">
-              <Link href={"/notification"}>
-                <Image src="/uploads/icons/mi--notification.png" width={23} height={23} alt="noti" />
-              </Link>
               <Link href={`/search`}>
                 <Icons.search className="w-[25px] h-[25px]" />
+              </Link>
+              <Link href={"/notification"}>
+                <Image src="/uploads/icons/mi--notification.png" width={23} height={23} alt="noti" />
               </Link>
             </Flex>
           </>

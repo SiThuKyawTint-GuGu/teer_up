@@ -138,20 +138,6 @@ const Profile: React.FC = () => {
       >
         <Grid columns="1">
           <Box className="pb-[55px]">
-            <div className="mb-[45px]">
-              <div className="max-w-[400px] fixed top-0 z-10 w-full shadow-[0px_1px_9px_0px_rgba(0,_0,_0,_0.06)]">
-                <Flex justify="center" position="relative" className="bg-white" p="3">
-                  <Text size="3" weight="medium">
-                    Profile
-                  </Text>
-                  <Flex justify="center" align="center" className="absolute top-0 right-6 bottom-0">
-                    <Link href={`/profile/setting`}>
-                      <Icons.profileSetting />
-                    </Link>
-                  </Flex>
-                </Flex>
-              </div>
-            </div>
             <Box className="mb-[0px] rounded-none">
               <Section className="pt-[40px]" pb="0" px="3" position="relative">
                 <DialogTrigger onClick={() => setTriggerType(PROFILE_TRIGGER.PROFILE)} className="w-full">
