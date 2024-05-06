@@ -107,12 +107,13 @@ const BrowsePage: React.FC = () => {
     );
   }
   return (
-    <>
+    <div>
       <HeaderCarousel />
       <MainPageLayout hideFooter={search ? true : false}>
         <div className="relative w-full h-full pb-[52px]">
           <Flex
-            className="p-3 w-full py-5 sticky top-0 overflow-auto gap-[7px] no-scrollbar scroll-smooth"
+          style={{top:'5.3%',zIndex:10}}
+            className="p-3 w-full py-5 sticky overflow-auto gap-[7px] bg-white no-scrollbar scroll-smooth"
             ref={parentContainer}
           >
             <div
@@ -153,8 +154,9 @@ const BrowsePage: React.FC = () => {
             ))}
           </Flex>
           {type === "all" && (!search || search === "") ? (
+            //  bg-[#F8F9FB]
             <div
-              className="overflow-y-scroll no-scrollbar  h-full bg-[#F8F9FB] scroll-smooth"
+              className="overflow-y-scroll no-scrollbar h-full  scroll-smooth"
               id="content-list-container"
             >
               {homeContent?.data && homeContent?.data?.length !== 0 ? (
@@ -267,7 +269,7 @@ const BrowsePage: React.FC = () => {
           )}
         </div>
       </MainPageLayout>
-    </>
+    </div>
   );
 };
 

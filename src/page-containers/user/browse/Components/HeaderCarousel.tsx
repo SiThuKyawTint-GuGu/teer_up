@@ -11,7 +11,7 @@ const SLIDE_COUNT = 5;
 const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
 
 const HeaderCarousel: React.FC = () => (
-  <div className="relative top-[9%] mb-4">
+  <div className="relative top-[80px] mb-4">
     <EmblaCarousel slides={SLIDES} options={OPTIONS} />
   </div>
 );
