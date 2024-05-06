@@ -79,9 +79,9 @@ function PersonalDetails({ user, userProfile: { data: userProfile } }: PersonalD
                 justify="between"
                 align="start"
                 className={cn(
-                  "pb-[10px] mb-[10px]",
-                  key !== (userProfile?.experiences ? userProfile.experiences.slice(0, 2).length - 1 : -1) &&
-                    "border-b border-b-[#BDC7D5]"
+                  key !== (userProfile?.experiences ? userProfile.experiences.slice(0, 2).length - 1 : -1)
+                    ? "pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]"
+                    : ""
                 )}
               >
                 <Flex justify="start" align="start" gap="2">
@@ -152,9 +152,8 @@ function PersonalDetails({ user, userProfile: { data: userProfile } }: PersonalD
                 justify="between"
                 align="start"
                 className={cn(
-                  "pb-[10px] mb-[10px]",
                   key !== (userProfile?.educations ? userProfile.educations.slice(0, 2).length - 1 : -1) &&
-                    "border-b border-b-[#BDC7D5]"
+                    "border-b border-b-[#BDC7D5] pb-[10px] mb-[10px]"
                 )}
               >
                 <Flex justify="start" align="start" gap="2">
