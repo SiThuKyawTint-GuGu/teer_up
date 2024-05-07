@@ -32,6 +32,12 @@ export const navbarItems: NavbarType[] = [
     activeIcon: <Icons.savedIcon width={24} height={24} activeFill="#DA291C" active />,
   },
   {
+    text: "Content History",
+    path: "/content-history",
+    icon: <Icons.savedIcon width={24} height={24} fill="#373A36" />,
+    activeIcon: <Icons.savedIcon width={24} height={24} activeFill="#DA291C" active />,
+  },
+  {
     text: "Profile",
     path: "/profile",
     icon: <Icons.profileIcon width={26} height={26} fill="#373A36" />,

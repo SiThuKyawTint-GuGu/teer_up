@@ -27,3 +27,10 @@ export const capitalizeFirstLetter = (val: string) => {
   if (!val) return;
   return val.charAt(0).toUpperCase() + val.slice(1);
 };
+
+export const trimmedText = (title: string, limit = 75) => {
+  if (title.length > limit) {
+    return title.substring(0, limit) + "...";
+  }
+  return title;
+};

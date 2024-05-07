@@ -62,15 +62,17 @@ function PersonalDetails({ user, userProfile: { data: userProfile } }: PersonalD
             <Heading as="h6" size="4" align="left">
               Job Experience
             </Heading>
-            {userProfile?.experiences?.length && userProfile?.experiences?.length > 2 && (
-              <Text className="ml-auto">
-                <Link href={`/profile/${user?.id}/experience`}>
-                  <Button variant="link" className="text-primary font-bold">
-                    See All
-                  </Button>
-                </Link>
-              </Text>
-            )}
+            {userProfile?.experiences?.length
+              ? userProfile?.experiences?.length > 2 && (
+                  <Text className="ml-auto">
+                    <Link href={`/profile/${user?.id}/experience`}>
+                      <Button variant="link" className="text-primary font-bold">
+                        See All
+                      </Button>
+                    </Link>
+                  </Text>
+                )
+              : null}
           </Flex>
           {userProfile?.experiences?.length ? (
             userProfile?.experiences?.slice(0, 2).map((each, key) => (
@@ -135,15 +137,17 @@ function PersonalDetails({ user, userProfile: { data: userProfile } }: PersonalD
             <Heading as="h6" size="4" align="left">
               Education
             </Heading>
-            {userProfile?.educations?.length && userProfile?.educations?.length > 2 && (
-              <Text className="ml-auto">
-                <Link href={`/profile/${user?.id}/education`}>
-                  <Button variant="link" className="text-primary font-bold">
-                    See All
-                  </Button>
-                </Link>
-              </Text>
-            )}
+            {userProfile?.educations?.length
+              ? userProfile?.educations?.length > 2 && (
+                  <Text className="ml-auto">
+                    <Link href={`/profile/${user?.id}/education`}>
+                      <Button variant="link" className="text-primary font-bold">
+                        See All
+                      </Button>
+                    </Link>
+                  </Text>
+                )
+              : null}
           </Flex>
           {userProfile?.educations?.length ? (
             userProfile?.educations?.slice(0, 2).map((each, key) => (

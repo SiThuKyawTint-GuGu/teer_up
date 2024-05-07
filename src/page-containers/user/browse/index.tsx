@@ -94,6 +94,7 @@ const BrowsePage: React.FC = () => {
   return (
     <div>
       <HeaderCarousel />
+
       <MainPageLayout hideFooter={search ? true : false}>
         <div className="relative w-full h-full ">
           <ComponentsSidebar handleCategoryChange={handleCategoryChange} />

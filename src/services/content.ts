@@ -205,6 +205,16 @@ export enum SAVED_CONTENT_TYPES {
   MENTOR = "mentor",
 }
 
+// content history
+export enum CONTENT_HISTORY_TYPES {
+  ALL = "all",
+  ARTICLE = "article",
+  EVENT = "event",
+  OPPORTUNITY = "opportunity",
+  PATHWAY = "pathway",
+  VIDEO = "video",
+}
+
 export type SavedContentParams = {
   page?: number;
   pagesize?: number;
