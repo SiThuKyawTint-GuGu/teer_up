@@ -8,7 +8,7 @@ import { navbarItems, NavbarType } from "@/shared/data/UserTabbar";
 import { UserProfileResponse } from "@/types/Profile";
 import { logout } from "@/utils/auth";
 import { cn } from "@/utils/cn";
-import { Box, Heading } from "@radix-ui/themes";
+import { Box, Button, Heading } from "@radix-ui/themes";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState, useTransition } from "react";
@@ -111,12 +111,12 @@ const Sidebar: React.FC<SidebarProps> = () => {
               </nav>
               <Box className="grid p-5 h-full">
                 <div className="self-end space-y-3">
-                  {/* <div className="flex items-center gap-4">
-                  <Image src="/sidebar/Logout.png" width={25} height={25} alt="logout icon" />
-                  <Button onClick={handleLogout} loading={isPending} variant="link" className="p-0 text-black">
-                    Log out
-                  </Button>
-                </div> */}
+                  <div className="flex items-center gap-4">
+                    <Image src="/sidebar/Logout.png" width={25} height={25} alt="logout icon" />
+                    <Button onClick={handleLogout} loading={isPending} variant="link" className="p-0 text-black">
+                      Log out
+                    </Button>
+                  </div>
                   <p>Version 1.1.0</p>
                 </div>
               </Box>
