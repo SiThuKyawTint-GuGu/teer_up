@@ -1,21 +1,46 @@
-import React from "react";
-import {  Flex } from  "@radix-ui/themes";
+/* eslint-disable no-unused-vars */
+"use client";
+/* eslint-disable @next/next/no-img-element */
+import React, { useEffect, useRef, useState } from "react";
+import { Flex } from "@radix-ui/themes";
+import { useGetContentCategory } from "@/services/contentCategory";
+import { getLocalStorage, removeLocalStorage } from "@/utils";
+import { ContentCategoryResponse } from "@/types/ContentCategory";
 
-interface Props {
-  handleCategoryChange: () => void;
-  type: string;
-  contentCategories: any; 
-  currentCategoryElement: React.RefObject<HTMLDivElement>;
-  parentContainer: React.RefObject<HTMLDivElement>;
-}
+const ComponentsSidebar: React.FC<{ handleCategoryChange: (value:string) => void}> = ({ handleCategoryChange }) => {
+  const [type, setType] = useState<string>("all");
+  const parentContainer = useRef<HTMLDivElement>(null);
+  const currentCategoryElement = useRef<HTMLDivElement>(null);
+  const { data: contentCategories } = useGetContentCategory<ContentCategoryResponse>();
 
-const ComponentsSidebar: React.FC<Props> = ({
-  handleCategoryChange,
-  type,
-  contentCategories,
-  currentCategoryElement,
-  parentContainer,
-}) => {
+  useEffect(() => {
+    if (contentCategories && contentCategories.data) {
+      const allCategory = contentCategories.data.find((category: any) => category.slug === "all");
+      if (allCategory) {
+        setType(allCategory.slug);
+      }
+    }
+  }, [contentCategories]);
+
+  useEffect(() => {
+    const storeContentList = getLocalStorage("contentListPosition");
+    const storeHomeContent = getLocalStorage("home-content-id");
+
+    if (type === "all") {
+      const targetElement = document.getElementById(`${storeContentList}`);
+      const targetContentElement = document.getElementById(`${storeHomeContent}`);
+      if (targetElement) {
+        targetElement.scrollIntoView({});
+        removeLocalStorage("contentListPosition");
+      } else if (targetContentElement) {
+        targetContentElement.scrollIntoView({});
+        removeLocalStorage("home-content-id");
+      }
+    }
+
+    return () => {};
+  }, [type]);
+
   return (
     <Flex
       style={{ top: "5.3%", zIndex: 1 }}
@@ -24,10 +49,11 @@ const ComponentsSidebar: React.FC<Props> = ({
     >
       <div
         onClick={() => {
+          setType("all");
           handleCategoryChange("all");
         }}
         className={`cursor-pointer border-[#BDC7D5]  px-3 flex-0 flex-shrink-0  rounded-[160px] border ${
-          type == "all" ? "bg-[#FCE8EA] border-[#DD524C] " : "border-[#E4E4E4] hover:border-primary"
+          type === "all" ? "bg-[#FCE8EA] border-[#DD524C] " : "border-[#E4E4E4] hover:border-primary"
         }     `}
         {...(type === "all" && { ref: currentCategoryElement })}
       >
@@ -35,10 +61,11 @@ const ComponentsSidebar: React.FC<Props> = ({
           All
         </p>
       </div>
-      {contentCategories?.data?.map((data, index: number) => (
+      {contentCategories?.data?.map((data: any, index: number) => (
         <div
           key={index}
           onClick={() => {
+            setType(data?.slug);
             handleCategoryChange(data?.slug);
           }}
           className={`cursor-pointer px-3  flex-0 flex-shrink-0 h-[40px]  rounded-[160px] border border-[#BDC7D5] ${
