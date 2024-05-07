@@ -80,6 +80,7 @@ import {
 import { RxCross2, RxMagnifyingGlass } from "react-icons/rx";
 import { SiAmazon, SiNetflix, SiTesla, SiVivawallet } from "react-icons/si";
 import {
+  ExploreIcon,
   GlobalIcon,
   HomeIcon,
   IconProps,
@@ -192,6 +193,7 @@ export const Icons = {
   savedIcon: ({ ...props }: IconProps) => <SavedIcon {...props} />,
   profileIcon: ({ ...props }: IconProps) => <ProfileIcon {...props} />,
   mentorshipIcon: ({ ...props }: IconProps) => <MentorshipIcon {...props} />,
+  exploreIcon: ({ ...props }: IconProps) => <ExploreIcon {...props} />,
 };
 
 interface Image {

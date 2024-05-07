@@ -16,8 +16,8 @@ export const navbarItems: NavbarType[] = [
   {
     text: "Explore",
     path: "/explore",
-    icon: <Icons.globeIcon width={24} height={24} fill="#373A36" />,
-    activeIcon: <Icons.globeIcon width={24} height={24} activeFill="#DA291C" active />,
+    icon: <Icons.exploreIcon width={24} height={24} fill="#373A36" />,
+    activeIcon: <Icons.exploreIcon width={24} height={24} activeFill="#DA291C" active />,
   },
   {
     text: "Mentorship",
@@ -40,7 +40,7 @@ export const navbarItems: NavbarType[] = [
   {
     text: "Profile",
     path: "/profile",
-    icon: <Icons.profileIcon width={26} height={26} fill="#373A36" />,
-    activeIcon: <Icons.profileIcon width={26} height={26} activeFill="#DA291C" active />,
+    icon: <Icons.profileIcon width={24} height={24} fill="#373A36" />,
+    activeIcon: <Icons.profileIcon width={24} height={24} activeFill="#DA291C" active />,
   },
 ];
