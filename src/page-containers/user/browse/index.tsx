@@ -118,8 +118,8 @@ const BrowsePage: React.FC = () => {
                           <p className="text-[24px] lh-[32px]">{contentData?.name}</p>
                         </div>
                         <button
-                          style={{ borderWidth: 0.9 }}
-                          className="px-10 py-3 rounded-[20px] border-2 text-[14px] border-black "
+                          style={{ borderWidth: 1 }}
+                          className="w-[106px] h-[40px] rounded-[20px] text-[#373A36] border-2 text-[14px] border-[#BDC7D5] "
                           onClick={() => {
                             handleCategoryChange(contentData?.slug);
                           }}

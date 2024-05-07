@@ -20,8 +20,11 @@ const NotificationPage: React.FC = () => {
     <Grid columns="1">
       <Box>
         <Section py="4" px="3">
-          <TitleHeader headerText={"Notifications"} optionText={"See More"} />
+          <TitleHeader headerText={"Notifications"} optionText={"Mark all as Read"} />
           <ComponentsSidebar handleCategoryChange={handleCategoryChange} />
+          <div className="flex justify-center mt-[70%]">
+            <p className="text-[16px] font-[400] text-[#373A36]">There’s no notification.</p>
+          </div>
         </Section>
       </Box>
     </Grid>
