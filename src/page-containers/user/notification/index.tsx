@@ -1,17 +1,27 @@
 "use client";
-import { Text } from "@/components/ui/Typo/Text";
-import { Box, Grid, Heading, Section } from "@radix-ui/themes";
-import React from "react";
+import { Box, Grid, Section } from "@radix-ui/themes";
+import React, { useMemo } from "react";
+import TitleHeader from "./components/TitleHeader";
+import ComponentsSidebar from "../browse/Components/SideBar";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const NotificationPage: React.FC = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const search = useMemo(() => {
+    return searchParams.get("search");
+  }, [searchParams]);
+
+  const handleCategoryChange = (value: string) => {
+    router.push(`?category=${value}${search ? `&search=${search}` : ""}`);
+  };
+
   return (
     <Grid columns="1">
       <Box>
         <Section py="4" px="3">
-          <Heading mb="3">Notifications</Heading>
-          <Box className="space-y-4">
-            <Text className="text-sm">Notifications</Text>
-          </Box>
+          <TitleHeader headerText={"Notifications"} optionText={"See More"} />
+          <ComponentsSidebar handleCategoryChange={handleCategoryChange} />
         </Section>
       </Box>
     </Grid>

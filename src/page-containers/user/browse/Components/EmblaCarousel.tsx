@@ -1,9 +1,12 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { EmblaCarouselType, EmblaOptionsType } from "embla-carousel";
+import React, { useCallback, useEffect, useRef } from "react";
+import { EmblaCarouselType, EmblaEventType, EmblaOptionsType } from "embla-carousel";
 import useEmblaCarousel from "embla-carousel-react";
-import { LazyLoadImage } from "./EmblaCarouselLazyLoadImage";
 import { NextButton, PrevButton, usePrevNextButtons } from "./EmblaCarouselArrowButtons";
 import { DotButton, useDotButton } from "./EmblaCarouselDotButton";
+
+const TWEEN_FACTOR_BASE = 0.84;
+
+const numberWithinRange = (number: number, min: number, max: number): number => Math.min(Math.max(number, min), max);
 
 type PropType = {
   slides: number[];
@@ -12,42 +15,70 @@ type PropType = {
 
 const EmblaCarousel: React.FC<PropType> = props => {
   const { slides, options } = props;
-  const [emblaRed, emblaApi] = useEmblaCarousel(options);
-  const [slidesInView, setSlidesInView] = useState<number[]>([]);
+  const [emblaRef, emblaApi] = useEmblaCarousel(options);
+  const tweenFactor = useRef(0);
 
   const { selectedIndex, scrollSnaps, onDotButtonClick } = useDotButton(emblaApi);
 
   const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } = usePrevNextButtons(emblaApi);
 
-  const updateSlidesInView = useCallback((emblaApi: EmblaCarouselType) => {
-    setSlidesInView(slidesInView => {
-      if (slidesInView.length === emblaApi.slideNodes().length) {
-        emblaApi.off("slidesInView", updateSlidesInView);
-      }
-      const inView = emblaApi.slidesInView().filter(index => !slidesInView.includes(index));
-      return slidesInView.concat(inView);
+  const setTweenFactor = useCallback((emblaApi: EmblaCarouselType) => {
+    tweenFactor.current = TWEEN_FACTOR_BASE * emblaApi.scrollSnapList().length;
+  }, []);
+
+  const tweenOpacity = useCallback((emblaApi: EmblaCarouselType, eventName?: EmblaEventType) => {
+    const engine = emblaApi.internalEngine();
+    const scrollProgress = emblaApi.scrollProgress();
+    const slidesInView = emblaApi.slidesInView();
+    const isScrollEvent = eventName === "scroll";
+
+    emblaApi.scrollSnapList().forEach((scrollSnap, snapIndex) => {
+      let diffToTarget = scrollSnap - scrollProgress;
+      const slidesInSnap = engine.slideRegistry[snapIndex];
+
+      slidesInSnap.forEach(slideIndex => {
+        if (isScrollEvent && !slidesInView.includes(slideIndex)) return;
+
+        if (engine.options.loop) {
+          engine.slideLooper.loopPoints.forEach(loopItem => {
+            const target = loopItem.target();
+
+            if (slideIndex === loopItem.index && target !== 0) {
+              const sign = Math.sign(target);
+
+              if (sign === -1) {
+                diffToTarget = scrollSnap - (1 + scrollProgress);
+              }
+              if (sign === 1) {
+                diffToTarget = scrollSnap + (1 - scrollProgress);
+              }
+            }
+          });
+        }
+
+        const tweenValue = 1 - Math.abs(diffToTarget * tweenFactor.current);
+        const opacity = numberWithinRange(tweenValue, 0, 1).toString();
+        emblaApi.slideNodes()[slideIndex].style.opacity = opacity;
+      });
     });
   }, []);
 
   useEffect(() => {
     if (!emblaApi) return;
 
-    updateSlidesInView(emblaApi);
-    emblaApi.on("slidesInView", updateSlidesInView);
-    emblaApi.on("reInit", updateSlidesInView);
-  }, [emblaApi, updateSlidesInView]);
+    setTweenFactor(emblaApi);
+    tweenOpacity(emblaApi);
+    emblaApi.on("reInit", setTweenFactor).on("reInit", tweenOpacity).on("scroll", tweenOpacity);
+  }, [emblaApi, tweenOpacity]);
 
   return (
     <div className="embla">
-      <div className="embla__viewport" ref={emblaRed}>
+      <div className="embla__viewport" ref={emblaRef}>
         <div className="embla__container">
           {slides.map(index => (
-            <LazyLoadImage
-              key={index}
-              index={index}
-              imgSrc={`https://picsum.photos/600/350?v=${index}`}
-              inView={slidesInView.indexOf(index) > -1}
-            />
+            <div className="embla__slide" key={index}>
+              <img className="embla__slide__img" src={`https://picsum.photos/600/350?v=${index}`} alt="Your alt text" />
+            </div>
           ))}
         </div>
       </div>

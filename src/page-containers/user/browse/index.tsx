@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 /* eslint-disable @next/next/no-img-element */
 "use client";
@@ -6,15 +7,14 @@ import MainPageLayout from "@/components/userLayout/MainPageLayout";
 import { useGetBrowseInfinite, useGetHomeContent } from "@/services/content";
 import { useGetContentCategory } from "@/services/contentCategory";
 import { ContentData, ContentHomeData } from "@/types/Content";
-
 import { ContentCategoryResponse } from "@/types/ContentCategory";
-import { getLocalStorage, removeLocalStorage } from "@/utils";
 import { Box, Flex } from "@radix-ui/themes";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import BrowserCategoryContentLayout from "./Components/BroswerCategoryContentLayout";
 import BrowserContentLayout from "./Components/BrowerCotentLayout";
 import HeaderCarousel from "./Components/HeaderCarousel";
+import ComponentsSidebar from "./Components/SideBar";
 
 const BrowsePage: React.FC = () => {
   const router = useRouter();
@@ -54,22 +54,6 @@ const BrowsePage: React.FC = () => {
   }, [params.get("category")]);
 
   useEffect(() => {
-    console.log(type);
-    const storeContentList = getLocalStorage("contentListPosition");
-    const targetElement = document.getElementById(`${storeContentList}`);
-    const storeHomeContent = getLocalStorage("home-content-id");
-
-    const targetContentElement = document.getElementById(`${storeHomeContent}`);
-    if (targetElement) {
-      targetElement.scrollIntoView({});
-      removeLocalStorage("contentListPosition");
-    } else if (targetContentElement) {
-      targetContentElement.scrollIntoView({});
-      removeLocalStorage("home-content-id");
-    }
-  }, [type]);
-
-  useEffect(() => {
     if (parentContainer.current && currentCategoryElement.current) {
       const remainingSpace = parentContainer?.current?.clientWidth - currentCategoryElement.current.offsetWidth;
       const spaceLeftAndRight = remainingSpace / 2;
@@ -94,6 +78,7 @@ const BrowsePage: React.FC = () => {
       };
     }
   }, [visibleItemIndex]);
+  
   const handleCategoryChange = (value: string) => {
     router.push(`?category=${value}${search ? `&search=${search}` : ""}`);
   };
@@ -110,55 +95,11 @@ const BrowsePage: React.FC = () => {
     <div>
       <HeaderCarousel />
       <MainPageLayout hideFooter={search ? true : false}>
-        <div className="relative w-full h-full pb-[52px]">
-          <Flex
-          style={{top:'5.3%',zIndex:10}}
-            className="p-3 w-full py-5 sticky overflow-auto gap-[7px] bg-white no-scrollbar scroll-smooth"
-            ref={parentContainer}
-          >
-            <div
-              onClick={() => {
-                handleCategoryChange("all");
-              }}
-              className={`cursor-pointer border-[#BDC7D5]  px-3 flex-0 flex-shrink-0  py-1 rounded-[160px] border ${
-                type == "all" ? "bg-[#FCE8EA] border-[#DD524C] " : "border-[#E4E4E4] hover:border-primary"
-              }     `}
-              {...(type === "all" && { ref: currentCategoryElement })}
-            >
-              <p style={{ color: type === "all" ? "#DA291C" : "#373A36" }}>All</p>
-            </div>
-            {contentCategories?.data?.map((data, index: number) => (
-              <div
-                key={index}
-                onClick={() => {
-                  handleCategoryChange(data?.slug);
-                }}
-                className={`cursor-pointer px-3  flex-0 flex-shrink-0 py-1 rounded-[160px] border border-[#BDC7D5] ${
-                  type === data.slug ? "bg-[#FCE8EA] border-[#DD524C]" : "border-[#E4E4E4] hover:border-primary"
-                }`}
-                {...(type === data.slug && { ref: currentCategoryElement })}
-              >
-                <div className="w-auto font-[500] text-[16px] flex space-between items-center">
-                  {data?.icon_url && (
-                    <img
-                      src={data?.icon_url}
-                      className={`w-[20px] mr-[10px] h-[20px] inline-block ${
-                        type === data.slug ? "text-blue-500" : "text-green-200"
-                      }`}
-                      alt="Category Icon"
-                    />
-                  )}
-                  <p style={{ color: type === data.slug ? "#DA291C" : "#373A36" }}>{data.name}</p>
-                </div>
-              </div>
-            ))}
-          </Flex>
+        <div className="relative w-full h-full ">
+          <ComponentsSidebar handleCategoryChange={handleCategoryChange} />
+
           {type === "all" && (!search || search === "") ? (
-            //  bg-[#F8F9FB]
-            <div
-              className="overflow-y-scroll no-scrollbar h-full  scroll-smooth"
-              id="content-list-container"
-            >
+            <div className="overflow-y-scroll no-scrollbar h-full  scroll-smooth" id="content-list-container">
               {homeContent?.data && homeContent?.data?.length !== 0 ? (
                 homeContent?.data?.map((contentData: ContentHomeData, index: number) => {
                   return (
@@ -173,21 +114,22 @@ const BrowsePage: React.FC = () => {
                           {contentData?.icon_url && (
                             <img src={contentData?.icon_url} className="w-[20px] mr-[10px] h-[20px] inline-block" />
                           )}
-                          <p>{contentData?.name}</p>
+                          <p className="text-[24px] lh-[32px]">{contentData?.name}</p>
                         </div>
-                        <p
-                          className="text-primary font-[600] ml-[5px] cursor-pointer"
+                        <button
+                          style={{ borderWidth: 0.9 }}
+                          className="px-10 py-3 rounded-[20px] border-2 text-[14px] border-black "
                           onClick={() => {
                             handleCategoryChange(contentData?.slug);
                           }}
                         >
                           Show More
-                        </p>
+                        </button>
                       </Flex>
                       <h1
                         className="
-                       ms-7
-                  text-[16px] text-[#4B5563] font-[400] px-[12px] mb-2
+                       ms-12
+                  text-[12px] text-[#373A36] font-[400] px-[12px] mb-2
                   "
                       >
                         Get a glimpse of what you can find on TEE-UP
