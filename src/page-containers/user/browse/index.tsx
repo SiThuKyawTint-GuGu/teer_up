@@ -268,8 +268,6 @@ const BrowsePage: React.FC = () => {
           )}
         </div>
       </MainPageLayout>
-
-      <Button onClick={() => router.push("/profile")}>Profile</Button>
     </div>
   );
 };
