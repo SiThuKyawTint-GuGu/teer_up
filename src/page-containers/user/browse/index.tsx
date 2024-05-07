@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 /* eslint-disable @next/next/no-img-element */
 "use client";
@@ -6,9 +7,7 @@ import MainPageLayout from "@/components/userLayout/MainPageLayout";
 import { useGetBrowseInfinite, useGetHomeContent } from "@/services/content";
 import { useGetContentCategory } from "@/services/contentCategory";
 import { ContentData, ContentHomeData } from "@/types/Content";
-
 import { ContentCategoryResponse } from "@/types/ContentCategory";
-import { getLocalStorage, removeLocalStorage } from "@/utils";
 import { Box, Flex } from "@radix-ui/themes";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useMemo, useRef, useState } from "react";
@@ -55,22 +54,6 @@ const BrowsePage: React.FC = () => {
   }, [params.get("category")]);
 
   useEffect(() => {
-    console.log(type);
-    const storeContentList = getLocalStorage("contentListPosition");
-    const targetElement = document.getElementById(`${storeContentList}`);
-    const storeHomeContent = getLocalStorage("home-content-id");
-
-    const targetContentElement = document.getElementById(`${storeHomeContent}`);
-    if (targetElement) {
-      targetElement.scrollIntoView({});
-      removeLocalStorage("contentListPosition");
-    } else if (targetContentElement) {
-      targetContentElement.scrollIntoView({});
-      removeLocalStorage("home-content-id");
-    }
-  }, [type]);
-
-  useEffect(() => {
     if (parentContainer.current && currentCategoryElement.current) {
       const remainingSpace = parentContainer?.current?.clientWidth - currentCategoryElement.current.offsetWidth;
       const spaceLeftAndRight = remainingSpace / 2;
@@ -95,6 +78,7 @@ const BrowsePage: React.FC = () => {
       };
     }
   }, [visibleItemIndex]);
+  
   const handleCategoryChange = (value: string) => {
     router.push(`?category=${value}${search ? `&search=${search}` : ""}`);
   };
@@ -112,57 +96,8 @@ const BrowsePage: React.FC = () => {
       <HeaderCarousel />
       <MainPageLayout hideFooter={search ? true : false}>
         <div className="relative w-full h-full ">
-          {/* <Flex
-            style={{ top: "5.3%", zIndex: 1 }}
-            className="p-3 w-full py-5 sticky overflow-auto gap-[7px] bg-white no-scrollbar scroll-smooth"
-            ref={parentContainer}
-          >
-            <div
-              onClick={() => {
-                handleCategoryChange("all");
-              }}
-              className={`cursor-pointer border-[#BDC7D5]  px-3 flex-0 flex-shrink-0  rounded-[160px] border ${
-                type == "all" ? "bg-[#FCE8EA] border-[#DD524C] " : "border-[#E4E4E4] hover:border-primary"
-              }     `}
-              {...(type === "all" && { ref: currentCategoryElement })}
-            >
-              <p className=" mt-3 px-3" style={{ color: type === "all" ? "#DA291C" : "#373A36" }}>
-                All
-              </p>
-            </div>
-            {contentCategories?.data?.map((data, index: number) => (
-              <div
-                key={index}
-                onClick={() => {
-                  handleCategoryChange(data?.slug);
-                }}
-                className={`cursor-pointer px-3  flex-0 flex-shrink-0 h-[40px]  rounded-[160px] border border-[#BDC7D5] ${
-                  type === data.slug ? "bg-[#FCE8EA] border-[#DD524C]" : "border-[#E4E4E4] hover:border-primary"
-                }`}
-                {...(type === data.slug && { ref: currentCategoryElement })}
-              >
-                <div className="w-auto font-[500] text-[16px] flex space-between items-center mt-3 px-3">
-                  {data?.icon_url && (
-                    <img
-                      src={data?.icon_url}
-                      className={`w-[20px] mr-[10px] h-[20px] inline-block ${
-                        type === data.slug ? "text-blue-500" : "text-green-200"
-                      }`}
-                      alt="Category Icon"
-                    />
-                  )}
-                  <p style={{ color: type === data.slug ? "#DA291C" : "#373A36" }}>{data.name}</p>
-                </div>
-              </div>
-            ))}
-          </Flex> */}
-          <ComponentsSidebar
-            handleCategoryChange={handleCategoryChange}
-            type={type}
-            contentCategories={contentCategories}
-            currentCategoryElement={currentCategoryElement}
-            parentContainer={parentContainer}
-          />
+          <ComponentsSidebar handleCategoryChange={handleCategoryChange} />
+
           {type === "all" && (!search || search === "") ? (
             <div className="overflow-y-scroll no-scrollbar h-full  scroll-smooth" id="content-list-container">
               {homeContent?.data && homeContent?.data?.length !== 0 ? (
