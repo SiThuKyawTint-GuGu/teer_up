@@ -8,11 +8,12 @@ import { navbarItems, NavbarType } from "@/shared/data/UserTabbar";
 import { UserProfileResponse } from "@/types/Profile";
 import { logout } from "@/utils/auth";
 import { cn } from "@/utils/cn";
-import { Box, Button, Heading } from "@radix-ui/themes";
+import { Box, Heading } from "@radix-ui/themes";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState, useTransition } from "react";
 import { mutate } from "swr";
+import { Button } from "../Button";
 
 type SidebarProps = {};
 
