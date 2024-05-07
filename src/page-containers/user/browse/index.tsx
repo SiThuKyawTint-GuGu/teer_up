@@ -15,7 +15,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import BrowserCategoryContentLayout from "./Components/BroswerCategoryContentLayout";
 import BrowserContentLayout from "./Components/BrowerCotentLayout";
 import HeaderCarousel from "./Components/HeaderCarousel";
-import { Button } from "@/components/ui/Button";
+import ComponentsSidebar from "./Components/SideBar";
 
 const BrowsePage: React.FC = () => {
   const router = useRouter();
@@ -112,9 +112,9 @@ const BrowsePage: React.FC = () => {
       <HeaderCarousel />
 
       <MainPageLayout hideFooter={search ? true : false}>
-        <div className="relative w-full h-full pb-[52px]">
-          <Flex
-            style={{ top: "5.3%", zIndex: 10 }}
+        <div className="relative w-full h-full ">
+          {/* <Flex
+            style={{ top: "5.3%", zIndex: 1 }}
             className="p-3 w-full py-5 sticky overflow-auto gap-[7px] bg-white no-scrollbar scroll-smooth"
             ref={parentContainer}
           >
@@ -122,12 +122,14 @@ const BrowsePage: React.FC = () => {
               onClick={() => {
                 handleCategoryChange("all");
               }}
-              className={`cursor-pointer border-[#BDC7D5]  px-3 flex-0 flex-shrink-0  py-1 rounded-[160px] border ${
+              className={`cursor-pointer border-[#BDC7D5]  px-3 flex-0 flex-shrink-0  rounded-[160px] border ${
                 type == "all" ? "bg-[#FCE8EA] border-[#DD524C] " : "border-[#E4E4E4] hover:border-primary"
               }     `}
               {...(type === "all" && { ref: currentCategoryElement })}
             >
-              <p style={{ color: type === "all" ? "#DA291C" : "#373A36" }}>All</p>
+              <p className=" mt-3 px-3" style={{ color: type === "all" ? "#DA291C" : "#373A36" }}>
+                All
+              </p>
             </div>
             {contentCategories?.data?.map((data, index: number) => (
               <div
@@ -135,12 +137,12 @@ const BrowsePage: React.FC = () => {
                 onClick={() => {
                   handleCategoryChange(data?.slug);
                 }}
-                className={`cursor-pointer px-3  flex-0 flex-shrink-0 py-1 rounded-[160px] border border-[#BDC7D5] ${
+                className={`cursor-pointer px-3  flex-0 flex-shrink-0 h-[40px]  rounded-[160px] border border-[#BDC7D5] ${
                   type === data.slug ? "bg-[#FCE8EA] border-[#DD524C]" : "border-[#E4E4E4] hover:border-primary"
                 }`}
                 {...(type === data.slug && { ref: currentCategoryElement })}
               >
-                <div className="w-auto font-[500] text-[16px] flex space-between items-center">
+                <div className="w-auto font-[500] text-[16px] flex space-between items-center mt-3 px-3">
                   {data?.icon_url && (
                     <img
                       src={data?.icon_url}
@@ -154,9 +156,15 @@ const BrowsePage: React.FC = () => {
                 </div>
               </div>
             ))}
-          </Flex>
+          </Flex> */}
+          <ComponentsSidebar
+            handleCategoryChange={handleCategoryChange}
+            type={type}
+            contentCategories={contentCategories}
+            currentCategoryElement={currentCategoryElement}
+            parentContainer={parentContainer}
+          />
           {type === "all" && (!search || search === "") ? (
-            //  bg-[#F8F9FB]
             <div className="overflow-y-scroll no-scrollbar h-full  scroll-smooth" id="content-list-container">
               {homeContent?.data && homeContent?.data?.length !== 0 ? (
                 homeContent?.data?.map((contentData: ContentHomeData, index: number) => {
@@ -172,21 +180,22 @@ const BrowsePage: React.FC = () => {
                           {contentData?.icon_url && (
                             <img src={contentData?.icon_url} className="w-[20px] mr-[10px] h-[20px] inline-block" />
                           )}
-                          <p>{contentData?.name}</p>
+                          <p className="text-[24px] lh-[32px]">{contentData?.name}</p>
                         </div>
-                        <p
-                          className="text-primary font-[600] ml-[5px] cursor-pointer"
+                        <button
+                          style={{ borderWidth: 0.9 }}
+                          className="px-10 py-3 rounded-[20px] border-2 text-[14px] border-black "
                           onClick={() => {
                             handleCategoryChange(contentData?.slug);
                           }}
                         >
                           Show More
-                        </p>
+                        </button>
                       </Flex>
                       <h1
                         className="
-                       ms-7
-                  text-[16px] text-[#4B5563] font-[400] px-[12px] mb-2
+                       ms-12
+                  text-[12px] text-[#373A36] font-[400] px-[12px] mb-2
                   "
                       >
                         Get a glimpse of what you can find on TEE-UP
