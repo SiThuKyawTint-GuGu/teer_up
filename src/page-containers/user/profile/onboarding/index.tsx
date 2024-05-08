@@ -6,6 +6,9 @@ import { ContentData } from "@/types/Content";
 import { getLocalStorage } from "@/utils";
 import { useRouter } from "next/navigation";
 
+import Modal from "@/components/ui/Modal";
+import { Text } from "@/components/ui/Typo/Text";
+import { Flex } from "@radix-ui/themes";
 import { useEffect, useState, useTransition } from "react";
 import ContentStart from "../../content/components/ContentStart";
 import Onboarding from "../../content/components/Onboarding";
@@ -13,6 +16,7 @@ import SecondStartPage from "../../content/components/SecondStartPage";
 
 const OnboardingQuestionPage = () => {
   const [showStart, setShowStart] = useState<boolean>(false);
+  const [openModal, setOpenModal] = useState<boolean>(false);
   const { data: onboardingArray } = useGetOnboardingQuestions({
     page: 1,
     pagesize: 25,
@@ -64,18 +68,19 @@ const OnboardingQuestionPage = () => {
                 disabled={ispending}
                 className="text-center w-full py-4 text-primary"
                 onClick={() => {
-                  skipOnboarding(
-                    {
-                      skip: true,
-                    },
-                    {
-                      onSuccess: () => {
-                        startTransition(() => {
-                          router.push("/profile");
-                        });
-                      },
-                    }
-                  );
+                  setOpenModal(true);
+                  // skipOnboarding(
+                  //   {
+                  //     skip: true,
+                  //   },
+                  //   {
+                  //     onSuccess: () => {
+                  //       startTransition(() => {
+                  //         router.push("/profile");
+                  //       });
+                  //     },
+                  //   }
+                  // );
                 }}
               >
                 Skip
@@ -83,6 +88,56 @@ const OnboardingQuestionPage = () => {
             </div>
           ))}
         </div>
+      )}
+      {openModal && (
+        <Modal
+          onClose={() => {
+            setOpenModal(false);
+          }}
+        >
+          <div className="w-[380px] p-5 z-[99999999] bg-white rounded-md">
+            <div className="w-full overflow-y-scroll no-scrollbar">
+              <div className="text-center w-full">
+                <Text className="text-[20px] font-[700] text-center mb-5" as="div">
+                  Skip This Step
+                </Text>
+                <p>Are you sure want to skip?</p>
+              </div>
+              <Flex gap="4">
+                <Button
+                  className="w-full mt-5 p-2 px-4 text-primary"
+                  size="sm"
+                  variant="outline"
+                  onClick={() => {
+                    setOpenModal(false);
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  className="w-full mt-5 p-2 px-4"
+                  size="sm"
+                  onClick={() => {
+                    skipOnboarding(
+                      {
+                        skip: true,
+                      },
+                      {
+                        onSuccess: () => {
+                          startTransition(() => {
+                            router.push("/profile");
+                          });
+                        },
+                      }
+                    );
+                  }}
+                >
+                  Next
+                </Button>
+              </Flex>
+            </div>
+          </div>
+        </Modal>
       )}
     </div>
   );
