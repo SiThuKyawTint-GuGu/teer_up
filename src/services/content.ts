@@ -79,6 +79,28 @@ export const useGetBrowseInfinite = ({
   );
 };
 
+export const useGetContentHistoryInfinite = <ParamsType>(params?: ParamsType): SWRInfiniteResponse<any> => {
+  const getKey = (pageIndex: number, previousPageData: any) => {
+    // Use the previous page data to determine if this is the first request
+    if (previousPageData) return null;
+
+    // Return the API endpoint with the page index
+    return `/user/content/history?${routeFilter(params)}`;
+  };
+  return useSWRInfinite<any>(getKey, {
+    revalidateFirstPage: true,
+    revalidateAll: true,
+    revalidateIfStale: true,
+    revalidateOnFocus: true,
+    revalidateOnReconnect: true,
+    parallel: true,
+  });
+};
+
+export const useGetContentHistory = <ParamsType>(params?: ParamsType): SWRResponse<any, any> => {
+  return useSWR<any>(`/user/content/history?${routeFilter(params)}`);
+};
+
 export const useGetHomeContent = <ContentType>(params?: ParamsType): SWRResponse<ContentType, any> => {
   return useSWR<ContentType>(`content/browse/all?${routeFilter(params)}`);
 };

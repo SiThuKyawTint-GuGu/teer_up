@@ -53,3 +53,26 @@ export interface SavedContentResponse {
 export interface UnfinishedPathwayResponse {
   data: UnfinishedPathway[];
 }
+
+export interface ContentHistoryData {
+  id: number;
+  title: string;
+  description: string;
+  created_at: string;
+  type: string;
+  updated_at: string;
+  image_url: string;
+  user_id: number;
+  slug: string;
+  status: string;
+  category_id: number | null;
+  mentor_id: number | null;
+  submit_label: string | null;
+}
+
+export interface ContentHistoryResponse {
+  current_page: number;
+  per_page: number;
+  order: string;
+  data: ContentHistoryData[];
+}
