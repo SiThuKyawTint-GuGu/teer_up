@@ -28,7 +28,6 @@ interface Props {
 }
 
 const validationSchema = yup.object({
-  // image_url: yup.string().required("Image is required!"),
   external_link: yup.string().required("Link is required!"),
   is_active: yup.boolean().required("Status is required!"),
 });
@@ -40,11 +39,9 @@ const BannerDetail = ({ id }: Props) => {
   const { data: banner, mutate } = useGetBannerById<SingleBannerDataResponse>(id);
 
   const [imgProgress, setImgProgress] = useState<number>();
-  const [shouldUpdate, setShouldUpdate] = useState<boolean>(true);
+
   const [imgUrl, setImgUrl] = useState<string>("");
   const [imgRes, setImgRes] = useState<any>();
-  const [name, setName] = useState<string>("");
-  const [link, setLink] = useState<string>("");
 
   const { trigger: fileTrigger, isMutating: fileMutating } = usePostFile();
 
@@ -54,6 +51,7 @@ const BannerDetail = ({ id }: Props) => {
     control,
     setValue,
     getValues,
+    watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(validationSchema),
@@ -61,10 +59,6 @@ const BannerDetail = ({ id }: Props) => {
 
   useEffect(() => {
     if (banner?.data) {
-      if (banner?.data?.external_link_url) {
-        setName(banner?.data?.external_link_url);
-      }
-
       if (banner?.data?.image_url) {
         setImgUrl(banner?.data?.image_url);
       }
@@ -139,26 +133,16 @@ const BannerDetail = ({ id }: Props) => {
         )}
 
         <div className="mb-10">
-          {link ? (
-            <TextField
-              InputLabelProps={{ shrink: !!link }}
-              {...register("external_link")}
-              label="Link"
-              id="link"
-              defaultValue={link}
-              className="w-full"
-              variant="outlined"
-            />
-          ) : (
-            <TextField
-              {...register("external_link")}
-              label="Link"
-              id="link"
-              defaultValue={link}
-              className="w-full"
-              variant="outlined"
-            />
-          )}
+          <TextField
+            InputLabelProps={{ shrink: !!watch("external_link") }}
+            {...register("external_link")}
+            label="Link"
+            id="link"
+            defaultValue={""}
+            className="w-full"
+            variant="outlined"
+          />
+
           <p className="mt-2 text-red-700">{errors.external_link?.message}</p>
         </div>
 
@@ -211,9 +195,6 @@ const BannerDetail = ({ id }: Props) => {
             </div>
           )}
         </div>
-        {/*
-        <div className="flex justify-between">
-          <div></div> */}
         <div className="pt-6">
           {banner?.data ? (
             <LoadingButton
@@ -228,7 +209,7 @@ const BannerDetail = ({ id }: Props) => {
             </LoadingButton>
           ) : (
             <LoadingButton
-              // loading={postMutating}
+              loading={bannerMutating}
               loadingPosition="start"
               startIcon={<SaveIcon />}
               variant="contained"
@@ -239,7 +220,6 @@ const BannerDetail = ({ id }: Props) => {
             </LoadingButton>
           )}
         </div>
-        {/* </div> */}
       </form>
     </>
   );
