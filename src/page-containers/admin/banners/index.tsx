@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Button, IconButton, Modal, Tooltip, Typography } from "@mui/material";
+import { Badge, Box, Button, Chip, IconButton, Modal, Tooltip, Typography } from "@mui/material";
 import { MRT_Row, MaterialReactTable, useMaterialReactTable } from "material-react-table";
 import { useEffect, useMemo, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -64,6 +64,12 @@ export default function Banner() {
             className="object-cover"
           />
         ),
+      },
+      {
+        accessorKey: "is_active",
+        header: "Active Status",
+        Cell: ({ row }: any) =>
+          row.original.is_active ? <Chip label="Active" color="success" /> : <Chip label="Inactive" />,
       },
       {
         accessorKey: "external_link_url",

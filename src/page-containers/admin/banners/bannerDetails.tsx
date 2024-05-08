@@ -75,6 +75,7 @@ const BannerDetail = ({ id }: Props) => {
 
       if (banner?.data?.is_active) {
         setValue("is_active", banner?.data?.is_active);
+        console.log("isactive", banner?.data?.is_active);
       }
     }
   }, [banner?.data, setValue]);
@@ -167,7 +168,7 @@ const BannerDetail = ({ id }: Props) => {
           render={({ field, fieldState: { error } }) => (
             <div>
               <FormControlLabel
-                control={<Checkbox {...field} checked={getValues("is_active")} />}
+                control={<Checkbox {...field} checked={getValues("is_active") || false} />}
                 label="Active Status"
               />
 
@@ -186,7 +187,12 @@ const BannerDetail = ({ id }: Props) => {
               color="error"
             >
               Upload Image
-              <VisuallyHiddenInput accept="image/*" onChange={handleImageChange} type="file" />
+              <VisuallyHiddenInput
+                accept="image/*"
+                onChange={handleImageChange}
+                type="file"
+                {...(imgUrl ? { required: false } : { required: true })}
+              />
             </MuiButton>
             <p className="mt-3">Please upload 4:3 ratio</p>
             {imgProgress && <ProgressBar progress={imgProgress} />}
