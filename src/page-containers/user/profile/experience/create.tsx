@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/Button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form";
 import { Icons } from "@/components/ui/Images";
-import { InputText } from "@/components/ui/Inputs";
+import { InputText, InputTextAreaBgWhite } from "@/components/ui/Inputs";
 import { Checkbox } from "@/components/ui/Inputs/Checkbox";
 import { Text } from "@/components/ui/Typo/Text";
 import { useCreateExperiences } from "@/services/experience";
@@ -15,6 +15,9 @@ import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
+import { Select, SelectTrigger, SelectContent, SelectItem } from "@/components/ui/Inputs/Select";
+
+
 
 const validationSchema = yup.object({
   company: yup.string().required("School is required!"),
@@ -45,6 +48,9 @@ const CreateExperience: React.FC = () => {
     });
   };
 
+   const jobType = ["Full Time", "Part Time"];
+   const locationList = ["Yangon , Myanmar", "Mandalay , Myanmar"];
+
   return (
     <>
       <Form {...form}>
@@ -68,35 +74,19 @@ const CreateExperience: React.FC = () => {
 
             <Box className="pb-[0px]">
               <Section className="bg-white" py="4" px="3">
-                <Heading as="h6" size="2" weight="medium" align="left" mb="2">
-                  Company
-                </Heading>
-                <FormField
-                  control={form.control}
-                  name="company"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <InputText type="text" inputType={USER_ROLE.STUDENT} placeholder="Company Name" {...field} />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-              </Section>
-            </Box>
-
-            <Box className="pb-[0px]">
-              <Section className="bg-white" py="4" px="3">
-                <Heading as="h6" size="2" weight="medium" align="left" mb="2">
-                  Position
-                </Heading>
+                <p className="text-[14px] font-[400] text-[#222222] ms-3">Job Title</p>
                 <FormField
                   control={form.control}
                   name="position"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <InputText type="text" inputType={USER_ROLE.STUDENT} placeholder="Position" {...field} />
+                        <InputText
+                          type="text"
+                          inputType={USER_ROLE.STUDENT}
+                          placeholder="Enter your job title"
+                          {...field}
+                        />
                       </FormControl>
                     </FormItem>
                   )}
@@ -106,32 +96,60 @@ const CreateExperience: React.FC = () => {
 
             <Box className="pb-[0px]">
               <Section className="bg-white" py="4" px="3">
-                {/* <Heading as="h6" size="2" weight="medium" align="left" mb="2">
-                  Start Date
-                </Heading>
+                <p className="text-[14px] font-[400] text-[#222222] ms-3">Employment type</p>
                 <FormField
                   control={form.control}
-                  name="start_date"
-                  defaultValue={new Date()}
+                  name="company"
+                  render={({ field }) => (
+                    <FormItem>
+                      <Select
+                      // onValueChange={(value: string) => {
+                      //   handleInput(inputData.id, value);
+                      // }}
+                      // defaultValue={inputData.input_options[0].value}
+                      >
+                        <SelectTrigger className="border-none outline-none shadow-md bg-white border-gray-700 ">
+                          Full Time / Part Time
+                        </SelectTrigger>
+                        <SelectContent className="bg-white">
+                          {jobType.map((dropdown, index) => (
+                            <SelectItem key={index} value={dropdown}>
+                              <Text>{dropdown}</Text>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+              </Section>
+            </Box>
+
+            <Box className="pb-[0px]">
+              <Section className="bg-white" py="4" px="3">
+                <p className="text-[14px] font-[400] text-[#222222] ms-3">Company name</p>
+                <FormField
+                  control={form.control}
+                  name="company"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <CardBox className="px-[12px] py-[16px] flex justify-between items-center">
-                          <ReactDatePicker
-                            selected={dayjs(field.value).toDate()}
-                            onChange={date => field.onChange(dayjs(date).format())}
-                            dateFormat="dd/MM/yyyy"
-                            className="w-full bg-white"
-                          />
-                          <Icons.calender />
-                        </CardBox>
+                        <InputText
+                          type="text"
+                          inputType={USER_ROLE.STUDENT}
+                          placeholder="Enter company Name"
+                          {...field}
+                        />
                       </FormControl>
                     </FormItem>
                   )}
-                /> */}
-                <Heading as="h6" size="4" align="left" mb="4">
-                  Start Date
-                </Heading>
+                />
+              </Section>
+            </Box>
+
+            <Box className="pb-[0px]">
+              <Section className="bg-white" py="4" px="3">
+                <p className="text-[14px] font-[400] text-[#222222] ms-3">From date</p>
                 <FormField
                   control={form.control}
                   name="start_date"
@@ -153,18 +171,46 @@ const CreateExperience: React.FC = () => {
                 />
               </Section>
             </Box>
+
+            <Box className="pb-[0px]">
+              <Section className="bg-white" py="4" px="3">
+                <p className="text-[14px] font-[400] text-[#222222] ms-3">To date</p>
+                <FormField
+                  control={form.control}
+                  name="start_date"
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <FormControl>
+                          <input
+                            type="date"
+                            className={cn(
+                              "font-light shadow-md bg-white border-0 text-black w-full h-[40px] p-3 outline-none"
+                            )}
+                            {...field}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    );
+                  }}
+                />
+              </Section>
+            </Box>
+
             <Box className="pb-[0px]">
               <Section className="bg-white" py="4" px="3">
                 <Flex className="items-center">
                   <Checkbox defaultChecked={isPresent} onCheckedChange={() => setIsPresent(!isPresent)} />
-                  <Text className="pl-2">Present</Text>
+                  <Text className="pl-2">
+                    <Text className="pl-2">I currently work here</Text>
+                  </Text>
                 </Flex>
               </Section>
             </Box>
-            {!isPresent && (
+            {/* {!isPresent && (
               <Box className="pb-[7px]">
                 <Section className="bg-white" py="4" px="3">
-                  {/* <Heading as="h6" size="2" weight="medium" align="left" mb="2">
+                  <Heading as="h6" size="2" weight="medium" align="left" mb="2">
                   End Date
                 </Heading>
                 <FormField
@@ -186,7 +232,7 @@ const CreateExperience: React.FC = () => {
                       </FormControl>
                     </FormItem>
                   )}
-                /> */}
+                />
                   <Heading as="h6" size="4" align="left" mb="4">
                     End Date
                   </Heading>
@@ -211,7 +257,60 @@ const CreateExperience: React.FC = () => {
                   />
                 </Section>
               </Box>
-            )}
+            )} */}
+
+            <Box className="pb-[0px]">
+              <Section className="bg-white" py="4" px="3">
+                <p className="text-[14px] font-[400] text-[#222222] ms-3">Location</p>
+                <FormField
+                  control={form.control}
+                  name="position"
+                  render={({ field }) => (
+                    <FormItem>
+                      <Select
+                      // onValueChange={(value: string) => {
+                      //   handleInput(inputData.id, value);
+                      // }}
+                      // defaultValue={inputData.input_options[0].value}
+                      >
+                        <SelectTrigger className="border-none outline-none shadow-md bg-white border-gray-700 ">
+                          Yangon , Myanmar
+                        </SelectTrigger>
+                        <SelectContent className="bg-white">
+                          {locationList.map((dropdown, index) => (
+                            <SelectItem key={index} value={dropdown}>
+                              <Text>{dropdown}</Text>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+              </Section>
+            </Box>
+
+            <Box className="pb-[0px]">
+              <Section className="bg-white" py="4" px="3">
+                <p className="text-[14px] font-[400] text-[#222222] ms-2">Description (optional)</p>
+                <FormField
+                  control={form.control}
+                  name="company"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <InputTextAreaBgWhite
+                          type="text"
+                          inputType={USER_ROLE.STUDENT}
+                          placeholder="Describe your work experience"
+                          {...field}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </Section>
+            </Box>
 
             <Box className="pb-[7px]">
               <Section py="4" px="3">
