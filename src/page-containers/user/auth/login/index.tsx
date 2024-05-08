@@ -61,7 +61,7 @@ const Login: React.FC = () => {
             </Heading>
             <Text weight="light">An OTP code will be sent to your email</Text>
           </Flex>
-          {error && <div className="text-primary">{error.response.data.message}</div>}
+          {error && <div className="text-primary">{error?.response?.data?.message || "An error occured"}</div>}
           <div className="space-y-[10px]">
             <Form {...form}>
               <form
@@ -100,13 +100,10 @@ const Login: React.FC = () => {
                   <Checkbox onCheckedChange={(val: boolean) => setChecked(val)} />
                   <Text className="space-x-[5px]" as="div" weight="light" size="2">
                     <Text as="span">By clicking &#34;Next&#34;, I have read, understood, and given my</Text>
-                    <DialogTrigger className="p-0 h-auto text-primary font-bold">
-                      consent
-                      <Button type="button" className="p-0 h-auto" variant="link"></Button>
-                    </DialogTrigger>
+                    <DialogTrigger className="p-0 h-auto text-primary font-bold">consent</DialogTrigger>
                     <Text as="span">and accepted the</Text>
                     <Link href="/support/terms-of-use">
-                      <Button className="p-0 h-auto font-bold font-medium" variant="link">
+                      <Button className="p-0 h-auto font-bold" variant="link">
                         Terms of Use
                       </Button>
                     </Link>

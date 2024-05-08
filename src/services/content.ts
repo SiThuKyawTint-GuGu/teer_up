@@ -1,6 +1,7 @@
 "use client";
 import appAxios from "@/lib/appAxios";
 import { CommentResponse, PathwayProgress } from "@/types/Content";
+
 import { routeFilter } from "@/utils";
 import useSWR, { SWRResponse } from "swr";
 import useSWRInfinite, { SWRInfiniteResponse } from "swr/infinite";
@@ -77,6 +78,30 @@ export const useGetBrowseInfinite = ({
       parallel: false,
     }
   );
+};
+
+export const useGetContentHistoryInfinite = <ParamsType>(params?: ParamsType): SWRInfiniteResponse<any> => {
+  const getKey = (pageIndex: number, previousPageData: any) => {
+    // Use the previous page data to determine if this is the first request
+    if (previousPageData) return null;
+
+    // Return the API endpoint with the page index
+    return `/user/content/history?${routeFilter(params)}`;
+  };
+  return useSWRInfinite<any>(getKey, {
+    revalidateFirstPage: true,
+    revalidateAll: true,
+    revalidateIfStale: true,
+    revalidateOnFocus: true,
+    revalidateOnReconnect: true,
+    parallel: true,
+  });
+};
+
+export const useGetContentHistory = <ParamsType, ContentHistoryType>(
+  params?: ParamsType
+): SWRResponse<ContentHistoryType, any> => {
+  return useSWR<ContentHistoryType>(`/user/content/histories?${routeFilter(params)}`);
 };
 
 export const useGetHomeContent = <ContentType>(params?: ParamsType): SWRResponse<ContentType, any> => {
