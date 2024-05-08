@@ -5,15 +5,19 @@ import CardBox from "@/components/ui/Card";
 import { DialogTrigger } from "@/components/ui/Dialog";
 import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
-import { CONTENT_HISTORY_TYPES } from "@/services/content";
+import fetcher from "@/lib/fetcher";
+import { CONTENT_HISTORY_TYPES, ParamsType, useGetContentHistory } from "@/services/content";
+import { ContentHistoryData, ContentHistoryResponse } from "@/types/SavedContent";
 import { trimmedText } from "@/utils";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import useSWRInfinite from "swr/infinite";
 import ContentFilterDialog, { filterNames } from "./components/ContentFilterDialog";
+import Loading from "@/app/loading";
 dayjs.extend(relativeTime);
 
 type ContentType = {
@@ -79,6 +83,23 @@ const demoData: ContentType[] = [
 const ContentHistoryPage: React.FC = () => {
   const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
+  const [pageIndex, setPageIndex] = useState(1);
+  const [content, setContent] = useState<ContentHistoryData[]>();
+  const {
+    data: contentHistory,
+    error,
+    isLoading,
+  } = useGetContentHistory<ParamsType, ContentHistoryResponse>({
+    page: pageIndex,
+  });
+
+  useEffect(() => {
+    setContent(prev => {
+      if (!contentHistory?.data) return prev;
+      return prev ? [...prev, ...contentHistory?.data] : contentHistory?.data;
+    });
+  }, [contentHistory?.data]);
+
   const [filteredType, setFilterTypes] = useState<
     {
       key: CONTENT_HISTORY_TYPES;
@@ -163,37 +184,44 @@ const ContentHistoryPage: React.FC = () => {
 
           <Box className="pb-[50px] pt-[20px]">
             <Section className="" py="4" px="3">
-              {demoData.length ? (
-                demoData.map((each, key) => (
-                  <Box key={key} pb="4">
-                    <CardBox
-                      className="p-[8px] bg-white cursor-pointer overflow-hidden shadow-lg"
-                      onClick={() => router.push(`/content/${each?.id}`)}
-                    >
-                      <Flex justify="start" align="start">
-                        {/* <BGImage width="128px" height="100px" className="rounded-[4px] mr-2" url={each?.image} /> */}
-                        <Image
-                          src={each?.image}
-                          width={128}
-                          height={100}
-                          className="rounded-[4px] mr-2"
-                          alt="
-                        content thumbnail
-                        "
-                        />
-                        <Flex className="text-[#373A36] space-y-1 w-[calc(100%-160px)]" direction="column" wrap="wrap">
-                          <Text weight="medium">{trimmedText(each?.title, 100)}</Text>
-                          <Text size="2" weight="light" className="flex gap-2 items-baseline">
-                            <Text as="span" className="text-sm">
-                              {each?.type}
+              {content ? (
+                <>
+                  {content.map((each: ContentHistoryData, key: number) => (
+                    <Box key={key} pb="4">
+                      <CardBox
+                        className="p-[8px] bg-white cursor-pointer overflow-hidden shadow-lg"
+                        onClick={() => router.push(`/content/${each?.slug}`)}
+                      >
+                        <Flex justify="start" align="start">
+                          {/* <BGImage width="128px" height="100px" className="rounded-[4px] mr-2" url={each?.image} /> */}
+                          <Image
+                            src={each?.image_url}
+                            width={128}
+                            height={100}
+                            className="rounded-[4px] mr-2 w-[128px] h-[100px] overflow-hidden object-cover"
+                            alt="content thumbnail"
+                          />
+                          <Flex
+                            className="text-[#373A36] space-y-1 w-[calc(100%-160px)]"
+                            direction="column"
+                            wrap="wrap"
+                          >
+                            <Text weight="medium">{trimmedText(each?.title, 100)}</Text>
+                            <Text size="2" weight="light" className="flex gap-2 items-baseline">
+                              <Text as="span" className="text-sm capitalize">
+                                {each?.type}
+                              </Text>
+                              <Text className="text-sm">{dayjs(each?.created_at).fromNow()}</Text>
                             </Text>
-                            <Text className="text-sm">{dayjs(each?.created_at).fromNow()}</Text>
-                          </Text>
+                          </Flex>
                         </Flex>
-                      </Flex>
-                    </CardBox>
-                  </Box>
-                ))
+                      </CardBox>
+                    </Box>
+                  ))}
+                  <Button variant="outline" className="" onClick={() => setPageIndex(prev => prev + 1)}>
+                    Load more
+                  </Button>
+                </>
               ) : (
                 <>
                   <NotFound

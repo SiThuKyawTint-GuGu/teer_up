@@ -19,9 +19,8 @@ import { UserOnboardingStatusResponse } from "@/types/User";
 import { setLocalStorage } from "@/utils";
 import { getUserInfo } from "@/utils/auth";
 import { Box, Flex, Grid, Heading, Section, Tabs } from "@radix-ui/themes";
-import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { ChangeEvent, useState, useTransition } from "react";
+import { ChangeEvent, useEffect, useState, useTransition } from "react";
 import CareerMuscles from "./CareerMuscles";
 import PersonalDetails from "./PersonalDetails";
 import ProfilePhotoModal from "./ProfilePhotoModal";
@@ -55,6 +54,11 @@ const Profile: React.FC = () => {
   const { data: getOnboardingStatus } = useGetUserOnboardingStatus<UserOnboardingStatusResponse>();
 
   const { trigger: resetScores, isMutating: scoresLoading } = useResetScores();
+
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const userProfile = profileData?.data;
   const handleUploadImage = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -117,127 +121,130 @@ const Profile: React.FC = () => {
       : userProfile?.profile_url
       ? profileEditTrigger[triggerType as PROFILE_TRIGGER]
       : profileCreateTrigger[triggerType as PROFILE_TRIGGER];
-  return (
-    <>
-      <ProfilePhotoModal
-        open={open}
-        setOpen={setOpen}
-        viewImage={viewImage}
-        setViewImage={setViewImage}
-        deleteModalOpen={deleteModalOpen}
-        setDeleteModalOpen={setDeleteModalOpen}
-        triggerType={triggerType as PROFILE_TRIGGER}
-        setTriggerType={setTriggerType}
-        isPending={isPending}
-        handleDeletePhoto={handleDeletePhoto}
-        handleUploadImage={handleUploadImage}
-        showEditDeleteProilPhoto={showEditDeleteProilPhoto as boolean}
-        showEditDeleteCoverPhoto={showEditDeleteCoverPhoto as boolean}
-        CreateUpdateLabelForPhoto={CreateUpdateLabelForPhoto}
-        userProfile={{ data: userProfile } as UserProfileResponse}
-      >
-        <Grid columns="1">
-          <Box className="pb-[55px]">
-            <Box className="mb-[0px] rounded-none">
-              <Section className="pt-[40px]" pb="0" px="3" position="relative">
-                <DialogTrigger onClick={() => setTriggerType(PROFILE_TRIGGER.PROFILE)} className="w-full">
-                  <div className="grid place-items-center">
-                    {userProfile?.profile_url ? (
-                      <Flex
-                        justify="center"
-                        align="center"
-                        position="relative"
-                        className="w-[96px] h-[96px] rounded-full bg-primary bg-opacity-70 ring-4 ring-white"
-                        style={{
-                          background: `url(${userProfile?.profile_url}) center / cover`,
-                        }}
-                      >
-                        <Flex
-                          justify="center"
-                          align="center"
-                          className="absolute bottom-0 right-0 w-[30px] h-[30px] rounded-full bg-white  ring-2 ring-white"
-                        >
-                          <Icons.profileCamera className="w-[15] h-[15] text-primary" />
-                        </Flex>
-                      </Flex>
-                    ) : (
-                      <Flex
-                        justify="center"
-                        align="center"
-                        position="relative"
-                        className="w-[96px] h-[96px] rounded-full ring-4 ring-white bg-gradient-to-b from-white to-red-500 "
-                      >
-                        <Image
-                          className=""
-                          width={61}
-                          height={65}
-                          src="/uploads/icons/user-profile.svg"
-                          alt="user profile"
-                        />
-                        <Flex
-                          justify="center"
-                          align="center"
-                          className="absolute bottom-0 right-0 w-[30px] h-[30px] rounded-full bg-white shadow-profile ring-2 ring-white"
-                        >
-                          <Icons.profileCamera className="w-[15] h-[15] text-primary" />
-                        </Flex>
-                      </Flex>
-                    )}
-                  </div>
-                </DialogTrigger>
-                <Heading as="h4" className="text-center" size="6" my="4">
-                  {userProfile?.name}
-                </Heading>
-                <Text className="text-center">{userProfile?.bio}</Text>
-              </Section>
-            </Box>
-            <CardBox className="mb-[7px] rounded-none">
-              <Section className="" pt="4" pb="0">
-                <Tabs.Root defaultValue={(get("tab") ? get("tab") : "competency") ?? ""}>
-                  <Tabs.List className="space-x-[20px] px-3 flex justify-center mb-2">
-                    <Tabs.Trigger
-                      onClick={() => handleTabTrigger("competency")}
-                      className="tab-trigger cursor-pointer text-lg"
-                      value="competency"
-                    >
-                      Your Career Muscles
-                    </Tabs.Trigger>
-                    <Tabs.Trigger
-                      onClick={() => handleTabTrigger("personalDetails")}
-                      className="tab-trigger cursor-pointer text-lg"
-                      value="personalDetails"
-                    >
-                      Personal details
-                    </Tabs.Trigger>
-                  </Tabs.List>
-                  <Tabs.Content value="competency" className="space-y-[7px] p-2">
-                    <CareerMuscles
-                      userDimensionData={userDimensionData as UserDimensionResultResponse}
-                      statusLoading={statusLoading}
-                      getOnboardingStatus={getOnboardingStatus as UserOnboardingStatusResponse}
-                      scoresLoading={scoresLoading}
-                      handleContinueAssessment={handleContinueAssessment}
-                      handleRetakeAssessment={handleRetakeAssessment}
-                    />
-                  </Tabs.Content>
 
-                  <Tabs.Content value="personalDetails" className="p-2">
-                    <PersonalDetails
-                      user={user}
-                      userProfile={
-                        {
-                          data: userProfile,
-                        } as UserProfileResponse
-                      }
-                    />
-                  </Tabs.Content>
-                </Tabs.Root>
-              </Section>
-            </CardBox>
-          </Box>
-        </Grid>
-      </ProfilePhotoModal>
-    </>
+  return (
+    mounted && (
+      <>
+        <ProfilePhotoModal
+          open={open}
+          setOpen={setOpen}
+          viewImage={viewImage}
+          setViewImage={setViewImage}
+          deleteModalOpen={deleteModalOpen}
+          setDeleteModalOpen={setDeleteModalOpen}
+          triggerType={triggerType as PROFILE_TRIGGER}
+          setTriggerType={setTriggerType}
+          isPending={isPending}
+          handleDeletePhoto={handleDeletePhoto}
+          handleUploadImage={handleUploadImage}
+          showEditDeleteProilPhoto={showEditDeleteProilPhoto as boolean}
+          showEditDeleteCoverPhoto={showEditDeleteCoverPhoto as boolean}
+          CreateUpdateLabelForPhoto={CreateUpdateLabelForPhoto}
+          userProfile={{ data: userProfile } as UserProfileResponse}
+        >
+          <Grid columns="1">
+            <Box className="pb-[55px]">
+              <Box className="mb-[0px] rounded-none">
+                <Section className="pt-[40px]" pb="0" px="3" position="relative">
+                  <DialogTrigger onClick={() => setTriggerType(PROFILE_TRIGGER.PROFILE)} className="w-full">
+                    <div className="grid place-items-center">
+                      {userProfile?.profile_url ? (
+                        <Flex
+                          justify="center"
+                          align="center"
+                          position="relative"
+                          className="w-[96px] h-[96px] rounded-full bg-primary bg-opacity-70 ring-4 ring-white"
+                          style={{
+                            background: `url(${userProfile?.profile_url}) center / cover`,
+                          }}
+                        >
+                          <Flex
+                            justify="center"
+                            align="center"
+                            className="absolute bottom-0 right-0 w-[30px] h-[30px] rounded-full bg-white  ring-2 ring-white"
+                          >
+                            <Icons.profileCamera className="w-[15] h-[15] text-primary" />
+                          </Flex>
+                        </Flex>
+                      ) : (
+                        <Flex
+                          justify="center"
+                          align="center"
+                          position="relative"
+                          className="w-[96px] h-[96px] rounded-full ring-4 ring-white bg-gradient-to-b from-white to-red-500 "
+                        >
+                          <Image
+                            className=""
+                            width={61}
+                            height={65}
+                            src="/uploads/icons/user-profile.svg"
+                            alt="user profile"
+                          />
+                          <Flex
+                            justify="center"
+                            align="center"
+                            className="absolute bottom-0 right-0 w-[30px] h-[30px] rounded-full bg-white shadow-profile ring-2 ring-white"
+                          >
+                            <Icons.profileCamera className="w-[15] h-[15] text-primary" />
+                          </Flex>
+                        </Flex>
+                      )}
+                    </div>
+                  </DialogTrigger>
+                  <Heading as="h4" className="text-center" size="6" my="4">
+                    {userProfile?.name}
+                  </Heading>
+                  <Text className="text-center">{userProfile?.bio}</Text>
+                </Section>
+              </Box>
+              <CardBox className="mb-[7px] rounded-none">
+                <Section className="" pt="4" pb="0">
+                  <Tabs.Root defaultValue={(get("tab") ? get("tab") : "competency") ?? ""}>
+                    <Tabs.List className="space-x-[20px] px-3 flex justify-center mb-2">
+                      <Tabs.Trigger
+                        onClick={() => handleTabTrigger("competency")}
+                        className="tab-trigger cursor-pointer text-lg"
+                        value="competency"
+                      >
+                        Your Career Muscles
+                      </Tabs.Trigger>
+                      <Tabs.Trigger
+                        onClick={() => handleTabTrigger("personalDetails")}
+                        className="tab-trigger cursor-pointer text-lg"
+                        value="personalDetails"
+                      >
+                        Personal details
+                      </Tabs.Trigger>
+                    </Tabs.List>
+                    <Tabs.Content value="competency" className="space-y-[7px] p-2">
+                      <CareerMuscles
+                        userDimensionData={userDimensionData as UserDimensionResultResponse}
+                        statusLoading={statusLoading}
+                        getOnboardingStatus={getOnboardingStatus as UserOnboardingStatusResponse}
+                        scoresLoading={scoresLoading}
+                        handleContinueAssessment={handleContinueAssessment}
+                        handleRetakeAssessment={handleRetakeAssessment}
+                      />
+                    </Tabs.Content>
+
+                    <Tabs.Content value="personalDetails" className="p-2">
+                      <PersonalDetails
+                        user={user}
+                        userProfile={
+                          {
+                            data: userProfile,
+                          } as UserProfileResponse
+                        }
+                      />
+                    </Tabs.Content>
+                  </Tabs.Root>
+                </Section>
+              </CardBox>
+            </Box>
+          </Grid>
+        </ProfilePhotoModal>
+      </>
+    )
   );
 };
 export default Profile;
