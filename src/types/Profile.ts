@@ -75,6 +75,5 @@ export interface UserProfileResponse {
   [x: string]: any;
   personal_info: any;
   experiences: any;
-  experiences: any;
   data: UserProfile;
 }
