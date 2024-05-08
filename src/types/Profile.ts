@@ -53,6 +53,7 @@ export interface Industries {
 }
 
 export interface UserProfile {
+  phone: string | undefined;
   bio: string;
   cover_url: string;
   created_at: string;
@@ -71,5 +72,9 @@ export interface UserProfile {
 }
 
 export interface UserProfileResponse {
+  [x: string]: any;
+  personal_info: any;
+  experiences: any;
+  experiences: any;
   data: UserProfile;
 }

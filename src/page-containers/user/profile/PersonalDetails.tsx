@@ -26,9 +26,14 @@ function PersonalDetails({ user, userProfile: { data: userProfile } }: PersonalD
       </div>
       <CardBox className="mb-4 rounded-md ">
         <Section className="bg-white" py="4" px="3">
-          <Heading as="h6" size="4" align="left" mb="4">
-            Personal information
-          </Heading>
+          <div className="flex justify-between">
+            <Heading as="h6" size="4" align="left" mb="4">
+              Personal information
+            </Heading>
+            <Link href={`/profile/${user?.id}/personal-details`} className="ml-auto">
+              <p className="text-primary text-[16px] font-[600]">Edit</p>
+            </Link>
+          </div>
           <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
             <Flex justify="start" align="center" gap="2">
               <Image src="/uploads/icons/personal-profile.svg" width={16} height={16} alt="personal profile" />
@@ -62,17 +67,13 @@ function PersonalDetails({ user, userProfile: { data: userProfile } }: PersonalD
             <Heading as="h6" size="4" align="left">
               Job Experience
             </Heading>
-            {userProfile?.experiences?.length
-              ? userProfile?.experiences?.length > 2 && (
-                  <Text className="ml-auto">
-                    <Link href={`/profile/${user?.id}/experience`}>
-                      <Button variant="link" className="text-primary font-bold">
-                        See All
-                      </Button>
-                    </Link>
-                  </Text>
-                )
-              : null}
+            <Text className="ml-auto">
+              <Link href={`/profile/${user?.id}/experience`}>
+                <Button variant="link" className="text-primary font-bold">
+                  <p className="text-primary text-[16px] font-[600]">Edit</p>
+                </Button>
+              </Link>
+            </Text>
           </Flex>
           {userProfile?.experiences?.length ? (
             userProfile?.experiences?.slice(0, 2).map((each, key) => (
@@ -137,61 +138,58 @@ function PersonalDetails({ user, userProfile: { data: userProfile } }: PersonalD
             <Heading as="h6" size="4" align="left">
               Education
             </Heading>
-            {userProfile?.educations?.length
-              ? userProfile?.educations?.length > 2 && (
-                  <Text className="ml-auto">
-                    <Link href={`/profile/${user?.id}/education`}>
-                      <Button variant="link" className="text-primary font-bold">
-                        See All
-                      </Button>
-                    </Link>
-                  </Text>
-                )
-              : null}
+
+            <Text className="ml-auto">
+              <Link href={`/profile/${user?.id}/education`}>
+                <p className="text-primary text-[16px] font-[600] me-3">Edit</p>
+              </Link>
+            </Text>
           </Flex>
           {userProfile?.educations?.length ? (
             userProfile?.educations?.slice(0, 2).map((each, key) => (
-              <Flex
-                key={key}
-                justify="between"
-                align="start"
-                className={cn(
-                  key !== (userProfile?.educations ? userProfile.educations.slice(0, 2).length - 1 : -1) &&
-                    "border-b border-b-[#BDC7D5] pb-[10px] mb-[10px]"
-                )}
-              >
-                <Flex justify="start" align="start" gap="2">
-                  <Image src="/uploads/icons/education.svg" width={32} height={32} alt="experience" />
-                  <Flex direction="column" gap="2">
-                    <Text as="label" weight="bold" size="3">
-                      {each.degree}
-                    </Text>
-                    <Text size="2" weight="light">
-                      {each.school_name}
-                    </Text>
-                  </Flex>
-                </Flex>
-                <Flex justify="end" align="center" gap="1">
-                  <Text size="2" weight="light">
-                    {dayjs(each?.start_date).format("MMM, YYYY")}
-                  </Text>
-                  <Text size="2" weight="light">
-                    -
-                  </Text>
-                  {each?.is_present === true ? (
-                    <Text size="2" weight="light">
-                      {"Present"}
-                    </Text>
-                  ) : (
-                    <Text size="2" weight="light">
-                      {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "-"}
-                    </Text>
+              <>
+                <Flex
+                  key={key}
+                  justify="between"
+                  align="start"
+                  className={cn(
+                    key !== (userProfile?.educations ? userProfile.educations.slice(0, 2).length - 1 : -1) &&
+                      "border-b border-b-[#BDC7D5] pb-[10px] mb-[10px]"
                   )}
-                  {/* <Text size="2" weight="light">
+                >
+                  <Flex justify="start" align="start" gap="2">
+                    <Image src="/uploads/icons/education.svg" width={32} height={32} alt="experience" />
+                    <Flex direction="column" gap="2">
+                      <Text as="label" weight="bold" size="3">
+                        {each.degree}
+                      </Text>
+                      <Text size="2" weight="light">
+                        {each.school_name}
+                      </Text>
+                    </Flex>
+                  </Flex>
+                  <Flex justify="end" align="center" gap="1">
+                    <Text size="2" weight="light">
+                      {dayjs(each?.start_date).format("MMM, YYYY")}
+                    </Text>
+                    <Text size="2" weight="light">
+                      -
+                    </Text>
+                    {each?.is_present === true ? (
+                      <Text size="2" weight="light">
+                        {"Present"}
+                      </Text>
+                    ) : (
+                      <Text size="2" weight="light">
+                        {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "-"}
+                      </Text>
+                    )}
+                    {/* <Text size="2" weight="light">
                                     {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "present"}
                                   </Text> */}
+                  </Flex>
                 </Flex>
-              </Flex>
+              </>
             ))
           ) : (
             <Flex direction="column" justify="center" align="center">

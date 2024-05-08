@@ -15,6 +15,8 @@ import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
+import { Select, SelectTrigger, SelectContent, SelectItem } from "@/components/ui/Inputs/Select";
+
 
 const validationSchema = yup.object({
   school_name: yup.string().required("School is required!"),
@@ -45,14 +47,17 @@ const CreateEducation: React.FC = () => {
     });
   };
 
+  const educationalAttainmentOptions = ["High School Diploma", "Bachelor's Degree", "Master's Degree", "PhD"];
+  const locationList = ["Yangon , Myanmar", "Mandalay , Myanmar"];
+
   return (
     <>
       <Form {...form}>
         <form className="mx-auto flex flex-col justify-center gap-y-3 w-full" onSubmit={form.handleSubmit(submit)}>
-          <Grid columns="1" className="bg-[#F8F9FB]">
+          <Grid columns="1" className="">
             <div className="mb-[45px]">
               <div className="max-w-[400px] fixed top-0 z-10 w-full shadow-[0px_1px_9px_0px_rgba(0,_0,_0,_0.06)]">
-                <Flex justify="between" align="center" className="bg-white" p="3">
+                <Flex justify="between" align="center" className="" p="3">
                   <div className="cursor-pointer" onClick={() => router.back()}>
                     <Icons.back className="text-[#373A36] w-[23px] h-[23px]" />
                   </div>
@@ -67,22 +72,31 @@ const CreateEducation: React.FC = () => {
             </div>
 
             <Box className="pb-[0px]">
-              <Section className="bg-white" py="4" px="3">
-                <Heading as="h6" size="2" weight="medium" align="left" mb="2">
-                  School
-                </Heading>
+              <Section className="" py="4" px="3">
+                <p className="text-[14px] font-[400] text-[#222222] ms-3"> Educational Attainment</p>
                 <FormField
                   control={form.control}
-                  name="school_name"
+                  name="degree"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <InputText
-                          type="text"
-                          inputType={USER_ROLE.STUDENT}
-                          placeholder="Ex: Boston University"
-                          {...field}
-                        />
+                        <Select
+                        // onValueChange={(value: string) => {
+                        //   handleInput(inputData.id, value);
+                        // }}
+                        // defaultValue={inputData.input_options[0].value}
+                        >
+                          <SelectTrigger className="border-none outline-none shadow-md bg-white border-gray-700 ">
+                            Ex: Bachelor, Diploma
+                          </SelectTrigger>
+                          <SelectContent className="bg-white">
+                            {educationalAttainmentOptions.map((dropdown, index) => (
+                              <SelectItem key={index} value={dropdown}>
+                                <Text>{dropdown}</Text>
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       </FormControl>
                     </FormItem>
                   )}
@@ -91,10 +105,8 @@ const CreateEducation: React.FC = () => {
             </Box>
 
             <Box className="pb-[0px]">
-              <Section className="bg-white" py="4" px="3">
-                <Heading as="h6" size="2" weight="medium" align="left" mb="2">
-                  Degree
-                </Heading>
+              <Section className="" py="4" px="3">
+                <p className="text-[14px] font-[400] text-[#222222] ms-3">Major</p>
                 <FormField
                   control={form.control}
                   name="degree"
@@ -102,6 +114,7 @@ const CreateEducation: React.FC = () => {
                     <FormItem>
                       <FormControl>
                         <InputText
+                          className="bg-white"
                           type="text"
                           inputType={USER_ROLE.STUDENT}
                           placeholder="Ex: Bachelor, Diploma"
@@ -115,10 +128,31 @@ const CreateEducation: React.FC = () => {
             </Box>
 
             <Box className="pb-[0px]">
-              <Section className="bg-white" py="4" px="3">
-                <Heading as="h6" size="4" align="left" mb="4">
-                  Start Date
-                </Heading>
+              <Section className="" py="4" px="3">
+                <p className="text-[14px] font-[400] text-[#222222] ms-3">School</p>
+                <FormField
+                  control={form.control}
+                  name="school_name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <InputText
+                          className="bg-white"
+                          type="text"
+                          inputType={USER_ROLE.STUDENT}
+                          placeholder="Ex: Bachelor, Diploma"
+                          {...field}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </Section>
+            </Box>
+
+            <Box className="pb-[0px]">
+              <Section className="" py="4" px="3">
+                <p className="text-[14px] font-[400] text-[#222222] ms-3">From date</p>
                 <FormField
                   control={form.control}
                   name="start_date"
@@ -129,7 +163,7 @@ const CreateEducation: React.FC = () => {
                           <input
                             type="date"
                             className={cn(
-                              "font-light shadow-md bg-white border-0 text-black w-full h-[40px] p-3 outline-none"
+                              "font-light shadow-md bg-white border-0 text-black w-full h-[40px] p-3 outline-none rounded-md"
                             )}
                             {...field}
                           />
@@ -140,15 +174,41 @@ const CreateEducation: React.FC = () => {
                 />
               </Section>
             </Box>
+
             <Box className="pb-[0px]">
-              <Section className="bg-white" py="4" px="3">
+              <Section className="" py="4" px="3">
+                <p className="text-[14px] font-[400] text-[#222222] ms-3">To date</p>
+                <FormField
+                  control={form.control}
+                  name="start_date"
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <FormControl>
+                          <input
+                            type="date"
+                            className={cn(
+                              "font-light shadow-md bg-white border-0 text-black w-full h-[40px] p-3 outline-none rounded-md"
+                            )}
+                            {...field}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    );
+                  }}
+                />
+              </Section>
+            </Box>
+
+            <Box className="pb-[0px]">
+              <Section className="" py="4" px="3">
                 <Flex className="items-center">
                   <Checkbox defaultChecked={isPresent} onCheckedChange={() => setIsPresent(!isPresent)} />
-                  <Text className="pl-2">Present</Text>
+                  <Text className="pl-2">Currently Studying</Text>
                 </Flex>
               </Section>
             </Box>
-            {!isPresent && (
+            {/* {!isPresent && (
               <Box className="pb-[7px]">
                 <Section className="bg-white" py="4" px="3">
                   <Heading as="h6" size="4" align="left" mb="4">
@@ -175,7 +235,38 @@ const CreateEducation: React.FC = () => {
                   />
                 </Section>
               </Box>
-            )}
+            )} */}
+
+            <Box className="pt-[0px]">
+              <Section className="" py="4" px="3">
+                <p className="text-[14px] font-[400] text-[#222222] ms-3">Location</p>
+                <FormField
+                  control={form.control}
+                  name="degree"
+                  render={({ field }) => (
+                    <FormItem>
+                      <Select
+                      // onValueChange={(value: string) => {
+                      //   handleInput(inputData.id, value);
+                      // }}
+                      // defaultValue={inputData.input_options[0].value}
+                      >
+                        <SelectTrigger className="border-none outline-none shadow-md bg-white border-gray-700 ">
+                          Yangon , Myanmar
+                        </SelectTrigger>
+                        <SelectContent className="bg-white">
+                          {locationList.map((dropdown, index) => (
+                            <SelectItem key={index} value={dropdown}>
+                              <Text>{dropdown}</Text>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+              </Section>
+            </Box>
 
             <Box className="pb-[7px]">
               <Section py="4" px="3">

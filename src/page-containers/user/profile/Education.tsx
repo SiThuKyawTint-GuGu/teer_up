@@ -18,7 +18,7 @@ const Education: React.FC = () => {
       <Grid columns="1">
         <div className="mb-[45px]">
           <div className="max-w-[400px] fixed top-0 z-10 w-full shadow-[0px_1px_9px_0px_rgba(0,_0,_0,_0.06)]">
-            <Flex justify="between" align="center" className="bg-white" p="3">
+            <Flex justify="between" align="center" className="" p="3">
               <div className="cursor-pointer" onClick={() => router.back()}>
                 <Icons.back className="text-[#373A36] w-[23px] h-[23px]" />
               </div>
@@ -33,7 +33,7 @@ const Education: React.FC = () => {
         </div>
 
         <Box className="pb-[7px]">
-          <Section className="bg-white" py="4" px="3">
+          <Section className="" py="4" px="3">
             {educationList?.data?.map((each, key) => (
               <div
                 key={key}
@@ -43,11 +43,11 @@ const Education: React.FC = () => {
                 )}
               >
                 <Flex justify="between" align="start">
-                  <Flex direction="column" gap="2">
+                  <Flex direction="column" gap="1">
                     <Text as="label" weight="bold" size="3">
-                      {each.degree}
+                      {each.school_name}
                     </Text>
-                    <Text>{each.school_name}</Text>
+                    <Text>{each.degree}</Text>
                   </Flex>
                   <Link href={`/profile/${id}/education/${each.id}`}>
                     <Image src="/uploads/icons/pencil.svg" width={20} height={20} alt="pencil" />
