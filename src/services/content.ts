@@ -1,6 +1,7 @@
 "use client";
 import appAxios from "@/lib/appAxios";
 import { CommentResponse, PathwayProgress } from "@/types/Content";
+
 import { routeFilter } from "@/utils";
 import useSWR, { SWRResponse } from "swr";
 import useSWRInfinite, { SWRInfiniteResponse } from "swr/infinite";
@@ -97,8 +98,10 @@ export const useGetContentHistoryInfinite = <ParamsType>(params?: ParamsType): S
   });
 };
 
-export const useGetContentHistory = <ParamsType>(params?: ParamsType): SWRResponse<any, any> => {
-  return useSWR<any>(`/user/content/history?${routeFilter(params)}`);
+export const useGetContentHistory = <ParamsType, ContentHistoryType>(
+  params?: ParamsType
+): SWRResponse<ContentHistoryType, any> => {
+  return useSWR<ContentHistoryType>(`/user/content/histories?${routeFilter(params)}`);
 };
 
 export const useGetHomeContent = <ContentType>(params?: ParamsType): SWRResponse<ContentType, any> => {

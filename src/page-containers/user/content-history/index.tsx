@@ -6,8 +6,8 @@ import { DialogTrigger } from "@/components/ui/Dialog";
 import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import fetcher from "@/lib/fetcher";
-import { CONTENT_HISTORY_TYPES } from "@/services/content";
-import { ContentHistoryData } from "@/types/SavedContent";
+import { CONTENT_HISTORY_TYPES, ParamsType, useGetContentHistory } from "@/services/content";
+import { ContentHistoryData, ContentHistoryResponse } from "@/types/SavedContent";
 import { trimmedText } from "@/utils";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useMemo, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import ContentFilterDialog, { filterNames } from "./components/ContentFilterDialog";
+import Loading from "@/app/loading";
 dayjs.extend(relativeTime);
 
 type ContentType = {
@@ -82,75 +83,22 @@ const demoData: ContentType[] = [
 const ContentHistoryPage: React.FC = () => {
   const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
-  // const { data, error, isLoading } = useGetContentHistoryInfinite<ContentHistoryResponse>();
-
+  const [pageIndex, setPageIndex] = useState(1);
+  const [content, setContent] = useState<ContentHistoryData[]>();
   const {
-    data: contentHistoyData,
-    mutate,
+    data: contentHistory,
+    error,
     isLoading,
-    setSize,
-    isValidating,
-  } = useSWRInfinite(index => `/user/content/histories?page=${index + 1}&pagesize=${20}`, fetcher, {
-    revalidateFirstPage: false,
-    revalidateAll: false,
-    revalidateIfStale: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
-    parallel: false,
+  } = useGetContentHistory<ParamsType, ContentHistoryResponse>({
+    page: pageIndex,
   });
 
-  const issues: any = contentHistoyData ? [].concat(...contentHistoyData) : [];
-
-  const contentDataArray: any = useMemo(() => issues?.flatMap((page: any) => page?.data) || [], [issues]);
-
   useEffect(() => {
-    if (contentHistoyData) {
-      const lastPage = contentHistoyData[contentHistoyData.length - 1];
-      if (lastPage?.data?.length === 0) {
-        setSize(contentHistoyData.length - 1);
-      }
-    }
-  }, [contentHistoyData]);
-
-  const [visibleItemIndex, setVisibleItemIndex] = useState<number>(0);
-
-  const containerRef = React.useRef<HTMLDivElement>(null);
-
-  const handleScroll = () => {
-    if (!containerRef.current) return;
-    const { scrollTop, clientHeight, scrollHeight } = containerRef.current;
-    if (scrollTop + clientHeight >= scrollHeight) {
-      setSize(size => size + 1);
-    }
-  };
-
-  // useEffect(() => {
-  //   if (containerRef.current) {
-  //     const container = containerRef.current;
-  //     container.addEventListener("scroll", handleScroll);
-  //     return () => {
-  //       container.removeEventListener("scroll", handleScroll);
-  //     };
-  //   }
-  // }, [containerRef.current]);
-
-  useEffect(() => {
-    if (containerRef.current) {
-      const container = containerRef.current;
-      const handleScroll = () => {
-        const scrollPosition = container.scrollTop;
-        const newIndex = Math.round(scrollPosition / 400);
-        setVisibleItemIndex(newIndex);
-        if (container.scrollHeight - container.scrollTop - container.clientHeight < 1) {
-          setSize(s => s + 1);
-        }
-      };
-      container.addEventListener("scroll", handleScroll);
-      return () => {
-        container.removeEventListener("scroll", handleScroll);
-      };
-    }
-  }, [visibleItemIndex]);
+    setContent(prev => {
+      if (!contentHistory?.data) return prev;
+      return prev ? [...prev, ...contentHistory?.data] : contentHistory?.data;
+    });
+  }, [contentHistory?.data]);
 
   const [filteredType, setFilterTypes] = useState<
     {
@@ -212,7 +160,7 @@ const ContentHistoryPage: React.FC = () => {
       handleCheckFilter={handleCheckFilter}
     >
       <Grid columns="1">
-        <Box ref={containerRef}>
+        <Box>
           <div className="mb-[45px]">
             <div className="max-w-[400px] fixed w-full">
               <Flex justify="between" position="relative" className="bg-white" p="3">
@@ -236,37 +184,44 @@ const ContentHistoryPage: React.FC = () => {
 
           <Box className="pb-[50px] pt-[20px]">
             <Section className="" py="4" px="3">
-              {contentDataArray ? (
-                contentDataArray.map((each: ContentHistoryData, key: number) => (
-                  <Box key={key} pb="4">
-                    <CardBox
-                      className="p-[8px] bg-white cursor-pointer overflow-hidden shadow-lg"
-                      onClick={() => router.push(`/content/${each?.id}`)}
-                    >
-                      <Flex justify="start" align="start">
-                        {/* <BGImage width="128px" height="100px" className="rounded-[4px] mr-2" url={each?.image} /> */}
-                        <Image
-                          src={each?.image_url}
-                          width={128}
-                          height={100}
-                          className="rounded-[4px] mr-2"
-                          alt="
-                        content thumbnail
-                        "
-                        />
-                        <Flex className="text-[#373A36] space-y-1 w-[calc(100%-160px)]" direction="column" wrap="wrap">
-                          <Text weight="medium">{trimmedText(each?.title, 100)}</Text>
-                          <Text size="2" weight="light" className="flex gap-2 items-baseline">
-                            <Text as="span" className="text-sm">
-                              {each?.type}
+              {content ? (
+                <>
+                  {content.map((each: ContentHistoryData, key: number) => (
+                    <Box key={key} pb="4">
+                      <CardBox
+                        className="p-[8px] bg-white cursor-pointer overflow-hidden shadow-lg"
+                        onClick={() => router.push(`/content/${each?.slug}`)}
+                      >
+                        <Flex justify="start" align="start">
+                          {/* <BGImage width="128px" height="100px" className="rounded-[4px] mr-2" url={each?.image} /> */}
+                          <Image
+                            src={each?.image_url}
+                            width={128}
+                            height={100}
+                            className="rounded-[4px] mr-2 w-[128px] h-[100px] overflow-hidden object-cover"
+                            alt="content thumbnail"
+                          />
+                          <Flex
+                            className="text-[#373A36] space-y-1 w-[calc(100%-160px)]"
+                            direction="column"
+                            wrap="wrap"
+                          >
+                            <Text weight="medium">{trimmedText(each?.title, 100)}</Text>
+                            <Text size="2" weight="light" className="flex gap-2 items-baseline">
+                              <Text as="span" className="text-sm capitalize">
+                                {each?.type}
+                              </Text>
+                              <Text className="text-sm">{dayjs(each?.created_at).fromNow()}</Text>
                             </Text>
-                            <Text className="text-sm">{dayjs(each?.created_at).fromNow()}</Text>
-                          </Text>
+                          </Flex>
                         </Flex>
-                      </Flex>
-                    </CardBox>
-                  </Box>
-                ))
+                      </CardBox>
+                    </Box>
+                  ))}
+                  <Button variant="outline" className="" onClick={() => setPageIndex(prev => prev + 1)}>
+                    Load more
+                  </Button>
+                </>
               ) : (
                 <>
                   <NotFound
