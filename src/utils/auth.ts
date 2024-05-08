@@ -20,10 +20,10 @@ export interface JWT_DECODE {
 
 export const setUserInfo = (token: string, userInfo: User) => {
   const { exp } = jwt_decode(token) as any;
-  const expires = new Date();
-  expires.setDate(expires.getDate() + exp);
+  const expires = new Date(exp * 1000); // Convert to milliseconds
   const cipherUserInfo = CryptoJS.AES.encrypt(JSON.stringify(userInfo), "userInfo").toString();
   const cipherText = CryptoJS.AES.encrypt(JSON.stringify(token), "token").toString();
+  console.log(expires);
   setCookie("token", cipherText, {
     expires,
   });
