@@ -1,16 +1,24 @@
 "use client";
 import ProgressBar from "@/components/ui/Progress";
-import { usePostBanner, useUpdateBanner, usePostFile } from "@/services/banner";
+import { usePostBanner, usePostFile, useUpdateBanner } from "@/services/banner";
 import { yupResolver } from "@hookform/resolvers/yup";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SaveIcon from "@mui/icons-material/Save";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { Alert, IconButton, Button as MuiButton, TextField } from "@mui/material";
+import {
+  Alert,
+  Checkbox,
+  FormControlLabel,
+  FormHelperText,
+  IconButton,
+  Button as MuiButton,
+  TextField,
+} from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { BiSolidCloudUpload } from "react-icons/bi";
 import * as yup from "yup";
 
@@ -19,8 +27,9 @@ interface Props {
 }
 
 const validationSchema = yup.object({
-  name: yup.string().required("Name is required!"),
-  link: yup.string().required("Link is required!"),
+  // image_url: yup.string().required("Image is required!"),
+  external_link: yup.string().required("Link is required!"),
+  is_active: yup.boolean().required("Status is required!"),
 });
 
 const BannerDetail = ({ id }: Props) => {
@@ -40,6 +49,7 @@ const BannerDetail = ({ id }: Props) => {
   const {
     register,
     handleSubmit,
+    control,
     setValue,
     formState: { errors },
   } = useForm({
@@ -54,6 +64,7 @@ const BannerDetail = ({ id }: Props) => {
     const res = await fileTrigger({ file, handleProgress });
     console.log(res);
     setImgRes(res);
+    // setValue("image_url", res?.data?.data?.file_path);
     if (file) {
       const fileURL = URL.createObjectURL(file);
       setImgUrl(fileURL);
@@ -69,16 +80,16 @@ const BannerDetail = ({ id }: Props) => {
     if (id !== "0") {
       const updateData = {
         id: id,
-        name: data?.name,
-        link: data?.link,
-        image: imgRes ? imgRes?.data?.data?.file_path : imgUrl,
+        external_link: data?.link,
+        image_url: imgRes ? imgRes?.data?.data?.file_path : imgUrl,
       };
-      await updateTrigger(updateData);
+      // await updateTrigger(updateData);
+      console.log(updateData);
     } else {
       const postData = {
-        name: data?.name,
-        link: data?.link,
-        image: imgRes ? imgRes?.data?.data?.file_path : imgUrl,
+        external_link_url: data?.external_link,
+        image_url: imgRes ? imgRes?.data?.data?.image_url : imgUrl,
+        is_active: data?.is_active,
       };
 
       await createTrigger(postData);
@@ -99,35 +110,12 @@ const BannerDetail = ({ id }: Props) => {
             {updateError.response.data.error}
           </Alert>
         )}
-        <div className="mb-10">
-          {name ? (
-            <TextField
-              InputLabelProps={{ shrink: !!name }}
-              {...register("name")}
-              label="Name"
-              id="name"
-              defaultValue={name}
-              className="w-full"
-              variant="outlined"
-            />
-          ) : (
-            <TextField
-              {...register("name")}
-              label="Name"
-              id="name"
-              defaultValue={name}
-              className="w-full"
-              variant="outlined"
-            />
-          )}
-          <p className="mt-2 text-red-700">{errors.name?.message}</p>
-        </div>
 
         <div className="mb-10">
           {link ? (
             <TextField
               InputLabelProps={{ shrink: !!link }}
-              {...register("link")}
+              {...register("external_link")}
               label="Link"
               id="link"
               defaultValue={link}
@@ -136,7 +124,7 @@ const BannerDetail = ({ id }: Props) => {
             />
           ) : (
             <TextField
-              {...register("link")}
+              {...register("external_link")}
               label="Link"
               id="link"
               defaultValue={link}
@@ -144,8 +132,21 @@ const BannerDetail = ({ id }: Props) => {
               variant="outlined"
             />
           )}
-          <p className="mt-2 text-red-700">{errors.link?.message}</p>
+          <p className="mt-2 text-red-700">{errors.external_link?.message}</p>
         </div>
+
+        {/* is active checkbox*/}
+        <Controller
+          name={"is_active"}
+          control={control}
+          render={({ field, fieldState: { error } }) => (
+            <div>
+              <FormControlLabel control={<Checkbox {...field} checked={field.value} />} label="Active Status" />
+
+              <FormHelperText error={!!errors.is_active}>{errors.is_active?.message}</FormHelperText>
+            </div>
+          )}
+        />
 
         <div className="mt-10">
           <div className="border border-dashed w-[30%] flex flex-col items-center justify-center p-10 border-gray-400 rounded-lg">
@@ -157,7 +158,7 @@ const BannerDetail = ({ id }: Props) => {
               color="error"
             >
               Upload Image
-              <VisuallyHiddenInput accept="image/*" onChange={handleImageChange} type="file" />
+              <VisuallyHiddenInput accept="image/*" onChange={handleImageChange} type="file" required />
             </MuiButton>
             <p className="mt-3">Please upload 4:3 ratio</p>
             {imgProgress && <ProgressBar progress={imgProgress} />}
@@ -180,7 +181,7 @@ const BannerDetail = ({ id }: Props) => {
         <div className="flex justify-between">
           <div></div> */}
         <div className="pt-6">
-          {shouldUpdate ? (
+          {/* {id == "0" ? (
             <LoadingButton
               // loading={updateMutating}
               loadingPosition="start"
@@ -191,18 +192,18 @@ const BannerDetail = ({ id }: Props) => {
             >
               Update
             </LoadingButton>
-          ) : (
-            <LoadingButton
-              // loading={postMutating}
-              loadingPosition="start"
-              startIcon={<SaveIcon />}
-              variant="contained"
-              type="submit"
-              color="error"
-            >
-              Save
-            </LoadingButton>
-          )}
+          ) : ( */}
+          <LoadingButton
+            // loading={postMutating}
+            loadingPosition="start"
+            startIcon={<SaveIcon />}
+            variant="contained"
+            type="submit"
+            color="error"
+          >
+            Save
+          </LoadingButton>
+          {/* )} */}
         </div>
         {/* </div> */}
       </form>
