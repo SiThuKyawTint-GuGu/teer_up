@@ -13,3 +13,7 @@ export interface BannerDataResponse {
   total: number;
   data: BannerData[];
 }
+
+export interface SingleBannerDataResponse {
+  data: BannerData;
+}

@@ -1,6 +1,7 @@
 "use client";
 import ProgressBar from "@/components/ui/Progress";
-import { usePostBanner, usePostFile, useUpdateBanner } from "@/services/banner";
+import { useGetBannerById, usePostBanner, usePostFile, useUpdateBanner } from "@/services/banner";
+import { SingleBannerDataResponse } from "@/types/Banner";
 import { yupResolver } from "@hookform/resolvers/yup";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SaveIcon from "@mui/icons-material/Save";
@@ -17,7 +18,7 @@ import {
 import { styled } from "@mui/material/styles";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { BiSolidCloudUpload } from "react-icons/bi";
 import * as yup from "yup";
@@ -36,6 +37,7 @@ const BannerDetail = ({ id }: Props) => {
   const router = useRouter();
   const { trigger: createTrigger, isMutating: bannerMutating, error: createError } = usePostBanner();
   const { trigger: updateTrigger, isMutating: updateMutating, error: updateError } = useUpdateBanner();
+  const { data: banner, mutate } = useGetBannerById<SingleBannerDataResponse>(id);
 
   const [imgProgress, setImgProgress] = useState<number>();
   const [shouldUpdate, setShouldUpdate] = useState<boolean>(true);
@@ -51,10 +53,31 @@ const BannerDetail = ({ id }: Props) => {
     handleSubmit,
     control,
     setValue,
+    getValues,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
+
+  useEffect(() => {
+    if (banner?.data) {
+      if (banner?.data?.external_link_url) {
+        setName(banner?.data?.external_link_url);
+      }
+
+      if (banner?.data?.image_url) {
+        setImgUrl(banner?.data?.image_url);
+      }
+
+      if (banner?.data?.external_link_url) {
+        setValue("external_link", banner?.data?.external_link_url);
+      }
+
+      if (banner?.data?.is_active) {
+        setValue("is_active", banner?.data?.is_active);
+      }
+    }
+  }, [banner?.data, setValue]);
 
   const handleImageChange = async (event: any) => {
     const file = event.target.files[0];
@@ -77,13 +100,16 @@ const BannerDetail = ({ id }: Props) => {
   };
 
   const Submit = async (data: any) => {
-    if (id !== "0") {
+    if (banner?.data) {
       const updateData = {
         id: id,
-        external_link: data?.link,
-        image_url: imgRes ? imgRes?.data?.data?.file_path : imgUrl,
+        external_link: data?.external_link,
+        image_url: imgRes ? imgRes?.data?.data?.image_url : imgUrl,
+        is_active: data?.is_active,
       };
-      // await updateTrigger(updateData);
+      await updateTrigger(updateData, {
+        onSuccess: () => mutate(),
+      });
       console.log(updateData);
     } else {
       const postData = {
@@ -135,13 +161,15 @@ const BannerDetail = ({ id }: Props) => {
           <p className="mt-2 text-red-700">{errors.external_link?.message}</p>
         </div>
 
-        {/* is active checkbox*/}
         <Controller
           name={"is_active"}
           control={control}
           render={({ field, fieldState: { error } }) => (
             <div>
-              <FormControlLabel control={<Checkbox {...field} checked={field.value} />} label="Active Status" />
+              <FormControlLabel
+                control={<Checkbox {...field} checked={getValues("is_active")} />}
+                label="Active Status"
+              />
 
               <FormHelperText error={!!errors.is_active}>{errors.is_active?.message}</FormHelperText>
             </div>
@@ -158,7 +186,7 @@ const BannerDetail = ({ id }: Props) => {
               color="error"
             >
               Upload Image
-              <VisuallyHiddenInput accept="image/*" onChange={handleImageChange} type="file" required />
+              <VisuallyHiddenInput accept="image/*" onChange={handleImageChange} type="file" />
             </MuiButton>
             <p className="mt-3">Please upload 4:3 ratio</p>
             {imgProgress && <ProgressBar progress={imgProgress} />}
@@ -181,9 +209,9 @@ const BannerDetail = ({ id }: Props) => {
         <div className="flex justify-between">
           <div></div> */}
         <div className="pt-6">
-          {/* {id == "0" ? (
+          {banner?.data ? (
             <LoadingButton
-              // loading={updateMutating}
+              loading={updateMutating}
               loadingPosition="start"
               startIcon={<SaveIcon />}
               variant="contained"
@@ -192,18 +220,18 @@ const BannerDetail = ({ id }: Props) => {
             >
               Update
             </LoadingButton>
-          ) : ( */}
-          <LoadingButton
-            // loading={postMutating}
-            loadingPosition="start"
-            startIcon={<SaveIcon />}
-            variant="contained"
-            type="submit"
-            color="error"
-          >
-            Save
-          </LoadingButton>
-          {/* )} */}
+          ) : (
+            <LoadingButton
+              // loading={postMutating}
+              loadingPosition="start"
+              startIcon={<SaveIcon />}
+              variant="contained"
+              type="submit"
+              color="error"
+            >
+              Save
+            </LoadingButton>
+          )}
         </div>
         {/* </div> */}
       </form>

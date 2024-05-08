@@ -1,7 +1,6 @@
 "use client";
 
 import appAxios from "@/lib/appAxios";
-import { routeFilter } from "@/utils";
 import useSWR, { SWRResponse } from "swr";
 import useSWRMutation from "swr/mutation";
 
@@ -28,18 +27,16 @@ export const useDeleteBanner = () =>
   });
 
 export const useGetBanner = <BannerDataResponse>(): SWRResponse<BannerDataResponse, any> => {
-  return useSWR<BannerDataResponse>(`/banner/all`);
+  return useSWR<BannerDataResponse>(`/banner`);
 };
 
-export const useGetContentCategoryById = <ContentCategoryResponse>(
-  id: string
-): SWRResponse<ContentCategoryResponse, any> => {
-  const key = id != "0" ? `/admin/contentcategories/${id}` : null;
-  return useSWR<ContentCategoryResponse>(key);
+export const useGetBannerById = <BannerDataResponse>(id: string): SWRResponse<BannerDataResponse, any> => {
+  const key = id != "0" ? `/banner/${id}` : null;
+  return useSWR<BannerDataResponse>(key);
 };
 
 export const useUpdateBanner = () =>
-  useSWRMutation(`/admin/banners`, (url, { arg }: BannerArgType) => {
+  useSWRMutation(`/banner`, (url, { arg }: BannerArgType) => {
     return appAxios.put<BannerArgType>(`${url}/${arg.id}`, arg);
   });
 
