@@ -4,7 +4,7 @@ import { NextPage } from "next";
 
 const SavedPage: NextPage = () => {
   return (
-    <MainPageLayout hideHeader>
+    <MainPageLayout hideHeader={false}>
       <SavedList />
     </MainPageLayout>
   );
