@@ -1,16 +1,17 @@
 "use client";
 
-import { Box, Button, IconButton, Modal, Tooltip, Typography } from "@mui/material";
-import { MRT_Row, MaterialReactTable, useMaterialReactTable } from "material-react-table";
-import { useMemo, useState } from "react";
+import { useDeleteBanner, useGetBanner } from "@/services/banner";
+import { BannerDataResponse } from "@/types/Banner";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { Box, Button, Chip, IconButton, Modal, Tooltip, Typography } from "@mui/material";
+import { download, generateCsv, mkConfig } from "export-to-csv";
+import { MRT_Row, MaterialReactTable, useMaterialReactTable } from "material-react-table";
 import Image from "next/image";
 import Link from "next/link";
-import { generateCsv, mkConfig, download } from "export-to-csv";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import { useDeleteBanner } from "@/services/banner";
-import LoadingButton from "@mui/lab/LoadingButton";
+import { useEffect, useMemo, useState } from "react";
 
 const csvConfig = mkConfig({
   fieldSeparator: ",",
@@ -20,35 +21,22 @@ const csvConfig = mkConfig({
 });
 
 export default function Banner() {
+  const [banners, setBanners] = useState<any>();
   const { trigger: deleteTrigger, isMutating: deletingBanner } = useDeleteBanner();
+  const { data: bannersData, isLoading, mutate } = useGetBanner<BannerDataResponse>();
   const [open, setOpen] = useState<boolean>(false);
   const [imageOpen, setImageOpen] = useState<boolean>(false);
+  const [imageUrl, setImageUrl] = useState<string>("");
   const [id, setId] = useState<string>("");
-  const isLoading = false;
   const [globalFilter, setGlobalFilter] = useState<string>("");
   const [pagination, setPagination] = useState<any>({
     pageIndex: 0,
     pageSize: 10,
   });
 
-  const data = [
-    {
-      id: 1,
-      name: "Banner 1",
-      imageUrl: "https://via.placeholder.com/1275x956.25",
-      link: "https://google.com",
-      created_at: "2024-09-01T00:00:00Z",
-      updated_at: "2024-09-01T00:00:00Z",
-    },
-    {
-      id: 2,
-      name: "Banner 2",
-      imageUrl: "https://via.placeholder.com/1275x956.25",
-      link: "https://google.com",
-      created_at: "2024-09-01T00:00:00Z",
-      updated_at: "2024-09-01T00:00:00Z",
-    },
-  ];
+  useEffect(() => {
+    setBanners(bannersData?.data);
+  }, [bannersData?.data]);
 
   const columns = useMemo(
     () => [
@@ -59,12 +47,7 @@ export default function Banner() {
         size: 2,
       },
       {
-        accessorKey: "name",
-        header: "Name",
-        enableEditing: false,
-      },
-      {
-        accessorKey: "imageUrl",
+        accessorKey: "image_url",
         header: "Image",
         enableEditing: false,
 
@@ -72,8 +55,9 @@ export default function Banner() {
           <Image
             onClick={() => {
               setImageOpen(true);
+              setImageUrl(row.original.image_url);
             }}
-            src={row.original.imageUrl}
+            src={row.original.image_url}
             alt={row.original.name}
             width={75}
             height={75}
@@ -82,9 +66,15 @@ export default function Banner() {
         ),
       },
       {
-        accessorKey: "link",
+        accessorKey: "is_active",
+        header: "Active Status",
+        Cell: ({ row }: any) =>
+          row.original.is_active ? <Chip label="Active" color="success" /> : <Chip label="Inactive" />,
+      },
+      {
+        accessorKey: "external_link_url",
         header: "Link",
-        enableEditing: false,
+        enableEditing: true,
       },
       {
         accessorKey: "created_at",
@@ -102,7 +92,7 @@ export default function Banner() {
 
   const table = useMaterialReactTable({
     columns,
-    data: (data as any) || [],
+    data: (banners as any) || [],
     createDisplayMode: "row",
     editDisplayMode: "row",
     enableEditing: true,
@@ -122,7 +112,7 @@ export default function Banner() {
     positionActionsColumn: "last",
     // manualFiltering: true,
     manualPagination: true,
-    rowCount: data?.length,
+    rowCount: banners?.data?.length,
     initialState: {
       pagination: {
         pageSize: 10,
@@ -177,7 +167,7 @@ export default function Banner() {
           onClick={() => handleExportRows(table.getRowModel().rows)}
           startIcon={<FileDownloadIcon />}
         >
-          Export Contents Data
+          Export Banner Data
         </Button>
       </div>
     ),
@@ -191,10 +181,8 @@ export default function Banner() {
 
   const handleDeleteBanner = async () => {
     setOpen(false);
-    const updatedData = data.filter((content: any) => content.id !== id);
-    // setContentData(data);
+
     await deleteTrigger({ id });
-    console.log("Deleted", id);
   };
 
   return (
@@ -242,7 +230,7 @@ export default function Banner() {
       </Modal>
       <Modal open={imageOpen} onClose={() => setImageOpen(false)}>
         <Box sx={style}>
-          <Image src="https://via.placeholder.com/1275x956.25" alt="Banner" width={400} height={400} />
+          <Image src={imageUrl} alt="Banner" width={400} height={400} />
         </Box>
       </Modal>
     </>

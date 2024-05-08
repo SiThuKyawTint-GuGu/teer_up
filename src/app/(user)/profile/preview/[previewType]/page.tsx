@@ -3,9 +3,14 @@ import CoverPhotoPreview from "@/page-containers/user/profile/preview/CoverPhoto
 import ProfilePhotoRreview from "@/page-containers/user/profile/preview/ProfilePhotoPreview";
 import { NextPage } from "next";
 import { useParams } from "next/navigation";
+import { useEffect } from "react";
 
 const PreviewPage: NextPage = () => {
-  const { previewType } = useParams();
+   const { previewType } = useParams();
+  useEffect(()=>{
+    console.log(previewType);
+  },[])
+ 
   if (previewType === "cover-photo") {
     return <CoverPhotoPreview />;
   }
