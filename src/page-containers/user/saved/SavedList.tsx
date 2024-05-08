@@ -203,7 +203,7 @@ const SavedList: React.FC = () => {
                         <Box key={key} pb="4">
                           <CardBox
                             className="p-[8px] bg-white cursor-pointer overflow-hidden shadow-lg"
-                            onClick={() => router.push(`/content/${each?.content?.id}`)}
+                            onClick={() => router.push(`/content/${each?.content?.slug}`)}
                           >
                             <Flex justify="start" align="start">
                               <BGImage
