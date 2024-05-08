@@ -2,46 +2,19 @@
 import NotFound from "@/components/shared/NotFound";
 import { Button } from "@/components/ui/Button";
 import CardBox from "@/components/ui/Card";
-import { Animate, Dialog, DialogClose, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
+import { DialogTrigger } from "@/components/ui/Dialog";
 import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import { CONTENT_HISTORY_TYPES } from "@/services/content";
 import { trimmedText } from "@/utils";
-import { cn } from "@/utils/cn";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import ContentFilterDialog, { filterNames } from "./components/ContentFilterDialog";
 dayjs.extend(relativeTime);
-
-const filterNames = [
-  {
-    key: CONTENT_HISTORY_TYPES.ALL,
-    value: "All content types",
-  },
-  {
-    key: CONTENT_HISTORY_TYPES.ARTICLE,
-    value: "Article",
-  },
-  {
-    key: CONTENT_HISTORY_TYPES.EVENT,
-    value: "Event",
-  },
-  {
-    key: CONTENT_HISTORY_TYPES.OPPORTUNITY,
-    value: "Opportunity",
-  },
-  {
-    key: CONTENT_HISTORY_TYPES.PATHWAY,
-    value: "Pathway",
-  },
-  {
-    key: CONTENT_HISTORY_TYPES.VIDEO,
-    value: "Video",
-  },
-];
 
 type ContentType = {
   image: string;
@@ -156,25 +129,14 @@ const ContentHistoryPage: React.FC = () => {
   };
 
   return (
-    <Dialog
+    <ContentFilterDialog
       open={open}
-      onOpenChange={val => {
-        if (val) {
-          setFilterTypes(pre => {
-            const filterData = pre.filter(data => filteredParams?.key?.split(",").includes(data.key));
-            if (filterData.length === 0) {
-              return [
-                {
-                  key: CONTENT_HISTORY_TYPES.ALL,
-                  value: "All content types",
-                },
-              ];
-            }
-            return filterData;
-          });
-        }
-        setOpen(val);
-      }}
+      setOpen={setOpen}
+      filteredType={filteredType}
+      setFilterTypes={setFilterTypes}
+      filteredParams={filteredParams}
+      setFilterParams={setFilterParams}
+      handleCheckFilter={handleCheckFilter}
     >
       <Grid columns="1">
         <Box>
@@ -254,52 +216,7 @@ const ContentHistoryPage: React.FC = () => {
           </Box>
         </Box>
       </Grid>
-      <DialogContent
-        animate={Animate.SLIDE}
-        className={cn("bg-white top-[initial] bottom-0 px-4 pb-8 translate-y-0 rounded-10px-tl-tr")}
-      >
-        <Text className="text-xl font-bold mb-3">Show only</Text>
-        <Box>
-          {filterNames.map((each, key) => (
-            <div
-              key={key}
-              className={cn(
-                "pb-[10px] mb-[10px] border-b border-b-[#BDC7D5] text-gray-400",
-                filteredType.find(data => data.key === each.key) && "text-primary",
-                key === filterNames.length - 1 && "border-none"
-              )}
-              onClick={() => {
-                handleCheckFilter(each);
-              }}
-            >
-              <Flex justify="between" align="center" gap="2">
-                <Text as="label" weight="bold" size="3">
-                  {each.value}
-                </Text>
-                {
-                  <Icons.check
-                    className={cn(
-                      "w-[20px] h-[20px]  text-[#BDC7D5]",
-                      filteredType.find(data => data.key === each.key) && "text-primary border-primary"
-                    )}
-                  />
-                }
-              </Flex>
-            </div>
-          ))}
-          <DialogClose
-            className="w-full"
-            onClick={async () => {
-              setFilterParams({
-                key: filteredType.map(data => data.key).join(","),
-              });
-            }}
-          >
-            <Button className="w-full">Apply filters</Button>
-          </DialogClose>
-        </Box>
-      </DialogContent>
-    </Dialog>
+    </ContentFilterDialog>
   );
 };
 

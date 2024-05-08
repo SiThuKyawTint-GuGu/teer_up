@@ -44,7 +44,7 @@ const ComponentsSidebar: React.FC<{ handleCategoryChange: (value:string) => void
   return (
     <Flex
       style={{ top: "5.3%", zIndex: 1 }}
-      className="p-3 w-full py-5 sticky overflow-auto gap-[7px] bg-white no-scrollbar scroll-smooth"
+      className="p-3 w-full  sticky overflow-auto gap-[7px] bg-[#F8F9FB] no-scrollbar scroll-smooth"
       ref={parentContainer}
     >
       <div
