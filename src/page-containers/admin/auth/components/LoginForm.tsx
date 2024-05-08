@@ -40,7 +40,7 @@ const LoginForm = () => {
         </h2>
         {loginError && (
           <Alert sx={{ marginBottom: "20px" }} severity="error">
-            {loginError.response.data.message}
+            {loginError?.response?.data?.message || "An error occured"}
           </Alert>
         )}
         <Form {...form}>

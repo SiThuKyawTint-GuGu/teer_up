@@ -1,16 +1,15 @@
 "use client";
 
 import appAxios from "@/lib/appAxios";
-import { routeFilter } from "@/utils";
 import useSWR, { SWRResponse } from "swr";
 import useSWRMutation from "swr/mutation";
 
 export interface BannerArgType {
   arg: {
     id?: string;
-    link?: string;
-    name?: string;
-    image?: string;
+    external_link?: string;
+    is_active?: boolean;
+    image_url?: string;
   };
 }
 
@@ -23,26 +22,31 @@ interface FileArgType {
 }
 
 export const useDeleteBanner = () =>
-  useSWRMutation(`/admin/banners`, (url, { arg }: { arg: { id: string } }) => {
+  useSWRMutation(`/banner`, (url, { arg }: { arg: { id: string } }) => {
     return appAxios.delete<BannerArgType>(`${url}/${arg.id}`);
   });
 
-export const useGetBanner = <ParamsType, ContentType>(params?: ParamsType): SWRResponse<ContentType, any> => {
-  return useSWR<ContentType>(`/admin/banners?${routeFilter(params)}`);
+export const useGetBanner = <BannerDataResponse>(): SWRResponse<BannerDataResponse, any> => {
+  return useSWR<BannerDataResponse>(`/banner`);
+};
+
+export const useGetBannerById = <BannerDataResponse>(id: string): SWRResponse<BannerDataResponse, any> => {
+  const key = id != "0" ? `/banner/${id}` : null;
+  return useSWR<BannerDataResponse>(key);
 };
 
 export const useUpdateBanner = () =>
-  useSWRMutation(`/admin/banners`, (url, { arg }: BannerArgType) => {
+  useSWRMutation(`/banner`, (url, { arg }: BannerArgType) => {
     return appAxios.put<BannerArgType>(`${url}/${arg.id}`, arg);
   });
 
 export const usePostBanner = () =>
-  useSWRMutation(`/admin/banners`, (url, { arg }: BannerArgType) => {
+  useSWRMutation(`/banner`, (url, { arg }: BannerArgType) => {
     return appAxios.post<BannerArgType>(url, arg);
   });
 
 export const usePostFile = () =>
-  useSWRMutation(`/banners/fileupload`, (url, { arg }: FileArgType) => {
+  useSWRMutation(`/banner/upload-image`, (url, { arg }: FileArgType) => {
     return appAxios.post<{ data: { file_path: string } }>(url, arg, {
       headers: {
         "Content-Type": "multipart/form-data",

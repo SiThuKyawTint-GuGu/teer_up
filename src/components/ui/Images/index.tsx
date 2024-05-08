@@ -1,4 +1,3 @@
-import ViewCarouselIcon from "@mui/icons-material/ViewCarousel";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import ArticleIcon from "@mui/icons-material/Article";
@@ -20,6 +19,7 @@ import RoomPreferencesIcon from "@mui/icons-material/RoomPreferences";
 import SettingsIcon from "@mui/icons-material/Settings";
 import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
 import TextSnippetIcon from "@mui/icons-material/TextSnippet";
+import ViewCarouselIcon from "@mui/icons-material/ViewCarousel";
 import NextImage from "next/image";
 import { BsInfoCircle } from "react-icons/bs";
 import { CiSettings } from "react-icons/ci";
@@ -80,7 +80,10 @@ import {
 import { RxCross2, RxMagnifyingGlass } from "react-icons/rx";
 import { SiAmazon, SiNetflix, SiTesla, SiVivawallet } from "react-icons/si";
 import {
+  ChatIcon,
+  ExploreIcon,
   GlobalIcon,
+  HistoryIcon,
   HomeIcon,
   IconProps,
   LandingIcon,
@@ -88,6 +91,7 @@ import {
   MentorshipIcon,
   ProfileIcon,
   SavedIcon,
+  SettingIcon,
   TeeupFooterIcon,
   TeeupIcon,
 } from "./Icons";
@@ -192,6 +196,10 @@ export const Icons = {
   savedIcon: ({ ...props }: IconProps) => <SavedIcon {...props} />,
   profileIcon: ({ ...props }: IconProps) => <ProfileIcon {...props} />,
   mentorshipIcon: ({ ...props }: IconProps) => <MentorshipIcon {...props} />,
+  exploreIcon: ({ ...props }: IconProps) => <ExploreIcon {...props} />,
+  historyIcon: ({ ...props }: IconProps) => <HistoryIcon {...props} />,
+  chatIcon: ({ ...props }: IconProps) => <ChatIcon {...props} />,
+  settingIcon: ({ ...props }: IconProps) => <SettingIcon {...props} />,
 };
 
 interface Image {

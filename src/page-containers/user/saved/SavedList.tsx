@@ -22,7 +22,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Link from "next/link";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ContentFilterDialog from "../content-history/components/ContentFilterDialog";
 import { trimmedText } from "@/utils";
 import UnfinishedPathway from "./UnfinishedPathway";
@@ -65,6 +65,13 @@ const SavedList: React.FC = () => {
   const [triggerType, setTriggerType] = useState<TRIGGER_TYPE>();
   const { get } = useSearchParams();
   const pathname = usePathname();
+
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
 
   const [filteredType, setFilterTypes] = useState<
     {
@@ -139,6 +146,11 @@ const SavedList: React.FC = () => {
     setIsMenuVisible(isMenuVisible && data.content_id == content ? !isMenuVisible : true);
   };
 
+
+  if (!isMounted) {
+    return null;
+  }
+
   if (isLoading) {
     return (
       <div className="w-full h-full flex justify-center items-center">
@@ -182,17 +194,17 @@ const SavedList: React.FC = () => {
               <Tabs.List className="space-x-[20px] px-3 flex justify-start bg-white max-w-[400px] ">
                 <Tabs.Trigger
                   onClick={() => handleTabTrigger("items")}
-                  className="tab-trigger cursor-pointer text-lg"
+                  className="tab-trigger cursor-pointer"
                   value="items"
                 >
-                  Save Items
+                  <h3 className="text-lg">Save Items</h3>
                 </Tabs.Trigger>
                 <Tabs.Trigger
                   onClick={() => handleTabTrigger("unfinishpathways")}
                   className="tab-trigger cursor-pointer text-lg"
                   value="unfinishpathways"
                 >
-                  Unfinished Pathways
+                   <h3 className="text-lg">Unfinished Pathways</h3>
                 </Tabs.Trigger>
               </Tabs.List>
               <Tabs.Content value="items" className="space-y-[7px] p-2">
@@ -203,7 +215,7 @@ const SavedList: React.FC = () => {
                         <Box key={key} pb="4">
                           <CardBox
                             className="p-[8px] bg-white cursor-pointer overflow-hidden shadow-lg"
-                            onClick={() => router.push(`/content/${each?.content?.id}`)}
+                            onClick={() => router.push(`/content/${each?.content?.slug}`)}
                           >
                             <Flex justify="start" align="start">
                               <BGImage
