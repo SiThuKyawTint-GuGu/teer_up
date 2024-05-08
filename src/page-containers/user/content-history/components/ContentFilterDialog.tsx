@@ -4,7 +4,7 @@ import { CONTENT_HISTORY_TYPES } from "@/services/content";
 import { cn } from "@/utils/cn";
 import { Box, Flex, Text } from "@radix-ui/themes";
 import { Button } from "@/components/ui/Button";
-import { BookmarkSlashIcon } from "@/components/ui/Images/Icons";
+import { BookmarkSlashIcon, DeleteIcon } from "@/components/ui/Images/Icons";
 
 export const filterNames = [
   {
@@ -151,7 +151,6 @@ function ContentFilterDialog({
           animate={Animate.SLIDE}
           className={cn("bg-white top-[initial] bottom-0 p-0 px-4 pb-8 translate-y-0 rounded-10px-tl-tr")}
         >
-          {/* red line */}
           <div
             className="
             w-[40px] h-[4px] bg-primary rounded-10px-tl-tr
@@ -161,6 +160,24 @@ function ContentFilterDialog({
           <button className="flex items-center gap-x-2 cursor-pointer" onClick={unSaveContent}>
             <BookmarkSlashIcon className="text-gray-400 w-6 h-6" />
             <h3 className="text-lg font-medium  text-neutral-950">Unsave</h3>
+          </button>
+        </DialogContent>
+      )}
+
+      {trigger_type === "UNFINISHEDPATH" && (
+        <DialogContent
+          animate={Animate.SLIDE}
+          className={cn("bg-white top-[initial] bottom-0 p-0 px-4 pb-8 translate-y-0 rounded-10px-tl-tr")}
+        >
+          <div
+            className="
+            w-[40px] h-[4px] bg-primary rounded-10px-tl-tr
+            mx-auto mt-3 mb-3
+          "
+          ></div>
+          <button className="flex items-center gap-x-2 cursor-pointer">
+            <DeleteIcon className="text-gray-500 w-6 h-6" />
+            <h3 className="text-lg font-medium  text-neutral-950">Remove from the list</h3>
           </button>
         </DialogContent>
       )}

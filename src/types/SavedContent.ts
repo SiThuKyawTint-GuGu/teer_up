@@ -1,5 +1,12 @@
 import { ContentArticle, ContentEvent, ContentOpportunity } from "./Content";
 
+export enum TRIGGER_TYPE {
+  FILTER = "FILTER",
+  UNFINISHED = "UNFINISHED",
+  UNSAVED = "UNSAVED",
+  UNFINISHEDPATH = "UNFINISHEDPATH",
+}
+
 export interface ContentVideo {
   id: number;
   video_url: string;

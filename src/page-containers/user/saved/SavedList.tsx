@@ -15,7 +15,7 @@ import {
   useGetUnfinishedPathway,
   useSaveContent,
 } from "@/services/content";
-import { SavedContent, SavedContentResponse, UnfinishedPathwayResponse } from "@/types/SavedContent";
+import { SavedContent, SavedContentResponse, TRIGGER_TYPE, UnfinishedPathwayResponse } from "@/types/SavedContent";
 import { cn } from "@/utils/cn";
 import { Box, Flex, Grid, Heading, IconButton, Section, Tabs } from "@radix-ui/themes";
 import dayjs from "dayjs";
@@ -54,12 +54,6 @@ const filterNames = [
     value: "Video",
   },
 ];
-
-enum TRIGGER_TYPE {
-  FILTER = "FILTER",
-  UNFINISHED = "UNFINISHED",
-  UNSAVED = "UNSAVED",
-}
 
 const SavedList: React.FC = () => {
   const router = useRouter();
@@ -277,7 +271,11 @@ const SavedList: React.FC = () => {
               </Tabs.Content>
 
               <Tabs.Content value="unfinishpathways" className="p-2">
-                <UnfinishedPathway />
+                <UnfinishedPathway
+                  setTriggerType={setTriggerType}
+                  toggleMenu={toggleMenu}
+                  trigger_type={TRIGGER_TYPE.UNFINISHEDPATH}
+                />
               </Tabs.Content>
             </Tabs.Root>
           </Section>
