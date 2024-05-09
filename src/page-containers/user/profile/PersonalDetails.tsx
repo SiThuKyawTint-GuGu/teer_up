@@ -34,7 +34,13 @@ function PersonalDetails({ user, userProfile: { data: userProfile } }: PersonalD
               <p className="text-primary text-[16px] font-[600]">Edit</p>
             </Link>
           </div>
-          <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
+          <div className="pb-[10px] mb-[10px] ">
+            <Flex justify="start" align="center" gap="2">
+              <Image src="/uploads/icons/personal-profile.svg" width={16} height={16} alt="personal profile" />
+              <Text className="capitalize text-[#373A36]">{userProfile?.name ? userProfile?.name : "-"}</Text>
+            </Flex>
+          </div>
+          <div className="pb-[10px] mb-[10px] ">
             <Flex justify="start" align="center" gap="2">
               <Image src="/uploads/icons/personal-profile.svg" width={16} height={16} alt="personal profile" />
               <Text className="capitalize text-[#373A36]">
@@ -42,7 +48,13 @@ function PersonalDetails({ user, userProfile: { data: userProfile } }: PersonalD
               </Text>
             </Flex>
           </div>
-          <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
+          <div className="pb-[10px] mb-[10px]">
+            <Flex justify="start" align="center" gap="2">
+              <Image src="/uploads/icons/mail-outline.svg" width={16} height={16} alt="mail" />
+              <Text className="text-[#373A36]">{userProfile?.email ? userProfile?.email : "-"}</Text>
+            </Flex>
+          </div>
+          {/* <div className="pb-[10px] mb-[10px] ">
             <Flex justify="start" align="center" gap="2">
               <Image src="/uploads/icons/birthday.svg" width={16} height={16} alt="birthday" />
               <Text className="text-[#373A36]">
@@ -51,11 +63,14 @@ function PersonalDetails({ user, userProfile: { data: userProfile } }: PersonalD
                   : "-"}
               </Text>
             </Flex>
-          </div>
-          <div className="pb-[10px] mb-[10px]">
+          </div> */}
+          <div className="">
             <Flex justify="start" align="center" gap="2">
-              <Image src="/uploads/icons/mail-outline.svg" width={16} height={16} alt="mail" />
-              <Text className="text-[#373A36]">{userProfile?.email ? userProfile?.email : "-"}</Text>
+              <Image src="/uploads/icons/personal-profile.svg" width={16} height={16} alt="personal profile" />
+              <Text className="capitalize text-[#373A36]">
+                {/* {userProfile?.personal_info?.gender ? userProfile?.personal_info?.gender?.type : "-"} */}
+                +959 12345678
+              </Text>
             </Flex>
           </div>
         </Section>
@@ -208,9 +223,14 @@ function PersonalDetails({ user, userProfile: { data: userProfile } }: PersonalD
 
       <CardBox className="mb-4 rounded-md">
         <Section className="bg-white" py="4" px="3">
-          <Heading as="h6" size="4" align="left" mb="4">
-            Career interests
-          </Heading>
+          <Flex>
+            <Heading as="h6" size="4" align="left" mb="4">
+              Career interests
+            </Heading>
+            <Link href={`/profile/${user?.id}/department`}>
+              <p className="text-primary text-[16px] font-[600] ms-3">Edit</p>
+            </Link>
+          </Flex>
           <Flex wrap="wrap" gap="2">
             {userProfile?.departments?.length
               ? userProfile?.departments?.map((each, key) => (
@@ -225,9 +245,14 @@ function PersonalDetails({ user, userProfile: { data: userProfile } }: PersonalD
 
       <CardBox className="mb-4 rounded-md">
         <Section className="bg-white" py="4" px="3">
-          <Heading as="h6" size="4" align="left" mb="4">
-            Industry interests
-          </Heading>
+          <Flex>
+            <Heading as="h6" size="4" align="left" mb="4">
+              Industry interests
+            </Heading>
+            <Link href={`/profile/${user?.id}/career-interests`}>
+              <p className="text-primary text-[16px] font-[600] ms-3">Edit</p>
+            </Link>
+          </Flex>
           <Flex wrap="wrap" gap="2">
             {userProfile?.industries?.length
               ? userProfile?.industries?.map((each, key) => (

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 "use client";
 import { useContentForm, useLikeContent, useSaveContent } from "@/services/content";
 import { ContentData, Input_config, Input_options } from "@/types/Content";
@@ -17,6 +18,7 @@ import { Label } from "../ui/Label";
 import { Text } from "../ui/Typo/Text";
 import CommentSection from "./CommentSection";
 import SuccessFormPage from "./SuccessFormPage";
+import { useRouter } from "next/navigation";
 
 enum dialogTrigger {
   COMMENT = "comment",
@@ -32,6 +34,7 @@ type Props = {
 
 const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) => {
   const { trigger: like } = useLikeContent();
+  const router = useRouter();
   const { trigger: contentSave } = useSaveContent();
   const { trigger: postForm, isMutating } = useContentForm();
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -376,6 +379,12 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
     }
   };
 
+  const handleNext = (_: undefined) =>{
+    router.push("/opportunity");
+    // setOpenModal(true);
+
+  }
+
   return (
     <Dialog>
       {showSuccessPage === false ? (
@@ -383,7 +392,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
           {form ? (
             <>
               <DialogTrigger asChild onClick={() => setTriggerType(dialogTrigger.FORM)}>
-                <Button size="sm" className="w-[166px]" onClick={() => setOpenModal(true)}>
+                <Button size="sm" className="w-[166px]" onClick={() => handleNext(undefined)}>
                   {form?.submit_label || "Join Now"}
                 </Button>
               </DialogTrigger>
