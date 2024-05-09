@@ -1,6 +1,6 @@
 "use client";
 
-import { Image } from "@/components/ui/Images";
+import { Icons, Image } from "@/components/ui/Images";
 import { useGetUser } from "@/services/user";
 import { navbarItems, NavbarType } from "@/shared/data/UserTabbar";
 import { UserProfileResponse } from "@/types/Profile";
@@ -11,7 +11,6 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState, useTransition } from "react";
 import { mutate } from "swr";
-
 
 type SidebarProps = {};
 
@@ -67,10 +66,18 @@ const Sidebar: React.FC<SidebarProps> = () => {
                 <Heading as="h2" size="6">
                   {userProfile?.name}
                 </Heading>
-                <Button radius="full" size="1" variant="surface" color="crimson" className="bg-red-100">
-                  <Image src="/uploads/icons/user.png" width={18} height={18} alt="profile user" />
-                  <Text color="gray">View Profile</Text>
-                </Button>
+                <Link href="/profile">
+                  <Button
+                    radius="full"
+                    size="1"
+                    variant="surface"
+                    color="crimson"
+                    className="bg-red-100 hover:cursor-pointer"
+                  >
+                    <Icons.userIcon />
+                    <Text color="gray">View Profile</Text>
+                  </Button>
+                </Link>
               </div>
               <nav className="row-span-6">
                 {navbarItems.map((item: NavbarType, index: number) => {
