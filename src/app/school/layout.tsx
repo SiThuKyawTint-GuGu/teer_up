@@ -1,9 +1,4 @@
-"use client";
 import { ReactNode } from "react";
-
-import PageLayout from "@/components/layout";
-import { getToken } from "@/utils/auth";
-import { usePathname } from "next/navigation";
 import ThemeRegistry from "./ThemeRegistry";
 
 interface Props {
@@ -11,8 +6,6 @@ interface Props {
 }
 
 const SchoolLayout = ({ children }: Props) => {
-  const pathname = usePathname();
-
   return (
     <ThemeRegistry options={{ key: "mui" }}>
       <div style={{ display: "flex" }}>
