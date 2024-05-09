@@ -1,33 +1,15 @@
 "use client";
-import {
-  Avatar,
-  Box,
-  Card,
-  Divider,
-  IconButton,
-  Link as MuiLink,
-  ListItemText,
-  MenuItem,
-  Stack,
-  Typography,
-} from "@mui/material";
-import Link from "next/link";
-import React from "react";
-import { Job } from "./OpportunityList";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
-import DescriptionIcon from "@mui/icons-material/Description";
+import { Box, Card, Divider, IconButton, Stack, Typography } from "@mui/material";
+
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import DescriptionIcon from "@mui/icons-material/Description";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
+import { Job } from "./OpportunityList";
 
 export default function OpportunitiyCard({ name, company, description, location, jobType, jobID, Views, Saved }: Job) {
-  //   const popover = {
-  //     onOpen: () => console.log("Popover opened"),
-  //     onClose: () => console.log("Popover closed"),
-  //     open: false,
-  //   };
-
   return (
     <>
       <Card
@@ -107,39 +89,6 @@ export default function OpportunitiyCard({ name, company, description, location,
           ))}
         </Box>
       </Card>
-
-      {/* <CustomPopover open={popover.open} onClose={popover.onClose} arrow="right-top" sx={{ width: 140 }}>
-        <MenuItem
-          onClick={() => {
-            popover.onClose();
-            onView();
-          }}
-        >
-          <Iconify icon="solar:eye-bold" />
-          View
-        </MenuItem>
-
-        <MenuItem
-          onClick={() => {
-            popover.onClose();
-            onEdit();
-          }}
-        >
-          <Iconify icon="solar:pen-bold" />
-          Edit
-        </MenuItem>
-
-        <MenuItem
-          onClick={() => {
-            popover.onClose();
-            onDelete();
-          }}
-          sx={{ color: "error.main" }}
-        >
-          <Iconify icon="solar:trash-bin-trash-bold" />
-          Delete
-        </MenuItem>
-      </CustomPopover> */}
     </>
   );
 }
