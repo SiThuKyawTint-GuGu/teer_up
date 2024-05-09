@@ -134,17 +134,33 @@ const ContentHistoryPage: React.FC = () => {
                 <Heading as="h4" className="font-bold" size="7" align="left">
                   Content History
                 </Heading>
-                <DialogTrigger asChild>
-                  <Button variant="ghost" className="text-primary">
-                    {capitalizeFirstLetter(filteredParams?.key?.split(",")?.[0])}
-                    {filteredParams.key.split(",").length > 1 && ` + ${filteredParams.key.split(",").length - 1} more`}
-                    {/* {
-                  filteredType.find(data => data.key === filteredParams.key)?.value ||
-                  filteredParams.value
-                } */}
-                    <Icons.caretDown />
+                {filteredParams.key === "all" ? (
+                  <DialogTrigger asChild>
+                    <Button variant="ghost" className="text-primary">
+                      All
+                      <Icons.caretDown />
+                    </Button>
+                  </DialogTrigger>
+                ) : (
+                  <Button
+                    variant="ghost"
+                    className="text-primary"
+                    onClick={() => {
+                      setFilterTypes([
+                        {
+                          key: CONTENT_HISTORY_TYPES.ALL,
+                          value: "All content types",
+                        },
+                      ]);
+                      setFilterParams({
+                        key: "all",
+                      });
+                      setPageIndex(1);
+                    }}
+                  >
+                    Clear filter ({filteredParams.key.split(",").length})
                   </Button>
-                </DialogTrigger>
+                )}
               </Flex>
             </div>
           </div>
