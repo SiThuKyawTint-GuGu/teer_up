@@ -6,7 +6,7 @@ import { DialogTrigger } from "@/components/ui/Dialog";
 import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
 import fetcher from "@/lib/fetcher";
-import { CONTENT_HISTORY_TYPES, ParamsType, useGetContentHistory } from "@/services/content";
+import { CONTENT_HISTORY_TYPES, ParamsType, SavedContentParams, useGetContentHistory } from "@/services/content";
 import { ContentHistoryData, ContentHistoryResponse } from "@/types/SavedContent";
 import { trimmedText } from "@/utils";
 import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
@@ -29,76 +29,11 @@ type ContentType = {
   updated_at?: string;
 };
 
-const demoData: ContentType[] = [
-  {
-    image: "https://via.placeholder.com/150",
-    title:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ullamcorper volutpat libero vitae feugiat. Duis ac tempor arcu. Sed ac turpis neque. Vestibulum hendrerit neque ac magna tincidunt molestie",
-    type: "Article",
-    created_at: "2023-09-09T10:00:00",
-    id: 1,
-  },
-  {
-    image: "https://via.placeholder.com/150",
-    title:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ullamcorper volutpat libero vitae feugiat. Duis ac tempor arcu. Sed ac turpis neque. Vestibulum hendrerit neque ac magna tincidunt molestie",
-    type: "Event",
-    created_at: "2023-09-09T10:00:00",
-    id: 2,
-  },
-  {
-    image: "https://via.placeholder.com/150",
-    title:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ullamcorper volutpat libero vitae feugiat. Duis ac tempor arcu. Sed ac turpis neque. Vestibulum hendrerit neque ac magna tincidunt molestie",
-    type: "Mentor",
-    created_at: "2023-09-09T10:00:00",
-    id: 3,
-  },
-  {
-    image: "https://via.placeholder.com/150",
-    title:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ullamcorper volutpat libero vitae feugiat. Duis ac tempor arcu. Sed ac turpis neque. Vestibulum hendrerit neque ac magna tincidunt molestie",
-    type: "Opportunity",
-    created_at: "2023-09-09T10:00:00",
-    id: 4,
-  },
-  {
-    image: "https://via.placeholder.com/150",
-    title:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ullamcorper volutpat libero vitae feugiat. Duis ac tempor arcu. Sed ac turpis neque. Vestibulum hendrerit neque ac magna tincidunt molestie",
-    type: "Pathway",
-    created_at: "2023-09-09T10:00:00",
-    id: 5,
-  },
-  {
-    image: "https://via.placeholder.com/150",
-    title:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ullamcorper volutpat libero vitae feugiat. Duis ac tempor arcu. Sed ac turpis neque. Vestibulum hendrerit neque ac magna tincidunt molestie",
-    type: "Video",
-    created_at: "2023-09-09T10:00:00",
-    id: 6,
-  },
-];
-
 const ContentHistoryPage: React.FC = () => {
   const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
   const [pageIndex, setPageIndex] = useState(1);
   const [content, setContent] = useState<ContentHistoryData[]>();
-  const {
-    data: contentHistory,
-    error,
-    isLoading,
-  } = useGetContentHistory<ParamsType, ContentHistoryResponse>({
-    page: pageIndex,
-  });
-
-  useEffect(() => {
-    setContent(prev => {
-      if (!contentHistory?.data) return prev;
-      return prev ? [...prev, ...contentHistory?.data] : contentHistory?.data;
-    });
-  }, [contentHistory?.data]);
 
   const [filteredType, setFilterTypes] = useState<
     {
@@ -117,6 +52,26 @@ const ContentHistoryPage: React.FC = () => {
     key: filterNames[0].key,
   });
 
+  const {
+    data: contentHistory,
+    error,
+    isLoading,
+  } = useGetContentHistory<SavedContentParams, ContentHistoryResponse>({
+    type: filteredParams.key === CONTENT_HISTORY_TYPES.ALL ? "" : filteredParams.key,
+    page: pageIndex,
+  });
+
+  useEffect(() => {
+    if (pageIndex > 1) {
+      setContent(prev => {
+        if (!contentHistory?.data) return prev;
+        return prev ? [...prev, ...contentHistory?.data] : contentHistory?.data;
+      });
+    } else {
+      setContent(contentHistory?.data);
+    }
+  }, [contentHistory?.data]);
+
   function capitalizeFirstLetter(string: string) {
     if (!string) return;
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -125,6 +80,7 @@ const ContentHistoryPage: React.FC = () => {
   const handleCheckFilter = (each: { key: CONTENT_HISTORY_TYPES; value: string }) => {
     if (each.key === CONTENT_HISTORY_TYPES.ALL) {
       setFilterTypes([each]);
+      setPageIndex(1);
       return;
     }
 
@@ -139,15 +95,26 @@ const ContentHistoryPage: React.FC = () => {
             value: "All content types",
           },
         ]);
+        setPageIndex(1);
         return;
       }
       setFilterTypes(filteredData);
+      setPageIndex(1);
       return;
     }
 
     setFilterTypes([...filteredData, each]);
+    setPageIndex(1);
     return;
   };
+
+  if (isLoading) {
+    return (
+      <div className="w-full h-full flex justify-center items-center">
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <ContentFilterDialog
