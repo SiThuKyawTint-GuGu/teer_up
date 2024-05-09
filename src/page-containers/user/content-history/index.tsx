@@ -108,14 +108,6 @@ const ContentHistoryPage: React.FC = () => {
     return;
   };
 
-  if (isLoading) {
-    return (
-      <div className="w-full h-full flex justify-center items-center">
-        <Loading />
-      </div>
-    );
-  }
-
   return (
     <ContentFilterDialog
       open={open}
@@ -201,9 +193,11 @@ const ContentHistoryPage: React.FC = () => {
                       </CardBox>
                     </Box>
                   ))}
-                  <Button variant="outline" className="" onClick={() => setPageIndex(prev => prev + 1)}>
-                    Load more
-                  </Button>
+                  {contentHistory?.hasNextPage ? (
+                    <Button variant="outline" className="" onClick={() => setPageIndex(prev => prev + 1)}>
+                      Load more
+                    </Button>
+                  ) : null}
                 </>
               ) : (
                 <>
