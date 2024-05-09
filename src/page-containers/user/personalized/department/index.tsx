@@ -36,7 +36,7 @@ const DepartmentPage = () => {
       },
       {
         onSuccess: () => {
-          startTransition(() => router.push("/profile/onboarding"));
+          startTransition(() => router.push("/industry"));
         },
       }
     );
@@ -49,7 +49,7 @@ const DepartmentPage = () => {
       ) : (
         <div className="w-full h-full">
           <QuestionPageCard
-            nextPage="/home"
+            nextPage="/industry"
             title="Which career field are you most interested in??"
             layout
             subTitle="Pick 1 or more fields"
