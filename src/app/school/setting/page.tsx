@@ -1,7 +1,10 @@
 import { NextPage } from "next";
+import SchoolSettings from "@/page-containers/school/settings/Settings";
 
 const SchoolSettingPage: NextPage = () => {
-  return <h1>School Opportunities</h1>;
+  return <>
+    <SchoolSettings/>
+  </>
 };
 
 export default SchoolSettingPage;

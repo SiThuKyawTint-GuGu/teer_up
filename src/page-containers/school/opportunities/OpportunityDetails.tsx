@@ -13,7 +13,7 @@ export default function OpportunityDetailsPage() {
     <>
       <Box
         sx={{
-          height: 400,
+          height: 300,
           position: "relative",
           color: "white",
           padding: 4,

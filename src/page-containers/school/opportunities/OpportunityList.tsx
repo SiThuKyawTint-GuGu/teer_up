@@ -110,7 +110,7 @@ export default function OpportunityList() {
           p: 4,
         }}
       >
-        <Typography variant="h3" fontWeight="bold">
+        <Typography variant="h6" fontWeight="bold">
           Opportunities
         </Typography>
 
@@ -122,7 +122,7 @@ export default function OpportunityList() {
           marginTop={4}
         >
           <Box display="flex" alignItems="center" gap={2}>
-            <Typography fontSize={25} fontWeight={"medium"}>
+            <Typography variant="body1" fontWeight={"medium"}>
               All opportunities
             </Typography>
             <Typography variant="body2">1 - {jobs.length} of many results</Typography>
@@ -139,15 +139,10 @@ export default function OpportunityList() {
           md: "repeat(3, 1fr)",
         }}
       >
-        {jobs.map((job, index) => (
+        {jobs.map((job) => (
           <OpportunitiyCard
             key={job.id}
             {...job}
-            // key={job.id}
-            // job={job}
-            // onView={() => handleView(job.id)}
-            // onEdit={() => handleEdit(job.id)}
-            // onDelete={() => handleDelete(job.id)}
           />
         ))}
       </Box>

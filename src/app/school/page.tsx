@@ -1,7 +1,10 @@
 import { NextPage } from "next";
+import DashboardPage from "@/page-containers/school/dashboard/DashboardPage";
 
 const SchoolHome: NextPage = () => {
-  return <h1>School Home</h1>;
+  return <>
+    <DashboardPage/>
+  </>;
 };
 
 export default SchoolHome;
