@@ -7,7 +7,10 @@ import { useGetContentCategory } from "@/services/contentCategory";
 import { getLocalStorage, removeLocalStorage } from "@/utils";
 import { ContentCategoryResponse } from "@/types/ContentCategory";
 
-const ComponentsSidebar: React.FC<{ handleCategoryChange: (value:string) => void}> = ({ handleCategoryChange }) => {
+const ComponentsSidebar: React.FC<{ handleCategoryChange: (value: string) => void; slugParams: any }> = ({
+  handleCategoryChange,
+  slugParams,
+}) => {
   const [type, setType] = useState<string>("all");
   const parentContainer = useRef<HTMLDivElement>(null);
   const currentCategoryElement = useRef<HTMLDivElement>(null);
@@ -16,11 +19,15 @@ const ComponentsSidebar: React.FC<{ handleCategoryChange: (value:string) => void
   useEffect(() => {
     if (contentCategories && contentCategories.data) {
       const allCategory = contentCategories.data.find((category: any) => category.slug === "all");
+
+       if (slugParams) {
+        setType(slugParams);
+       }
       if (allCategory) {
-        setType(allCategory.slug);
+          setType(allCategory.slug);
       }
     }
-  }, [contentCategories]);
+  }, [contentCategories, slugParams]);
 
   useEffect(() => {
     const storeContentList = getLocalStorage("contentListPosition");

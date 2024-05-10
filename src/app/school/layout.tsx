@@ -1,4 +1,9 @@
+"use client";
 import { ReactNode } from "react";
+
+import SchoolDashboardLayout from "@/components/layout/schoolLayout";
+import { getToken } from "@/utils/auth";
+import { usePathname } from "next/navigation";
 import ThemeRegistry from "./ThemeRegistry";
 
 interface Props {
@@ -6,27 +11,12 @@ interface Props {
 }
 
 const SchoolLayout = ({ children }: Props) => {
+  const pathname = usePathname();
+  const token = getToken();
+
   return (
     <ThemeRegistry options={{ key: "mui" }}>
-      <div style={{ display: "flex" }}>
-        <div style={{ width: "400px" }}>
-          {" "}
-          {/* This is the sidebar */}
-          {/* Sidebar content goes here */}
-        </div>
-        <main className="bg-white w-full p-0 " id="main-content">
-          <div style={{ height: "auto", marginBottom: "60px" }}>
-            {/* Header */}
-            <div
-              style={{
-                width: "100%",
-                height: "110px",
-              }}
-            ></div>
-            {children}
-          </div>
-        </main>
-      </div>
+      <SchoolDashboardLayout>{children}</SchoolDashboardLayout>
     </ThemeRegistry>
   );
 };

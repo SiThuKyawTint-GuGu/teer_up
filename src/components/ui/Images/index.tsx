@@ -91,9 +91,12 @@ import {
   MentorshipIcon,
   ProfileIcon,
   SavedIcon,
+  SchoolBlogIcon,
+  SchoolJobIcon,
   SettingIcon,
   TeeupFooterIcon,
   TeeupIcon,
+  UserIcon,
 } from "./Icons";
 
 export const Icons = {
@@ -189,6 +192,7 @@ export const Icons = {
   info: BsInfoCircle,
   deleteCross: MdOutlineDeleteSweep,
   moreOption: MdMoreVert,
+  userIcon: UserIcon,
 
   // Nav menu icons
   homeIcon: ({ ...props }: IconProps) => <HomeIcon {...props} />,
@@ -200,6 +204,9 @@ export const Icons = {
   historyIcon: ({ ...props }: IconProps) => <HistoryIcon {...props} />,
   chatIcon: ({ ...props }: IconProps) => <ChatIcon {...props} />,
   settingIcon: ({ ...props }: IconProps) => <SettingIcon {...props} />,
+
+  schoolBlogIcon: ({ ...props }: IconProps) => <SchoolBlogIcon {...props} />,
+  schoolJobIcon: ({ ...props }: IconProps) => <SchoolJobIcon {...props} />,
 };
 
 interface Image {

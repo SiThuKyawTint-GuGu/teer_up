@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import GoogleLogin from "./GoogleLogin";
+import SocialLogin from "./SocialLogin";
 
 const validationSchema = yup.object({
   email: yup.string().email().required("Please enter email address").default(""),
@@ -118,7 +118,7 @@ const Login: React.FC = () => {
                 Or
               </Text>
 
-              <GoogleLogin />
+              <SocialLogin />
             </Form>
             <Flex justify="center" wrap="wrap" width="100%" gap="2">
               <Text weight="light">Don’t have an account? </Text>

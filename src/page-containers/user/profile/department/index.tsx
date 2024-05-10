@@ -12,7 +12,7 @@ import { Box, Flex, Grid, Section } from "@radix-ui/themes";
 import { debounce } from "lodash";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const Department: React.FC = () => {
   const [searchValue, setSearchValue] = useState<string>("");
@@ -33,6 +33,10 @@ const Department: React.FC = () => {
   const debouncedOnChange = debounce(() => {
     setSearchValue(inputRef?.current?.value);
   }, 500);
+
+  useEffect(()=>{
+    console.log(profileData);
+  },[])
 
   const filteredDepartments = departmentData?.data?.filter(each =>
     each.name.toLowerCase().includes(searchValue.toLowerCase())

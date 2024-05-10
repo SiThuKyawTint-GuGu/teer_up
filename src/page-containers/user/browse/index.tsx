@@ -22,6 +22,7 @@ const BrowsePage: React.FC = () => {
   const searchParams = useSearchParams();
   const [visibleItemIndex, setVisibleItemIndex] = useState<number>(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [slugParam,setSlugParam] = useState<any>(null);
   const search = useMemo(() => {
     return searchParams.get("search");
   }, [searchParams]);
@@ -80,7 +81,10 @@ const BrowsePage: React.FC = () => {
   }, [visibleItemIndex]);
   
   const handleCategoryChange = (value: string) => {
-    router.push(`?category=${value}${search ? `&search=${search}` : ""}`);
+    setSlugParam(value);
+    // console.log(value);
+    // router.push(`?category=${value}${search ? `&search=${search}` : ""}`);
+     router.push(`?category=${value}`);
   };
 
   console.log(visibleItemIndex);
@@ -97,7 +101,7 @@ const BrowsePage: React.FC = () => {
 
       <MainPageLayout hideFooter={search ? true : false}>
         <div className="relative w-full h-full ">
-          <ComponentsSidebar handleCategoryChange={handleCategoryChange} />
+          <ComponentsSidebar slugParams={slugParam} handleCategoryChange={handleCategoryChange} />
 
           {type === "all" && (!search || search === "") ? (
             <div className="overflow-y-scroll no-scrollbar h-full  scroll-smooth" id="content-list-container">

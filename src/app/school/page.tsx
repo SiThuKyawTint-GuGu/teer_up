@@ -1,10 +1,7 @@
-import OpportunityList from "@/page-containers/school/opportunities/OpportunityList";
-import React from "react";
+import { NextPage } from "next";
 
-export default function Opportunities() {
-  return (
-    <>
-      <OpportunityList />
-    </>
-  );
-}
+const SchoolHome: NextPage = () => {
+  return <h1>School Home</h1>;
+};
+
+export default SchoolHome;
