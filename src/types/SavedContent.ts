@@ -71,6 +71,7 @@ export interface ContentHistoryData {
 }
 
 export interface ContentHistoryResponse {
+  hasNextPage: boolean;
   current_page: number;
   per_page: number;
   order: string;

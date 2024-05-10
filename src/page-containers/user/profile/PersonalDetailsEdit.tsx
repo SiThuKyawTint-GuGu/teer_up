@@ -10,6 +10,7 @@ import { Text } from "@/components/ui/Typo/Text";
 import {
   useDeleteCoverPhoto,
   useDeleteProfilePhoto,
+  useGetGenders,
   useGetUserById,
   useUploadCover,
   useUploadProfile,
@@ -19,13 +20,14 @@ import { UserProfileResponse } from "@/types/Profile";
 import { setLocalStorage } from "@/utils";
 import { Box, Flex, Grid, Section } from "@radix-ui/themes";
 import { useParams, useRouter } from "next/navigation";
-import { ChangeEvent, useState, useTransition } from "react";
+import { ChangeEvent, useEffect, useState, useTransition } from "react";
 import HeaderText from "./components/HeaderText";
 import { InputText, InputTextArea, InputTextAreaBgWhite } from "@/components/ui/Inputs";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Select, SelectTrigger, SelectContent, SelectItem } from "@/components/ui/Inputs/Select";
+import { Gender } from "@/types/User";
 
 
 const profileEditTrigger = {
@@ -52,27 +54,32 @@ const PersonalDetailsEdit: React.FC = () => {
   const { id } = useParams();
   const [isPending] = useTransition();
   const { data: profileData, mutate } = useGetUserById<UserProfileResponse>(id as string);
+  const { data: genderData } = useGetGenders<Gender>();
   const { trigger: deleteCoverTrigger } = useDeleteCoverPhoto();
   const { trigger: deleteProfileTrigger } = useDeleteProfilePhoto();
   const userProfile = profileData?.data;
 
-  const validationSchema = yup.object({
-    company: yup.string().required("School is required!"),
-    position: yup.string().required("Degree is required!"),
-    start_date: yup.string().required("Start Date is required!"),
-    end_date: yup.string(),
-  });
+  // const validationSchema = yup.object({
+  //   company: yup.string().required("School is required!"),
+  //   position: yup.string().required("Degree is required!"),
+  //   start_date: yup.string().required("Start Date is required!"),
+  //   end_date: yup.string(),
+  // });
 
    const form = useForm({
-     resolver: yupResolver(validationSchema as any),
+    //  resolver: yupResolver(validationSchema as any),
      defaultValues: {
        name: profileData?.data?.name,
        email: profileData?.data?.email,
-       aboutMe: profileData?.data?.phone,
+       aboutMe: profileData?.bio,
        phone: profileData?.data?.phone,
        gender: profileData?.personal_info?.gender,
      },
    });
+
+   useEffect(()=>{
+    console.log(genderData)
+   })
 
 
 
@@ -230,9 +237,9 @@ const PersonalDetailsEdit: React.FC = () => {
                                 Male / Female
                               </SelectTrigger>
                               <SelectContent className="bg-white">
-                                {genderList.map((dropdown, index) => (
-                                  <SelectItem key={index} value={dropdown}>
-                                    <Text>{dropdown}</Text>
+                                {genderData?.map((item: any, index: number) => (
+                                  <SelectItem key={index} value={item}>
+                                    <Text>{item.type}</Text>
                                   </SelectItem>
                                 ))}
                               </SelectContent>
