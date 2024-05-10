@@ -45,6 +45,7 @@ const profileTriggerIcon = {
 };
 
 interface GenderProps {
+  find(arg0: (item: { id: string; }) => boolean): unknown;
   id:number,
   type:string,
 }
@@ -234,24 +235,27 @@ const SubmitInfo = async (data: any) => {
                             <FormItem>
                               <Select>
                                 <SelectTrigger
-                                  className="border-none outline-none shadow-md bg-white border-gray-700 "
-                                  defaultValue={selectedGender}
-                                  onValueChange={(value: string) => {
-                                    setSelectedGender(value);
-                                    form.setValue("gender", value);
-                                  }}
+                                  className="border-none outline-none shadow-md bg-white border-gray-700"
+                                  // defaultValue={selectedGender}
+                                  // onValueChange={(value: string) => {
+                                  //   setSelectedGender(value);
+                                  //   form.setValue("gender", parseInt(value, 10));
+                                  // }}
                                 >
-                                  {selectedGender
-                                    ? genderData?.find(item => item.id === selectedGender)?.type
-                                    : "Select gender"}
+                                  {/* {selectedGender && genderData
+                                    ? (genderData.find((item: { id: string }) => item.id === selectedGender) || {}).type
+                                    : "Select gender"} */}
+                                    Select Gender
                                 </SelectTrigger>
 
                                 <SelectContent className="bg-white">
-                                  {genderData?.map((item: any, index: number) => (
-                                    <SelectItem key={index} value={item.id}>
-                                      <Text>{item.type}</Text>
-                                    </SelectItem>
-                                  ))}
+                                  {genderData &&
+                                    Array.isArray(genderData) &&
+                                    genderData.map((item: any, index: number) => (
+                                      <SelectItem key={index} value={item.id}>
+                                        <Text>{item.type}</Text>
+                                      </SelectItem>
+                                    ))}
                                 </SelectContent>
                               </Select>
                             </FormItem>
@@ -403,3 +407,7 @@ const SubmitInfo = async (data: any) => {
 };
 
 export default PersonalDetailsEdit;
+
+function mutate() {
+  throw new Error("Function not implemented.");
+}
