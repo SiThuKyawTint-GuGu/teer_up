@@ -211,7 +211,7 @@ export default function OpportunityDetailsPage() {
                 textDecoration: "underline",
               }}
             >
-              <Link href="/school/applicants">View All Appliants</Link>
+              <Link href="/school/opportunities/1/applicants">View All Appliants</Link>
             </Typography>
           </Box>
           <Box

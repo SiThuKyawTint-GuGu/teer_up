@@ -16,13 +16,13 @@ export const navbarItems: NavbarType[] = [
   },
   {
     text: "Opportunities",
-    path: "/school/opportunity",
+    path: "/school/opportunities",
     icon: <Icons.schoolJobIcon width={24} height={24} fill="#373A36" />,
     activeIcon: <Icons.schoolJobIcon width={24} height={24} activeFill="#DA291C" active />,
   },
   {
-    text: "Student",
-    path: "/school/student",
+    text: "Students",
+    path: "/school/students",
     icon: <Icons.schoolBlogIcon width={24} height={24} fill="#373A36" />,
     activeIcon: <Icons.schoolBlogIcon width={24} height={24} activeFill="#DA291C" active />,
   },

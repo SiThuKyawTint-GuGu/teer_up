@@ -8,10 +8,11 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
 import { Job } from "./OpportunityList";
+import Link from "next/link";
 
-export default function OpportunitiyCard({ name, company, description, location, jobType, jobID, Views, Saved }: Job) {
+export default function OpportunitiyCard({id, name, company, description, location, jobType, jobID, Views, Saved }: Job) {
   return (
-    <>
+    <Link href={`/school/opportunities/${id}`}>
       <Card
         color="#FAFAFA"
         sx={{
@@ -89,6 +90,6 @@ export default function OpportunitiyCard({ name, company, description, location,
           ))}
         </Box>
       </Card>
-    </>
+    </Link>
   );
 }

@@ -7,12 +7,15 @@ import dayjs from "dayjs";
 import { MaterialReactTable, useMaterialReactTable, type MRT_TableOptions } from "material-react-table";
 import { useMemo, useState } from "react";
 import {staticStudentData as students} from "@/page-containers/school/students/staticData";
+import InfoIcon from '@mui/icons-material/Info';
+import {useRouter} from "next/navigation";
 
 const StudentsTable: React.FC = () => {
   const [validationErrors, setValidationErrors] = useState<Record<string, string | undefined>>({});
 
   const [open, setOpen] = useState<boolean>(false);
   const [id, setId] = useState<string>("");
+  const router = useRouter()
 
   const columns = useMemo(
     () => [
@@ -160,6 +163,11 @@ const StudentsTable: React.FC = () => {
         <Tooltip title="Edit">
           <IconButton onClick={() => table.setEditingRow(row)}>
             <EditIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Details">
+          <IconButton onClick={() => router.push(`/school/students/${row.original.id}/applications`)}>
+            <InfoIcon />
           </IconButton>
         </Tooltip>
         <Tooltip title="Delete">
