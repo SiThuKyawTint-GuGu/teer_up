@@ -137,7 +137,6 @@ const SchoolDashboardLayout: React.FC<LayoutProps> = ({ children }) => {
               </Box>
             </Toolbar>
           </AppBar>
-          <Toolbar />
           {children}
         </Box>
       </Box>
