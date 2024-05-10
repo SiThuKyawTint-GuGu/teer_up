@@ -91,6 +91,8 @@ import {
   MentorshipIcon,
   ProfileIcon,
   SavedIcon,
+  SchoolBlogIcon,
+  SchoolJobIcon,
   SettingIcon,
   TeeupFooterIcon,
   TeeupIcon,
@@ -200,6 +202,9 @@ export const Icons = {
   historyIcon: ({ ...props }: IconProps) => <HistoryIcon {...props} />,
   chatIcon: ({ ...props }: IconProps) => <ChatIcon {...props} />,
   settingIcon: ({ ...props }: IconProps) => <SettingIcon {...props} />,
+
+  schoolBlogIcon: ({ ...props }: IconProps) => <SchoolBlogIcon {...props} />,
+  schoolJobIcon: ({ ...props }: IconProps) => <SchoolJobIcon {...props} />,
 };
 
 interface Image {
