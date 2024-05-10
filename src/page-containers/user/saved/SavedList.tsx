@@ -8,23 +8,16 @@ import { DialogTrigger } from "@/components/ui/Dialog";
 
 import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
-import {
-  CONTENT_HISTORY_TYPES,
-  SavedContentParams,
-  useGetSavedContents,
-  useGetUnfinishedPathway,
-  useSaveContent,
-} from "@/services/content";
-import { SavedContent, SavedContentResponse, TRIGGER_TYPE, UnfinishedPathwayResponse } from "@/types/SavedContent";
-import { cn } from "@/utils/cn";
+import { CONTENT_HISTORY_TYPES, SavedContentParams, useGetSavedContents, useSaveContent } from "@/services/content";
+import { SavedContent, SavedContentResponse, TRIGGER_TYPE } from "@/types/SavedContent";
+import { trimmedText } from "@/utils";
 import { Box, Flex, Grid, Heading, IconButton, Section, Tabs } from "@radix-ui/themes";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Link from "next/link";
-import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import ContentFilterDialog from "../content-history/components/ContentFilterDialog";
-import { trimmedText } from "@/utils";
 import UnfinishedPathway from "./UnfinishedPathway";
 dayjs.extend(relativeTime);
 
@@ -58,7 +51,6 @@ const filterNames = [
 const SavedList: React.FC = () => {
   const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
-  const [openUnsaved, setOpenUnsaved] = useState<boolean>(false);
   const [isMenuVisible, setIsMenuVisible] = useState<boolean>(false);
   const [content, setContent] = useState<number>(0);
   const { trigger: contentSave } = useSaveContent();
@@ -71,7 +63,6 @@ const SavedList: React.FC = () => {
   useEffect(() => {
     setIsMounted(true);
   }, []);
-
 
   const [filteredType, setFilterTypes] = useState<
     {
@@ -96,16 +87,11 @@ const SavedList: React.FC = () => {
   } = useGetSavedContents<SavedContentParams, SavedContentResponse>({
     type: filteredParams.key === CONTENT_HISTORY_TYPES.ALL ? "" : filteredParams.key,
   });
-  const { data: unFinishedPathways } = useGetUnfinishedPathway<UnfinishedPathwayResponse>();
 
   const handleTabTrigger = (key: string) => {
     router.push(`${pathname}?tab=${key}`);
   };
 
-  function capitalizeFirstLetter(string: string) {
-    if (!string) return;
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  }
   const unSaveContent = async (e: any) => {
     e.stopPropagation();
     await contentSave({
@@ -146,7 +132,6 @@ const SavedList: React.FC = () => {
     setIsMenuVisible(isMenuVisible && data.content_id == content ? !isMenuVisible : true);
   };
 
-
   if (!isMounted) {
     return null;
   }
@@ -179,13 +164,32 @@ const SavedList: React.FC = () => {
                 <Heading as="h6" size="7" align="left">
                   {get("tab") === "unfinishpathways" ? "Unfinished Pathway" : "Saved Items"}
                 </Heading>
-                <DialogTrigger asChild onClick={() => setTriggerType(TRIGGER_TYPE.FILTER)}>
-                  <Button variant="ghost" className="text-primary">
-                    {capitalizeFirstLetter(filteredParams?.key?.split(",")?.[0])}
-                    {filteredParams.key.split(",").length > 1 && ` + ${filteredParams.key.split(",").length - 1} more`}
-                    <Icons.caretDown />
+                {get("tab") === "unfinishpathways" ? null : filteredParams.key === "all" ? (
+                  <DialogTrigger asChild>
+                    <Button variant="ghost" className="text-primary">
+                      All
+                      <Icons.caretDown />
+                    </Button>
+                  </DialogTrigger>
+                ) : (
+                  <Button
+                    variant="ghost"
+                    className="text-primary"
+                    onClick={() => {
+                      setFilterTypes([
+                        {
+                          key: CONTENT_HISTORY_TYPES.ALL,
+                          value: "All content types",
+                        },
+                      ]);
+                      setFilterParams({
+                        key: "all",
+                      });
+                    }}
+                  >
+                    Clear filter ({filteredParams.key.split(",").length})
                   </Button>
-                </DialogTrigger>
+                )}
               </Flex>
             </div>
           </div>
@@ -204,7 +208,7 @@ const SavedList: React.FC = () => {
                   className="tab-trigger cursor-pointer text-lg"
                   value="unfinishpathways"
                 >
-                   <h3 className="text-lg">Unfinished Pathways</h3>
+                  <h3 className="text-lg">Unfinished Pathways</h3>
                 </Tabs.Trigger>
               </Tabs.List>
               <Tabs.Content value="items" className="space-y-[7px] p-2">

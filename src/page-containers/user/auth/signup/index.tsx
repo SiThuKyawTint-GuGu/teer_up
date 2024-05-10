@@ -20,7 +20,6 @@ import { Box, Flex, Grid, Heading } from "@radix-ui/themes";
 import Link from "next/link";
 import { useRef, useState, useTransition } from "react";
 import { useUserRegister } from "../../../../services/user";
-import GoogleLogin from "../login/GoogleLogin";
 interface SignUpFormType {
   email: string;
   name: string;
@@ -214,7 +213,7 @@ const SignUp = () => {
               <Text align="center" className="my-1">
                 Or
               </Text>
-              <GoogleLogin forLogin={false} />
+              {/* <GoogleLogin forLogin={false} /> */}
               <Flex justify="center" wrap="wrap" width="100%" gap="2">
                 <Text weight="light">Already have an account?</Text>
                 <Link href="/auth/login">
