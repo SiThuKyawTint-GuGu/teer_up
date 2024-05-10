@@ -1,9 +1,9 @@
 import { createTheme } from "@mui/material/styles";
-import { fontSans } from "../fonts";
+import { open_sans } from "../fonts";
 
 const defaultTheme = createTheme({
   typography: {
-    fontFamily: fontSans.style.fontFamily,
+    fontFamily: open_sans.style.fontFamily,
   },
   palette: {
     // mode: "light",

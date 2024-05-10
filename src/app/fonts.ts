@@ -1,4 +1,4 @@
-import { Inter as FontSans } from "next/font/google";
+import { Inter as FontSans, Open_Sans } from "next/font/google";
 import localFont from "next/font/local";
 
 export const lFont = localFont({
@@ -30,4 +30,9 @@ export const lFont = localFont({
 export const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
+});
+
+export const open_sans = Open_Sans({
+  subsets: ["latin"],
+  display: "swap",
 });
