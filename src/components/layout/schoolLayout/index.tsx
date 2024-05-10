@@ -1,19 +1,16 @@
-"use client";
-
 import { Icons, Image } from "@/components/ui/Images";
 import { useGetUser } from "@/services/user";
 import { navbarItems, NavbarType } from "@/shared/data/SchoolTabbar";
 import { UserProfileResponse } from "@/types/Profile";
 import { logout } from "@/utils/auth";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Box, CssBaseline, ListItem, ListItemButton, Stack, styled, TextField, Typography } from "@mui/material";
+import { Box, CssBaseline, ListItem, ListItemButton, Stack, TextField, Toolbar, Typography } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
-import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import Toolbar from "@mui/material/Toolbar";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useState, useTransition } from "react";
@@ -24,10 +21,11 @@ interface AppBarProps extends MuiAppBarProps {
 }
 
 const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: prop => prop !== "open",
+  shouldForwardProp: (prop) => prop !== "open",
 })<AppBarProps>(({ theme, open }) => ({
   backgroundColor: "white",
   color: "black",
+  zIndex: theme.zIndex.drawer + 1, // Bring header to front
 }));
 
 interface LayoutProps {
@@ -36,13 +34,12 @@ interface LayoutProps {
 
 const SchoolDashboardLayout: React.FC<LayoutProps> = ({ children }) => {
   const { data: profileData } = useGetUser<UserProfileResponse>();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true); // Set the sidebar open by default
   const [isPending, startTransition] = useTransition();
   const pathName = usePathname();
   const router = useRouter();
 
   const userProfile = profileData?.data;
-  console.log(userProfile);
 
   const handleDrawerToggle = () => {
     setOpen(!open);
@@ -93,8 +90,8 @@ const SchoolDashboardLayout: React.FC<LayoutProps> = ({ children }) => {
           </Box>
         </Toolbar>
       </AppBar>
-      <Drawer anchor="left" open={open} onClose={handleDrawerToggle}>
-        <Box sx={{ width: 250 }} role="presentation" onClick={handleDrawerToggle}>
+      <Box sx={{ display: "flex", height: "100vh" }}>
+        <Box sx={{ width: 250, flexShrink: 0, bgcolor: "background.paper", overflowY: "auto" }}>
           <div className="grid place-items-center p-6">
             <Image src="/teeUpLogo.png" width={84} height={20} alt="teeup logo" />
           </div>
@@ -138,8 +135,11 @@ const SchoolDashboardLayout: React.FC<LayoutProps> = ({ children }) => {
             </ListItem>
           </List>
         </Box>
-      </Drawer>
-      <main style={{ padding: "20px" }}>{children}</main>
+        <Box component="main" sx={{ flexGrow: 1, bgcolor: "background.default", p: 3, overflowY: "auto", paddingBottom: 8 }}>
+          <Toolbar />
+          {children}
+        </Box>
+      </Box>
     </>
   );
 };
