@@ -123,7 +123,7 @@ const BrowsePage: React.FC = () => {
                         </div>
                         <button
                           style={{ borderWidth: 1 }}
-                          className="w-[106px] h-[40px] rounded-[20px] text-[#373A36] border-2 text-[14px] border-[#BDC7D5] "
+                          className="w-[106px] h-[40px] rounded-[20px] text-[#373A36] border-2 text-[14px] ms-1 border-[#BDC7D5] "
                           onClick={() => {
                             handleCategoryChange(contentData?.slug);
                           }}
@@ -133,7 +133,7 @@ const BrowsePage: React.FC = () => {
                       </Flex>
                       <h1
                         className="
-                       ms-12
+                       ms-7
                   text-[12px] text-[#373A36] font-[400] px-[12px] mb-2
                   "
                       >
