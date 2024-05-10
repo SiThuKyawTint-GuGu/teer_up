@@ -10,7 +10,7 @@ import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
 import { Job } from "./OpportunityList";
 import Link from "next/link";
 
-export default function OpportunitiyCard({id, name, company, description, location, jobType, jobID, Views, Saved }: Job) {
+export default function OpportunitiyCard({id, name, description, location, jobType, jobID, Views, Saved }: Job) {
   return (
     <Link href={`/school/opportunities/${id}`}>
       <Card
@@ -27,11 +27,11 @@ export default function OpportunitiyCard({id, name, company, description, locati
 
         <Stack sx={{ p: 2, pb: 2 }}>
           {/* <Avatar alt={company.name} src={company.logo} variant="rounded" sx={{ width: 48, height: 48, mb: 2 }} /> */}
-          <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+          <Typography variant="h6" sx={{ fontWeight: "bold" }}>
             {name}
           </Typography>
 
-          <Typography variant="h6" sx={{ fontWeight: "normal", mt: 1 }}>
+          <Typography variant="body1" sx={{ fontWeight: "normal", mt: 1 }}>
             {description}
           </Typography>
 
@@ -52,7 +52,7 @@ export default function OpportunitiyCard({id, name, company, description, locati
             ].map((item, index) => (
               <Stack key={index} spacing={2} flexShrink={0} direction="row" alignItems="center" sx={{ minWidth: 0 }}>
                 {item.icon}
-                <Typography variant="h6" noWrap>
+                <Typography variant="body2" noWrap>
                   {item.label}
                 </Typography>
               </Stack>
@@ -83,7 +83,7 @@ export default function OpportunitiyCard({id, name, company, description, locati
               sx={{ minWidth: 0 }}
             >
               {item.icon}
-              <Typography variant="h6" noWrap>
+              <Typography variant="body1" noWrap>
                 {item.label}
               </Typography>
             </Stack>
