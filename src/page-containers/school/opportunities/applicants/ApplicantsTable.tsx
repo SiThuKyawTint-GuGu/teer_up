@@ -8,7 +8,7 @@ import { MaterialReactTable, useMaterialReactTable, type MRT_TableOptions } from
 import { useMemo, useState } from "react";
 import {staticStudentData as students} from "@/page-containers/school/students/staticData";
 
-const StudentsTable: React.FC = () => {
+const ApplicantsTable: React.FC = () => {
   const [validationErrors, setValidationErrors] = useState<Record<string, string | undefined>>({});
 
   const [open, setOpen] = useState<boolean>(false);
@@ -179,9 +179,17 @@ const StudentsTable: React.FC = () => {
 
   return (
     <Box padding={2}>
+      <Typography variant={"h5"} fontWeight={"bold"}>
+      Job: UIX Designer
+      </Typography>
       <Typography variant={"h5"} fontWeight={"bold"} sx={{
         marginBottom: 4,
-      }}> Student List </Typography>
+      }}>
+        Company: ABC Ltd
+      </Typography>
+      <Typography variant={"h5"} fontWeight={"bold"} sx={{
+        marginBottom: 4,
+      }}> Applicant List </Typography>
       <MaterialReactTable table={table} />
       <Modal open={open} onClose={() => setOpen(false)}>
         <Box sx={style}>
@@ -221,7 +229,7 @@ const StudentsTable: React.FC = () => {
   );
 };
 
-export default StudentsTable;
+export default ApplicantsTable;
 
 const validateRequired = (value: string) => !!value.length;
 
