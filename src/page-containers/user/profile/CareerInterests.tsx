@@ -13,7 +13,7 @@ import { Box, Flex, Grid, Section } from "@radix-ui/themes";
 import { debounce } from "lodash";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 const CareerInterests: React.FC = () => {
   const [searchValue, setSearchValue] = useState<string>("");
@@ -26,29 +26,26 @@ const CareerInterests: React.FC = () => {
   const inputRef = useRef<any>(null);
   const [selectId, setSelectId] = useState<number[]>([]);
 
-  useEffect(()=>{
-      console.log(selectId);
-  },[selectId])
-
-  const handleCheckedChange = (checked: boolean, industry_id: number) => {
-    console.log(industry_id);
-    setSelectId([...selectId,industry_id]);
-    console.log(selectId)
-    // updateTrigger({
-    //   industry_id,
-    // });
-  };
+ const handleCheckedChange = (_: boolean, industry_id: number) => {
+   if (selectId.includes(industry_id)) {
+     setSelectId(selectId.filter(id => id !== industry_id));
+   } else {
+     setSelectId([...selectId, industry_id]);
+   }
+ };
 
   const debouncedOnChange = debounce(() => {
     setSearchValue(inputRef?.current?.value);
   }, 500);
 
   const handleSave = (_:undefined) =>{
+    console.log(selectId);
     selectId.map(item =>
       updateTrigger({
         industry_id:item
       })
     );
+    router.back();
   }
 
   return (
@@ -102,8 +99,8 @@ const CareerInterests: React.FC = () => {
                 );
               })}
 
-              <div className="mt-[30px]">
-                <Button onClick={()=>handleSave()} className="w-full h-[40px]">Save</Button>
+              <div className="pt-[40px]">
+                <Button onClick={()=>handleSave(undefined)} className="w-full h-[40px]">Save</Button>
               </div>
               {/* <Text size="3" weight="bold">
                 Coming Soon

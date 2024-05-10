@@ -64,7 +64,7 @@ const ComponentsSidebar: React.FC<{ handleCategoryChange: (value: string) => voi
         }     `}
         {...(type === "all" && { ref: currentCategoryElement })}
       >
-        <p className=" mt-3 px-3" style={{ color: type === "all" ? "#DA291C" : "#373A36" }}>
+        <p className=" mt-2 px-3" style={{ color: type === "all" ? "#DA291C" : "#373A36" }}>
           All
         </p>
       </div>
@@ -80,7 +80,7 @@ const ComponentsSidebar: React.FC<{ handleCategoryChange: (value: string) => voi
           }`}
           {...(type === data.slug && { ref: currentCategoryElement })}
         >
-          <div className="w-auto font-[500] text-[16px] flex space-between items-center mt-3 px-3">
+          <div className="w-auto font-[500] text-[16px] flex space-between items-center mt-2 px-3">
             {data?.icon_url && (
               <img
                 src={data?.icon_url}
