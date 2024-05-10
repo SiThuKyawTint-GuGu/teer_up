@@ -98,7 +98,7 @@ const CardReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate, comme
         </DialogContent>
 
         <div className="w-full py-2">
-          <div className="flex justify-between space-x-28 ms-1  items-center">
+          <div className="flex justify-between space-x-16 ms-1  items-center">
             <DialogTrigger onClick={() => setTriggerType(dialogTrigger.COMMENT)}>
               <div className="flex items-center flex-wrap gap-x-[10px] rounded-[15px]  bg-[#17161621] h-[35px] w-[55px] justify-center">
                 <Icons.comment className="w-[20px] h-[20px]  text-white font-[600]" />
@@ -107,7 +107,7 @@ const CardReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate, comme
             </DialogTrigger>
 
             <button
-              className="flex items-center flex-wrap gap-x-[10px] bg-[#17161621] h-[35px] w-[35px] justify-center rounded-[50%]"
+              className="flex items-center flex-wrap gap-x-[10px]  bg-[#17161621] h-[35px] w-[35px] justify-center rounded-[50%]"
               onClick={likePost}
             >
               {reaction.is_like ? (
