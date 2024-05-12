@@ -56,40 +56,7 @@ const SchoolDashboardLayout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <>
       <CssBaseline />
-      <AppBar position="static" sx={{ boxShadow: "none" }}>
-        <Toolbar>
-          <IconButton
-            size="medium"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-            onClick={handleDrawerToggle}
-          >
-            <MenuIcon />
-          </IconButton>
-          <TextField
-            InputProps={{
-              startAdornment: <Icons.search color="inherit" />,
-              style: { borderRadius: 20 },
-            }}
-            variant="outlined"
-            size="small"
-          />
-          <Box sx={{ flexGrow: 1 }}>
-            <Stack direction="row" justifyContent="flex-end" spacing={2} alignItems="center">
-              <Icons.noti width={24} height={24} />
-              <IconButton sx={{ p: 0 }}>
-                <Image src="/uploads/icons/auth/default-profile.png" width={38} height={38} alt="profile" />
-              </IconButton>
-              <Stack>
-                <Typography variant="subtitle2">{userProfile?.name}</Typography>
-                <Typography variant="caption">{userProfile?.role}</Typography>
-              </Stack>
-            </Stack>
-          </Box>
-        </Toolbar>
-      </AppBar>
+
       <Box sx={{ display: "flex", height: "100vh" }}>
         <Box sx={{ width: 250, flexShrink: 0, bgcolor: "background.paper", overflowY: "auto" }}>
           <div className="grid place-items-center p-6">
@@ -135,8 +102,41 @@ const SchoolDashboardLayout: React.FC<LayoutProps> = ({ children }) => {
             </ListItem>
           </List>
         </Box>
-        <Box component="main" sx={{ flexGrow: 1, bgcolor: "background.default", p: 3, overflowY: "auto", paddingBottom: 8 }}>
-          <Toolbar />
+        <Box component="main" sx={{ flexGrow: 1, bgcolor: "background.default", overflowY: "auto", paddingBottom: 8 }}>
+          <AppBar position="sticky" sx={{ boxShadow: "none" }}>
+            <Toolbar>
+              <IconButton
+                size="medium"
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                sx={{ mr: 2 }}
+                onClick={handleDrawerToggle}
+              >
+                <MenuIcon />
+              </IconButton>
+              <TextField
+                InputProps={{
+                  startAdornment: <Icons.search color="inherit" />,
+                  style: { borderRadius: 20 },
+                }}
+                variant="outlined"
+                size="small"
+              />
+              <Box sx={{ flexGrow: 1 }}>
+                <Stack direction="row" justifyContent="flex-end" spacing={2} alignItems="center">
+                  <Icons.noti width={24} height={24} />
+                  <IconButton sx={{ p: 0 }}>
+                    <Image src="/uploads/icons/auth/default-profile.png" width={38} height={38} alt="profile" />
+                  </IconButton>
+                  <Stack>
+                    <Typography variant="subtitle2">{userProfile?.name}</Typography>
+                    <Typography variant="caption">{userProfile?.role}</Typography>
+                  </Stack>
+                </Stack>
+              </Box>
+            </Toolbar>
+          </AppBar>
           {children}
         </Box>
       </Box>

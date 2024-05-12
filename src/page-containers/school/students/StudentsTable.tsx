@@ -9,6 +9,7 @@ import { useMemo, useState } from "react";
 import {staticStudentData as students} from "@/page-containers/school/students/staticData";
 import InfoIcon from '@mui/icons-material/Info';
 import {useRouter} from "next/navigation";
+import AssignmentIcon from '@mui/icons-material/Assignment';
 
 const StudentsTable: React.FC = () => {
   const [validationErrors, setValidationErrors] = useState<Record<string, string | undefined>>({});
@@ -166,8 +167,13 @@ const StudentsTable: React.FC = () => {
           </IconButton>
         </Tooltip>
         <Tooltip title="Details">
-          <IconButton onClick={() => router.push(`/school/students/${row.original.id}/applications`)}>
+          <IconButton onClick={() => router.push(`/school/students/${row.original.id}`)}>
             <InfoIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Applications">
+          <IconButton onClick={() => router.push(`/school/students/${row.original.id}/applications`)}>
+            <AssignmentIcon />
           </IconButton>
         </Tooltip>
         <Tooltip title="Delete">
