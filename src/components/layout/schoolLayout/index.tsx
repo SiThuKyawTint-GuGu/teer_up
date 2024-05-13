@@ -1,16 +1,16 @@
 import { Icons, Image } from "@/components/ui/Images";
 import { useGetUser } from "@/services/user";
-import { navbarItems, NavbarType } from "@/shared/data/SchoolTabbar";
+import { NavbarType, navbarItems } from "@/shared/data/SchoolTabbar";
 import { UserProfileResponse } from "@/types/Profile";
 import { logout } from "@/utils/auth";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Box, CssBaseline, ListItem, ListItemButton, Stack, TextField, Toolbar, Typography } from "@mui/material";
-import { styled } from "@mui/material/styles";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import { styled } from "@mui/material/styles";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useState, useTransition } from "react";
@@ -21,7 +21,7 @@ interface AppBarProps extends MuiAppBarProps {
 }
 
 const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== "open",
+  shouldForwardProp: prop => prop !== "open",
 })<AppBarProps>(({ theme, open }) => ({
   backgroundColor: "white",
   color: "black",
@@ -68,28 +68,34 @@ const SchoolDashboardLayout: React.FC<LayoutProps> = ({ children }) => {
                 key={item.path}
                 disablePadding
                 sx={{
-                  backgroundColor: (pathName === '/school' && item.path === '/school') || pathName.includes(item.path)
-                    ? "secondary.main"
-                    : "",
-                  borderLeft: (pathName === '/school' && item.path === '/school') || pathName.includes(item.path)
-                    ? "4px solid #DA291C"
-                    : "4px solid white",
+                  backgroundColor:
+                    (pathName === "/school" && item.path === "/school") || pathName.includes(item.path)
+                      ? "secondary.main"
+                      : "",
+                  borderLeft:
+                    (pathName === "/school" && item.path === "/school") || pathName.includes(item.path)
+                      ? "4px solid #DA291C"
+                      : "4px solid white",
                 }}
               >
                 <ListItemButton component={Link} href={item.path}>
-                  <ListItemIcon>{(pathName === '/school' && item.path === '/school') || pathName.includes(item.path)
-                    ? item.activeIcon
-                    : item.icon}</ListItemIcon>
+                  <ListItemIcon>
+                    {(pathName === "/school" && item.path === "/school") || pathName.includes(item.path)
+                      ? item.activeIcon
+                      : item.icon}
+                  </ListItemIcon>
                   <ListItemText
                     primary={item.text}
                     sx={{
                       "& .MuiTypography-root": {
-                        color: (pathName === '/school' && item.path === '/school') || pathName.includes(item.path)
-                          ? "primary.main"
-                          : "",
-                        fontWeight: (pathName === '/school' && item.path === '/school') || pathName.includes(item.path)
-                          ? "600"
-                          : "",
+                        color:
+                          (pathName === "/school" && item.path === "/school") || pathName.includes(item.path)
+                            ? "primary.main"
+                            : "",
+                        fontWeight:
+                          (pathName === "/school" && item.path === "/school") || pathName.includes(item.path)
+                            ? "600"
+                            : "",
                       },
                     }}
                   />
@@ -105,7 +111,7 @@ const SchoolDashboardLayout: React.FC<LayoutProps> = ({ children }) => {
             >
               <ListItemButton onClick={handleLogout}>
                 <ListItemIcon>
-                  <Icons.schoolBlogIcon width={24} height={24} fill="#373A36" />
+                  <Icons.schoolLogoutIcon width={24} height={24} fill="#373A36" />
                 </ListItemIcon>
                 <ListItemText primary="Log out" />
               </ListItemButton>
