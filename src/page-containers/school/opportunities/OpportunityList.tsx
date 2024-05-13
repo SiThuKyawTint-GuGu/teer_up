@@ -30,7 +30,7 @@ export default function OpportunityList() {
   };
 
   return (
-    <Container sx={{ mb: 10, maxWidth: "lg" }}>
+    <Container sx={{ maxWidth: "lg" }}>
       <Box>
         <Typography variant="h6" fontWeight="bold">
           Opportunities
