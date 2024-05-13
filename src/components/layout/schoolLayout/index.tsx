@@ -68,18 +68,28 @@ const SchoolDashboardLayout: React.FC<LayoutProps> = ({ children }) => {
                 key={item.path}
                 disablePadding
                 sx={{
-                  backgroundColor: pathName === item.path ? "secondary.main" : "",
-                  borderLeft: pathName === item.path ? "4px solid #DA291C" : "4px solid white",
+                  backgroundColor: (pathName === '/school' && item.path === '/school') || pathName.includes(item.path)
+                    ? "secondary.main"
+                    : "",
+                  borderLeft: (pathName === '/school' && item.path === '/school') || pathName.includes(item.path)
+                    ? "4px solid #DA291C"
+                    : "4px solid white",
                 }}
               >
                 <ListItemButton component={Link} href={item.path}>
-                  <ListItemIcon>{pathName === item.path ? item.activeIcon : item.icon}</ListItemIcon>
+                  <ListItemIcon>{(pathName === '/school' && item.path === '/school') || pathName.includes(item.path)
+                    ? item.activeIcon
+                    : item.icon}</ListItemIcon>
                   <ListItemText
                     primary={item.text}
                     sx={{
                       "& .MuiTypography-root": {
-                        color: pathName === item.path ? "primary.main" : "",
-                        fontWeight: pathName === item.path ? "600" : "",
+                        color: (pathName === '/school' && item.path === '/school') || pathName.includes(item.path)
+                          ? "primary.main"
+                          : "",
+                        fontWeight: (pathName === '/school' && item.path === '/school') || pathName.includes(item.path)
+                          ? "600"
+                          : "",
                       },
                     }}
                   />

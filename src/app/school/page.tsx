@@ -1,10 +1,7 @@
-import { NextPage } from "next";
-import DashboardPage from "@/page-containers/school/dashboard/DashboardPage";
+import { redirect } from "next/navigation";
 
-const SchoolHome: NextPage = () => {
-  return <>
-    <DashboardPage/>
-  </>;
-};
+async function SchoolHome() {
+  redirect('/school/dashboard')
+}
 
 export default SchoolHome;

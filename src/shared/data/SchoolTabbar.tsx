@@ -10,7 +10,7 @@ export type NavbarType = {
 export const navbarItems: NavbarType[] = [
   {
     text: "Dashboard",
-    path: "/school",
+    path: "/school/dashboard",
     icon: <Icons.schoolBlogIcon width={24} height={24} fill="#373A36" />,
     activeIcon: <Icons.schoolBlogIcon width={24} height={24} activeFill="#DA291C" active />,
   },
