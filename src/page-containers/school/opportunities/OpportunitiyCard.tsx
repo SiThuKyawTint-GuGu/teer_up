@@ -18,7 +18,6 @@ export default function OpportunitiyCard({ id, name, description, location, jobT
 
   return (
     <>
-      {/* <Link href={`/school/opportunities/${id}`}> */}
       <Card
         color="#FAFAFA"
         sx={{
@@ -32,10 +31,11 @@ export default function OpportunitiyCard({ id, name, description, location, jobT
         </IconButton>
 
         <Stack sx={{ p: 2, pb: 2 }}>
-          {/* <Avatar alt={company.name} src={company.logo} variant="rounded" sx={{ width: 48, height: 48, mb: 2 }} /> */}
-          <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-            {name}
-          </Typography>
+          <Link href={`/school/opportunities/${id}`}>
+            <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+              {name}
+            </Typography>
+          </Link>
 
           <Typography variant="body1" sx={{ fontWeight: "normal", mt: 1 }}>
             {description}
