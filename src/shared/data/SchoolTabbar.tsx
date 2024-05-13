@@ -11,8 +11,8 @@ export const navbarItems: NavbarType[] = [
   {
     text: "Dashboard",
     path: "/school/dashboard",
-    icon: <Icons.schoolDashboardIcon width={24} height={24} fill="#373A36" />,
-    activeIcon: <Icons.schoolDashboardIcon width={24} height={24} activeFill="#DA291C" active />,
+    icon: <Icons.schoolBlogIcon width={24} height={24} fill="#373A36" />,
+    activeIcon: <Icons.schoolBlogIcon width={24} height={24} activeFill="#DA291C" active />,
   },
   {
     text: "Opportunities",
@@ -23,13 +23,13 @@ export const navbarItems: NavbarType[] = [
   {
     text: "Students",
     path: "/school/students",
-    icon: <Icons.schoolStudentsIcon width={24} height={24} fill="#373A36" />,
-    activeIcon: <Icons.schoolStudentsIcon width={24} height={24} activeFill="#DA291C" active />,
+    icon: <Icons.schoolBlogIcon width={24} height={24} fill="#373A36" />,
+    activeIcon: <Icons.schoolBlogIcon width={24} height={24} activeFill="#DA291C" active />,
   },
   {
     text: "Setting",
     path: "/school/setting",
-    icon: <Icons.schoolSettingsIcon width={24} height={24} fill="#373A36" />,
-    activeIcon: <Icons.schoolSettingsIcon width={24} height={24} activeFill="#DA291C" active />,
+    icon: <Icons.schoolBlogIcon width={24} height={24} fill="#373A36" />,
+    activeIcon: <Icons.schoolBlogIcon width={24} height={24} activeFill="#DA291C" active />,
   },
 ];
