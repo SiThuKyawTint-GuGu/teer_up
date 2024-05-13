@@ -7,8 +7,10 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import DescriptionIcon from "@mui/icons-material/Description";
 import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function OpportunityDetailsPage() {
+  const router = useRouter();
   return (
     <>
       <Box
@@ -29,8 +31,7 @@ export default function OpportunityDetailsPage() {
               "url('https://images.unsplash.com/photo-1573496130407-57329f01f769?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
             backgroundSize: "cover",
             backgroundPosition: "center",
-            // opacity: 0.5,
-            // filter: "brightness(0.5)",
+            filter: "brightness(0.5)",
             zIndex: 0,
           },
         }}
@@ -55,7 +56,9 @@ export default function OpportunityDetailsPage() {
                 columnGap: 2,
               }}
             >
-              <ArrowBackIcon sx={{ flexShrink: 0, width: 32, height: 32 }} />
+              <button onClick={() => router.back()}>
+                <ArrowBackIcon sx={{ flexShrink: 0, width: 32, height: 32 }} />
+              </button>
               <Typography fontSize={40} fontWeight={"bold"}>
                 Software Engineer
               </Typography>
