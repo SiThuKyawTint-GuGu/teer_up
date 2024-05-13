@@ -111,7 +111,7 @@ const SchoolDashboardLayout: React.FC<LayoutProps> = ({ children }) => {
             >
               <ListItemButton onClick={handleLogout}>
                 <ListItemIcon>
-                  <Icons.schoolLogoutIcon width={24} height={24} fill="#373A36" />
+                  <Icons.logout width={24} height={24} fill="#373A36" />
                 </ListItemIcon>
                 <ListItemText primary="Log out" />
               </ListItemButton>

@@ -1,4 +1,7 @@
 import { Icons } from "@/components/ui/Images";
+import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
+import PeopleIcon from "@mui/icons-material/People";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 export type NavbarType = {
   text: string;
@@ -11,8 +14,8 @@ export const navbarItems: NavbarType[] = [
   {
     text: "Dashboard",
     path: "/school/dashboard",
-    icon: <Icons.schoolBlogIcon width={24} height={24} fill="#373A36" />,
-    activeIcon: <Icons.schoolBlogIcon width={24} height={24} activeFill="#DA291C" active />,
+    icon: <SpaceDashboardIcon sx={{ fontSize: 24 }} />,
+    activeIcon: <SpaceDashboardIcon sx={{ fontSize: 24, color: "#DA291C" }} />,
   },
   {
     text: "Opportunities",
@@ -23,13 +26,13 @@ export const navbarItems: NavbarType[] = [
   {
     text: "Students",
     path: "/school/students",
-    icon: <Icons.schoolBlogIcon width={24} height={24} fill="#373A36" />,
-    activeIcon: <Icons.schoolBlogIcon width={24} height={24} activeFill="#DA291C" active />,
+    icon: <PeopleIcon sx={{ fontSize: 24 }} />,
+    activeIcon: <PeopleIcon sx={{ fontSize: 24, color: "#DA291C" }} />,
   },
   {
     text: "Setting",
     path: "/school/setting",
-    icon: <Icons.schoolBlogIcon width={24} height={24} fill="#373A36" />,
-    activeIcon: <Icons.schoolBlogIcon width={24} height={24} activeFill="#DA291C" active />,
+    icon: <SettingsIcon sx={{ fontSize: 24 }} />,
+    activeIcon: <SettingsIcon sx={{ fontSize: 24, color: "#DA291C" }} />,
   },
 ];
