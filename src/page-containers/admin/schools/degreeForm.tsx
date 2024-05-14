@@ -153,7 +153,7 @@ export function Majors({ value, onChange }: MajorsProps) {
       selectOnFocus
       clearOnBlur
       handleHomeEndKeys
-      renderInput={params => <TextField {...params} label="Add Degrees" placeholder="Favorites" />}
+      renderInput={params => <TextField {...params} label="Add Majors" placeholder="Majors" />}
       renderOption={(props, option) => <li {...props}>{option.name}</li>}
       renderTags={(selected, getTagProps) =>
         selected.map((option, index) => (
