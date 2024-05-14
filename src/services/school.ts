@@ -26,3 +26,12 @@ export const useCreateSchool = () =>
   useSWRMutation(`/schools`, (url, { arg }: { arg: any }) => {
     return appAxios.post<SchoolArgType>(url, arg);
   });
+
+export const useGetDegreeBySchoolId = <ParamsType, Degree>(params: { id: string }): SWRResponse<Degree, any> => {
+  return useSWR<Degree>(`/schools/degrees/school/${params.id}`);
+};
+
+export const useCreateDegree = () =>
+  useSWRMutation(`/schools/degrees`, (url, { arg }: { arg: any }) => {
+    return appAxios.post<SchoolArgType>(url, arg);
+  });

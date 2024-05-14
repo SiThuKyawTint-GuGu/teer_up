@@ -66,3 +66,12 @@ export interface ParamsType {
   role?: string;
   search?: number;
 }
+
+export interface DegreeDetail {
+  id: number;
+  name: string;
+}
+
+export interface DegreeResponse {
+  data: DegreeDetail[];
+}
