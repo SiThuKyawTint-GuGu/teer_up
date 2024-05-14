@@ -35,3 +35,108 @@ export const useCreateDegree = () =>
   useSWRMutation(`/schools/degrees`, (url, { arg }: { arg: any }) => {
     return appAxios.post<SchoolArgType>(url, arg);
   });
+
+// courses
+export const useGetCoursesBySchoolId = <ParamsType, Course>(params: { id: string }): SWRResponse<Course, any> => {
+  return useSWR<Course>(`/schools/courses/school/${params.id}`);
+};
+
+// {
+//   "name": "Game Dev 101",
+//   "credit": 1,
+//   "major_id": 1
+// }
+
+export const useCreateCourse = () =>
+  useSWRMutation(
+    `/schools/courses`,
+    (
+      url,
+      {
+        arg,
+      }: {
+        arg: {
+          name: string;
+          credit: number;
+          major_id: number;
+        };
+      }
+    ) => {
+      return appAxios.post<SchoolArgType>(url, arg);
+    }
+  );
+
+export const useDeleteCourse = () =>
+  useSWRMutation(`/schools/courses`, (url, { arg }: { arg: { id: string } }) => {
+    return appAxios.delete<SchoolArgType>(`${url}/${arg.id}`);
+  });
+
+export const useUpdateCourse = () =>
+  useSWRMutation(
+    `/schools/courses`,
+    (
+      url,
+      {
+        arg,
+      }: {
+        arg: {
+          id: string;
+          name: string;
+          credit: number;
+        };
+      }
+    ) => {
+      return appAxios.put<SchoolArgType>(`${url}/${arg.id}`, arg);
+    }
+  );
+
+// majors
+export const useGetMajorsBySchoolId = <ParamsType, Major>(params: { id: string }): SWRResponse<Major, any> => {
+  return useSWR<Major>(`/schools/majors/school/${params.id}`);
+};
+
+export const useCreateMajor = () =>
+  useSWRMutation(
+    `/schools/majors`,
+    (
+      url,
+      {
+        arg,
+      }: {
+        arg: {
+          name: string;
+          degree_id: number;
+        };
+      }
+    ) => {
+      return appAxios.post<SchoolArgType>(url, arg);
+    }
+  );
+
+export const useDeleteMajor = () =>
+  useSWRMutation(`/schools/majors`, (url, { arg }: { arg: { id: string } }) => {
+    return appAxios.delete<SchoolArgType>(`${url}/${arg.id}`);
+  });
+
+export const useGetAllMajors = <Major>(params: { id: string }): SWRResponse<Major, any> => {
+  return useSWR<Major>(`/schools/majors`);
+};
+
+export const useUpdateMajor = () =>
+  useSWRMutation(
+    `/schools/majors`,
+    (
+      url,
+      {
+        arg,
+      }: {
+        arg: {
+          id: string;
+          name: string;
+          degree_id: number;
+        };
+      }
+    ) => {
+      return appAxios.put<SchoolArgType>(`${url}/${arg.id}`, arg);
+    }
+  );
