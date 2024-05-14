@@ -1,23 +1,23 @@
 "use client";
+import { ParamsType, SchoolAdmin, SchoolAdminResponse } from "@/types/School";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Autocomplete, Button, Container, TextField, Typography } from "@mui/material";
+import { Autocomplete, Container, TextField, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
-import { SchoolAdminResponse, ParamsType, SchoolAdmin } from "@/types/School";
 
-import * as React from "react";
-import { Theme, useTheme } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import Chip from "@mui/material/Chip";
 import { useCreateSchool, useGetSchoolAdmins } from "@/services/school";
 import { USER_ROLE } from "@/shared/enums";
 import LoadingButton from "@mui/lab/LoadingButton";
+import Box from "@mui/material/Box";
+import Chip from "@mui/material/Chip";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { Theme, useTheme } from "@mui/material/styles";
+import * as React from "react";
 
 const validationSchema = yup.object({
   name: yup.string().required("Name is required!"),
@@ -87,15 +87,7 @@ export default function SchoolDetails({ id }: SchoolDetailsProps) {
         <Typography variant="body2" color="red">
           {errors.email?.message}
         </Typography>
-        {/* <TextField
-          type="number"
-          placeholder="School Admin ID"
-          {...register("school_admin_id")}
-          fullWidth
-          sx={{
-            marginTop: 2,
-          }}
-        /> */}
+
         <Box
           sx={{
             marginTop: 2,
