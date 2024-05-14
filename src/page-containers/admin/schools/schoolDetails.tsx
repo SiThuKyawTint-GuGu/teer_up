@@ -1,7 +1,7 @@
 "use client";
 import { ParamsType, SchoolAdmin, SchoolAdminResponse } from "@/types/School";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Autocomplete, Container, TextField, Typography } from "@mui/material";
+import { Autocomplete, Card, Container, TextField, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -63,13 +63,17 @@ export default function SchoolDetails({ id }: SchoolDetailsProps) {
   };
 
   return (
-    <Container
-      component="main"
-      maxWidth="xl"
+    <Card
       sx={{
-        marginTop: 8,
+        padding: 2,
+        borderRadius: 2,
+        boxShadow: 2,
+        marginBottom: 2,
       }}
     >
+      <Typography variant="h6" fontWeight="bold" my={2}>
+        Add School
+      </Typography>
       <form onSubmit={handleSubmit(onSubmit)}>
         <TextField type="text" label="Name" {...register("name")} fullWidth />
         <Typography variant="body2" color="red">
@@ -132,7 +136,7 @@ export default function SchoolDetails({ id }: SchoolDetailsProps) {
           Submit
         </LoadingButton>
       </form>
-    </Container>
+    </Card>
   );
 }
 
