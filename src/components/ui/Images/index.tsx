@@ -81,8 +81,11 @@ import { RxCross2, RxMagnifyingGlass } from "react-icons/rx";
 import { SiAmazon, SiNetflix, SiTesla, SiVivawallet } from "react-icons/si";
 import {
   ChatIcon,
+  CommentIcon,
   ExploreIcon,
+  FilterIcon,
   GlobalIcon,
+  HeartIcon,
   HistoryIcon,
   HomeIcon,
   IconProps,
@@ -193,6 +196,8 @@ export const Icons = {
   deleteCross: MdOutlineDeleteSweep,
   moreOption: MdMoreVert,
   userIcon: UserIcon,
+  filterIcon: FilterIcon,
+  commentIcon: CommentIcon,
 
   // Nav menu icons
   homeIcon: ({ ...props }: IconProps) => <HomeIcon {...props} />,
@@ -207,6 +212,7 @@ export const Icons = {
 
   schoolBlogIcon: ({ ...props }: IconProps) => <SchoolBlogIcon {...props} />,
   schoolJobIcon: ({ ...props }: IconProps) => <SchoolJobIcon {...props} />,
+  heartIcon: ({ ...props }: IconProps) => <HeartIcon {...props} />,
 };
 
 interface Image {
