@@ -90,6 +90,7 @@ export const useUserRegister = () => {
 interface LoginArgType {
   arg: {
     email: string;
+    token?: string;
   };
 }
 export const useUserLogin = () => {
@@ -117,6 +118,7 @@ export const useOAuthLogin = () => {
 interface OtpArgType {
   arg: {
     verificationCode: string;
+    token?: string;
   };
 }
 export const useOtpVerified = () => {
