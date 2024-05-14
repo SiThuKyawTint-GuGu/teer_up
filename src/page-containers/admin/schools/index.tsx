@@ -4,6 +4,7 @@ import { useDeleteSchool, useGetSchools } from "@/services/school";
 import { GetAllSchoolsResponse, School } from "@/types/School";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import InfoIcon from "@mui/icons-material/Info";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { Box, Button, Chip, IconButton, Modal, Tooltip, Typography } from "@mui/material";
 import { MaterialReactTable, useMaterialReactTable } from "material-react-table";
@@ -122,6 +123,13 @@ export default function Schools() {
             <EditIcon />
           </IconButton>
           {/* </Link> */}
+        </Tooltip>
+        <Tooltip title="Details">
+          <Link href={`/admin/schools/${row.id}`}>
+            <IconButton>
+              <InfoIcon />
+            </IconButton>
+          </Link>
         </Tooltip>
         <Tooltip title="Delete">
           <IconButton
