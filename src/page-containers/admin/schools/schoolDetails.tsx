@@ -22,7 +22,7 @@ import * as React from "react";
 const validationSchema = yup.object({
   name: yup.string().required("Name is required!"),
   email: yup.string().email("Invalid email").required("Email is required!"),
-  degrees: yup.array().of(
+  majors: yup.array().of(
     yup.object({
       name: yup.string().required("Degree name is required!"),
     })
@@ -119,7 +119,7 @@ export default function SchoolDetails({ id }: SchoolDetailsProps) {
         </Typography>
 
         <Controller
-          name="degrees"
+          name="majors"
           control={control}
           defaultValue={[]}
           render={({ field }) => (
@@ -130,7 +130,7 @@ export default function SchoolDetails({ id }: SchoolDetailsProps) {
           )}
         />
         <Typography variant="body2" color="red">
-          {errors.degrees?.message}
+          {errors.majors?.message}
         </Typography>
         <LoadingButton loading={isSubmitting || creatingSchool} variant="contained" type="submit">
           Submit
@@ -180,10 +180,10 @@ export function DegreeSelector({ value, onChange }: DegreeSelectorProps) {
   return (
     <div>
       <FormControl sx={{ marginY: 2 }} fullWidth>
-        <InputLabel id="school-degrees">Degree</InputLabel>
+        <InputLabel id="school-majors">Degree</InputLabel>
         <Select
-          labelId="school-degrees"
-          id="school-degrees-select"
+          labelId="school-majors"
+          id="school-majors-select"
           multiple
           value={degreeName}
           onChange={handleChange}

@@ -1,7 +1,6 @@
 "use client";
 
-import { useGetDegrees } from "@/services/school";
-import { AllDegree, AllDegreeResponse } from "@/types/School";
+import { useGetMajors } from "@/services/school";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import InfoIcon from "@mui/icons-material/Info";
@@ -10,10 +9,11 @@ import { Box, Button, Chip, IconButton, Modal, Tooltip, Typography } from "@mui/
 import { MaterialReactTable, useMaterialReactTable } from "material-react-table";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { AllMajorResponse, Major } from "@/types/Majors";
 
-export default function AllDegreeTable() {
-  const [degrees, setDegrees] = useState<AllDegree[]>();
-  const { data: degreesData, isLoading, mutate } = useGetDegrees<AllDegreeResponse>();
+export default function AllMajorsTable() {
+  const [majors, setMajors] = useState<Major[]>();
+  const { data: majorsData, isLoading, mutate } = useGetMajors<AllMajorResponse>();
   const [open, setOpen] = useState<boolean>(false);
   const [id, setId] = useState<string>("");
   const [globalFilter, setGlobalFilter] = useState<string>("");
@@ -23,8 +23,8 @@ export default function AllDegreeTable() {
   });
 
   useEffect(() => {
-    if (degreesData) setDegrees(degreesData?.data);
-  }, [degreesData?.data]);
+    if (majorsData) setMajors(majorsData?.data);
+  }, [majorsData?.data]);
 
   const columns = useMemo(
     () => [
@@ -36,15 +36,23 @@ export default function AllDegreeTable() {
       },
       {
         accessorKey: "name",
-        header: "Name",
+        header: "Major Name",
         enableEditing: false,
       },
       {
-        accessorKey: "school.name",
+        accessorKey: "degree.name",
+        header: "Degree Name",
+        enableEditing: false,
+        renderCell: ({ row }: { row: Major }) => {
+          return <Chip label={row.degree.name} />;
+        },
+      },
+      {
+        accessorKey: "degree.school.name",
         header: "University Name",
         enableEditing: false,
-        renderCell: ({ row }: { row: AllDegree }) => {
-          return <Chip label={row.school.name} />;
+        renderCell: ({ row }: { row: Major }) => {
+          return <Chip label={row.degree.school.name} />;
         },
       },
       {
@@ -63,7 +71,7 @@ export default function AllDegreeTable() {
 
   const table = useMaterialReactTable({
     columns,
-    data: (degrees as any) || [],
+    data: (majors as any) || [],
     createDisplayMode: "row",
     editDisplayMode: "row",
     enableEditing: true,
@@ -83,7 +91,7 @@ export default function AllDegreeTable() {
     positionActionsColumn: "last",
     // manualFiltering: true,
     manualPagination: true,
-    rowCount: degrees?.length ?? 0,
+    rowCount: majors?.length ?? 0,
     initialState: {
       pagination: {
         pageSize: 10,
@@ -135,7 +143,7 @@ export default function AllDegreeTable() {
     ),
     renderTopToolbarCustomActions: ({ table }) => (
       <Typography variant="h6" fontWeight="bold" m={2}>
-        All Degrees
+        All Majors
       </Typography>
     ),
   });
@@ -155,7 +163,7 @@ export default function AllDegreeTable() {
             Delete Confirm
           </Typography>
           <Typography sx={{ mt: 2 }}>
-            Are you sure you want to delete this degree ID <span className="text-red-700 font-semibold">[{id}]</span>?
+            Are you sure you want to delete this major ID <span className="text-red-700 font-semibold">[{id}]</span>?
           </Typography>
           <div className="flex justify-between mt-4">
             <div></div>
