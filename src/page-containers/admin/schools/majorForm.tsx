@@ -53,8 +53,6 @@ function MajorForm({ id }: MajorFormProps) {
   const {trigger: createMajor, data, isMutating} = useCreateMajor()
 
   const onSubmit = (data: any) => {
-    console.log("Form Data:", data);
-
     createMajor(data, {
       onSuccess: data1 => router.push('/admin/schools')
     })

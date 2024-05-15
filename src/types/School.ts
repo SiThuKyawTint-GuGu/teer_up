@@ -75,3 +75,16 @@ export interface DegreeDetail {
 export interface DegreeResponse {
   data: DegreeDetail[];
 }
+
+export interface AllDegree {
+  id: number;
+  created_at: string;
+  updated_at: string;
+  name: string;
+  school_id: number;
+  school: School;
+}
+
+export interface AllDegreeResponse {
+  data: AllDegree[];
+}

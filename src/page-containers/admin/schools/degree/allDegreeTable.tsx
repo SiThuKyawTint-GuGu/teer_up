@@ -1,7 +1,7 @@
 "use client";
 
-import { useDeleteSchool, useGetSchools } from "@/services/school";
-import { GetAllSchoolsResponse, School } from "@/types/School";
+import { useGetDegrees } from "@/services/school";
+import { AllDegree, AllDegreeResponse } from "@/types/School";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import InfoIcon from "@mui/icons-material/Info";
@@ -11,10 +11,9 @@ import { MaterialReactTable, useMaterialReactTable } from "material-react-table"
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
-export default function Schools() {
-  const [schools, setSchools] = useState<School[]>();
-  const { trigger: deleteTrigger, isMutating: deletingSchool } = useDeleteSchool();
-  const { data: schoolsData, isLoading, mutate } = useGetSchools<GetAllSchoolsResponse>();
+export default function AllDegreeTable() {
+  const [degrees, setDegrees] = useState<AllDegree[]>();
+  const { data: degreesData, isLoading, mutate } = useGetDegrees<AllDegreeResponse>();
   const [open, setOpen] = useState<boolean>(false);
   const [id, setId] = useState<string>("");
   const [globalFilter, setGlobalFilter] = useState<string>("");
@@ -24,8 +23,8 @@ export default function Schools() {
   });
 
   useEffect(() => {
-    if (schoolsData) setSchools(schoolsData?.data);
-  }, [schoolsData?.data]);
+    if (degreesData) setDegrees(degreesData?.data);
+  }, [degreesData?.data]);
 
   const columns = useMemo(
     () => [
@@ -41,21 +40,11 @@ export default function Schools() {
         enableEditing: false,
       },
       {
-        accessorKey: "email",
-        header: "Email",
-      },
-      {
-        accessorKey: "type",
-        header: "Type",
-        enableEditing: true,
-        renderCell: ({
-          row,
-        }: {
-          row: {
-            type: string;
-          };
-        }) => {
-          return <Chip label={row.type} />;
+        accessorKey: "school.name",
+        header: "University Name",
+        enableEditing: false,
+        renderCell: ({ row }: { row: AllDegree }) => {
+          return <Chip label={row.school.name} />;
         },
       },
       {
@@ -74,7 +63,7 @@ export default function Schools() {
 
   const table = useMaterialReactTable({
     columns,
-    data: (schools as any) || [],
+    data: (degrees as any) || [],
     createDisplayMode: "row",
     editDisplayMode: "row",
     enableEditing: true,
@@ -94,7 +83,7 @@ export default function Schools() {
     positionActionsColumn: "last",
     // manualFiltering: true,
     manualPagination: true,
-    rowCount: schools?.length ?? 0,
+    rowCount: degrees?.length ?? 0,
     initialState: {
       pagination: {
         pageSize: 10,
@@ -125,11 +114,11 @@ export default function Schools() {
           {/* </Link> */}
         </Tooltip>
         <Tooltip title="Details">
-          <Link href={`/admin/schools/${row.id}`}>
-            <IconButton>
-              <InfoIcon />
-            </IconButton>
-          </Link>
+          {/*<Link href={`/admin/schools/${row.id}`}>*/}
+          <IconButton>
+            <InfoIcon />
+          </IconButton>
+          {/*</Link>*/}
         </Tooltip>
         <Tooltip title="Delete">
           <IconButton
@@ -145,18 +134,16 @@ export default function Schools() {
       </Box>
     ),
     renderTopToolbarCustomActions: ({ table }) => (
-      <div>
-        <Button variant="contained" color="error" sx={{ background: "#DA291C", textTransform: "none" }}>
-          <Link href={"/admin/schools/0"}>Create New School</Link>
-        </Button>
-      </div>
+      <Typography variant="h6" fontWeight="bold" m={2}>
+        All Degrees
+      </Typography>
     ),
   });
 
   const handleDeleteSchool = async () => {
     setOpen(false);
 
-    await deleteTrigger({ id });
+    // await deleteTrigger({ id });
   };
 
   return (
@@ -168,7 +155,7 @@ export default function Schools() {
             Delete Confirm
           </Typography>
           <Typography sx={{ mt: 2 }}>
-            Are you sure you want to delete this school ID <span className="text-red-700 font-semibold">[{id}]</span>?
+            Are you sure you want to delete this degree ID <span className="text-red-700 font-semibold">[{id}]</span>?
           </Typography>
           <div className="flex justify-between mt-4">
             <div></div>
@@ -190,7 +177,7 @@ export default function Schools() {
                 Cancel
               </Button>
               <LoadingButton
-                loading={deletingSchool}
+                // loading={deletingSchool}
                 onClick={handleDeleteSchool}
                 color="error"
                 sx={{ textTransform: "none" }}
@@ -212,7 +199,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: "background.paper",
+  bgColor: "background.paper",
   boxShadow: 24,
   p: 4,
 };

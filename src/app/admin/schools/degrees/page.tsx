@@ -1,7 +1,8 @@
-import Schools from "@/page-containers/admin/schools/schoolTable";
 import { Box } from "@mui/material";
 
-export default function SchoolPage() {
+import AllDegreeTable from "@/page-containers/admin/schools/degree/allDegreeTable";
+
+export default function DegreesPage() {
   return (
     <Box
       sx={{
@@ -11,7 +12,7 @@ export default function SchoolPage() {
         maxWidth: "lg",
       }}
     >
-      <Schools />
+      <AllDegreeTable />
     </Box>
   );
 }
