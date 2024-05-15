@@ -1,6 +1,10 @@
-import { Box, Stack, Typography } from "@mui/material";
-import React from "react";
+"use client";
+import { Badge, Box, Button, Container, Divider, Drawer, Pagination, Stack, Typography } from "@mui/material";
+
+import FilterListIcon from "@mui/icons-material/FilterList";
 import OpportunitiyCard from "./OpportunitiyCard";
+import { useState } from "react";
+import { jobs } from "./staticData";
 
 export interface Job {
   id: number;
@@ -14,106 +18,23 @@ export interface Job {
   Saved: string;
 }
 
-const jobs: Job[] = [
-  {
-    id: 1,
-    name: "Software Engineer",
-    company: "Google",
-    description:
-      "Lorem ipsum dolor sit amet consectetur. Elementum consequat magna mauris ipsum vestibulum morbi. Eget eu luctus...",
-    location: "Yangon",
-    jobType: "Full-Time",
-    jobID: "Job ID : 1345951",
-    Views: "12K",
-    Saved: "12K",
-  },
-  {
-    id: 2,
-    name: "Software Engineer",
-    company: "Google",
-    description:
-      "Lorem ipsum dolor sit amet consectetur. Elementum consequat magna mauris ipsum vestibulum morbi. Eget eu luctus...",
-    location: "Yangon",
-    jobType: "Full-Time",
-    jobID: "Job ID : 1345951",
-    Views: "12K",
-    Saved: "12K",
-  },
-  {
-    id: 3,
-    name: "Software Engineer",
-    company: "Google",
-    description:
-      "Lorem ipsum dolor sit amet consectetur. Elementum consequat magna mauris ipsum vestibulum morbi. Eget eu luctus...",
-    location: "Yangon",
-    jobType: "Full-Time",
-    jobID: "Job ID : 1345951",
-    Views: "12K",
-    Saved: "12K",
-  },
-  {
-    id: 4,
-    name: "Software Engineer",
-    company: "Google",
-    description:
-      "Lorem ipsum dolor sit amet consectetur. Elementum consequat magna mauris ipsum vestibulum morbi. Eget eu luctus...",
-    location: "Yangon",
-    jobType: "Full-Time",
-    jobID: "Job ID : 1345951",
-    Views: "12K",
-    Saved: "12K",
-  },
-  {
-    id: 5,
-    name: "Software Engineer",
-    company: "Google",
-    description:
-      "Lorem ipsum dolor sit amet consectetur. Elementum consequat magna mauris ipsum vestibulum morbi. Eget eu luctus...",
-    location: "Yangon",
-    jobType: "Full-Time",
-    jobID: "Job ID : 1345951",
-    Views: "12K",
-    Saved: "12K",
-  },
-  {
-    id: 6,
-    name: "Software Engineer",
-    company: "Google",
-    description:
-      "Lorem ipsum dolor sit amet consectetur. Elementum consequat magna mauris ipsum vestibulum morbi. Eget eu luctus...",
-    location: "Yangon",
-    jobType: "Full-Time",
-    jobID: "Job ID : 1345951",
-    Views: "12K",
-    Saved: "12K",
-  },
-  {
-    id: 7,
-    name: "Software Engineer",
-    company: "Google",
-    description:
-      "Lorem ipsum dolor sit amet consectetur. Elementum consequat magna mauris ipsum vestibulum morbi. Eget eu luctus...",
-    location: "Yangon",
-    jobType: "Full-Time",
-    jobID: "Job ID : 1345951",
-    Views: "12K",
-    Saved: "12K",
-  },
-];
 export default function OpportunityList() {
-  // empty array 3
+  const [open, setOpen] = useState(false);
+
+  const onOpen = () => {
+    setOpen(true);
+  };
+
+  const onClose = () => {
+    setOpen(false);
+  };
 
   return (
-    <>
-      <Box
-        sx={{
-          p: 4,
-        }}
-      >
+    <Container sx={{ maxWidth: "lg" }}>
+      <Box>
         <Typography variant="h6" fontWeight="bold">
           Opportunities
         </Typography>
-
         <Stack
           display="grid"
           gridTemplateColumns={{
@@ -127,11 +48,44 @@ export default function OpportunityList() {
             </Typography>
             <Typography variant="body2">1 - {jobs.length} of many results</Typography>
           </Box>
+          <Box display="flex" justifyContent="flex-end">
+            <Button
+              disableRipple
+              color="inherit"
+              endIcon={
+                <Badge color="error" variant="dot">
+                  <FilterListIcon />
+                </Badge>
+              }
+              onClick={onOpen}
+            >
+              Filters
+            </Button>
+            <Drawer
+              anchor="right"
+              open={open}
+              onClose={onClose}
+              slotProps={{
+                backdrop: { invisible: true },
+              }}
+              PaperProps={{
+                sx: { width: 280 },
+              }}
+            >
+              {/* {renderHead} */}
+
+              <Divider />
+
+              <Box sx={{ px: 2.5, py: 3 }}>
+                <Stack spacing={3}>Filters</Stack>
+              </Box>
+            </Drawer>
+          </Box>
         </Stack>
       </Box>
       <Box
         gap={3}
-        padding={4}
+        marginTop={4}
         display="grid"
         gridTemplateColumns={{
           xs: "repeat(1, 1fr)",
@@ -139,13 +93,23 @@ export default function OpportunityList() {
           md: "repeat(3, 1fr)",
         }}
       >
-        {jobs.map((job) => (
-          <OpportunitiyCard
-            key={job.id}
-            {...job}
-          />
+        {jobs.map(job => (
+          <OpportunitiyCard key={job.id} {...job} />
         ))}
       </Box>
-    </>
+      {jobs.length >= 8 ? (
+        <Stack>
+          <Pagination
+            count={10}
+            color="primary"
+            sx={{
+              mt: 4,
+              justifyContent: "center",
+              mx: "auto",
+            }}
+          />
+        </Stack>
+      ) : null}
+    </Container>
   );
 }
