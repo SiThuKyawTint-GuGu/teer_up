@@ -97,6 +97,7 @@ import {
   TeeupFooterIcon,
   TeeupIcon,
   UserIcon,
+  VerifiedIcon,
 } from "./Icons";
 
 export const Icons = {
@@ -193,6 +194,7 @@ export const Icons = {
   deleteCross: MdOutlineDeleteSweep,
   moreOption: MdMoreVert,
   userIcon: UserIcon,
+  verifiedIcon: VerifiedIcon,
 
   // Nav menu icons
   homeIcon: ({ ...props }: IconProps) => <HomeIcon {...props} />,
