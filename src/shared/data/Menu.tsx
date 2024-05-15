@@ -56,14 +56,14 @@ export const menuList: Menu[] = [
         icon: <Icons.book className="w-[20px] h-[20px]" />,
       },
       {
-        key: "/admin/schools/courses",
-        title: "Courses",
-        icon: <Icons.book className="w-[20px] h-[20px]" />,
-      },
-      {
         key: "/admin/schools/majors",
         title: "Majors",
         icon: <Icons.school className="w-[20px] h-[20px]" />,
+      },
+      {
+        key: "/admin/schools/courses",
+        title: "Courses",
+        icon: <Icons.course className="w-[20px] h-[20px]" />,
       },
     ],
   },

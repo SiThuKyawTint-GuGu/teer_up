@@ -1,3 +1,17 @@
+import { Box } from "@mui/material";
+import AllCoursesTable from "@/page-containers/admin/schools/courses/allCoursesTable";
+
 export default function CoursePage() {
-  return <div>CoursePage</div>;
+  return (
+    <Box
+      sx={{
+        maxHeight: "calc(100vh - 200px)",
+        pt: 4,
+        px: 2,
+        maxWidth: "lg",
+      }}
+    >
+      <AllCoursesTable />
+    </Box>
+  );
 }

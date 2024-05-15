@@ -21,6 +21,10 @@ export const useGetMajors = <MajorDataResponse>(): SWRResponse<MajorDataResponse
   return useSWR<MajorDataResponse>(`/schools/majors`);
 };
 
+export const useGetCourses = <CourseDataResponse>(): SWRResponse<CourseDataResponse, any> => {
+  return useSWR<CourseDataResponse>(`/schools/courses`);
+};
+
 export const useDeleteSchool = () =>
   useSWRMutation(`/schools`, (url, { arg }: { arg: { id: string } }) => {
     return appAxios.delete<SchoolArgType>(`${url}/${arg.id}`);

@@ -1,4 +1,4 @@
-import MenuBookIcon from '@mui/icons-material/MenuBook';
+import MenuBookIcon from "@mui/icons-material/MenuBook";
 import BookIcon from "@mui/icons-material/Book";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import ApartmentIcon from "@mui/icons-material/Apartment";
@@ -101,6 +101,7 @@ import {
   TeeupIcon,
   UserIcon,
 } from "./Icons";
+import CastForEducationIcon from "@mui/icons-material/CastForEducation";
 
 export const Icons = {
   loading: ({ ...props }: IconProps) => <LoadingIcon {...props} />,
@@ -126,6 +127,7 @@ export const Icons = {
   carousel: ViewCarouselIcon,
   school: SchoolIcon,
   major: MenuBookIcon,
+  course: CastForEducationIcon,
   book: BookIcon,
   schoolBuilding: ApartmentIcon,
   discussions: GoCommentDiscussion,
