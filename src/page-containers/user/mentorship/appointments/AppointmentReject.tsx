@@ -23,8 +23,8 @@ const AppointmentReject = () => {
     resolver: yupResolver(validationSchema),
   });
 
-  const handleAccept = (_: undefined) => {
-    router.push("appointments-accept");
+  const handleNext = (_: undefined) => {
+    router.push("postpone-appointment");
   };
 
   return (
@@ -62,7 +62,9 @@ const AppointmentReject = () => {
                 )}
               />
               <Box className="mt-4">
-                <Button className="w-full h-[40px] text-[16px] font-[600] mt-2 bg-transparent border-primary border-2 text-primary hover:text-white">
+                <Button
+                onClick={()=>handleNext(undefined)}
+                className="w-full h-[40px] text-[16px] font-[600] mt-2 bg-transparent border-primary border-2 text-primary hover:text-white">
                   Postpone Appointment
                 </Button>
               </Box>
