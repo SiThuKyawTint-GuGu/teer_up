@@ -4,7 +4,7 @@ import { NextPage } from "next";
 
 const OnboardingPage: NextPage = () => {
   return (
-    <MainPageLayout>
+    <MainPageLayout hideHeader={true}>
       <OnboardingQuestionPage />
     </MainPageLayout>
   );
