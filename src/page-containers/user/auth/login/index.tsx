@@ -48,22 +48,29 @@ const Login: React.FC = () => {
       console.log("Execute recaptcha not available yet");
       return;
     }
-    executeRecaptcha("login").then(gReCaptchaToken => {
-      setToken(gReCaptchaToken);
-      // form.setValue("token", gReCaptchaToken);
-    });
 
-    if (!token) return;
-    data = { ...data, token };
-    await trigger(data, {
-      onSuccess: res => {
-        setUserInfo(res.data.token, res.data.data);
-        startTransition(() => {
-          router.push("/auth/otp");
-        });
-      },
-    });
+    try {
+      const gReCaptchaToken = await executeRecaptcha("login");
+      if (!gReCaptchaToken) {
+        console.log("Failed to get reCAPTCHA token");
+        return;
+      }
+
+      const updatedData = { ...data, token: gReCaptchaToken };
+
+      await trigger(updatedData, {
+        onSuccess: (res) => {
+          setUserInfo(res.data.token, res.data.data);
+          startTransition(() => {
+            router.push("/auth/otp");
+          });
+        },
+      });
+    } catch (error) {
+      console.error("Error during login:", error);
+    }
   };
+
 
   return (
     <Dialog>
