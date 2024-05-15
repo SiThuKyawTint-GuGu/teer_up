@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import GoogleCaptchaWrapper from "@/app/google-captcha-wrapper";
 
 interface Props {
   children: ReactNode;
@@ -7,7 +8,9 @@ interface Props {
 const AuthLayout = ({ children }: Props) => {
   return (
     <main className="bg-layout">
-      <div className="w-full max-w-[400px] mx-auto">{children}</div>
+      <div className="w-full max-w-[400px] mx-auto">
+       <GoogleCaptchaWrapper> {children}</GoogleCaptchaWrapper>
+      </div>
     </main>
   );
 };
