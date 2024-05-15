@@ -1,16 +1,27 @@
 import { Icons, Image } from "@/components/ui/Images";
 import { useGetUser } from "@/services/user";
-import { navbarItems, NavbarType } from "@/shared/data/SchoolTabbar";
+import { NavbarType, navbarItems } from "@/shared/data/SchoolTabbar";
 import { UserProfileResponse } from "@/types/Profile";
 import { logout } from "@/utils/auth";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Box, CssBaseline, ListItem, ListItemButton, Stack, TextField, Toolbar, Typography } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import {
+  Box,
+  CssBaseline,
+  Drawer,
+  Hidden,
+  ListItem,
+  ListItemButton,
+  Stack,
+  TextField,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import { styled } from "@mui/material/styles";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useState, useTransition } from "react";
@@ -21,7 +32,7 @@ interface AppBarProps extends MuiAppBarProps {
 }
 
 const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== "open",
+  shouldForwardProp: prop => prop !== "open",
 })<AppBarProps>(({ theme, open }) => ({
   backgroundColor: "white",
   color: "black",
@@ -53,55 +64,87 @@ const SchoolDashboardLayout: React.FC<LayoutProps> = ({ children }) => {
     });
   };
 
+  const renderSidebar = () => {
+    return (
+      <Box sx={{ width: 250, flexShrink: 0, bgcolor: "background.paper", overflowY: "auto" }}>
+        <div className="grid place-items-center p-6">
+          <Image src="/teeUpLogo.png" width={84} height={20} alt="teeup logo" />
+        </div>
+        <List>
+          {navbarItems.map((item: NavbarType, index: number) => (
+            <ListItem
+              key={item.path}
+              disablePadding
+              sx={{
+                backgroundColor:
+                  (pathName === "/school" && item.path === "/school") || pathName.includes(item.path)
+                    ? "secondary.main"
+                    : "",
+                borderLeft:
+                  (pathName === "/school" && item.path === "/school") || pathName.includes(item.path)
+                    ? "4px solid #DA291C"
+                    : "4px solid white",
+              }}
+            >
+              <ListItemButton component={Link} href={item.path}>
+                <ListItemIcon>
+                  {(pathName === "/school" && item.path === "/school") || pathName.includes(item.path)
+                    ? item.activeIcon
+                    : item.icon}
+                </ListItemIcon>
+                <ListItemText
+                  primary={item.text}
+                  sx={{
+                    "& .MuiTypography-root": {
+                      color:
+                        (pathName === "/school" && item.path === "/school") || pathName.includes(item.path)
+                          ? "primary.main"
+                          : "",
+                      fontWeight:
+                        (pathName === "/school" && item.path === "/school") || pathName.includes(item.path)
+                          ? "600"
+                          : "",
+                    },
+                  }}
+                />
+              </ListItemButton>
+            </ListItem>
+          ))}
+          <ListItem
+            key="/logout"
+            disablePadding
+            sx={{
+              borderLeft: "4px solid white",
+            }}
+          >
+            <ListItemButton onClick={handleLogout}>
+              <ListItemIcon>
+                <Icons.logout width={24} height={24} fill="#373A36" />
+              </ListItemIcon>
+              <ListItemText primary="Log out" />
+            </ListItemButton>
+          </ListItem>
+        </List>
+      </Box>
+    );
+  };
+
   return (
     <>
       <CssBaseline />
 
       <Box sx={{ display: "flex", height: "100vh" }}>
-        <Box sx={{ width: 250, flexShrink: 0, bgcolor: "background.paper", overflowY: "auto" }}>
-          <div className="grid place-items-center p-6">
-            <Image src="/teeUpLogo.png" width={84} height={20} alt="teeup logo" />
-          </div>
-          <List>
-            {navbarItems.map((item: NavbarType, index: number) => (
-              <ListItem
-                key={item.path}
-                disablePadding
-                sx={{
-                  backgroundColor: pathName === item.path ? "secondary.main" : "",
-                  borderLeft: pathName === item.path ? "4px solid #DA291C" : "4px solid white",
-                }}
-              >
-                <ListItemButton component={Link} href={item.path}>
-                  <ListItemIcon>{pathName === item.path ? item.activeIcon : item.icon}</ListItemIcon>
-                  <ListItemText
-                    primary={item.text}
-                    sx={{
-                      "& .MuiTypography-root": {
-                        color: pathName === item.path ? "primary.main" : "",
-                        fontWeight: pathName === item.path ? "600" : "",
-                      },
-                    }}
-                  />
-                </ListItemButton>
-              </ListItem>
-            ))}
-            <ListItem
-              key="/logout"
-              disablePadding
-              sx={{
-                borderLeft: "4px solid white",
-              }}
-            >
-              <ListItemButton onClick={handleLogout}>
-                <ListItemIcon>
-                  <Icons.schoolBlogIcon width={24} height={24} fill="#373A36" />
-                </ListItemIcon>
-                <ListItemText primary="Log out" />
-              </ListItemButton>
-            </ListItem>
-          </List>
-        </Box>
+        <Hidden smDown>{renderSidebar()}</Hidden>
+        <Drawer
+          variant="temporary"
+          open={open}
+          onClose={handleDrawerToggle}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+        >
+          {renderSidebar()}
+        </Drawer>
         <Box component="main" sx={{ flexGrow: 1, bgcolor: "background.default", overflowY: "auto", paddingBottom: 8 }}>
           <AppBar position="sticky" sx={{ boxShadow: "none" }}>
             <Toolbar>
@@ -110,7 +153,7 @@ const SchoolDashboardLayout: React.FC<LayoutProps> = ({ children }) => {
                 edge="start"
                 color="inherit"
                 aria-label="menu"
-                sx={{ mr: 2 }}
+                sx={{ mr: 2, display: { sm: "none", xs: "block" } }}
                 onClick={handleDrawerToggle}
               >
                 <MenuIcon />

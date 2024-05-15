@@ -1,5 +1,5 @@
 "use client";
-import { Box, Card, Divider, IconButton, Stack, Typography } from "@mui/material";
+import { Box, Card, Divider, IconButton, MenuItem, Stack, Typography } from "@mui/material";
 
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import DescriptionIcon from "@mui/icons-material/Description";
@@ -7,12 +7,17 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { Job } from "./OpportunityList";
 import Link from "next/link";
+import CustomPopover, { usePopover } from "@/components/ui/CustomPopover";
 
-export default function OpportunitiyCard({id, name, description, location, jobType, jobID, Views, Saved }: Job) {
+export default function OpportunitiyCard({ id, name, description, location, jobType, jobID, Views, Saved }: Job) {
+  const popover = usePopover();
+
   return (
-    <Link href={`/school/opportunities/${id}`}>
+    <>
       <Card
         color="#FAFAFA"
         sx={{
@@ -21,15 +26,16 @@ export default function OpportunitiyCard({id, name, description, location, jobTy
           padding: 1,
         }}
       >
-        <IconButton onClick={() => {}} sx={{ position: "absolute", top: 8, right: 8 }}>
+        <IconButton onClick={popover.onOpen} sx={{ position: "absolute", top: 8, right: 8 }}>
           <MoreVertIcon width={16} sx={{ flexShrink: 0 }} />
         </IconButton>
 
         <Stack sx={{ p: 2, pb: 2 }}>
-          {/* <Avatar alt={company.name} src={company.logo} variant="rounded" sx={{ width: 48, height: 48, mb: 2 }} /> */}
-          <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-            {name}
-          </Typography>
+          <Link href={`/school/opportunities/${id}`}>
+            <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+              {name}
+            </Typography>
+          </Link>
 
           <Typography variant="body1" sx={{ fontWeight: "normal", mt: 1 }}>
             {description}
@@ -90,6 +96,38 @@ export default function OpportunitiyCard({id, name, description, location, jobTy
           ))}
         </Box>
       </Card>
-    </Link>
+      <CustomPopover open={popover.open} onClose={popover.onClose} arrow="right-top" sx={{ width: 140 }}>
+        <MenuItem
+          onClick={() => {
+            popover.onClose();
+            // onView();
+          }}
+        >
+          <VisibilityIcon />
+          View
+        </MenuItem>
+
+        <MenuItem
+          onClick={() => {
+            popover.onClose();
+            // onEdit();
+          }}
+        >
+          <EditIcon />
+          Edit
+        </MenuItem>
+
+        <MenuItem
+          onClick={() => {
+            popover.onClose();
+            // onDelete();
+          }}
+          sx={{ color: "error.main" }}
+        >
+          <DeleteIcon />
+          Delete
+        </MenuItem>
+      </CustomPopover>
+    </>
   );
 }

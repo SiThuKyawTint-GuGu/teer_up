@@ -1,22 +1,22 @@
 "use client";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { Box, IconButton, Modal, Tooltip, Typography } from "@mui/material";
+import { Box, Container, IconButton, Modal, Tooltip, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import dayjs from "dayjs";
 import { MaterialReactTable, useMaterialReactTable, type MRT_TableOptions } from "material-react-table";
 import { useMemo, useState } from "react";
-import {staticStudentData as students} from "@/page-containers/school/students/staticData";
-import InfoIcon from '@mui/icons-material/Info';
-import {useRouter} from "next/navigation";
-import AssignmentIcon from '@mui/icons-material/Assignment';
+import { staticStudentData as students } from "@/page-containers/school/students/staticData";
+import InfoIcon from "@mui/icons-material/Info";
+import { useRouter } from "next/navigation";
+import AssignmentIcon from "@mui/icons-material/Assignment";
 
 const StudentsTable: React.FC = () => {
   const [validationErrors, setValidationErrors] = useState<Record<string, string | undefined>>({});
 
   const [open, setOpen] = useState<boolean>(false);
   const [id, setId] = useState<string>("");
-  const router = useRouter()
+  const router = useRouter();
 
   const columns = useMemo(
     () => [
@@ -24,7 +24,7 @@ const StudentsTable: React.FC = () => {
         accessorKey: "id",
         header: "ID",
         enableEditing: false,
-        size: 1
+        size: 1,
       },
       {
         accessorKey: "name",
@@ -128,7 +128,7 @@ const StudentsTable: React.FC = () => {
   const handleDelete = async () => {
     setOpen(false);
     // await deleteTrigger({ id });
-    console.log("deleted")
+    console.log("deleted");
   };
 
   const table = useMaterialReactTable({
@@ -192,10 +192,17 @@ const StudentsTable: React.FC = () => {
   });
 
   return (
-    <Box padding={2}>
-      <Typography variant={"h5"} fontWeight={"bold"} sx={{
-        marginBottom: 4,
-      }}> Student List </Typography>
+    <Container sx={{ mb: 10, maxWidth: "lg" }}>
+      <Typography
+        variant={"h5"}
+        fontWeight={"bold"}
+        sx={{
+          marginBottom: 4,
+        }}
+      >
+        {" "}
+        Student List{" "}
+      </Typography>
       <MaterialReactTable table={table} />
       <Modal open={open} onClose={() => setOpen(false)}>
         <Box sx={style}>
@@ -231,7 +238,7 @@ const StudentsTable: React.FC = () => {
           </div>
         </Box>
       </Modal>
-    </Box>
+    </Container>
   );
 };
 

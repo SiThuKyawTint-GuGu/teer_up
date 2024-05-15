@@ -7,21 +7,21 @@ import React from "react";
 type ContentStartProp = {};
 const SecondStartPage: React.FC<ContentStartProp> = () => {
   return (
-    <div className="w-full h-full px-[16px] py-4 snap-start">
-      <Flex justify="center" direction="column" align="center" className="w-full h-[80%]">
+    <div className="w-full h-full snap-start">
+      <Flex direction="column" align="center" justify="center" className="w-full h-full">
         {/* <Heading className="text-[36px] font-[700] leading-[48px]">About TEE-UP</Heading> */}
 
-        <Text as="p" className="pt-[12px] font-[16px]">
+        <Text as="p">
           Different people use different strengths to build their careers and life. No one is good at everything, each
           of us emphasizes some strengths more than others. There are NO right or wrong answers, only what is true to
           you only. Your responses will be kept PRIVATE & CONFIDENTIAL. Please rate how strongly you have developed each
           of the following career readiness strengths with the scale.
         </Text>
-        <Flex justify="center" align="center" className="pt-[32px]">
+        <Flex justify="center" align="center" my="4">
           <Image src="/content/secondPage.svg" width={192} height={148} alt="startImage" />
         </Flex>
 
-        <Text className="w-full h-full text-center font-[500] text-[20px] mt-7 text-primary">Scroll up to start</Text>
+        <Text className="text-center mt-[12px] text-primary">Scroll up to start</Text>
         {/* <Button
           className="w-full mt-[48px]"
           onClick={() => {

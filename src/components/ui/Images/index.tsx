@@ -81,8 +81,11 @@ import { RxCross2, RxMagnifyingGlass } from "react-icons/rx";
 import { SiAmazon, SiNetflix, SiTesla, SiVivawallet } from "react-icons/si";
 import {
   ChatIcon,
+  CommentIcon,
   ExploreIcon,
+  FilterIcon,
   GlobalIcon,
+  HeartIcon,
   HistoryIcon,
   HomeIcon,
   IconProps,
@@ -92,8 +95,12 @@ import {
   ProfileIcon,
   SavedIcon,
   SchoolBlogIcon,
+  SchoolDashboardIcon,
   SchoolJobIcon,
+  SchoolLogoutIcon,
+  SchoolSettingsIcon,
   SettingIcon,
+  StudentsIcon,
   TeeupFooterIcon,
   TeeupIcon,
   UserIcon,
@@ -193,6 +200,8 @@ export const Icons = {
   deleteCross: MdOutlineDeleteSweep,
   moreOption: MdMoreVert,
   userIcon: UserIcon,
+  filterIcon: FilterIcon,
+  commentIcon: CommentIcon,
 
   // Nav menu icons
   homeIcon: ({ ...props }: IconProps) => <HomeIcon {...props} />,
@@ -204,9 +213,13 @@ export const Icons = {
   historyIcon: ({ ...props }: IconProps) => <HistoryIcon {...props} />,
   chatIcon: ({ ...props }: IconProps) => <ChatIcon {...props} />,
   settingIcon: ({ ...props }: IconProps) => <SettingIcon {...props} />,
-
+  schoolDashboardIcon: ({ ...props }: IconProps) => <SchoolDashboardIcon {...props} />,
+  schoolStudentsIcon: ({ ...props }: IconProps) => <StudentsIcon {...props} />,
+  schoolSettingsIcon: ({ ...props }: IconProps) => <SchoolSettingsIcon {...props} />,
+  schoolLogoutIcon: ({ ...props }: IconProps) => <SchoolLogoutIcon {...props} />,
   schoolBlogIcon: ({ ...props }: IconProps) => <SchoolBlogIcon {...props} />,
   schoolJobIcon: ({ ...props }: IconProps) => <SchoolJobIcon {...props} />,
+  heartIcon: ({ ...props }: IconProps) => <HeartIcon {...props} />,
 };
 
 interface Image {
