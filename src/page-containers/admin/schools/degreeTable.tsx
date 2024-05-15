@@ -12,9 +12,10 @@ import { useEffect, useMemo, useState } from "react";
 
 interface DegreeTableProps {
   id: string;
+  degreeId: string;
 }
 
-export default function DegreeTable({ id }: DegreeTableProps) {
+export default function DegreeTable({ id, degreeId }: DegreeTableProps) {
   const [degrees, setDegrees] = useState<DegreeDetail[]>();
   const { trigger: deleteTrigger, isMutating: deletingDegree } = useDeleteSchool();
   const {
@@ -126,11 +127,11 @@ export default function DegreeTable({ id }: DegreeTableProps) {
     renderRowActions: ({ row, table }) => (
       <Box sx={{ display: "flex", gap: "1rem" }}>
         <Tooltip title="Edit">
-          {/* <Link href={`/admin/banners/${row.id}`}> */}
-          <IconButton>
-            <EditIcon />
-          </IconButton>
-          {/* </Link> */}
+           <Link href={`/admin/schools/${id}/degrees/${row.id}`}>
+              <IconButton>
+                <EditIcon />
+              </IconButton>
+           </Link>
         </Tooltip>
         <Tooltip title="Delete">
           <IconButton

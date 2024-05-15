@@ -41,12 +41,6 @@ export const useGetCoursesBySchoolId = <ParamsType, Course>(params: { id: string
   return useSWR<Course>(`/schools/courses/school/${params.id}`);
 };
 
-// {
-//   "name": "Game Dev 101",
-//   "credit": 1,
-//   "major_id": 1
-// }
-
 export const useCreateCourse = () =>
   useSWRMutation(
     `/schools/courses`,

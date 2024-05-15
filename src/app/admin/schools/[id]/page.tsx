@@ -4,23 +4,29 @@ import SchoolDetails from "@/page-containers/admin/schools/schoolDetails";
 import { Box, Container } from "@mui/material";
 
 interface Props {
-  params: { id: string };
+  params: {
+    id: string;
+    degreeId: string
+  };
 }
-const SchoolDetailPage = ({ params: { id } }: Props) => {
+const SchoolDetailPage = ({ params: { id, degreeId } }: Props) => {
   return (
     <Container
       component="main"
       maxWidth="xl"
       sx={{
-        marginY: 8,
+        paddingY: 6,
       }}
     >
       <SchoolDetails id={id} />
 
       {/* degree */}
-      <Box my={4}>
-        <DegreeTable id={id} />
-      </Box>
+      {id !== "0" ? (
+        <Box my={4}>
+          <DegreeTable id={id} degreeId={degreeId}/>
+        </Box>
+      ) : null}
+
 
       <Box my={4}>
         <DegreeForm id={id} />
