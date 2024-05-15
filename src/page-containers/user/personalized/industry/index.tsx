@@ -39,7 +39,7 @@ const IndustryPage = () => {
       },
       {
         onSuccess: () => {
-          startTransition(() => router.push("/profile/onboarding"));
+          startTransition(() => router.push("/questions"));
         },
       }
     );
@@ -52,7 +52,7 @@ const IndustryPage = () => {
       ) : (
         <div className="w-full bg-[#F8F9FB]">
           <QuestionPageCard
-            nextPage="/home"
+            nextPage="/questions"
             title="Which industry are you most interested in?"
             layout
             subTitle="Pick 1 or more industry"

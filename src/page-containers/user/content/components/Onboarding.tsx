@@ -6,6 +6,7 @@ import { Text } from "@/components/ui/Typo/Text";
 import { usePostOnboarding } from "@/services/content";
 import { ContentData, OnBoardingOption } from "@/types/Content";
 import { cn } from "@/utils/cn";
+import { Flex } from "@radix-ui/themes";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 type OnboardingProps = {
@@ -23,100 +24,94 @@ const Onboarding: React.FC<OnboardingProps> = ({ data, parentIndex, total }) => 
   const router = useRouter();
 
   return (
-    <CardBox className="w-full h-[80%] bg-white">
-      <div className="w-full h-full">
-        <div className="flex flex-col flex-wrap px-3  justify-between overflow-y-auto no-scrollbar  w-full h-full">
-          <div className="text-gray-500 my-4 text-center">
-            <Text className="text-[20px] font-[700]  text-center mb-5" as="div">
-              {data.name}
-            </Text>
-            <div className="w-full cursor-pointer  flex flex-col flex-wrap gap-y-2 justify-center h-full items-center">
-              {data.options &&
-                data.options.length &&
-                data.options.map((q: OnBoardingOption, index: number) => (
-                  <div
-                    key={index}
-                    onClick={e => {
-                      e.preventDefault();
-                      setOption(q);
-                      setOpenModal(true);
-                    }}
-                    className={cn(
-                      `w-full border-[1px] border-slateGray p-2 rounded-xl text-center ${
-                        option && option.id === q.id && "bg-secondary border-[1px] border-primary"
-                      }`
-                    )}
-                  >
-                    <div>{q.name}</div>
-                  </div>
-                ))}
+    <Flex align="center">
+      <CardBox className="w-full h-full bg-white space-y-2" p="4">
+        <Text className="text-center font-semibold text-xl mb-4" as="p">
+          {data.name}
+        </Text>
+        {data.options &&
+          data.options.length &&
+          data.options.map((q: OnBoardingOption, index: number) => (
+            <div
+              key={index}
+              onClick={e => {
+                e.preventDefault();
+                setOption(q);
+                setOpenModal(true);
+              }}
+              className={cn(
+                `w-full border-[1px] border-slateGray p-2 rounded-xl text-center ${
+                  option && option.id === q.id && "bg-secondary border-[1px] border-primary"
+                }`
+              )}
+            >
+              {q.name}
             </div>
-          </div>
-        </div>
-      </div>
-      {modalOpen && (
-        <Modal
-          onClose={() => {
-            setOpenModal(false);
-          }}
-        >
-          <div className="w-full max-w-[380px] min-w-[200px] p-5 z-[99999999] bg-white rounded-md">
-            {option?.feedback && (
-              <>
-                {imageLoading ? (
-                  <Spinner className="w-full" color="#DA291C" width={35} height={35} />
-                ) : (
-                  <div className="w-full h-[60dvh] overflow-y-scroll no-scrollbar">
-                    <div
-                      className="text-center w-full"
-                      dangerouslySetInnerHTML={{
-                        __html: option.feedback,
-                      }}
-                      onLoad={() => {
-                        setImageLoading(true); // Set imageLoading to false when the image has loaded
-                      }}
-                    />
-                    <Button
-                      className="w-full mt-5 p-2"
-                      size="sm"
-                      onClick={() => {
-                        trigger(
-                          {
-                            option_id: option.id,
-                            question_id: data.id,
-                          },
-                          {
-                            onSuccess: () => {
-                              setOpenModal(false);
-
-                              if (total) {
-                                if (parseInt(parentIndex) === total) {
-                                  router.push("/profile");
-                                }
-                              }
-
-                              const targetElement = document.getElementById(`${parseInt(parentIndex) + 1}`);
-                              if (targetElement) {
-                                targetElement.scrollIntoView({
-                                  behavior: "smooth", // Smooth scroll effect
-                                });
-                              }
+          ))}
+        {modalOpen && (
+          <Modal
+            onClose={() => {
+              setOpenModal(false);
+            }}
+          >
+            <div className="w-full max-w-[380px] min-w-[200px] p-5 z-[99999999] bg-white rounded-md">
+              {option?.feedback && (
+                <>
+                  {imageLoading ? (
+                    <Spinner className="w-full" color="#DA291C" width={35} height={35} />
+                  ) : (
+                    <div className="w-full h-[60dvh] overflow-y-scroll no-scrollbar">
+                      <div
+                        className="text-center w-full"
+                        dangerouslySetInnerHTML={{
+                          __html: option.feedback,
+                        }}
+                        onLoad={() => {
+                          setImageLoading(true); // Set imageLoading to false when the image has loaded
+                        }}
+                      />
+                      <Button
+                        className="w-full mt-5 p-2"
+                        size="sm"
+                        onClick={() => {
+                          trigger(
+                            {
+                              option_id: option.id,
+                              question_id: data.id,
                             },
-                          }
-                        );
-                      }}
-                      disabled={isMutating}
-                    >
-                      Next
-                    </Button>
-                  </div>
-                )}
-              </>
-            )}
-          </div>
-        </Modal>
-      )}
-    </CardBox>
+                            {
+                              onSuccess: () => {
+                                setOpenModal(false);
+
+                                if (total) {
+                                  if (parseInt(parentIndex) === total) {
+                                    router.push("/profile");
+                                  }
+                                }
+
+                                const targetElement = document.getElementById(`${parseInt(parentIndex) + 1}`);
+                                if (targetElement) {
+                                  targetElement.scrollIntoView({
+                                    behavior: "smooth", // Smooth scroll effect
+                                  });
+                                }
+                              },
+                            }
+                          );
+                        }}
+                        disabled={isMutating}
+                      >
+                        Next
+                      </Button>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          </Modal>
+        )}
+      </CardBox>
+    </Flex>
   );
 };
 
