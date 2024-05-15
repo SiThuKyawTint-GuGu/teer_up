@@ -97,7 +97,7 @@ const Setting: React.FC = () => {
               </Link>
             </div>
             <div>
-              <Link className="block" href="/profile/setting/refer-friend">
+              <Link className="block" href="/setting/refer-friend">
                 <Flex justify="between" align="start">
                   <Text as="label" className="font-[400]" size="3">
                     Refer a friend

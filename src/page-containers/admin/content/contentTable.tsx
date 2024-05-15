@@ -3,14 +3,23 @@ import { ParamsType, useDeleteContent, useGetContent } from "@/services/content"
 import { ContentType } from "@/types/Content";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { Box, IconButton, Tooltip } from "@mui/material";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";
-import { MaterialReactTable, MRT_PaginationState, useMaterialReactTable } from "material-react-table";
+import { download, generateCsv, mkConfig } from "export-to-csv";
+import { MaterialReactTable, MRT_PaginationState, MRT_Row, useMaterialReactTable } from "material-react-table";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+
+const csvConfig = mkConfig({
+  fieldSeparator: ",",
+  decimalSeparator: ".",
+  useKeysAsHeaders: true,
+  filename: "contents",
+});
 
 const ContentTable: React.FC = () => {
   const [pagination, setPagination] = useState<MRT_PaginationState>({
@@ -32,6 +41,12 @@ const ContentTable: React.FC = () => {
   useEffect(() => {
     setContentData(contents?.data);
   }, [contents?.data]);
+
+  const handleExportRows = (rows: MRT_Row<any>[]) => {
+    const rowData = rows.map(row => row.original);
+    const csv = generateCsv(csvConfig)(rowData);
+    download(csvConfig)(csv);
+  };
 
   const columns = useMemo(
     () => [
@@ -127,6 +142,11 @@ const ContentTable: React.FC = () => {
     },
     enableStickyHeader: true,
     enableStickyFooter: true,
+    muiPaginationProps: {
+      rowsPerPageOptions: [10, 25, 50, 75, 100, 500, 700, 1000],
+      showFirstButton: false,
+      showLastButton: false,
+    },
     onGlobalFilterChange: setGlobalFilter,
     onPaginationChange: setPagination,
     renderRowActions: ({ row, table }) => (
@@ -152,9 +172,20 @@ const ContentTable: React.FC = () => {
       </Box>
     ),
     renderTopToolbarCustomActions: ({ table }) => (
-      <Button variant="contained" color="error" sx={{ background: "#DA291C", textTransform: "none" }}>
-        <Link href={"/admin/contents/content/0"}>Create New Content</Link>
-      </Button>
+      <div>
+        <Button variant="contained" color="error" sx={{ background: "#DA291C", textTransform: "none" }}>
+          <Link href={"/admin/contents/content/0"}>Create New Content</Link>
+        </Button>
+        <Button
+          sx={{ marginLeft: "5px", textTransform: "none" }}
+          variant="contained"
+          disabled={table.getRowModel().rows.length === 0}
+          onClick={() => handleExportRows(table.getRowModel().rows)}
+          startIcon={<FileDownloadIcon />}
+        >
+          Export Contents Data
+        </Button>
+      </div>
     ),
   });
 

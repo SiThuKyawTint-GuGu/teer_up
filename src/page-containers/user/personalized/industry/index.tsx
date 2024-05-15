@@ -29,11 +29,8 @@ const IndustryPage = () => {
     });
   };
 
-  console.log(selectData);
-
   const publicIndustry = useMemo(() => data?.data.published, [data]);
   const unpublicIndustry = useMemo(() => data?.data.unpublished, [data]);
-  console.log(publicIndustry);
 
   const submitHandler = () => {
     trigger(
@@ -42,7 +39,7 @@ const IndustryPage = () => {
       },
       {
         onSuccess: () => {
-          startTransition(() => router.push("/department"));
+          startTransition(() => router.push("/questions"));
         },
       }
     );
@@ -55,7 +52,7 @@ const IndustryPage = () => {
       ) : (
         <div className="w-full bg-[#F8F9FB]">
           <QuestionPageCard
-            nextPage="/department"
+            nextPage="/questions"
             title="Which industry are you most interested in?"
             layout
             subTitle="Pick 1 or more industry"

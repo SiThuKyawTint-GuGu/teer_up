@@ -11,6 +11,7 @@ import KeyIcon from "@mui/icons-material/Key";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import LogoutIcon from "@mui/icons-material/Logout";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
 import PostAddIcon from "@mui/icons-material/PostAdd";
@@ -18,6 +19,7 @@ import RoomPreferencesIcon from "@mui/icons-material/RoomPreferences";
 import SettingsIcon from "@mui/icons-material/Settings";
 import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
 import TextSnippetIcon from "@mui/icons-material/TextSnippet";
+import ViewCarouselIcon from "@mui/icons-material/ViewCarousel";
 import NextImage from "next/image";
 import { BsInfoCircle } from "react-icons/bs";
 import { CiSettings } from "react-icons/ci";
@@ -53,9 +55,9 @@ import { MdDelete, MdMoreVert, MdOutlineDeleteSweep, MdOutlineMailOutline } from
 import {
   PiAirplaneTiltLight,
   PiArrowDownRightThin,
-  PiArrowUpRightThin,
   PiArrowsLeftRightDuotone,
   PiArrowsLeftRightThin,
+  PiArrowUpRightThin,
   PiBagSimpleThin,
   PiCameraLight,
   PiCameraPlusFill,
@@ -78,15 +80,30 @@ import {
 import { RxCross2, RxMagnifyingGlass } from "react-icons/rx";
 import { SiAmazon, SiNetflix, SiTesla, SiVivawallet } from "react-icons/si";
 import {
+  ChatIcon,
+  CommentIcon,
+  ExploreIcon,
+  FilterIcon,
   GlobalIcon,
+  HeartIcon,
+  HistoryIcon,
   HomeIcon,
   IconProps,
   LandingIcon,
   LoadingIcon,
+  MentorshipIcon,
   ProfileIcon,
   SavedIcon,
+  SchoolBlogIcon,
+  SchoolDashboardIcon,
+  SchoolJobIcon,
+  SchoolLogoutIcon,
+  SchoolSettingsIcon,
+  SettingIcon,
+  StudentsIcon,
   TeeupFooterIcon,
   TeeupIcon,
+  UserIcon,
 } from "./Icons";
 
 export const Icons = {
@@ -96,6 +113,7 @@ export const Icons = {
   teeupFooter: TeeupFooterIcon,
   innovates: FaLightbulb,
   users: FiUsers,
+  noti: NotificationsIcon,
   userscore: SupervisedUserCircleIcon,
   content: ArticleIcon,
   category: BallotIcon,
@@ -109,6 +127,7 @@ export const Icons = {
   industry: CorporateFareIcon,
   department: ApartmentIcon,
   mentor: AccountBoxIcon,
+  carousel: ViewCarouselIcon,
   discussions: GoCommentDiscussion,
   contents: ChromeReaderModeIcon,
   wallet: PiWallet,
@@ -180,12 +199,27 @@ export const Icons = {
   info: BsInfoCircle,
   deleteCross: MdOutlineDeleteSweep,
   moreOption: MdMoreVert,
+  userIcon: UserIcon,
+  filterIcon: FilterIcon,
+  commentIcon: CommentIcon,
 
   // Nav menu icons
   homeIcon: ({ ...props }: IconProps) => <HomeIcon {...props} />,
   globeIcon: ({ ...props }: IconProps) => <GlobalIcon {...props} />,
   savedIcon: ({ ...props }: IconProps) => <SavedIcon {...props} />,
   profileIcon: ({ ...props }: IconProps) => <ProfileIcon {...props} />,
+  mentorshipIcon: ({ ...props }: IconProps) => <MentorshipIcon {...props} />,
+  exploreIcon: ({ ...props }: IconProps) => <ExploreIcon {...props} />,
+  historyIcon: ({ ...props }: IconProps) => <HistoryIcon {...props} />,
+  chatIcon: ({ ...props }: IconProps) => <ChatIcon {...props} />,
+  settingIcon: ({ ...props }: IconProps) => <SettingIcon {...props} />,
+  schoolDashboardIcon: ({ ...props }: IconProps) => <SchoolDashboardIcon {...props} />,
+  schoolStudentsIcon: ({ ...props }: IconProps) => <StudentsIcon {...props} />,
+  schoolSettingsIcon: ({ ...props }: IconProps) => <SchoolSettingsIcon {...props} />,
+  schoolLogoutIcon: ({ ...props }: IconProps) => <SchoolLogoutIcon {...props} />,
+  schoolBlogIcon: ({ ...props }: IconProps) => <SchoolBlogIcon {...props} />,
+  schoolJobIcon: ({ ...props }: IconProps) => <SchoolJobIcon {...props} />,
+  heartIcon: ({ ...props }: IconProps) => <HeartIcon {...props} />,
 };
 
 interface Image {

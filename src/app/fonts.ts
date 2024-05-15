@@ -1,4 +1,4 @@
-import { JetBrains_Mono as FontMono, Inter as FontSans } from "next/font/google";
+import { Inter as FontSans, Open_Sans } from "next/font/google";
 import localFont from "next/font/local";
 
 export const lFont = localFont({
@@ -32,7 +32,7 @@ export const fontSans = FontSans({
   variable: "--font-sans",
 });
 
-export const fontMono = FontMono({
+export const open_sans = Open_Sans({
   subsets: ["latin"],
-  variable: "--font-mono",
+  display: "swap",
 });

@@ -1,4 +1,3 @@
-import MainPageLayout from "@/components/userLayout/MainPageLayout";
 import BrowsePage from "@/page-containers/user/browse";
 import { NextPage } from "next";
 export const metadata = {
@@ -9,9 +8,9 @@ export const metadata = {
 };
 const Home: NextPage = () => {
   return (
-    <MainPageLayout>
-      <BrowsePage />
-    </MainPageLayout>
+    // <MainPageLayout>
+    <BrowsePage />
+    // </MainPageLayout>
   );
 };
 

@@ -36,14 +36,14 @@ const Search: React.FC = () => {
         router.push(`/home?search=${inputRef?.current?.value}`);
       });
     }
-    if (histories) {
-      const words = inputRef?.current?.value.split(" ");
-      if (words.length > 4) {
-        const truncatedWords = words.slice(0, 4);
-        const newData = [...histories, truncatedWords];
-        inputRef?.current?.value && setLocalStorage("history", newData);
-      }
-    }
+    // if (histories) {
+    // const words = inputRef?.current?.value.split(" ");
+    // if (words.length > 4) {
+    // const truncatedWords = words.slice(0, 4);
+    const newData = [...histories, inputRef.current?.value];
+    inputRef?.current?.value && setLocalStorage("history", newData);
+    // }
+    // }
   };
 
   const handleTextClick = (data: string) => {
@@ -105,7 +105,7 @@ const Search: React.FC = () => {
               </Heading>
               <Flex justify="start" wrap="wrap" align="center" gap="2">
                 {(histories as string[])
-                  ?.filter(each => each.trim() !== "")
+                  ?.filter(each => typeof each === "string" && each.trim() !== "")
                   .reverse()
                   .map((each, key) => {
                     const truncated = each.split(" ").slice(0, 4);

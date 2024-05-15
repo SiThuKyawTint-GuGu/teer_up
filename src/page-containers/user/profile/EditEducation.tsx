@@ -17,6 +17,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
+import { Select, SelectTrigger, SelectContent, SelectItem, SelectLabel } from "@/components/ui/Inputs/Select";
 
 const validationSchema = yup.object({
   school_name: yup.string().required("School is required!"),
@@ -79,6 +80,10 @@ const EditEducation: React.FC = () => {
     setIsPresent(educationData?.data?.is_present);
   }, [form, educationData?.data]);
 
+
+   const educationalAttainmentOptions = ["High School Diploma", "Bachelor's Degree", "Master's Degree", "PhD"];
+   const locationList = ["Yangon , Myanmar", "Mandalay , Myanmar"];
+
   return (
     <>
       <Form {...form}>
@@ -86,7 +91,7 @@ const EditEducation: React.FC = () => {
           <Grid columns="1">
             <div className="mb-[45px]">
               <div className="max-w-[400px] fixed top-0 z-10 w-full shadow-[0px_1px_9px_0px_rgba(0,_0,_0,_0.06)]">
-                <Flex justify="between" align="center" className="bg-white" p="3">
+                <Flex justify="between" align="center" className="" p="3">
                   <div className="cursor-pointer" onClick={() => router.back()}>
                     <Icons.back className="text-[#373A36] w-[23px] h-[23px]" />
                   </div>
@@ -100,11 +105,9 @@ const EditEducation: React.FC = () => {
               </div>
             </div>
 
-            <Box className="pb-[0px]">
+            {/* <Box className="pb-[0px]">
               <Section className="bg-white" py="4" px="3">
-                <Heading as="h6" size="2" weight="medium" align="left" mb="2">
-                  School
-                </Heading>
+                <p className="text-[14px] font-[400] text-[#222222]">School</p>
                 <FormField
                   control={form.control}
                   name="school_name"
@@ -122,9 +125,86 @@ const EditEducation: React.FC = () => {
                   )}
                 />
               </Section>
+            </Box> */}
+
+            <Box className="pb-[0px]">
+              <Section className="" py="4" px="3">
+                <p className="text-[14px] font-[400] text-[#222222] ms-3"> Educational Attainment</p>
+                <FormField
+                  control={form.control}
+                  name="degree"
+                  render={({ field }) => (
+                    <FormItem>
+                      <Select
+                      // onValueChange={(value: string) => {
+                      //   handleInput(inputData.id, value);
+                      // }}
+                      // defaultValue={inputData.input_options[0].value}
+                      >
+                        <SelectTrigger className="border-none outline-none shadow-md bg-white border-gray-700 ">
+                          Ex: Bachelor, Diploma
+                        </SelectTrigger>
+                        <SelectContent className="bg-white">
+                          {educationalAttainmentOptions.map((dropdown, index) => (
+                            <SelectItem key={index} value={dropdown}>
+                              <Text>{dropdown}</Text>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+              </Section>
             </Box>
 
             <Box className="pb-[0px]">
+              <Section className="" py="4" px="3">
+                <p className="text-[14px] font-[400] text-[#222222] ms-3">Major</p>
+                <FormField
+                  control={form.control}
+                  name="degree"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <InputText
+                          className="bg-white"
+                          type="text"
+                          inputType={USER_ROLE.STUDENT}
+                          placeholder="Ex: Computer Science"
+                          {...field}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </Section>
+            </Box>
+
+            <Box className="pb-[0px]">
+              <Section className="" py="4" px="3">
+                <p className="text-[14px] font-[400] text-[#222222] ms-3">School</p>
+                <FormField
+                  control={form.control}
+                  name="school_name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <InputText
+                          className="bg-white"
+                          type="text"
+                          inputType={USER_ROLE.STUDENT}
+                          placeholder="Ex: Boston University"
+                          {...field}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </Section>
+            </Box>
+
+            {/* <Box className="pb-[0px]">
               <Section className="bg-white" py="4" px="3">
                 <Heading as="h6" size="2" weight="medium" align="left" mb="2">
                   Degree
@@ -146,13 +226,11 @@ const EditEducation: React.FC = () => {
                   )}
                 />
               </Section>
-            </Box>
+            </Box> */}
 
             <Box className="pb-[0px]">
-              <Section className="bg-white" py="4" px="3">
-                <Heading as="h6" size="4" align="left" mb="4">
-                  Start Date
-                </Heading>
+              <Section className="" py="4" px="3">
+                <p className="text-[14px] font-[400] text-[#222222] ms-3">From date</p>
                 <FormField
                   control={form.control}
                   name="start_date"
@@ -163,7 +241,7 @@ const EditEducation: React.FC = () => {
                           <input
                             type="date"
                             className={cn(
-                              "font-light shadow-md bg-white border-0 text-black w-full h-[40px] p-3 outline-none"
+                              "font-light shadow-md bg-white border-0 text-black w-full h-[40px] p-3 outline-none rounded-md"
                             )}
                             {...field}
                           />
@@ -174,19 +252,45 @@ const EditEducation: React.FC = () => {
                 />
               </Section>
             </Box>
+
             <Box className="pb-[0px]">
-              <Section className="bg-white" py="4" px="3">
+              <Section className="" py="4" px="3">
+                <p className="text-[14px] font-[400] text-[#222222] ms-3">To date</p>
+                <FormField
+                  control={form.control}
+                  name="start_date"
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <FormControl>
+                          <input
+                            type="date"
+                            className={cn(
+                              "font-light shadow-md bg-white border-0 text-black w-full h-[40px] p-3 outline-none rounded-md"
+                            )}
+                            {...field}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    );
+                  }}
+                />
+              </Section>
+            </Box>
+
+            <Box className="pb-[0px]">
+              <Section className="bg-white" py="1" px="3">
                 <Flex className="items-center">
                   <Checkbox
                     defaultChecked={isPresent}
                     checked={isPresent}
                     onCheckedChange={() => setIsPresent(!isPresent)}
                   />
-                  <Text className="pl-2">Present</Text>
+                  <Text className="pl-2">Currently Studying</Text>
                 </Flex>
               </Section>
             </Box>
-            {!isPresent && (
+            {/* {!isPresent && (
               <Box className="pb-[7px]">
                 <Section className="bg-white" py="4" px="3">
                   <Heading as="h6" size="4" align="left" mb="4">
@@ -211,7 +315,7 @@ const EditEducation: React.FC = () => {
                       );
                     }}
                   />
-                  {/* <Heading as="h6" size="2" weight="medium" align="left" mb="2">
+                  <Heading as="h6" size="2" weight="medium" align="left" mb="2">
                   End Date
                 </Heading>
                 <FormField
@@ -233,17 +337,48 @@ const EditEducation: React.FC = () => {
                       </FormControl>
                     </FormItem>
                   )}
-                /> */}
+                />
                 </Section>
               </Box>
-            )}
+            )} */}
+
+            <Box className="pt-[20px]">
+              <Section className="" py="4" px="3">
+                <p className="text-[14px] font-[400] text-[#222222] ms-3">Location</p>
+                <FormField
+                  control={form.control}
+                  name="degree"
+                  render={({ field }) => (
+                    <FormItem>
+                      <Select
+                      // onValueChange={(value: string) => {
+                      //   handleInput(inputData.id, value);
+                      // }}
+                      // defaultValue={inputData.input_options[0].value}
+                      >
+                        <SelectTrigger className="border-none outline-none shadow-md bg-white border-gray-700 ">
+                          Yangon , Myanmar
+                        </SelectTrigger>
+                        <SelectContent className="bg-white">
+                          {locationList.map((dropdown, index) => (
+                            <SelectItem key={index} value={dropdown}>
+                              <Text>{dropdown}</Text>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+              </Section>
+            </Box>
 
             <Box className="pb-[7px]">
               <Section py="4" px="3" className="space-y-[15px]">
-                <Button type="submit" loading={isMutating} className="bg-primary w-full">
-                  Save
+                <Button type="submit" loading={isMutating} className="bg-primary w-full h-[40px]">
+                  Add Education
                 </Button>
-                <Button
+                {/* <Button
                   type="button"
                   loading={deleteMutating}
                   onClick={handleDelete}
@@ -252,7 +387,20 @@ const EditEducation: React.FC = () => {
                   spinnerColor="#DA291C"
                 >
                   Delete
-                </Button>
+                </Button> */}
+                <Flex className=" justify-end gap-3">
+                  <Button
+                    type="submit"
+                    onClick={() => router.back()}
+                    loading={isMutating}
+                    className="bg-primary h-[40] px-[35px]"
+                  >
+                    Back
+                  </Button>
+                  <Button type="submit" loading={isMutating} className="bg-primary h-[40] px-[35px]">
+                    Done
+                  </Button>
+                </Flex>
               </Section>
             </Box>
           </Grid>

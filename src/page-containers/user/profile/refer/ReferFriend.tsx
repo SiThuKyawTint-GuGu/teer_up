@@ -20,7 +20,7 @@ const ReferFriend = () => {
       <Grid columns="1">
         <Box>
           <Flex justify="between" align="center" className="bg-white" p="3">
-            <Link href="/profile/setting">
+            <Link href="/setting">
               <Icons.back className="text-[#373A36] w-[23px] h-[23px]" />
             </Link>
             <Text size="3" weight="medium">
@@ -67,7 +67,7 @@ const ReferFriend = () => {
           className={cn("bg-white top-[initial] bottom-0 px-0 py-2 translate-y-0 rounded-16px-tl-tr")}
         >
           <Share
-            url={`/auth/signup?referalCode=${user.referral_code}`}
+            url={`/auth/signup?referralCode=${user.referral_code}`}
             header={"Share Link To"}
             onClickCopied={setIsCopied}
           />

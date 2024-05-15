@@ -32,8 +32,8 @@ const Experience: React.FC = () => {
           </div>
         </div>
 
-        <Box className="pb-[7px]">
-          <Section className="bg-white" py="4" px="3">
+        <Box className="pb-[7px] mt-5">
+          <Section className="" py="4" px="3">
             {experiences?.data?.map((each, key) => (
               <div
                 key={key}
@@ -43,7 +43,7 @@ const Experience: React.FC = () => {
                 )}
               >
                 <Flex justify="between" align="start">
-                  <Flex direction="column" gap="2">
+                  <Flex direction="column" gap="1">
                     <Text as="label" weight="bold" size="3">
                       {each.position}
                     </Text>

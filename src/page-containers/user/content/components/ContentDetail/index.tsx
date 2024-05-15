@@ -20,8 +20,8 @@ const NormalContentDetail: React.FC<NormalContentDetailProp> = ({ data, contentM
   return (
     <>
       {data && (
-        <Grid columns="1" className="w-full h-full  overflow-y-auto bg-layout mb-5">
-          <div className="w-full h-full  no-scrollbar justify-center items-center ">
+        <Grid columns="1" className="w-full h-[calc(100dvh-96px)]  overflow-y-auto no-scrollbar bg-layout">
+          <div className="w-full h-full  no-scrollbar justify-center items-center">
             {" "}
             <div className={`w-full mx-auto ${data.type !== "mentor" ? "h-[200px]" : "h-[300px]"}  relative p-2`}>
               <div
@@ -42,7 +42,7 @@ const NormalContentDetail: React.FC<NormalContentDetailProp> = ({ data, contentM
                 <h1 className="font-[700] text-[24px]">{data?.title}</h1>
                 <div className="w-full  flex flex-col flex-wrap gap-y-3 ">
                   {data.type !== "opportunity" && data.type !== "article" && (
-                    <section
+                    <div
                       dangerouslySetInnerHTML={{
                         __html: data?.description,
                       }}
@@ -62,14 +62,15 @@ const NormalContentDetail: React.FC<NormalContentDetailProp> = ({ data, contentM
                       }}
                     />
                   )}
+                  <Flex gap="3">
 
-                  {data.content_keywords.length > 0 &&
-                    data.content_keywords.map((key: ContentKeywords, index: number) => (
-                      <Flex gap="3" key={index}>
-                        <Text className="text-primary font-[600] text-[16px]">#{key.keyword.keyword}</Text>
-                      </Flex>
-                    ))}
-
+                    {data.content_keywords.length > 0 &&
+                      data.content_keywords.map((key: ContentKeywords, index: number) => (
+                        <Text className="text-primary font-[600] text-[16px]" key={index}>
+                          #{key.keyword.keyword}
+                        </Text>
+                      ))}
+                  </Flex>
                   {data?.content_event && (
                     <div className="flex flex-wrap gap-x-2 items-center text-[16px] font-[700]">
                       <Icons.location className="w-[20px] h-[20px]" />

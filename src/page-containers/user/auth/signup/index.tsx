@@ -20,42 +20,47 @@ import { Box, Flex, Grid, Heading } from "@radix-ui/themes";
 import Link from "next/link";
 import { useRef, useState, useTransition } from "react";
 import { useUserRegister } from "../../../../services/user";
-import GoogleLogin from "../login/GoogleLogin";
 interface SignUpFormType {
   email: string;
   name: string;
   country: string;
+  referral_code?: string | undefined;
 }
 
 const validationSchema = yup.object({
   email: yup.string().email().required("Email is required!"),
   name: yup.string().required("Name is required!"),
   country: yup.string().required("Country is required!"),
+  referral_code: yup.string(),
 });
 
 const SignUp = () => {
   const router = useRouter();
   const comboboxRef = useRef<any>(null);
   const searchParams = useSearchParams();
-  const referalCode = searchParams.get("referalCode");
+  const referalCode = searchParams.get("referralCode");
   const [isPending, startTransition] = useTransition();
   const [checked, setChecked] = useState<boolean>(false);
   const { trigger, error, isMutating } = useUserRegister();
   const { data: countries } = useGetCountries<CountriesResponse>();
+  console.log(countries);
   const form = useForm<SignUpFormType>({
     resolver: yupResolver(validationSchema),
+    defaultValues: {
+      email: "",
+      name: "",
+      country: "",
+      referral_code: referalCode ? referalCode : "",
+    },
   });
 
   const onSubmit = async (data: SignUpFormType) => {
-    await trigger(
-      { ...data, referal_code: referalCode || null },
-      {
-        onSuccess: response => {
-          setUserInfo(response.data.token, response.data.data);
-          startTransition(() => router.push("/auth/otp"));
-        },
-      }
-    );
+    await trigger(data, {
+      onSuccess: response => {
+        setUserInfo(response.data.token, response.data.data);
+        startTransition(() => router.push("/auth/otp"));
+      },
+    });
   };
 
   return (
@@ -162,6 +167,25 @@ const SignUp = () => {
                       );
                     }}
                   />
+                  <FormField
+                    control={form.control}
+                    name="referral_code"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <InputText
+                            className={cn(
+                              "bg-white shadow-md",
+                              form.formState.errors.referral_code && "border-2 border-primary focus:outline-0"
+                            )}
+                            placeholder="Enter your referral code (optional)"
+                            type="text"
+                            {...field}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
 
                   <Flex width="100%" gap="1" my="5">
                     <Checkbox onCheckedChange={(val: boolean) => setChecked(val)} />
@@ -189,7 +213,7 @@ const SignUp = () => {
               <Text align="center" className="my-1">
                 Or
               </Text>
-              <GoogleLogin forLogin={false} />
+              {/* <GoogleLogin forLogin={false} /> */}
               <Flex justify="center" wrap="wrap" width="100%" gap="2">
                 <Text weight="light">Already have an account?</Text>
                 <Link href="/auth/login">

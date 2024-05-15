@@ -86,7 +86,7 @@ const Otp = () => {
             return;
           }
           setLocalStorage("content", 0);
-          router.push("/industry");
+          router.push("/department");
         });
       },
       onError: (res: any) => {

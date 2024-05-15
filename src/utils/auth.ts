@@ -23,6 +23,7 @@ export const setUserInfo = (token: string, userInfo: User) => {
   const expires = new Date(exp * 1000); // Convert to milliseconds
   const cipherUserInfo = CryptoJS.AES.encrypt(JSON.stringify(userInfo), "userInfo").toString();
   const cipherText = CryptoJS.AES.encrypt(JSON.stringify(token), "token").toString();
+  console.log(expires);
   setCookie("token", cipherText, {
     expires,
   });

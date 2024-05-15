@@ -1,15 +1,20 @@
 "use client";
 import { Button } from "@/components/ui/Button";
-import { Dialog, DialogContent } from "@/components/ui/Dialog";
+import { Animate, Dialog, DialogContent } from "@/components/ui/Dialog";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form";
 import { Image } from "@/components/ui/Images";
 import { InputTextArea } from "@/components/ui/Inputs";
 import { Text } from "@/components/ui/Typo/Text";
 import { useRequestMentorship } from "@/services/content";
+import { REQUEST_TYPES } from "@/shared/enums";
 import { ContentData } from "@/types/Content";
+import { cn } from "@/utils/cn";
+import { CapitalizeWord } from "@/utils/helper";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { Box, Flex, Heading, Section } from "@radix-ui/themes";
+import dayjs from "dayjs";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -20,28 +25,55 @@ const validationSchema = yup.object({
 
 type MentorDetailProp = {
   data: ContentData;
-  contentMutate: any;
+  contentMutate?: any;
 };
-const MentorDetail: React.FC<MentorDetailProp> = ({ data, contentMutate }) => {
+const MentorDetail: React.FC<MentorDetailProp> = ({ data }) => {
   const [open, setOpen] = useState<boolean>(false);
-
+  const router = useRouter();
   const { trigger, isMutating } = useRequestMentorship();
   const form = useForm({
     resolver: yupResolver(validationSchema),
   });
 
   const submit = async (formData: { message: string }) => {
-    await trigger({
-      message: formData.message,
-      content_id: data?.id,
-    });
+    try {
+      await trigger({
+        message: formData.message,
+        content_id: data?.id,
+      });
+      setOpen(false);
+      router.push("/mentorship");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const SendRequestMentorship = () => {
+    if (data?.mentorship_status === REQUEST_TYPES.DENIED || !data?.mentorship_status) {
+      return (
+        <DialogTrigger>
+          <div className="fixed w-full max-w-[400px] shadow-inner bottom-0 z-[9] bg-white p-3 ">
+            <Button size="sm" className="w-full">
+              Send Request
+            </Button>
+          </div>
+        </DialogTrigger>
+      );
+    }
+
+    return (
+      <div className="fixed w-full max-w-[400px] shadow-inner bottom-0 z-[9] bg-white p-3 ">
+        <Button size="sm" className="w-full" onClick={() => router.push("/mentorship")}>
+          {CapitalizeWord(data?.mentorship_status)}
+        </Button>
+      </div>
+    );
   };
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-[calc(100dvh-96px)] ">
       {data && (
-        <div className="w-full h-full overflow-y-auto">
-          <Box className="pb-[55px]">
+        <div className="w-full h-full overflow-y-auto no-scrollbar">
+          <Box className="pb-[7]">
             <Box className="pb-[7px]">
               <Section p="0">
                 <div
@@ -60,7 +92,7 @@ const MentorDetail: React.FC<MentorDetailProp> = ({ data, contentMutate }) => {
                       position="relative"
                       className="w-[120px] h-[120px] rounded-full bg-[#D9D9D9] ring-4 ring-white"
                       style={{
-                        background: `url(${data.mentor.profile_url}) center / cover`,
+                        background: `url(${data?.mentor?.profile_url}) center / cover`,
                       }}
                     />
                   ) : (
@@ -81,33 +113,19 @@ const MentorDetail: React.FC<MentorDetailProp> = ({ data, contentMutate }) => {
                   )}
                 </div>
 
-                <Heading as="h4" size="5" mb="4">
-                  {}
+                <Heading as="h4" size="5" mb="4" mt="3">
+                  {data?.mentor?.name}
                 </Heading>
-                <Text>{data.mentor.bio}</Text>
+                <Text>{data?.mentor?.bio}</Text>
               </Section>
             </Box>
             <Box className="pb-[7px]">
               <Section className="bg-white" py="4" px="3">
                 <Heading as="h6" size="4" align="left" mb="4">
-                  Personal information
+                  About
                 </Heading>
-                <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
-                  <Flex direction="column" gap="2">
-                    <Text as="label" weight="bold" size="3">
-                      Gender
-                    </Text>
-                    <Text>Male</Text>
-                  </Flex>
-                </div>
-                <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
-                  <Flex direction="column" gap="2">
-                    <Text as="label" weight="bold" size="3">
-                      Birthday
-                    </Text>
-                    <Text>24th December 2002</Text>
-                  </Flex>
-                </div>
+                <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">This is about</div>
+
                 <div className="pb-[10px] mb-[10px]">
                   <Flex direction="column" gap="2">
                     <Text as="label" weight="bold" size="3">
@@ -118,33 +136,23 @@ const MentorDetail: React.FC<MentorDetailProp> = ({ data, contentMutate }) => {
                 </div>
               </Section>
             </Box>
+
             <Box className="pb-[7px]">
               <Section className="bg-white" py="4" px="3">
                 <Heading as="h6" size="4" align="left" mb="4">
                   Experties
                 </Heading>
-                <span className="px-2 py-1 rounded-xl text-center text-[14px] bg-secondary border-[1px] border-primary">
-                  Programming
-                </span>
-              </Section>
-            </Box>
-            <Box className="pb-[7px]">
-              <Section className="bg-white" py="4" px="3">
-                <Heading as="h6" size="4" align="left" mb="4">
-                  Career interests
-                </Heading>
-                <Flex wrap="wrap" gap="2">
-                  Industry
-                </Flex>
-              </Section>
-            </Box>
-            <Box className="pb-[7px]">
-              <Section className="bg-white" py="4" px="3">
-                <Heading as="h6" size="4" align="left" mb="4">
-                  Experience
-                </Heading>
-                <Flex wrap="wrap" gap="2">
-                  Frontend Developer
+                <Flex gap="3" wrap="wrap">
+                  {data?.mentor?.industries?.length > 0 &&
+                    data?.mentor?.industries?.map((each, index) => (
+                      <Text
+                        key={index}
+                        as="span"
+                        className="px-2 py-1  rounded-xl text-center text-[14px] bg-secondary border-[1px] border-primary"
+                      >
+                        {each?.industry?.name}
+                      </Text>
+                    ))}
                 </Flex>
               </Section>
             </Box>
@@ -152,35 +160,116 @@ const MentorDetail: React.FC<MentorDetailProp> = ({ data, contentMutate }) => {
           <Box className="pb-[7px]">
             <Section className="bg-white" py="4" px="3">
               <Heading as="h6" size="4" align="left" mb="4">
+                Job Experience
+              </Heading>
+              {data?.mentor?.experiences?.length > 0 &&
+                data?.mentor?.experiences?.map((each, key) => (
+                  <Flex
+                    key={key}
+                    justify="between"
+                    align="start"
+                    className={cn(
+                      "pb-[10px] mb-[10px]",
+                      key !== (data?.mentor?.experiences ? data?.mentor?.experiences.length - 1 : -1) &&
+                        "border-b border-b-[#BDC7D5]"
+                    )}
+                  >
+                    <Flex justify="start" align="start" gap="2">
+                      <Image src="/uploads/icons/experience.svg" width={32} height={32} alt="experience" />
+                      <Flex direction="column" gap="2">
+                        <Text as="label" weight="bold" size="3">
+                          {each?.position}
+                        </Text>
+                        <Text size="2" weight="light">
+                          {each?.company || "-"}
+                        </Text>
+                      </Flex>
+                    </Flex>
+                    <Flex justify="end" align="center" gap="1">
+                      <Text size="2" weight="light">
+                        {dayjs(each?.start_date).format("MMM, YYYY")}
+                      </Text>
+                      <Text size="2" weight="light">
+                        -
+                      </Text>
+                      {each?.is_present === true ? (
+                        <Text size="2" weight="light">
+                          {"Present"}
+                        </Text>
+                      ) : (
+                        <Text size="2" weight="light">
+                          {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "-"}
+                        </Text>
+                      )}
+                    </Flex>
+                  </Flex>
+                ))}
+            </Section>
+          </Box>
+          <Box className="pb-[7px]">
+            <Section className="bg-white" py="4" px="3">
+              <Heading as="h6" size="4" align="left" mb="4">
                 Education
               </Heading>
-
-              <div className="pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]">
-                <Flex direction="column" gap="2">
-                  <Text as="label" weight="bold" size="3">
-                    National Management Degree Collegue
-                  </Text>
-                  <Text>BA</Text>
-                </Flex>
-              </div>
+              {data?.mentor?.education?.length > 0 &&
+                data?.mentor?.education?.map((each, key) => (
+                  <Flex
+                    key={key}
+                    justify="between"
+                    align="start"
+                    className={cn(
+                      "pb-[10px] mb-[10px]",
+                      key !== (data?.mentor?.education ? data?.mentor?.education.length - 1 : -1) &&
+                        "border-b border-b-[#BDC7D5]"
+                    )}
+                  >
+                    <Flex justify="start" align="start" gap="2">
+                      <Image src="/uploads/icons/experience.svg" width={32} height={32} alt="experience" />
+                      <Flex direction="column" gap="2">
+                        <Text as="label" weight="bold" size="3">
+                          {each?.degree}
+                        </Text>
+                        <Text size="2" weight="light">
+                          {each?.school_name || "-"}
+                        </Text>
+                      </Flex>
+                    </Flex>
+                    <Flex justify="end" align="center" gap="1">
+                      <Text size="2" weight="light">
+                        {dayjs(each?.start_date).format("MMM, YYYY")}
+                      </Text>
+                      <Text size="2" weight="light">
+                        -
+                      </Text>
+                      {each?.is_present ? (
+                        <Text size="2" weight="light">
+                          {"Present"}
+                        </Text>
+                      ) : (
+                        <Text size="2" weight="light">
+                          {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "-"}
+                        </Text>
+                      )}
+                    </Flex>
+                  </Flex>
+                ))}
             </Section>
           </Box>
         </div>
       )}
       <Dialog open={open} onOpenChange={val => setOpen(val)}>
-        <DialogTrigger>
-          <div className="fixed w-full max-w-[400px] shadow-inner bottom-0 z-[9] bg-white p-3 ">
-            <Button size="sm" className="w-full">
-              Send Request
-            </Button>
-          </div>
-        </DialogTrigger>
+        {SendRequestMentorship()}
 
-        <DialogContent className="bg-white top-[initial] h-auto bottom-0 max-w-[400px] px-4 pt-8 pb-2 translate-y-0 rounded-10px-tl-tr">
-          <Flex gap="3" direction="column" className="bg-white h-full">
-            <div className="bg-primary rounded-[6px] w-[60px] h-[2px] my-3 mx-auto"></div>
+        <DialogContent
+          animate={Animate.SLIDE}
+          className={cn(
+            " top-[initial] bottom-0 px-0 py-2 translate-y-0 border-0  bg-white shadow-none outline-none rounded-16px-tl-tr"
+          )}
+        >
+          <Flex direction="column" className="bg-white h-full">
+            <div className="bg-primary rounded-[6px] w-[60px] h-[2px] mt-[8px]  mx-auto" />
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(submit)}>
+              <form onSubmit={form.handleSubmit(submit)} className="p-4">
                 <FormField
                   control={form.control}
                   name="message"
@@ -191,13 +280,13 @@ const MentorDetail: React.FC<MentorDetailProp> = ({ data, contentMutate }) => {
                           type="text"
                           placeholder="Include you available time and describe why you want this mentorship"
                           {...field}
-                          className="p-3"
+                          className="p-3 h-[190px]"
                         />
                       </FormControl>
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full my-5" disabled={isMutating}>
+                <Button type="submit" className="w-full mt-[24px]" disabled={isMutating}>
                   Send
                 </Button>
               </form>

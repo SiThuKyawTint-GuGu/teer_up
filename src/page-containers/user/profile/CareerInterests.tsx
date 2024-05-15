@@ -1,4 +1,5 @@
 "use client";
+import { Button } from "@/components/ui/Button";
 import { Icons } from "@/components/ui/Images";
 import { InputSearch } from "@/components/ui/Inputs";
 import { Checkbox } from "@/components/ui/Inputs/Checkbox";
@@ -23,16 +24,29 @@ const CareerInterests: React.FC = () => {
   const { trigger: updateTrigger } = useUpdateProfileIndustry();
   const industries = profileData?.data?.industries;
   const inputRef = useRef<any>(null);
+  const [selectId, setSelectId] = useState<number[]>([]);
 
-  const handleCheckedChange = (checked: boolean, industry_id: number) => {
-    updateTrigger({
-      industry_id,
-    });
-  };
+ const handleCheckedChange = (_: boolean, industry_id: number) => {
+   if (selectId.includes(industry_id)) {
+     setSelectId(selectId.filter(id => id !== industry_id));
+   } else {
+     setSelectId([...selectId, industry_id]);
+   }
+ };
 
   const debouncedOnChange = debounce(() => {
     setSearchValue(inputRef?.current?.value);
   }, 500);
+
+  const handleSave = (_:undefined) =>{
+    console.log(selectId);
+    selectId.map(item =>
+      updateTrigger({
+        industry_id:item
+      })
+    );
+    router.back();
+  }
 
   return (
     <>
@@ -44,7 +58,7 @@ const CareerInterests: React.FC = () => {
                 <Icons.back className="text-[#373A36] w-[23px] h-[23px]" />
               </div>
               <Text size="3" weight="medium">
-                Industry interests
+                Preferences
               </Text>
               <Link href="/" className="opacity-0">
                 <Icons.plus className="text-primary w-[23px] h-[23px]" />
@@ -53,8 +67,8 @@ const CareerInterests: React.FC = () => {
           </div>
         </div>
 
-        <Box className="mb-[56px]">
-          <Section className="bg-white" py="4" px="3">
+        <Box className="mb-[56px] h-[100%]">
+          <Section className="bg-white h-[100%]" py="4" px="3">
             <Flex justify="center" align="center" className="mb-[40px] mt-[10px]">
               {/* <InputSearch placeholder="Search Interests" /> */}
               <InputSearch
@@ -84,7 +98,11 @@ const CareerInterests: React.FC = () => {
                   </Label>
                 );
               })}
-              <Text size="3" weight="bold">
+
+              <div className="pt-[40px]">
+                <Button onClick={()=>handleSave(undefined)} className="w-full h-[40px]">Save</Button>
+              </div>
+              {/* <Text size="3" weight="bold">
                 Coming Soon
               </Text>
               {industryData?.data?.unpublished?.map((each, key) => {
@@ -100,7 +118,7 @@ const CareerInterests: React.FC = () => {
                     </Flex>
                   </Label>
                 );
-              })}
+              })} */}
             </div>
           </Section>
         </Box>

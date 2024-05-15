@@ -1,4 +1,5 @@
 "use client";
+import { Button } from "@/components/ui/Button";
 import { Icons } from "@/components/ui/Images";
 import { InputSearch } from "@/components/ui/Inputs";
 import { Checkbox } from "@/components/ui/Inputs/Checkbox";
@@ -12,7 +13,7 @@ import { Box, Flex, Grid, Section } from "@radix-ui/themes";
 import { debounce } from "lodash";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const Department: React.FC = () => {
   const [searchValue, setSearchValue] = useState<string>("");
@@ -23,20 +24,37 @@ const Department: React.FC = () => {
   const { trigger: updateTrigger } = useUpdateUserDepartmentById();
   const departmentsData = profileData?.data?.departments;
   const inputRef = useRef<any>(null);
+  const [selectId, setSelectId] = useState<number[]>([]);
 
   const handleCheckedChange = (department_id: number) => {
-    updateTrigger({
-      department_id,
-    });
+     if (selectId.includes(department_id)) {
+       setSelectId(selectId.filter(id => id !== department_id));
+     } else {
+       setSelectId([...selectId, department_id]);
+     }
   };
 
   const debouncedOnChange = debounce(() => {
     setSearchValue(inputRef?.current?.value);
   }, 500);
 
+  useEffect(()=>{
+    console.log(profileData);
+  },[])
+
   const filteredDepartments = departmentData?.data?.filter(each =>
     each.name.toLowerCase().includes(searchValue.toLowerCase())
   );
+
+   const handleSave = (_:undefined) =>{
+    console.log(selectId);
+    selectId.map(item =>
+      updateTrigger({
+        department_id: item,
+      })
+    );
+    router.back();
+  }
 
   return (
     <>
@@ -84,6 +102,11 @@ const Department: React.FC = () => {
               );
             })}
           </Section>
+          <div className="pt-[40px]">
+            <Button onClick={() => handleSave(undefined)} className="w-full h-[40px]">
+              Save
+            </Button>
+          </div>
         </Box>
       </Grid>
     </>

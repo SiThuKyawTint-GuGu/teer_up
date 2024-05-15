@@ -37,8 +37,8 @@ export const useRequestMentorship = () =>
   });
 
 export const useApproveMentorship = () =>
-  useSWRMutation(`/mentorships`, (url, { arg }: { arg: { status: REQUEST_TYPES } }) => {
-    return appAxios.put<{ arg: { status: REQUEST_TYPES } }>(url, arg);
+  useSWRMutation(`/mentorships`, (url, { arg }: { arg: { status: REQUEST_TYPES; id: number; reply?: string } }) => {
+    return appAxios.put<{ arg: { status: REQUEST_TYPES; id: number; reply?: string } }>(`${url}/${arg.id}`, arg);
   });
 
 interface UpdateUserResType {

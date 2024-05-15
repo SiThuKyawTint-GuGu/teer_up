@@ -1,11 +1,11 @@
 import MainPageLayout from "@/components/userLayout/MainPageLayout";
-import RequestMentorship from "@/page-containers/user/mentorship/RequestMentorship";
+import ExploreMentors from "@/page-containers/user/mentorship/explore";
 import { NextPage } from "next";
 
 const MentorshipPage: NextPage = () => {
   return (
     <MainPageLayout>
-      <RequestMentorship />
+      <ExploreMentors />
     </MainPageLayout>
   );
 };

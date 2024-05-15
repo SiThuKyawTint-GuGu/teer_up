@@ -4,61 +4,49 @@ import BGImage from "@/components/shared/BGImage";
 import NotFound from "@/components/shared/NotFound";
 import { Button } from "@/components/ui/Button";
 import CardBox from "@/components/ui/Card";
-import { Animate, Dialog, DialogClose, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
+import { DialogTrigger } from "@/components/ui/Dialog";
+
 import { Icons, Image } from "@/components/ui/Images";
 import { Text } from "@/components/ui/Typo/Text";
-import {
-  SAVED_CONTENT_TYPES,
-  SavedContentParams,
-  useGetSavedContents,
-  useGetUnfinishedPathway,
-  useSaveContent,
-} from "@/services/content";
-import { SavedContentResponse, UnfinishedPathwayResponse } from "@/types/SavedContent";
-import { cn } from "@/utils/cn";
-import { Box, Flex, Grid, Heading, IconButton, Section } from "@radix-ui/themes";
+import { CONTENT_HISTORY_TYPES, SavedContentParams, useGetSavedContents, useSaveContent } from "@/services/content";
+import { SavedContent, SavedContentResponse, TRIGGER_TYPE } from "@/types/SavedContent";
+import { trimmedText } from "@/utils";
+import { Box, Flex, Grid, Heading, IconButton, Section, Tabs } from "@radix-ui/themes";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import ContentFilterDialog from "../content-history/components/ContentFilterDialog";
+import UnfinishedPathway from "./UnfinishedPathway";
 dayjs.extend(relativeTime);
 
 const filterNames = [
   {
-    key: SAVED_CONTENT_TYPES.ALL,
+    key: CONTENT_HISTORY_TYPES.ALL,
     value: "All content types",
   },
   {
-    key: SAVED_CONTENT_TYPES.ARTICLE,
+    key: CONTENT_HISTORY_TYPES.ARTICLE,
     value: "Article",
   },
   {
-    key: SAVED_CONTENT_TYPES.EVENT,
+    key: CONTENT_HISTORY_TYPES.EVENT,
     value: "Event",
   },
   {
-    key: SAVED_CONTENT_TYPES.MENTOR,
-    value: "Mentor",
-  },
-  {
-    key: SAVED_CONTENT_TYPES.OPPORTUNITY,
+    key: CONTENT_HISTORY_TYPES.OPPORTUNITY,
     value: "Opportunity",
   },
   {
-    key: SAVED_CONTENT_TYPES.PATHWAY,
+    key: CONTENT_HISTORY_TYPES.PATHWAY,
     value: "Pathway",
   },
   {
-    key: SAVED_CONTENT_TYPES.VIDEO,
+    key: CONTENT_HISTORY_TYPES.VIDEO,
     value: "Video",
   },
 ];
-
-enum TRIGGER_TYPE {
-  FILTER = "FILTER",
-  UNFINISHED = "UNFINISHED",
-}
 
 const SavedList: React.FC = () => {
   const router = useRouter();
@@ -67,10 +55,18 @@ const SavedList: React.FC = () => {
   const [content, setContent] = useState<number>(0);
   const { trigger: contentSave } = useSaveContent();
   const [triggerType, setTriggerType] = useState<TRIGGER_TYPE>();
-  const [refreshKey, setRefreshKey] = useState<number>(0);
+  const { get } = useSearchParams();
+  const pathname = usePathname();
+
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const [filteredType, setFilterTypes] = useState<
     {
-      key: SAVED_CONTENT_TYPES;
+      key: CONTENT_HISTORY_TYPES;
       value: string;
     }[]
   >([
@@ -89,30 +85,13 @@ const SavedList: React.FC = () => {
     mutate,
     isLoading,
   } = useGetSavedContents<SavedContentParams, SavedContentResponse>({
-    type: filteredParams.key === SAVED_CONTENT_TYPES.ALL ? "" : filteredParams.key,
+    type: filteredParams.key === CONTENT_HISTORY_TYPES.ALL ? "" : filteredParams.key,
   });
-  const { data: unFinishedPathways } = useGetUnfinishedPathway<UnfinishedPathwayResponse>();
 
-  const DropdownMenu = () => {
-    return (
-      <div className="dropdown-menu h-[100px] bg-red-600 flex items-center justify-center rounded ">
-        <ul>
-          <li
-            onClick={(e: any) => {
-              unSaveContent(e);
-            }}
-            className="p-1 cursor-pointer text-white"
-          >
-            Unsave
-          </li>
-        </ul>
-      </div>
-    );
+  const handleTabTrigger = (key: string) => {
+    router.push(`${pathname}?tab=${key}`);
   };
-  function capitalizeFirstLetter(string: string) {
-    if (!string) return;
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  }
+
   const unSaveContent = async (e: any) => {
     e.stopPropagation();
     await contentSave({
@@ -121,20 +100,20 @@ const SavedList: React.FC = () => {
     await mutate();
   };
 
-  const handleCheckFilter = (each: { key: SAVED_CONTENT_TYPES; value: string }) => {
-    if (each.key === SAVED_CONTENT_TYPES.ALL) {
+  const handleCheckFilter = (each: { key: CONTENT_HISTORY_TYPES; value: string }) => {
+    if (each.key === CONTENT_HISTORY_TYPES.ALL) {
       setFilterTypes([each]);
       return;
     }
 
-    let filteredData = filteredType.filter(data => data.key !== SAVED_CONTENT_TYPES.ALL);
+    let filteredData = filteredType.filter(data => data.key !== CONTENT_HISTORY_TYPES.ALL);
     const isExist = filteredData.find(data => data.key === each.key);
     if (isExist) {
       filteredData = filteredData.filter(data => data.key !== each.key);
       if (filteredData.length === 0) {
         setFilterTypes([
           {
-            key: SAVED_CONTENT_TYPES.ALL,
+            key: CONTENT_HISTORY_TYPES.ALL,
             value: "All content types",
           },
         ]);
@@ -148,10 +127,14 @@ const SavedList: React.FC = () => {
     return;
   };
 
-  const toggleMenu = (data: any) => {
+  const toggleMenu = (data: SavedContent) => {
     setContent(data.content_id);
     setIsMenuVisible(isMenuVisible && data.content_id == content ? !isMenuVisible : true);
   };
+
+  if (!isMounted) {
+    return null;
+  }
 
   if (isLoading) {
     return (
@@ -162,165 +145,159 @@ const SavedList: React.FC = () => {
   }
 
   return (
-    <Dialog
+    <ContentFilterDialog
+      trigger_type={triggerType}
       open={open}
-      onOpenChange={val => {
-        if (val) {
-          setFilterTypes(pre => {
-            const filterData = pre.filter(data => filteredParams?.key?.split(",").includes(data.key));
-            if (filterData.length === 0) {
-              return [
-                {
-                  key: SAVED_CONTENT_TYPES.ALL,
-                  value: "All content types",
-                },
-              ];
-            }
-            return filterData;
-          });
-        }
-        setOpen(val);
-      }}
+      setOpen={setOpen}
+      filteredType={filteredType}
+      setFilterTypes={setFilterTypes}
+      filteredParams={filteredParams}
+      setFilterParams={setFilterParams}
+      handleCheckFilter={handleCheckFilter}
+      unSaveContent={unSaveContent}
     >
       <Grid columns="1">
         <Box>
           <div className="mb-[45px]">
-            <div className="max-w-[400px] fixed top-0 z-10 w-full shadow-[0px_1px_9px_0px_rgba(0,_0,_0,_0.06)]">
+            <div className="max-w-[400px] fixed w-full">
               <Flex justify="between" position="relative" className="bg-white" p="3">
                 <Heading as="h6" size="7" align="left">
-                  Saved items
+                  {get("tab") === "unfinishpathways" ? "Unfinished Pathway" : "Saved Items"}
                 </Heading>
-                <DialogTrigger asChild onClick={() => setTriggerType(TRIGGER_TYPE.FILTER)}>
-                  <Button variant="ghost" className="text-primary">
-                    {capitalizeFirstLetter(filteredParams?.key?.split(",")?.[0])}
-                    {filteredParams.key.split(",").length > 1 && ` + ${filteredParams.key.split(",").length - 1} more`}
-                    {/* {
-                  filteredType.find(data => data.key === filteredParams.key)?.value ||
-                  filteredParams.value
-                } */}
-                    <Icons.caretDown />
+                {get("tab") === "unfinishpathways" ? null : filteredParams.key === "all" ? (
+                  <DialogTrigger asChild>
+                    <Button variant="ghost" className="text-primary">
+                      All
+                      <Icons.caretDown />
+                    </Button>
+                  </DialogTrigger>
+                ) : (
+                  <Button
+                    variant="ghost"
+                    className="text-primary"
+                    onClick={() => {
+                      setFilterTypes([
+                        {
+                          key: CONTENT_HISTORY_TYPES.ALL,
+                          value: "All content types",
+                        },
+                      ]);
+                      setFilterParams({
+                        key: "all",
+                      });
+                    }}
+                  >
+                    Clear filter ({filteredParams.key.split(",").length})
                   </Button>
-                </DialogTrigger>
+                )}
               </Flex>
             </div>
           </div>
+          <Section className="" pt="4" pb="0">
+            <Tabs.Root defaultValue={(get("tab") ? get("tab") : "items") ?? ""}>
+              <Tabs.List className="space-x-[20px] px-3 flex justify-start bg-white max-w-[400px] ">
+                <Tabs.Trigger
+                  onClick={() => handleTabTrigger("items")}
+                  className="tab-trigger cursor-pointer"
+                  value="items"
+                >
+                  <h3 className="text-lg">Save Items</h3>
+                </Tabs.Trigger>
+                <Tabs.Trigger
+                  onClick={() => handleTabTrigger("unfinishpathways")}
+                  className="tab-trigger cursor-pointer text-lg"
+                  value="unfinishpathways"
+                >
+                  <h3 className="text-lg">Unfinished Pathways</h3>
+                </Tabs.Trigger>
+              </Tabs.List>
+              <Tabs.Content value="items" className="space-y-[7px] p-2">
+                <Box>
+                  <Section className="" py="4" px="3">
+                    {savedContents?.data?.length ? (
+                      savedContents?.data?.map((each, key) => (
+                        <Box key={key} pb="4">
+                          <CardBox
+                            className="p-[8px] bg-white cursor-pointer overflow-hidden shadow-lg"
+                            onClick={() => router.push(`/content/${each?.content?.slug}`)}
+                          >
+                            <Flex justify="start" align="start">
+                              <BGImage
+                                width="128px"
+                                height="100px"
+                                className="rounded-[4px] mr-2"
+                                url={each?.content.image_url}
+                              />
 
-          <Box className="pb-[50px] pt-[20px]">
-            <Section className="" py="4" px="3">
-              {unFinishedPathways?.data && unFinishedPathways?.data?.length > 0 && (
-                <Link href="/saved/unfinished-pathway">
-                  <Button variant="outline" className="w-full mb-4">
-                    Continue unfinished pathway
-                  </Button>
-                </Link>
-              )}
-              {savedContents?.data?.length ? (
-                savedContents?.data?.map((each, key) => (
-                  <Box key={key} pb="4">
-                    {/* <Link key={key} href={`/content/${each?.content?.slug}`} className="w-3/4" passHref> */}
-                    <CardBox
-                      className="p-[8px] bg-white cursor-pointer"
-                      onClick={() => router.push(`/content/${each?.content?.slug}`)}
-                    >
-                      <Flex justify="start" align="start" gap="2">
-                        <BGImage
-                          width="128px"
-                          height="100px"
-                          className="rounded-[4px]"
-                          url={each?.content?.image_url}
-                        />
-                        <Flex className="text-[#373A36] space-y-1" direction="column" wrap="wrap">
-                          <Text>{each?.content?.title}</Text>
-                          <Text size="2" weight="light">
-                            <Text as="span" className="capitalize">
-                              {each?.content?.type}
-                            </Text>{" "}
-                            <Text>Saved {dayjs(each?.created_at).fromNow()}</Text>
-                          </Text>
-                        </Flex>
-                        <IconButton
-                          size="2"
-                          className="ml-auto"
-                          variant="ghost"
-                          onClick={e => {
-                            e.stopPropagation();
-                            toggleMenu(each);
-                          }}
-                        >
-                          <Icons.moreOption className={cn("w-[24px] h-[24px] text-[#5B6770]", "text-[#8d9499]")} />
-                        </IconButton>
+                              <Flex
+                                className="text-[#373A36] space-y-1 w-[calc(100%-160px)]"
+                                direction="column"
+                                wrap="wrap"
+                                justify="between"
+                              >
+                                <h3 className="text-base font-bold">{trimmedText(each?.content?.title, 30)}</h3>
+                                <div className="flex gap-2 items-baseline ">
+                                  <span className="text-sm capitalize">{each?.content?.type}</span>
+                                  <span className="text-sm">{dayjs(each?.created_at).fromNow()}</span>
+                                </div>
+                              </Flex>
 
-                        {isMenuVisible && content == each.content_id && <DropdownMenu />}
-                        {/* <DropdownMenu /> */}
-                      </Flex>
-                    </CardBox>
-                    {/* </Link> */}
-                  </Box>
-                ))
-              ) : (
-                <>
-                  <NotFound
-                    icon={<Image src="/uploads/icons/saved-icon.svg" width={80} height={80} alt="saved" />}
-                    content={
+                              {/*more  Icon  */}
+                              <DialogTrigger
+                                asChild
+                                onClick={() => {
+                                  setTriggerType(TRIGGER_TYPE.UNSAVED);
+                                }}
+                              >
+                                <IconButton
+                                  className="ml-auto"
+                                  variant="ghost"
+                                  onClick={e => {
+                                    e.stopPropagation();
+                                    toggleMenu(each);
+                                  }}
+                                >
+                                  <Icons.moreOption />
+                                </IconButton>
+                              </DialogTrigger>
+                            </Flex>
+                          </CardBox>
+                        </Box>
+                      ))
+                    ) : (
                       <>
-                        <Text className="text-[16px]">There’s no items saved.</Text>
-                        <Text className="text-[16px]">Items saved will be added here.</Text>
+                        <NotFound
+                          icon={<Image src="/uploads/icons/saved-icon.svg" width={80} height={80} alt="saved" />}
+                          content={
+                            <>
+                              <Text className="text-[16px]">There’s no items saved.</Text>
+                              <Text className="text-[16px]">Items saved will be added here.</Text>
+                            </>
+                          }
+                          link={
+                            <Link href="/home">
+                              <Button className="mt-[16px] text-[18px]">Browse now</Button>
+                            </Link>
+                          }
+                        />
                       </>
-                    }
-                    link={
-                      <Link href="/home">
-                        <Button className="mt-[16px] text-[18px]">Browse now</Button>
-                      </Link>
-                    }
-                  />
-                </>
-              )}
-            </Section>
-          </Box>
+                    )}
+                  </Section>
+                </Box>
+              </Tabs.Content>
+
+              <Tabs.Content value="unfinishpathways" className="p-2">
+                <UnfinishedPathway
+                  setTriggerType={setTriggerType}
+                  toggleMenu={toggleMenu}
+                  trigger_type={TRIGGER_TYPE.UNFINISHEDPATH}
+                />
+              </Tabs.Content>
+            </Tabs.Root>
+          </Section>
         </Box>
       </Grid>
-      <DialogContent
-        animate={Animate.SLIDE}
-        className={cn(
-          "bg-white top-[initial] bottom-0 px-4 py-8 translate-y-0 rounded-10px-tl-tr",
-          triggerType === TRIGGER_TYPE.UNFINISHED && "top-0 rounded-none"
-        )}
-      >
-        <Text className="text-[20px] font-bold">Show only</Text>
-        <Box>
-          {filterNames.map((each, key) => (
-            <div
-              key={key}
-              className={cn(
-                "pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]",
-                filteredType.find(data => data.key === each.key) && "text-primary",
-                key === filterNames.length - 1 && "border-none"
-              )}
-              onClick={() => {
-                handleCheckFilter(each);
-              }}
-            >
-              <Flex justify="between" align="center" gap="2">
-                <Text as="label" weight="bold" size="3">
-                  {each.value}
-                </Text>
-                <Icons.check className="text-lg" />
-              </Flex>
-            </div>
-          ))}
-          <DialogClose
-            className="w-full"
-            onClick={async () => {
-              setFilterParams({
-                key: filteredType.map(data => data.key).join(","),
-              });
-            }}
-          >
-            <Button className="w-full">Apply filters</Button>
-          </DialogClose>
-        </Box>
-      </DialogContent>
-    </Dialog>
+    </ContentFilterDialog>
   );
 };
 

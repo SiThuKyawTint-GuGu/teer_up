@@ -16,8 +16,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import GoogleLogin from "./GoogleLogin";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import SocialLogin from "./SocialLogin";
 
 const validationSchema = yup.object({
   email: yup.string().email().required("Please enter email address").default(""),
@@ -83,9 +83,9 @@ const Login: React.FC = () => {
             <Heading className="text-[36px]" as="h4" weight="bold" mb="3">
               Log in
             </Heading>
-            <Text weight="light">An OTP code will be send to your email</Text>
+            <Text weight="light">An OTP code will be sent to your email</Text>
           </Flex>
-          {error && <div className="text-primary">{error?.response?.data?.message || "Something Went Wrong"}</div>}
+          {error && <div className="text-primary">{error?.response?.data?.message || "An error occured"}</div>}
           <div className="space-y-[10px]">
             <Form {...form}>
               <form
@@ -124,13 +124,10 @@ const Login: React.FC = () => {
                   <Checkbox onCheckedChange={(val: boolean) => setChecked(val)} />
                   <Text className="space-x-[5px]" as="div" weight="light" size="2">
                     <Text as="span">By clicking &#34;Next&#34;, I have read, understood, and given my</Text>
-                    <DialogTrigger className="p-0 h-auto text-primary font-bold">
-                      consent
-                      <Button type="button" className="p-0 h-auto" variant="link"></Button>
-                    </DialogTrigger>
+                    <DialogTrigger className="p-0 h-auto text-primary font-bold">consent</DialogTrigger>
                     <Text as="span">and accepted the</Text>
                     <Link href="/support/terms-of-use">
-                      <Button className="p-0 h-auto font-bold font-medium" variant="link">
+                      <Button className="p-0 h-auto font-bold" variant="link">
                         Terms of Use
                       </Button>
                     </Link>
@@ -145,7 +142,7 @@ const Login: React.FC = () => {
                 Or
               </Text>
 
-              <GoogleLogin />
+              <SocialLogin />
             </Form>
             <Flex justify="center" wrap="wrap" width="100%" gap="2">
               <Text weight="light">Don’t have an account? </Text>

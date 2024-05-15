@@ -50,7 +50,7 @@ const InputText = React.forwardRef<HTMLInputElement, Props>(
           <TextField.Root>
             <TextField.Input
               type={type}
-              className={cn(`${className} shadow-md text-[#2A2A2A]`)}
+              className={cn(`${className} shadow-md text-[#2A2A2A] `)}
               placeholder={placeholder}
               defaultValue={defaultValue || ""}
               size="3"
@@ -113,7 +113,7 @@ const InputSearch = React.forwardRef<HTMLInputElement, InputProps>(
 
           <TextField.Input
             type={type}
-            className={cn(className, variant && "placeholder-[#373A36]")}
+            className={cn(className, variant && "placeholder-[#373A36] text-[16px]")}
             placeholder={placeholder}
             ref={ref}
             onChange={onChange}
@@ -160,9 +160,9 @@ const InputTextArea = React.forwardRef<HTMLInputElement, Props>(
         <label htmlFor="email" className="block text-sm font-medium text-gray-700">
           {label}
         </label>
-        <div className="relative mt-1 rounded-md">
+        <div className="relative mt-1 rounded-md outline-none ">
           <TextArea
-            className={cn("w-full rounded-[8px] bg-[#5b6770] bg-opacity-10 font-regular", className)}
+            className={cn("w-full outline-none rounded-[8px] bg-[#5b6770] bg-opacity-10 font-regular", className)}
             placeholder={placeholder}
             defaultValue={defaultValue || ""}
             size="3"
@@ -176,6 +176,37 @@ const InputTextArea = React.forwardRef<HTMLInputElement, Props>(
   }
 );
 InputTextArea.displayName = "InputTextArea";
+
+
+const InputTextAreaBgWhite = React.forwardRef<HTMLInputElement, Props>(
+  (
+    { label, error, className, placeholder, defaultValue, inputType = USER_ROLE.ADMIN, disabled = false, ...props },
+    ref
+  ) => {
+    return (
+      <InputStyled inputtype={inputType}>
+        <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+          {label}
+        </label>
+        <div className="relative mt-1 rounded-md outline-none ">
+          <TextArea
+            className={cn(
+              "w-full outline-none rounded-[8px] shadow-md text-[#2A2A2A] bg-[white] bg-opacity-10 font-regular",
+              className
+            )}
+            placeholder={placeholder}
+            defaultValue={defaultValue || ""}
+            size="3"
+            disabled={disabled}
+            {...props}
+          />
+        </div>
+        {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+      </InputStyled>
+    );
+  }
+);
+InputTextAreaBgWhite.displayName = "InputTextAreaBgWhite";
 
 const InputOtp: React.FC = ({ ...props }) => {
   return <InputOtpStyled {...props} />;
@@ -197,6 +228,7 @@ const InputStyled = styled.div<{ inputtype?: USER_ROLE | string; disabled?: bool
   }
   & textarea {
     font-size: 14px;
+    outline: none;
   }
   & .rt-TextFieldChrome,
   .rt-TextAreaChrome {
@@ -206,7 +238,7 @@ const InputStyled = styled.div<{ inputtype?: USER_ROLE | string; disabled?: bool
   }
 `;
 
-export { InputOtp, InputSearch, InputStyled, InputText, InputTextArea };
+export { InputOtp, InputSearch, InputStyled, InputText, InputTextArea,InputTextAreaBgWhite };
 
 const InputOtpStyled = styled.input`
   width: 53px;

@@ -24,5 +24,6 @@ export const showTime = (createTime: string) => {
   const { days, hours, minutes } = showTimeDifference(createTime);
   if (days) return `${days} day ago`;
   if (hours) return `${hours} hour ago`;
-  return `${minutes} minute ago`;
+  if (minutes) return `${minutes}minutes ago`;
+  return `0 minute ago`;
 };
