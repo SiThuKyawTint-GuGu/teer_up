@@ -17,6 +17,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Flex, Grid, Heading } from "@radix-ui/themes";
 import jwt_decode from "jwt-decode";
 import OtpInput from "react-otp-input";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 const validationSchema = yup.object({
   verificationCode: yup.string().required("Enter verification code"),
@@ -24,6 +25,7 @@ const validationSchema = yup.object({
 
 interface OtpFormData {
   verificationCode: string;
+  token?: string;
 }
 
 const Otp = () => {
@@ -34,6 +36,9 @@ const Otp = () => {
   const [isPending, startTransition] = useTransition();
   const [showResend, setShowResend] = useState<boolean>(false);
   const [seconds, setSeconds] = useState<number>(20);
+  const [gToken, setGToken] = useState<string | null>(null);
+
+  const { executeRecaptcha } = useGoogleReCaptcha();
 
   const { isMutating: verifiedLoading, trigger: verified } = useOtpVerified();
   const { isMutating, trigger: getOtpCode } = useGetOtp();
@@ -60,7 +65,17 @@ const Otp = () => {
     });
   };
 
+
   const onSubmit = useCallback(async (data: OtpFormData) => {
+    if (!executeRecaptcha) {
+      console.log("Execute recaptcha not available yet");
+      console.log(executeRecaptcha)
+      return;
+    }
+    const gReCaptchaToken = await executeRecaptcha("login");
+    if (!gReCaptchaToken) return;
+    setGToken(gReCaptchaToken);
+    data = { ...data, token: gReCaptchaToken };
     await verified(data, {
       onSuccess: res => {
         setUserInfo(res.data.token, res.data.data);
@@ -78,7 +93,7 @@ const Otp = () => {
         setMessage(prev => ({ ...prev, isError: true, messageValue: res.response.data.message }));
       },
     });
-  }, []);
+  }, [executeRecaptcha]);
 
   useEffect(() => {
     const coundSeconds = setInterval(() => {

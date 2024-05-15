@@ -10,23 +10,40 @@ import { InputText } from "@/components/ui/Inputs";
 import { useOtpVerified } from "@/services/user";
 import { setUserInfo } from "@/utils/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 const validationSchema = yup.object({
   verificationCode: yup.string().required("Enter verification code"),
+  token: yup.string().required("Please verify reCaptcha"),
 });
 interface OtpFormData {
   verificationCode: string;
+  token: string;
 }
 const LoginOtp = () => {
   const router = useRouter();
   const { trigger: verified, error, isMutating } = useOtpVerified();
   const [isPending, startTransition] = useTransition();
+  const [token, setToken] = useState<string | null>(null);
 
   const form = useForm({
     resolver: yupResolver(validationSchema),
   });
+
+  const { executeRecaptcha } = useGoogleReCaptcha();
+
   const onSubmit = async (data: OtpFormData) => {
+    if (!executeRecaptcha) {
+      console.log("Execute recaptcha not available yet");
+      return;
+    }
+    executeRecaptcha("login").then(gReCaptchaToken => {
+      setToken(gReCaptchaToken);
+      form.setValue("token", gReCaptchaToken);
+    });
+    if (!token) return;
+    data = { ...data, token };
     await verified(data, {
       onSuccess: res => {
         setUserInfo(res.data.token, res.data.data);

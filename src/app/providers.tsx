@@ -7,6 +7,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { AppProgressBar as ProgressBar } from "next-nprogress-bar";
 import { PropsWithChildren } from "react";
 import { SWRConfig } from "swr";
+import GoogleCaptchaWrapper from "@/app/google-captcha-wrapper";
 
 export default function Providers({ children }: PropsWithChildren) {
   return (
@@ -16,8 +17,10 @@ export default function Providers({ children }: PropsWithChildren) {
         <StoreProvider>
           <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
             <Theme>
-              {children}
-              <ProgressBar height="4px" color="#DA291C" options={{ showSpinner: false }} shallowRouting />
+              <GoogleCaptchaWrapper>
+                {children}
+                <ProgressBar height="4px" color="#DA291C" options={{ showSpinner: false }} shallowRouting />
+              </GoogleCaptchaWrapper>
             </Theme>
           </ThemeProvider>
         </StoreProvider>

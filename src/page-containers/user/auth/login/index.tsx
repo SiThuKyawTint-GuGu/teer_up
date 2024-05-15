@@ -13,23 +13,26 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Flex, Grid, Heading } from "@radix-ui/themes";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import GoogleLogin from "./GoogleLogin";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 const validationSchema = yup.object({
   email: yup.string().email().required("Please enter email address").default(""),
   // password: yup.string().required("Password is required!").default(""),
+  // token: yup.string().required("Please verify reCaptcha"),
 });
 
-interface Login {
+interface LoginType {
   email: string;
-  // password: string;
+  token?: string;
 }
 
 const Login: React.FC = () => {
   const [checked, setChecked] = useState<boolean>(false);
+  const [token, setToken] = useState<string>("");
   const router = useRouter();
   const { ...form } = useForm({
     resolver: yupResolver(validationSchema),
@@ -37,16 +40,37 @@ const Login: React.FC = () => {
 
   const { isMutating, trigger, error } = useUserLogin();
   const [isPending, startTransition] = useTransition();
-  const loginHandler = async (data: Login) => {
-    await trigger(data, {
-      onSuccess: res => {
-        setUserInfo(res.data.token, res.data.data);
-        startTransition(() => {
-          router.push("/auth/otp");
-        });
-      },
-    });
+
+  const { executeRecaptcha } = useGoogleReCaptcha();
+
+  const loginHandler = async (data: LoginType) => {
+    if (!executeRecaptcha) {
+      console.log("Execute recaptcha not available yet");
+      return;
+    }
+
+    try {
+      const gReCaptchaToken = await executeRecaptcha("login");
+      if (!gReCaptchaToken) {
+        console.log("Failed to get reCAPTCHA token");
+        return;
+      }
+
+      const updatedData = { ...data, token: gReCaptchaToken };
+
+      await trigger(updatedData, {
+        onSuccess: (res) => {
+          setUserInfo(res.data.token, res.data.data);
+          startTransition(() => {
+            router.push("/auth/otp");
+          });
+        },
+      });
+    } catch (error) {
+      console.error("Error during login:", error);
+    }
   };
+
 
   return (
     <Dialog>
@@ -61,7 +85,7 @@ const Login: React.FC = () => {
             </Heading>
             <Text weight="light">An OTP code will be send to your email</Text>
           </Flex>
-          {error && <div className="text-primary">{error.response.data.message}</div>}
+          {error && <div className="text-primary">{error?.response?.data?.message || "Something Went Wrong"}</div>}
           <div className="space-y-[10px]">
             <Form {...form}>
               <form
