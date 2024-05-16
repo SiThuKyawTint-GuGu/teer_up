@@ -30,7 +30,7 @@ const AppointmentChat = () => {
         </Flex>
       </Box>
       <Box>
-        <Box className="w-full flex justify-end pt-[20px]">
+        <Box className="w-full flex justify-end ">
           <Text className="text-start text-[16px] font-[400] w-[60%] text-white  bg-primary p-2 rounded-[15px] rounded-br-none">
             Lorem ipsum do amet ipsum mattis ipsum dolor sit am Lorem ipsum do amet ipsu
           </Text>
