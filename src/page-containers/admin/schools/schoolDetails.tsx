@@ -1,12 +1,12 @@
 "use client";
-import { ParamsType, SchoolAdmin, SchoolAdminResponse } from "@/types/School";
+import { GetAllSchoolsResponse, ParamsType, SchoolAdmin, SchoolAdminResponse } from "@/types/School";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Autocomplete, Card, Container, TextField, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 
-import { useCreateSchool, useGetSchoolAdmins } from "@/services/school";
+import { useCreateSchool, useGetSchoolAdmins, useGetSchools } from "@/services/school";
 import { USER_ROLE } from "@/shared/enums";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Box from "@mui/material/Box";
@@ -42,6 +42,8 @@ export default function SchoolDetails({ id }: SchoolDetailsProps) {
     isValidating,
     mutate,
   } = useGetSchoolAdmins<ParamsType, SchoolAdminResponse>({ page: 1, pageSize: 10, role: USER_ROLE.SCHOOL });
+  const { mutate: mutateSchools } = useGetSchools<GetAllSchoolsResponse>();
+
   const { trigger: createSchool, data, error: createError, isMutating: creatingSchool } = useCreateSchool();
 
   //   validations
@@ -59,6 +61,7 @@ export default function SchoolDetails({ id }: SchoolDetailsProps) {
 
   const onSubmit = async (data: any) => {
     createSchool(data);
+    mutateSchools();
     router.push("/admin/schools");
   };
 
@@ -108,7 +111,13 @@ export default function SchoolDetails({ id }: SchoolDetailsProps) {
                 getOptionLabel={(option: SchoolAdmin) => option.email}
                 onChange={(_, data) => field.onChange(data?.id)}
                 fullWidth
-                renderInput={params => <TextField {...params} label="Choose School Admin" />}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label="Choose School Admin"
+                    helperText="You can create admin under user tab."
+                  />
+                )}
               />
             )}
           />

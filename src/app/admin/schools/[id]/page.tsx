@@ -22,14 +22,16 @@ const SchoolDetailPage = ({ params: { id, degreeId } }: Props) => {
 
       {/* degree */}
       {id !== "0" ? (
-        <Box my={4}>
-          <DegreeTable id={id} degreeId={degreeId} />
-        </Box>
-      ) : null}
+        <>
+          <Box my={4}>
+            <DegreeTable id={id} degreeId={degreeId} />
+          </Box>
 
-      <Box my={4}>
-        <DegreeForm id={id} />
-      </Box>
+          <Box my={4}>
+            <DegreeForm id={id} />
+          </Box>
+        </>
+      ) : null}
     </Container>
   );
 };
