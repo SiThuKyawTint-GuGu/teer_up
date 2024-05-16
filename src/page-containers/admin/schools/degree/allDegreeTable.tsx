@@ -9,8 +9,8 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { Box, Button, Chip, IconButton, Modal, Tooltip, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import { MRT_ColumnDef, MRT_TableOptions, MaterialReactTable, useMaterialReactTable } from "material-react-table";
-import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import CreateDegreeModal from "../CreateDegreeModal";
 
 export default function AllDegreeTable() {
   const [degrees, setDegrees] = useState<AllDegree[]>();
@@ -180,9 +180,9 @@ export default function AllDegreeTable() {
       </Box>
     ),
     renderTopToolbarCustomActions: ({ table }) => (
-      <Typography variant="h6" fontWeight="bold" m={2}>
-        All Degrees
-      </Typography>
+      <>
+        <CreateDegreeModal />
+      </>
     ),
   });
 
