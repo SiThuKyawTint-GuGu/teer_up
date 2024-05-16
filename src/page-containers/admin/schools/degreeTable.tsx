@@ -1,6 +1,6 @@
 "use client";
 
-import { useDeleteSchool, useGetDegreeBySchoolId } from "@/services/school";
+import { useDeleteDegree, useDeleteSchool, useGetDegreeBySchoolId } from "@/services/school";
 import { DegreeDetail, DegreeResponse } from "@/types/School";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -17,7 +17,7 @@ interface DegreeTableProps {
 
 export default function DegreeTable({ id, degreeId }: DegreeTableProps) {
   const [degrees, setDegrees] = useState<DegreeDetail[]>();
-  const { trigger: deleteTrigger, isMutating: deletingDegree } = useDeleteSchool();
+  const { trigger: deleteTrigger, isMutating: deletingDegree } = useDeleteDegree();
   const {
     data: degreesData,
     isLoading: loadingDegrees,
@@ -127,11 +127,11 @@ export default function DegreeTable({ id, degreeId }: DegreeTableProps) {
     renderRowActions: ({ row, table }) => (
       <Box sx={{ display: "flex", gap: "1rem" }}>
         <Tooltip title="Edit">
-           <Link href={`/admin/schools/${id}/degrees/${row.id}`}>
-              <IconButton>
-                <EditIcon />
-              </IconButton>
-           </Link>
+          <Link href={`/admin/schools/${id}/degrees/${row.id}`}>
+            <IconButton>
+              <EditIcon />
+            </IconButton>
+          </Link>
         </Tooltip>
         <Tooltip title="Delete">
           <IconButton

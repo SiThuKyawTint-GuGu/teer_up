@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetDegrees } from "@/services/school";
+import { useDeleteDegree, useGetDegrees, useUpdateDegree } from "@/services/school";
 import { AllDegree, AllDegreeResponse } from "@/types/School";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -8,13 +8,15 @@ import InfoIcon from "@mui/icons-material/Info";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { Box, Button, Chip, IconButton, Modal, Tooltip, Typography } from "@mui/material";
 import dayjs from "dayjs";
-import { MaterialReactTable, useMaterialReactTable } from "material-react-table";
+import { MRT_ColumnDef, MRT_TableOptions, MaterialReactTable, useMaterialReactTable } from "material-react-table";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
 export default function AllDegreeTable() {
   const [degrees, setDegrees] = useState<AllDegree[]>();
   const { data: degreesData, isLoading, mutate } = useGetDegrees<AllDegreeResponse>();
+  const { trigger: updateDegree, isMutating: updatingDegree } = useUpdateDegree();
+  const { trigger: deleteTrigger, isMutating: deletingDegree } = useDeleteDegree();
   const [open, setOpen] = useState<boolean>(false);
   const [id, setId] = useState<string>("");
   const [globalFilter, setGlobalFilter] = useState<string>("");
@@ -22,12 +24,13 @@ export default function AllDegreeTable() {
     pageIndex: 0,
     pageSize: 10,
   });
+  const [validationErrors, setValidationErrors] = useState<Record<string, string | undefined>>({});
 
   useEffect(() => {
     if (degreesData) setDegrees(degreesData?.data);
   }, [degreesData?.data]);
 
-  const columns = useMemo(
+  const columns = useMemo<MRT_ColumnDef<AllDegree>[]>(
     () => [
       {
         accessorKey: "id",
@@ -38,7 +41,17 @@ export default function AllDegreeTable() {
       {
         accessorKey: "name",
         header: "Name",
-        enableEditing: false,
+        muiEditTextFieldProps: {
+          required: true,
+          error: !!validationErrors?.name,
+          helperText: validationErrors?.name,
+          //remove any previous validation errors when user focuses on the input
+          onFocus: () =>
+            setValidationErrors({
+              ...validationErrors,
+              name: undefined,
+            }),
+        },
       },
       {
         accessorKey: "school.name",
@@ -73,11 +86,26 @@ export default function AllDegreeTable() {
         },
       },
     ],
-    []
+    [validationErrors]
   );
 
+  // update action
+  const handleSave: MRT_TableOptions<AllDegree>["onEditingRowSave"] = async ({ values, table }) => {
+    const errors = validateDegree(values);
+    if (Object.keys(errors).length > 0) {
+      setValidationErrors(errors);
+      return;
+    }
+
+    const { id, name } = values;
+
+    await updateDegree({ id, name });
+    await mutate();
+    table.setEditingRow(null);
+  };
+
   const table = useMaterialReactTable({
-    columns,
+    columns: columns as any,
     data: (degrees as any) || [],
     createDisplayMode: "row",
     editDisplayMode: "row",
@@ -119,11 +147,14 @@ export default function AllDegreeTable() {
     },
     onGlobalFilterChange: setGlobalFilter,
     onPaginationChange: setPagination,
+    onCreatingRowCancel: () => setValidationErrors({}),
+    onEditingRowCancel: () => setValidationErrors({}),
+    onEditingRowSave: handleSave,
     renderRowActions: ({ row, table }) => (
       <Box sx={{ display: "flex", gap: "1rem" }}>
         <Tooltip title="Edit">
           {/* <Link href={`/admin/banners/${row.id}`}> */}
-          <IconButton>
+          <IconButton onClick={() => table.setEditingRow(row)}>
             <EditIcon />
           </IconButton>
           {/* </Link> */}
@@ -158,7 +189,7 @@ export default function AllDegreeTable() {
   const handleDeleteSchool = async () => {
     setOpen(false);
 
-    // await deleteTrigger({ id });
+    await deleteTrigger({ id });
   };
 
   return (
@@ -218,3 +249,13 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+
+function validateDegree(values: AllDegree) {
+  const errors: Record<string, string | undefined> = {};
+
+  if (!values.name) {
+    errors.name = "Name is required";
+  }
+
+  return errors;
+}

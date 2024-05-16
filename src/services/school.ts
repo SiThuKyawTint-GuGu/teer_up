@@ -69,7 +69,29 @@ export const useCreateDegree = () =>
     return appAxios.post<SchoolArgType>(url, arg);
   });
 
-// update degree
+// update degree /schools/degrees/id
+export const useUpdateDegree = () =>
+  useSWRMutation(
+    `/schools/degrees`,
+    (
+      url,
+      {
+        arg,
+      }: {
+        arg: {
+          id: string;
+          name: string;
+        };
+      }
+    ) => {
+      return appAxios.put<SchoolArgType>(`${url}/${arg.id}`, arg);
+    }
+  );
+
+export const useDeleteDegree = () =>
+  useSWRMutation(`/schools/degrees`, (url, { arg }: { arg: { id: string } }) => {
+    return appAxios.delete<SchoolArgType>(`${url}/${arg.id}`);
+  });
 
 // courses
 export const useGetCoursesBySchoolId = <ParamsType, Course>(params: { id: string }): SWRResponse<Course, any> => {
