@@ -1,12 +1,12 @@
 "use client";
 
-import { useGetMajors } from "@/services/school";
+import { useDeleteMajor, useGetMajors, useUpdateMajor } from "@/services/school";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import InfoIcon from "@mui/icons-material/Info";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { Box, Button, Chip, IconButton, Modal, Tooltip, Typography } from "@mui/material";
-import { MaterialReactTable, useMaterialReactTable } from "material-react-table";
+import { MRT_ColumnDef, MRT_TableOptions, MaterialReactTable, useMaterialReactTable } from "material-react-table";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { AllMajorResponse, Major } from "@/types/Majors";
@@ -15,6 +15,8 @@ import dayjs from "dayjs";
 export default function AllMajorsTable() {
   const [majors, setMajors] = useState<Major[]>();
   const { data: majorsData, isLoading, mutate } = useGetMajors<AllMajorResponse>();
+  const { trigger: updateMajor, isMutating: updatingMajor } = useUpdateMajor();
+  const { trigger: deleteTrigger, isMutating: deletingMajor } = useDeleteMajor();
   const [open, setOpen] = useState<boolean>(false);
   const [id, setId] = useState<string>("");
   const [globalFilter, setGlobalFilter] = useState<string>("");
@@ -22,12 +24,13 @@ export default function AllMajorsTable() {
     pageIndex: 0,
     pageSize: 10,
   });
+  const [validationErrors, setValidationErrors] = useState<Record<string, string | undefined>>({});
 
   useEffect(() => {
     if (majorsData) setMajors(majorsData?.data);
-  }, [majorsData?.data]);
+  }, [majorsData, majorsData?.data]);
 
-  const columns = useMemo(
+  const columns = useMemo<MRT_ColumnDef<Major>[]>(
     () => [
       {
         accessorKey: "id",
@@ -38,7 +41,17 @@ export default function AllMajorsTable() {
       {
         accessorKey: "name",
         header: "Major Name",
-        enableEditing: false,
+        muiEditTextFieldProps: {
+          required: true,
+          error: !!validationErrors?.name,
+          helperText: validationErrors?.name,
+          //remove any previous validation errors when user focuses on the input
+          onFocus: () =>
+            setValidationErrors({
+              ...validationErrors,
+              name: undefined,
+            }),
+        },
       },
       {
         accessorKey: "degree.name",
@@ -81,11 +94,32 @@ export default function AllMajorsTable() {
         },
       },
     ],
-    []
+    [validationErrors]
   );
 
+  const handleSave: MRT_TableOptions<Major>["onEditingRowSave"] = async ({ values, table }) => {
+    const errors = validateMajor(values);
+    if (Object.keys(errors).length) {
+      setValidationErrors(errors);
+      return;
+    }
+
+    const { data } = await updateMajor({
+      id: values.id,
+      name: values.name,
+      degree_id: values.degree_id,
+    });
+
+    if (data) {
+      // show success
+      mutate();
+      table.setEditingRow(null);
+      return;
+    }
+  };
+
   const table = useMaterialReactTable({
-    columns,
+    columns: columns as any,
     data: (majors as any) || [],
     createDisplayMode: "row",
     editDisplayMode: "row",
@@ -127,14 +161,15 @@ export default function AllMajorsTable() {
     },
     onGlobalFilterChange: setGlobalFilter,
     onPaginationChange: setPagination,
+    onCreatingRowCancel: () => setValidationErrors({}),
+    onEditingRowCancel: () => setValidationErrors({}),
+    onEditingRowSave: handleSave,
     renderRowActions: ({ row, table }) => (
       <Box sx={{ display: "flex", gap: "1rem" }}>
         <Tooltip title="Edit">
-          {/* <Link href={`/admin/banners/${row.id}`}> */}
-          <IconButton>
+          <IconButton onClick={() => table.setEditingRow(row)}>
             <EditIcon />
           </IconButton>
-          {/* </Link> */}
         </Tooltip>
         <Tooltip title="Details">
           {/*<Link href={`/admin/schools/${row.id}`}>*/}
@@ -166,7 +201,7 @@ export default function AllMajorsTable() {
   const handleDeleteSchool = async () => {
     setOpen(false);
 
-    // await deleteTrigger({ id });
+    await deleteTrigger({ id });
   };
 
   return (
@@ -226,3 +261,9 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+
+function validateMajor(major: Major) {
+  const errors: Record<string, string | undefined> = {};
+  if (!major.name) errors.name = "Name is required";
+  return errors;
+}
