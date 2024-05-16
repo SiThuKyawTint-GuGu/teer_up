@@ -1,6 +1,6 @@
 "use client";
 
-import { useDeleteSchool, useGetSchools } from "@/services/school";
+import { useDeleteSchool, useGetSchools, useUpdateSchool } from "@/services/school";
 import { GetAllSchoolsResponse, School } from "@/types/School";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -8,7 +8,7 @@ import InfoIcon from "@mui/icons-material/Info";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { Box, Button, Chip, IconButton, Modal, Tooltip, Typography } from "@mui/material";
 import dayjs from "dayjs";
-import { MaterialReactTable, useMaterialReactTable } from "material-react-table";
+import { MRT_ColumnDef, MRT_TableOptions, MaterialReactTable, useMaterialReactTable } from "material-react-table";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
@@ -16,6 +16,7 @@ export default function Schools() {
   const [schools, setSchools] = useState<School[]>();
   const { trigger: deleteTrigger, isMutating: deletingSchool } = useDeleteSchool();
   const { data: schoolsData, isLoading, mutate } = useGetSchools<GetAllSchoolsResponse>();
+  const { trigger: updateSchool, isMutating: updatingSchool } = useUpdateSchool();
   const [open, setOpen] = useState<boolean>(false);
   const [id, setId] = useState<string>("");
   const [globalFilter, setGlobalFilter] = useState<string>("");
@@ -23,12 +24,13 @@ export default function Schools() {
     pageIndex: 0,
     pageSize: 10,
   });
+  const [validationErrors, setValidationErrors] = useState<Record<string, string | undefined>>({});
 
   useEffect(() => {
     if (schoolsData) setSchools(schoolsData?.data);
   }, [schoolsData?.data]);
 
-  const columns = useMemo(
+  const columns = useMemo<MRT_ColumnDef<School>[]>(
     () => [
       {
         accessorKey: "id",
@@ -39,16 +41,38 @@ export default function Schools() {
       {
         accessorKey: "name",
         header: "Name",
-        enableEditing: false,
+        muiEditTextFieldProps: {
+          required: true,
+          error: !!validationErrors?.name,
+          helperText: validationErrors?.name,
+          //remove any previous validation errors when user focuses on the input
+          onFocus: () =>
+            setValidationErrors({
+              ...validationErrors,
+              name: undefined,
+            }),
+        },
       },
       {
         accessorKey: "email",
         header: "Email",
+        muiEditTextFieldProps: {
+          type: "email",
+          required: true,
+          error: !!validationErrors?.email,
+          helperText: validationErrors?.email,
+          //remove any previous validation errors when user focuses on the input
+          onFocus: () =>
+            setValidationErrors({
+              ...validationErrors,
+              email: undefined,
+            }),
+        },
       },
       {
         accessorKey: "type",
         header: "Type",
-        enableEditing: true,
+        enableEditing: false,
         renderCell: ({
           row,
         }: {
@@ -84,12 +108,24 @@ export default function Schools() {
         },
       },
     ],
-    []
+    [validationErrors]
   );
 
+  // update action
+  const handleSave: MRT_TableOptions<School>["onEditingRowSave"] = async ({ values, table }) => {
+    const newValidationErrors = validateSchool(values);
+    if (Object.values(newValidationErrors).some(error => error)) {
+      setValidationErrors(newValidationErrors);
+      return;
+    }
+    setValidationErrors({});
+    await updateSchool({ ...values });
+    table.setEditingRow(null); //exit editing mode
+  };
+
   const table = useMaterialReactTable({
-    columns,
-    data: (schools as any) || [],
+    columns: columns as MRT_ColumnDef<any, any>[],
+    data: (schools as School[]) || [],
     createDisplayMode: "row",
     editDisplayMode: "row",
     enableEditing: true,
@@ -130,11 +166,14 @@ export default function Schools() {
     },
     onGlobalFilterChange: setGlobalFilter,
     onPaginationChange: setPagination,
+    onCreatingRowCancel: () => setValidationErrors({}),
+    onEditingRowCancel: () => setValidationErrors({}),
+    onEditingRowSave: handleSave,
     renderRowActions: ({ row, table }) => (
       <Box sx={{ display: "flex", gap: "1rem" }}>
         <Tooltip title="Edit">
           {/* <Link href={`/admin/banners/${row.id}`}> */}
-          <IconButton>
+          <IconButton onClick={() => table.setEditingRow(row)}>
             <EditIcon />
           </IconButton>
           {/* </Link> */}
@@ -227,7 +266,23 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
-  bgColor: "background.paper",
+  bgcolor: "background.paper",
   boxShadow: 24,
   p: 4,
+};
+
+const validateRequired = (value: string) => !!value.length;
+const validateEmail = (email: string) =>
+  !!email.length &&
+  email
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+
+const validateSchool = (school: School) => {
+  return {
+    name: !validateRequired(school.name) ? "Name is required" : "",
+    email: !validateEmail(school.email) ? "Email is required" : "",
+  };
 };

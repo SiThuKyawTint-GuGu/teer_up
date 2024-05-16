@@ -25,11 +25,6 @@ export const useGetCourses = <CourseDataResponse>(): SWRResponse<CourseDataRespo
   return useSWR<CourseDataResponse>(`/schools/courses`);
 };
 
-export const useDeleteSchool = () =>
-  useSWRMutation(`/schools`, (url, { arg }: { arg: { id: string } }) => {
-    return appAxios.delete<SchoolArgType>(`${url}/${arg.id}`);
-  });
-
 export const useGetSchoolAdmins = <ParamsType, SchoolAdmin>(params: ParamsType): SWRResponse<SchoolAdmin, any> => {
   return useSWR<SchoolAdmin>(`/user?${routeFilter(params)}`);
 };
@@ -37,6 +32,32 @@ export const useGetSchoolAdmins = <ParamsType, SchoolAdmin>(params: ParamsType):
 export const useCreateSchool = () =>
   useSWRMutation(`/schools`, (url, { arg }: { arg: any }) => {
     return appAxios.post<SchoolArgType>(url, arg);
+  });
+
+// update school
+export const useUpdateSchool = () =>
+  useSWRMutation(
+    `/schools`,
+    (
+      url,
+      {
+        arg,
+      }: {
+        arg: {
+          id: string;
+          name: string;
+          email: string;
+          type: string;
+        };
+      }
+    ) => {
+      return appAxios.put<SchoolArgType>(`${url}/${arg.id}`, arg);
+    }
+  );
+
+export const useDeleteSchool = () =>
+  useSWRMutation(`/schools`, (url, { arg }: { arg: { id: string } }) => {
+    return appAxios.delete<SchoolArgType>(`${url}/${arg.id}`);
   });
 
 export const useGetDegreeBySchoolId = <ParamsType, Degree>(params: { id: string }): SWRResponse<Degree, any> => {
@@ -47,6 +68,8 @@ export const useCreateDegree = () =>
   useSWRMutation(`/schools/degrees`, (url, { arg }: { arg: any }) => {
     return appAxios.post<SchoolArgType>(url, arg);
   });
+
+// update degree
 
 // courses
 export const useGetCoursesBySchoolId = <ParamsType, Course>(params: { id: string }): SWRResponse<Course, any> => {
