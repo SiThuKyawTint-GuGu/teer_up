@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetCourses } from "@/services/school";
+import { useDeleteCourse, useGetCourses, useUpdateCourse } from "@/services/school";
 import { AllCoursesResponse, Course } from "@/types/Course";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -8,12 +8,14 @@ import InfoIcon from "@mui/icons-material/Info";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { Box, Button, Chip, IconButton, Modal, Tooltip, Typography } from "@mui/material";
 import dayjs from "dayjs";
-import { MaterialReactTable, useMaterialReactTable } from "material-react-table";
+import { MRT_ColumnDef, MaterialReactTable, useMaterialReactTable } from "material-react-table";
 import { useEffect, useMemo, useState } from "react";
 
 export default function AllCoursesTable() {
   const [courses, setCourses] = useState<Course[]>();
   const { data: coursesData, isLoading, mutate } = useGetCourses<AllCoursesResponse>();
+  const { trigger: updateCourse, isMutating: updatingCourse } = useUpdateCourse();
+  const { trigger: deleteTrigger, isMutating: deletingCourse } = useDeleteCourse();
   const [open, setOpen] = useState<boolean>(false);
   const [id, setId] = useState<string>("");
   const [globalFilter, setGlobalFilter] = useState<string>("");
@@ -21,12 +23,13 @@ export default function AllCoursesTable() {
     pageIndex: 0,
     pageSize: 10,
   });
+  const [validationErrors, setValidationErrors] = useState<Record<string, string | undefined>>({});
 
   useEffect(() => {
     if (coursesData) setCourses(coursesData?.data);
-  }, [coursesData?.data]);
+  }, [coursesData, coursesData?.data]);
 
-  const columns = useMemo(
+  const columns = useMemo<MRT_ColumnDef<Course>[]>(
     () => [
       {
         accessorKey: "id",
@@ -37,7 +40,32 @@ export default function AllCoursesTable() {
       {
         accessorKey: "name",
         header: "Course Name",
-        enableEditing: false,
+        muiEditTextFieldProps: {
+          required: true,
+          error: !!validationErrors?.name,
+          helperText: validationErrors?.name,
+          //remove any previous validation errors when user focuses on the input
+          onFocus: () =>
+            setValidationErrors({
+              ...validationErrors,
+              name: undefined,
+            }),
+        },
+      },
+      {
+        accessorKey: "credit",
+        header: "Credits",
+        muiEditTextFieldProps: {
+          required: true,
+          error: !!validationErrors?.credits,
+          helperText: validationErrors?.credits,
+          //remove any previous validation errors when user focuses on the input
+          onFocus: () =>
+            setValidationErrors({
+              ...validationErrors,
+              credits: undefined,
+            }),
+        },
       },
       {
         accessorKey: "major.name",
@@ -88,11 +116,11 @@ export default function AllCoursesTable() {
         },
       },
     ],
-    []
+    [validationErrors]
   );
 
   const table = useMaterialReactTable({
-    columns,
+    columns: columns as any,
     data: (courses as any) || [],
     createDisplayMode: "row",
     editDisplayMode: "row",
@@ -134,14 +162,27 @@ export default function AllCoursesTable() {
     },
     onGlobalFilterChange: setGlobalFilter,
     onPaginationChange: setPagination,
+    onCreatingRowCancel: () => setValidationErrors({}),
+    onEditingRowCancel: () => setValidationErrors({}),
+    onEditingRowSave: async ({ values }) => {
+      const errors = validateCourse(values);
+      if (Object.keys(errors).length > 0) {
+        setValidationErrors(errors);
+        return;
+      }
+
+      const { id, name, credit } = values;
+
+      await updateCourse({ id, name, credit });
+      await mutate();
+      table.setEditingRow(null);
+    },
     renderRowActions: ({ row, table }) => (
       <Box sx={{ display: "flex", gap: "1rem" }}>
         <Tooltip title="Edit">
-          {/* <Link href={`/admin/banners/${row.id}`}> */}
-          <IconButton>
+          <IconButton onClick={() => table.setEditingRow(row)}>
             <EditIcon />
           </IconButton>
-          {/* </Link> */}
         </Tooltip>
         <Tooltip title="Details">
           {/*<Link href={`/admin/schools/${row.id}`}>*/}
@@ -173,7 +214,7 @@ export default function AllCoursesTable() {
   const handleDeleteSchool = async () => {
     setOpen(false);
 
-    // await deleteTrigger({ id });
+    await deleteTrigger({ id });
   };
 
   return (
@@ -233,3 +274,13 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+
+function validateCourse(values: any) {
+  const errors: Record<string, string> = {};
+
+  if (!values.name) {
+    errors.name = "Name is required";
+  }
+
+  return errors;
+}
