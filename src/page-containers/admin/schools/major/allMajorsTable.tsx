@@ -10,6 +10,7 @@ import { MaterialReactTable, useMaterialReactTable } from "material-react-table"
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { AllMajorResponse, Major } from "@/types/Majors";
+import dayjs from "dayjs";
 
 export default function AllMajorsTable() {
   const [majors, setMajors] = useState<Major[]>();
@@ -59,11 +60,25 @@ export default function AllMajorsTable() {
         accessorKey: "created_at",
         header: "Created At",
         enableEditing: false,
+        Cell: ({ row }: any) => {
+          const createdAt = row.original.created_at;
+          if (createdAt && dayjs(createdAt).isValid()) {
+            return dayjs(createdAt).format("MMM D, YYYY h:mm A");
+          }
+          return "";
+        },
       },
       {
         accessorKey: "updated_at",
         header: "Updated At",
         enableEditing: false,
+        Cell: ({ row }: any) => {
+          const updatedAt = row.original.updated_at;
+          if (updatedAt && dayjs(updatedAt).isValid()) {
+            return dayjs(updatedAt).format("MMM D, YYYY h:mm A");
+          }
+          return "";
+        },
       },
     ],
     []

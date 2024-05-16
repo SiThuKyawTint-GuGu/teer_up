@@ -7,6 +7,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import InfoIcon from "@mui/icons-material/Info";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { Box, Button, Chip, IconButton, Modal, Tooltip, Typography } from "@mui/material";
+import dayjs from "dayjs";
 import { MaterialReactTable, useMaterialReactTable } from "material-react-table";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
@@ -62,11 +63,25 @@ export default function Schools() {
         accessorKey: "created_at",
         header: "Created At",
         enableEditing: false,
+        Cell: ({ row }: any) => {
+          const createdAt = row.original.created_at;
+          if (createdAt && dayjs(createdAt).isValid()) {
+            return dayjs(createdAt).format("MMM D, YYYY h:mm A");
+          }
+          return "";
+        },
       },
       {
         accessorKey: "updated_at",
         header: "Updated At",
         enableEditing: false,
+        Cell: ({ row }: any) => {
+          const updatedAt = row.original.updated_at;
+          if (updatedAt && dayjs(updatedAt).isValid()) {
+            return dayjs(updatedAt).format("MMM D, YYYY h:mm A");
+          }
+          return "";
+        },
       },
     ],
     []
