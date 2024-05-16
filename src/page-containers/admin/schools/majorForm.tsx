@@ -8,16 +8,17 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useCreateMajor } from "@/services/school";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const courseSchema = yup.object().shape({
-  name: yup.string().required('Course name is required'),
-  credit: yup.number().integer().positive().required('Course credit is required')
+  name: yup.string().required("Course name is required"),
+  credit: yup.number().integer().positive().required("Course credit is required"),
 });
 
 const validationSchema = yup.object().shape({
-  name: yup.string().required('Name is required'),
-  degree_id: yup.number().integer().positive().required('Degree ID is required'),
-  courses: yup.array().of(courseSchema).min(1, 'At least one course is required')
+  name: yup.string().required("Name is required"),
+  degree_id: yup.number().integer().positive().required("Degree ID is required"),
+  courses: yup.array().of(courseSchema).min(1, "At least one course is required"),
 });
 
 interface MajorFormProps {
@@ -25,7 +26,7 @@ interface MajorFormProps {
 }
 
 function MajorForm({ id }: MajorFormProps) {
-  const router = useRouter()
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -37,25 +38,32 @@ function MajorForm({ id }: MajorFormProps) {
     defaultValues: {
       name: "",
       degree_id: parseInt(id),
-      courses: [{ name: "", credit: 0 }]
-    }
+      courses: [{ name: "", credit: 0 }],
+    },
   });
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "courses"
+    name: "courses",
   });
 
   useEffect(() => {
     setValue("degree_id", parseInt(id));
   }, [id, setValue]);
 
-  const {trigger: createMajor, data, isMutating} = useCreateMajor()
+  const { trigger: createMajor, data, isMutating } = useCreateMajor();
 
   const onSubmit = (data: any) => {
     createMajor(data, {
-      onSuccess: data1 => router.push('/admin/schools')
-    })
+      onSuccess: data1 => {
+        toast.success("Successfully created");
+        router.push("/admin/schools");
+      },
+      onError: err => {
+        console.log(err);
+        toast.error(err.response.data.message);
+      },
+    });
   };
 
   return (
@@ -72,13 +80,7 @@ function MajorForm({ id }: MajorFormProps) {
           Add Major
         </Typography>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <TextField
-            type="text"
-            label="Name"
-            {...register("name")}
-            fullWidth
-            margin="normal"
-          />
+          <TextField type="text" label="Name" {...register("name")} fullWidth margin="normal" />
           <Typography variant="body2" color="red">
             {errors.name?.message}
           </Typography>
@@ -87,12 +89,7 @@ function MajorForm({ id }: MajorFormProps) {
             <Card key={item.id} sx={{ padding: 2, marginBottom: 2 }}>
               <Grid container spacing={2}>
                 <Grid item xs={6}>
-                  <TextField
-                    label="Course Name"
-                    {...register(`courses.${index}.name`)}
-                    fullWidth
-                    margin="normal"
-                  />
+                  <TextField label="Course Name" {...register(`courses.${index}.name`)} fullWidth margin="normal" />
                   <Typography variant="body2" color="red">
                     {errors.courses?.[index]?.name?.message}
                   </Typography>
@@ -110,12 +107,7 @@ function MajorForm({ id }: MajorFormProps) {
                   </Typography>
                 </Grid>
                 <Grid item xs={2}>
-                  <Button
-                    variant="outlined"
-                    color="error"
-                    onClick={() => remove(index)}
-                    sx={{ marginTop: 2 }}
-                  >
+                  <Button variant="outlined" color="error" onClick={() => remove(index)} sx={{ marginTop: 2 }}>
                     Remove
                   </Button>
                 </Grid>

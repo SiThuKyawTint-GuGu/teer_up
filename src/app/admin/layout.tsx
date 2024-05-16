@@ -5,6 +5,7 @@ import PageLayout from "@/components/layout";
 import { getToken } from "@/utils/auth";
 import { usePathname } from "next/navigation";
 import ThemeRegistry from "./ThemeRegistry";
+import { Toaster } from "react-hot-toast";
 
 interface Props {
   children: ReactNode;
@@ -27,6 +28,7 @@ const AdminLayout = ({ children }: Props) => {
           <div style={{ height: "auto", marginBottom: "60px" }}>{children}</div>
         </main>
       )}
+      <Toaster />
     </ThemeRegistry>
   );
 };

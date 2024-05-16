@@ -6,7 +6,7 @@ import { Box, Container } from "@mui/material";
 interface Props {
   params: {
     id: string;
-    degreeId: string
+    degreeId: string;
   };
 }
 const SchoolDetailPage = ({ params: { id, degreeId } }: Props) => {
@@ -18,15 +18,14 @@ const SchoolDetailPage = ({ params: { id, degreeId } }: Props) => {
         paddingY: 6,
       }}
     >
-      <SchoolDetails id={id} />
+      {id === "0" ? <SchoolDetails id={id} /> : null}
 
       {/* degree */}
       {id !== "0" ? (
         <Box my={4}>
-          <DegreeTable id={id} degreeId={degreeId}/>
+          <DegreeTable id={id} degreeId={degreeId} />
         </Box>
       ) : null}
-
 
       <Box my={4}>
         <DegreeForm id={id} />

@@ -6,10 +6,12 @@ import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { createFilterOptions } from "@mui/material/Autocomplete";
 import * as React from "react";
-import { useCreateDegree } from "@/services/school";
+import { useCreateDegree, useGetDegreeBySchoolId } from "@/services/school";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Box from "@mui/material/Box";
 import { majors } from "./majors";
+import toast from "react-hot-toast";
+import { DegreeResponse } from "@/types/School";
 
 const validationSchema = yup.object({
   name: yup.string().required("Name is required!"),
@@ -29,7 +31,12 @@ export default function DegreeForm({ id }: SchoolDetailsProps) {
   const router = useRouter();
 
   const { trigger: createDegree, data, error: createError, isMutating: creatingDegree } = useCreateDegree();
-
+  const { mutate } = useGetDegreeBySchoolId<
+    {
+      id: string;
+    },
+    DegreeResponse
+  >({ id });
   //   validations
   const {
     register,
@@ -48,7 +55,12 @@ export default function DegreeForm({ id }: SchoolDetailsProps) {
       ...data,
       school_id: id,
     };
-    createDegree(submitData);
+    createDegree(submitData, {
+      onSuccess: data => {
+        mutate();
+        toast.success("Degree created successfully");
+      },
+    });
   };
 
   return (
