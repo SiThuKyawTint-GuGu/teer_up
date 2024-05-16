@@ -5,7 +5,6 @@ export default function CoursePage() {
   return (
     <Box
       sx={{
-        maxHeight: "calc(100vh - 200px)",
         pt: 4,
         px: 2,
         maxWidth: "lg",
