@@ -6,9 +6,9 @@ export default function DegreesPage() {
   return (
     <Box
       sx={{
-        maxHeight: "calc(100vh - 200px)",
         pt: 4,
         px: 2,
+        pb: 4,
         maxWidth: "lg",
       }}
     >
