@@ -112,14 +112,19 @@ export default function Schools() {
   );
 
   // update action
-  const handleSave: MRT_TableOptions<School>["onEditingRowSave"] = async ({ values, table }) => {
-    const newValidationErrors = validateSchool(values);
+  const handleSave: MRT_TableOptions<any>["onEditingRowSave"] = async ({ values, table }) => {
+    const newValidationErrors = validateSchool(values as School);
     if (Object.values(newValidationErrors).some(error => error)) {
       setValidationErrors(newValidationErrors);
       return;
     }
     setValidationErrors({});
-    await updateSchool({ ...values });
+    await updateSchool({
+      id: values.id,
+      name: values.name,
+      email: values.email,
+      type: values.type,
+    });
     table.setEditingRow(null); //exit editing mode
   };
 
