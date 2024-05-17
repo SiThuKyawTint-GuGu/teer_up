@@ -194,6 +194,9 @@ importers:
       react-fast-marquee:
         specifier: ^1.6.2
         version: 1.6.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-google-recaptcha-v3:
+        specifier: ^1.10.1
+        version: 1.10.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-hook-form:
         specifier: ^7.47.0
         version: 7.51.4(react@18.3.1)
@@ -3337,6 +3340,12 @@ packages:
     peerDependencies:
       react: '>= 16.8.0 || 18.0.0'
       react-dom: '>= 16.8.0 || 18.0.0'
+
+  react-google-recaptcha-v3@1.10.1:
+    resolution: {integrity: sha512-K3AYzSE0SasTn+XvV2tq+6YaxM+zQypk9rbCgG4OVUt7Rh4ze9basIKefoBz9sC0CNslJj9N1uwTTgRMJQbQJQ==}
+    peerDependencies:
+      react: ^16.3 || ^17.0 || ^18.0
+      react-dom: ^17.0 || ^18.0
 
   react-hook-form@7.51.4:
     resolution: {integrity: sha512-V14i8SEkh+V1gs6YtD0hdHYnoL4tp/HX/A45wWQN15CYr9bFRmmRdYStSO5L65lCCZRF+kYiSKhm9alqbcdiVA==}
@@ -7431,6 +7440,12 @@ snapshots:
 
   react-fast-marquee@1.6.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+
+  react-google-recaptcha-v3@1.10.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      hoist-non-react-statics: 3.3.2
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
