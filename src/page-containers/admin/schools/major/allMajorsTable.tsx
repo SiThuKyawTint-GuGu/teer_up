@@ -11,6 +11,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { AllMajorResponse, Major } from "@/types/Majors";
 import dayjs from "dayjs";
+import CreateMajorModal from "@/page-containers/admin/schools/major/CreateMajorModal";
 
 export default function AllMajorsTable() {
   const [majors, setMajors] = useState<Major[]>();
@@ -191,11 +192,7 @@ export default function AllMajorsTable() {
         </Tooltip>
       </Box>
     ),
-    renderTopToolbarCustomActions: ({ table }) => (
-      <Typography variant="h6" fontWeight="bold" m={2}>
-        All Majors
-      </Typography>
-    ),
+    renderTopToolbarCustomActions: ({ table }) => <CreateMajorModal />,
   });
 
   const handleDeleteSchool = async () => {
@@ -215,22 +212,15 @@ export default function AllMajorsTable() {
           <Typography sx={{ mt: 2 }}>
             Are you sure you want to delete this major ID <span className="text-red-700 font-semibold">[{id}]</span>?
           </Typography>
-          <div className="flex justify-between mt-4">
+          <div className="flex justify-between items-center mt-4">
             <div></div>
             <div>
               <Button
                 onClick={() => setOpen(false)}
+                variant="outlined"
                 sx={{
-                  textTransform: "none",
-                  marginRight: "10px",
-                  color: "white",
-                  background: "gray",
-                  ":hover": {
-                    color: "white",
-                    background: "gray",
-                  },
+                  mr: 2,
                 }}
-                variant="contained"
               >
                 Cancel
               </Button>

@@ -10,6 +10,7 @@ import { Box, Button, Chip, IconButton, Modal, Tooltip, Typography } from "@mui/
 import dayjs from "dayjs";
 import { MRT_ColumnDef, MaterialReactTable, useMaterialReactTable } from "material-react-table";
 import { useEffect, useMemo, useState } from "react";
+import CreateCourseModal from "@/page-containers/admin/schools/courses/CreateCourseModal";
 
 export default function AllCoursesTable() {
   const [courses, setCourses] = useState<Course[]>();
@@ -204,11 +205,7 @@ export default function AllCoursesTable() {
         </Tooltip>
       </Box>
     ),
-    renderTopToolbarCustomActions: ({ table }) => (
-      <Typography variant="h6" fontWeight="bold" m={2}>
-        All Courses
-      </Typography>
-    ),
+    renderTopToolbarCustomActions: ({ table }) => <CreateCourseModal />,
   });
 
   const handleDeleteSchool = async () => {
