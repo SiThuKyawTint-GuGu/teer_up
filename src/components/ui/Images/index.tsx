@@ -104,6 +104,7 @@ import {
   TeeupFooterIcon,
   TeeupIcon,
   UserIcon,
+  VerifiedIcon,
 } from "./Icons";
 
 export const Icons = {
@@ -200,6 +201,7 @@ export const Icons = {
   deleteCross: MdOutlineDeleteSweep,
   moreOption: MdMoreVert,
   userIcon: UserIcon,
+  verifiedIcon: VerifiedIcon,
   filterIcon: FilterIcon,
   commentIcon: CommentIcon,
 
