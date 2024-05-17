@@ -20,6 +20,7 @@ export enum USER_ROLE {
   MENTOR = "mentor",
   STUDENT = "student",
   ADMIN = "admin",
+  SCHOOL = "school",
 }
 
 export const ROLES = {
