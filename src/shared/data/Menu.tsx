@@ -41,6 +41,33 @@ export const menuList: Menu[] = [
     child: [],
   },
   {
+    key: "/admin/schools",
+    icon: <Icons.school className="w-[20px] h-[20px]" />,
+    title: "School",
+    child: [
+      {
+        key: "/admin/schools",
+        title: "Schools",
+        icon: <Icons.schoolBuilding className="w-[20px] h-[20px]" />,
+      },
+      {
+        key: "/admin/schools/degrees",
+        title: "Degrees",
+        icon: <Icons.book className="w-[20px] h-[20px]" />,
+      },
+      {
+        key: "/admin/schools/majors",
+        title: "Majors",
+        icon: <Icons.school className="w-[20px] h-[20px]" />,
+      },
+      {
+        key: "/admin/schools/courses",
+        title: "Courses",
+        icon: <Icons.course className="w-[20px] h-[20px]" />,
+      },
+    ],
+  },
+  {
     key: "/admin/form",
     icon: <Icons.form className="w-[20px] h-[20px]" />,
     title: "Form Config",
@@ -128,6 +155,11 @@ export const menuList: Menu[] = [
       {
         key: "/admin/users/admin-list",
         title: "Admin",
+        icon: <Icons.admin className="w-[20px] h-[20px]" />,
+      },
+      {
+        key: "/admin/users/school-admin-list",
+        title: "School Admins",
         icon: <Icons.admin className="w-[20px] h-[20px]" />,
       },
       {

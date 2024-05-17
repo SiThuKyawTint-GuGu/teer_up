@@ -1,3 +1,5 @@
+import MenuBookIcon from "@mui/icons-material/MenuBook";
+import BookIcon from "@mui/icons-material/Book";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import ArticleIcon from "@mui/icons-material/Article";
@@ -20,6 +22,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
 import TextSnippetIcon from "@mui/icons-material/TextSnippet";
 import ViewCarouselIcon from "@mui/icons-material/ViewCarousel";
+import SchoolIcon from "@mui/icons-material/School";
 import NextImage from "next/image";
 import { BsInfoCircle } from "react-icons/bs";
 import { CiSettings } from "react-icons/ci";
@@ -104,7 +107,9 @@ import {
   TeeupFooterIcon,
   TeeupIcon,
   UserIcon,
+  VerifiedIcon,
 } from "./Icons";
+import CastForEducationIcon from "@mui/icons-material/CastForEducation";
 
 export const Icons = {
   loading: ({ ...props }: IconProps) => <LoadingIcon {...props} />,
@@ -128,6 +133,11 @@ export const Icons = {
   department: ApartmentIcon,
   mentor: AccountBoxIcon,
   carousel: ViewCarouselIcon,
+  school: SchoolIcon,
+  major: MenuBookIcon,
+  course: CastForEducationIcon,
+  book: BookIcon,
+  schoolBuilding: ApartmentIcon,
   discussions: GoCommentDiscussion,
   contents: ChromeReaderModeIcon,
   wallet: PiWallet,
@@ -200,6 +210,7 @@ export const Icons = {
   deleteCross: MdOutlineDeleteSweep,
   moreOption: MdMoreVert,
   userIcon: UserIcon,
+  verifiedIcon: VerifiedIcon,
   filterIcon: FilterIcon,
   commentIcon: CommentIcon,
 
