@@ -2716,6 +2716,9 @@ export const VerifiedIcon: React.FC = () => {
           <rect width="24" height="24" fill="white" transform="translate(0.5)" />
         </clipPath>
       </defs>
+    </svg>
+  );
+};
 
 export const FilterIcon: React.FC<IconProps> = () => {
   return (
