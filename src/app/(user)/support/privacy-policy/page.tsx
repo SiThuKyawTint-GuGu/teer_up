@@ -4,7 +4,7 @@ import { NextPage } from "next";
 
 const PrivacyPolicyPage: NextPage = () => {
   return (
-    <MainPageLayout hideHeader hideFooter>
+    <MainPageLayout hideHeader>
       <PrivacyPolicy />;
     </MainPageLayout>
   );

@@ -90,7 +90,7 @@ export default function AllDegreeTable() {
   );
 
   // update action
-  const handleSave: MRT_TableOptions<AllDegree>["onEditingRowSave"] = async ({ values, table }) => {
+  const handleSave: MRT_TableOptions<any>["onEditingRowSave"] = async ({ values, table }) => {
     const errors = validateDegree(values);
     if (Object.keys(errors).length > 0) {
       setValidationErrors(errors);

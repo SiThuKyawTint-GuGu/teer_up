@@ -4,7 +4,7 @@ import { NextPage } from "next";
 
 const ConsentPage: NextPage = () => {
   return (
-    <MainPageLayout hideHeader hideFooter>
+    <MainPageLayout hideHeader>
       <Consent />
     </MainPageLayout>
   );

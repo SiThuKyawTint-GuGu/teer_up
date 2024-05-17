@@ -4,7 +4,7 @@ import { NextPage } from "next";
 
 const AboutPage: NextPage = () => {
   return (
-    <MainPageLayout hideHeader hideFooter>
+    <MainPageLayout hideHeader>
       <About />
     </MainPageLayout>
   );
