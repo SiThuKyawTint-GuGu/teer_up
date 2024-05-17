@@ -9,6 +9,8 @@ import { setUserInfo } from "@/utils/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { Alert, TextField } from "@mui/material";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import { useState } from "react";
 
 const validationSchema = yup.object({
   email: yup.string().email().required("Email address is required!"),
@@ -17,20 +19,41 @@ const validationSchema = yup.object({
 
 const LoginForm = () => {
   const router = useRouter();
+  const [token, setToken] = useState<string>("");
   const form = useForm({
     resolver: yupResolver(validationSchema),
   });
   const { isMutating, trigger: loginTrigger, error: loginError } = useUserLogin();
 
-  const loginHandler = async (data: { email: string; password: string }) => {
-    await loginTrigger(data, {
-      onSuccess: res => {
-        const { token, data } = res.data;
-        setUserInfo(token, data);
-        router.push("/admin/contents/content");
-      },
-    });
+
+  const {executeRecaptcha} = useGoogleReCaptcha()
+  const loginHandler = async (data: { email: string; password: string; token?: string }) => {
+    if (!executeRecaptcha) {
+      console.log("Execute recaptcha not available yet");
+      return;
+    }
+
+    try {
+      const gReCaptchaToken = await executeRecaptcha("login");
+      if (!gReCaptchaToken) {
+        console.log("Failed to get reCAPTCHA token");
+        return;
+      }
+
+      const updatedData = { ...data, token: gReCaptchaToken };
+
+      await loginTrigger(updatedData, {
+        onSuccess: (res) => {
+          const { token, data: userInfo } = res.data;
+          setUserInfo(token, userInfo);
+          router.push("/admin/contents/content");
+        },
+      });
+    } catch (error) {
+      console.error("Error during login:", error);
+    }
   };
+
 
   return (
     <>

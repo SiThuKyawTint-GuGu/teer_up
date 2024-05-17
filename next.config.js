@@ -1,5 +1,23 @@
 /** @type {import('next').NextConfig} */
+
+const cspHeader = `
+    frame-ancestors 'none';
+`;
+
 const nextConfig = {
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          {
+            key: "Content-Security-Policy",
+            value: cspHeader.replace(/\n/g, ""),
+          },
+        ],
+      },
+    ];
+  },
   images: {
     domains: [
       "teeup-dev.s3.amazonaws.com",
