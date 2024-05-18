@@ -1,14 +1,16 @@
 "use client";
 
 import { useDeleteMajor, useGetMajors, useUpdateMajor } from "@/services/school";
+import { AllMajorResponse, Major } from "@/types/Majors";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import InfoIcon from "@mui/icons-material/Info";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { Box, Button, Chip, IconButton, Modal, Tooltip, Typography } from "@mui/material";
+import dayjs from "dayjs";
 import { MRT_ColumnDef, MRT_TableOptions, MaterialReactTable, useMaterialReactTable } from "material-react-table";
-import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+
 import { AllMajorResponse, Major } from "@/types/Majors";
 import dayjs from "dayjs";
 import CreateMajorModal from "@/page-containers/admin/schools/major/CreateMajorModal";
@@ -98,8 +100,8 @@ export default function AllMajorsTable() {
     [validationErrors]
   );
 
-  const handleSave: MRT_TableOptions<Major>["onEditingRowSave"] = async ({ values, table }) => {
-    const errors = validateMajor(values);
+  const handleSave: MRT_TableOptions<any>["onEditingRowSave"] = async ({ values, table }) => {
+    const errors = validateMajor(values as Major);
     if (Object.keys(errors).length) {
       setValidationErrors(errors);
       return;
