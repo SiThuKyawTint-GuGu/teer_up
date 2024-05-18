@@ -78,7 +78,7 @@ export default function CreateDegreeModal() {
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <Button variant="contained" onClick={handleClickOpen}>
         Add Degree
       </Button>
       <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
