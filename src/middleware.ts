@@ -33,7 +33,7 @@ export function middleware(req: NextRequest) {
   }
 
   // If the user is not logged in, redirect to the login page
-  //? admin
+  //? admin || ?user
   if (!token) {
     if (pathname.includes("/admin")) {
       return NextResponse.rewrite(new URL(adminLoginPath, req.url));
@@ -43,10 +43,10 @@ export function middleware(req: NextRequest) {
     }
   }
 
-  // If the user is already logged in and has a token, redirect to the home page
+  // If the user is not logged in, no a token and request to private routes, redirect to the login page
   //? user
   if (!token && protectedUserRoutes.includes(pathname)) {
-    return NextResponse.rewrite(new URL("/auth/login", req.url));
+    return NextResponse.rewrite(new URL(loginPath, req.url));
   }
 
   //? user does not verified
@@ -57,7 +57,11 @@ export function middleware(req: NextRequest) {
   }
 
   if (user?.role !== USER_ROLE.ADMIN) {
-    if (
+    if (user?.role === "company" && !pathname.startsWith("/company")) {
+      return NextResponse.redirect(new URL("/company", req.url));
+    } else if (user?.role === "school" && !pathname.startsWith("/school")) {
+      return NextResponse.redirect(new URL("/school", req.url));
+    } else if (
       token &&
       (pathname.includes("/admin") || pathname === "/login" || pathname === "/auth/login" || pathname === "/")
     ) {
@@ -72,6 +76,8 @@ export function middleware(req: NextRequest) {
       }
     }
   }
+
+  return NextResponse.next();
 }
 
 export const config = {
@@ -93,6 +99,8 @@ export const config = {
     "/mentorship/:path*",
     "/pathway/:path*",
     "/events/:path*",
+    "/company/:path*",
+    "/school/:path*",
     "/",
     {
       source: "/((?!api|_next/static|_next/image|favicon.ico).*)",
