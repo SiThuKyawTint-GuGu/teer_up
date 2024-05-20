@@ -10,8 +10,6 @@ import { Box, Button, Chip, IconButton, Modal, Tooltip, Typography } from "@mui/
 import dayjs from "dayjs";
 import { MRT_ColumnDef, MRT_TableOptions, MaterialReactTable, useMaterialReactTable } from "material-react-table";
 import { useEffect, useMemo, useState } from "react";
-
-import { AllMajorResponse, Major } from "@/types/Majors";
 import CreateMajorModal from "@/page-containers/admin/schools/major/CreateMajorModal";
 
 export default function AllMajorsTable() {
