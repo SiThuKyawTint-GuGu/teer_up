@@ -1,9 +1,9 @@
-import MenuBookIcon from "@mui/icons-material/MenuBook";
-import BookIcon from "@mui/icons-material/Book";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import ArticleIcon from "@mui/icons-material/Article";
 import BallotIcon from "@mui/icons-material/Ballot";
+import BookIcon from "@mui/icons-material/Book";
+import CastForEducationIcon from "@mui/icons-material/CastForEducation";
 import ChromeReaderModeIcon from "@mui/icons-material/ChromeReaderMode";
 import CorporateFareIcon from "@mui/icons-material/CorporateFare";
 import CreateIcon from "@mui/icons-material/Create";
@@ -13,16 +13,17 @@ import KeyIcon from "@mui/icons-material/Key";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import LogoutIcon from "@mui/icons-material/Logout";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import RoomPreferencesIcon from "@mui/icons-material/RoomPreferences";
+import SchoolIcon from "@mui/icons-material/School";
 import SettingsIcon from "@mui/icons-material/Settings";
 import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
 import TextSnippetIcon from "@mui/icons-material/TextSnippet";
 import ViewCarouselIcon from "@mui/icons-material/ViewCarousel";
-import SchoolIcon from "@mui/icons-material/School";
 import NextImage from "next/image";
 import { BsInfoCircle } from "react-icons/bs";
 import { CiSettings } from "react-icons/ci";
@@ -93,6 +94,7 @@ import {
   HomeIcon,
   IconProps,
   LandingIcon,
+  ListLikedIcon,
   LoadingIcon,
   MentorshipIcon,
   ProfileIcon,
@@ -109,7 +111,6 @@ import {
   UserIcon,
   VerifiedIcon,
 } from "./Icons";
-import CastForEducationIcon from "@mui/icons-material/CastForEducation";
 
 export const Icons = {
   loading: ({ ...props }: IconProps) => <LoadingIcon {...props} />,
@@ -213,6 +214,7 @@ export const Icons = {
   verifiedIcon: VerifiedIcon,
   filterIcon: FilterIcon,
   commentIcon: CommentIcon,
+  listLikedIcon: ListLikedIcon,
 
   // Nav menu icons
   homeIcon: ({ ...props }: IconProps) => <HomeIcon {...props} />,
