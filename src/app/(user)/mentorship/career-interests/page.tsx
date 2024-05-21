@@ -1,4 +1,4 @@
-import { CareerInterests } from "@/page-containers/user/mentorship/components/CareerInterests";
+import CareerInterests from "@/page-containers/user/profile/CareerInterests";
 import { NextPage } from "next";
 
 const MentorshipCareerInterestPage: NextPage = () => {
