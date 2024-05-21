@@ -62,7 +62,7 @@ export default function SchoolDetails({ id }: SchoolDetailsProps) {
           {...register("email")}
           fullWidth
           sx={{
-            marginTop: 2,
+            marginY: 2,
           }}
         />
         <Typography variant="body2" color="red">

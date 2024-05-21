@@ -1,3 +1,4 @@
+import AllEducationLevelTable from "@/page-containers/admin/schools/education-level/allEducationLevelTable";
 import { Box } from "@mui/material";
 
 export default function EducationLevelPage() {
@@ -9,7 +10,7 @@ export default function EducationLevelPage() {
         maxWidth: "lg",
       }}
     >
-      Education Level
+      <AllEducationLevelTable />
     </Box>
   );
 }
