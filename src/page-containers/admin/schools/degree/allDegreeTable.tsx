@@ -10,7 +10,7 @@ import { Box, Button, Chip, IconButton, Modal, Tooltip, Typography } from "@mui/
 import dayjs from "dayjs";
 import { MRT_ColumnDef, MRT_TableOptions, MaterialReactTable, useMaterialReactTable } from "material-react-table";
 import { useEffect, useMemo, useState } from "react";
-import CreateDegreeModal from "../CreateDegreeModal";
+import CreateDegreeModal from "./CreateDegreeModal";
 
 export default function AllDegreeTable() {
   const [degrees, setDegrees] = useState<AllDegree[]>();
