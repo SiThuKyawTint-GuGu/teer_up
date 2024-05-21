@@ -1,8 +1,8 @@
-import { Preference } from "@/page-containers/user/mentorship/components/Preference";
+import Preferences from "@/page-containers/user/profile/Preferences";
 import { NextPage } from "next";
 
 const MentorshipPreferencePage: NextPage = () => {
-  return <Preference />;
+  return <Preferences />;
 };
 
 export default MentorshipPreferencePage;
