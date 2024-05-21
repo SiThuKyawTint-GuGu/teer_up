@@ -214,3 +214,26 @@ export const useCreateEducationLevel = () =>
       return appAxios.post<SchoolArgType>(url, arg);
     }
   );
+
+export const useUpdateEducationLevel = () =>
+  useSWRMutation(
+    `/schools/education-levels`,
+    (
+      url,
+      {
+        arg,
+      }: {
+        arg: {
+          id: string;
+          name: string;
+        };
+      }
+    ) => {
+      return appAxios.put<SchoolArgType>(`${url}/${arg.id}`, arg);
+    }
+  );
+
+export const useDeleteEducationLevel = () =>
+  useSWRMutation(`/schools/education-levels`, (url, { arg }: { arg: { id: string } }) => {
+    return appAxios.delete<SchoolArgType>(`${url}/${arg.id}`);
+  });

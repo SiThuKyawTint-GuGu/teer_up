@@ -69,7 +69,7 @@ function CreateEducationLevelModal() {
   return (
     <div>
       <Button variant="contained" onClick={handleClickOpen}>
-        Add Course
+        Add Education Level
       </Button>
       <Dialog
         open={open}
@@ -77,10 +77,10 @@ function CreateEducationLevelModal() {
         maxWidth="sm" // Set maximum width
         fullWidth // Ensure full width
       >
-        <DialogTitle>Add Course</DialogTitle>
+        <DialogTitle>Add Education Level</DialogTitle>
         <DialogContent>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <TextField type="text" label="Course Name" {...register("name")} fullWidth margin="normal" />
+            <TextField type="text" label="Education Level Name" {...register("name")} fullWidth margin="normal" />
             <Typography variant="body2" color="red">
               {errors.name?.message}
             </Typography>

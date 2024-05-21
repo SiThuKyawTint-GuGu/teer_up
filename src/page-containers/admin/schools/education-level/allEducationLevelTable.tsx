@@ -1,22 +1,22 @@
 "use client";
 
-import { useDeleteDegree, useGetDegrees, useUpdateDegree } from "@/services/school";
-import { AllDegree, AllDegreeResponse } from "@/types/School";
+import { useDeleteEducationLevel, useGetEducationLevels, useUpdateEducationLevel } from "@/services/school";
+import { AllEduLevelResponse, EduLevel } from "@/types/EducationLevel";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import InfoIcon from "@mui/icons-material/Info";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { Box, Button, Chip, IconButton, Modal, Tooltip, Typography } from "@mui/material";
+import { Box, Button, IconButton, Modal, Tooltip, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import { MRT_ColumnDef, MRT_TableOptions, MaterialReactTable, useMaterialReactTable } from "material-react-table";
 import { useEffect, useMemo, useState } from "react";
-import CreateDegreeModal from "../degree/CreateDegreeModal";
+import CreateEducationLevelModal from "./CreateEducationLevelModal";
 
 export default function AllEducationLevelTable() {
-  const [degrees, setDegrees] = useState<AllDegree[]>();
-  const { data: degreesData, isLoading, mutate } = useGetDegrees<AllDegreeResponse>();
-  const { trigger: updateDegree, isMutating: updatingDegree } = useUpdateDegree();
-  const { trigger: deleteTrigger, isMutating: deletingDegree } = useDeleteDegree();
+  const [eduLevels, setEduLevels] = useState<EduLevel[]>();
+  const { data: eduLevelsData, isLoading, mutate } = useGetEducationLevels<AllEduLevelResponse>();
+  const { trigger: updateEduLevel } = useUpdateEducationLevel();
+  const { trigger: deleteTrigger, isMutating: deletingEduLevel } = useDeleteEducationLevel();
   const [open, setOpen] = useState<boolean>(false);
   const [id, setId] = useState<string>("");
   const [globalFilter, setGlobalFilter] = useState<string>("");
@@ -27,10 +27,10 @@ export default function AllEducationLevelTable() {
   const [validationErrors, setValidationErrors] = useState<Record<string, string | undefined>>({});
 
   useEffect(() => {
-    if (degreesData) setDegrees(degreesData?.data);
-  }, [degreesData?.data]);
+    if (eduLevelsData) setEduLevels(eduLevelsData?.data);
+  }, [eduLevelsData?.data]);
 
-  const columns = useMemo<MRT_ColumnDef<AllDegree>[]>(
+  const columns = useMemo<MRT_ColumnDef<EduLevel>[]>(
     () => [
       {
         accessorKey: "id",
@@ -51,14 +51,6 @@ export default function AllEducationLevelTable() {
               ...validationErrors,
               name: undefined,
             }),
-        },
-      },
-      {
-        accessorKey: "school.name",
-        header: "University Name",
-        enableEditing: false,
-        renderCell: ({ row }: { row: AllDegree }) => {
-          return <Chip label={row.school.name} />;
         },
       },
       {
@@ -91,7 +83,7 @@ export default function AllEducationLevelTable() {
 
   // update action
   const handleSave: MRT_TableOptions<any>["onEditingRowSave"] = async ({ values, table }) => {
-    const errors = validateDegree(values as AllDegree);
+    const errors = validateEduLevel(values as EduLevel);
     if (Object.keys(errors).length > 0) {
       setValidationErrors(errors);
       return;
@@ -99,14 +91,14 @@ export default function AllEducationLevelTable() {
 
     const { id, name } = values;
 
-    await updateDegree({ id, name });
+    await updateEduLevel({ id, name });
     await mutate();
     table.setEditingRow(null);
   };
 
   const table = useMaterialReactTable({
     columns: columns as any,
-    data: (degrees as any) || [],
+    data: (eduLevels as any) || [],
     createDisplayMode: "row",
     editDisplayMode: "row",
     enableEditing: true,
@@ -126,7 +118,7 @@ export default function AllEducationLevelTable() {
     positionActionsColumn: "last",
     // manualFiltering: true,
     manualPagination: true,
-    rowCount: degrees?.length ?? 0,
+    rowCount: eduLevels?.length ?? 0,
     initialState: {
       pagination: {
         pageSize: 10,
@@ -181,7 +173,7 @@ export default function AllEducationLevelTable() {
     ),
     renderTopToolbarCustomActions: ({ table }) => (
       <>
-        <CreateDegreeModal />
+        <CreateEducationLevelModal />
       </>
     ),
   });
@@ -224,7 +216,7 @@ export default function AllEducationLevelTable() {
                 Cancel
               </Button>
               <LoadingButton
-                // loading={deletingSchool}
+                loading={deletingEduLevel}
                 onClick={handleDeleteSchool}
                 color="error"
                 sx={{ textTransform: "none" }}
@@ -251,7 +243,7 @@ const style = {
   p: 4,
 };
 
-function validateDegree(values: AllDegree) {
+function validateEduLevel(values: EduLevel) {
   const errors: Record<string, string | undefined> = {};
 
   if (!values.name) {
