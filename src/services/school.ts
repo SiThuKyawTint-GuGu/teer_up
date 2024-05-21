@@ -17,6 +17,10 @@ export const useGetDegrees = <DegreeDataResponse>(): SWRResponse<DegreeDataRespo
   return useSWR<DegreeDataResponse>(`/schools/degrees`);
 };
 
+export const useGetEducationLevels = <EducationLevelDataResponse>(): SWRResponse<EducationLevelDataResponse, any> => {
+  return useSWR<EducationLevelDataResponse>(`/schools/education-levels`);
+};
+
 export const useGetMajors = <MajorDataResponse>(): SWRResponse<MajorDataResponse, any> => {
   return useSWR<MajorDataResponse>(`/schools/majors`);
 };
@@ -191,3 +195,45 @@ export const useUpdateMajor = () =>
       return appAxios.put<SchoolArgType>(`${url}/${arg.id}`, arg);
     }
   );
+
+// education levels
+export const useCreateEducationLevel = () =>
+  useSWRMutation(
+    `/schools/education-levels`,
+    (
+      url,
+      {
+        arg,
+      }: {
+        arg: {
+          name: string;
+          major_id: number;
+        };
+      }
+    ) => {
+      return appAxios.post<SchoolArgType>(url, arg);
+    }
+  );
+
+export const useUpdateEducationLevel = () =>
+  useSWRMutation(
+    `/schools/education-levels`,
+    (
+      url,
+      {
+        arg,
+      }: {
+        arg: {
+          id: string;
+          name: string;
+        };
+      }
+    ) => {
+      return appAxios.put<SchoolArgType>(`${url}/${arg.id}`, arg);
+    }
+  );
+
+export const useDeleteEducationLevel = () =>
+  useSWRMutation(`/schools/education-levels`, (url, { arg }: { arg: { id: string } }) => {
+    return appAxios.delete<SchoolArgType>(`${url}/${arg.id}`);
+  });

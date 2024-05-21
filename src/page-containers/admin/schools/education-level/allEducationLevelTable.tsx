@@ -1,22 +1,22 @@
 "use client";
 
-import { useDeleteCourse, useGetCourses, useUpdateCourse } from "@/services/school";
-import { AllCoursesResponse, Course } from "@/types/Course";
+import { useDeleteEducationLevel, useGetEducationLevels, useUpdateEducationLevel } from "@/services/school";
+import { AllEduLevelResponse, EduLevel } from "@/types/EducationLevel";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import InfoIcon from "@mui/icons-material/Info";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { Box, Button, Chip, IconButton, Modal, Tooltip, Typography } from "@mui/material";
+import { Box, Button, IconButton, Modal, Tooltip, Typography } from "@mui/material";
 import dayjs from "dayjs";
-import { MRT_ColumnDef, MaterialReactTable, useMaterialReactTable } from "material-react-table";
+import { MRT_ColumnDef, MRT_TableOptions, MaterialReactTable, useMaterialReactTable } from "material-react-table";
 import { useEffect, useMemo, useState } from "react";
-import CreateCourseModal from "@/page-containers/admin/schools/courses/CreateCourseModal";
+import CreateEducationLevelModal from "./CreateEducationLevelModal";
 
-export default function AllCoursesTable() {
-  const [courses, setCourses] = useState<Course[]>();
-  const { data: coursesData, isLoading, mutate } = useGetCourses<AllCoursesResponse>();
-  const { trigger: updateCourse, isMutating: updatingCourse } = useUpdateCourse();
-  const { trigger: deleteTrigger, isMutating: deletingCourse } = useDeleteCourse();
+export default function AllEducationLevelTable() {
+  const [eduLevels, setEduLevels] = useState<EduLevel[]>();
+  const { data: eduLevelsData, isLoading, mutate } = useGetEducationLevels<AllEduLevelResponse>();
+  const { trigger: updateEduLevel } = useUpdateEducationLevel();
+  const { trigger: deleteTrigger, isMutating: deletingEduLevel } = useDeleteEducationLevel();
   const [open, setOpen] = useState<boolean>(false);
   const [id, setId] = useState<string>("");
   const [globalFilter, setGlobalFilter] = useState<string>("");
@@ -27,10 +27,10 @@ export default function AllCoursesTable() {
   const [validationErrors, setValidationErrors] = useState<Record<string, string | undefined>>({});
 
   useEffect(() => {
-    if (coursesData) setCourses(coursesData?.data);
-  }, [coursesData, coursesData?.data]);
+    if (eduLevelsData) setEduLevels(eduLevelsData?.data);
+  }, [eduLevelsData?.data]);
 
-  const columns = useMemo<MRT_ColumnDef<Course>[]>(
+  const columns = useMemo<MRT_ColumnDef<EduLevel>[]>(
     () => [
       {
         accessorKey: "id",
@@ -40,7 +40,7 @@ export default function AllCoursesTable() {
       },
       {
         accessorKey: "name",
-        header: "Course Name",
+        header: "Name",
         muiEditTextFieldProps: {
           required: true,
           error: !!validationErrors?.name,
@@ -51,45 +51,6 @@ export default function AllCoursesTable() {
               ...validationErrors,
               name: undefined,
             }),
-        },
-      },
-      {
-        accessorKey: "credit",
-        header: "Credits",
-        muiEditTextFieldProps: {
-          required: true,
-          error: !!validationErrors?.credits,
-          helperText: validationErrors?.credits,
-          //remove any previous validation errors when user focuses on the input
-          onFocus: () =>
-            setValidationErrors({
-              ...validationErrors,
-              credits: undefined,
-            }),
-        },
-      },
-      {
-        accessorKey: "major.name",
-        header: "Major Name",
-        enableEditing: false,
-        renderCell: ({ row }: { row: Course }) => {
-          return <Chip label={row.major.degree.name} />;
-        },
-      },
-      {
-        accessorKey: "major.degree.name",
-        header: "Degree Name",
-        enableEditing: false,
-        renderCell: ({ row }: { row: Course }) => {
-          return <Chip label={row.major.degree.name} />;
-        },
-      },
-      {
-        accessorKey: "major.degree.school.name",
-        header: "University Name",
-        enableEditing: false,
-        renderCell: ({ row }: { row: Course }) => {
-          return <Chip label={row.major.degree.school.name} />;
         },
       },
       {
@@ -120,9 +81,24 @@ export default function AllCoursesTable() {
     [validationErrors]
   );
 
+  // update action
+  const handleSave: MRT_TableOptions<any>["onEditingRowSave"] = async ({ values, table }) => {
+    const errors = validateEduLevel(values as EduLevel);
+    if (Object.keys(errors).length > 0) {
+      setValidationErrors(errors);
+      return;
+    }
+
+    const { id, name } = values;
+
+    await updateEduLevel({ id, name });
+    await mutate();
+    table.setEditingRow(null);
+  };
+
   const table = useMaterialReactTable({
     columns: columns as any,
-    data: (courses as any) || [],
+    data: (eduLevels as any) || [],
     createDisplayMode: "row",
     editDisplayMode: "row",
     enableEditing: true,
@@ -142,7 +118,7 @@ export default function AllCoursesTable() {
     positionActionsColumn: "last",
     // manualFiltering: true,
     manualPagination: true,
-    rowCount: courses?.length ?? 0,
+    rowCount: eduLevels?.length ?? 0,
     initialState: {
       pagination: {
         pageSize: 10,
@@ -165,25 +141,15 @@ export default function AllCoursesTable() {
     onPaginationChange: setPagination,
     onCreatingRowCancel: () => setValidationErrors({}),
     onEditingRowCancel: () => setValidationErrors({}),
-    onEditingRowSave: async ({ values }) => {
-      const errors = validateCourse(values);
-      if (Object.keys(errors).length > 0) {
-        setValidationErrors(errors);
-        return;
-      }
-
-      const { id, name, credit } = values;
-
-      await updateCourse({ id, name, credit });
-      await mutate();
-      table.setEditingRow(null);
-    },
+    onEditingRowSave: handleSave,
     renderRowActions: ({ row, table }) => (
       <Box sx={{ display: "flex", gap: "1rem" }}>
         <Tooltip title="Edit">
+          {/* <Link href={`/admin/banners/${row.id}`}> */}
           <IconButton onClick={() => table.setEditingRow(row)}>
             <EditIcon />
           </IconButton>
+          {/* </Link> */}
         </Tooltip>
         <Tooltip title="Details">
           {/*<Link href={`/admin/schools/${row.id}`}>*/}
@@ -205,7 +171,11 @@ export default function AllCoursesTable() {
         </Tooltip>
       </Box>
     ),
-    renderTopToolbarCustomActions: ({ table }) => <CreateCourseModal />,
+    renderTopToolbarCustomActions: ({ table }) => (
+      <>
+        <CreateEducationLevelModal />
+      </>
+    ),
   });
 
   const handleDeleteSchool = async () => {
@@ -223,7 +193,8 @@ export default function AllCoursesTable() {
             Delete Confirm
           </Typography>
           <Typography sx={{ mt: 2 }}>
-            Are you sure you want to delete this course ID <span className="text-red-700 font-semibold">[{id}]</span>?
+            Are you sure you want to delete this education level ID{" "}
+            <span className="text-red-700 font-semibold">[{id}]</span>?
           </Typography>
           <div className="flex justify-between mt-4">
             <div></div>
@@ -245,7 +216,7 @@ export default function AllCoursesTable() {
                 Cancel
               </Button>
               <LoadingButton
-                // loading={deletingSchool}
+                loading={deletingEduLevel}
                 onClick={handleDeleteSchool}
                 color="error"
                 sx={{ textTransform: "none" }}
@@ -272,8 +243,8 @@ const style = {
   p: 4,
 };
 
-function validateCourse(values: any) {
-  const errors: Record<string, string> = {};
+function validateEduLevel(values: EduLevel) {
+  const errors: Record<string, string | undefined> = {};
 
   if (!values.name) {
     errors.name = "Name is required";

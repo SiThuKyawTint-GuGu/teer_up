@@ -6,6 +6,7 @@ import { getToken } from "@/utils/auth";
 import { usePathname } from "next/navigation";
 import ThemeRegistry from "./ThemeRegistry";
 import { Toaster } from "react-hot-toast";
+import "./styles.css";
 
 interface Props {
   children: ReactNode;

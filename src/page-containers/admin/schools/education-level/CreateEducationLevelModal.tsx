@@ -1,54 +1,48 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useCreateEducationLevel, useGetMajors } from "@/services/school";
+import { AllMajorResponse } from "@/types/Majors";
+import { yupResolver } from "@hookform/resolvers/yup";
+import LoadingButton from "@mui/lab/LoadingButton";
 import {
-  TextField,
-  Typography,
   Button,
   Dialog,
-  DialogTitle,
-  DialogContent,
   DialogActions,
-  InputLabel,
-  Select,
-  MenuItem,
+  DialogContent,
+  DialogTitle,
   FormControl,
   FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
 } from "@mui/material";
-import * as yup from "yup";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useCreateCourse, useCreateMajor, useGetDegrees, useGetMajors } from "@/services/school";
-import LoadingButton from "@mui/lab/LoadingButton";
-import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { AllDegreeResponse } from "@/types/School";
-import { AllMajorResponse } from "@/types/Majors";
+import * as yup from "yup";
 
-const courseSchema = yup.object().shape({
-  name: yup.string().required("Course name is required"),
-  credit: yup.number().integer().positive().required("Course credit is required"),
-  major_id: yup.number().integer().positive().required("Degree ID is required"),
+const educationLevelSchema = yup.object().shape({
+  name: yup.string().required("Education level name is required"),
+  major_id: yup.number().integer().positive().required("Major is required"),
 });
 
-function CreateCourseModal() {
-  const router = useRouter();
+function CreateEducationLevelModal() {
   const [open, setOpen] = useState(false);
 
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors, isSubmitting },
   } = useForm({
-    resolver: yupResolver(courseSchema),
+    resolver: yupResolver(educationLevelSchema),
     defaultValues: {
       name: "",
-      credit: 0,
       major_id: 0,
     },
   });
-  const { trigger: createCourse, isMutating } = useCreateCourse();
+  const { trigger: createEducationLevel, isMutating } = useCreateEducationLevel();
   const { data: majors } = useGetMajors<AllMajorResponse>();
 
   const handleClickOpen = () => {
@@ -60,7 +54,7 @@ function CreateCourseModal() {
   };
 
   const onSubmit = (data: any) => {
-    createCourse(data, {
+    createEducationLevel(data, {
       onSuccess: () => {
         toast.success("Successfully created");
         handleClose();
@@ -75,7 +69,7 @@ function CreateCourseModal() {
   return (
     <div>
       <Button variant="contained" onClick={handleClickOpen}>
-        Add Course
+        Add Education Level
       </Button>
       <Dialog
         open={open}
@@ -83,17 +77,12 @@ function CreateCourseModal() {
         maxWidth="sm" // Set maximum width
         fullWidth // Ensure full width
       >
-        <DialogTitle>Add Course</DialogTitle>
+        <DialogTitle>Add Education Level</DialogTitle>
         <DialogContent>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <TextField type="text" label="Course Name" {...register("name")} fullWidth margin="normal" />
+            <TextField type="text" label="Education Level Name" {...register("name")} fullWidth margin="normal" />
             <Typography variant="body2" color="red">
               {errors.name?.message}
-            </Typography>
-
-            <TextField type="number" label="Course Credit" {...register("credit")} fullWidth margin="normal" />
-            <Typography variant="body2" color="red">
-              {errors.credit?.message}
             </Typography>
 
             <FormControl fullWidth margin="normal">
@@ -124,4 +113,4 @@ function CreateCourseModal() {
   );
 }
 
-export default CreateCourseModal;
+export default CreateEducationLevelModal;
