@@ -8,6 +8,7 @@ import ChromeReaderModeIcon from "@mui/icons-material/ChromeReaderMode";
 import CorporateFareIcon from "@mui/icons-material/CorporateFare";
 import CreateIcon from "@mui/icons-material/Create";
 import FeedIcon from "@mui/icons-material/Feed";
+import GroupIcon from "@mui/icons-material/Group";
 import HelpIcon from "@mui/icons-material/Help";
 import KeyIcon from "@mui/icons-material/Key";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -59,9 +60,9 @@ import { MdDelete, MdMoreVert, MdOutlineDeleteSweep, MdOutlineMailOutline } from
 import {
   PiAirplaneTiltLight,
   PiArrowDownRightThin,
+  PiArrowUpRightThin,
   PiArrowsLeftRightDuotone,
   PiArrowsLeftRightThin,
-  PiArrowUpRightThin,
   PiBagSimpleThin,
   PiCameraLight,
   PiCameraPlusFill,
@@ -129,6 +130,8 @@ export const Icons = {
   question: HelpIcon,
   dimension: TextSnippetIcon,
   admin: PeopleOutlineIcon,
+  companyAdmin: GroupIcon,
+  schoolAdmin: PeopleAltIcon,
   preference: RoomPreferencesIcon,
   industry: CorporateFareIcon,
   department: ApartmentIcon,

@@ -1,7 +1,7 @@
+import CompanyAdminTable from "@/page-containers/admin/company/CompanyAdminTable";
 import { Box } from "@mui/material";
-import AllCoursesTable from "@/page-containers/admin/schools/courses/allCoursesTable";
 
-export default function CoursePage() {
+export default function CompanyAdminsPage() {
   return (
     <Box
       sx={{
@@ -10,7 +10,7 @@ export default function CoursePage() {
         maxWidth: "lg",
       }}
     >
-      <AllCoursesTable />
+      <CompanyAdminTable />
     </Box>
   );
 }

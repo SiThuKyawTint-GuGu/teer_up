@@ -51,6 +51,11 @@ export const menuList: Menu[] = [
         icon: <Icons.schoolBuilding className="w-[20px] h-[20px]" />,
       },
       {
+        key: "/admin/schools/education-level",
+        title: "Education Level",
+        icon: <Icons.school className="w-[20px] h-[20px]" />,
+      },
+      {
         key: "/admin/schools/degrees",
         title: "Degrees",
         icon: <Icons.book className="w-[20px] h-[20px]" />,
@@ -58,12 +63,7 @@ export const menuList: Menu[] = [
       {
         key: "/admin/schools/majors",
         title: "Majors",
-        icon: <Icons.school className="w-[20px] h-[20px]" />,
-      },
-      {
-        key: "/admin/schools/courses",
-        title: "Courses",
-        icon: <Icons.course className="w-[20px] h-[20px]" />,
+        icon: <Icons.major className="w-[20px] h-[20px]" />,
       },
     ],
   },
@@ -159,8 +159,13 @@ export const menuList: Menu[] = [
       },
       {
         key: "/admin/users/school-admin-list",
-        title: "School Admins",
-        icon: <Icons.admin className="w-[20px] h-[20px]" />,
+        title: "School Admin",
+        icon: <Icons.schoolAdmin className="w-[20px] h-[20px]" />,
+      },
+      {
+        key: "/admin/users/company-admin-list",
+        title: "Company Admin",
+        icon: <Icons.companyAdmin className="w-[20px] h-[20px]" />,
       },
       {
         key: "/admin/users/user-list",

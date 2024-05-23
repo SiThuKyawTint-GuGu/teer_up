@@ -1,33 +1,31 @@
 "use client";
+import { useCreateDegree, useGetSchools } from "@/services/school";
+import { GetAllSchoolsResponse } from "@/types/School";
 import { yupResolver } from "@hookform/resolvers/yup";
+import LoadingButton from "@mui/lab/LoadingButton";
 import {
   Autocomplete,
-  Card,
+  Button,
   Chip,
-  Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
   TextField,
   Typography,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
-  Select,
-  MenuItem,
-  InputLabel,
-  FormControl,
 } from "@mui/material";
-import { useRouter } from "next/navigation";
-import { Controller, useForm } from "react-hook-form";
-import * as yup from "yup";
 import { createFilterOptions } from "@mui/material/Autocomplete";
-import * as React from "react";
-import { useCreateDegree, useGetDegreeBySchoolId, useGetSchools } from "@/services/school";
-import LoadingButton from "@mui/lab/LoadingButton";
 import Box from "@mui/material/Box";
-import { majors } from "./majors";
+import { useRouter } from "next/navigation";
+import * as React from "react";
+import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { DegreeResponse, GetAllSchoolsResponse } from "@/types/School";
+import * as yup from "yup";
+import { majors } from "../majors";
 
 const validationSchema = yup.object({
   name: yup.string().required("Name is required!"),

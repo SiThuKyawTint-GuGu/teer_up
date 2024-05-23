@@ -81,7 +81,7 @@ const UserTable: React.FC = () => {
         id: shortName,
         size: 1,
         Cell: ({ row }: any) => {
-          const score = row.original.user_scores.find((s: any) => s.dimension.short_name === shortName);
+          const score = row.original.user_scores?.find((s: any) => s.dimension.short_name === shortName);
           return score ? score.skill : "-";
         },
       })),

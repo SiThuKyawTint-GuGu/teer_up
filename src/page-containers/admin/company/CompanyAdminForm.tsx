@@ -1,5 +1,11 @@
 "use client";
 
+import { useCreateUser } from "@/services/user";
+import { USER_ROLE } from "@/shared/enums";
+import { yupResolver } from "@hookform/resolvers/yup";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import LoadingButton from "@mui/lab/LoadingButton";
 import {
   Box,
   Button,
@@ -12,24 +18,18 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import * as yup from "yup";
-import { useForm } from "react-hook-form";
-import LoadingButton from "@mui/lab/LoadingButton";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
-import { useCreateUser } from "@/services/user";
-import { USER_ROLE } from "@/shared/enums";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
 
 const schema = yup.object().shape({
-  name: yup.string().required("Name is required"),
+  name: yup.string().required("Company Name is required"),
   email: yup.string().email().required("Email is required"),
   password: yup.string().required("Password is required").min(8, "Password must be at least 8 characters"),
 });
 
-export default function SchoolAdminForm() {
+export default function CompanyAdminForm() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const { trigger: createUser, isMutating: creatingUser } = useCreateUser();
@@ -52,7 +52,7 @@ export default function SchoolAdminForm() {
   const onSubmit = (data: { name: string; email: string; password: string }) => {
     const submitData = {
       ...data,
-      role: USER_ROLE.SCHOOL,
+      role: USER_ROLE.COMPANY,
     };
     createUser(submitData, {
       onSuccess: () => {
@@ -75,16 +75,30 @@ export default function SchoolAdminForm() {
       onSubmit={handleSubmit(onSubmit)}
     >
       <Typography variant="h4" fontWeight="bold">
-        Add School Admin
+        Add Company
       </Typography>
-      <TextField label="Name" {...register("name")} error={!!errors.name} helperText={errors.name?.message} fullWidth />
-      <TextField label="Email" {...register("email")} error={!!errors.email} helperText={errors.email?.message} />
+      <TextField
+        label="Company Name"
+        {...register("name")}
+        error={!!errors.name}
+        helperText={errors.name?.message}
+        fullWidth
+      />
+      <TextField
+        label="Company Email"
+        {...register("email")}
+        autoComplete="company-admin-email"
+        error={!!errors.email}
+        helperText={errors.email?.message}
+      />
+
       <FormControl fullWidth variant="outlined">
         <InputLabel>Password</InputLabel>
 
         <OutlinedInput
           label="Password"
           type={showPassword ? "text" : "password"}
+          autoComplete="company-admin-password"
           {...register("password")}
           error={!!errors.password}
           endAdornment={
