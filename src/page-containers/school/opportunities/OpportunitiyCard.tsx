@@ -1,19 +1,19 @@
 "use client";
 import { Box, Card, Divider, IconButton, MenuItem, Stack, Typography } from "@mui/material";
 
+import CustomPopover, { usePopover } from "@/components/ui/CustomPopover";
+import { CompanyOpportunity } from "@/types/CompanyOpportunity";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import DeleteIcon from "@mui/icons-material/Delete";
 import DescriptionIcon from "@mui/icons-material/Description";
+import EditIcon from "@mui/icons-material/Edit";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { Job } from "./OpportunityList";
 import Link from "next/link";
-import CustomPopover, { usePopover } from "@/components/ui/CustomPopover";
 
-export default function OpportunitiyCard({ id, name, description, location, jobType, jobID, Views, Saved }: Job) {
+export default function OpportunitiyCard({ id, location, content }: CompanyOpportunity) {
   const popover = usePopover();
 
   return (
@@ -33,12 +33,12 @@ export default function OpportunitiyCard({ id, name, description, location, jobT
         <Stack sx={{ p: 2, pb: 2 }}>
           <Link href={`/school/opportunities/${id}`}>
             <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-              {name}
+              {content.title}
             </Typography>
           </Link>
 
           <Typography variant="body1" sx={{ fontWeight: "normal", mt: 1 }}>
-            {description}
+            {content.description}
           </Typography>
 
           <Box rowGap={1.5} display="grid" gridTemplateColumns="repeat(1, 1fr)" sx={{ mt: 3 }}>
@@ -48,11 +48,11 @@ export default function OpportunitiyCard({ id, name, description, location, jobT
                 icon: <LocationOnIcon width={32} sx={{ flexShrink: 0 }} />,
               },
               {
-                label: jobType,
+                label: content.type,
                 icon: <WorkOutlineIcon width={16} sx={{ flexShrink: 0 }} />,
               },
               {
-                label: jobID,
+                label: id,
                 icon: <DescriptionIcon width={16} sx={{ flexShrink: 0 }} />,
               },
             ].map((item, index) => (
@@ -71,11 +71,11 @@ export default function OpportunitiyCard({ id, name, description, location, jobT
         <Box rowGap={3} sx={{ p: 3 }} display="flex" gap={3}>
           {[
             {
-              label: Views,
+              label: "1224",
               icon: <VisibilityIcon width={16} sx={{ flexShrink: 0 }} />,
             },
             {
-              label: Saved,
+              label: "3456",
               icon: <BookmarkBorderIcon width={16} sx={{ flexShrink: 0 }} />,
             },
           ].map((item, index) => (
