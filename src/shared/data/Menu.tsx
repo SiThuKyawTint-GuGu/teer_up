@@ -159,8 +159,13 @@ export const menuList: Menu[] = [
       },
       {
         key: "/admin/users/school-admin-list",
-        title: "School Admins",
-        icon: <Icons.admin className="w-[20px] h-[20px]" />,
+        title: "School Admin",
+        icon: <Icons.schoolAdmin className="w-[20px] h-[20px]" />,
+      },
+      {
+        key: "/admin/users/school-admin-list",
+        title: "Company Admin",
+        icon: <Icons.companyAdmin className="w-[20px] h-[20px]" />,
       },
       {
         key: "/admin/users/user-list",
