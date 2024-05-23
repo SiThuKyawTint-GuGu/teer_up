@@ -1,24 +1,12 @@
 "use client";
 import { Badge, Box, Button, Container, Divider, Drawer, Pagination, Stack, Typography } from "@mui/material";
 
+import { CompanyOpportunityResponse } from "@/types/CompanyOpportunity";
 import FilterListIcon from "@mui/icons-material/FilterList";
-import OpportunitiyCard from "./OpportunitiyCard";
 import { useState } from "react";
-import { jobs } from "./staticData";
+import OpportunitiyCard from "./OpportunitiyCard";
 
-export interface Job {
-  id: number;
-  name: string;
-  company: string;
-  description: string;
-  location: string;
-  jobType: string;
-  jobID: string;
-  Views: string;
-  Saved: string;
-}
-
-export default function OpportunityList() {
+export default function OpportunityList({ data }: CompanyOpportunityResponse) {
   const [open, setOpen] = useState(false);
 
   const onOpen = () => {
@@ -46,7 +34,7 @@ export default function OpportunityList() {
             <Typography variant="body1" fontWeight={"medium"}>
               All opportunities
             </Typography>
-            <Typography variant="body2">1 - {jobs.length} of many results</Typography>
+            <Typography variant="body2">1 - {data.length} of many results</Typography>
           </Box>
           <Box display="flex" justifyContent="flex-end">
             <Button
@@ -93,11 +81,11 @@ export default function OpportunityList() {
           md: "repeat(3, 1fr)",
         }}
       >
-        {jobs.map(job => (
+        {data.map(job => (
           <OpportunitiyCard key={job.id} {...job} />
         ))}
       </Box>
-      {jobs.length >= 8 ? (
+      {data.length >= 8 ? (
         <Stack>
           <Pagination
             count={10}
