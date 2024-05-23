@@ -54,12 +54,11 @@ export default function CompanyAdminForm() {
       ...data,
       role: USER_ROLE.COMPANY,
     };
-    console.log(submitData);
-    // createUser(submitData, {
-    //   onSuccess: () => {
-    //     router.back();
-    //   },
-    // });
+    createUser(submitData, {
+      onSuccess: () => {
+        router.back();
+      },
+    });
   };
 
   return (
@@ -88,6 +87,7 @@ export default function CompanyAdminForm() {
       <TextField
         label="Company Email"
         {...register("email")}
+        autoComplete="company-admin-email"
         error={!!errors.email}
         helperText={errors.email?.message}
       />
@@ -98,6 +98,7 @@ export default function CompanyAdminForm() {
         <OutlinedInput
           label="Password"
           type={showPassword ? "text" : "password"}
+          autoComplete="company-admin-password"
           {...register("password")}
           error={!!errors.password}
           endAdornment={
