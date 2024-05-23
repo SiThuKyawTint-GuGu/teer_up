@@ -76,7 +76,7 @@ export default function CompanyAdminForm() {
       onSubmit={handleSubmit(onSubmit)}
     >
       <Typography variant="h4" fontWeight="bold">
-        Add Company Admin
+        Add Company
       </Typography>
       <TextField
         label="Company Name"
@@ -93,7 +93,7 @@ export default function CompanyAdminForm() {
       />
 
       <FormControl fullWidth variant="outlined">
-        <InputLabel>Old Password</InputLabel>
+        <InputLabel>Password</InputLabel>
 
         <OutlinedInput
           label="Password"

@@ -1,4 +1,4 @@
-import SchoolAdminTable from "@/page-containers/admin/schools/admins/SchoolAdminTable";
+import CompanyAdminTable from "@/page-containers/admin/company/CompanyAdminTable";
 import { Box } from "@mui/material";
 
 export default function CompanyAdminsPage() {
@@ -10,7 +10,7 @@ export default function CompanyAdminsPage() {
         maxWidth: "lg",
       }}
     >
-      <SchoolAdminTable />
+      <CompanyAdminTable />
     </Box>
   );
 }
