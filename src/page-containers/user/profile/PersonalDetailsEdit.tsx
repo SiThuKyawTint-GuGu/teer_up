@@ -72,11 +72,6 @@ const PersonalDetailsEdit: React.FC = () => {
     },
   });
 
-  useEffect(()=>{
-    console.log(profileData);
-    
-  },[])
-
   const router = useRouter();
   const handleDeletePhoto = async () => {
     const triggerFunction = triggerType === PROFILE_TRIGGER.PROFILE ? deleteProfileTrigger() : deleteCoverTrigger();
@@ -131,9 +126,9 @@ const PersonalDetailsEdit: React.FC = () => {
       console.log(submitData);
 
       const response = await trigger(submitData, {
-      // onSuccess: () => {
-      //   router.replace(`/profile?tab=personalDetails`);
-      // },
+      onSuccess: () => {
+        router.replace(`/profile?tab=personalDetails`);
+      },
     });
     console.log(response);
     };
