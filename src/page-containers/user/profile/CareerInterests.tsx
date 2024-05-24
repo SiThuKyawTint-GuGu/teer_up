@@ -13,7 +13,7 @@ import { Box, Flex, Grid, Section } from "@radix-ui/themes";
 import { debounce } from "lodash";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const CareerInterests: React.FC = () => {
   const [searchValue, setSearchValue] = useState<string>("");
@@ -47,6 +47,10 @@ const CareerInterests: React.FC = () => {
     );
     router.back();
   }
+
+ useEffect(() => {
+   console.log(inputRef);
+ }, [industries,selectId,inputRef]);
 
   return (
     <>

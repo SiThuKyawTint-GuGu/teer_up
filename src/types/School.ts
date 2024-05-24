@@ -27,6 +27,29 @@ export interface School {
   degrees: Degree[];
 }
 
+
+export interface SchoolListResponse {
+  data: School[];
+  id: number;
+  name: string;
+  type: string;
+}
+
+export interface MajorListResponse {
+  data: Major[];
+  id: number;
+  name: string;
+  type: string;
+}
+
+export interface DegreeListResponse {
+  data: Degree[];
+  id: number;
+  name: string;
+  type: string;
+}
+
+
 export interface GetAllSchoolsResponse {
   data: School[];
 }

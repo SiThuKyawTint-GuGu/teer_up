@@ -23,6 +23,10 @@ export const useGetEducationById = <EducationResponse>(id: string): SWRResponse<
   return useSWR<EducationResponse>(`/user/profile/educations/${id}`);
 };
 
+// export const useGetDegrees = <EducationResponse>(): SWRResponse<EducationResponse, any> => {
+//   return useSWR<EducationResponse>(`/schools/degrees`);
+// };
+
 interface CreateUserResType {
   arg: {
     school_name: string;
@@ -40,21 +44,29 @@ export const useCreateEducation = () =>
 interface UpdateUserResType {
   arg: {
     educationId: string;
-    school_name: string;
-    degree: string;
+    school_id: string;
+    degree_id: string;
+    major_id: string;
     is_present?: boolean;
     start_date: string;
     end_date: string;
+    other_school_name:string,
+    other_school_major:string,
+    other_school_degree:string,
   };
 }
 export const useUpdateEducation = () =>
   useSWRMutation(`/user/profile/educations`, (url, { arg }: UpdateUserResType) => {
     return appAxios.put<UpdateUserResType>(`${url}/${arg.educationId}`, {
-      school_name: arg?.school_name,
-      degree: arg?.degree,
+      school_id: arg?.school_id,
+      degree_id: arg?.degree_id,
+      major_id: arg?.major_id,
       start_date: arg?.start_date,
       end_date: arg?.end_date,
       is_present: arg?.is_present,
+      other_school_name: arg?.other_school_name,
+      other_school_major: arg?.other_school_major,
+      other_school_degree: arg?.other_school_degree,
     });
   });
 

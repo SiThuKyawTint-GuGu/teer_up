@@ -12,6 +12,7 @@ import { UserProfileResponse } from "@/types/Profile";
 import { Box, Flex, Grid, Section } from "@radix-ui/themes";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const Preferences: React.FC = () => {
   const { id } = useParams();
@@ -32,7 +33,6 @@ const Preferences: React.FC = () => {
   const handleSave = () =>{
     router.back();
   }
-
   return (
     <>
       <Grid columns="1">
