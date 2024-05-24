@@ -7,8 +7,6 @@ import { CompanyOpportunityResponseById } from "@/types/CompanyOpportunity";
 export default function OpportunityDetails({ params }: { params: { id: string } }) {
   const { data, isLoading } = useGetCompanyOpportunityById<CompanyOpportunityResponseById>(params.id);
 
-  console.log(data);
-
   if (isLoading) {
     return <div>Loading...</div>;
   }
