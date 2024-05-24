@@ -8,7 +8,6 @@ import { NextPage } from "next";
 const CompanyOpportunityPage: NextPage = () => {
   const { data, isLoading } = useGetCompanyOpportunity<CompanyOpportunityResponse>();
 
-  console.log(data);
   if (isLoading) {
     return <div>Loading...</div>;
   }

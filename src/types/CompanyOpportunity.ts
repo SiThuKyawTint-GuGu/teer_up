@@ -23,3 +23,7 @@ export interface OpportunityContent {
 export interface CompanyOpportunityResponse {
   data: CompanyOpportunity[];
 }
+
+export interface CompanyOpportunityResponseById {
+  data: CompanyOpportunity;
+}
