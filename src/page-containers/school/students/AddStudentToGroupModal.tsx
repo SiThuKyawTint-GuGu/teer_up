@@ -7,7 +7,11 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import * as yup from "yup";
-import { useAddToStudentGroup, useGetStudentGroupById } from "@/services/school/studentGroup";
+import {
+  useAddToStudentGroup,
+  useGetStudentGroupById,
+  useRemoveStudentFromGroup,
+} from "@/services/school/studentGroup";
 import { StudentGroupDataResponse } from "@/types/school/StudentGroup";
 
 const studentGroupSchema = yup.object().shape({
@@ -28,7 +32,7 @@ const studentGroupSchema = yup.object().shape({
     .required("Student emails are required"),
 });
 
-function AddStudentToGroupModal({ id }: { id: string }) {
+function AddStudentToGroupModal({ id, type = "addstudent" }: { id: string; type: "addstudent" | "removestudent" }) {
   const [open, setOpen] = useState(false);
 
   const {
@@ -43,6 +47,8 @@ function AddStudentToGroupModal({ id }: { id: string }) {
     },
   });
   const { trigger: addToStudentGroup, isMutating } = useAddToStudentGroup();
+  const { trigger: removeStudentFromGroup, isMutating: removingStudents } = useRemoveStudentFromGroup();
+
   const { mutate } = useGetStudentGroupById<
     {
       id: string;
@@ -66,24 +72,39 @@ function AddStudentToGroupModal({ id }: { id: string }) {
       student_emails: emails,
     };
     console.log(formattedData);
-    addToStudentGroup(formattedData, {
-      onSuccess: () => {
-        toast.success("Successfully added");
-        reset();
-        mutate();
-        handleClose();
-      },
-      onError: err => {
-        console.log(err);
-        toast.error(err.response.data.message);
-      },
-    });
+    if (type === "removestudent") {
+      removeStudentFromGroup(formattedData, {
+        onSuccess: () => {
+          toast.success("Successfully removed");
+          reset();
+          mutate();
+          handleClose();
+        },
+        onError: err => {
+          console.log(err);
+          toast.error(err.response.data.message);
+        },
+      });
+    } else {
+      addToStudentGroup(formattedData, {
+        onSuccess: () => {
+          toast.success("Successfully added");
+          reset();
+          mutate();
+          handleClose();
+        },
+        onError: err => {
+          console.log(err);
+          toast.error(err.response.data.message);
+        },
+      });
+    }
   };
 
   return (
     <div>
       <Button size={"small"} variant="contained" onClick={handleClickOpen}>
-        Add Student To Group
+        {type === "addstudent" ? "Add Students" : "Remove Students"}
       </Button>
       <Dialog
         open={open}

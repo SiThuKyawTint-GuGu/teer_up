@@ -44,6 +44,24 @@ export const useAddToStudentGroup = () =>
     }
   );
 
+export const useRemoveStudentFromGroup = () =>
+  useSWRMutation(
+    `/schools/groups/remove-students`,
+    (
+      url,
+      {
+        arg,
+      }: {
+        arg: {
+          group_id: number;
+          student_emails: string[];
+        };
+      }
+    ) => {
+      return appAxios.post(url, arg);
+    }
+  );
+
 export const useGetStudentGroups = <StudentGroupResponse>(): SWRResponse<StudentGroupResponse, any> => {
   return useSWR<StudentGroupResponse>(`/schools/groups`);
 };

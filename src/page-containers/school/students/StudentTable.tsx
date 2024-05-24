@@ -72,6 +72,11 @@ export default function StudentTable({ id: studentGroupId }: props) {
             }),
         },
       },
+
+      {
+        accessorKey: "email",
+        header: "Email",
+      },
       {
         accessorKey: "created_at",
         header: "Created At",
@@ -191,9 +196,10 @@ export default function StudentTable({ id: studentGroupId }: props) {
     //   </Box>
     // ),
     renderTopToolbarCustomActions: ({ table }) => (
-      <>
-        <AddStudentToGroupModal id={studentGroupId} />
-      </>
+      <Box display="flex" columnGap={2}>
+        <AddStudentToGroupModal id={studentGroupId} type={"addstudent"} />
+        <AddStudentToGroupModal id={studentGroupId} type={"removestudent"} />
+      </Box>
     ),
   });
 
