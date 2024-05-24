@@ -24,8 +24,8 @@ export const navbarItems: NavbarType[] = [
     activeIcon: <Icons.schoolJobIcon width={24} height={24} activeFill="#DA291C" active />,
   },
   {
-    text: "Students",
-    path: "/school/students",
+    text: "Student Groups",
+    path: "/school/student-group",
     icon: <PeopleIcon sx={{ fontSize: 24 }} />,
     activeIcon: <PeopleIcon sx={{ fontSize: 24, color: "#DA291C" }} />,
   },
