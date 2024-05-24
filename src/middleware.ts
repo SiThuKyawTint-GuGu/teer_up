@@ -60,7 +60,7 @@ export function middleware(req: NextRequest) {
     if (user?.role === "company" && !pathname.startsWith("/company")) {
       return NextResponse.redirect(new URL("/company", req.url));
     } else if (user?.role === "school" && !pathname.startsWith("/school")) {
-      return NextResponse.redirect(new URL("/school", req.url));
+      return NextResponse.redirect(new URL("/school/dashboard", req.url));
     } else if (
       token &&
       (pathname.includes("/admin") || pathname === "/login" || pathname === "/auth/login" || pathname === "/")
