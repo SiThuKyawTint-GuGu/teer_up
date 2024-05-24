@@ -12,6 +12,7 @@ export interface Gender {
 
 export interface PersonalInfo {
   birthday: string;
+  phone_number: string | undefined;
   created_at: string;
   gender_id: number;
   gender: Gender;
@@ -53,7 +54,7 @@ export interface Industries {
 }
 
 export interface UserProfile {
-  phone: string | undefined;
+  phone_number: string | undefined;
   bio: string;
   cover_url: string;
   created_at: string;
@@ -70,10 +71,9 @@ export interface UserProfile {
   industries: Industries[];
   preferences: Preferences[];
 }
-
 export interface UserProfileResponse {
   [x: string]: any;
-  personal_info: any;
+  personal_info: PersonalInfo;
   experiences: any;
   data: UserProfile;
 }

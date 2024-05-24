@@ -11,7 +11,7 @@ import {
   useDeleteCoverPhoto,
   useDeleteProfilePhoto,
   useGetGenders,
-  useGetUserById,
+  useUpdatePersonalInfo,
 } from "@/services/user";
 import { PROFILE_TRIGGER } from "@/shared/enums";
 import { UserProfileResponse } from "@/types/Profile";
@@ -22,8 +22,6 @@ import { ChangeEvent, useEffect, useState, useTransition } from "react";
 import HeaderText from "./components/HeaderText";
 import { InputText, InputTextArea, InputTextAreaBgWhite } from "@/components/ui/Inputs";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import { Select, SelectTrigger, SelectContent, SelectItem } from "@/components/ui/Inputs/Select";
 import { useGetUser } from "@/services/user";
 
@@ -45,7 +43,6 @@ const profileTriggerIcon = {
 };
 
 interface GenderProps {
-  find(arg0: (item: { id: string; }) => boolean): unknown;
   id:number,
   type:string,
 }
@@ -58,7 +55,8 @@ const PersonalDetailsEdit: React.FC = () => {
   const [isPending] = useTransition();
   const { data: profileData } = useGetUser<UserProfileResponse>();
   const userProfile = profileData?.data;
-  const { data: genderData } = useGetGenders<GenderProps>();
+  const { trigger, isMutating } = useUpdatePersonalInfo();
+  const { data: genderData } = useGetGenders<GenderProps[]>();
   const { trigger: deleteCoverTrigger } = useDeleteCoverPhoto();
   const { trigger: deleteProfileTrigger } = useDeleteProfilePhoto();
   const [selectedGender, setSelectedGender] = useState<any>(profileData?.data?.personal_info?.gender_id);
@@ -68,9 +66,9 @@ const PersonalDetailsEdit: React.FC = () => {
     defaultValues: {
       name: profileData?.data?.name,
       email: profileData?.data?.email,
-      aboutMe: profileData?.bio,
-      phone: profileData?.data?.phone,
-      gender: profileData?.data?.personal_info?.gender_id,
+      bio: profileData?.data?.bio,
+      phone_number: profileData?.data?.personal_info?.phone_number,
+      gender: profileData?.data?.personal_info?.gender?.type,
     },
   });
 
@@ -119,27 +117,26 @@ const PersonalDetailsEdit: React.FC = () => {
     setTriggerType(PROFILE_TRIGGER.PROFILE);
   };
 
-  const genderList = ["male", "female"];
 
-const SubmitInfo = async (data: any) => {
-  try {
-    const { name, email, gender, phone, aboutMe } = data;
+   const submit = async (data: any) => {
+      const submitData = {
+        ...data,
+        gender_id: parseInt(selectedGender,10),
+      };
+      console.log(submitData);
 
-    // Perform actions with the form data, such as sending it to a server
-
-    // Example: Log the form data to the console
-    console.log("Form data:", data);
-
-    // After processing, you can navigate or perform any other action
-  } catch (error) {
-    console.error("Error submitting form:", error);
-  }
-};
+      const response = await trigger(submitData, {
+      onSuccess: () => {
+        router.replace(`/profile?tab=personalDetails`);
+      },
+    });
+    console.log(response);
+    };
 
   return (
     <>
       <Form {...form}>
-        <form method="POST" onSubmit={form.handleSubmit(SubmitInfo)}>
+        <form method="POST" onSubmit={form.handleSubmit(submit)}>
           <Dialog open={open} onOpenChange={val => setOpen(val)}>
             <Grid columns="1">
               <Box className="pb-[55px] bg-white">
@@ -233,31 +230,28 @@ const SubmitInfo = async (data: any) => {
                           name="gender"
                           render={({ field }) => (
                             <FormItem>
-                              <Select>
-                                <SelectTrigger
-                                  className="border-none outline-none shadow-md bg-white border-gray-700"
-                                  // defaultValue={selectedGender}
-                                  // onValueChange={(value: string) => {
-                                  //   setSelectedGender(value);
-                                  //   form.setValue("gender", parseInt(value, 10));
-                                  // }}
-                                >
-                                  {/* {selectedGender && genderData
-                                    ? (genderData.find((item: { id: string }) => item.id === selectedGender) || {}).type
-                                    : "Select gender"} */}
-                                    Select Gender
-                                </SelectTrigger>
+                              <FormControl>
+                                <Select
+                                  onValueChange={(value: string) => {
+                                    const selectedGender = genderData?.find((item: { type: string; }) => item.type === value);
 
-                                <SelectContent className="bg-white">
-                                  {genderData &&
-                                    Array.isArray(genderData) &&
-                                    genderData.map((item: any, index: number) => (
-                                      <SelectItem key={index} value={item.id}>
+                                    setSelectedGender(selectedGender ? String(selectedGender.id) : null);
+                                    field.onChange(selectedGender?.type || "");
+                                  }}
+                                  value={String(field.value)}
+                                >
+                                  <SelectTrigger className="border-none outline-none shadow-md bg-white border-gray-700 ">
+                                    {field.value || "Select a Gender"}
+                                  </SelectTrigger>
+                                  <SelectContent className="bg-white">
+                                    {genderData?.map((item:any, index:number) => (
+                                      <SelectItem key={index} value={item.type}>
                                         <Text>{item.type}</Text>
                                       </SelectItem>
                                     ))}
-                                </SelectContent>
-                              </Select>
+                                  </SelectContent>
+                                </Select>
+                              </FormControl>
                             </FormItem>
                           )}
                         />
@@ -284,7 +278,7 @@ const SubmitInfo = async (data: any) => {
                         <p className="text-[14px] font-[400] text-[#222222]">Phone Number</p>
                         <FormField
                           control={form.control}
-                          name="phone"
+                          name="phone_number"
                           render={({ field }) => (
                             <FormItem>
                               <FormControl>
@@ -300,7 +294,7 @@ const SubmitInfo = async (data: any) => {
                         <p className="text-[14px] font-[400] text-[#222222]">About me</p>
                         <FormField
                           control={form.control}
-                          name="aboutMe"
+                          name="bio"
                           render={({ field }) => (
                             <FormItem>
                               <FormControl>
@@ -314,7 +308,7 @@ const SubmitInfo = async (data: any) => {
                   </Section>
                 </CardBox>
                 <Flex justify={"end"}>
-                  <Button className="me-2 px-8">Done</Button>
+                  <Button type="submit" className="me-2 px-8">Done</Button>
                 </Flex>
               </Box>
             </Grid>

@@ -29,6 +29,11 @@ export const useGetCourses = <CourseDataResponse>(): SWRResponse<CourseDataRespo
   return useSWR<CourseDataResponse>(`/schools/courses`);
 };
 
+export const useGetMajorsByDegreeId = <ParamsType, Major>(params: { id: string }): SWRResponse<Major, any> => {
+  return useSWR<Major>(params.id && `/schools/majors/degree/${params.id}`);
+};
+
+
 export const useGetSchoolAdmins = <ParamsType, SchoolAdmin>(params: ParamsType): SWRResponse<SchoolAdmin, any> => {
   return useSWR<SchoolAdmin>(`/user?${routeFilter(params)}`);
 };
@@ -99,7 +104,7 @@ export const useDeleteDegree = () =>
 
 // courses
 export const useGetCoursesBySchoolId = <ParamsType, Course>(params: { id: string }): SWRResponse<Course, any> => {
-  return useSWR<Course>(`/schools/courses/school/${params.id}`);
+  return useSWR<Course>(params.id && `/schools/courses/school/${params.id}`);
 };
 
 export const useCreateCourse = () =>

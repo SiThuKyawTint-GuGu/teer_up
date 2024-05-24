@@ -58,6 +58,7 @@ const Profile: React.FC = () => {
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
+    console.log("Data",profileData)
   }, []);
 
   const userProfile = profileData?.data;

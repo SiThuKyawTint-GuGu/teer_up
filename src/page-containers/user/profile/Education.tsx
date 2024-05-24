@@ -7,11 +7,17 @@ import { cn } from "@/utils/cn";
 import { Box, Flex, Grid, Section } from "@radix-ui/themes";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const Education: React.FC = () => {
   const { id } = useParams();
   const router = useRouter();
   const { data: educationList } = useGetUserEducations<EducationParamsType, EducationResponse>();
+  
+
+  useEffect(() => {
+    console.log(educationList);
+  }, [educationList]);
 
   return (
     <>
@@ -42,17 +48,31 @@ const Education: React.FC = () => {
                   key !== (educationList?.data ? educationList?.data.length - 1 : -1) && "border-line"
                 )}
               >
-                <Flex justify="between" align="start">
-                  <Flex direction="column" gap="1">
-                    <Text as="label" weight="bold" size="3">
-                      {each.school_name}
-                    </Text>
-                    <Text>{each.degree}</Text>
+                {each.school_id ? (
+                  <Flex justify="between" align="start">
+                    <Flex direction="column" gap="1">
+                      <Text as="label" weight="bold" size="3">
+                        {each.school?.name}
+                      </Text>
+                      <Text>{each.degree_relation?.name}</Text>
+                    </Flex>
+                    <Link href={`/profile/${id}/education/${each.id}`}>
+                      <Image src="/uploads/icons/pencil.svg" width={20} height={20} alt="pencil" />
+                    </Link>
                   </Flex>
-                  <Link href={`/profile/${id}/education/${each.id}`}>
-                    <Image src="/uploads/icons/pencil.svg" width={20} height={20} alt="pencil" />
-                  </Link>
-                </Flex>
+                ) : (
+                  <Flex justify="between" align="start">
+                    <Flex direction="column" gap="1">
+                      <Text as="label" weight="bold" size="3">
+                        {each?.other_school_name}
+                      </Text>
+                      <Text>{each?.other_school_degree}</Text>
+                    </Flex>
+                    <Link href={`/profile/${id}/education/${each.id}`}>
+                      <Image src="/uploads/icons/pencil.svg" width={20} height={20} alt="pencil" />
+                    </Link>
+                  </Flex>
+                )}
               </div>
             ))}
           </Section>

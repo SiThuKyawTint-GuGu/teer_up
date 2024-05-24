@@ -6,23 +6,27 @@ import dayjs from "dayjs";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import Image from "next/image";
+import { EducationParamsType, useGetUserEducations } from "@/services/education";
+import { EducationResponse } from "@/types/Education";
+import { useEffect } from "react";
 
 interface PersonalDetailsProps {
   user: any;
   userProfile: UserProfileResponse;
 }
 
+
 function PersonalDetails({ user, userProfile: { data: userProfile } }: PersonalDetailsProps) {
   return (
     <>
       <div className="flex justify-between mb-2">
         <div></div>
-        <Link href={`/profile/${user?.id}`} className="ml-auto">
+        {/* <Link href={`/profile/${user?.id}`} className="ml-auto">
           <Button variant="ghost" className="">
             <Image src="/uploads/icons/pencil-square.svg" width={20} height={20} alt="pencil" />
             <Text className="text-primary">Edit Profile</Text>
           </Button>
-        </Link>
+        </Link> */}
       </div>
       <CardBox className="mb-4 rounded-md ">
         <Section className="bg-white" py="4" px="3">
@@ -68,8 +72,7 @@ function PersonalDetails({ user, userProfile: { data: userProfile } }: PersonalD
             <Flex justify="start" align="center" gap="2">
               <Image src="/uploads/icons/personal-profile.svg" width={16} height={16} alt="personal profile" />
               <Text className="capitalize text-[#373A36]">
-                {/* {userProfile?.personal_info?.gender ? userProfile?.personal_info?.gender?.type : "-"} */}
-                +959 12345678
+                {userProfile?.personal_info?.gender ? userProfile?.personal_info?.phone_number : "-"}{" "}
               </Text>
             </Flex>
           </div>
@@ -163,6 +166,7 @@ function PersonalDetails({ user, userProfile: { data: userProfile } }: PersonalD
           {userProfile?.educations?.length ? (
             userProfile?.educations?.slice(0, 2).map((each, key) => (
               <>
+                {console.log(each)}
                 <Flex
                   key={key}
                   justify="between"
@@ -176,10 +180,10 @@ function PersonalDetails({ user, userProfile: { data: userProfile } }: PersonalD
                     <Image src="/uploads/icons/education.svg" width={32} height={32} alt="experience" />
                     <Flex direction="column" gap="2">
                       <Text as="label" weight="bold" size="3">
-                        {each.degree}
+                        {each.degree_id ? each.degree_relation?.name : each.other_school_degree}
                       </Text>
                       <Text size="2" weight="light">
-                        {each.school_name}
+                        {each.school_id ? each.school?.name : each.other_school_name}
                       </Text>
                     </Flex>
                   </Flex>

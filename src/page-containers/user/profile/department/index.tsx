@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { Button } from "@/components/ui/Button";
 import { Icons } from "@/components/ui/Images";
@@ -26,6 +27,8 @@ const Department: React.FC = () => {
   const inputRef = useRef<any>(null);
   const [selectId, setSelectId] = useState<number[]>([]);
 
+    
+    
   const handleCheckedChange = (department_id: number) => {
      if (selectId.includes(department_id)) {
        setSelectId(selectId.filter(id => id !== department_id));
@@ -38,13 +41,16 @@ const Department: React.FC = () => {
     setSearchValue(inputRef?.current?.value);
   }, 500);
 
-  useEffect(()=>{
-    console.log(profileData);
-  },[])
+
 
   const filteredDepartments = departmentData?.data?.filter(each =>
     each.name.toLowerCase().includes(searchValue.toLowerCase())
   );
+
+  useEffect(() => {
+    console.log(selectId);
+    console.log(filteredDepartments);
+  }, [selectId]);
 
    const handleSave = (_:undefined) =>{
     console.log(selectId);
@@ -53,7 +59,7 @@ const Department: React.FC = () => {
         department_id: item,
       })
     );
-    router.back();
+     router.replace(`/profile?tab=personalDetails`);
   }
 
   return (
@@ -114,3 +120,11 @@ const Department: React.FC = () => {
 };
 
 export default Department;
+function refetchProfile() {
+  throw new Error("Function not implemented.");
+}
+
+function refetchDepartment() {
+  throw new Error("Function not implemented.");
+}
+

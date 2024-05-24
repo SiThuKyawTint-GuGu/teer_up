@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import { Button } from "@/components/ui/Button";
 import { Icons } from "@/components/ui/Images";
@@ -26,7 +27,9 @@ const ProfilePhotoRreview: React.FC = () => {
         await mutateUser();
 
         removeLocalStorage("profilePhoto");
-        router.push("/profile");
+        // router.push("/profile");
+        console.log("back");
+        router.back();
       } catch (error) {
         console.error("Upload failed =>", error);
       }
