@@ -48,12 +48,13 @@ interface GenderProps {
 }
 
 const PersonalDetailsEdit: React.FC = () => {
+  const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
   const [triggerType, setTriggerType] = useState<PROFILE_TRIGGER>();
   const { id } = useParams();
   const [isPending] = useTransition();
-  const { data: profileData } = useGetUser<UserProfileResponse>();
+  const { data: profileData, mutate: mutateUser } = useGetUser<UserProfileResponse>();
   const userProfile = profileData?.data;
   const { trigger, isMutating } = useUpdatePersonalInfo();
   const { data: genderData } = useGetGenders<GenderProps[]>();
@@ -72,12 +73,11 @@ const PersonalDetailsEdit: React.FC = () => {
     },
   });
 
-  const router = useRouter();
   const handleDeletePhoto = async () => {
     const triggerFunction = triggerType === PROFILE_TRIGGER.PROFILE ? deleteProfileTrigger() : deleteCoverTrigger();
     try {
       await triggerFunction;
-      await mutate();
+      await mutateUser();
       setDeleteModalOpen(false);
       setOpen(!open);
     } catch (error) {
