@@ -28,7 +28,10 @@ export default function StudentGroupTable() {
   const [validationErrors, setValidationErrors] = useState<Record<string, string | undefined>>({});
 
   useEffect(() => {
-    if (studentGroupsData) setStudentGroups(studentGroupsData?.data);
+    if (studentGroupsData?.data) {
+      // @ts-ignore
+      setStudentGroups(studentGroupsData?.data);
+    }
   }, [studentGroupsData?.data]);
 
   const columns = useMemo<MRT_ColumnDef<StudentGroup>[]>(
