@@ -45,7 +45,7 @@ interface LayoutProps {
 
 const SchoolDashboardLayout: React.FC<LayoutProps> = ({ children }) => {
   const { data: profileData } = useGetUser<UserProfileResponse>();
-  const [open, setOpen] = useState(true); // Set the sidebar open by default
+  const [open, setOpen] = useState(false); // Set the sidebar open by default
   const [isPending, startTransition] = useTransition();
   const pathName = usePathname();
   const router = useRouter();
