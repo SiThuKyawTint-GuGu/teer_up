@@ -1,13 +1,16 @@
 "use client";
 import useSWR, { SWRResponse } from "swr";
 
-export const useGetCompanyOpportunity = <ContentCategoryResponse>(): SWRResponse<ContentCategoryResponse, any> => {
-  return useSWR<ContentCategoryResponse>(`/companies/opportunities`);
+export const useGetCompanyOpportunity = <CompanyOpportunityResponse>(): SWRResponse<
+  CompanyOpportunityResponse,
+  any
+> => {
+  return useSWR<CompanyOpportunityResponse>(`/companies/opportunities`);
 };
 
-export const useGetCompanyOpportunityById = <ContentCategoryResponse>(
+export const useGetCompanyOpportunityById = <CompanyOpportunityResponseById>(
   id: string
-): SWRResponse<ContentCategoryResponse, any> => {
+): SWRResponse<CompanyOpportunityResponseById, any> => {
   const key = id != "0" ? `/companies/opportunities/${id}` : null;
-  return useSWR<ContentCategoryResponse>(key);
+  return useSWR<CompanyOpportunityResponseById>(key);
 };
