@@ -12,8 +12,10 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function OpportunitiyCard({ id, location, content }: CompanyOpportunity) {
+  const pathname = usePathname();
   const popover = usePopover();
 
   return (
@@ -31,7 +33,7 @@ export default function OpportunitiyCard({ id, location, content }: CompanyOppor
         </IconButton>
 
         <Stack sx={{ p: 2, pb: 2 }}>
-          <Link href={`/school/opportunities/${id}`}>
+          <Link href={`${pathname}/${id}`}>
             <Typography variant="h6" sx={{ fontWeight: "bold" }}>
               {content.title}
             </Typography>

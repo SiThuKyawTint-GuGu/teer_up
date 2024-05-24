@@ -2,17 +2,18 @@
 
 import { Button } from "@/components/ui/Button";
 import { Icons, Image } from "@/components/ui/Images";
+import { CompanyOpportunity } from "@/types/CompanyOpportunity";
 import { Box, Container, Grid, Typography } from "@mui/material";
 import { Flex } from "@radix-ui/themes";
 import { useState } from "react";
 
-const JobInfo = () => {
+const JobInfo = ({ data }: { data: CompanyOpportunity }) => {
   return (
     <>
       <Flex direction="column" gap="6">
         <Flex direction="column" gap="2" my="3">
           <Typography variant="h6" fontWeight="bold">
-            UI UX Designer
+            {data.content.title}
           </Typography>
           <Typography variant="caption" display="block">
             UI UX
@@ -80,10 +81,7 @@ const JobInfo = () => {
             Job Description
           </Typography>
           <Typography variant="caption" display="block">
-            As a UI UX Designer at [Company Name], you will play a pivotal role in crafting exceptional user experiences
-            that delight our customers. You will work closely with cross-functional teams, including product managers,
-            developers, and other designers, to design user-centric solutions for our digital products. If youre
-            passionate about creating intuitive and engaging interfaces, wed love to have you on board.
+            {data.content.description}
           </Typography>
         </Flex>
         <Flex direction="column" gap="2">
@@ -136,7 +134,7 @@ const Applicants = () => {
   return <>Job Applicants</>;
 };
 
-const OpportunityDetail = () => {
+const OpportunityDetail = ({ data }: { data: CompanyOpportunity }) => {
   const [activeButton, setActiveButton] = useState("jobInfo");
 
   const handleButtonClick = (button: string) => {
@@ -145,9 +143,9 @@ const OpportunityDetail = () => {
 
   return (
     <>
-      <Container sx={{ m: 2 }}>
+      <Container>
         <Typography variant="h6" fontWeight="bold">
-          Job: UI UX Designer
+          Job: {data.content.title}
         </Typography>
         <Typography variant="h6" fontWeight="bold">
           Company: ABC Ltd
@@ -159,7 +157,7 @@ const OpportunityDetail = () => {
         <Flex direction="column" p="4">
           <Grid container>
             <Grid item xs={4}>
-              UI/UX Designer
+              {data.content.title}
             </Grid>
             <Grid item xs={8}>
               <Grid container justifyContent="center">
@@ -181,7 +179,7 @@ const OpportunityDetail = () => {
               </Grid>
             </Grid>
             <Grid item xs={4}>
-              <p className="text-sm">Singapore</p>
+              <p className="text-sm">{data.location}</p>
             </Grid>
             <Grid item xs={8}>
               <Grid container justifyContent="center">
@@ -226,7 +224,7 @@ const OpportunityDetail = () => {
             </Button>
           </Flex>
           <Box>
-            {activeButton === "jobInfo" && <JobInfo />}
+            {activeButton === "jobInfo" && <JobInfo data={data} />}
             {activeButton === "connections" && <Applicants />}
           </Box>
         </Flex>
