@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import appAxios from "@/lib/appAxios";
 import { routeFilter } from "@/utils";
 import useSWR, { SWRResponse } from "swr";
@@ -29,8 +30,8 @@ export const useGetCourses = <CourseDataResponse>(): SWRResponse<CourseDataRespo
   return useSWR<CourseDataResponse>(`/schools/courses`);
 };
 
-export const useGetMajorsByDegreeId = <ParamsType, Major>(params: { id: string }): SWRResponse<Major, any> => {
-  return useSWR<Major>(params.id && `/schools/majors/degree/${params.id}`);
+export const useGetMajorsByDegreeId = <ParamsType, Major>(params: { id: any }): SWRResponse<Major, any> => {
+   const url = params.id !== null ? (!Number.isNaN(params.id) ? `/schools/majors/degree/${params.id}` : null) : null;return useSWR<Major>(url);
 };
 
 
@@ -69,8 +70,9 @@ export const useDeleteSchool = () =>
     return appAxios.delete<SchoolArgType>(`${url}/${arg.id}`);
   });
 
-export const useGetDegreeBySchoolId = <ParamsType, Degree>(params: { id: string }): SWRResponse<Degree, any> => {
-  return useSWR<Degree>(`/schools/degrees/school/${params.id}`);
+export const useGetDegreeBySchoolId = <ParamsType, Degree>(params: { id: any }): SWRResponse<Degree, any> => {
+  const url = params.id !== null ? (!Number.isNaN(params.id) ? `/schools/degrees/school/${params.id}` : null) : null;
+  return useSWR<Degree>(url);
 };
 
 export const useCreateDegree = () =>

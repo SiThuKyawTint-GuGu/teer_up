@@ -18,6 +18,7 @@ import { Select, SelectTrigger, SelectContent, SelectItem } from "@/components/u
 import { useGetDegreeBySchoolId, useGetMajorsByDegreeId, useGetSchools } from "@/services/school";
 import { DegreeListResponse, MajorListResponse } from "@/types/School";
 import { InputText } from "@/components/ui/Inputs";
+import CreateSelectInput from "./components/SelectInput";
 
 const EditEducation: React.FC = () => {
   const { id, edu_id } = useParams();
@@ -37,6 +38,7 @@ const EditEducation: React.FC = () => {
   const { data: majorList } = useGetMajorsByDegreeId<MajorListResponse, any>({
     id: selectedDegreeId,
   });
+  const [resetSelectInput, setResetSelectInput] = useState(false);
 
   const form = useForm({
     defaultValues: {
@@ -54,7 +56,6 @@ const EditEducation: React.FC = () => {
   useEffect(() => {
     if (educationData) {
       form.setValue("school", educationData?.data.school?.name || "");
-
       form.setValue("major", educationData?.data.major?.name || "");
       form.setValue("other_school_major", educationData?.data.other_school_major || "");
       form.setValue("other_school_degree", educationData?.data.other_school_degree || "");
@@ -75,16 +76,6 @@ const EditEducation: React.FC = () => {
     form.setValue("major", educationData?.data.major?.name || "");
     setSelectedMajorId(educationData?.data.major?.id || null);
   }, [majorList]);
-
-  const handleSchoolChange = (value: string) => {
-    const selectedSchool = schoolList?.data?.find((item: { name: string }) => item.name === value);
-    setSelectedSchoolId(selectedSchool ? String(selectedSchool.id) : null);
-    form.setValue("school", value);
-    form.setValue("degree", "");
-    form.setValue("major", "");
-    setSelectedDegreeId(null);
-    setSelectedMajorId(null);
-  };
 
   const submit = async (data: any) => {
     let endDate = null;
@@ -121,6 +112,27 @@ const EditEducation: React.FC = () => {
   //   );
   // };
 
+    const handleSchoolChange = (selectedOptions: any) => {
+      const selectedSchool = selectedOptions.length > 0 ? selectedOptions[0] : null;
+      setSelectedSchoolId(selectedSchool ? parseInt(selectedSchool.value, 10) : null);
+      form.setValue("other_school_name", selectedSchool ? selectedSchool.label : "");
+      setResetSelectInput(true);
+    };
+
+     const handleDegreeChange = (selectedOptions: any) => {
+       const selectedDegree = selectedOptions.length > 0 ? selectedOptions[0] : null;
+       setSelectedDegreeId(selectedDegree ? parseInt(selectedDegree.value, 10) : null);
+       form.setValue("other_school_degree", selectedDegree ? selectedDegree.label : "");
+     };
+
+    const handleMajorChange = (selectedOptions: any) => {
+      const selectedMajor = selectedOptions.length > 0 ? selectedOptions[0] : null;
+      setSelectedMajorId(selectedMajor ? parseInt(selectedMajor.value, 10) : null);
+      form.setValue("other_school_major", selectedMajor ? selectedMajor.label : "");
+    };
+
+
+
   return (
     <>
       <Form {...form}>
@@ -150,23 +162,11 @@ const EditEducation: React.FC = () => {
                   name="school"
                   render={({ field }) => (
                     <FormItem>
-                      <FormControl>
-                        <Select onValueChange={handleSchoolChange} value={field.value}>
-                          <SelectTrigger
-                            disabled={educationData?.data?.other_school_name}
-                            className="border-none outline-none shadow-md bg-white border-gray-700 "
-                          >
-                            {field.value || "Select a School"}
-                          </SelectTrigger>
-                          <SelectContent className="bg-white">
-                            {schoolList?.data?.map((item: any, index: any) => (
-                              <SelectItem key={index} value={item.name}>
-                                <Text>{item.name}</Text>
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
+                      <CreateSelectInput
+                        dataList={schoolList?.data || []}
+                        onChange={handleSchoolChange}
+                        selectedValue={educationData?.data.school?.id || educationData?.data.other_school_name}
+                      />
                     </FormItem>
                   )}
                 />
@@ -181,34 +181,14 @@ const EditEducation: React.FC = () => {
                   name="degree"
                   render={({ field }) => (
                     <FormItem>
-                      <FormControl>
-                        <Select
-                          onValueChange={(value: string) => {
-                            const selectedDegree = degreeList?.data?.find(
-                              (item: { name: string }) => item.name === value
-                            );
-                            setSelectedDegreeId(selectedDegree ? String(selectedDegree.id) : null);
-                            field.onChange(value);
-                            form.setValue("major", "");
-                            setSelectedMajorId(null);
-                          }}
-                          value={field.value}
-                        >
-                          <SelectTrigger
-                            disabled={educationData?.data?.other_school_name}
-                            className="border-none outline-none shadow-md bg-white border-gray-700"
-                          >
-                            {field.value || "Select a Degree"}
-                          </SelectTrigger>
-                          <SelectContent className="bg-white">
-                            {degreeList?.data?.map((item: any, index: any) => (
-                              <SelectItem key={index} value={item.name}>
-                                <Text>{item.name}</Text>
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
+                      <CreateSelectInput
+                        dataList={degreeList?.data || []}
+                        onChange={handleDegreeChange}
+                        selectedValue={
+                          educationData?.data.degree_relation?.id || educationData?.data.other_school_degree
+                        }
+                        resetState={resetSelectInput}
+                      />
                     </FormItem>
                   )}
                 />
@@ -223,99 +203,14 @@ const EditEducation: React.FC = () => {
                   name="major"
                   render={({ field }) => (
                     <FormItem>
-                      <FormControl>
-                        <Select
-                          onValueChange={(value: string) => {
-                            const selectedMajor = majorList?.data?.find(
-                              (item: { name: string }) => item.name === value
-                            );
-                            setSelectedMajorId(selectedMajor ? String(selectedMajor.id) : null);
-                            field.onChange(value);
-                          }}
-                          value={field.value}
-                        >
-                          <SelectTrigger
-                            disabled={educationData?.data?.other_school_name}
-                            className="border-none outline-none shadow-md bg-white border-gray-700"
-                          >
-                            {field.value || "Select a Major"}
-                          </SelectTrigger>
-                          <SelectContent className="bg-white">
-                            {majorList?.data?.map((item: any, index: any) => (
-                              <SelectItem key={index} value={item.name}>
-                                <Text>{item.name}</Text>
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-              </Section>
-            </Box>
-
-            <Box className="">
-              <Section className="" py="4" px="3">
-                <p className="text-[14px] font-[400] text-[#222222] ms-3">Other School (Optional)</p>
-                <FormField
-                  control={form.control}
-                  name="other_school_name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <InputText
-                          disabled={selectedSchoolId}
-                          type="text"
-                          className="bg-white"
-                          placeholder="Enter Other School Name"
-                          {...field}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-              </Section>
-            </Box>
-            <Box className="pb-[0px]">
-              <Section className="" py="4" px="3">
-                <p className="text-[14px] font-[400] text-[#222222] ms-3">Other Degree (Optional)</p>
-                <FormField
-                  control={form.control}
-                  name="other_school_degree"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <InputText
-                          disabled={selectedSchoolId}
-                          type="text"
-                          className="bg-white"
-                          placeholder="Enter Other Degree Name"
-                          {...field}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-              </Section>
-            </Box>
-            <Box className="pb-[0px]">
-              <Section className="" py="4" px="3">
-                <p className="text-[14px] font-[400] text-[#222222] ms-3">Other Major (Optional)</p>
-                <FormField
-                  control={form.control}
-                  name="other_school_major"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <InputText
-                          disabled={selectedSchoolId}
-                          type="text"
-                          className="bg-white"
-                          placeholder="Enter Other Major Name"
-                          {...field}
-                        />
-                      </FormControl>
+                      <CreateSelectInput
+                        dataList={majorList?.data || []}
+                        onChange={handleMajorChange}
+                        selectedValue={
+                          educationData?.data.major?.id || educationData?.data.other_school_major
+                        }
+                        resetState={resetSelectInput}
+                      />
                     </FormItem>
                   )}
                 />
