@@ -22,6 +22,9 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import * as yup from "yup";
 import { useCreateCompany } from "@/services/company";
+import { ParamsType, useGetUsers } from "@/services/user";
+import { UserResponse } from "@/types/User";
+import { USER_ROLE } from "@/shared/enums";
 
 const validationSchema = yup.object().shape({
   name: yup.string().required("Name is required"),
@@ -39,22 +42,31 @@ function CreateCompanyModal() {
     control,
     setValue,
     formState: { errors, isSubmitting },
+    reset,
   } = useForm({
     resolver: yupResolver(validationSchema),
     defaultValues: {
       name: "",
       email: "",
-      // courses: [{ name: "", credit: 0 }],
+      company_admin_id: 0,
     },
   });
 
   const { trigger: createCompany, data, isMutating } = useCreateCompany();
+  const {
+    data: userData,
+    mutate,
+    isLoading,
+  } = useGetUsers<ParamsType, UserResponse>({
+    role: USER_ROLE.COMPANY,
+  });
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
+    reset();
     setOpen(false);
   };
 
@@ -62,10 +74,12 @@ function CreateCompanyModal() {
     createCompany(data, {
       onSuccess: data1 => {
         toast.success("Successfully created");
+        reset();
         handleClose();
       },
       onError: err => {
         console.log(err);
+        handleClose();
         toast.error(err.response.data.message);
       },
     });
@@ -96,6 +110,24 @@ function CreateCompanyModal() {
               {errors.email?.message}
             </Typography>
 
+            {userData?.data ? (
+              <FormControl
+                fullWidth
+                sx={{
+                  marginY: 2,
+                }}
+              >
+                <InputLabel id="company-admin-id">Company Admin</InputLabel>
+                <Select fullWidth labelId="company-admin-id" {...register("company_admin_id")} label="Company Admin">
+                  {userData?.data.map(user => (
+                    <MenuItem key={user.id} value={user.id}>
+                      {user.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText>Company admins can be created under user tab.</FormHelperText>
+              </FormControl>
+            ) : null}
             <DialogActions sx={{ marginTop: 2 }}>
               <Button onClick={handleClose}>Cancel</Button>
               <LoadingButton loading={isSubmitting || isMutating} type="submit" variant="contained" color="primary">
