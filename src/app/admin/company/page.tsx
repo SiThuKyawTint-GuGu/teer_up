@@ -1,4 +1,5 @@
 import { Box } from "@mui/material";
+import CompanyTable from "@/page-containers/admin/company/CompanyTable";
 
 export default function CompanyPage() {
   return (
@@ -9,7 +10,7 @@ export default function CompanyPage() {
         maxWidth: "lg",
       }}
     >
-      <h1>Company Page</h1>
+      <CompanyTable />
     </Box>
   );
 }

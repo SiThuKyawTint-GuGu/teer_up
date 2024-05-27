@@ -1,7 +1,5 @@
 "use client";
 
-import { useDeleteSchool, useGetSchools, useUpdateSchool } from "@/services/school";
-import { GetAllSchoolsResponse, School } from "@/types/School";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import InfoIcon from "@mui/icons-material/Info";
@@ -11,12 +9,14 @@ import dayjs from "dayjs";
 import { MRT_ColumnDef, MRT_TableOptions, MaterialReactTable, useMaterialReactTable } from "material-react-table";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { useDeleteCompany, useGetCompanies, useUpdateCompany } from "@/services/company";
+import { Company, CompanyResponse } from "@/types/Company";
 
 export default function CompanyTable() {
-  const [company, setSchools] = useState<School[]>();
-  const { trigger: deleteTrigger, isMutating: deletingSchool } = useDeleteSchool();
-  const { data: companyData, isLoading, mutate } = useGetSchools<GetAllSchoolsResponse>();
-  const { trigger: updateSchool, isMutating: updatingSchool } = useUpdateSchool();
+  const [company, setCompany] = useState<Company[]>();
+  const { trigger: deleteTrigger, isMutating: deletingCompany } = useDeleteCompany();
+  const { data: companyData, isLoading, mutate } = useGetCompanies<CompanyResponse>();
+  const { trigger: update, isMutating: updating } = useUpdateCompany();
   const [open, setOpen] = useState<boolean>(false);
   const [id, setId] = useState<string>("");
   const [globalFilter, setGlobalFilter] = useState<string>("");
@@ -27,10 +27,10 @@ export default function CompanyTable() {
   const [validationErrors, setValidationErrors] = useState<Record<string, string | undefined>>({});
 
   useEffect(() => {
-    if (companyData) setSchools(companyData?.data);
+    if (companyData) setCompany(companyData?.data);
   }, [companyData?.data]);
 
-  const columns = useMemo<MRT_ColumnDef<School>[]>(
+  const columns = useMemo<MRT_ColumnDef<Company>[]>(
     () => [
       {
         accessorKey: "id",
@@ -113,24 +113,23 @@ export default function CompanyTable() {
 
   // update action
   const handleSave: MRT_TableOptions<any>["onEditingRowSave"] = async ({ values, table }) => {
-    const newValidationErrors = validateSchool(values as School);
+    const newValidationErrors = validate(values as Company);
     if (Object.values(newValidationErrors).some(error => error)) {
       setValidationErrors(newValidationErrors);
       return;
     }
     setValidationErrors({});
-    await updateSchool({
+    await update({
       id: values.id,
       name: values.name,
       email: values.email,
-      type: values.type,
     });
     table.setEditingRow(null); //exit editing mode
   };
 
   const table = useMaterialReactTable({
     columns: columns as MRT_ColumnDef<any, any>[],
-    data: (company as School[]) || [],
+    data: (company as Company[]) || [],
     createDisplayMode: "row",
     editDisplayMode: "row",
     enableEditing: true,
@@ -206,13 +205,13 @@ export default function CompanyTable() {
     renderTopToolbarCustomActions: ({ table }) => (
       <div>
         <Button variant="contained" color="error" sx={{ background: "#DA291C", textTransform: "none" }}>
-          <Link href={"/admin/company/0"}>Create New School</Link>
+          <Link href={"/admin/company/0"}>Create New Company</Link>
         </Button>
       </div>
     ),
   });
 
-  const handleDeleteSchool = async () => {
+  const handleDeleteCompany = async () => {
     setOpen(false);
 
     await deleteTrigger({ id });
@@ -227,7 +226,7 @@ export default function CompanyTable() {
             Delete Confirm
           </Typography>
           <Typography sx={{ mt: 2 }}>
-            Are you sure you want to delete this school ID <span className="text-red-700 font-semibold">[{id}]</span>?
+            Are you sure you want to delete this company ID <span className="text-red-700 font-semibold">[{id}]</span>?
           </Typography>
           <div className="flex justify-between mt-4">
             <div></div>
@@ -249,8 +248,8 @@ export default function CompanyTable() {
                 Cancel
               </Button>
               <LoadingButton
-                loading={deletingSchool}
-                onClick={handleDeleteSchool}
+                loading={deletingCompany}
+                onClick={handleDeleteCompany}
                 color="error"
                 sx={{ textTransform: "none" }}
                 variant="contained"
@@ -285,9 +284,9 @@ const validateEmail = (email: string) =>
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     );
 
-const validateSchool = (school: School) => {
+const validate = (company: Company) => {
   return {
-    name: !validateRequired(school.name) ? "Name is required" : "",
-    email: !validateEmail(school.email) ? "Email is required" : "",
+    name: !validateRequired(company.name) ? "Name is required" : "",
+    email: !validateEmail(company.email) ? "Email is required" : "",
   };
 };

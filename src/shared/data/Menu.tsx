@@ -42,7 +42,7 @@ export const menuList: Menu[] = [
   },
   {
     key: "/admin/company",
-    icon: <Icons.carousel className="w-[20px] h-[20px]" />,
+    icon: <Icons.company className="w-[20px] h-[20px]" />,
     title: "Company",
     child: [],
   },
