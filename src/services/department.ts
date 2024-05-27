@@ -1,5 +1,6 @@
 "use client";
 import appAxios from "@/lib/appAxios";
+import appAxiosVersion2 from "@/lib/appAxiosVersion2";
 import useSWR, { SWRResponse } from "swr";
 import useSWRMutation from "swr/mutation";
 
@@ -13,6 +14,12 @@ export type ParamsType = {
 
 export const useGetDepartment = <DepartmentResponse>(): SWRResponse<DepartmentResponse, any> => {
   return useSWR<DepartmentResponse>(`/details/departments`);
+};
+
+export const useGetDepartmentList = <DepartmentResponse>(): SWRResponse<DepartmentResponse, any> => {
+  return useSWR<DepartmentResponse>(`/details/departments`, () =>
+    appAxiosVersion2.get(`/details/departments`).then(res => res.data)
+  );
 };
 
 export const useGetDepartmentById = <DepartmentResponse>(id: number): SWRResponse<DepartmentResponse, any> => {

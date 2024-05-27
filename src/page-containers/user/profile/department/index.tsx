@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { Button } from "@/components/ui/Button";
@@ -6,9 +7,8 @@ import { InputSearch } from "@/components/ui/Inputs";
 import { Checkbox } from "@/components/ui/Inputs/Checkbox";
 import { Label } from "@/components/ui/Label";
 import { Text } from "@/components/ui/Typo/Text";
-import { useGetDepartment, useUpdateUserDepartmentById } from "@/services/department";
+import { useGetDepartmentList, useUpdateUserDepartmentById } from "@/services/department"; 
 import { useGetUserById } from "@/services/user";
-import { DepartmentResponse } from "@/types/Department";
 import { UserProfileResponse } from "@/types/Profile";
 import { Box, Flex, Grid, Section } from "@radix-ui/themes";
 import { debounce } from "lodash";
@@ -21,46 +21,56 @@ const Department: React.FC = () => {
   const { id } = useParams();
   const router = useRouter();
   const { data: profileData } = useGetUserById<UserProfileResponse>(id as string);
-  const { data: departmentData } = useGetDepartment<DepartmentResponse>();
+  const { data: departmentData } = useGetDepartmentList<any>();
   const { trigger: updateTrigger } = useUpdateUserDepartmentById();
-  const departmentsData = profileData?.data?.departments;
-  const inputRef = useRef<any>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const [selectId, setSelectId] = useState<number[]>([]);
 
-    
-    
+  useEffect(() => {
+    if (profileData) {
+      const initialSelectedIds = profileData.data.departments.map(dep => dep.department_id);
+      setSelectId(initialSelectedIds);
+    }
+  }, [profileData]);
+
   const handleCheckedChange = (department_id: number) => {
-     if (selectId.includes(department_id)) {
-       setSelectId(selectId.filter(id => id !== department_id));
-     } else {
-       setSelectId([...selectId, department_id]);
-     }
+    if (selectId.includes(department_id)) {
+      setSelectId(selectId.filter(id => id !== department_id));
+    } else {
+      setSelectId([...selectId, department_id]);
+    }
   };
 
   const debouncedOnChange = debounce(() => {
-    setSearchValue(inputRef?.current?.value);
+    if (inputRef.current) {
+      setSearchValue(inputRef.current.value);
+    }
   }, 500);
 
-
-
-  const filteredDepartments = departmentData?.data?.filter(each =>
-    each.name.toLowerCase().includes(searchValue.toLowerCase())
-  );
+  const filteredDepartments =
+    departmentData?.data?.published.filter((department: { name: any }) =>
+      department.name.toLowerCase().includes(searchValue.toLowerCase())
+    ) || [];
 
   useEffect(() => {
-    console.log(selectId);
-    console.log(filteredDepartments);
-  }, [selectId]);
+    debouncedOnChange();
 
-   const handleSave = (_:undefined) =>{
-    console.log(selectId);
-    selectId.map(item =>
-      updateTrigger({
-        department_id: item,
-      })
-    );
-     router.replace(`/profile?tab=personalDetails`);
-  }
+    return () => debouncedOnChange.cancel();
+  }, [searchValue]);
+
+  const handleSave = async (_: undefined) => {
+    if (!profileData) return;
+    const originalIds = profileData?.data.departments.map(dep => dep.department_id);
+    const addedIds = selectId.filter(id => !originalIds.includes(id));
+    const removedIds = originalIds.filter(id => !selectId.includes(id));
+    for (const department_id of addedIds) {
+      await updateTrigger({ department_id });
+    }
+    for (const department_id of removedIds) {
+      await updateTrigger({ department_id });
+    }
+    router.replace(`/profile?tab=personalDetails`);
+  };
 
   return (
     <>
@@ -72,7 +82,7 @@ const Department: React.FC = () => {
                 <Icons.back className="text-[#373A36] w-[23px] h-[23px]" />
               </div>
               <Text size="3" weight="medium">
-                Career interests
+                Department
               </Text>
               <Link href="/" className="opacity-0">
                 <Icons.plus className="text-primary w-[23px] h-[23px]" />
@@ -91,8 +101,8 @@ const Department: React.FC = () => {
                 inputClassName="p-[10px]"
               />
             </Flex>
-            {filteredDepartments?.map((each, key) => {
-              const isChecked = departmentsData?.find(department => department.department_id === each?.id);
+            {filteredDepartments?.map((each: any, key: number) => {
+              const isChecked = selectId.includes(each?.id);
 
               return (
                 <Label key={key} className="block mb-[20px]">
@@ -102,7 +112,7 @@ const Department: React.FC = () => {
                         {each.name}
                       </Text>
                     </Flex>
-                    <Checkbox defaultChecked={!!isChecked} onCheckedChange={() => handleCheckedChange(each?.id)} />
+                    <Checkbox checked={isChecked} onCheckedChange={() => handleCheckedChange(each?.id)} />
                   </Flex>
                 </Label>
               );
@@ -120,11 +130,3 @@ const Department: React.FC = () => {
 };
 
 export default Department;
-function refetchProfile() {
-  throw new Error("Function not implemented.");
-}
-
-function refetchDepartment() {
-  throw new Error("Function not implemented.");
-}
-

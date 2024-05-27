@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { Button } from "@/components/ui/Button";
 import { Icons } from "@/components/ui/Images";
@@ -5,8 +7,8 @@ import { InputSearch } from "@/components/ui/Inputs";
 import { Checkbox } from "@/components/ui/Inputs/Checkbox";
 import { Label } from "@/components/ui/Label";
 import { Text } from "@/components/ui/Typo/Text";
-import { useGetIndustry } from "@/services/industry";
-import { useGetUserById, useUpdateProfileIndustry } from "@/services/user";
+import { useGetIndustryList, useUpdateIndustryList } from "@/services/industry";
+import { useGetUserById } from "@/services/user";
 import { IndustryResponse } from "@/types/Industry";
 import { UserProfileResponse } from "@/types/Profile";
 import { Box, Flex, Grid, Section } from "@radix-ui/themes";
@@ -20,37 +22,58 @@ const CareerInterests: React.FC = () => {
   const { id } = useParams();
   const router = useRouter();
   const { data: profileData } = useGetUserById<UserProfileResponse>(id as string);
-  const { data: industryData } = useGetIndustry<IndustryResponse>(searchValue);
-  const { trigger: updateTrigger } = useUpdateProfileIndustry();
+  const { data: industryData } = useGetIndustryList<IndustryResponse>();
+  const { trigger: updateTrigger } = useUpdateIndustryList();
   const industries = profileData?.data?.industries;
   const inputRef = useRef<any>(null);
   const [selectId, setSelectId] = useState<number[]>([]);
 
- const handleCheckedChange = (_: boolean, industry_id: number) => {
-   if (selectId.includes(industry_id)) {
-     setSelectId(selectId.filter(id => id !== industry_id));
-   } else {
-     setSelectId([...selectId, industry_id]);
-   }
- };
+  useEffect(() => {
+    if (profileData) {
+      const initialSelectedIds = profileData.data.industries.map(ind => ind.industry_id);
+      setSelectId(initialSelectedIds);
+    }
+  }, [profileData]);
+
+  const handleCheckedChange = (_: boolean, industry_id: number) => {
+    if (selectId.includes(industry_id)) {
+      setSelectId(selectId.filter(id => id !== industry_id));
+    } else {
+      setSelectId([...selectId, industry_id]);
+    }
+  };
 
   const debouncedOnChange = debounce(() => {
     setSearchValue(inputRef?.current?.value);
   }, 500);
 
-  const handleSave = (_:undefined) =>{
-    console.log(selectId);
-    selectId.map(item =>
-      updateTrigger({
-        industry_id:item
-      })
+  let filteredIndustry = [];
+
+  if (Array.isArray(industryData?.data)) {
+    filteredIndustry = industryData.data.filter((industry: { name: any }) =>
+      industry.name.toLowerCase().includes(searchValue.toLowerCase())
     );
-    router.back();
   }
 
- useEffect(() => {
-   console.log(inputRef);
- }, [industries,selectId,inputRef]);
+  const handleSave = async (_: undefined) => {
+    const originalIds = profileData?.data?.industries.map(ind => ind.industry_id) || [];
+    const addedIds = selectId.filter(id => !originalIds.includes(id));
+    const removedIds = originalIds.filter(id => !selectId.includes(id));
+    for (const industry_id of addedIds) {
+      await updateTrigger({ industry_id });
+    }
+    for (const industry_id of removedIds) {
+      await updateTrigger({ industry_id });
+    }
+
+    router.replace(`/profile?tab=personalDetails`);
+  };
+
+  useEffect(() => {
+    debouncedOnChange();
+
+    return () => debouncedOnChange.cancel();
+  }, [searchValue]);
 
   return (
     <>
@@ -62,7 +85,7 @@ const CareerInterests: React.FC = () => {
                 <Icons.back className="text-[#373A36] w-[23px] h-[23px]" />
               </div>
               <Text size="3" weight="medium">
-                Preferences
+                Industry
               </Text>
               <Link href="/" className="opacity-0">
                 <Icons.plus className="text-primary w-[23px] h-[23px]" />
@@ -74,7 +97,6 @@ const CareerInterests: React.FC = () => {
         <Box className="mb-[56px] h-[100%]">
           <Section className="bg-white h-[100%]" py="4" px="3">
             <Flex justify="center" align="center" className="mb-[40px] mt-[10px]">
-              {/* <InputSearch placeholder="Search Interests" /> */}
               <InputSearch
                 onChange={debouncedOnChange}
                 ref={inputRef}
@@ -83,8 +105,8 @@ const CareerInterests: React.FC = () => {
               />
             </Flex>
             <div className="space-y-4">
-              {industryData?.data?.published?.map((each, key) => {
-                const isChecked = industries?.find(industry => industry.industry_id === each?.id);
+              {filteredIndustry?.map((each: any, key: number) => {
+                const isChecked = selectId.includes(each?.id);
 
                 return (
                   <Label key={key} className="block mb-[15px] asd">
@@ -95,7 +117,7 @@ const CareerInterests: React.FC = () => {
                         </Text>
                       </Flex>
                       <Checkbox
-                        defaultChecked={isChecked && true}
+                        checked={isChecked}
                         onCheckedChange={(checked: boolean) => handleCheckedChange(checked, each?.id)}
                       />
                     </Flex>
@@ -104,25 +126,10 @@ const CareerInterests: React.FC = () => {
               })}
 
               <div className="pt-[40px]">
-                <Button onClick={()=>handleSave(undefined)} className="w-full h-[40px]">Save</Button>
+                <Button onClick={() => handleSave(undefined)} className="w-full h-[40px]">
+                  Save
+                </Button>
               </div>
-              {/* <Text size="3" weight="bold">
-                Coming Soon
-              </Text>
-              {industryData?.data?.unpublished?.map((each, key) => {
-                return (
-                  <Label key={key} className="block mb-[15px] asd">
-                    <Flex justify="between" align="start">
-                      <Flex direction="column" gap="2">
-                        <Text as="label" weight="regular" size="3" className="text-[#909090]">
-                          {each.name}
-                        </Text>
-                      </Flex>
-                      <Checkbox disabled />
-                    </Flex>
-                  </Label>
-                );
-              })} */}
             </div>
           </Section>
         </Box>

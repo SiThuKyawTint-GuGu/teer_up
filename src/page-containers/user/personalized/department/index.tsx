@@ -3,20 +3,24 @@
 import Loading from "@/app/loading";
 import { Button } from "@/components/ui/Button";
 import { Text } from "@/components/ui/Typo/Text";
-import { useGetDepartment, useUpdateUserDepartment } from "@/services/department";
+import { useGetDepartment, useGetDepartmentList, useUpdateUserDepartment } from "@/services/department";
 import { DepartmentResponse } from "@/types/Department";
 import { IndustryData } from "@/types/Industry";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import QuestionPageCard from "../components/QuestionPageCard";
 
 const DepartmentPage = () => {
   const router = useRouter();
   const { trigger } = useUpdateUserDepartment();
   const [isPending, startTransition] = useTransition();
-  const { data, isLoading } = useGetDepartment<DepartmentResponse>();
+  const { data, isLoading } = useGetDepartmentList<DepartmentResponse>();
   const [selectData, setSelectData] = useState<number[]>([]);
+
+  useEffect(()=>{
+    console.log(data?.data?.published);
+  },[data])
   const onChange = (data: number) => {
     const sameId = selectData.find(e => e === data);
     if (sameId) {
@@ -27,7 +31,7 @@ const DepartmentPage = () => {
       return [...prev, data];
     });
   };
-  const industry = useMemo(() => data?.data, [data]);
+  const industry = useMemo(() => data?.data?.published, [data]);
 
   const submitHandler = () => {
     trigger(
