@@ -41,6 +41,12 @@ export const menuList: Menu[] = [
     child: [],
   },
   {
+    key: "/admin/company",
+    icon: <Icons.company className="w-[20px] h-[20px]" />,
+    title: "Company",
+    child: [],
+  },
+  {
     key: "/admin/schools",
     icon: <Icons.school className="w-[20px] h-[20px]" />,
     title: "School",

@@ -1,3 +1,4 @@
+import BusinessIcon from "@mui/icons-material/Business";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import ArticleIcon from "@mui/icons-material/Article";
@@ -137,6 +138,7 @@ export const Icons = {
   department: ApartmentIcon,
   mentor: AccountBoxIcon,
   carousel: ViewCarouselIcon,
+  company: BusinessIcon,
   school: SchoolIcon,
   major: MenuBookIcon,
   course: CastForEducationIcon,
