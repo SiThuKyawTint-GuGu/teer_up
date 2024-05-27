@@ -3,12 +3,12 @@
 import Loading from "@/app/loading";
 import ContentDetailHeader from "@/components/contentLayout/ContentDetailHeader";
 
-import { useGetContentBySlug } from "@/services/content";
+import { useContentWatchCount, useGetContentBySlug } from "@/services/content";
 import { ContentData } from "@/types/Content";
 
 import { Flex, Grid } from "@radix-ui/themes";
 import { useParams } from "next/navigation";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import NormalContentDetail from "./ContentDetail";
 import MentorDetail from "./MentorDetail";
 import PathwayDetail from "./PathwayDetail";
@@ -18,8 +18,18 @@ type ContentLayoutProps = {};
 const UserContentDetail: React.FC<ContentLayoutProps> = () => {
   const { slug }: { slug: string } = useParams();
   const { data, mutate: contentMutate, isLoading } = useGetContentBySlug<ContentData>(slug);
+  const { trigger: updateWatchCount } = useContentWatchCount();
 
   const contentData: ContentData = useMemo(() => data?.data, [data]);
+
+  useEffect(() => {
+    if (contentData?.id) {
+      updateWatchCount({
+        watched_time: 1,
+        content_id: contentData?.id,
+      });
+    }
+  }, [contentData?.id, updateWatchCount]);
 
   const getContentDetail = () => {
     if (
