@@ -55,6 +55,7 @@ export interface UnfinishedPathwayResponse {
 }
 
 export interface ContentHistoryData {
+  last_watched_time: string;
   id: number;
   title: string;
   description: string;

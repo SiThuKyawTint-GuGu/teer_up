@@ -186,7 +186,7 @@ const ContentHistoryPage: React.FC = () => {
                               <Text as="span" className="text-sm capitalize">
                                 {each?.type}
                               </Text>
-                              <Text className="text-sm">{dayjs(each?.created_at).fromNow()}</Text>
+                              <Text className="text-sm">{dayjs(each?.last_watched_time).fromNow()}</Text>
                             </Text>
                           </Flex>
                         </Flex>
