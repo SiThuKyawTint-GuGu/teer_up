@@ -13,9 +13,9 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
 export default function CompanyTable() {
-  const [schools, setSchools] = useState<School[]>();
+  const [company, setSchools] = useState<School[]>();
   const { trigger: deleteTrigger, isMutating: deletingSchool } = useDeleteSchool();
-  const { data: schoolsData, isLoading, mutate } = useGetSchools<GetAllSchoolsResponse>();
+  const { data: companyData, isLoading, mutate } = useGetSchools<GetAllSchoolsResponse>();
   const { trigger: updateSchool, isMutating: updatingSchool } = useUpdateSchool();
   const [open, setOpen] = useState<boolean>(false);
   const [id, setId] = useState<string>("");
@@ -27,8 +27,8 @@ export default function CompanyTable() {
   const [validationErrors, setValidationErrors] = useState<Record<string, string | undefined>>({});
 
   useEffect(() => {
-    if (schoolsData) setSchools(schoolsData?.data);
-  }, [schoolsData?.data]);
+    if (companyData) setSchools(companyData?.data);
+  }, [companyData?.data]);
 
   const columns = useMemo<MRT_ColumnDef<School>[]>(
     () => [
@@ -130,7 +130,7 @@ export default function CompanyTable() {
 
   const table = useMaterialReactTable({
     columns: columns as MRT_ColumnDef<any, any>[],
-    data: (schools as School[]) || [],
+    data: (company as School[]) || [],
     createDisplayMode: "row",
     editDisplayMode: "row",
     enableEditing: true,
@@ -150,7 +150,7 @@ export default function CompanyTable() {
     positionActionsColumn: "last",
     // manualFiltering: true,
     manualPagination: true,
-    rowCount: schools?.length ?? 0,
+    rowCount: company?.length ?? 0,
     initialState: {
       pagination: {
         pageSize: 10,
@@ -184,7 +184,7 @@ export default function CompanyTable() {
           {/* </Link> */}
         </Tooltip>
         <Tooltip title="Details">
-          <Link href={`/admin/schools/${row.id}`}>
+          <Link href={`/admin/company/${row.id}`}>
             <IconButton>
               <InfoIcon />
             </IconButton>
@@ -206,7 +206,7 @@ export default function CompanyTable() {
     renderTopToolbarCustomActions: ({ table }) => (
       <div>
         <Button variant="contained" color="error" sx={{ background: "#DA291C", textTransform: "none" }}>
-          <Link href={"/admin/schools/0"}>Create New School</Link>
+          <Link href={"/admin/company/0"}>Create New School</Link>
         </Button>
       </div>
     ),
