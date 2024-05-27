@@ -8,7 +8,7 @@ import { ContentData } from "@/types/Content";
 
 import { Flex, Grid } from "@radix-ui/themes";
 import { useParams } from "next/navigation";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import NormalContentDetail from "./ContentDetail";
 import MentorDetail from "./MentorDetail";
 import PathwayDetail from "./PathwayDetail";
@@ -22,14 +22,33 @@ const UserContentDetail: React.FC<ContentLayoutProps> = () => {
 
   const contentData: ContentData = useMemo(() => data?.data, [data]);
 
+  // Ref to store the start time
+  const startTimeRef = useRef<number | null>(null);
+
+  // Calculate and update the watch time
+  const calculateAndUpdateWatchTime = () => {
+    if (startTimeRef.current && contentData?.id) {
+      const endTime = Date.now();
+      const watchTime = Math.round((endTime - startTimeRef.current) / 1000); // Watch time in seconds
+      updateWatchCount({
+        watched_time: watchTime,
+        content_id: contentData.id,
+      });
+      startTimeRef.current = null; // Reset the start time
+    }
+  };
+
   useEffect(() => {
     if (contentData?.id) {
-      updateWatchCount({
-        watched_time: 1,
-        content_id: contentData?.id,
-      });
+      // Set the start time when the content is loaded
+      startTimeRef.current = Date.now();
     }
-  }, [contentData?.id, updateWatchCount]);
+
+    return () => {
+      // Update watch time when the component is unmounted
+      calculateAndUpdateWatchTime();
+    };
+  }, [contentData?.id]);
 
   const getContentDetail = () => {
     if (
