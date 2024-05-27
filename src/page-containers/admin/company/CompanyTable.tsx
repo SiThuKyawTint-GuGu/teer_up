@@ -4,13 +4,14 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import InfoIcon from "@mui/icons-material/Info";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { Box, Button, Chip, IconButton, Modal, Tooltip, Typography } from "@mui/material";
+import { Box, Button, IconButton, Modal, Tooltip, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import { MRT_ColumnDef, MRT_TableOptions, MaterialReactTable, useMaterialReactTable } from "material-react-table";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useDeleteCompany, useGetCompanies, useUpdateCompany } from "@/services/company";
 import { Company, CompanyResponse } from "@/types/Company";
+import CreateCompanyModal from "@/page-containers/admin/company/CreateCompanyModal";
 
 export default function CompanyTable() {
   const [company, setCompany] = useState<Company[]>();
@@ -67,20 +68,6 @@ export default function CompanyTable() {
               ...validationErrors,
               email: undefined,
             }),
-        },
-      },
-      {
-        accessorKey: "type",
-        header: "Type",
-        enableEditing: false,
-        renderCell: ({
-          row,
-        }: {
-          row: {
-            type: string;
-          };
-        }) => {
-          return <Chip label={row.type} />;
         },
       },
       {
@@ -202,13 +189,7 @@ export default function CompanyTable() {
         </Tooltip>
       </Box>
     ),
-    renderTopToolbarCustomActions: ({ table }) => (
-      <div>
-        <Button variant="contained" color="error" sx={{ background: "#DA291C", textTransform: "none" }}>
-          <Link href={"/admin/company/0"}>Create New Company</Link>
-        </Button>
-      </div>
-    ),
+    renderTopToolbarCustomActions: ({ table }) => <CreateCompanyModal />,
   });
 
   const handleDeleteCompany = async () => {

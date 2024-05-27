@@ -9,6 +9,11 @@ export interface CompanyArgType {
   };
 }
 
+export const useCreateCompany = () =>
+  useSWRMutation(`/companies`, (url, { arg }: { arg: any }) => {
+    return appAxios.post<CompanyArgType>(url, arg);
+  });
+
 export const useGetCompanies = <CompanyDataResponse>(): SWRResponse<CompanyDataResponse, any> => {
   return useSWR<CompanyDataResponse>(`/companies`);
 };
