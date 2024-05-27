@@ -47,13 +47,13 @@ const CareerInterests: React.FC = () => {
     setSearchValue(inputRef?.current?.value);
   }, 500);
 
-  let filteredIndustry = [];
+ let filteredIndustry: IndustryResponse[] = []; 
 
-  if (Array.isArray(industryData?.data)) {
-    filteredIndustry = industryData.data.filter((industry: { name: any }) =>
-      industry.name.toLowerCase().includes(searchValue.toLowerCase())
-    );
-  }
+ if (industryData && Array.isArray(industryData.data)) {
+   filteredIndustry = industryData.data.filter((industry: { name: any }) =>
+     industry.name.toLowerCase().includes(searchValue.toLowerCase())
+   );
+ }
 
   const handleSave = async (_: undefined) => {
     const originalIds = profileData?.data?.industries.map(ind => ind.industry_id) || [];

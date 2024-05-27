@@ -19,7 +19,6 @@ const DepartmentPage = () => {
   const [selectData, setSelectData] = useState<number[]>([]);
 
   useEffect(()=>{
-    console.log(data?.data?.published);
   },[data])
   const onChange = (data: number) => {
     const sameId = selectData.find(e => e === data);
@@ -34,6 +33,7 @@ const DepartmentPage = () => {
   const industry = useMemo(() => data?.data?.published, [data]);
 
   const submitHandler = () => {
+    console.log(selectData);
     trigger(
       {
         departments: selectData,
@@ -54,7 +54,7 @@ const DepartmentPage = () => {
         <div className="w-full h-full">
           <QuestionPageCard
             nextPage="/industry"
-            title="Which career field are you most interested in??"
+            title="Which Department are you most interested in??"
             layout
             subTitle="Pick 1 or more fields"
           >

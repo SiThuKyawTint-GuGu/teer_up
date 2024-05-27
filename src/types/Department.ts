@@ -16,7 +16,10 @@ export interface DepartmentData {
 }
 
 export interface DepartmentResponse {
-  data: DepartmentData[];
+  data: {
+    map: any;
+    published: DepartmentData[];
+  };
 }
 
 export interface UserDepartmentResponse {
