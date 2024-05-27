@@ -8,7 +8,9 @@ import {
   IconButton,
   InputAdornment,
   InputLabel,
+  MenuItem,
   OutlinedInput,
+  Select,
   TextField,
   Typography,
 } from "@mui/material";
@@ -22,17 +24,21 @@ import { USER_ROLE } from "@/shared/enums";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { useState } from "react";
+import { useGetSchools } from "@/services/school";
+import { GetAllSchoolsResponse } from "@/types/School";
 
 const schema = yup.object().shape({
   name: yup.string().required("Name is required"),
   email: yup.string().email().required("Email is required"),
   password: yup.string().required("Password is required").min(8, "Password must be at least 8 characters"),
+  school_id: yup.number().required("School is required"),
 });
 
 export default function SchoolAdminForm() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const { trigger: createUser, isMutating: creatingUser } = useCreateUser();
+  const { data: schoolsData, isLoading, mutate } = useGetSchools<GetAllSchoolsResponse>();
   const {
     register,
     handleSubmit,
@@ -102,6 +108,21 @@ export default function SchoolAdminForm() {
         />
         {errors.password && <FormHelperText error>{errors.password.message}</FormHelperText>}
       </FormControl>
+
+      {schoolsData?.data ? (
+        <FormControl fullWidth sx={{}}>
+          <InputLabel id="school-id">School</InputLabel>
+          <Select fullWidth labelId="school-id" {...register("school_id")} label="School">
+            {schoolsData?.data.map(school => (
+              <MenuItem key={school.id} value={school.id}>
+                {school.name}
+              </MenuItem>
+            ))}
+          </Select>
+          <FormHelperText>Choose School</FormHelperText>
+        </FormControl>
+      ) : null}
+
       <Box>
         <LoadingButton type="submit" loading={isSubmitting || creatingUser} variant="contained">
           Submit

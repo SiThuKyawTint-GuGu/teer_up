@@ -75,7 +75,7 @@ export default function CompanyAdminForm() {
       onSubmit={handleSubmit(onSubmit)}
     >
       <Typography variant="h4" fontWeight="bold">
-        Add Company
+        Add Company Admin
       </Typography>
       <TextField
         label="Company Name"
