@@ -20,22 +20,22 @@ export const navbarItems: NavbarType[] = [
     path: "/company",
     icon: <Icons.schoolBlogIcon width={24} height={24} fill="#373A36" />,
     activeIcon: <Icons.schoolBlogIcon width={24} height={24} activeFill="#DA291C" active />,
-    subItems: [
-      {
-        text: "Job Posting",
-        path: "/company/job",
-      },
-      {
-        text: "View Applicants",
-        path: "/company/applicants",
-      },
-    ],
   },
   {
     text: "Opportunities",
     path: "/company/opportunities",
     icon: <Icons.schoolJobIcon width={24} height={24} fill="#373A36" />,
     activeIcon: <Icons.schoolJobIcon width={24} height={24} activeFill="#DA291C" active />,
+    subItems: [
+      {
+        text: "Job Posting",
+        path: "/company/opportunities/job",
+      },
+      {
+        text: "View Applicants",
+        path: "/company/applicants",
+      },
+    ],
   },
   {
     text: "Students",

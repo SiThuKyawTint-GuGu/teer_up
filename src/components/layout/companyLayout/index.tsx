@@ -106,8 +106,8 @@ const CompanyDashboardLayout: React.FC<LayoutProps> = ({ children }) => {
                           key={subIndex}
                           disablePadding
                           sx={{
-                            backgroundColor: pathName === item.path ? "secondary.main" : "",
-                            borderLeft: pathName === item.path ? "4px solid #DA291C" : "4px solid white",
+                            backgroundColor: pathName === subItem.path ? "secondary.main" : "",
+                            borderLeft: pathName === subItem.path ? "4px solid #DA291C" : "4px solid white",
                           }}
                         >
                           <ListItemButton component={Link} href={subItem.path}>
@@ -115,7 +115,7 @@ const CompanyDashboardLayout: React.FC<LayoutProps> = ({ children }) => {
                               primary={subItem.text}
                               sx={{
                                 "& .MuiTypography-root": {
-                                  color: pathName === item.path ? "primary.main" : "",
+                                  color: pathName === subItem.path ? "primary.main" : "",
                                   fontWeight: pathName === subItem.path ? "600" : "",
                                   marginLeft: "60px",
                                 },
