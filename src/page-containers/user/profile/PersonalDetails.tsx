@@ -229,7 +229,7 @@ function PersonalDetails({ user, userProfile: { data: userProfile } }: PersonalD
         <Section className="bg-white" py="4" px="3">
           <Flex>
             <Heading as="h6" size="4" align="left" mb="4">
-              Career interests
+              Department
             </Heading>
             <Link href={`/profile/${user?.id}/department`}>
               <p className="text-primary text-[16px] font-[600] ms-3">Edit</p>
@@ -251,7 +251,7 @@ function PersonalDetails({ user, userProfile: { data: userProfile } }: PersonalD
         <Section className="bg-white" py="4" px="3">
           <Flex>
             <Heading as="h6" size="4" align="left" mb="4">
-              Industry interests
+              Industry (Career Interest)
             </Heading>
             <Link href={`/profile/${user?.id}/career-interests`}>
               <p className="text-primary text-[16px] font-[600] ms-3">Edit</p>

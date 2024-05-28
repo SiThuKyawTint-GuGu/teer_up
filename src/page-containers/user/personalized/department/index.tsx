@@ -3,20 +3,23 @@
 import Loading from "@/app/loading";
 import { Button } from "@/components/ui/Button";
 import { Text } from "@/components/ui/Typo/Text";
-import { useGetDepartment, useUpdateUserDepartment } from "@/services/department";
+import { useGetDepartment, useGetDepartmentList, useUpdateUserDepartment } from "@/services/department";
 import { DepartmentResponse } from "@/types/Department";
 import { IndustryData } from "@/types/Industry";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import QuestionPageCard from "../components/QuestionPageCard";
 
 const DepartmentPage = () => {
   const router = useRouter();
   const { trigger } = useUpdateUserDepartment();
   const [isPending, startTransition] = useTransition();
-  const { data, isLoading } = useGetDepartment<DepartmentResponse>();
+  const { data, isLoading } = useGetDepartmentList<DepartmentResponse>();
   const [selectData, setSelectData] = useState<number[]>([]);
+
+  useEffect(()=>{
+  },[data])
   const onChange = (data: number) => {
     const sameId = selectData.find(e => e === data);
     if (sameId) {
@@ -27,9 +30,10 @@ const DepartmentPage = () => {
       return [...prev, data];
     });
   };
-  const industry = useMemo(() => data?.data, [data]);
+  const industry = useMemo(() => data?.data?.published, [data]);
 
   const submitHandler = () => {
+    console.log(selectData);
     trigger(
       {
         departments: selectData,
@@ -50,7 +54,7 @@ const DepartmentPage = () => {
         <div className="w-full h-full">
           <QuestionPageCard
             nextPage="/industry"
-            title="Which career field are you most interested in??"
+            title="Which Department are you most interested in??"
             layout
             subTitle="Pick 1 or more fields"
           >

@@ -3,18 +3,18 @@
 import Loading from "@/app/loading";
 import { Button } from "@/components/ui/Button";
 import { Text } from "@/components/ui/Typo/Text";
-import { useGetIndustry, useUpdateUserIndustry } from "@/services/industry";
+import { useGetIndustry, useGetIndustryList, useUpdateUserIndustry } from "@/services/industry";
 import { IndustryData, IndustryResponse } from "@/types/Industry";
 import { Flex } from "@radix-ui/themes";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import QuestionPageCard from "../components/QuestionPageCard";
 const IndustryPage = () => {
   const router = useRouter();
   const { trigger } = useUpdateUserIndustry();
   const [isPending, startTransition] = useTransition();
-  const { data, isLoading } = useGetIndustry<IndustryResponse>();
+  const { data, isLoading } = useGetIndustryList<IndustryResponse>();
   console.log(data);
 
   const [selectData, setSelectData] = useState<number[]>([]);
@@ -29,8 +29,8 @@ const IndustryPage = () => {
     });
   };
 
-  const publicIndustry = useMemo(() => data?.data.published, [data]);
-  const unpublicIndustry = useMemo(() => data?.data.unpublished, [data]);
+  const publicIndustry = useMemo(() => data?.data, [data]);
+  const unpublicIndustry = useMemo(() => data?.data, [data]);
 
   const submitHandler = () => {
     trigger(
@@ -45,6 +45,10 @@ const IndustryPage = () => {
     );
   };
 
+  useEffect(()=>{
+    console.log(data);
+  },[])
+
   return (
     <>
       {isLoading ? (
@@ -53,9 +57,9 @@ const IndustryPage = () => {
         <div className="w-full bg-[#F8F9FB]">
           <QuestionPageCard
             nextPage="/questions"
-            title="Which industry are you most interested in?"
+            title="Which Career Interests are you most interested in?"
             layout
-            subTitle="Pick 1 or more industry"
+            subTitle="Pick 1 or more Career Interests"
           >
             <Flex direction="column" className=" w-full h-full no-scrollbar overflow-y-auto gap-y-3">
               <div className="flex justify-between flex-wrap   no-scrollbar ">
@@ -88,7 +92,7 @@ const IndustryPage = () => {
                   ))}
               </div>
 
-              <Text className="font-bold text-[18px]">Coming Soon</Text>
+              {/* <Text className="font-bold text-[18px]">Coming Soon</Text>
               <div className="grid grid-cols-2 gap-3   no-scrollbar  grid-flow-row">
                 {unpublicIndustry &&
                   unpublicIndustry.length > 0 &&
@@ -101,7 +105,7 @@ const IndustryPage = () => {
                       <Text className="text-slateGray">{each.name}</Text>
                     </div>
                   ))}
-              </div>
+              </div> */}
             </Flex>
           </QuestionPageCard>
           <div className="fixed bottom-0 w-full max-w-[400px] py-2 px-4 mx-auto  bg-white">

@@ -12,10 +12,14 @@ export interface DepartmentData {
   name: string;
   created_at: string;
   updated_at: string;
+  published: any;
 }
 
 export interface DepartmentResponse {
-  data: DepartmentData[];
+  data: {
+    map: any;
+    published: DepartmentData[];
+  };
 }
 
 export interface UserDepartmentResponse {

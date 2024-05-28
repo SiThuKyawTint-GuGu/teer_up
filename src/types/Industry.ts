@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 export interface IndustryData {
   id: number;
   name: string;
@@ -6,7 +7,10 @@ export interface IndustryData {
 }
 
 export interface IndustryResponse {
+  name: any;
   data: {
+    length: number;
+    map(arg0: (each: IndustryData, index: number) => import("react").JSX.Element): import("react").ReactNode;
     published: IndustryData[];
     unpublished: IndustryData[];
   };
