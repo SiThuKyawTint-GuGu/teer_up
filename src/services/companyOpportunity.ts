@@ -1,5 +1,8 @@
 "use client";
+import appAxios from "@/lib/appAxios";
+import { OpportunityContentArgType } from "@/types/CompanyOpportunity";
 import useSWR, { SWRResponse } from "swr";
+import useSWRMutation from "swr/mutation";
 
 export const useGetCompanyOpportunity = <CompanyOpportunityResponse>(): SWRResponse<
   CompanyOpportunityResponse,
@@ -14,3 +17,8 @@ export const useGetCompanyOpportunityById = <CompanyOpportunityResponseById>(
   const key = id != "0" ? `/companies/opportunities/${id}` : null;
   return useSWR<CompanyOpportunityResponseById>(key);
 };
+
+export const usePostContentOpportunity = () =>
+  useSWRMutation(`/content`, (url, { arg }: OpportunityContentArgType) => {
+    return appAxios.post<OpportunityContentArgType>(url, arg);
+  });
