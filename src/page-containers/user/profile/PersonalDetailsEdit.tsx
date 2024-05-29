@@ -76,7 +76,6 @@ const PersonalDetailsEdit: React.FC = () => {
   });
 
    useEffect(() => {
-     console.log("Previous URL (referrer):", referrer);
    }, [referrer]);
 
   const handleDeletePhoto = async () => {
@@ -242,7 +241,9 @@ const PersonalDetailsEdit: React.FC = () => {
                               <FormControl>
                                 <Select
                                   onValueChange={(value: string) => {
-                                    const selectedGender = genderData?.find((item: { type: string; }) => item.type === value);
+                                    const selectedGender = genderData?.find(
+                                      (item: { type: string }) => item.type === value
+                                    );
 
                                     setSelectedGender(selectedGender ? String(selectedGender.id) : null);
                                     field.onChange(selectedGender?.type || "");
@@ -253,7 +254,7 @@ const PersonalDetailsEdit: React.FC = () => {
                                     {field.value || "Select a Gender"}
                                   </SelectTrigger>
                                   <SelectContent className="bg-white">
-                                    {genderData?.map((item:any, index:number) => (
+                                    {genderData?.map((item: any, index: number) => (
                                       <SelectItem key={index} value={item.type}>
                                         <Text>{item.type}</Text>
                                       </SelectItem>
@@ -317,7 +318,9 @@ const PersonalDetailsEdit: React.FC = () => {
                   </Section>
                 </CardBox>
                 <Flex justify={"end"}>
-                  <Button type="submit" className="me-2 px-8">Done</Button>
+                  <Button type="submit" className="me-2 px-8">
+                    Done
+                  </Button>
                 </Flex>
               </Box>
             </Grid>

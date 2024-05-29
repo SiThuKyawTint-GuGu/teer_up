@@ -1,11 +1,10 @@
-import React, { ChangeEvent, HTMLInputTypeAttribute } from "react";
+/* eslint-disable no-unused-vars */
+import React, { ChangeEvent, HTMLInputTypeAttribute, useState } from "react";
 import styled, { css } from "styled-components";
-
 import { IconButton, TextArea, TextField } from "@radix-ui/themes";
-
+import { Icons } from "../Images";
 import { USER_ROLE } from "@/shared/enums";
 import { cn } from "@/utils/cn";
-import { Icons } from "../Images";
 
 export enum SLOT_DIRECTION {
   LEFT = "LEFT",
@@ -18,7 +17,6 @@ type Props = {
   className?: string;
   error?: any;
   placeholder?: string;
-  value?: string;
   defaultValue?: string;
   inputType?: USER_ROLE | string;
   disabled?: boolean;
@@ -33,7 +31,6 @@ const InputText = React.forwardRef<HTMLInputElement, Props>(
       error,
       className,
       placeholder,
-      defaultValue,
       handleChange,
       inputType = USER_ROLE.ADMIN,
       disabled = false,
@@ -41,6 +38,15 @@ const InputText = React.forwardRef<HTMLInputElement, Props>(
     },
     ref
   ) => {
+    const [value, setValue] = useState(props.defaultValue || "");
+
+    const handleChangeInternal = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setValue(e.target.value);
+      if (handleChange) {
+        handleChange(e);
+      }
+    };
+
     return (
       <InputStyled inputtype={inputType} disabled={disabled}>
         <label htmlFor="email" className="block text-sm font-medium text-gray-700">
@@ -52,11 +58,11 @@ const InputText = React.forwardRef<HTMLInputElement, Props>(
               type={type}
               className={cn(`${className} shadow-md text-[#2A2A2A] `)}
               placeholder={placeholder}
-              defaultValue={defaultValue || ""}
+              value={value}
               size="3"
               ref={ref}
               disabled={disabled}
-              onChange={handleChange}
+              onChange={handleChangeInternal}
               {...props}
             />
           </TextField.Root>
@@ -67,7 +73,6 @@ const InputText = React.forwardRef<HTMLInputElement, Props>(
   }
 );
 InputText.displayName = "InputText";
-
 InputText.defaultProps = {
   type: "text",
 };
@@ -88,7 +93,6 @@ const InputSearch = React.forwardRef<HTMLInputElement, InputProps>(
       placeholder,
       className,
       variant,
-      defaultValue,
       slotDir,
       clearSlot,
       onClear,
@@ -97,6 +101,7 @@ const InputSearch = React.forwardRef<HTMLInputElement, InputProps>(
       onKeyPress,
       onFocus,
       inputClassName = "",
+      defaultValue,
     },
     ref
   ) => {
@@ -105,9 +110,7 @@ const InputSearch = React.forwardRef<HTMLInputElement, InputProps>(
         <TextField.Root>
           {slotDir === SLOT_DIRECTION.LEFT && (
             <TextField.Slot>
-              {/* <IconButton size="2" variant="ghost" onClick={onSlotClick}> */}
               <Icons.search className={cn("w-[24px] h-[24px] text-[#5B6770] ", variant && "text-[#8d9499]")} />
-              {/* </IconButton> */}
             </TextField.Slot>
           )}
 
@@ -118,7 +121,7 @@ const InputSearch = React.forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             onChange={onChange}
             onKeyPress={onKeyPress}
-            defaultValue={defaultValue}
+            value={defaultValue}
             onFocus={onFocus}
           />
           {slotDir === SLOT_DIRECTION.RIGHT && (
@@ -128,7 +131,6 @@ const InputSearch = React.forwardRef<HTMLInputElement, InputProps>(
               </IconButton>
             </TextField.Slot>
           )}
-          {/* /** cross button */}
           {clearSlot && (
             <TextField.Slot>
               <IconButton size="1" variant="ghost">
@@ -150,11 +152,17 @@ InputSearch.defaultProps = {
   clearSlot: false,
 };
 
-const InputTextArea = React.forwardRef<HTMLInputElement, Props>(
-  (
-    { label, error, className, placeholder, defaultValue, inputType = USER_ROLE.ADMIN, disabled = false, ...props },
-    ref
-  ) => {
+const InputTextArea = React.forwardRef<HTMLTextAreaElement, Props>(
+  ({ label, error, className, placeholder, inputType = USER_ROLE.ADMIN, disabled = false, ...props }, ref) => {
+    const [value, setValue] = useState(props.defaultValue || "");
+
+    const handleChangeInternal = (e:any) => {
+      setValue(e.target.value);
+      if (props.handleChange) {
+        props.handleChange(e);
+      }
+    };
+
     return (
       <InputStyled inputtype={inputType}>
         <label htmlFor="email" className="block text-sm font-medium text-gray-700">
@@ -164,8 +172,8 @@ const InputTextArea = React.forwardRef<HTMLInputElement, Props>(
           <TextArea
             className={cn("w-full outline-none rounded-[8px] bg-[#5b6770] bg-opacity-10 font-regular", className)}
             placeholder={placeholder}
-            defaultValue={defaultValue || ""}
-            size="3"
+            value={value}
+            onChange={handleChangeInternal}
             disabled={disabled}
             {...props}
           />
@@ -177,12 +185,17 @@ const InputTextArea = React.forwardRef<HTMLInputElement, Props>(
 );
 InputTextArea.displayName = "InputTextArea";
 
+const InputTextAreaBgWhite = React.forwardRef<HTMLTextAreaElement, Props>(
+  ({ label, error, className, placeholder, inputType = USER_ROLE.ADMIN, disabled = false, ...props }, ref) => {
+    const [value, setValue] = useState(props.defaultValue || "");
 
-const InputTextAreaBgWhite = React.forwardRef<HTMLInputElement, Props>(
-  (
-    { label, error, className, placeholder, defaultValue, inputType = USER_ROLE.ADMIN, disabled = false, ...props },
-    ref
-  ) => {
+    const handleChangeInternal = (e: any) => {
+      setValue(e.target.value);
+      if (props.handleChange) {
+        props.handleChange(e);
+      }
+    };
+
     return (
       <InputStyled inputtype={inputType}>
         <label htmlFor="email" className="block text-sm font-medium text-gray-700">
@@ -195,8 +208,8 @@ const InputTextAreaBgWhite = React.forwardRef<HTMLInputElement, Props>(
               className
             )}
             placeholder={placeholder}
-            defaultValue={defaultValue || ""}
-            size="3"
+            value={value}
+            onChange={handleChangeInternal}
             disabled={disabled}
             {...props}
           />
@@ -207,10 +220,12 @@ const InputTextAreaBgWhite = React.forwardRef<HTMLInputElement, Props>(
   }
 );
 InputTextAreaBgWhite.displayName = "InputTextAreaBgWhite";
-
-const InputOtp: React.FC = ({ ...props }) => {
-  return <InputOtpStyled {...props} />;
-};
+const InputOtpStyled = styled.input`
+  width: 53px;
+  height: 64px;
+  border-radius: 8px;
+  background-color: white;
+`;
 
 const InputStyled = styled.div<{ inputtype?: USER_ROLE | string; disabled?: boolean }>`
   width: 100%;
@@ -238,11 +253,4 @@ const InputStyled = styled.div<{ inputtype?: USER_ROLE | string; disabled?: bool
   }
 `;
 
-export { InputOtp, InputSearch, InputStyled, InputText, InputTextArea,InputTextAreaBgWhite };
-
-const InputOtpStyled = styled.input`
-  width: 53px;
-  height: 64px;
-  border-radius: 8px;
-  background-color: white;
-`;
+export { InputOtpStyled, InputSearch, InputStyled, InputText, InputTextArea, InputTextAreaBgWhite };
