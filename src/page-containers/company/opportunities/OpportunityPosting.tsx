@@ -171,7 +171,7 @@ const OpportunityPosting = () => {
       return;
     }
 
-    if (!formconfigs) {
+    if (!selectForm) {
       setEventError("Form config is required!");
       return;
     }
@@ -217,9 +217,8 @@ const OpportunityPosting = () => {
         degree_id: degree,
       },
     };
-
-    console.log(postdata);
     await postTrigger(postdata);
+    router.push("/company/opportunities");
   };
 
   useEffect(() => {
@@ -486,7 +485,7 @@ const OpportunityPosting = () => {
         </Stack>
         {!createError && eventError && <p className="text-red-700 mt-3 mb-3">{eventError}</p>}
         <Stack direction="row" justifyContent="space-between" my={4}>
-          <Button type="submit" variant="secondary" disabled={postMutating}>
+          <Button type="submit" variant="secondary" disabled={postMutating} onClick={() => router.back()}>
             Cancel
           </Button>
           <Button type="submit" color="primary" disabled={postMutating}>
