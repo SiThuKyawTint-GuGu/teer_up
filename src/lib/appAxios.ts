@@ -1,39 +1,40 @@
-import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from "axios";
-
+import axios from "axios";
 import { getToken } from "@/utils/auth";
 
 const appAxios = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_API_URL}/api/v1`,
-  headers: {
-    Accept: "application/json",
-    "Content-Type": "application/json",
-  },
-  // withCredentials: true,
 });
 
 appAxios.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
+  config => {
     if (config.headers) {
       const token = getToken();
-      if (!config.headers.getAuthorization()) {
-        config.headers.Authorization = token ? `Bearer ${token}` : "";
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+      if (!config.headers["Content-Type"]) {
+        if (config.data instanceof FormData) {
+          config.headers["Content-Type"] = "multipart/form-data";
+        } else {
+          config.headers["Content-Type"] = "application/json";
+        }
       }
     }
     return config;
   },
-  (error: AxiosError) => {
+  error => {
     return Promise.reject(error);
   }
 );
 
 appAxios.interceptors.response.use(
-  async (response: AxiosResponse) => {
+  response => {
     if (!response.data) {
       return Promise.reject(response);
     }
     return response;
   },
-  async (error: AxiosError) => {
+  error => {
     return Promise.reject(error);
   }
 );

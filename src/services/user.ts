@@ -3,6 +3,8 @@ import appAxios from "@/lib/appAxios";
 import { USER_ROLE } from "@/shared/enums";
 import { AuthResponse, UserScoresResponse } from "@/types/User";
 import { routeFilter } from "@/utils";
+import { getToken } from "@/utils/auth";
+import axios from "axios";
 import useSWR, { SWRResponse } from "swr";
 import useSWRMutation from "swr/mutation";
 
@@ -41,11 +43,20 @@ interface CreateUserResType {
     role: USER_ROLE;
   };
 }
+
+interface UploadFileType {
+    file: any;
+}
+
 export const useCreateUser = () =>
   useSWRMutation(`/user`, (url, { arg }: CreateUserResType) => {
     return appAxios.post<CreateUserResType>(url, arg);
   });
 
+
+export const useUploadFile = (formData: any) =>{
+   return appAxios.post("/user/profile/resume", formData);
+}
 interface UpdateUserResType {
   arg: {
     name: string;

@@ -70,6 +70,8 @@ export interface UserProfile {
   updated_at: string;
   industries: Industries[];
   preferences: Preferences[];
+  resume_url: any;
+  resume_created_at:string;
 }
 export interface UserProfileResponse {
   [x: string]: any;

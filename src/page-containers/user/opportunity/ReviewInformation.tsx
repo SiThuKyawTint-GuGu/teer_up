@@ -1,4 +1,6 @@
-"use client"
+/* eslint-disable react-hooks/rules-of-hooks */
+/* eslint-disable no-unused-vars */
+"use client";
 import CardBox from "@/components/ui/Card";
 import { UserProfileResponse } from "@/types/Profile";
 import { cn } from "@/utils/cn";
@@ -7,25 +9,57 @@ import dayjs from "dayjs";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import Image from "next/image";
-import {
-  useGetUser,
-} from "@/services/user";
-import { getUserInfo } from "@/utils/auth";
+import { useGetUser, useUploadFile } from "@/services/user";
+import { getToken, getUserInfo } from "@/utils/auth";
 import HeaderText from "../profile/components/HeaderText";
-import { useRouter,usePathname } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 function ReviewInformation() {
   const pathname = usePathname();
-  const { data: profileData } = useGetUser<UserProfileResponse>();
+  const { data: profileData, mutate: mutateUserProfile } = useGetUser<UserProfileResponse>(); 
   const currentUrl = pathname;
   const userProfile = profileData?.data;
   const user = getUserInfo();
   const router = useRouter();
 
-  const handleNext = (_:undefined) =>{
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        const response = await useUploadFile(formData);
+        mutateUserProfile(); 
+      } catch (error) {
+        console.error("Error uploading file:", error);
+      }
+    }
+  };
+
+  const formatDate = (dateString: any) => {
+    if (!dateString) return "Invalid date";
+
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return "Invalid date";
+
+    return new Intl.DateTimeFormat("en-GB", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    }).format(date);
+  };
+
+ useEffect(() => {
+   console.log(userProfile);
+ }, [userProfile]);
+
+  const handleNext = (_: undefined) => {
     console.log("next");
-    router.push('opportunity/additional-questions')
-  }
+    router.push("opportunity/additional-questions");
+  };
+
   return (
     <>
       <div className="flex justify-between mb-2">
@@ -82,7 +116,7 @@ function ReviewInformation() {
               Education
             </Heading>
             <Text className="ml-auto">
-              <Link href={{pathname: `/profile/${user?.id}/education`,query: { from: currentUrl }}}>
+              <Link href={{ pathname: `/profile/${user?.id}/education`, query: { from: currentUrl } }}>
                 <p className="text-primary text-[16px] font-[600] me-3">Edit</p>
               </Link>
             </Text>
@@ -139,7 +173,7 @@ function ReviewInformation() {
               <Text size="2" weight="light">
                 You haven’t added any education yet.
               </Text>
-              <Link href={{ pathname:`/profile/${user?.id}/education/create`,query: { from: currentUrl }}}>
+              <Link href={{ pathname: `/profile/${user?.id}/education/create`, query: { from: currentUrl } }}>
                 <Button variant="link" className="text-base">
                   + Add education
                 </Button>
@@ -227,12 +261,25 @@ function ReviewInformation() {
               Attach Resume
             </Heading>
           </Flex>
-          <Box className="flex justify-center">
+          {/* <Box className="flex justify-center">
             <button className="">Use</button>
-          </Box>
+          </Box> */}
           <Box className="border-b border-b-[#BDC7D5] pb-[10px] ">
-            <p className="text-[16px] font-[600] text-[#373A36]">Resume_Julia_Nov_2023.docx</p>
-            <p className="text-[14px] font-[300] text-[#373A36]">Uploaded on 26 Nov 2023</p>
+            <p className="text-[16px] font-[600] text-[#373A36]">
+              {userProfile?.resume_url &&
+                userProfile.resume_url
+                  .split("/")
+                  .pop()
+                  .replace("%20", " ")
+                  ?.split("-")
+                  .slice(2)
+                  .join("-")
+                  .replace("%20", " ")}
+            </p>
+            <p className="text-[14px] font-[300] text-[#373A36]">
+              {" "}
+              Uploaded on {formatDate(userProfile?.resume_created_at)}
+            </p>
           </Box>
           <Box className="justify-center flex ">
             <p className="text-[16px] font-[600] text-[##373A36] ">or</p>
@@ -259,13 +306,9 @@ function ReviewInformation() {
                       d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
                     />
                   </svg>
-                  {/* <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                    <span className="font-semibold">Click to upload</span> or drag and drop
-                  </p> */}
                   <p className="mb-2 text-sm text-primary text-[14px] font-[400]">Tap to upload file</p>
-                  {/* <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p> */}
                 </div>
-                <input id="dropzone-file" type="file" className="hidden" />
+                <input id="dropzone-file" type="file" className="hidden" onChange={handleFileChange} />
               </label>
             </div>
           </Box>
