@@ -6,9 +6,6 @@ import dayjs from "dayjs";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import Image from "next/image";
-import { EducationParamsType, useGetUserEducations } from "@/services/education";
-import { EducationResponse } from "@/types/Education";
-import { useEffect } from "react";
 
 interface PersonalDetailsProps {
   user: any;
