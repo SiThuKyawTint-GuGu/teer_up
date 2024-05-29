@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 "use client";
 import React, { useState, useEffect } from "react";
@@ -39,20 +40,19 @@ const CreateSelectInput: React.FC<CreateSelectInputProps> = ({
     }
   };
 
-  useEffect(() => {
-    const responseById = dataList.find(item => item.id === selectedValue);
-    const responseByName = dataList.find(item => item.name === selectedValue);
-    console.log(responseById)
-    console.log(responseByName);
-    console.log(typeof(selectedValue));
-    if (responseById) {
-      setSelectedOptions([{ value: String(responseById.name), label: responseById.name }]);
-    } else if (typeof(selectedValue) === "string") {
-      setSelectedOptions([{ value: String(selectedValue), label: String(selectedValue) }]);
-    } else {
-      setSelectedOptions([]);
-    }
-  }, [selectedValue, dataList]);
+useEffect(() => {
+  const responseById = dataList.find(item => item.id === selectedValue);
+  console.log("SelectValue", selectedValue);
+  console.log("data", dataList);
+
+  if (responseById) {
+    setSelectedOptions([{ value: String(responseById.name), label: responseById.name }]);
+  } else if (typeof selectedValue === "string") {
+    setSelectedOptions([{ value: String(selectedValue), label: String(selectedValue) }]);
+  } else {
+    setSelectedOptions([]);
+  }
+}, [selectedValue, dataList.length > 0]);
 
   const options = [
     ...dataList.map(item => ({

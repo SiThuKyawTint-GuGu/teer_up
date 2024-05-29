@@ -6,18 +6,20 @@ import { EducationResponse } from "@/types/Education";
 import { cn } from "@/utils/cn";
 import { Box, Flex, Grid, Section } from "@radix-ui/themes";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter,useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
 const Education: React.FC = () => {
   const { id } = useParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const referrer = searchParams.get("from");
   const { data: educationList } = useGetUserEducations<EducationParamsType, EducationResponse>();
   
 
   useEffect(() => {
-    console.log(educationList);
-  }, [educationList]);
+    console.log("Previous URL (referrer):", referrer);
+  }, [educationList,referrer]);
 
   return (
     <>
@@ -31,7 +33,7 @@ const Education: React.FC = () => {
               <Text size="3" weight="medium">
                 Education
               </Text>
-              <Link href={`/profile/${id}/education/create`}>
+              <Link href={{pathname:`/profile/${id}/education/create`,query: { from: referrer }}}>
                 <Icons.plus className="text-primary w-[23px] h-[23px]" />
               </Link>
             </Flex>
@@ -56,7 +58,7 @@ const Education: React.FC = () => {
                       </Text>
                       <Text>{each.degree_relation?.name}</Text>
                     </Flex>
-                    <Link href={`/profile/${id}/education/${each.id}`}>
+                    <Link href={{pathname:`/profile/${id}/education/${each.id}`,query: { from: referrer }}}>
                       <Image src="/uploads/icons/pencil.svg" width={20} height={20} alt="pencil" />
                     </Link>
                   </Flex>
