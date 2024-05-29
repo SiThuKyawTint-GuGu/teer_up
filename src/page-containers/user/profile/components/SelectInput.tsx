@@ -42,9 +42,6 @@ const CreateSelectInput: React.FC<CreateSelectInputProps> = ({
 
 useEffect(() => {
   const responseById = dataList.find(item => item.id === selectedValue);
-  console.log("SelectValue", selectedValue);
-  console.log("data", dataList);
-
   if (responseById) {
     setSelectedOptions([{ value: String(responseById.name), label: responseById.name }]);
   } else if (typeof selectedValue === "string") {

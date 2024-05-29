@@ -18,7 +18,6 @@ const Education: React.FC = () => {
   
 
   useEffect(() => {
-    console.log("Previous URL (referrer):", referrer);
   }, [educationList,referrer]);
 
   return (

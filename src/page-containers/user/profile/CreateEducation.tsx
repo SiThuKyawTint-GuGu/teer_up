@@ -48,6 +48,10 @@ const CreateEducation: React.FC = () => {
 
   const form = useForm({
     resolver: yupResolver(validationSchema),
+    defaultValues: {
+      start_date: "", 
+      end_date:"",
+    },
   });
 
   const submit = async (data: any) => {
@@ -91,13 +95,12 @@ const CreateEducation: React.FC = () => {
     form.setValue("other_school_major", selectedMajor ? selectedMajor.label : "");
   };
 
- useEffect(() => {
-   console.log("Previous URL (referrer):", referrer);
-  //  if (resetSelectInput) {
-  //    setResetSelectInput(false);
-  //  }
- // eslint-disable-next-line react-hooks/exhaustive-deps
- }, []);
+//  useEffect(() => {
+//   //  if (resetSelectInput) {
+//   //    setResetSelectInput(false);
+//   //  }
+//  // eslint-disable-next-line react-hooks/exhaustive-deps
+//  }, []);
 
   return (
     <>

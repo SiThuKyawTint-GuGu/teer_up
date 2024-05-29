@@ -55,7 +55,6 @@ const EditEducation: React.FC = () => {
   });
 
   useEffect(() => {
-    console.log("Previous URL (referrer):", referrer);
     if (educationData) {
       form.setValue("school", educationData?.data.school?.name || "");
       form.setValue("major", educationData?.data.major?.name || "");
