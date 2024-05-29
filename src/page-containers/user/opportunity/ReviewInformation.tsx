@@ -12,10 +12,12 @@ import {
 } from "@/services/user";
 import { getUserInfo } from "@/utils/auth";
 import HeaderText from "../profile/components/HeaderText";
-import { useRouter } from "next/navigation";
+import { useRouter,usePathname } from "next/navigation";
 
 function ReviewInformation() {
+  const pathname = usePathname();
   const { data: profileData } = useGetUser<UserProfileResponse>();
+  const currentUrl = pathname;
   const userProfile = profileData?.data;
   const user = getUserInfo();
   const router = useRouter();
@@ -28,20 +30,14 @@ function ReviewInformation() {
     <>
       <div className="flex justify-between mb-2">
         <HeaderText text={"Review Information"} />
-        <Link href={`/profile/${user?.id}`} className="ml-auto">
-          <Button variant="ghost" className="">
-            <Image src="/uploads/icons/pencil-square.svg" width={20} height={20} alt="pencil" />
-            <Text className="text-primary">Edit Profile</Text>
-          </Button>
-        </Link>
       </div>
-      <CardBox className=" rounded-md p-4 ">
+      <CardBox className="mb-4 rounded-md ">
         <Section className="bg-white" py="4" px="3">
           <div className="flex justify-between">
             <Heading as="h6" size="4" align="left" mb="4">
               Personal information
             </Heading>
-            <Link href={`/profile/${user?.id}/personal-details`} className="ml-auto">
+            <Link href={{ pathname: `/profile/${user?.id}/personal-details`, query: { from: currentUrl } }} className="ml-auto">
               <p className="text-primary text-[16px] font-[600]">Edit</p>
             </Link>
           </div>
@@ -65,99 +61,15 @@ function ReviewInformation() {
               <Text className="text-[#373A36]">{userProfile?.email ? userProfile?.email : "-"}</Text>
             </Flex>
           </div>
-          {/* <div className="pb-[10px] mb-[10px] ">
-            <Flex justify="start" align="center" gap="2">
-              <Image src="/uploads/icons/birthday.svg" width={16} height={16} alt="birthday" />
-              <Text className="text-[#373A36]">
-                {userProfile?.personal_info?.birthday
-                  ? dayjs(userProfile?.personal_info?.birthday).format("MMMM D, YYYY")
-                  : "-"}
-              </Text>
-            </Flex>
-          </div> */}
           <div className="">
             <Flex justify="start" align="center" gap="2">
               <Image src="/uploads/icons/personal-profile.svg" width={16} height={16} alt="personal profile" />
               <Text className="capitalize text-[#373A36]">
-                {/* {userProfile?.personal_info?.gender ? userProfile?.personal_info?.gender?.type : "-"} */}
-                +959 12345678
+                {userProfile?.personal_info?.gender ? userProfile?.personal_info?.phone_number : "-"}{" "}
               </Text>
             </Flex>
           </div>
         </Section>
-        <CardBox className=" rounded-md">
-          <Section className="bg-white" py="4" px="3">
-            <Flex justify={"between"} align={"baseline"} mb="4">
-              <Heading as="h6" size="4" align="left">
-                Education
-              </Heading>
-
-              <Text className="ml-auto">
-                <Link href={`/profile/${user?.id}/education`}>
-                  <p className="text-primary text-[16px] font-[600] me-3">Edit</p>
-                </Link>
-              </Text>
-            </Flex>
-            {userProfile?.educations?.length ? (
-              userProfile?.educations?.slice(0, 2).map((each: any, key: any) => (
-                <>
-                  <Flex
-                    key={key}
-                    justify="between"
-                    align="start"
-                    className={cn(
-                      key !== (userProfile?.educations ? userProfile.educations.slice(0, 2).length - 1 : -1) &&
-                        "border-b border-b-[#BDC7D5] pb-[10px] mb-[10px]"
-                    )}
-                  >
-                    <Flex justify="start" align="start" gap="2">
-                      <Image src="/uploads/icons/education.svg" width={32} height={32} alt="experience" />
-                      <Flex direction="column" gap="2">
-                        <Text as="label" weight="bold" size="3">
-                          {each.degree}
-                        </Text>
-                        <Text size="2" weight="light">
-                          {each.school_name}
-                        </Text>
-                      </Flex>
-                    </Flex>
-                    <Flex justify="end" align="center" gap="1">
-                      <Text size="2" weight="light">
-                        {dayjs(each?.start_date).format("MMM, YYYY")}
-                      </Text>
-                      <Text size="2" weight="light">
-                        -
-                      </Text>
-                      {each?.is_present === true ? (
-                        <Text size="2" weight="light">
-                          {"Present"}
-                        </Text>
-                      ) : (
-                        <Text size="2" weight="light">
-                          {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "-"}
-                        </Text>
-                      )}
-                      {/* <Text size="2" weight="light">
-                                    {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "present"}
-                                  </Text> */}
-                    </Flex>
-                  </Flex>
-                </>
-              ))
-            ) : (
-              <Flex direction="column" justify="center" align="center">
-                <Text size="2" weight="light">
-                  You haven’t added any education yet.
-                </Text>
-                <Link href={`/profile/${user?.id}/education/create`}>
-                  <Button variant="link" className="text-base">
-                    + Add education
-                  </Button>
-                </Link>
-              </Flex>
-            )}
-          </Section>
-        </CardBox>
       </CardBox>
 
       <CardBox className=" rounded-md p-4">
@@ -282,7 +194,9 @@ function ReviewInformation() {
           </Box>
           <Flex className="justify-end gap-3 mt-5">
             <Button className="px-[35px] h-[40px] text-[18px] font-[600]">Back</Button>
-            <Button onClick={()=>handleNext(undefined)} className="px-[35px] h-[40px] text-[18px] font-[600]">Next</Button>
+            <Button onClick={() => handleNext(undefined)} className="px-[35px] h-[40px] text-[18px] font-[600]">
+              Next
+            </Button>
           </Flex>
         </Section>
       </CardBox>

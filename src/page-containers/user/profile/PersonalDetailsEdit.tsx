@@ -17,7 +17,7 @@ import { PROFILE_TRIGGER } from "@/shared/enums";
 import { UserProfileResponse } from "@/types/Profile";
 import { setLocalStorage } from "@/utils";
 import { Box, Flex, Grid, Section } from "@radix-ui/themes";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter,useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useState, useTransition } from "react";
 import HeaderText from "./components/HeaderText";
 import { InputText, InputTextArea, InputTextAreaBgWhite } from "@/components/ui/Inputs";
@@ -53,6 +53,8 @@ const PersonalDetailsEdit: React.FC = () => {
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
   const [triggerType, setTriggerType] = useState<PROFILE_TRIGGER>();
   const { id } = useParams();
+  const searchParams = useSearchParams();
+  const referrer = searchParams.get("from");
   const [isPending] = useTransition();
   const { data: profileData, mutate: mutateUser } = useGetUser<UserProfileResponse>();
   const userProfile = profileData?.data;
@@ -72,6 +74,10 @@ const PersonalDetailsEdit: React.FC = () => {
       gender: profileData?.data?.personal_info?.gender?.type,
     },
   });
+
+   useEffect(() => {
+     console.log("Previous URL (referrer):", referrer);
+   }, [referrer]);
 
   const handleDeletePhoto = async () => {
     const triggerFunction = triggerType === PROFILE_TRIGGER.PROFILE ? deleteProfileTrigger() : deleteCoverTrigger();
@@ -125,12 +131,15 @@ const PersonalDetailsEdit: React.FC = () => {
       };
       console.log(submitData);
 
-      const response = await trigger(submitData, {
+      await trigger(submitData, {
       onSuccess: () => {
-        router.replace(`/profile?tab=personalDetails`);
+        if(referrer){
+            router.push(`/opportunity`);
+        }else{
+          router.push(`/profile?tab=personalDetails`);
+        }
       },
     });
-    console.log(response);
     };
 
   return (
