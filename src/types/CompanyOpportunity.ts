@@ -3,6 +3,7 @@ export interface CompanyOpportunity {
   content_id: number;
   formconfig_id: number;
   location: string;
+  location_type: string;
   link: string;
   body: string;
   content: OpportunityContent;

@@ -3,6 +3,7 @@ import { Box, Card, Divider, IconButton, MenuItem, Stack, Typography } from "@mu
 
 import CustomPopover, { usePopover } from "@/components/ui/CustomPopover";
 import { CompanyOpportunity } from "@/types/CompanyOpportunity";
+import { truncateString } from "@/utils/helper";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DescriptionIcon from "@mui/icons-material/Description";
@@ -14,7 +15,7 @@ import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function OpportunitiyCard({ id, location, content }: CompanyOpportunity) {
+export default function OpportunitiyCard({ id, location, content, location_type }: CompanyOpportunity) {
   const pathname = usePathname();
   const popover = usePopover();
 
@@ -25,42 +26,42 @@ export default function OpportunitiyCard({ id, location, content }: CompanyOppor
         sx={{
           backgroundColor: "#FAFAFA",
           position: "relative",
-          padding: 1,
+          padding: 2,
         }}
+        variant="outlined"
       >
-        <IconButton onClick={popover.onOpen} sx={{ position: "absolute", top: 8, right: 8 }}>
-          <MoreVertIcon width={16} sx={{ flexShrink: 0 }} />
-        </IconButton>
+        <Stack spacing={1}>
+          <Stack direction="row" justifyContent="space-between" alignItems="center">
+            <Link href={`${pathname}/${id}`}>
+              <Typography variant="body1" fontWeight={"bold"}>
+                {truncateString(content.title, 18)}
+              </Typography>
+            </Link>
+            <IconButton onClick={popover.onOpen} sx={{ margin: 0, padding: 0 }}>
+              <MoreVertIcon sx={{ flexShrink: 0, width: 20 }} />
+            </IconButton>
+          </Stack>
 
-        <Stack sx={{ p: 2, pb: 2 }}>
-          <Link href={`${pathname}/${id}`}>
-            <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-              {content.title}
-            </Typography>
-          </Link>
+          <Typography variant="caption">{truncateString(content.description, 40)}</Typography>
 
-          <Typography variant="body1" sx={{ fontWeight: "normal", mt: 1 }}>
-            {content.description}
-          </Typography>
-
-          <Box rowGap={1.5} display="grid" gridTemplateColumns="repeat(1, 1fr)" sx={{ mt: 3 }}>
+          <Box rowGap={1} display="grid" gridTemplateColumns="repeat(1, 1fr)">
             {[
               {
                 label: location,
-                icon: <LocationOnIcon width={32} sx={{ flexShrink: 0 }} />,
+                icon: <LocationOnIcon sx={{ flexShrink: 0, width: 20 }} />,
               },
               {
-                label: content.type,
-                icon: <WorkOutlineIcon width={16} sx={{ flexShrink: 0 }} />,
+                label: location_type,
+                icon: <WorkOutlineIcon width={10} sx={{ flexShrink: 0, width: 20 }} />,
               },
               {
                 label: id,
-                icon: <DescriptionIcon width={16} sx={{ flexShrink: 0 }} />,
+                icon: <DescriptionIcon width={10} sx={{ flexShrink: 0, width: 20 }} />,
               },
             ].map((item, index) => (
-              <Stack key={index} spacing={2} flexShrink={0} direction="row" alignItems="center" sx={{ minWidth: 0 }}>
+              <Stack key={index} spacing={1} flexShrink={0} direction="row" alignItems="center" sx={{ minWidth: 0 }}>
                 {item.icon}
-                <Typography variant="body2" noWrap>
+                <Typography variant="caption" noWrap>
                   {item.label}
                 </Typography>
               </Stack>
@@ -68,17 +69,17 @@ export default function OpportunitiyCard({ id, location, content }: CompanyOppor
           </Box>
         </Stack>
 
-        <Divider sx={{ borderStyle: "dashed" }} />
+        <Divider sx={{ my: 2 }} />
 
-        <Box rowGap={3} sx={{ p: 3 }} display="flex" gap={3}>
+        <Box rowGap={3} display="flex" gap={3}>
           {[
             {
               label: "1224",
-              icon: <VisibilityIcon width={16} sx={{ flexShrink: 0 }} />,
+              icon: <VisibilityIcon sx={{ flexShrink: 0, width: 20 }} />,
             },
             {
               label: "3456",
-              icon: <BookmarkBorderIcon width={16} sx={{ flexShrink: 0 }} />,
+              icon: <BookmarkBorderIcon sx={{ flexShrink: 0, width: 20 }} />,
             },
           ].map((item, index) => (
             <Stack
@@ -91,7 +92,7 @@ export default function OpportunitiyCard({ id, location, content }: CompanyOppor
               sx={{ minWidth: 0 }}
             >
               {item.icon}
-              <Typography variant="body1" noWrap>
+              <Typography variant="caption" noWrap>
                 {item.label}
               </Typography>
             </Stack>

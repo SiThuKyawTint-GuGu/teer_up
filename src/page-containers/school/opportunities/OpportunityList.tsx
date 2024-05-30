@@ -28,20 +28,22 @@ export default function OpportunityList({ data }: CompanyOpportunityResponse) {
           gridTemplateColumns={{
             lg: "repeat(2, 1fr)",
           }}
-          marginTop={4}
+          marginTop={2}
         >
           <Box display="flex" alignItems="center" gap={2}>
-            <Typography variant="body1" fontWeight={"medium"}>
+            <Typography variant="body1" fontWeight={"bold"}>
               All opportunities
             </Typography>
-            <Typography variant="body2">1 - {data.length} of many results</Typography>
+            <Typography variant="caption">1 - {data.length} of many results</Typography>
           </Box>
           <Box display="flex" justifyContent="flex-end">
             <Button
               disableRipple
-              color="inherit"
+              variant="contained"
+              size="small"
+              sx={{ backgroundColor: "#03a9f4", textTransform: "none" }}
               endIcon={
-                <Badge color="error" variant="dot">
+                <Badge>
                   <FilterListIcon />
                 </Badge>
               }
@@ -72,8 +74,8 @@ export default function OpportunityList({ data }: CompanyOpportunityResponse) {
         </Stack>
       </Box>
       <Box
-        gap={3}
-        marginTop={4}
+        gap={2}
+        marginTop={2}
         display="grid"
         gridTemplateColumns={{
           xs: "repeat(1, 1fr)",

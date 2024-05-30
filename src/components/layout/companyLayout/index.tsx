@@ -159,6 +159,7 @@ const CompanyDashboardLayout: React.FC<LayoutProps> = ({ children }) => {
           </Stack>
         </Drawer>
         <Box component="main" sx={{ flexGrow: 1, bgcolor: "background.default", p: 3, overflowY: "auto" }}>
+          <Toolbar />
           {children}
         </Box>
       </Box>
