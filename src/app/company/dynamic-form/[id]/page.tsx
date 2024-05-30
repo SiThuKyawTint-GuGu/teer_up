@@ -1,4 +1,4 @@
-import FormDetailConfigPage from "@/page-containers/admin/form/formDetailConfig";
+import DynamicFormDetailConfig from "@/page-containers/company/dynamic-form/DynamicFormDetailConfig";
 
 interface Props {
   params: { id: string };
@@ -6,7 +6,7 @@ interface Props {
 const DynamicFormConfigDetail = ({ params: { id } }: Props) => {
   return (
     <div>
-      <FormDetailConfigPage id={id} />
+      <DynamicFormDetailConfig id={id} />
     </div>
   );
 };
