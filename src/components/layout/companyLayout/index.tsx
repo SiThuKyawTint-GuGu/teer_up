@@ -1,4 +1,4 @@
-import { Icons, Image } from "@/components/ui/Images";
+import { Icons } from "@/components/ui/Images";
 import { useGetUser } from "@/services/user";
 import { navbarItems, NavbarType } from "@/shared/data/CompanyTabbar";
 import { UserProfileResponse } from "@/types/Profile";
@@ -10,6 +10,7 @@ import List from "@mui/material/List";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { styled } from "@mui/material/styles";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useTransition } from "react";
@@ -55,7 +56,7 @@ const CompanyDashboardLayout: React.FC<LayoutProps> = ({ children }) => {
               <Grid item xs={5}></Grid>
               <Grid item xs={7}>
                 <Stack direction="row" justifyContent="flex-end" spacing={2} alignItems="center">
-                  <Icons.noti width={24} height={24} />
+                  {/* <Icons.noti width={24} height={24} /> */}
                   <IconButton sx={{ p: 0 }}>
                     <Image src="/uploads/icons/auth/default-profile.png" width={38} height={38} alt="profile" />
                   </IconButton>
@@ -83,7 +84,9 @@ const CompanyDashboardLayout: React.FC<LayoutProps> = ({ children }) => {
         >
           <Stack direction="column">
             <Stack direction="row" justifyContent="center" padding={3}>
-              <Image src="/teeUpLogo.png" width={84} height={20} alt="teeup logo" />
+              <IconButton>
+                <Image src="/teeUpLogo.png" width={84} height={20} alt="teeupLogo" />
+              </IconButton>
             </Stack>
             <List component="nav">
               {navbarItems.map((item: NavbarType, index: number) => (
