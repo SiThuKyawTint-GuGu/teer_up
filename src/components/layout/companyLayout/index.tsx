@@ -106,6 +106,12 @@ const CompanyDashboardLayout: React.FC<LayoutProps> = ({ children }) => {
                       sx={{
                         marginLeft: 0,
                         paddingLeft: 0,
+                        "&:hover": {
+                          backgroundColor: "transparent",
+                        },
+                        "&.Mui-focusVisible": {
+                          backgroundColor: "transparent",
+                        },
                       }}
                     >
                       <ListItemIcon
@@ -149,6 +155,12 @@ const CompanyDashboardLayout: React.FC<LayoutProps> = ({ children }) => {
                             sx={{
                               margin: 0,
                               padding: 0,
+                              "&:hover": {
+                                backgroundColor: "transparent",
+                              },
+                              "&.Mui-focusVisible": {
+                                backgroundColor: "transparent",
+                              },
                             }}
                           >
                             <ListItemIcon
@@ -179,6 +191,12 @@ const CompanyDashboardLayout: React.FC<LayoutProps> = ({ children }) => {
                   sx={{
                     margin: 0,
                     padding: 0,
+                    "&:hover": {
+                      backgroundColor: "transparent",
+                    },
+                    "&.Mui-focusVisible": {
+                      backgroundColor: "transparent",
+                    },
                   }}
                 >
                   <ListItemIcon
