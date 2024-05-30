@@ -75,6 +75,11 @@ const FormConfigTable: React.FC = () => {
     state: {
       showSkeletons: isLoading ?? false,
     },
+    initialState: {
+      columnVisibility: {
+        id: false,
+      },
+    },
     renderRowActions: ({ row, table }) => (
       <Box sx={{ display: "flex", gap: "1rem" }}>
         <Tooltip title="Edit">
