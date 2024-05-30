@@ -10,7 +10,7 @@ interface Props {
   children: ReactNode;
 }
 
-const SchoolLayout = ({ children }: Props) => {
+const CompanyLayout = ({ children }: Props) => {
   const pathname = usePathname();
   const token = getToken();
 
@@ -21,4 +21,4 @@ const SchoolLayout = ({ children }: Props) => {
   );
 };
 
-export default SchoolLayout;
+export default CompanyLayout;
