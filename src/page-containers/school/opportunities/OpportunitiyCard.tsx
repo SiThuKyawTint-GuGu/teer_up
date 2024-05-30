@@ -25,15 +25,14 @@ export default function OpportunitiyCard({ id, location, content, location_type 
         color="#FAFAFA"
         sx={{
           backgroundColor: "#FAFAFA",
-          position: "relative",
-          padding: 2,
+          padding: "24px",
         }}
         variant="outlined"
       >
-        <Stack spacing={1}>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: "8px" }}>
           <Stack direction="row" justifyContent="space-between" alignItems="center">
             <Link href={`${pathname}/${id}`}>
-              <Typography variant="body1" fontWeight={"bold"}>
+              <Typography fontWeight="700" fontSize="20px">
                 {truncateString(content.title, 18)}
               </Typography>
             </Link>
@@ -42,9 +41,11 @@ export default function OpportunitiyCard({ id, location, content, location_type 
             </IconButton>
           </Stack>
 
-          <Typography variant="caption">{truncateString(content.description, 40)}</Typography>
+          <Typography fontSize="16px" fontWeight="400">
+            {truncateString(content.description, 40)}
+          </Typography>
 
-          <Box rowGap={1} display="grid" gridTemplateColumns="repeat(1, 1fr)">
+          <Box display="grid" gridTemplateColumns="repeat(1, 1fr)" gap="8px">
             {[
               {
                 label: location,
@@ -61,13 +62,13 @@ export default function OpportunitiyCard({ id, location, content, location_type 
             ].map((item, index) => (
               <Stack key={index} spacing={1} flexShrink={0} direction="row" alignItems="center" sx={{ minWidth: 0 }}>
                 {item.icon}
-                <Typography variant="caption" noWrap>
+                <Typography fontSize="16px" fontWeight="400" noWrap>
                   {item.label}
                 </Typography>
               </Stack>
             ))}
           </Box>
-        </Stack>
+        </Box>
 
         <Divider sx={{ my: 2 }} />
 
@@ -92,7 +93,7 @@ export default function OpportunitiyCard({ id, location, content, location_type 
               sx={{ minWidth: 0 }}
             >
               {item.icon}
-              <Typography variant="caption" noWrap>
+              <Typography fontSize="16px" fontWeight="400" noWrap>
                 {item.label}
               </Typography>
             </Stack>
