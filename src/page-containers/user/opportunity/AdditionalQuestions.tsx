@@ -32,9 +32,9 @@ type Props = {
   setComments: any;
 };
 
-const AdditionalQuestions: React.FC<Props> = () => {
-  const opportunityData = useStore(state => state.opportunityData);
-  const { data, mutate, comments, setComments } = opportunityData?.someData || {};
+const AdditionalQuestions: React.FC<Props> = ({ data, mutate, comments, setComments }) => {
+  // const opportunityData = useStore(state => state.opportunityData);
+  // const { data, mutate, comments, setComments } = opportunityData?.someData || {};
   const { trigger: like } = useLikeContent();
   const setOpportunityData = useStore(state => state.setOpportunityData);
   const router = useRouter();
@@ -64,16 +64,11 @@ const AdditionalQuestions: React.FC<Props> = () => {
     setComments: setComments,
   };
 
-  useEffect(() => {
-    console.log(data);
-    console.log(form);
-  }, [opportunityData]);
 
   const handleNext = (_: undefined) => {
     setOpportunityData({ someData: AllOppoData });
     router.push("/opportunity");
   };
-
 
   const handleCheckBox = (input: Input_options, InputConfigId: number | string) => {
     const sameId = selectedOptions.find(e => e.value === input.value);
@@ -172,7 +167,6 @@ const AdditionalQuestions: React.FC<Props> = () => {
       );
     }
   };
-
 
   const formElements = (inputData: Input_config) => {
     if (inputData.type === "radio") {
