@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { Button } from "@/components/ui/Button";
@@ -11,18 +12,18 @@ import { cn } from "@/utils/cn";
 import { Box, Flex, Grid, Section } from "@radix-ui/themes";
 import dayjs from "dayjs";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
-import { Select, SelectTrigger, SelectContent, SelectItem } from "@/components/ui/Inputs/Select";
 import { useGetDegreeBySchoolId, useGetMajorsByDegreeId, useGetSchools } from "@/services/school";
 import { DegreeListResponse, MajorListResponse } from "@/types/School";
-import { InputText } from "@/components/ui/Inputs";
 import CreateSelectInput from "./components/SelectInput";
 
 const EditEducation: React.FC = () => {
   const { id, edu_id } = useParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const referrer = searchParams.get("from");
   const [, startTransition] = useTransition();
   const { data: educationData, isLoading } = useGetEducationById<EducationById>(edu_id as string);
   const { trigger, isMutating } = useUpdateEducation();
@@ -65,7 +66,7 @@ const EditEducation: React.FC = () => {
       setIsPresent(educationData?.data.is_present);
       setSelectedSchoolId(educationData?.data.school?.id || null);
     }
-  }, [educationData, form, schoolList]);
+  }, [educationData, form, schoolList, referrer]);
 
   useEffect(() => {
     form.setValue("degree", educationData?.data.degree_relation?.name || "");
@@ -95,8 +96,11 @@ const EditEducation: React.FC = () => {
     };
     await trigger(newData, {
       onSuccess: () => {
-        router.replace(`/profile/${id}/education`);
-        router.back();
+        if (referrer) {
+          router.push(`/opportunity`);
+        } else {
+          router.push(`/profile/${id}/education`);
+        }
       },
     });
   };
@@ -112,26 +116,24 @@ const EditEducation: React.FC = () => {
   //   );
   // };
 
-    const handleSchoolChange = (selectedOptions: any) => {
-      const selectedSchool = selectedOptions.length > 0 ? selectedOptions[0] : null;
-      setSelectedSchoolId(selectedSchool ? parseInt(selectedSchool.value, 10) : null);
-      form.setValue("other_school_name", selectedSchool ? selectedSchool.label : "");
-      setResetSelectInput(true);
-    };
+  const handleSchoolChange = (selectedOptions: any) => {
+    const selectedSchool = selectedOptions.length > 0 ? selectedOptions[0] : null;
+    setSelectedSchoolId(selectedSchool ? parseInt(selectedSchool.value, 10) : null);
+    form.setValue("other_school_name", selectedSchool ? selectedSchool.label : "");
+    setResetSelectInput(true);
+  };
 
-     const handleDegreeChange = (selectedOptions: any) => {
-       const selectedDegree = selectedOptions.length > 0 ? selectedOptions[0] : null;
-       setSelectedDegreeId(selectedDegree ? parseInt(selectedDegree.value, 10) : null);
-       form.setValue("other_school_degree", selectedDegree ? selectedDegree.label : "");
-     };
+  const handleDegreeChange = (selectedOptions: any) => {
+    const selectedDegree = selectedOptions.length > 0 ? selectedOptions[0] : null;
+    setSelectedDegreeId(selectedDegree ? parseInt(selectedDegree.value, 10) : null);
+    form.setValue("other_school_degree", selectedDegree ? selectedDegree.label : "");
+  };
 
-    const handleMajorChange = (selectedOptions: any) => {
-      const selectedMajor = selectedOptions.length > 0 ? selectedOptions[0] : null;
-      setSelectedMajorId(selectedMajor ? parseInt(selectedMajor.value, 10) : null);
-      form.setValue("other_school_major", selectedMajor ? selectedMajor.label : "");
-    };
-
-
+  const handleMajorChange = (selectedOptions: any) => {
+    const selectedMajor = selectedOptions.length > 0 ? selectedOptions[0] : null;
+    setSelectedMajorId(selectedMajor ? parseInt(selectedMajor.value, 10) : null);
+    form.setValue("other_school_major", selectedMajor ? selectedMajor.label : "");
+  };
 
   return (
     <>
@@ -206,9 +208,7 @@ const EditEducation: React.FC = () => {
                       <CreateSelectInput
                         dataList={majorList?.data || []}
                         onChange={handleMajorChange}
-                        selectedValue={
-                          educationData?.data.major?.id || educationData?.data.other_school_major
-                        }
+                        selectedValue={educationData?.data.major?.id || educationData?.data.other_school_major}
                         resetState={resetSelectInput}
                       />
                     </FormItem>
@@ -280,17 +280,17 @@ const EditEducation: React.FC = () => {
               </Section>
             </Box>
 
-            <Box className="pb-[7px]">
+            <Box className="pb-[7px] mt-4">
               <Section py="4" px="3" className="space-y-[15px]">
-                <Button className="bg-primary w-full h-[40px]">Add Education</Button>
-                <Flex className=" justify-end gap-3">
-                  <Button onClick={() => router.back()} className="bg-primary h-[40] px-[35px]">
+                {/* <Button type="button" onClick={()=>handleAdd(undefined)} className="bg-primary w-full h-[40px]">Add Education</Button> */}
+                <Box className=" justify-end">
+                  <Button onClick={() => router.back()} className="bg-primary h-[40] w-full">
                     Back
                   </Button>
-                  <Button type="submit" loading={isMutating} className="bg-primary h-[40] px-[35px]">
+                  <Button type="submit" loading={isMutating} className="bg-primary h-[40] w-full mt-3 ">
                     Done
                   </Button>
-                </Flex>
+                </Box>
               </Section>
             </Box>
           </Grid>

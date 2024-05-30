@@ -10,7 +10,7 @@ import { cn } from "@/utils/cn";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Flex, Grid, Section } from "@radix-ui/themes";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter,useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -34,11 +34,12 @@ const validationSchema = yup.object({
 const CreateEducation: React.FC = () => {
   const { id } = useParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const referrer = searchParams.get("from");
   const { trigger, isMutating } = useCreateEducation();
   const [selectedSchoolId, setSelectedSchoolId] = useState<number | null>(null);
   const [selectedMajorId, setSelectedMajorId] = useState<number | null>(null);
   const [selectedDegreeId, setSelectedDegreeId] = useState<number | null>(null);
-  const [statusOption, setStatusOption] = useState<boolean | null>(false);
   const [isPresent, setIsPresent] = useState<boolean>(false);
   const { data: schoolList } = useGetSchools<SchoolListResponse>();
   const { data: degreeList } = useGetDegreeBySchoolId<DegreeListResponse, any>({ id: selectedSchoolId });
@@ -47,6 +48,10 @@ const CreateEducation: React.FC = () => {
 
   const form = useForm({
     resolver: yupResolver(validationSchema),
+    defaultValues: {
+      start_date: "", 
+      end_date:"",
+    },
   });
 
   const submit = async (data: any) => {
@@ -62,7 +67,11 @@ const CreateEducation: React.FC = () => {
     };
     await trigger(submitData, {
       onSuccess: () => {
-        router.replace(`/profile/${id}/education`);
+        if (referrer) {
+          router.push(`/opportunity`);
+        } else {
+          router.replace(`/profile/${id}/education`);
+        }
       },
     });
   };
@@ -86,11 +95,12 @@ const CreateEducation: React.FC = () => {
     form.setValue("other_school_major", selectedMajor ? selectedMajor.label : "");
   };
 
- useEffect(() => {
-   if (resetSelectInput) {
-     setResetSelectInput(false);
-   }
- }, [resetSelectInput]);
+//  useEffect(() => {
+//   //  if (resetSelectInput) {
+//   //    setResetSelectInput(false);
+//   //  }
+//  // eslint-disable-next-line react-hooks/exhaustive-deps
+//  }, []);
 
   return (
     <>
@@ -294,11 +304,6 @@ const CreateEducation: React.FC = () => {
           </Grid>
         </form>
       </Form>
-      <Box className="mx-3">
-        <Button onClick={() => setStatusOption(!statusOption)} className="w-full">
-          {statusOption === false ? " Add Other School" : " Add Normal"}
-        </Button>
-      </Box>
     </>
   );
 };

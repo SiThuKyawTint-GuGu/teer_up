@@ -17,7 +17,7 @@ import { PROFILE_TRIGGER } from "@/shared/enums";
 import { UserProfileResponse } from "@/types/Profile";
 import { setLocalStorage } from "@/utils";
 import { Box, Flex, Grid, Section } from "@radix-ui/themes";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter,useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useState, useTransition } from "react";
 import HeaderText from "./components/HeaderText";
 import { InputText, InputTextArea, InputTextAreaBgWhite } from "@/components/ui/Inputs";
@@ -53,6 +53,8 @@ const PersonalDetailsEdit: React.FC = () => {
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
   const [triggerType, setTriggerType] = useState<PROFILE_TRIGGER>();
   const { id } = useParams();
+  const searchParams = useSearchParams();
+  const referrer = searchParams.get("from");
   const [isPending] = useTransition();
   const { data: profileData, mutate: mutateUser } = useGetUser<UserProfileResponse>();
   const userProfile = profileData?.data;
@@ -72,6 +74,9 @@ const PersonalDetailsEdit: React.FC = () => {
       gender: profileData?.data?.personal_info?.gender?.type,
     },
   });
+
+   useEffect(() => {
+   }, [referrer]);
 
   const handleDeletePhoto = async () => {
     const triggerFunction = triggerType === PROFILE_TRIGGER.PROFILE ? deleteProfileTrigger() : deleteCoverTrigger();
@@ -125,12 +130,15 @@ const PersonalDetailsEdit: React.FC = () => {
       };
       console.log(submitData);
 
-      const response = await trigger(submitData, {
+      await trigger(submitData, {
       onSuccess: () => {
-        router.replace(`/profile?tab=personalDetails`);
+        if(referrer){
+            router.push(`/opportunity`);
+        }else{
+          router.push(`/profile?tab=personalDetails`);
+        }
       },
     });
-    console.log(response);
     };
 
   return (
@@ -233,7 +241,9 @@ const PersonalDetailsEdit: React.FC = () => {
                               <FormControl>
                                 <Select
                                   onValueChange={(value: string) => {
-                                    const selectedGender = genderData?.find((item: { type: string; }) => item.type === value);
+                                    const selectedGender = genderData?.find(
+                                      (item: { type: string }) => item.type === value
+                                    );
 
                                     setSelectedGender(selectedGender ? String(selectedGender.id) : null);
                                     field.onChange(selectedGender?.type || "");
@@ -244,7 +254,7 @@ const PersonalDetailsEdit: React.FC = () => {
                                     {field.value || "Select a Gender"}
                                   </SelectTrigger>
                                   <SelectContent className="bg-white">
-                                    {genderData?.map((item:any, index:number) => (
+                                    {genderData?.map((item: any, index: number) => (
                                       <SelectItem key={index} value={item.type}>
                                         <Text>{item.type}</Text>
                                       </SelectItem>
@@ -308,7 +318,9 @@ const PersonalDetailsEdit: React.FC = () => {
                   </Section>
                 </CardBox>
                 <Flex justify={"end"}>
-                  <Button type="submit" className="me-2 px-8">Done</Button>
+                  <Button type="submit" className="me-2 px-8">
+                    Done
+                  </Button>
                 </Flex>
               </Box>
             </Grid>

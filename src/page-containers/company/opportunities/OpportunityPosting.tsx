@@ -7,7 +7,7 @@ import { usePostContentOpportunity } from "@/services/companyOpportunity";
 import { useGetContentCategory } from "@/services/contentCategory";
 import { useGetDepartment } from "@/services/department";
 import { useGetFormConfig } from "@/services/formConfig";
-import { useGetIndustry } from "@/services/industry";
+import { useGetIndustryList } from "@/services/industry";
 import { useGetKeywords } from "@/services/keyword";
 import { useGetDegreeBySchoolId, useGetMajorsByDegreeId, useGetSchools } from "@/services/school";
 import { ContentCategoryResponse } from "@/types/ContentCategory";
@@ -63,7 +63,7 @@ const OpportunityPosting = () => {
 
   //swr hooks
   const { trigger: postTrigger, isMutating: postMutating, error: createError } = usePostContentOpportunity();
-  const { data: industries } = useGetIndustry<any>();
+  const { data: industries } = useGetIndustryList<any>();
   const { data: category } = useGetContentCategory<ContentCategoryResponse>();
   const { data: departments } = useGetDepartment<DepartmentResponse>();
   const { data: keywords } = useGetKeywords<KeywordResponse>();
@@ -171,11 +171,6 @@ const OpportunityPosting = () => {
       return;
     }
 
-    if (!selectForm) {
-      setEventError("Form config is required!");
-      return;
-    }
-
     if (!oppoEditor) {
       setEventError("Opportunity Content is required!");
       return;
@@ -207,7 +202,7 @@ const OpportunityPosting = () => {
       industries,
       content_opportunity: {
         link: link,
-        formconfig_id: selectForm ? selectForm : undefined,
+        formconfig_id: selectForm ? selectForm : 22,
         location: oppoLocation,
         body: oppoEditor,
         location_type: locationType,
@@ -222,7 +217,7 @@ const OpportunityPosting = () => {
   };
 
   useEffect(() => {
-    if (industries?.data) {
+    if (industries?.data && industries?.data?.length > 0) {
       const updatedOptions = industries?.data.map((option: any) => ({
         label: option.name,
         id: option.id,
@@ -230,7 +225,7 @@ const OpportunityPosting = () => {
       setIndustryOptions(updatedOptions);
     }
 
-    if (category?.data) {
+    if (category?.data && category?.data?.length > 0) {
       const updatedOptions = category?.data.map((option: any) => ({
         label: option.name,
         id: option.id,
@@ -238,15 +233,15 @@ const OpportunityPosting = () => {
       setCategoryOptions(updatedOptions);
     }
 
-    if (departments?.data) {
-      const updatedOptions = departments?.data.map((option: any) => ({
+    if (departments?.data && departments?.data?.published?.length > 0) {
+      const updatedOptions = departments?.data?.published.map((option: any) => ({
         label: option.name,
         id: option.id,
       }));
       setDepartmentOptions(updatedOptions);
     }
 
-    if (keywords?.data) {
+    if (keywords?.data && keywords?.data?.length > 0) {
       const updatedOptions = keywords?.data.map((option: any) => ({
         label: option.keyword,
         id: option.id,
@@ -254,7 +249,7 @@ const OpportunityPosting = () => {
       setKeywordOptions(updatedOptions);
     }
 
-    if (schoolList?.data) {
+    if (schoolList?.data && schoolList?.data?.length > 0) {
       const updatedOptions = schoolList?.data.map((option: any) => ({
         label: option.name,
         id: option.id,
@@ -262,7 +257,7 @@ const OpportunityPosting = () => {
       setSchoolOptions(updatedOptions);
     }
 
-    if (degreeList?.data) {
+    if (degreeList?.data && degreeList?.data?.length > 0) {
       const updatedOptions = degreeList?.data.map((option: any) => ({
         label: option.name,
         id: option.id,
@@ -270,7 +265,7 @@ const OpportunityPosting = () => {
       setDegreeOptions(updatedOptions);
     }
 
-    if (majorList?.data) {
+    if (majorList?.data && majorList?.data?.length > 0) {
       const updatedOptions = majorList?.data.map((option: any) => ({
         label: option.name,
         id: option.id,

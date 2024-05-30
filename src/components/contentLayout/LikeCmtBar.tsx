@@ -58,8 +58,7 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
     is_like: false,
     saves: 0,
     is_save: false,
-  });
-  console.log(selectedOptions);
+  });  
   useEffect(() => {
     setReacion(prev => ({
       ...prev,

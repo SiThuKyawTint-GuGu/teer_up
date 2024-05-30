@@ -6,9 +6,7 @@ import dayjs from "dayjs";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import Image from "next/image";
-import { EducationParamsType, useGetUserEducations } from "@/services/education";
-import { EducationResponse } from "@/types/Education";
-import { useEffect } from "react";
+import React from "react";
 
 interface PersonalDetailsProps {
   user: any;
@@ -95,45 +93,46 @@ function PersonalDetails({ user, userProfile: { data: userProfile } }: PersonalD
           </Flex>
           {userProfile?.experiences?.length ? (
             userProfile?.experiences?.slice(0, 2).map((each, key) => (
-              <Flex
-                key={key}
-                justify="between"
-                align="start"
-                className={cn(
-                  key !== (userProfile?.experiences ? userProfile.experiences.slice(0, 2).length - 1 : -1)
-                    ? "pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]"
-                    : ""
-                )}
-              >
-                <Flex justify="start" align="start" gap="2">
-                  <Image src="/uploads/icons/experience.svg" width={32} height={32} alt="experience" />
-                  <Flex direction="column" gap="2">
-                    <Text as="label" weight="bold" size="3">
-                      {each?.position}
+              <React.Fragment key={each.id}>
+                <Flex
+                  justify="between"
+                  align="start"
+                  className={cn(
+                    key !== (userProfile?.experiences ? userProfile.experiences.slice(0, 2).length - 1 : -1)
+                      ? "pb-[10px] mb-[10px] border-b border-b-[#BDC7D5]"
+                      : ""
+                  )}
+                >
+                  <Flex justify="start" align="start" gap="2">
+                    <Image src="/uploads/icons/experience.svg" width={32} height={32} alt="experience" />
+                    <Flex direction="column" gap="2">
+                      <Text as="label" weight="bold" size="3">
+                        {each?.position}
+                      </Text>
+                      <Text size="2" weight="light">
+                        {each?.company}
+                      </Text>
+                    </Flex>
+                  </Flex>
+                  <Flex justify="end" align="center" gap="1">
+                    <Text size="2" weight="light">
+                      {dayjs(each?.start_date).format("MMM, YYYY")}
                     </Text>
                     <Text size="2" weight="light">
-                      {each?.company}
+                      -
                     </Text>
+                    {each?.is_present === true ? (
+                      <Text size="2" weight="light">
+                        {"Present"}
+                      </Text>
+                    ) : (
+                      <Text size="2" weight="light">
+                        {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "-"}
+                      </Text>
+                    )}
                   </Flex>
                 </Flex>
-                <Flex justify="end" align="center" gap="1">
-                  <Text size="2" weight="light">
-                    {dayjs(each?.start_date).format("MMM, YYYY")}
-                  </Text>
-                  <Text size="2" weight="light">
-                    -
-                  </Text>
-                  {each?.is_present === true ? (
-                    <Text size="2" weight="light">
-                      {"Present"}
-                    </Text>
-                  ) : (
-                    <Text size="2" weight="light">
-                      {each?.end_date ? dayjs(each?.end_date).format("MMM, YYYY") : "-"}
-                    </Text>
-                  )}
-                </Flex>
-              </Flex>
+              </React.Fragment>
             ))
           ) : (
             <Flex direction="column" justify="center" align="center">
@@ -165,10 +164,8 @@ function PersonalDetails({ user, userProfile: { data: userProfile } }: PersonalD
           </Flex>
           {userProfile?.educations?.length ? (
             userProfile?.educations?.slice(0, 2).map((each, key) => (
-              <>
-                {console.log(each)}
+              <React.Fragment key={each.id}>
                 <Flex
-                  key={key}
                   justify="between"
                   align="start"
                   className={cn(
@@ -208,7 +205,7 @@ function PersonalDetails({ user, userProfile: { data: userProfile } }: PersonalD
                                   </Text> */}
                   </Flex>
                 </Flex>
-              </>
+              </React.Fragment>
             ))
           ) : (
             <Flex direction="column" justify="center" align="center">

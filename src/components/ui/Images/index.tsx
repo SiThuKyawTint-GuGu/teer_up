@@ -257,7 +257,9 @@ export const Image: React.FC<Image> = ({ src, width, className, height, alt, ...
       width={width || 0}
       height={height || 0}
       alt={alt}
+      style={{ width: width ? width : "auto", height: height ? height : "auto" }}
       {...props}
+      priority
     />
   );
 };

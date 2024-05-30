@@ -58,7 +58,6 @@ const Profile: React.FC = () => {
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
-    console.log("Data",profileData)
   }, []);
 
   const userProfile = profileData?.data;
@@ -180,6 +179,7 @@ const Profile: React.FC = () => {
                             height={65}
                             src="/uploads/icons/user-profile.svg"
                             alt="user profile"
+                            
                           />
                           <Flex
                             justify="center"

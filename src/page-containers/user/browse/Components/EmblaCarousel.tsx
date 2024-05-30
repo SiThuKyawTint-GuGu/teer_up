@@ -1,9 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/jsx-key */
 /* eslint-disable @next/next/no-img-element */
 import React, { useCallback, useEffect, useRef } from "react";
 import { EmblaCarouselType, EmblaEventType, EmblaOptionsType } from "embla-carousel";
 import useEmblaCarousel from "embla-carousel-react";
-import { NextButton, PrevButton, usePrevNextButtons } from "./EmblaCarouselArrowButtons";
 import { DotButton, useDotButton } from "./EmblaCarouselDotButton";
 import { useGetBanner } from "@/services/banner";
 
@@ -27,7 +27,7 @@ interface BannerResponse {
 }
 
 const EmblaCarousel: React.FC<PropType> = props => {
-  const { slides, options } = props;
+  const { options } = props;
   const [emblaRef, emblaApi] = useEmblaCarousel(options);
   const tweenFactor = useRef(0);
 
@@ -37,13 +37,10 @@ const EmblaCarousel: React.FC<PropType> = props => {
     if (bannerError) {
       console.error("Error fetching banner data:", bannerError);
     } else if (bannerData) {
-      console.log("Banner data:", bannerData);
     }
   }, [bannerData, bannerError]);
 
   const { selectedIndex, scrollSnaps, onDotButtonClick } = useDotButton(emblaApi);
-
-  const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } = usePrevNextButtons(emblaApi);
 
   const setTweenFactor = useCallback((emblaApi: EmblaCarouselType) => {
     tweenFactor.current = TWEEN_FACTOR_BASE * emblaApi.scrollSnapList().length;
@@ -118,11 +115,6 @@ const EmblaCarousel: React.FC<PropType> = props => {
       </div>
 
       <div className="embla__controls">
-        {/* <div className="embla__buttons">
-          <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
-          <NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
-        </div> */}
-
         <div className="embla__dots">
           {scrollSnaps.map((_, index) => (
             <DotButton

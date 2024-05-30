@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import CommentSection from "@/components/contentLayout/CommentSection";
 import { Animate, Dialog, DialogClose, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Icons, Image } from "@/components/ui/Images";
@@ -23,8 +24,6 @@ interface ReactionBarProp {
 }
 
 const CardReactionBar: React.FC<ReactionBarProp> = ({ data, contentMutate, comments, setComments }) => {
-  const [openComment, setOpenComment] = useState<boolean>(false);
-  const [openShare, setOpenShare] = useState<boolean>(false);
   const [isCopied, setIsCopied] = useState<boolean>(false);
   const [triggerType, setTriggerType] = useState<dialogTrigger>();
   const { trigger: like } = useLikeContent();
