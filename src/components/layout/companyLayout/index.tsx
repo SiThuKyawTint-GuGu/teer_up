@@ -85,9 +85,9 @@ const CompanyDashboardLayout: React.FC<LayoutProps> = ({ children }) => {
             <Stack direction="row" justifyContent="center" padding={3}>
               <Image src="/teeUpLogo.png" width={84} height={20} alt="teeup logo" />
             </Stack>
-            <List>
+            <List component="nav">
               {navbarItems.map((item: NavbarType, index: number) => (
-                <>
+                <React.Fragment key={item.path || index}>
                   <ListItem
                     key={item.path}
                     disablePadding
@@ -113,7 +113,7 @@ const CompanyDashboardLayout: React.FC<LayoutProps> = ({ children }) => {
                     <List component="div" disablePadding>
                       {item.subItems.map((subItem, subIndex) => (
                         <ListItem
-                          key={subIndex}
+                          key={subItem.path}
                           disablePadding
                           sx={{
                             backgroundColor: pathName === subItem.path ? "secondary.main" : "",
@@ -136,7 +136,7 @@ const CompanyDashboardLayout: React.FC<LayoutProps> = ({ children }) => {
                       ))}
                     </List>
                   )}
-                </>
+                </React.Fragment>
               ))}
               <ListItem
                 key="/logout"
