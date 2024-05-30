@@ -19,6 +19,7 @@ import { Text } from "../ui/Typo/Text";
 import CommentSection from "./CommentSection";
 import SuccessFormPage from "./SuccessFormPage";
 import { useRouter } from "next/navigation";
+import { useStore } from "@/lib/store";
 
 enum dialogTrigger {
   COMMENT = "comment",
@@ -34,6 +35,7 @@ type Props = {
 
 const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) => {
   const { trigger: like } = useLikeContent();
+  const setOpportunityData = useStore(state => state.setOpportunityData);
   const router = useRouter();
   const { trigger: contentSave } = useSaveContent();
   const { trigger: postForm, isMutating } = useContentForm();
@@ -58,7 +60,14 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
     is_like: false,
     saves: 0,
     is_save: false,
-  });  
+  });
+  const AllOppoData = {
+    data: data,
+    mutate: mutate,
+    comments: comments,
+    setComments: setComments,
+  };
+
   useEffect(() => {
     setReacion(prev => ({
       ...prev,
@@ -68,6 +77,16 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
       ["is_like"]: data.is_liked,
     }));
   }, [data]);
+
+   const handleNext = (_: undefined) => {
+     setOpportunityData({ someData: AllOppoData });
+     router.push("/opportunity");
+   };
+
+
+  // <Link href={{pathname:`/profile/${id}/education/${each.id}`,query: { from: referrer }}}></Link>
+  // setOpenModal(true);
+
 
   const likePost = async () => {
     if (reaction.is_like && token) {
@@ -378,19 +397,15 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
     }
   };
 
-  const handleNext = (_: undefined) =>{
-    router.push("/opportunity");
-    // setOpenModal(true);
-
-  }
-
+  // onClick={() => setTriggerType(dialogTrigger.FORM)}
+  
   return (
     <Dialog>
       {showSuccessPage === false ? (
         <div className="bg-white flex px-3 items-center py-2">
           {form ? (
             <>
-              <DialogTrigger asChild onClick={() => setTriggerType(dialogTrigger.FORM)}>
+              <DialogTrigger asChild >
                 <Button size="sm" className="w-[166px]" onClick={() => handleNext(undefined)}>
                   {form?.submit_label || "Join Now"}
                 </Button>

@@ -68,7 +68,7 @@ function PersonalDetails({ user, userProfile: { data: userProfile } }: PersonalD
           </div> */}
           <div className="">
             <Flex justify="start" align="center" gap="2">
-              <Image src="/uploads/icons/personal-profile.svg" width={16} height={16} alt="personal profile" />
+              <Image src="/uploads/images/phone.png" width={16} height={16} alt="personal profile" />
               <Text className="capitalize text-[#373A36]">
                 {userProfile?.personal_info?.gender ? userProfile?.personal_info?.phone_number : "-"}{" "}
               </Text>

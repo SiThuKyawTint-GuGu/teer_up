@@ -10,6 +10,8 @@ interface StoreInterface {
   toggleUpdated: (arg: boolean) => void;
   increment: () => void;
   decrement: () => void;
+  opportunityData: any;
+  setOpportunityData: (data: any) => void;
 }
 
 const getDefaultInitialState = () => ({
@@ -17,6 +19,7 @@ const getDefaultInitialState = () => ({
   light: false,
   count: 0,
   refetch: false,
+  opportunityData: null,
 });
 
 export type StoreType = ReturnType<typeof initializeStore>;
@@ -48,6 +51,11 @@ export const initializeStore = (preloadedState: Partial<StoreInterface> = {}) =>
     toggleUpdated: (val: boolean) => {
       set({
         refetch: val,
+      });
+    },
+    setOpportunityData: (data: any) => {
+      set({
+        opportunityData: data,
       });
     },
   }));
