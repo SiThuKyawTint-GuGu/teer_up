@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
 import EmblaCarousel from "./EmblaCarousel";
 import { EmblaOptionsType } from "embla-carousel";
 import "../Components/css/base.css";

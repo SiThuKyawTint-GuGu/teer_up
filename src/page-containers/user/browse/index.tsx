@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 /* eslint-disable @next/next/no-img-element */
@@ -29,7 +30,7 @@ const BrowsePage: React.FC = () => {
   const {
     data: contentCategories,
     isLoading,
-    mutate: contentDataMutate,
+    // mutate: contentDataMutate,
   } = useGetContentCategory<ContentCategoryResponse>();
 
   const { data: homeContent, isLoading: homeContentLoading } = useGetHomeContent<any>({
@@ -38,10 +39,10 @@ const BrowsePage: React.FC = () => {
 
   const { data, mutate, setSize } = useGetBrowseInfinite({ search: search ?? "", type: type });
   const browseDataArray = useMemo(() => data?.flatMap((page: any) => page?.data) || [], [data]);
-  const searchDataArray = useMemo(
-    () => homeContent?.data?.flatMap((page: any) => page?.category_contents) || [],
-    [search, homeContent]
-  );
+  // const searchDataArray = useMemo(
+  //   () => homeContent?.data?.flatMap((page: any) => page?.category_contents) || [],
+  //   [search, homeContent]
+  // );
 
   const bannerIconUrl = contentCategories?.data?.find((each: any) => each.slug === type)?.banner_icon_url;
 
@@ -87,7 +88,6 @@ const BrowsePage: React.FC = () => {
     router.push(`?category=${value}`);
   };
 
-  console.log(visibleItemIndex);
   if (isLoading || homeContentLoading) {
     return (
       <div className="w-full h-full flex justify-center items-center">
@@ -222,7 +222,7 @@ const BrowsePage: React.FC = () => {
 
 export default BrowsePage;
 
-type HeaderType = {
-  text: string;
-  value: string;
-};
+// type HeaderType = {
+//   text: string;
+//   value: string;
+// };

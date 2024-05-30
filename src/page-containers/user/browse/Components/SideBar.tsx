@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-"use client";
 /* eslint-disable @next/next/no-img-element */
+"use client";
 import React, { useEffect, useRef, useState } from "react";
 import { Flex } from "@radix-ui/themes";
 import { useGetContentCategory } from "@/services/contentCategory";
