@@ -12,7 +12,7 @@ import { InputConfigResponse } from "@/types/InputConfig";
 import { yupResolver } from "@hookform/resolvers/yup";
 import SaveIcon from "@mui/icons-material/Save";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { Box, IconButton, InputLabel, Switch, TextField } from "@mui/material";
+import { Box, Container, IconButton, InputLabel, Stack, Switch, TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import FormControl from "@mui/material/FormControl";
@@ -39,6 +39,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { Typography } from "@mui/material";
+import { Icons } from "@/components/ui/Images";
 
 interface OptionsProps {
   label: string;
@@ -297,20 +298,30 @@ const FormDetailConfigPage = ({ id }: Props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(handleAddFormConfig)}>
-      <div className="bg-white p-7 rounded-md">
-        <div className="mb-10">
-          <TextField
-            {...register("name")}
-            InputLabelProps={{ shrink: !!watch("name") }}
-            label="Name"
-            className="w-full"
-            variant="outlined"
-          />
-          <p className="mt-2 text-red-700">{errors.name?.message}</p>
-        </div>
+    <Container sx={{ p: 2 }}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between">
+        <Button onClick={() => router.back()} className="p-0" variant="text">
+          <Icons.back className="text-[#373A36] w-[23px] h-[23px]" />
+        </Button>
+        <Typography variant="h6" fontWeight="bold" my={4}>
+          Question Form
+        </Typography>
+        <Icons.back className="text-[#373A36] w-[23px] h-[23px] opacity-0" />
+      </Stack>
+      <form onSubmit={handleSubmit(handleAddFormConfig)}>
+        <div className="bg-white p-7 rounded-md">
+          <div className="mb-10">
+            <TextField
+              {...register("name")}
+              InputLabelProps={{ shrink: !!watch("name") }}
+              label="Name"
+              className="w-full"
+              variant="outlined"
+            />
+            <p className="mt-2 text-red-700">{errors.name?.message}</p>
+          </div>
 
-        {/* <div className="mb-10">
+          {/* <div className="mb-10">
           <TextField
             // {...register("name")}
             label="Button Label"
@@ -320,7 +331,7 @@ const FormDetailConfigPage = ({ id }: Props) => {
           <p className="mt-2 text-red-700">{errors.title?.message}</p>
         </div> */}
 
-        {/* <div className="mb-10">
+          {/* <div className="mb-10">
           <p className="font-weight-600 mb-3">Header</p>
           <Editor onInit={(evt, editor) => (editorRef.current = editor)} />
         </div>
@@ -328,184 +339,36 @@ const FormDetailConfigPage = ({ id }: Props) => {
           <p className="font-weight-600 mb-3">Fooder</p>
           <Editor onInit={(evt, editor) => (editorRef.current = editor)} />
         </div> */}
-        {/* Input Config */}
-        {/* {error && <p className="text-red-600 mb-2">{error}</p>} */}
-        <div className="flex justify-between">
-          <div className=" flex-1 border border-gray-300 p-1 py-3 m-1 rounded-md">
-            <h1 className="m-3 text-lg font-semibold">Input Config</h1>
+          {/* Input Config */}
+          {/* {error && <p className="text-red-600 mb-2">{error}</p>} */}
+          <div className="flex justify-between">
+            <div className=" flex-1 border border-gray-300 p-1 py-3 m-1 rounded-md">
+              <h1 className="m-3 text-lg font-semibold">Input Config</h1>
 
-            {fields?.data &&
-              fields?.data.length > 0 &&
-              fields.data.map((field: any, index: number) => (
-                <>
-                  {(field.type === "Text" ||
-                    field.type === "text" ||
-                    field.type === "email" ||
-                    field.type === "phone" ||
-                    field.type === "number") && (
-                    <div key={index} className="flex flex-col border border-gray-300 p-5 m-3 rounded-md">
-                      <p className="font-weight-500 text-sm ">{field.name}</p>
-                      <div className="flex justify-center items-center my-5">
-                        <TextField
-                          label={field.name}
-                          type={field.type === "number" ? "number" : "text"}
-                          placeholder={field.placeholder}
-                          className="w-full"
-                          variant="outlined"
-                        />
-                        {/* <AiTwotoneEdit
+              {fields?.data &&
+                fields?.data.length > 0 &&
+                fields.data.map((field: any, index: number) => (
+                  <>
+                    {(field.type === "Text" ||
+                      field.type === "text" ||
+                      field.type === "email" ||
+                      field.type === "phone" ||
+                      field.type === "number") && (
+                      <div key={index} className="flex flex-col border border-gray-300 p-5 m-3 rounded-md">
+                        <p className="font-weight-500 text-sm ">{field.name}</p>
+                        <div className="flex justify-center items-center my-5">
+                          <TextField
+                            label={field.name}
+                            type={field.type === "number" ? "number" : "text"}
+                            placeholder={field.placeholder}
+                            className="w-full"
+                            variant="outlined"
+                          />
+                          {/* <AiTwotoneEdit
                           onClick={() => handleUpdateInputConfig(field)}
                           className="ml-2 cursor-pointer text-red-700"
                           size={25}
                         /> */}
-                        <div className="ml-2">
-                          <IconButton onClick={() => handleUpdateInputConfig(field)} color="error">
-                            <BorderColorIcon fontSize="inherit" />
-                          </IconButton>
-                        </div>
-                      </div>
-                      <div className="flex justify-between">
-                        <Button
-                          color="error"
-                          variant="contained"
-                          sx={{ width: "50px" }}
-                          onClick={() => handleAddField(field)}
-                        >
-                          ADD
-                        </Button>
-                        <IconButton color="error" onClick={() => handleDeleteInputConfig(field.id)}>
-                          <DeleteIcon fontSize="inherit" />
-                        </IconButton>
-                      </div>
-                    </div>
-                  )}
-                  {field.type === "radio" && (
-                    <div className="border border-gray-300 p-5 m-3 rounded-md">
-                      <p className="text-sm">{field.name}</p>
-                      <FormControl>
-                        <RadioGroup defaultValue="" name="radio-buttons-group">
-                          {field.input_options.length > 0 &&
-                            field.input_options.map((option: any, index: number) => (
-                              <>
-                                <FormControlLabel
-                                  key={index}
-                                  value={option.value}
-                                  control={<Radio />}
-                                  label={option.label}
-                                />
-                              </>
-                            ))}
-                        </RadioGroup>
-                      </FormControl>
-                      <div className="flex justify-between">
-                        <Button
-                          color="error"
-                          variant="contained"
-                          sx={{ width: "50px" }}
-                          onClick={() => handleAddField(field)}
-                        >
-                          ADD
-                        </Button>
-                        <div>
-                          <IconButton onClick={() => handleUpdateInputConfig(field)} color="error">
-                            <BorderColorIcon fontSize="inherit" />
-                          </IconButton>
-                          <IconButton color="error" onClick={() => handleDeleteInputConfig(field.id)}>
-                            <DeleteIcon fontSize="inherit" />
-                          </IconButton>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {field.type === "dropdown" && (
-                    <div className="border border-gray-300 p-5 m-3 rounded-md">
-                      <p className="text-sm mb-2">{field.name}</p>
-                      {field.input_options.length > 0 && (
-                        <FormControl fullWidth>
-                          <InputLabel id="input-config">{field.placeholder || selectInputConfig}</InputLabel>
-                          <Select
-                            labelId="input-config"
-                            value={selectInputConfig}
-                            label={field.placeholder || selectInputConfig}
-                            onChange={handleSelectInputConfig}
-                          >
-                            {field.input_options.map((dropdown: any, index: number) => (
-                              <MenuItem key={index} value={dropdown.value}>
-                                {dropdown.label}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
-                      )}
-                      <div className="flex justify-between items-center mt-5">
-                        <Button
-                          color="error"
-                          variant="contained"
-                          sx={{ width: "50px" }}
-                          onClick={() => handleAddField(field)}
-                        >
-                          ADD
-                        </Button>
-                        <div className="ml-2">
-                          <IconButton onClick={() => handleUpdateInputConfig(field)} color="error">
-                            <BorderColorIcon fontSize="inherit" />
-                          </IconButton>
-                          <IconButton color="error" onClick={() => handleDeleteInputConfig(field.id)}>
-                            <DeleteIcon fontSize="inherit" />
-                          </IconButton>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                  {field.type === "checkbox" && (
-                    <div key={index} className="flex flex-col border border-gray-300 p-5 m-3 rounded-md">
-                      <p className="font-weight-500 text-sm mb-2">{field.name}</p>
-                      <div className="flex justify-between">
-                        <FormGroup>
-                          {field.input_options.map((box: any, index: number) => (
-                            <FormControlLabel key={index} control={<Checkbox defaultChecked />} label={box.label} />
-                          ))}
-                        </FormGroup>
-                      </div>
-                      <div className="flex justify-between">
-                        <Button
-                          color="error"
-                          variant="contained"
-                          sx={{ width: "50px" }}
-                          onClick={() => handleAddField(field)}
-                        >
-                          ADD
-                        </Button>
-                        <div className="ml-2">
-                          <IconButton onClick={() => handleUpdateInputConfig(field)} color="error">
-                            <BorderColorIcon fontSize="inherit" />
-                          </IconButton>
-                          <IconButton color="error" onClick={() => handleDeleteInputConfig(field.id)}>
-                            <DeleteIcon fontSize="inherit" />
-                          </IconButton>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                  {field.type === "date" && (
-                    <>
-                      <div key={index} className="flex flex-col border border-gray-300 p-5 m-3 rounded-md">
-                        <p>{field.name}</p>
-                        <div className="flex justify-center items-center my-3">
-                          <div>
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                              <DemoContainer components={["DatePicker"]}>
-                                <DatePicker label={field.name} />
-                              </DemoContainer>
-                            </LocalizationProvider>
-                          </div>
-
-                          {/* <AiTwotoneEdit
-                            onClick={() => handleUpdateInputConfig(field)}
-                            className="ml-2 cursor-pointer text-red-700"
-                            size={25}
-                          /> */}
                           <div className="ml-2">
                             <IconButton onClick={() => handleUpdateInputConfig(field)} color="error">
                               <BorderColorIcon fontSize="inherit" />
@@ -526,360 +389,373 @@ const FormDetailConfigPage = ({ id }: Props) => {
                           </IconButton>
                         </div>
                       </div>
-                    </>
-                  )}
-                </>
-              ))}
-
-            <div className="flex justify-between">
-              <div></div>
-              <Button onClick={() => setShowModal(true)} color="error" variant="contained" sx={{ width: "50px" }}>
-                <AddIcon />
-              </Button>
-            </div>
-            <div className="flex justify-between">
-              <div></div>
-              <Modal open={showModal}>
-                {/* Dialog Box */}
-                <Box sx={style}>
-                  <div className="mb-3">
-                    <h1 className="text-xl font-semibold mb-7">Input Config</h1>
-                  </div>
-                  {error && <p className="text-red-600">{error}</p>}
-                  <div className="mb-10">
-                    <TextField
-                      label="Name"
-                      defaultValue={inputConfigName || ""}
-                      onChange={e => setInputConfigName(e.target.value)}
-                      className="w-full"
-                      variant="outlined"
-                    />
-                  </div>
-
-                  <div className="mb-10">
-                    <TextField
-                      label="Placeholder"
-                      defaultValue={inputConfigPlaceholder || ""}
-                      onChange={e => setInputConfigPlaceholder(e.target.value)}
-                      className="w-full"
-                      variant="outlined"
-                    />
-                  </div>
-                  <div className="mb-10">
-                    <FormControl fullWidth>
-                      <InputLabel id="selectType-label">Type</InputLabel>
-                      <Select
-                        labelId="selectType-label"
-                        id="selectType"
-                        value={selectType}
-                        onChange={handleSelectChange}
-                        label="Type"
-                      >
-                        <MenuItem value="text">Text</MenuItem>
-                        <MenuItem value="email">Email</MenuItem>
-                        <MenuItem value="phone">Phone</MenuItem>
-                        <MenuItem value="number">Number</MenuItem>
-                        <MenuItem value="checkbox">Checkbox</MenuItem>
-                        <MenuItem value="date">Date</MenuItem>
-                        <MenuItem value="radio">Radio</MenuItem>
-                        <MenuItem value="dropdown">Dropdown</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </div>
-                  {(selectType === "radio" || selectType === "dropdown" || selectType === "checkbox") && (
-                    <>
-                      <p>Options</p>
-                      {options.map((field, index) => (
-                        <>
-                          <div
-                            key={index}
-                            className="flex justify-between items-center p-5 rounded-md border border-gray-300 my-2"
+                    )}
+                    {field.type === "radio" && (
+                      <div className="border border-gray-300 p-5 m-3 rounded-md">
+                        <p className="text-sm">{field.name}</p>
+                        <FormControl>
+                          <RadioGroup defaultValue="" name="radio-buttons-group">
+                            {field.input_options.length > 0 &&
+                              field.input_options.map((option: any, index: number) => (
+                                <>
+                                  <FormControlLabel
+                                    key={index}
+                                    value={option.value}
+                                    control={<Radio />}
+                                    label={option.label}
+                                  />
+                                </>
+                              ))}
+                          </RadioGroup>
+                        </FormControl>
+                        <div className="flex justify-between">
+                          <Button
+                            color="error"
+                            variant="contained"
+                            sx={{ width: "50px" }}
+                            onClick={() => handleAddField(field)}
                           >
-                            <div className="mb-2 mr-2">
-                              <TextField
-                                name="label"
-                                onChange={e => handleOptionChange(e, field.value, index)}
-                                defaultValue={field.label}
-                                label="Label"
-                                variant="outlined"
-                              />
-                            </div>
-                            <div className="mb-2">
-                              <TextField
-                                name="value"
-                                onChange={e => handleOptionChange(e, field.value, index)}
-                                defaultValue={field.value}
-                                label="Value"
-                                variant="outlined"
-                              />
-                            </div>
+                            ADD
+                          </Button>
+                          <div>
+                            <IconButton onClick={() => handleUpdateInputConfig(field)} color="error">
+                              <BorderColorIcon fontSize="inherit" />
+                            </IconButton>
+                            <IconButton color="error" onClick={() => handleDeleteInputConfig(field.id)}>
+                              <DeleteIcon fontSize="inherit" />
+                            </IconButton>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {field.type === "dropdown" && (
+                      <div className="border border-gray-300 p-5 m-3 rounded-md">
+                        <p className="text-sm mb-2">{field.name}</p>
+                        {field.input_options.length > 0 && (
+                          <FormControl fullWidth>
+                            <InputLabel id="input-config">{field.placeholder || selectInputConfig}</InputLabel>
+                            <Select
+                              labelId="input-config"
+                              value={selectInputConfig}
+                              label={field.placeholder || selectInputConfig}
+                              onChange={handleSelectInputConfig}
+                            >
+                              {field.input_options.map((dropdown: any, index: number) => (
+                                <MenuItem key={index} value={dropdown.value}>
+                                  {dropdown.label}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          </FormControl>
+                        )}
+                        <div className="flex justify-between items-center mt-5">
+                          <Button
+                            color="error"
+                            variant="contained"
+                            sx={{ width: "50px" }}
+                            onClick={() => handleAddField(field)}
+                          >
+                            ADD
+                          </Button>
+                          <div className="ml-2">
+                            <IconButton onClick={() => handleUpdateInputConfig(field)} color="error">
+                              <BorderColorIcon fontSize="inherit" />
+                            </IconButton>
+                            <IconButton color="error" onClick={() => handleDeleteInputConfig(field.id)}>
+                              <DeleteIcon fontSize="inherit" />
+                            </IconButton>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    {field.type === "checkbox" && (
+                      <div key={index} className="flex flex-col border border-gray-300 p-5 m-3 rounded-md">
+                        <p className="font-weight-500 text-sm mb-2">{field.name}</p>
+                        <div className="flex justify-between">
+                          <FormGroup>
+                            {field.input_options.map((box: any, index: number) => (
+                              <FormControlLabel key={index} control={<Checkbox defaultChecked />} label={box.label} />
+                            ))}
+                          </FormGroup>
+                        </div>
+                        <div className="flex justify-between">
+                          <Button
+                            color="error"
+                            variant="contained"
+                            sx={{ width: "50px" }}
+                            onClick={() => handleAddField(field)}
+                          >
+                            ADD
+                          </Button>
+                          <div className="ml-2">
+                            <IconButton onClick={() => handleUpdateInputConfig(field)} color="error">
+                              <BorderColorIcon fontSize="inherit" />
+                            </IconButton>
+                            <IconButton color="error" onClick={() => handleDeleteInputConfig(field.id)}>
+                              <DeleteIcon fontSize="inherit" />
+                            </IconButton>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    {field.type === "date" && (
+                      <>
+                        <div key={index} className="flex flex-col border border-gray-300 p-5 m-3 rounded-md">
+                          <p>{field.name}</p>
+                          <div className="flex justify-center items-center my-3">
                             <div>
-                              <IconButton onClick={() => handleDeleteOption(field.value)} color="error" size="large">
-                                <DeleteIcon fontSize="inherit" />
+                              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <DemoContainer components={["DatePicker"]}>
+                                  <DatePicker label={field.name} />
+                                </DemoContainer>
+                              </LocalizationProvider>
+                            </div>
+
+                            {/* <AiTwotoneEdit
+                            onClick={() => handleUpdateInputConfig(field)}
+                            className="ml-2 cursor-pointer text-red-700"
+                            size={25}
+                          /> */}
+                            <div className="ml-2">
+                              <IconButton onClick={() => handleUpdateInputConfig(field)} color="error">
+                                <BorderColorIcon fontSize="inherit" />
                               </IconButton>
                             </div>
                           </div>
-                        </>
-                      ))}
-                      <Button
-                        color="error"
-                        variant="contained"
-                        sx={{ textTransform: "none", marginTop: "10px" }}
-                        onClick={handleAddOption}
-                      >
-                        + Add Option
-                      </Button>
-                    </>
-                  )}
-                  {/* footer */}
-                  <div className="flex justify-between">
-                    <div></div>
-                    <div>
-                      <Button
-                        sx={{
-                          textTransform: "none",
-                          marginRight: "10px",
-                          color: "white",
-                          backgroundColor: "gray",
-                          "&:hover": {
+                          <div className="flex justify-between">
+                            <Button
+                              color="error"
+                              variant="contained"
+                              sx={{ width: "50px" }}
+                              onClick={() => handleAddField(field)}
+                            >
+                              ADD
+                            </Button>
+                            <IconButton color="error" onClick={() => handleDeleteInputConfig(field.id)}>
+                              <DeleteIcon fontSize="inherit" />
+                            </IconButton>
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </>
+                ))}
+
+              <div className="flex justify-between">
+                <div></div>
+                <Button onClick={() => setShowModal(true)} color="error" variant="contained" sx={{ width: "50px" }}>
+                  <AddIcon />
+                </Button>
+              </div>
+              <div className="flex justify-between">
+                <div></div>
+                <Modal open={showModal}>
+                  {/* Dialog Box */}
+                  <Box sx={style}>
+                    <div className="mb-3">
+                      <h1 className="text-xl font-semibold mb-7">Input Config</h1>
+                    </div>
+                    {error && <p className="text-red-600">{error}</p>}
+                    <div className="mb-10">
+                      <TextField
+                        label="Name"
+                        defaultValue={inputConfigName || ""}
+                        onChange={e => setInputConfigName(e.target.value)}
+                        className="w-full"
+                        variant="outlined"
+                      />
+                    </div>
+
+                    <div className="mb-10">
+                      <TextField
+                        label="Placeholder"
+                        defaultValue={inputConfigPlaceholder || ""}
+                        onChange={e => setInputConfigPlaceholder(e.target.value)}
+                        className="w-full"
+                        variant="outlined"
+                      />
+                    </div>
+                    <div className="mb-10">
+                      <FormControl fullWidth>
+                        <InputLabel id="selectType-label">Type</InputLabel>
+                        <Select
+                          labelId="selectType-label"
+                          id="selectType"
+                          value={selectType}
+                          onChange={handleSelectChange}
+                          label="Type"
+                        >
+                          <MenuItem value="text">Text</MenuItem>
+                          <MenuItem value="email">Email</MenuItem>
+                          <MenuItem value="phone">Phone</MenuItem>
+                          <MenuItem value="number">Number</MenuItem>
+                          <MenuItem value="checkbox">Checkbox</MenuItem>
+                          <MenuItem value="date">Date</MenuItem>
+                          <MenuItem value="radio">Radio</MenuItem>
+                          <MenuItem value="dropdown">Dropdown</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </div>
+                    {(selectType === "radio" || selectType === "dropdown" || selectType === "checkbox") && (
+                      <>
+                        <p>Options</p>
+                        {options.map((field, index) => (
+                          <>
+                            <div
+                              key={index}
+                              className="flex justify-between items-center p-5 rounded-md border border-gray-300 my-2"
+                            >
+                              <div className="mb-2 mr-2">
+                                <TextField
+                                  name="label"
+                                  onChange={e => handleOptionChange(e, field.value, index)}
+                                  defaultValue={field.label}
+                                  label="Label"
+                                  variant="outlined"
+                                />
+                              </div>
+                              <div className="mb-2">
+                                <TextField
+                                  name="value"
+                                  onChange={e => handleOptionChange(e, field.value, index)}
+                                  defaultValue={field.value}
+                                  label="Value"
+                                  variant="outlined"
+                                />
+                              </div>
+                              <div>
+                                <IconButton onClick={() => handleDeleteOption(field.value)} color="error" size="large">
+                                  <DeleteIcon fontSize="inherit" />
+                                </IconButton>
+                              </div>
+                            </div>
+                          </>
+                        ))}
+                        <Button
+                          color="error"
+                          variant="contained"
+                          sx={{ textTransform: "none", marginTop: "10px" }}
+                          onClick={handleAddOption}
+                        >
+                          + Add Option
+                        </Button>
+                      </>
+                    )}
+                    {/* footer */}
+                    <div className="flex justify-between">
+                      <div></div>
+                      <div>
+                        <Button
+                          sx={{
+                            textTransform: "none",
+                            marginRight: "10px",
                             color: "white",
                             backgroundColor: "gray",
-                          },
-                        }}
-                        variant="contained"
-                        onClick={() => {
-                          setShowModal(false);
-                          setInputConfigName(""), setSelectType(""), setInputConfigPlaceholder(""), setOptions([]);
-                        }}
-                      >
-                        Cancel
-                      </Button>
+                            "&:hover": {
+                              color: "white",
+                              backgroundColor: "gray",
+                            },
+                          }}
+                          variant="contained"
+                          onClick={() => {
+                            setShowModal(false);
+                            setInputConfigName(""), setSelectType(""), setInputConfigPlaceholder(""), setOptions([]);
+                          }}
+                        >
+                          Cancel
+                        </Button>
 
-                      <Button
-                        onClick={handleAddInputConfig}
-                        color="error"
-                        variant="contained"
-                        sx={{ textTransform: "none" }}
-                      >
-                        Save changes
-                      </Button>
+                        <Button
+                          onClick={handleAddInputConfig}
+                          color="error"
+                          variant="contained"
+                          sx={{ textTransform: "none" }}
+                        >
+                          Save changes
+                        </Button>
+                      </div>
                     </div>
-                  </div>
-                </Box>
-              </Modal>
+                  </Box>
+                </Modal>
+              </div>
             </div>
-          </div>
 
-          {/* Edit form config */}
-          <div className=" flex-1 border border-gray-300 p-1 py-3 m-1 rounded-md">
-            <h1 className="m-3 text-lg font-semibold">Edit Form Config</h1>
-            {editFormFields &&
-              editFormFields.length > 0 &&
-              editFormFields.map((field, index) => (
-                <>
-                  <div key={index} className=" flex flex-col border border-gray-300 p-5 m-3 rounded-md">
-                    {(field.input_config.type === "text" ||
-                      field.input_config.type === "Text" ||
-                      field.input_config.type === "email" ||
-                      field.input_config.type === "phone" ||
-                      field.input_config.type === "number") && (
-                      <>
-                        <div className="mb-5">
-                          <p className="font-weight-500 text-sm mb-2">
-                            Name<sub>*</sub>
-                          </p>
-                          <div className="flex">
-                            <TextField
-                              label={"Name"}
-                              placeholder={field.input_config.name}
-                              className="w-full"
-                              defaultValue={""}
-                              onChange={e => handleFieldChange(index, "name", e.target.value)}
-                              variant="outlined"
-                            />
-                          </div>
-                        </div>
-                        <div className="mb-5">
-                          <p className="font-weight-500 text-sm mb-2">Placeholder*</p>
-                          <div className="flex">
-                            <TextField
-                              label={"Placeholder"}
-                              defaultValue={""}
-                              type={field.type === "number" ? "number" : "text"}
-                              placeholder={field.input_config.placeholder}
-                              className="w-full"
-                              onChange={e => handleFieldChange(index, "placeholder", e.target.value)}
-                              variant="outlined"
-                            />
-                          </div>
-                        </div>
-                      </>
-                    )}
-                    {field.input_config.type === "radio" && field.input_config.input_options.length > 0 && (
-                      <div>
-                        <p className="text-sm">{field.input_config.name}</p>
-                        <FormControl>
-                          <RadioGroup defaultValue="" name="radio-buttons-group">
-                            {field.input_config.input_options.map((option: any, index: number) => (
-                              <>
-                                <FormControlLabel
-                                  key={index}
-                                  value={option.value}
-                                  control={<Radio />}
-                                  label={option.label}
-                                />
-                              </>
-                            ))}
-                          </RadioGroup>
-                        </FormControl>
-                      </div>
-                    )}
-                    {field.input_config.type === "dropdown" && field.input_config.input_options.length > 0 && (
-                      <>
-                        <p className="text-sm mb-5">{field.input_config.name}</p>
-
-                        <FormControl fullWidth>
-                          <InputLabel id="drop-label">{field.input_config.placeholder || selectInputConfig}</InputLabel>
-                          <Select
-                            labelId="drop-label"
-                            id="drop"
-                            value={selectType}
-                            onChange={handleSelectChange}
-                            label={field.input_config.placeholder || selectInputConfig}
-                          >
-                            {field.input_config.input_options.map((dropdown: any, index: number) => (
-                              <MenuItem key={index} value={dropdown.value}>
-                                {dropdown.label}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
-                      </>
-                    )}
-
-                    {field.input_config.type === "checkbox" && field.input_config.input_options.length > 0 && (
-                      <>
-                        <p className="my-3">{field.input_config.name}</p>
-                        <FormGroup>
-                          {field.input_config.input_options.map((box: any, index: number) => (
-                            <FormControlLabel key={index} control={<Checkbox defaultChecked />} label={box.label} />
-                          ))}
-                        </FormGroup>
-                      </>
-                    )}
-                    {field.input_config.type === "date" && (
-                      <>
-                        <div className="mb-2">
-                          <p className="my-3">{field.input_config.name}</p>
-                          <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DemoContainer components={["DatePicker"]}>
-                              <DatePicker label={field.input_config.name} />
-                            </DemoContainer>
-                          </LocalizationProvider>
-                        </div>
-                      </>
-                    )}
-
-                    <div className=" mt-3 flex items-center justify-between">
-                      <form>
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                          <FormControlLabel
-                            control={
-                              <Switch
-                                checked={field.required}
-                                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                                  handleSwitchChange(index, event)
-                                }
-                                color="error"
-                              />
-                            }
-                            sx={{ color: "gray" }}
-                            label="Required"
-                          />
-                        </div>
-                      </form>
-                      <div className="flex justify-center">
-                        <IconButton
-                          disabled={index === 0}
-                          onClick={() => handleMoveField(index, index - 1)}
-                          color="error"
-                        >
-                          <KeyboardArrowUpIcon fontSize="inherit" />
-                        </IconButton>
-                        <IconButton
-                          disabled={index === editFormFields.length - 1}
-                          onClick={() => handleMoveField(index, index + 1)}
-                          color="error"
-                        >
-                          <KeyboardArrowDownIcon fontSize="inherit" />
-                        </IconButton>
-                      </div>
-                      <IconButton onClick={() => handleDeleteField(field.order)} color="error">
-                        <DeleteIcon fontSize="inherit" />
-                      </IconButton>
-                    </div>
-                  </div>
-                </>
-              ))}
-          </div>
-
-          {/* Preview */}
-          <div className="flex-1 border border-gray-300 p-1 py-3 m-1 rounded-md">
-            <h1 className="m-3 text-lg font-semibold">Preview</h1>
-            <div className=" flex flex-col pb-10 m-3 rounded-md">
-              {editFormFields.length > 0 &&
+            {/* Edit form config */}
+            <div className=" flex-1 border border-gray-300 p-1 py-3 m-1 rounded-md">
+              <h1 className="m-3 text-lg font-semibold">Edit Form Config</h1>
+              {editFormFields &&
+                editFormFields.length > 0 &&
                 editFormFields.map((field, index) => (
-                  <div key={index}>
-                    {(field.input_config.type === "text" ||
-                      field.input_config.type === "Text" ||
-                      field.input_config.type === "email" ||
-                      field.input_config.type === "phone" ||
-                      field.input_config.type === "number") && (
-                      <div className="my-2">
-                        <p className="font-weight-500 text-sm mb-2">
-                          {field.input_config.name}
-                          {field.required === true ? "*" : ""}
-                        </p>
-                        <div className="flex mb-5">
-                          <TextField
-                            label={field.input_config.name}
-                            type={field.input_config.type === "number" ? "number" : "text"}
-                            className="w-full"
-                            placeholder={field.input_config.placeholder}
-                            variant="outlined"
-                          />
+                  <>
+                    <div key={index} className=" flex flex-col border border-gray-300 p-5 m-3 rounded-md">
+                      {(field.input_config.type === "text" ||
+                        field.input_config.type === "Text" ||
+                        field.input_config.type === "email" ||
+                        field.input_config.type === "phone" ||
+                        field.input_config.type === "number") && (
+                        <>
+                          <div className="mb-5">
+                            <p className="font-weight-500 text-sm mb-2">
+                              Name<sub>*</sub>
+                            </p>
+                            <div className="flex">
+                              <TextField
+                                label={"Name"}
+                                placeholder={field.input_config.name}
+                                className="w-full"
+                                defaultValue={""}
+                                onChange={e => handleFieldChange(index, "name", e.target.value)}
+                                variant="outlined"
+                              />
+                            </div>
+                          </div>
+                          <div className="mb-5">
+                            <p className="font-weight-500 text-sm mb-2">Placeholder*</p>
+                            <div className="flex">
+                              <TextField
+                                label={"Placeholder"}
+                                defaultValue={""}
+                                type={field.type === "number" ? "number" : "text"}
+                                placeholder={field.input_config.placeholder}
+                                className="w-full"
+                                onChange={e => handleFieldChange(index, "placeholder", e.target.value)}
+                                variant="outlined"
+                              />
+                            </div>
+                          </div>
+                        </>
+                      )}
+                      {field.input_config.type === "radio" && field.input_config.input_options.length > 0 && (
+                        <div>
+                          <p className="text-sm">{field.input_config.name}</p>
+                          <FormControl>
+                            <RadioGroup defaultValue="" name="radio-buttons-group">
+                              {field.input_config.input_options.map((option: any, index: number) => (
+                                <>
+                                  <FormControlLabel
+                                    key={index}
+                                    value={option.value}
+                                    control={<Radio />}
+                                    label={option.label}
+                                  />
+                                </>
+                              ))}
+                            </RadioGroup>
+                          </FormControl>
                         </div>
-                      </div>
-                    )}
+                      )}
+                      {field.input_config.type === "dropdown" && field.input_config.input_options.length > 0 && (
+                        <>
+                          <p className="text-sm mb-5">{field.input_config.name}</p>
 
-                    {field.input_config.type === "radio" && field.input_config.input_options.length > 0 && (
-                      <div className="mb-4">
-                        <p className="text-sm">{field.input_config.name}</p>
-                        <FormControl>
-                          <RadioGroup defaultValue="" name="radio-buttons-group">
-                            {field.input_config.input_options.map((option: any, index: number) => (
-                              <>
-                                <FormControlLabel
-                                  key={index}
-                                  value={option.value}
-                                  control={<Radio />}
-                                  label={option.label}
-                                />
-                              </>
-                            ))}
-                          </RadioGroup>
-                        </FormControl>
-                      </div>
-                    )}
-                    {field.input_config.type === "dropdown" && field.input_config.input_options.length > 0 && (
-                      <>
-                        <p className="text-sm my-2 mb-2">{field.input_config.name}</p>
-
-                        <div className="mb-5">
                           <FormControl fullWidth>
-                            <InputLabel id="drop">{field.input_config.placeholder || selectInputConfig}</InputLabel>
+                            <InputLabel id="drop-label">
+                              {field.input_config.placeholder || selectInputConfig}
+                            </InputLabel>
                             <Select
-                              labelId="drop"
+                              labelId="drop-label"
+                              id="drop"
                               value={selectType}
                               onChange={handleSelectChange}
                               label={field.input_config.placeholder || selectInputConfig}
@@ -891,66 +767,204 @@ const FormDetailConfigPage = ({ id }: Props) => {
                               ))}
                             </Select>
                           </FormControl>
-                        </div>
-                      </>
-                    )}
+                        </>
+                      )}
 
-                    {field.input_config.type === "checkbox" && field.input_config.input_options.length > 0 && (
-                      <div className="my-3">
-                        <p className="my-2">{field.input_config.name}</p>
-                        <FormGroup>
-                          {field.input_config.input_options.map((box: any, index: number) => (
-                            <FormControlLabel key={index} control={<Checkbox defaultChecked />} label={box.label} />
-                          ))}
-                        </FormGroup>
-                      </div>
-                    )}
-                    {field.input_config.type === "date" && (
-                      <>
-                        <div className="mb-2">
-                          <p>{field.input_config.name}</p>
-                          <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DemoContainer components={["DatePicker"]}>
-                              <DatePicker label={field.input_config.name} />
-                            </DemoContainer>
-                          </LocalizationProvider>
+                      {field.input_config.type === "checkbox" && field.input_config.input_options.length > 0 && (
+                        <>
+                          <p className="my-3">{field.input_config.name}</p>
+                          <FormGroup>
+                            {field.input_config.input_options.map((box: any, index: number) => (
+                              <FormControlLabel key={index} control={<Checkbox defaultChecked />} label={box.label} />
+                            ))}
+                          </FormGroup>
+                        </>
+                      )}
+                      {field.input_config.type === "date" && (
+                        <>
+                          <div className="mb-2">
+                            <p className="my-3">{field.input_config.name}</p>
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                              <DemoContainer components={["DatePicker"]}>
+                                <DatePicker label={field.input_config.name} />
+                              </DemoContainer>
+                            </LocalizationProvider>
+                          </div>
+                        </>
+                      )}
+
+                      <div className=" mt-3 flex items-center justify-between">
+                        <form>
+                          <div style={{ display: "flex", alignItems: "center" }}>
+                            <FormControlLabel
+                              control={
+                                <Switch
+                                  checked={field.required}
+                                  onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                                    handleSwitchChange(index, event)
+                                  }
+                                  color="error"
+                                />
+                              }
+                              sx={{ color: "gray" }}
+                              label="Required"
+                            />
+                          </div>
+                        </form>
+                        <div className="flex justify-center">
+                          <IconButton
+                            disabled={index === 0}
+                            onClick={() => handleMoveField(index, index - 1)}
+                            color="error"
+                          >
+                            <KeyboardArrowUpIcon fontSize="inherit" />
+                          </IconButton>
+                          <IconButton
+                            disabled={index === editFormFields.length - 1}
+                            onClick={() => handleMoveField(index, index + 1)}
+                            color="error"
+                          >
+                            <KeyboardArrowDownIcon fontSize="inherit" />
+                          </IconButton>
                         </div>
-                      </>
-                    )}
-                  </div>
+                        <IconButton onClick={() => handleDeleteField(field.order)} color="error">
+                          <DeleteIcon fontSize="inherit" />
+                        </IconButton>
+                      </div>
+                    </div>
+                  </>
                 ))}
             </div>
+
+            {/* Preview */}
+            <div className="flex-1 border border-gray-300 p-1 py-3 m-1 rounded-md">
+              <h1 className="m-3 text-lg font-semibold">Preview</h1>
+              <div className=" flex flex-col pb-10 m-3 rounded-md">
+                {editFormFields.length > 0 &&
+                  editFormFields.map((field, index) => (
+                    <div key={index}>
+                      {(field.input_config.type === "text" ||
+                        field.input_config.type === "Text" ||
+                        field.input_config.type === "email" ||
+                        field.input_config.type === "phone" ||
+                        field.input_config.type === "number") && (
+                        <div className="my-2">
+                          <p className="font-weight-500 text-sm mb-2">
+                            {field.input_config.name}
+                            {field.required === true ? "*" : ""}
+                          </p>
+                          <div className="flex mb-5">
+                            <TextField
+                              label={field.input_config.name}
+                              type={field.input_config.type === "number" ? "number" : "text"}
+                              className="w-full"
+                              placeholder={field.input_config.placeholder}
+                              variant="outlined"
+                            />
+                          </div>
+                        </div>
+                      )}
+
+                      {field.input_config.type === "radio" && field.input_config.input_options.length > 0 && (
+                        <div className="mb-4">
+                          <p className="text-sm">{field.input_config.name}</p>
+                          <FormControl>
+                            <RadioGroup defaultValue="" name="radio-buttons-group">
+                              {field.input_config.input_options.map((option: any, index: number) => (
+                                <>
+                                  <FormControlLabel
+                                    key={index}
+                                    value={option.value}
+                                    control={<Radio />}
+                                    label={option.label}
+                                  />
+                                </>
+                              ))}
+                            </RadioGroup>
+                          </FormControl>
+                        </div>
+                      )}
+                      {field.input_config.type === "dropdown" && field.input_config.input_options.length > 0 && (
+                        <>
+                          <p className="text-sm my-2 mb-2">{field.input_config.name}</p>
+
+                          <div className="mb-5">
+                            <FormControl fullWidth>
+                              <InputLabel id="drop">{field.input_config.placeholder || selectInputConfig}</InputLabel>
+                              <Select
+                                labelId="drop"
+                                value={selectType}
+                                onChange={handleSelectChange}
+                                label={field.input_config.placeholder || selectInputConfig}
+                              >
+                                {field.input_config.input_options.map((dropdown: any, index: number) => (
+                                  <MenuItem key={index} value={dropdown.value}>
+                                    {dropdown.label}
+                                  </MenuItem>
+                                ))}
+                              </Select>
+                            </FormControl>
+                          </div>
+                        </>
+                      )}
+
+                      {field.input_config.type === "checkbox" && field.input_config.input_options.length > 0 && (
+                        <div className="my-3">
+                          <p className="my-2">{field.input_config.name}</p>
+                          <FormGroup>
+                            {field.input_config.input_options.map((box: any, index: number) => (
+                              <FormControlLabel key={index} control={<Checkbox defaultChecked />} label={box.label} />
+                            ))}
+                          </FormGroup>
+                        </div>
+                      )}
+                      {field.input_config.type === "date" && (
+                        <>
+                          <div className="mb-2">
+                            <p>{field.input_config.name}</p>
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                              <DemoContainer components={["DatePicker"]}>
+                                <DatePicker label={field.input_config.name} />
+                              </DemoContainer>
+                            </LocalizationProvider>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  ))}
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-between mt-2">
+            <div></div>
+
+            {formConfigs?.data ? (
+              <LoadingButton
+                loading={updateMutating}
+                loadingPosition="start"
+                startIcon={<SaveIcon />}
+                variant="contained"
+                type="submit"
+                color="error"
+              >
+                Update
+              </LoadingButton>
+            ) : (
+              <LoadingButton
+                loading={postMutating}
+                loadingPosition="start"
+                startIcon={<SaveIcon />}
+                variant="contained"
+                type="submit"
+                color="error"
+              >
+                Save
+              </LoadingButton>
+            )}
           </div>
         </div>
-        <div className="flex justify-between mt-2">
-          <div></div>
-
-          {formConfigs?.data ? (
-            <LoadingButton
-              loading={updateMutating}
-              loadingPosition="start"
-              startIcon={<SaveIcon />}
-              variant="contained"
-              type="submit"
-              color="error"
-            >
-              Update
-            </LoadingButton>
-          ) : (
-            <LoadingButton
-              loading={postMutating}
-              loadingPosition="start"
-              startIcon={<SaveIcon />}
-              variant="contained"
-              type="submit"
-              color="error"
-            >
-              Save
-            </LoadingButton>
-          )}
-        </div>
-      </div>
-    </form>
+      </form>
+    </Container>
   );
 };
 
