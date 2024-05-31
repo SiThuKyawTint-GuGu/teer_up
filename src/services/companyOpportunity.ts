@@ -1,6 +1,6 @@
 "use client";
 import appAxios from "@/lib/appAxios";
-import { OpportunityContentArgType } from "@/types/CompanyOpportunity";
+import { OpportunityContentArgType, usePostFormOpportunityType } from "@/types/CompanyOpportunity";
 import useSWR, { SWRResponse } from "swr";
 import useSWRMutation from "swr/mutation";
 
@@ -21,4 +21,9 @@ export const useGetCompanyOpportunityById = <CompanyOpportunityResponseById>(
 export const usePostContentOpportunity = () =>
   useSWRMutation(`/content`, (url, { arg }: OpportunityContentArgType) => {
     return appAxios.post<OpportunityContentArgType>(url, arg);
+  });
+
+export const useCreateFormOpportunity = () =>
+  useSWRMutation(`/user/opportunity/apply`, (url, { arg }: { arg: { opportunity_id: any; form_id: any } }) => {
+    return appAxios.post(url, arg);
   });

@@ -159,6 +159,7 @@ export interface ContentHomeData {
   category_contents: ContentData[] | [];
 }
 export interface ContentData {
+  alreadyAppliedOpportunity: any;
   content: {
     id: string;
     mentorship_status: string;

@@ -19,6 +19,7 @@ import { Text } from "@/components/ui/Typo/Text";
 import { useStore } from "@/lib/store";
 import CardBox from "@/components/ui/Card";
 import HeaderText from "../profile/components/HeaderText";
+import { useCreateFormOpportunity } from "@/services/companyOpportunity";
 
 enum dialogTrigger {
   COMMENT = "comment",
@@ -33,9 +34,8 @@ type Props = {
 };
 
 const AdditionalQuestions: React.FC<Props> = ({ data, mutate, comments, setComments }) => {
-  // const opportunityData = useStore(state => state.opportunityData);
-  // const { data, mutate, comments, setComments } = opportunityData?.someData || {};
   const { trigger: like } = useLikeContent();
+  const { trigger: createFormConfig } = useCreateFormOpportunity();
   const setOpportunityData = useStore(state => state.setOpportunityData);
   const router = useRouter();
   const { trigger: contentSave } = useSaveContent();
@@ -57,18 +57,6 @@ const AdditionalQuestions: React.FC<Props> = ({ data, mutate, comments, setComme
     saves: 0,
     is_save: false,
   });
-  const AllOppoData = {
-    data: data,
-    mutate: mutate,
-    comments: comments,
-    setComments: setComments,
-  };
-
-
-  const handleNext = (_: undefined) => {
-    setOpportunityData({ someData: AllOppoData });
-    router.push("/opportunity");
-  };
 
   const handleCheckBox = (input: Input_options, InputConfigId: number | string) => {
     const sameId = selectedOptions.find(e => e.value === input.value);
@@ -114,14 +102,26 @@ const AdditionalQuestions: React.FC<Props> = ({ data, mutate, comments, setComme
           inputs: selectedOptions,
         },
         {
-          onSuccess: response => {
+          onSuccess: async response => {
             setSelectedOptions([]);
             setMessage("Form submit Successfully");
             setTimeout(() => {
               setMessage("");
             }, 3000);
-            router.push("application-status");
-            console.log("Response from content event form submit:", response);
+            if (data.content_opportunity) {
+              const opportunityResponse = await createFormConfig(
+                {
+                  opportunity_id: data.content_opportunity.id,
+                  form_id: response.data.data.id,
+                },
+                {}
+              );
+              router.push("application-status");
+              console.log("Response from content opportunity form submit:", response.data.data.id);
+              console.log("Opportunity response:", opportunityResponse);
+            } else {
+              console.error("Content opportunity is null.");
+            }
           },
         }
       );
@@ -134,14 +134,28 @@ const AdditionalQuestions: React.FC<Props> = ({ data, mutate, comments, setComme
           inputs: selectedOptions,
         },
         {
-          onSuccess: response => {
+          onSuccess: async response => {
             setSelectedOptions([]);
             setMessage("Form submit Successfully");
             setTimeout(() => {
               setMessage("");
             }, 3000);
-            router.push("application-status");
-            console.log("Response from content opportunity form submit:", response);
+
+
+            if (data.content_opportunity) {
+              const opportunityResponse = await createFormConfig(
+                {
+                  opportunity_id: data.content_opportunity.id,
+                  form_id: response.data.data.id,
+                },
+                {}
+              );
+              router.push("application-status");
+              console.log("Response from content opportunity form submit:", response.data.data.id);
+              console.log("Opportunity response:", opportunityResponse);
+            } else {
+              console.error("Content opportunity is null.");
+            }
           },
         }
       );
@@ -154,14 +168,26 @@ const AdditionalQuestions: React.FC<Props> = ({ data, mutate, comments, setComme
           inputs: selectedOptions,
         },
         {
-          onSuccess: response => {
+          onSuccess: async response => {
             setSelectedOptions([]);
             setMessage("Form submit Successfully");
             setTimeout(() => {
               setMessage("");
             }, 3000);
-            router.push("application-status");
-            console.log("Response from content article form submit:", response);
+            if (data.content_opportunity) {
+              const opportunityResponse = await createFormConfig(
+                {
+                  opportunity_id: data.content_opportunity.id,
+                  form_id: response.data.data.id,
+                },
+                {}
+              );
+              router.push("application-status");
+              console.log("Response from content opportunity form submit:", response.data.data.id);
+              console.log("Opportunity response:", opportunityResponse);
+            } else {
+              console.error("Content opportunity is null.");
+            }
           },
         }
       );
@@ -173,7 +199,7 @@ const AdditionalQuestions: React.FC<Props> = ({ data, mutate, comments, setComme
       return (
         <>
           <Box className="pb-[7px]">
-            <Section py="1" px="3">
+            <Section py="1" >
               <Text as="label" className="block mb-3 text-md font-medium text-gray-700">
                 {inputData.name}
               </Text>
@@ -207,7 +233,7 @@ const AdditionalQuestions: React.FC<Props> = ({ data, mutate, comments, setComme
       return (
         <Box className="pb-[7px]">
           <Text as="label">{inputData.name}</Text>
-          <Section className="bg-white" py="1" px="3">
+          <Section className="bg-white" py="1" >
             <InputText
               type={inputData.type === "date" ? "date" : "text"}
               className="p-2"
@@ -247,7 +273,7 @@ const AdditionalQuestions: React.FC<Props> = ({ data, mutate, comments, setComme
     if (inputData.type === "checkbox") {
       return (
         <Box className="pb-[7px]">
-          <Section py="1" px="3">
+          <Section py="1" >
             <Text as="label" className="block text-md font-medium text-gray-700">
               {inputData.placeholder}
             </Text>
@@ -271,7 +297,7 @@ const AdditionalQuestions: React.FC<Props> = ({ data, mutate, comments, setComme
     <>
       <HeaderText text={"Additional Questions"} />
       <CardBox className=" relative bottom-[30px]">
-        <div className="bg-white flex px-3 items-center">
+        <div className="bg-white flex items-center">
           <CardBox asChild children={undefined}></CardBox>
           <CardBox asChild>
             <CardBox className={cn("bg-white top-[initial] bottom-0 px-0 py-2 translate-y-0 rounded-16px-tl-tr")}>

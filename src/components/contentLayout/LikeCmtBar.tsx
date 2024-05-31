@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 "use client";
 import { useContentForm, useLikeContent, useSaveContent } from "@/services/content";
@@ -405,10 +406,13 @@ const LikeCmtBar: React.FC<Props> = ({ data, mutate, comments, setComments }) =>
         <div className="bg-white flex px-3 items-center py-2">
           {form ? (
             <>
-              <DialogTrigger asChild >
-                <Button size="sm" className="w-[166px]" onClick={() => handleNext(undefined)}>
-                  {form?.submit_label || "Join Now"}
-                </Button>
+              <DialogTrigger asChild>
+                {
+                  !data.alreadyAppliedOpportunity &&
+                  <Button size="sm" className="w-[166px]" onClick={() => handleNext(undefined)}>
+                    {form?.submit_label || "Join Now"}
+                  </Button>
+                }
               </DialogTrigger>
               {triggerType === dialogTrigger.FORM && (
                 <DialogClose asChild>

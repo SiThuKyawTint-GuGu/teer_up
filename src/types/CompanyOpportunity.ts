@@ -53,3 +53,8 @@ export interface CompanyOpportunityResponse {
 export interface CompanyOpportunityResponseById {
   data: CompanyOpportunity;
 }
+
+export interface usePostFormOpportunityType {
+  opportunity_id: number;
+  form_id: number;
+}
