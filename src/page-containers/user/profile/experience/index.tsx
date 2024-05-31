@@ -32,7 +32,7 @@ const Experience: React.FC = () => {
           </div>
         </div>
 
-        <Box className="pb-[7px] mt-5">
+        <Box className="pb-[7px] relative bottom-[30px]">
           <Section className="" py="4" px="3">
             {experiences?.data?.map((each, key) => (
               <div

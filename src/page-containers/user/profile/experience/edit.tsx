@@ -22,14 +22,19 @@ import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import HeaderText from "../components/HeaderText";
-import { Select, SelectTrigger, SelectContent, SelectItem, SelectLabel } from "@/components/ui/Inputs/Select";
+import { Select, SelectTrigger, SelectContent, SelectItem } from "@/components/ui/Inputs/Select";
+import { useGetCountries } from "@/services/country";
+import { CountriesResponse } from "@/types/Countries";
 
 
 const validationSchema = yup.object({
-  company: yup.string().required("School is required!"),
-  position: yup.string().required("Degree is required!"),
-  start_date: yup.string().required("Start Date is required!"),
+  position: yup.string().required("Job Title is required!"),
+  employment_type: yup.string().required("Employment Type is required!"),
+  company: yup.string().required("Company Name is required!"),
+  start_date: yup.string().required("Form Date is required!"),
   end_date: yup.string(),
+  location: yup.string().required("Location is required!"),
+  description: yup.string(),
 });
 
 const EditExperience: React.FC = () => {
@@ -39,6 +44,8 @@ const EditExperience: React.FC = () => {
   const { trigger: deleteTrigger, isMutating: deleteMutating } = useDeleteExperience();
   const { data: experiences } = useGetUserExperiences<ExperienceParamsType, ExperienceResponse>();
   const [isPresent, setIsPresent] = useState<boolean>();
+  const { data: countries } = useGetCountries<CountriesResponse>();
+  const [selectedLocationId, setSelectedLocationId] = useState<any | null>(null);
 
   const experience = useMemo(
     () => experiences?.data?.find(each => each.id.toString() === exp_id.toString()),
@@ -52,6 +59,9 @@ const EditExperience: React.FC = () => {
       position: experience?.position,
       start_date: dayjs(experience?.start_date).format("YYYY-MM-DD"),
       end_date: dayjs(experience?.end_date).format("YYYY-MM-DD"),
+      employment_type: experience?.employment_type,
+      location: experience?.location,
+      description: experience?.description,
     },
   });
 
@@ -60,6 +70,7 @@ const EditExperience: React.FC = () => {
       ...data,
       is_present: isPresent,
       exp_id: exp_id as string,
+      location_id:selectedLocationId,
     };
     await trigger(newData, {
       onSuccess: () => {
@@ -80,16 +91,22 @@ const EditExperience: React.FC = () => {
     );
   };
 
+  const handleEmploymentTypeChange = (selectedOptions: any) => {
+    form.setValue("employment_type", selectedOptions);
+  };
+
+   const handleLocationChange = (selectedOptions: any) => {
+     const selectLocation = countries?.data.find((item: any) => item.name === selectedOptions);
+     setSelectedLocationId(selectLocation ? selectLocation.id : null);
+     form.setValue("location", selectedOptions);
+   };
+
   useEffect(() => {
-    form.setValue("company", experience?.company || "");
-    form.setValue("position", experience?.position || "");
-    form.setValue("start_date", dayjs(experience?.start_date).format("YYYY-MM-DD") || "");
-    form.setValue("end_date", dayjs(experience?.end_date).format("YYYY-MM-DD") || "");
+    console.log(experience);
     setIsPresent(experience?.is_present || false);
   }, [form, experience]);
 
-       const jobType = ["Full Time","Part Time"];
-       const locationList = ["Yangon , Myanmar", "Mandalay , Myanmar"];
+  const jobType = ["fulltime", "parttime", "contract", "internship"];
 
   return (
     <>
@@ -120,16 +137,11 @@ const EditExperience: React.FC = () => {
                 <p className="text-[14px] font-[400] text-[#222222] ms-3">Employment type</p>
                 <FormField
                   control={form.control}
-                  name="position"
+                  name="employment_type"
                   render={({ field }) => (
-                    <Select
-                    // onValueChange={(value: string) => {
-                    //   handleInput(inputData.id, value);
-                    // }}
-                    // defaultValue={inputData.input_options[0].value}
-                    >
+                    <Select onValueChange={handleEmploymentTypeChange}>
                       <SelectTrigger className="border-none outline-none shadow-md bg-white border-gray-700 ">
-                        Full Time / Part Time
+                        {field.value || "Full Time / Part Time"}
                       </SelectTrigger>
                       <SelectContent className="bg-white">
                         {jobType.map((dropdown, index) => (
@@ -191,7 +203,7 @@ const EditExperience: React.FC = () => {
                 <p className="text-[14px] font-[400] text-[#222222] ms-3">To date</p>
                 <FormField
                   control={form.control}
-                  name="start_date"
+                  name="end_date"
                   render={({ field }) => {
                     return (
                       <FormItem>
@@ -278,22 +290,17 @@ const EditExperience: React.FC = () => {
                 <p className="text-[14px] font-[400] text-[#222222] ms-3">Location</p>
                 <FormField
                   control={form.control}
-                  name="position"
+                  name="location"
                   render={({ field }) => (
                     <FormItem>
-                      <Select
-                      // onValueChange={(value: string) => {
-                      //   handleInput(inputData.id, value);
-                      // }}
-                      // defaultValue={inputData.input_options[0].value}
-                      >
+                      <Select onValueChange={handleLocationChange}>
                         <SelectTrigger className="border-none outline-none shadow-md bg-white border-gray-700 ">
-                          Yangon , Myanmar
+                          {field.value || "Myanmar"}
                         </SelectTrigger>
                         <SelectContent className="bg-white">
-                          {locationList.map((dropdown, index) => (
-                            <SelectItem key={index} value={dropdown}>
-                              <Text>{dropdown}</Text>
+                          {countries?.data?.map((item: any, index: number) => (
+                            <SelectItem key={index} value={item.name}>
+                              <Text>{item.name}</Text>
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -309,7 +316,7 @@ const EditExperience: React.FC = () => {
                 <p className="text-[14px] font-[400] text-[#222222] ms-2">Description (optional)</p>
                 <FormField
                   control={form.control}
-                  name="company"
+                  name="description"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>

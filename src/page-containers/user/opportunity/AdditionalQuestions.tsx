@@ -233,10 +233,10 @@ const AdditionalQuestions: React.FC<Props> = ({ data, mutate, comments, setComme
       return (
         <Box className="pb-[7px]">
           <Text as="label">{inputData.name}</Text>
-          <Section className="bg-white" py="1" >
+          <Section className="bg-white" py="1">
             <InputText
               type={inputData.type === "date" ? "date" : "text"}
-              className="p-2"
+              className={inputData.type === "text" ? "px-2" : ""}
               inputType={inputData.type}
               placeholder={inputData.placeholder}
               handleChange={(e: ChangeEvent<HTMLInputElement>) => {

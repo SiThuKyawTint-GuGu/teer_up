@@ -8,6 +8,9 @@ export interface Experience {
   end_date: string;
   is_present: boolean;
   user_id: number;
+  employment_type: string;
+  location: string;
+  description:string;
 }
 
 export interface ExperienceResponse {
