@@ -5,6 +5,7 @@ import SchoolDashboardLayout from "@/components/layout/schoolLayout";
 import { getToken } from "@/utils/auth";
 import { usePathname } from "next/navigation";
 import ThemeRegistry from "./ThemeRegistry";
+import { Toaster } from "react-hot-toast";
 
 interface Props {
   children: ReactNode;
@@ -17,6 +18,15 @@ const SchoolLayout = ({ children }: Props) => {
   return (
     <ThemeRegistry options={{ key: "mui" }}>
       <SchoolDashboardLayout>{children}</SchoolDashboardLayout>
+      <Toaster
+        containerStyle={{
+          top: 80,
+          right: 20,
+          width: "100%",
+          position: "fixed",
+          zIndex: 2,
+        }}
+      />
     </ThemeRegistry>
   );
 };

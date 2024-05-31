@@ -38,8 +38,20 @@ export const navbarItems: NavbarType[] = [
     ],
   },
   {
+    text: "Question Form",
+    path: "/company/dynamic-form",
+    icon: <Icons.schoolBlogIcon width={24} height={24} fill="#373A36" />,
+    activeIcon: <Icons.schoolBlogIcon width={24} height={24} activeFill="#DA291C" active />,
+  },
+  {
     text: "Students",
     path: "/company/students",
+    icon: <Icons.schoolBlogIcon width={24} height={24} fill="#373A36" />,
+    activeIcon: <Icons.schoolBlogIcon width={24} height={24} activeFill="#DA291C" active />,
+  },
+  {
+    text: "Profile",
+    path: "/company/profile",
     icon: <Icons.schoolBlogIcon width={24} height={24} fill="#373A36" />,
     activeIcon: <Icons.schoolBlogIcon width={24} height={24} activeFill="#DA291C" active />,
   },

@@ -145,7 +145,7 @@ const SchoolDashboardLayout: React.FC<LayoutProps> = ({ children }) => {
         >
           {renderSidebar()}
         </Drawer>
-        <Box component="main" sx={{ flexGrow: 1, bgcolor: "background.default", overflowY: "auto", paddingBottom: 8 }}>
+        <Box component="main" sx={{ flexGrow: 1, bgcolor: "background.default", overflowY: "auto" }}>
           <AppBar position="sticky" sx={{ boxShadow: "none" }}>
             <Toolbar>
               <IconButton
