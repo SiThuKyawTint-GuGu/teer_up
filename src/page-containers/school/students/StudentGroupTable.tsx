@@ -115,8 +115,8 @@ export default function StudentGroupTable() {
       : undefined,
     muiTableContainerProps: {
       sx: {
-        maxHeight: "calc(100vh - 200px)",
-        minHeight: "480px",
+        height: "calc(100vh - 330px)",
+        overflow: "auto",
       },
     },
     positionActionsColumn: "last",

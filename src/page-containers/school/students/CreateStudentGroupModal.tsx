@@ -1,31 +1,18 @@
 "use client";
 
 import { useGetSchools } from "@/services/school";
+import { useCreateStudentGroup } from "@/services/school/studentGroup";
+import { GetAllSchoolsResponse } from "@/types/School";
 import { yupResolver } from "@hookform/resolvers/yup";
 import LoadingButton from "@mui/lab/LoadingButton";
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import * as yup from "yup";
-import { GetAllSchoolsResponse } from "@/types/School";
-import { useCreateStudentGroup } from "@/services/school/studentGroup";
 
 const studentGroupSchema = yup.object().shape({
   name: yup.string().required("Student Group name is required"),
-  school_id: yup.number().integer().positive().required("School is required"),
 });
 
 function CreateStudentGroupModal() {
@@ -40,7 +27,6 @@ function CreateStudentGroupModal() {
     resolver: yupResolver(studentGroupSchema),
     defaultValues: {
       name: "",
-      school_id: 0,
     },
   });
   const { trigger: createStudentGroup, isMutating } = useCreateStudentGroup();
@@ -85,20 +71,6 @@ function CreateStudentGroupModal() {
             <TextField type="text" label="Student Group Name" {...register("name")} fullWidth margin="normal" />
             <Typography variant="body2" color="red">
               {errors.name?.message}
-            </Typography>
-
-            <FormControl fullWidth margin="normal">
-              <InputLabel id="school-id">School</InputLabel>
-              <Select labelId="school-id" {...register("school_id")} label="School">
-                {schools?.data.map(school => (
-                  <MenuItem key={school.id} value={school.id}>
-                    {school.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <Typography variant="body2" color="red">
-              {errors.school_id?.message}
             </Typography>
 
             <DialogActions sx={{ marginTop: 2 }}>
