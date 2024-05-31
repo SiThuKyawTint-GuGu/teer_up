@@ -1,7 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/Button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form";
-import { Icons } from "@/components/ui/Images";
 import { InputText, InputTextAreaBgWhite } from "@/components/ui/Inputs";
 import { Checkbox } from "@/components/ui/Inputs/Checkbox";
 import { Text } from "@/components/ui/Typo/Text";
@@ -140,13 +139,13 @@ const EditExperience: React.FC = () => {
                   name="employment_type"
                   render={({ field }) => (
                     <Select onValueChange={handleEmploymentTypeChange}>
-                      <SelectTrigger className="border-none outline-none shadow-md bg-white border-gray-700 ">
+                      <SelectTrigger className="border-none outline-none shadow-md bg-white border-gray-700 capitalize ">
                         {field.value || "Full Time / Part Time"}
                       </SelectTrigger>
                       <SelectContent className="bg-white">
                         {jobType.map((dropdown, index) => (
                           <SelectItem key={index} value={dropdown}>
-                            <Text>{dropdown}</Text>
+                            <Text className=" capitalize">{dropdown}</Text>
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -335,11 +334,11 @@ const EditExperience: React.FC = () => {
 
             <Box className="pb-[7px]">
               <Section py="4" px="3" className="space-y-[15px]">
-                <Button type="submit" loading={isMutating} className="bg-primary h-[40px] w-full">
+                {/* <Button type="submit" loading={isMutating} className="bg-primary h-[40px] w-full">
                   Add Work Experience
-                </Button>
+                </Button> */}
 
-                <Flex className="justify-end gap-4">
+                <Box className="justify-end gap-4">
                   {/* <Button
                     type="button"
                     loading={deleteMutating}
@@ -354,14 +353,14 @@ const EditExperience: React.FC = () => {
                     type="submit"
                     onClick={() => router.back()}
                     loading={isMutating}
-                    className="bg-primary h-[40px] px-[35px]"
+                    className="bg-primary h-[40px] px-[35px] w-full"
                   >
                     Back
                   </Button>
-                  <Button type="submit" loading={isMutating} className="bg-primary h-[40px] px-[35px]">
+                  <Button type="submit" loading={isMutating} className="bg-primary h-[40px] px-[35px] w-full mt-3">
                     Done
                   </Button>
-                </Flex>
+                </Box>
               </Section>
             </Box>
           </Grid>
