@@ -4,7 +4,7 @@ import { Box } from "@mui/material";
 
 const DynamicFormPage = () => {
   return (
-    <Box sx={{ maxHeight: "calc(100vh - 200px)", marginTop: 6 }}>
+    <Box sx={{ marginTop: 6 }}>
       {/* header */}
       <Typography
         variant="h4"
@@ -13,7 +13,7 @@ const DynamicFormPage = () => {
           marginBottom: 2,
         }}
       >
-        Dynamic Form
+        Question Form
       </Typography>
 
       <DynamicFormTable />
