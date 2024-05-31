@@ -21,46 +21,76 @@ export default function OpportunitiyCard({ id, location, content, location_type 
 
   return (
     <>
-      <Card
-        color="#FAFAFA"
-        sx={{
-          backgroundColor: "#FAFAFA",
-          padding: "24px",
-        }}
-        variant="outlined"
-      >
-        <Box sx={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-          <Stack direction="row" justifyContent="space-between" alignItems="center">
-            <Link href={`${pathname}/${id}`}>
+      <Link href={`${pathname}/${id}`}>
+        <Card
+          color="#FAFAFA"
+          sx={{
+            backgroundColor: "#FAFAFA",
+            padding: "24px",
+          }}
+          variant="outlined"
+        >
+          <Box sx={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+            <Stack direction="row" justifyContent="space-between" alignItems="center">
               <Typography fontWeight="700" fontSize="20px">
                 {truncateString(content.title, 18)}
               </Typography>
-            </Link>
-            <IconButton onClick={popover.onOpen} sx={{ margin: 0, padding: 0 }}>
-              <MoreVertIcon sx={{ flexShrink: 0, width: 20 }} />
-            </IconButton>
-          </Stack>
+              <IconButton onClick={popover.onOpen} sx={{ margin: 0, padding: 0 }}>
+                <MoreVertIcon sx={{ flexShrink: 0, width: 20 }} />
+              </IconButton>
+            </Stack>
 
-          <Typography fontSize="16px" fontWeight="400">
-            {truncateString(content.description, 40)}
-          </Typography>
+            <Typography fontSize="16px" fontWeight="400">
+              {truncateString(content.description, 40)}
+            </Typography>
 
-          <Box display="grid" gridTemplateColumns="repeat(1, 1fr)" gap="8px">
+            <Box display="grid" gridTemplateColumns="repeat(1, 1fr)" gap="8px">
+              {[
+                {
+                  label: location,
+                  icon: <LocationOnIcon sx={{ flexShrink: 0, width: 20 }} />,
+                },
+                {
+                  label: location_type,
+                  icon: <WorkOutlineIcon width={10} sx={{ flexShrink: 0, width: 20 }} />,
+                },
+                {
+                  label: id,
+                  icon: <DescriptionIcon width={10} sx={{ flexShrink: 0, width: 20 }} />,
+                },
+              ].map((item, index) => (
+                <Stack key={index} spacing={1} flexShrink={0} direction="row" alignItems="center" sx={{ minWidth: 0 }}>
+                  {item.icon}
+                  <Typography fontSize="16px" fontWeight="400" noWrap>
+                    {item.label}
+                  </Typography>
+                </Stack>
+              ))}
+            </Box>
+          </Box>
+
+          <Divider sx={{ my: 2 }} />
+
+          <Box rowGap={3} display="flex" gap={3}>
             {[
               {
-                label: location,
-                icon: <LocationOnIcon sx={{ flexShrink: 0, width: 20 }} />,
+                label: "1224",
+                icon: <VisibilityIcon sx={{ flexShrink: 0, width: 20 }} />,
               },
               {
-                label: location_type,
-                icon: <WorkOutlineIcon width={10} sx={{ flexShrink: 0, width: 20 }} />,
-              },
-              {
-                label: id,
-                icon: <DescriptionIcon width={10} sx={{ flexShrink: 0, width: 20 }} />,
+                label: "3456",
+                icon: <BookmarkBorderIcon sx={{ flexShrink: 0, width: 20 }} />,
               },
             ].map((item, index) => (
-              <Stack key={index} spacing={1} flexShrink={0} direction="row" alignItems="center" sx={{ minWidth: 0 }}>
+              <Stack
+                key={index}
+                spacing={0.5}
+                flexShrink={0}
+                direction="row"
+                alignItems="center"
+                justifyContent="start"
+                sx={{ minWidth: 0 }}
+              >
                 {item.icon}
                 <Typography fontSize="16px" fontWeight="400" noWrap>
                   {item.label}
@@ -68,38 +98,8 @@ export default function OpportunitiyCard({ id, location, content, location_type 
               </Stack>
             ))}
           </Box>
-        </Box>
-
-        <Divider sx={{ my: 2 }} />
-
-        <Box rowGap={3} display="flex" gap={3}>
-          {[
-            {
-              label: "1224",
-              icon: <VisibilityIcon sx={{ flexShrink: 0, width: 20 }} />,
-            },
-            {
-              label: "3456",
-              icon: <BookmarkBorderIcon sx={{ flexShrink: 0, width: 20 }} />,
-            },
-          ].map((item, index) => (
-            <Stack
-              key={index}
-              spacing={0.5}
-              flexShrink={0}
-              direction="row"
-              alignItems="center"
-              justifyContent="start"
-              sx={{ minWidth: 0 }}
-            >
-              {item.icon}
-              <Typography fontSize="16px" fontWeight="400" noWrap>
-                {item.label}
-              </Typography>
-            </Stack>
-          ))}
-        </Box>
-      </Card>
+        </Card>
+      </Link>
       <CustomPopover open={popover.open} onClose={popover.onClose} arrow="right-top" sx={{ width: 140 }}>
         <MenuItem
           onClick={() => {
