@@ -39,6 +39,7 @@ function AddStudentToGroupModal({ id, type = "addstudent" }: { id: string; type:
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
+    setError,
     reset,
   } = useForm({
     resolver: yupResolver(studentGroupSchema),
@@ -87,15 +88,21 @@ function AddStudentToGroupModal({ id, type = "addstudent" }: { id: string; type:
       });
     } else {
       addToStudentGroup(formattedData, {
-        onSuccess: () => {
-          toast.success("Successfully added");
-          reset();
-          mutate();
-          handleClose();
+        onSuccess: (res: any) => {
+          if (res?.data?.data?.invalid?.length) {
+            setError("student_emails", {
+              type: "manual",
+              message: `Invalid emails: ${res?.data?.data?.invalid.join(", ")}`,
+            });
+          } else {
+            reset();
+            mutate();
+            handleClose();
+          }
         },
         onError: err => {
           console.log(err);
-          toast.error(err.response.data.message);
+          toast.error("Error adding students");
         },
       });
     }
